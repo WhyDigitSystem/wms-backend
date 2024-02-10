@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,9 @@ public class BranchVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long branchid;
+	@Column(unique = true)
 	private String branchname;
+	@Column(unique = true)
 	private String branchcode;
     private String branchaddress;
     private String company;
@@ -35,6 +38,7 @@ public class BranchVO {
     private String branchGST;
     private String locationgtype;
     private boolean active;
+    private String orgid;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

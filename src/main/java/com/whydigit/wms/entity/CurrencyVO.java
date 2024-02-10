@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 public class CurrencyVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long currencyid;
-	private long userid;
+	private String userid;
 	private String country;
 	private String currency;
     private String subcurrency;

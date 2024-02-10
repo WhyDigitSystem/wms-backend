@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,9 @@ public class CompanyVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long companyid;
+	@Column(unique = true)
 	private String name;
+	@Column(unique = true)
 	private String companycode;
 	private String address;
     private String zip;
@@ -42,6 +45,7 @@ public class CompanyVO {
 	private String TIN;
 	private String PAN;
     private String companyobject;
+    private String userid;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

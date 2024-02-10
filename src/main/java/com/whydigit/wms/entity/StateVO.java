@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,14 +22,19 @@ import lombok.NoArgsConstructor;
 public class StateVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long stateid;
-	private long userid;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long stateid;
+		
+	@Column(unique = true)
 	private String statecode;
+	
+	@Column(unique = true)
 	private String statename;
+	
     private String country;
     private String region;
     private boolean active;
+    private String userid;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
