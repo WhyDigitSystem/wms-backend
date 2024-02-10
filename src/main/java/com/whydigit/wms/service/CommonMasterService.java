@@ -30,6 +30,8 @@ public interface CommonMasterService {
 	List<StateVO> getAllgetAllStates();
 
 	Optional<StateVO> getStateById(Long stateid);
+	
+	List<StateVO> getStatesByCountry(String country);
 
 	StateVO createState(StateVO stateVO);
 

@@ -80,6 +80,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<StateVO> getStateById(Long stateid) {
 		return stateRepo.findById(stateid);
 	}
+	
+	@Override
+	public List<StateVO> getStatesByCountry(String country) {
+		
+		return stateRepo.findByCountry(country);
+	}
 
 	@Override
 	public StateVO createState(StateVO stateVO) {
@@ -176,6 +182,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		public void deleteRegion(Long regionid) {
 			regionRepo.deleteById(regionid);
 		}
+
+		
 
 	
 
