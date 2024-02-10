@@ -10,8 +10,6 @@ import com.whydigit.wms.entity.StateVO;
 
 
 @Repository
-public interface StateRepo extends JpaRepository<StateVO, Integer> {
-	@Query(value = "select s from StateVO s where s.userid=?1")
-	List<StateVO> getStateByUserId(long userid);
-
+public interface StateRepo extends JpaRepository<StateVO, Long> {
+	
 }
