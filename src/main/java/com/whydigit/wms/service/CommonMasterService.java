@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.entity.UnitVO;
 
 @Service
 public interface CommonMasterService {
@@ -30,7 +32,7 @@ public interface CommonMasterService {
 	List<StateVO> getAllgetAllStates();
 
 	Optional<StateVO> getStateById(Long stateid);
-	
+
 	List<StateVO> getStatesByCountry(String country);
 
 	StateVO createState(StateVO stateVO);
@@ -62,4 +64,28 @@ public interface CommonMasterService {
 	Optional<RegionVO> updateRegion(RegionVO regionVO);
 
 	void deleteRegion(Long regionid);
+
+	// Group
+
+	List<GroupVO> getAllGroup();
+
+	Optional<GroupVO> getGroupById(Long groupid);
+
+	GroupVO createGroup(GroupVO groupVO);
+
+	Optional<GroupVO> updateGroup(GroupVO groupVO);
+
+	void deleteGroup(Long groupid);
+
+	// Unit
+
+	List<UnitVO> getAllUnit();
+
+	Optional<UnitVO> getUnitById(Long unitid);
+
+	UnitVO createUnit(UnitVO unitVO);
+
+	Optional<UnitVO> updateUnit(UnitVO unitVO);
+
+	void deleteUnit(Long unitid);
 }

@@ -1,4 +1,4 @@
-  package com.whydigit.wms.controller;
+package com.whydigit.wms.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +23,10 @@ import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.service.CommonMasterService;
 
 @RestController
@@ -32,12 +34,10 @@ import com.whydigit.wms.service.CommonMasterService;
 public class CommonMasterController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(CommonMasterController.class);
-	
+
 	@Autowired
 	CommonMasterService commonMasterService;
-	
 
-	
 	@GetMapping("/country")
 	public ResponseEntity<ResponseDTO> getAllcountries() {
 		String methodName = "getAllCountry()";
@@ -63,7 +63,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/country/{id}")
 	public ResponseEntity<ResponseDTO> getCountryById(@PathVariable Long countryid) {
 		String methodName = "getCountryById()";
@@ -89,7 +89,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/country")
 	public ResponseEntity<ResponseDTO> createCountry(@RequestBody CountryVO countryVO) {
 		String methodName = "createCountry()";
@@ -102,15 +102,16 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Country created successfully");
 			responseObjectsMap.put("countryVO", createdCountryVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e){
+		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Country creation failed. Country Name or Country Code already Exist ", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Country creation failed. Country Name or Country Code already Exist ", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PutMapping("/country")
 	public ResponseEntity<ResponseDTO> updateCountry(@RequestBody CountryVO countryVO) {
 		String methodName = "updateCountry()";
@@ -131,16 +132,15 @@ public class CommonMasterController extends BaseController {
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Country Update failed, Country Name or Country Code already Exisit", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Country Update failed, Country Name or Country Code already Exisit", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
-	
+
 	// State
-	
+
 	@GetMapping("/state")
 	public ResponseEntity<ResponseDTO> getAllStates() {
 		String methodName = "getAllStates()";
@@ -160,18 +160,14 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put("stateVO", stateVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "States information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "States information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
-	//getStateByStateId
-	
-	
-	
+
+	// getStateByStateId
+
 	@GetMapping("/state/{id}")
 	public ResponseEntity<ResponseDTO> getStateById(@PathVariable Long stateid) {
 		String methodName = "getStateById()";
@@ -186,7 +182,7 @@ public class CommonMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
+
 		if (StringUtils.isEmpty(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "States found by State ID");
 			responseObjectsMap.put("stateVO", stateVO);
@@ -198,7 +194,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/state/country/{country}")
 	public ResponseEntity<ResponseDTO> getStateByCountry(@PathVariable String country) {
 		String methodName = "getStateByCountry()";
@@ -213,7 +209,7 @@ public class CommonMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
+
 		if (StringUtils.isEmpty(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "States found by Country");
 			responseObjectsMap.put("stateVO", stateVO);
@@ -238,16 +234,17 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "State created successfully");
 			responseObjectsMap.put("stateVO", statevO);
 			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e){
+		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "State creation failed. State Name or State Code already Exist ", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"State creation failed. State Name or State Code already Exist ", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/state")              
+	@PutMapping("/state")
 	public ResponseEntity<ResponseDTO> updateState(@RequestBody StateVO stateVO) {
 		String methodName = "updateState()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -262,19 +259,21 @@ public class CommonMasterController extends BaseController {
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "State not found for State ID: " + stateVO.getStateid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "State Update failed, StateName and State Code Should Not Duplicate", errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"State Update failed, StateName and State Code Should Not Duplicate", errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "State Update failed, StateName and State Code Should Not Duplicate", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"State Update failed, StateName and State Code Should Not Duplicate", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	// city
-	
+
 	@GetMapping("/city")
 	public ResponseEntity<ResponseDTO> getAllCities() {
 		String methodName = "getAllCities()";
@@ -294,13 +293,12 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put("cityVO", cityVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "city information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "city information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/city/{id}")
 	public ResponseEntity<ResponseDTO> getCityById(@PathVariable Long cityid) {
 		String methodName = "getCityById()";
@@ -315,7 +313,7 @@ public class CommonMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
+
 		if (StringUtils.isEmpty(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "City found by City ID");
 			responseObjectsMap.put("cityVO", cityVO);
@@ -328,7 +326,6 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 	@PostMapping("/city")
 	public ResponseEntity<ResponseDTO> createCity(@RequestBody CityVO cityVO) {
 		String methodName = "createCity()";
@@ -344,13 +341,12 @@ public class CommonMasterController extends BaseController {
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "City creation failed, CityName and City Code Should Not Duplicate", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"City creation failed, CityName and City Code Should Not Duplicate", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
 
 	@PutMapping("/city")
 	public ResponseEntity<ResponseDTO> updateCity(@RequestBody CityVO cityVO) {
@@ -367,19 +363,21 @@ public class CommonMasterController extends BaseController {
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "City not found for ID: " + cityVO.getCityid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "City Update failed, CityName and City Code Should Not Duplicate", errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"City Update failed, CityName and City Code Should Not Duplicate", errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "City Update failed, CityName and City Code Should Not Duplicate", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"City Update failed, CityName and City Code Should Not Duplicate", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	// Region
-	
+
 	@GetMapping("/region")
 	public ResponseEntity<ResponseDTO> getAllCRegions() {
 		String methodName = "getAllCRegions()";
@@ -399,13 +397,12 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put("regionVO", regionVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Region information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Region information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/region/{id}")
 	public ResponseEntity<ResponseDTO> getRegionById(@PathVariable Long regionid) {
 		String methodName = "getRegionById()";
@@ -420,7 +417,7 @@ public class CommonMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
+
 		if (StringUtils.isEmpty(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Region found by Region ID");
 			responseObjectsMap.put("regionVO", regionVO);
@@ -433,7 +430,6 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 	@PostMapping("/region")
 	public ResponseEntity<ResponseDTO> createRegion(@RequestBody RegionVO regionVO) {
 		String methodName = "createRegion()";
@@ -449,13 +445,12 @@ public class CommonMasterController extends BaseController {
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Region creation failed, Region and Region Code Should Not Duplicate", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Region creation failed, Region and Region Code Should Not Duplicate", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
 
 	@PutMapping("/region")
 	public ResponseEntity<ResponseDTO> updateRegion(@RequestBody RegionVO regionVO) {
@@ -472,18 +467,222 @@ public class CommonMasterController extends BaseController {
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "City not found for ID: " + regionvo.getRegionid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Region Update failed, Region and Region Code Should Not Duplicate", errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Region Update failed, Region and Region Code Should Not Duplicate", errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Region Update failed, Region and Region Code Should Not Duplicate", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Region Update failed, Region and Region Code Should Not Duplicate", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
-	
-	
+
+	// Group
+
+	@GetMapping("/group")
+	public ResponseEntity<ResponseDTO> getAllGroup() {
+		String methodName = "getAllGroup()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<GroupVO> groupVO = new ArrayList<>();
+		try {
+			groupVO = commonMasterService.getAllGroup();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Group information get successfully");
+			responseObjectsMap.put("groupVO", groupVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Group information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/group/{id}")
+	public ResponseEntity<ResponseDTO> getGroupById(@PathVariable Long groupid) {
+		String methodName = "getGroupById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		GroupVO groupVO = null;
+		try {
+			groupVO = commonMasterService.getGroupById(groupid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Group found by Group ID");
+			responseObjectsMap.put("groupVO", groupVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "group not found for group ID: " + groupid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "group not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/group")
+	public ResponseEntity<ResponseDTO> createGroup(@RequestBody GroupVO groupVO) {
+		String methodName = "createGroup()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			GroupVO createdGroupVO = commonMasterService.createGroup(groupVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Group created successfully");
+			responseObjectsMap.put("createdGroupVO", createdGroupVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Group creation failed. Group Name already Exist ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	@PutMapping("/group")
+	public ResponseEntity<ResponseDTO> updateGroup(@RequestBody GroupVO groupVO) {
+		String methodName = "updateGroup()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			GroupVO groupvo = commonMasterService.updateGroup(groupVO).orElse(null);
+			if (groupVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Group Updated successfully");
+				responseObjectsMap.put("groupVO", groupvo);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Group not found for ID: " + groupvo.getGroupid();
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Group Update failed, Group Name already Exist", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Group Name Update failed, Group Name already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// Unit
+
+	@GetMapping("/unit")
+	public ResponseEntity<ResponseDTO> getAllUnit() {
+		String methodName = "getAllUnit()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<UnitVO> unitVO = new ArrayList<>();
+		try {
+			unitVO = commonMasterService.getAllUnit();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Unit information get successfully");
+			responseObjectsMap.put("unitVO", unitVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Unit information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/unit/{id}")
+	public ResponseEntity<ResponseDTO> getUnitById(@PathVariable Long unitid) {
+		String methodName = "getUnitById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		UnitVO unitVO = null;
+		try {
+			unitVO = commonMasterService.getUnitById(unitid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Unit found by Unit ID");
+			responseObjectsMap.put("unitVO", unitVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Unit not found for Unit ID: " + unitid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Unit not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/unit")
+	public ResponseEntity<ResponseDTO> createUnit(@RequestBody UnitVO unitVO) {
+		String methodName = "createUnit()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			UnitVO createdUnitVO = commonMasterService.createUnit(unitVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Unit created successfully");
+			responseObjectsMap.put("createdUnitVO", createdUnitVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Unit creation failed. Unit Name already Exist ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	@PutMapping("/unit")
+	public ResponseEntity<ResponseDTO> updateUnit(@RequestBody UnitVO unitVO) {
+		String methodName = "updateUnit()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			UnitVO unitvo= commonMasterService.updateUnit(unitVO).orElse(null);
+			if (unitVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Unit Updated successfully");
+				responseObjectsMap.put("unitVO", unitvo);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Unit not found for ID: " + unitvo.getUnitid();
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Unit Update failed, Unit Name already Exist", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Unit Name Update failed, Unit Name already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }
