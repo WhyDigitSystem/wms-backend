@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,15 +15,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "warehouse")
+@Table(name = "region")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class WarehouseVO {
+@AllArgsConstructor
+public class RegionVO {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long warehouseid;
-	private String warehouse;
-	 @Embedded
-		private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	private Long regionid;
+	private long userid;
+	@Column(unique = true)
+	private String regioncode;
+	@Column(unique = true)
+	private String regionname;
+	private boolean active;
+	@Embedded
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

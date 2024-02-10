@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.CountryVORepository;
+import com.whydigit.wms.repo.RegionRepo;
 import com.whydigit.wms.repo.StateRepo;
 
 @Service
@@ -24,6 +26,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	
 	@Autowired
 	CityRepo cityRepo;
+	
+	@Autowired
+	RegionRepo regionRepo;
 	
 	
 
@@ -136,6 +141,41 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		cityRepo.deleteById(cityid);
 	}
 
+
+	// Region
+
+		@Override
+		public List<RegionVO> getAllRegion() {
+			return regionRepo.findAll();
+		}
+		
+		@Override
+		public Optional<RegionVO> getRegionById(Long Regionid) {
+			return regionRepo.findById(Regionid);
+		}
+
+		@Override
+		public RegionVO createRegion(RegionVO regionVO) {
+			regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
+			regionVO.setRegionname(regionVO.getRegionname().toUpperCase());
+			return regionRepo.save(regionVO);
+		}
+
+		@Override
+		public Optional<RegionVO> updateRegion(RegionVO regionVO) {
+			if (regionRepo.existsById(regionVO.getRegionid())) {
+				regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
+				regionVO.setRegionname(regionVO.getRegionname().toUpperCase());
+				return Optional.of(regionRepo.save(regionVO));
+			} else {
+				return Optional.empty();
+			}
+		}
+
+		@Override
+		public void deleteRegion(Long regionid) {
+			regionRepo.deleteById(regionid);
+		}
 
 	
 
