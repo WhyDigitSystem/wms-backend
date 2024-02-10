@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
@@ -14,19 +13,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "warehouse")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class WarehouseVO {
+@AllArgsConstructor
+public class WarehouseClientVO {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long warehouseid;
-	private String warehousename;
-	private String branch;
-	private String branchcode;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long whclientid;
+	private String client;
+	private String clientcode;
 	private boolean active;
-	private long userid;
+	private boolean userid;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
