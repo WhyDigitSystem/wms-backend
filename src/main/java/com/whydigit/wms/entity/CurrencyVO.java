@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class CurrencyVO {
 	private long currencyid;
 	private String userid;
 	private String country;
+	@Column(unique = true)
 	private String currency;
     private String subcurrency;
     private String currencysymbol;
