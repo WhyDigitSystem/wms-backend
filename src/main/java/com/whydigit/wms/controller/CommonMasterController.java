@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UnitVO;
@@ -555,6 +557,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@PutMapping("/group")
 	public ResponseEntity<ResponseDTO> updateGroup(@RequestBody GroupVO groupVO) {
 		String methodName = "updateGroup()";
@@ -658,6 +661,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@PutMapping("/unit")
 	public ResponseEntity<ResponseDTO> updateUnit(@RequestBody UnitVO unitVO) {
 		String methodName = "updateUnit()";
@@ -666,7 +670,7 @@ public class CommonMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			UnitVO unitvo= commonMasterService.updateUnit(unitVO).orElse(null);
+			UnitVO unitvo = commonMasterService.updateUnit(unitVO).orElse(null);
 			if (unitVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Unit Updated successfully");
 				responseObjectsMap.put("unitVO", unitvo);
@@ -681,6 +685,214 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Unit Name Update failed, Unit Name already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	// LocationType
+
+	@GetMapping("/locationType")
+	public ResponseEntity<ResponseDTO> getAllLocationType() {
+		String methodName = "getAllLocationType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<LocationTypeVO> locationTypeVO = new ArrayList<>();
+		try {
+			locationTypeVO = commonMasterService.getAllLocationType();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType information get successfully");
+			responseObjectsMap.put("locationTypeVO", locationTypeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationType information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/locationType/{id}")
+	public ResponseEntity<ResponseDTO> getLocationTypeById(@PathVariable Long locationtypeid) {
+		String methodName = "getLocationTypeById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		LocationTypeVO locationTypeVO = null;
+		try {
+			locationTypeVO = commonMasterService.getLocationTypeById(locationtypeid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType found by LocationType ID");
+			responseObjectsMap.put("locationTypeVO", locationTypeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "LocationType not found for LocationType ID: " + locationtypeid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationType not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/locationType")
+	public ResponseEntity<ResponseDTO> createLocationType(@RequestBody LocationTypeVO locationTypeVO) {
+		String methodName = "createLocationType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LocationTypeVO createdLocationTypeVO = commonMasterService.createLocationType(locationTypeVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType created successfully");
+			responseObjectsMap.put("createdLocationTypeVO", createdLocationTypeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"LocationType creation failed. LocationType Name already Exist ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/locationType")
+	public ResponseEntity<ResponseDTO> updateLocationType(@RequestBody LocationTypeVO locationTypeVO) {
+		String methodName = "updateLocationType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LocationTypeVO locationTypevo = commonMasterService.updateLocationType(locationTypeVO).orElse(null);
+			if (locationTypeVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType Updated successfully");
+				responseObjectsMap.put("locationTypeVO", locationTypevo);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "LocationType not found for ID: " + locationTypevo.getLocationtype();
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"LocationType Update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"LocationType Name Update failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// CellType
+
+	@GetMapping("/cellType")
+	public ResponseEntity<ResponseDTO> getAllCellType() {
+		String methodName = "getAllCellType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CellTypeVO> cellTypeVO = new ArrayList<>();
+		try {
+			cellTypeVO = commonMasterService.getAllCellType();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType information get successfully");
+			responseObjectsMap.put("cellTypeVO", cellTypeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "CellType information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/cellType/{id}")
+	public ResponseEntity<ResponseDTO> getCellTypeById(@PathVariable Long celltypeid) {
+		String methodName = "getCellTypeById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		CellTypeVO cellTypeVO = null;
+		try {
+			cellTypeVO = commonMasterService.getCellTypeById(celltypeid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType found by CellType ID");
+			responseObjectsMap.put("cellTypeVO", cellTypeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "CellType not found for CellType ID: " + celltypeid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "CellType not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/cellType")
+	public ResponseEntity<ResponseDTO> createCellType(@RequestBody CellTypeVO cellTypeVO) {
+		String methodName = "createCellType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CellTypeVO createdCellTypeVO = commonMasterService.createCellType(cellTypeVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType created successfully");
+			responseObjectsMap.put("createdCellTypeVO", createdCellTypeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CellType creation failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/cellType")
+	public ResponseEntity<ResponseDTO> updateCellType(@RequestBody CellTypeVO cellTypeVO) {
+		String methodName = "updateCellType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CellTypeVO cellTypevo= commonMasterService.updateCellType(cellTypeVO).orElse(null);
+			if (cellTypeVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType Updated successfully");
+				responseObjectsMap.put("cellTypeVO", cellTypevo);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Celltype not found for ID: " + cellTypevo.getCelltypeid();
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"CellType Update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CellType Update failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

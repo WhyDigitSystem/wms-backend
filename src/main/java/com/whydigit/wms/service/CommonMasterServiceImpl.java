@@ -6,15 +6,19 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.CountryVORepository;
 import com.whydigit.wms.repo.GroupRepo;
+import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.RegionRepo;
 import com.whydigit.wms.repo.StateRepo;
 import com.whydigit.wms.repo.UnitRepo;
@@ -39,6 +43,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	UnitRepo unitRepo;
+
+	@Autowired
+	LocationTypeRepo locationTypeRepo;
+
+	@Autowired
+	CellTypeRepo cellTypeRepo;
 
 	@Override
 	public List<CountryVO> getAllCountry() {
@@ -250,5 +260,65 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public void deleteUnit(Long unitid) {
 		unitRepo.deleteById(unitid);
 	}
+	// LocationType
 
+	@Override
+	public List<LocationTypeVO> getAllLocationType() {
+		return locationTypeRepo.findAll();
+	}
+
+	@Override
+	public Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid) {
+		return locationTypeRepo.findById(locationtypeid);
+	}
+
+	@Override
+	public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
+		return locationTypeRepo.save(locationTypeVO);
+	}
+
+	@Override
+	public Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO) {
+		if (locationTypeRepo.existsById(locationTypeVO.getLocationtypeid())) {
+			return Optional.of(locationTypeRepo.save(locationTypeVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteLocationType(Long locationtypeid) {
+		locationTypeRepo.deleteById(locationtypeid);
+	}
+
+	// CellType
+
+	@Override
+	public List<CellTypeVO> getAllCellType() {
+		return cellTypeRepo.findAll();
+	}
+
+	@Override
+	public Optional<CellTypeVO> getCellTypeById(Long celltypeid) {
+		return cellTypeRepo.findById(celltypeid);
+	}
+
+	@Override
+	public CellTypeVO createCellType(CellTypeVO cellTypeVO) {
+		return cellTypeRepo.save(cellTypeVO);
+	}
+
+	@Override
+	public Optional<CellTypeVO> updateCellType(CellTypeVO cellTypeVO) {
+		if (cellTypeRepo.existsById(cellTypeVO.getCelltypeid())) {
+			return Optional.of(cellTypeRepo.save(cellTypeVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteCellType(Long celltypeid) {
+		cellTypeRepo.deleteById(celltypeid);
+	}
 }
