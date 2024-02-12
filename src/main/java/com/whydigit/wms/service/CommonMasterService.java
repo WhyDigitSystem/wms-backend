@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UnitVO;
@@ -88,4 +90,28 @@ public interface CommonMasterService {
 	Optional<UnitVO> updateUnit(UnitVO unitVO);
 
 	void deleteUnit(Long unitid);
+
+	// Location Type
+
+	List<LocationTypeVO> getAllLocationType();
+
+	Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid);
+
+	LocationTypeVO createLocationType(LocationTypeVO locationTypeVO);
+
+	Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO);
+
+	void deleteLocationType(Long locationtypeid);
+
+	// CellType
+
+	List<CellTypeVO> getAllCellType();
+
+	Optional<CellTypeVO> getCellTypeById(Long celltypeid);
+
+	CellTypeVO createCellType(CellTypeVO cellTypeVO);
+
+	Optional<CellTypeVO> updateCellType(CellTypeVO cellTypeVO);
+
+	void deleteCellType(Long celltypeid);
 }
