@@ -23,7 +23,7 @@ public class CurrencyVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long currencyid;
+	private Long currencyid;
 	private String userid;
 	private String country;
 	@Column(unique = true)
