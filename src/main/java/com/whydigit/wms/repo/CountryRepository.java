@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.whydigit.wms.entity.CountryVO;
 
-public interface CountryVORepository extends JpaRepository<CountryVO,Long>{
+public interface CountryRepository extends JpaRepository<CountryVO,Long>{
 
 }
