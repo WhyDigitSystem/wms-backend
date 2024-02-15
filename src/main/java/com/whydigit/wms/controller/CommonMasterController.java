@@ -33,7 +33,6 @@ import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.repo.CountryRepository;
 import com.whydigit.wms.service.CommonMasterService;
 
-
 @RestController
 @RequestMapping("/api")
 public class CommonMasterController extends BaseController {
@@ -42,8 +41,6 @@ public class CommonMasterController extends BaseController {
 
 	@Autowired
 	CommonMasterService commonMasterService;
-	@Autowired
-	CountryRepository countryRepo;
 
 	@GetMapping("/country")
 	public ResponseEntity<ResponseDTO> getAllcountries() {
@@ -71,7 +68,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/country/{id}")
+	@GetMapping("/country/{countryid}")
 	public ResponseEntity<ResponseDTO> getCountryById(@PathVariable Long countryid) {
 		String methodName = "getCountryById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -96,6 +93,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@PostMapping("/country")
 	public ResponseEntity<ResponseDTO> createCountry(@RequestBody CountryVO countryVO) {
 		String methodName = "createCountry()";
@@ -174,7 +172,7 @@ public class CommonMasterController extends BaseController {
 
 	// getStateByStateId
 
-	@GetMapping("/state/{id}")
+	@GetMapping("/state/{stateid}")
 	public ResponseEntity<ResponseDTO> getStateById(@PathVariable Long stateid) {
 		String methodName = "getStateById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -305,7 +303,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/city/{id}")
+	@GetMapping("/city/{cityid}")
 	public ResponseEntity<ResponseDTO> getCityById(@PathVariable Long cityid) {
 		String methodName = "getCityById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -409,7 +407,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/region/{id}")
+	@GetMapping("/region/{regionid}")
 	public ResponseEntity<ResponseDTO> getRegionById(@PathVariable Long regionid) {
 		String methodName = "getRegionById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -513,7 +511,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/group/{id}")
+	@GetMapping("/group/{groupid}")
 	public ResponseEntity<ResponseDTO> getGroupById(@PathVariable Long groupid) {
 		String methodName = "getGroupById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -617,7 +615,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/unit/{id}")
+	@GetMapping("/unit/{unitid}")
 	public ResponseEntity<ResponseDTO> getUnitById(@PathVariable Long unitid) {
 		String methodName = "getUnitById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -721,7 +719,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/locationType/{id}")
+	@GetMapping("/locationType/{locationtypeid}")
 	public ResponseEntity<ResponseDTO> getLocationTypeById(@PathVariable Long locationtypeid) {
 		String methodName = "getLocationTypeById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -824,7 +822,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/cellType/{id}")
+	@GetMapping("/cellType/{celltypeid}")
 	public ResponseEntity<ResponseDTO> getCellTypeById(@PathVariable Long celltypeid) {
 		String methodName = "getCellTypeById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -926,7 +924,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/company/{id}")
+	@GetMapping("/company/{companyid}")
 	public ResponseEntity<ResponseDTO> getcompanyById(@PathVariable Long companyid) {
 		String methodName = "getCompanyById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -973,6 +971,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@PutMapping("/company")
 	public ResponseEntity<ResponseDTO> updateCompany(@RequestBody CompanyVO companyVO) {
 		String methodName = "updateCompany()";
