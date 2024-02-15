@@ -21,9 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
+import com.whydigit.wms.entity.ClientVO;
+import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -66,26 +70,26 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/country/{id}")
+	@GetMapping("/country/{countryid}")
 	public ResponseEntity<ResponseDTO> getCountryById(@PathVariable Long countryid) {
 		String methodName = "getCountryById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		CountryVO countryVO = null;
+		CountryVO CountryVO = null;
 		try {
-			countryVO = commonMasterService.getCountryById(countryid).orElse(null);
+			CountryVO = commonMasterService.getCountryById(countryid).orElse(null);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Country found by ID");
-			responseObjectsMap.put("countryVO", countryVO);
+			responseObjectsMap.put("Country", CountryVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			errorMsg = "Countries not found for CountryID: " + countryid;
+			errorMsg = "Country not found for ID: " + countryid;
 			responseDTO = createServiceResponseError(responseObjectsMap, "Country not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -170,7 +174,7 @@ public class CommonMasterController extends BaseController {
 
 	// getStateByStateId
 
-	@GetMapping("/state/{id}")
+	@GetMapping("/state/{stateid}")
 	public ResponseEntity<ResponseDTO> getStateById(@PathVariable Long stateid) {
 		String methodName = "getStateById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -301,7 +305,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/city/{id}")
+	@GetMapping("/city/{cityid}")
 	public ResponseEntity<ResponseDTO> getCityById(@PathVariable Long cityid) {
 		String methodName = "getCityById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -405,7 +409,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/region/{id}")
+	@GetMapping("/region/{regionid}")
 	public ResponseEntity<ResponseDTO> getRegionById(@PathVariable Long regionid) {
 		String methodName = "getRegionById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -463,7 +467,7 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			RegionVO regionvo = commonMasterService.updateRegion(regionVO).orElse(null);
-			if (regionvo != null) {
+			if (regionVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Region Updated successfully");
 				responseObjectsMap.put("regionvo", regionvo);
 				responseDTO = createServiceResponse(responseObjectsMap);
@@ -509,7 +513,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/group/{id}")
+	@GetMapping("/group/{groupid}")
 	public ResponseEntity<ResponseDTO> getGroupById(@PathVariable Long groupid) {
 		String methodName = "getGroupById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -613,7 +617,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/unit/{id}")
+	@GetMapping("/unit/{unitid}")
 	public ResponseEntity<ResponseDTO> getUnitById(@PathVariable Long unitid) {
 		String methodName = "getUnitById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -717,7 +721,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/locationType/{id}")
+	@GetMapping("/locationType/{locationtypeid}")
 	public ResponseEntity<ResponseDTO> getLocationTypeById(@PathVariable Long locationtypeid) {
 		String methodName = "getLocationTypeById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -781,14 +785,12 @@ public class CommonMasterController extends BaseController {
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "LocationType not found for ID: " + locationTypevo.getLocationtype();
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"LocationType Update failed", errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, "LocationType Update failed", errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"LocationType Name Update failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationType Name Update failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -815,13 +817,14 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put("cellTypeVO", cellTypeVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "CellType information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "CellType information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/cellType/{id}")
+	@GetMapping("/cellType/{celltypeid}")
 	public ResponseEntity<ResponseDTO> getCellTypeById(@PathVariable Long celltypeid) {
 		String methodName = "getCellTypeById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -863,8 +866,7 @@ public class CommonMasterController extends BaseController {
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"CellType creation failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "CellType creation failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -878,21 +880,351 @@ public class CommonMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CellTypeVO cellTypevo= commonMasterService.updateCellType(cellTypeVO).orElse(null);
+			CellTypeVO cellTypevo = commonMasterService.updateCellType(cellTypeVO).orElse(null);
 			if (cellTypeVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType Updated successfully");
 				responseObjectsMap.put("cellTypeVO", cellTypevo);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "Celltype not found for ID: " + cellTypevo.getCelltypeid();
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"CellType Update failed", errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// Company
+
+	@GetMapping("/company")
+	public ResponseEntity<ResponseDTO> getAllCompany() {
+		String methodName = "getAllCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CompanyVO> companyVO = new ArrayList<>();
+		try {
+			companyVO = commonMasterService.getAllCompany();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company information get successfully");
+			responseObjectsMap.put("companyVO", companyVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Company information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/company/{companyid}")
+	public ResponseEntity<ResponseDTO> getcompanyById(@PathVariable Long companyid) {
+		String methodName = "getCompanyById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		CompanyVO companyVO = null;
+		try {
+			companyVO = commonMasterService.getCompanyById(companyid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company found by Company ID");
+			responseObjectsMap.put("companyVO", companyVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "company not found for companyID: " + companyid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "company not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/company")
+	public ResponseEntity<ResponseDTO> createCompany(@RequestBody CompanyVO companyVO) {
+		String methodName = "createCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CompanyVO createdCompanyVO = commonMasterService.createCompany(companyVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company created successfully");
+			responseObjectsMap.put("createdCompanyVO", createdCompanyVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Company creation failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/company")
+	public ResponseEntity<ResponseDTO> updateCompany(@RequestBody CompanyVO companyVO) {
+		String methodName = "updateCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CompanyVO companyvo = commonMasterService.updateCompany(companyVO).orElse(null);
+			if (companyVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company Updated successfully");
+				responseObjectsMap.put("companyVO", companyvo);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Company not found for ID: " + companyvo.getCompanyid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Company Update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Company Name Update failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// Branch
+	@GetMapping("/branch")
+	public ResponseEntity<ResponseDTO> getAllBranch() {
+		String methodName = "getAllBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<BranchVO> branchVO = new ArrayList<>();
+		try {
+			branchVO = commonMasterService.getAllBranch();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch information get successfully");
+			responseObjectsMap.put("branchVO", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Branch information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/branch/{branchid}")
+	public ResponseEntity<ResponseDTO> getBranchById(@PathVariable Long branchid) {
+		String methodName = "getBranchById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		BranchVO branchVO = null;
+		try {
+			branchVO = commonMasterService.getBranchById(branchid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch found by ID");
+			responseObjectsMap.put("Branch", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Branch not found for ID: " + branchid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Branch not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getAllBranchByCompany/{company}")
+	public ResponseEntity<ResponseDTO> getAllBranchByCompany(@PathVariable String company) {
+		String methodName = "getAllBranchByCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<BranchVO> branchVO = null;
+		try {
+			branchVO = commonMasterService.getAllBranchByCompany(company);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "getAllBranchByCompany found by ID");
+			responseObjectsMap.put("getAllBranchByCompany", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "getAllBranchByCompany not found for ID: " + company;
+			responseDTO = createServiceResponseError(responseObjectsMap, "getAllBranchByCompany not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/branch")
+	public ResponseEntity<ResponseDTO> createBranch(@RequestBody BranchVO branchVO) {
+		String methodName = "createBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			BranchVO createdBranchVO = commonMasterService.createBranch(branchVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch created successfully");
+			responseObjectsMap.put("branchVO", createdBranchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"CellType Update failed", errorMsg);
+					"Branch creation failed. Branch already Exist ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/branch")
+	public ResponseEntity<ResponseDTO> updateBranch(@RequestBody BranchVO branchVO) {
+		String methodName = "updateBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			BranchVO updatedBranchVO = commonMasterService.updateBranch(branchVO).orElse(null);
+			if (updatedBranchVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch updated successfully");
+				responseObjectsMap.put("branchVO", updatedBranchVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Branch not found for BranchID: " + branchVO.getBranchid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Branch update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Branch Update failed. Branch already Exisit",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// Customer
+
+	@GetMapping("/customer")
+	public ResponseEntity<ResponseDTO> getAllCustomer() {
+		String methodName = "getAllCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CustomerVO> customerVO = new ArrayList<>();
+		try {
+			customerVO = commonMasterService.getAllCustomer();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer information get successfully");
+			responseObjectsMap.put("CustomerVO", customerVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Customer information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/customer/{customerid}")
+	public ResponseEntity<ResponseDTO> getCustomerById(@PathVariable Long customerid) {
+		String methodName = "getCustomerById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		CustomerVO customerVO = null;
+		try {
+			customerVO = commonMasterService.getCustomerById(customerid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer found by ID");
+			responseObjectsMap.put("Customer", customerVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Customer not found for ID: " + customerid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Customer not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/customer")
+	public ResponseEntity<ResponseDTO> createCustomer(@RequestBody CustomerVO customerVO) {
+		String methodName = "createCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CustomerVO createdCustomerVO = commonMasterService.createCustomer(customerVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer created successfully");
+			responseObjectsMap.put("customerVO", createdCustomerVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Customer and Client already Exist ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/customer")
+	public ResponseEntity<ResponseDTO> updateCustomer(@RequestBody CustomerVO customerVO,@RequestBody ClientVO clientVO) {
+		String methodName = "updateCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CustomerVO updatedCustomerVO = commonMasterService.updateCustomer(customerVO,clientVO).orElse(null);
+			if (updatedCustomerVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer updated successfully");
+				responseObjectsMap.put("customerVO", updatedCustomerVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Customer not found for CustomerID: " + customerVO.getCustomerid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Customer update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Customer and Client already Exisit",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

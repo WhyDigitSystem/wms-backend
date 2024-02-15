@@ -23,29 +23,16 @@ public class CompanyVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long companyid;
-	@Column(unique = true)
-	private String name;
-	@Column(unique = true)
+	private Long companyid;
 	private String companycode;
-	private String address;
-    private String zip;
-	private String town;
-	private String country;
-    private String state;
+	private String companyname;
+    private String country;
 	private String currency;
-	private String phone;
-    private String email;
-	private String website;
-	private String note;
-    private String image;
-	private String directorname;
-	private String capital;
-    private String entitytype;
-	private String TIN;
-	private String PAN;
-    private String companyobject;
+	private String addressline1;
+	private String addressline2;
+    private String addressline3;
     private String userid;
+    private boolean active;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

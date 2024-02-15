@@ -5,9 +5,13 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
+import com.whydigit.wms.entity.ClientVO;
+import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -114,4 +118,42 @@ public interface CommonMasterService {
 	Optional<CellTypeVO> updateCellType(CellTypeVO cellTypeVO);
 
 	void deleteCellType(Long celltypeid);
+
+	// Company
+
+	List<CompanyVO> getAllCompany();
+
+	Optional<CompanyVO> getCompanyById(Long companyid);
+
+	CompanyVO createCompany(CompanyVO companyVO);
+
+	Optional<CompanyVO> updateCompany(CompanyVO companyVO);
+
+	void deleteCompany(Long companyid);
+
+	// Branch
+
+	List<BranchVO> getAllBranch();
+
+	List<BranchVO> getAllBranchByCompany(String company);
+
+	Optional<BranchVO> getBranchById(Long branchid);
+
+	BranchVO createBranch(BranchVO branchVO);
+
+	Optional<BranchVO> updateBranch(BranchVO branchVO);
+
+	void deleteBranch(Long branchid);
+
+	// Customer & client
+
+	List<CustomerVO> getAllCustomer();
+
+	Optional<CustomerVO> getCustomerById(Long customerid);
+
+	CustomerVO createCustomer(CustomerVO customerVO);
+
+	Optional<CustomerVO> updateCustomer(CustomerVO customerVO,ClientVO clientVO);
+
+	void deleteCustomer(Long customerid);
 }
