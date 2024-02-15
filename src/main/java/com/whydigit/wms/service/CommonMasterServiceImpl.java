@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
+import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -21,6 +23,7 @@ import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.CompanyRepo;
 import com.whydigit.wms.repo.CountryRepository;
+import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.GroupRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.RegionRepo;
@@ -60,6 +63,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Autowired
 	BranchRepo branchRepo;
 
+	@Autowired
+	CustomerRepo customerRepo;
+	
 	// Country
 
 	@Override
@@ -392,7 +398,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
 		if (branchRepo.existsById(branchVO.getBranchid())) {
 			branchVO.setUpdatedby(branchVO.getUserid());
-			branchVO.setDupchk(branchVO.getCompany()+branchVO.getBranchcode());
+			branchVO.setDupchk(branchVO.getCompany() + branchVO.getBranchcode());
 			return Optional.of(branchRepo.save(branchVO));
 		} else {
 			return Optional.empty();
@@ -401,6 +407,39 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Override
 	public void deleteBranch(Long branchid) {
-
+		branchRepo.deleteById(branchid);
 	}
+	
+	// Customer&client
+
+		@Override
+		public List<CustomerVO> getAllCustomer() {
+			return customerRepo.findAll();
+		}
+
+		@Override
+		public Optional<CustomerVO> getCustomerById(Long customerid) {
+			return customerRepo.findById(customerid);
+		}
+
+		@Override
+		public CustomerVO createCustomer(CustomerVO customerVO) {
+			return customerRepo.save(customerVO);
+		}
+
+		@Override
+		public Optional<CustomerVO> updateCustomer(CustomerVO customerVO,ClientVO clientVO) {
+			if (customerRepo.existsById(customerVO.getCustomerid())) {
+				customerVO.setDupchk(customerVO.getCustomer() + customerVO.getCompany());
+				clientVO.setClient(clientVO.getClient()+clientVO.getCompany());
+				return Optional.of(customerRepo.save(customerVO));
+			} else {
+				return Optional.empty();
+			}
+		}
+
+		@Override
+		public void deleteCustomer(Long customerid) {
+			customerRepo.deleteById(customerid);
+		}
 }

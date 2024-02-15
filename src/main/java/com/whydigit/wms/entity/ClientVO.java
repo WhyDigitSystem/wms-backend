@@ -6,8 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
@@ -15,37 +18,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "branch")
+@Table(name = "client")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BranchVO {
+public class ClientVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long branchid;
-	private String branchname;
-	private String branchcode;
+	private Long clientid;
 	private String company;
-	private String addressline1;
-	private String addressline2;
-	private String PANno;
-	private String GSTin;
-	private String state;
-	private String city;
-	private String pincode;
-	private String stateno;
-	private String statecode;
-	private String region;
-	private String lccurrency;
-	private String cancel;
-	private String cancelremarks;
-	private String createdby;
-	private String updatedby;
+	private String client; // caps
+	private String clientcode; // caps
+	private String clienttype;
+	private int fifofife;
 	@Column(unique = true)
 	private String dupchk;
-	private boolean active;
-	private String userid;
+
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "customerid")
+	private CustomerVO customerVO;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
