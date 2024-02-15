@@ -24,21 +24,28 @@ public class BranchVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long branchid;
-	@Column(unique = true)
 	private String branchname;
-	@Column(unique = true)
 	private String branchcode;
-    private String branchaddress;
-    private String company;
-    private String city;
-    private String state;
-    private String zipcode;
-    private String phone;
-    private String email;
-    private String branchGST;
-    private String locationgtype;
-    private boolean active;
-    private String orgid;
-    @Embedded
+	private String company;
+	private String addressline1;
+	private String addressline2;
+	private String PANno;
+	private String GSTin;
+	private String state;
+	private String city;
+	private String pincode;
+	private String stateno;
+	private String statecode;
+	private String region;
+	private String lccurrency;
+	private String cancel;
+	private String cancelremarks;
+	private String createdby;
+	private String updatedby;
+	@Column(unique = true)
+	private String dupchk;
+	private boolean active;
+	private String userid;
+	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

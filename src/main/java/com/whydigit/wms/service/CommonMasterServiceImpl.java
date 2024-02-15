@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -15,6 +16,7 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.repo.BranchRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.CompanyRepo;
@@ -54,6 +56,11 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	CompanyRepo companyRepo;
+
+	@Autowired
+	BranchRepo branchRepo;
+
+	// Country
 
 	@Override
 	public List<CountryVO> getAllCountry() {
@@ -356,5 +363,44 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public void deleteCompany(Long companyid) {
 		companyRepo.deleteById(companyid);
+	}
+
+	// Branch
+
+	@Override
+	public List<BranchVO> getAllBranch() {
+		return branchRepo.findAll();
+	}
+
+	public List<BranchVO> getAllBranchByCompany(String company) {
+		return branchRepo.findAllByCompany(company);
+	}
+
+	@Override
+	public Optional<BranchVO> getBranchById(Long branchid) {
+		return branchRepo.findById(branchid);
+	}
+
+	@Override
+	public BranchVO createBranch(BranchVO branchVO) {
+		branchVO.setBranchname(branchVO.getBranchname().toUpperCase());
+		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
+		return branchRepo.save(branchVO);
+	}
+
+	@Override
+	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
+		if (branchRepo.existsById(branchVO.getBranchid())) {
+			branchVO.setUpdatedby(branchVO.getUserid());
+			branchVO.setDupchk(branchVO.getCompany()+branchVO.getBranchcode());
+			return Optional.of(branchRepo.save(branchVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteBranch(Long branchid) {
+
 	}
 }

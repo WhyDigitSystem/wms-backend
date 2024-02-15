@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -30,7 +31,6 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UnitVO;
-import com.whydigit.wms.repo.CountryRepository;
 import com.whydigit.wms.service.CommonMasterService;
 
 @RestController
@@ -993,6 +993,133 @@ public class CommonMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, "Company Name Update failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// Branch
+	@GetMapping("/branch")
+	public ResponseEntity<ResponseDTO> getAllBranch() {
+		String methodName = "getAllBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<BranchVO> branchVO = new ArrayList<>();
+		try {
+			branchVO = commonMasterService.getAllBranch();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch information get successfully");
+			responseObjectsMap.put("branchVO", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Branch information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/branch/{branchid}")
+	public ResponseEntity<ResponseDTO> getBranchById(@PathVariable Long branchid) {
+		String methodName = "getBranchById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		BranchVO branchVO = null;
+		try {
+			branchVO = commonMasterService.getBranchById(branchid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch found by ID");
+			responseObjectsMap.put("Branch", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Branch not found for ID: " + branchid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Branch not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getAllBranchByCompany/{company}")
+	public ResponseEntity<ResponseDTO> getAllBranchByCompany(@PathVariable String company) {
+		String methodName = "getAllBranchByCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<BranchVO> branchVO = null;
+		try {
+			branchVO = commonMasterService.getAllBranchByCompany(company);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "getAllBranchByCompany found by ID");
+			responseObjectsMap.put("getAllBranchByCompany", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "getAllBranchByCompany not found for ID: " + company;
+			responseDTO = createServiceResponseError(responseObjectsMap, "getAllBranchByCompany not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/branch")
+	public ResponseEntity<ResponseDTO> createBranch(@RequestBody BranchVO branchVO) {
+		String methodName = "createBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			BranchVO createdBranchVO = commonMasterService.createBranch(branchVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch created successfully");
+			responseObjectsMap.put("branchVO", createdBranchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Branch creation failed. Branch already Exist ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/branch")
+	public ResponseEntity<ResponseDTO> updateBranch(@RequestBody BranchVO branchVO) {
+		String methodName = "updateBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			BranchVO updatedBranchVO = commonMasterService.updateBranch(branchVO).orElse(null);
+			if (updatedBranchVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch updated successfully");
+				responseObjectsMap.put("branchVO", updatedBranchVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Branch not found for BranchID: " + branchVO.getBranchid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Branch update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Branch Update failed. Branch already Exisit", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

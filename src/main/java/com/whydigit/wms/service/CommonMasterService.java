@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -128,4 +129,18 @@ public interface CommonMasterService {
 
 	void deleteCompany(Long companyid);
 
+
+	// Branch 
+	
+	List<BranchVO> getAllBranch();
+	
+	List<BranchVO> getAllBranchByCompany(String company);
+
+	Optional<BranchVO> getBranchById(Long branchid);
+
+	BranchVO createBranch(BranchVO branchVO);
+
+	Optional<BranchVO> updateBranch(BranchVO branchVO);
+
+	void deleteBranch(Long branchid);
 }
