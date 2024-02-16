@@ -5,7 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
@@ -20,11 +23,17 @@ public class WarehouseClientVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long whclientid;
+	private Long warehouseclientid;
 	private String client;
 	private String clientcode;
 	private boolean active;
 	private boolean userid;
+
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "warehouseid")
+	private WarehouseVO warehouseVO;
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

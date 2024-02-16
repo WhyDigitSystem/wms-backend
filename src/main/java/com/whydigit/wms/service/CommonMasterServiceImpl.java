@@ -18,6 +18,7 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.repo.BranchRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CityRepo;
@@ -29,6 +30,7 @@ import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.RegionRepo;
 import com.whydigit.wms.repo.StateRepo;
 import com.whydigit.wms.repo.UnitRepo;
+import com.whydigit.wms.repo.WarehouseRepo;
 
 @Service
 public class CommonMasterServiceImpl implements CommonMasterService {
@@ -65,6 +67,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	CustomerRepo customerRepo;
+
+	@Autowired
+	WarehouseRepo warehouseRepo;
 	
 	// Country
 
@@ -409,37 +414,74 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public void deleteBranch(Long branchid) {
 		branchRepo.deleteById(branchid);
 	}
-	
+
 	// Customer&client
 
-		@Override
-		public List<CustomerVO> getAllCustomer() {
-			return customerRepo.findAll();
-		}
+	@Override
+	public List<CustomerVO> getAllCustomer() {
+		return customerRepo.findAll();
+	}
 
-		@Override
-		public Optional<CustomerVO> getCustomerById(Long customerid) {
-			return customerRepo.findById(customerid);
-		}
+	@Override
+	public Optional<CustomerVO> getCustomerById(Long customerid) {
+		return customerRepo.findById(customerid);
+	}
 
-		@Override
-		public CustomerVO createCustomer(CustomerVO customerVO) {
-			return customerRepo.save(customerVO);
-		}
+	@Override
+	public CustomerVO createCustomer(CustomerVO customerVO) {
+		return customerRepo.save(customerVO);
+	}
 
-		@Override
-		public Optional<CustomerVO> updateCustomer(CustomerVO customerVO,ClientVO clientVO) {
-			if (customerRepo.existsById(customerVO.getCustomerid())) {
-				customerVO.setDupchk(customerVO.getCustomer() + customerVO.getCompany());
-				clientVO.setClient(clientVO.getClient()+clientVO.getCompany());
-				return Optional.of(customerRepo.save(customerVO));
-			} else {
-				return Optional.empty();
-			}
+	@Override
+	public Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO) {
+		if (customerRepo.existsById(customerVO.getCustomerid())) {
+			customerVO.setDupchk(customerVO.getCustomer() + customerVO.getCompany());
+			clientVO.setClient(clientVO.getClient() + clientVO.getCompany());
+			return Optional.of(customerRepo.save(customerVO));
+		} else {
+			return Optional.empty();
 		}
+	}
 
-		@Override
-		public void deleteCustomer(Long customerid) {
-			customerRepo.deleteById(customerid);
+	@Override
+	public void deleteCustomer(Long customerid) {
+		customerRepo.deleteById(customerid);
+	}
+
+	// Warehouse
+
+	@Override
+	public List<WarehouseVO> getAllWarehouse() {
+		return warehouseRepo.findAll();
+	}
+
+	@Override
+	public Optional<WarehouseVO> getWarehouseById(Long warehouseid) {
+		return warehouseRepo.findById(warehouseid);
+	}
+
+	@Override
+	public WarehouseVO createWarehouse(WarehouseVO warehouseVO) {
+		warehouseVO.setWarehousename(warehouseVO.getWarehousename().toUpperCase());
+		warehouseVO.setBranchcode(warehouseVO.getBranchcode().toUpperCase());
+		return warehouseRepo.save(warehouseVO);
+	}
+
+	@Override
+	public Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO) {
+		if (warehouseRepo.existsById(warehouseVO.getWarehouseid())) {
+			warehouseVO
+					.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
+			return Optional.of(warehouseRepo.save(warehouseVO));
+		} else {
+			return Optional.empty();
 		}
+	}
+
+	@Override
+	public void deleteWarehouse(Long warehouseid) {
+		warehouseRepo.deleteById(warehouseid);
+	}
+
+	
 }
