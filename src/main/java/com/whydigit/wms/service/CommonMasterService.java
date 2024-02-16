@@ -18,6 +18,7 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.entity.WarehouseVO;
 
 @Service
 public interface CommonMasterService {
@@ -154,23 +155,23 @@ public interface CommonMasterService {
 
 	CustomerVO createCustomer(CustomerVO customerVO);
 
-	Optional<CustomerVO> updateCustomer(CustomerVO customerVO,ClientVO clientVO);
+	Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
 
 	void deleteCustomer(Long customerid);
-	
-	
-	List<FinancialYearVO>getAllFinyear();
-	
-	Optional<FinancialYearVO> getFinyearById(Long finyearid);
-	
-	List<FinancialYearVO> getFinyearByCompany(String company);
 
-	FinancialYearVO createFinyear(FinancialYearVO finyear);
-	
-	Optional<FinancialYearVO> updateFinyear(FinancialYearVO finyear);	
 
-	void deleteFinyear(Long finyearid);
+	// Warehouse
 
+	List<WarehouseVO> getAllWarehouse();
+
+	Optional<WarehouseVO> getWarehouseById(Long warehouseid);
+
+	WarehouseVO createWarehouse(WarehouseVO warehouseVO);
+
+	Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
+
+	void deleteWarehouse(Long warehouseid);
 	
 	
 }
+

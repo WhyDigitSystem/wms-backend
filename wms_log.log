@@ -1,0 +1,464 @@
+2024-02-14 11:39:03 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 3428 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 11:39:03 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 11:39:03 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 11:39:05 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 11:39:05 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 178 ms. Found 16 JPA repository interfaces.
+2024-02-14 11:39:06 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 11:39:07 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3239 ms
+2024-02-14 11:39:12 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 13244 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 11:39:12 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 11:39:12 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 11:39:14 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 11:39:14 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 142 ms. Found 16 JPA repository interfaces.
+2024-02-14 11:39:15 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 11:39:15 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2845 ms
+2024-02-14 11:39:18 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 11:39:19 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 11:39:19 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 11:39:20 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 11:39:20 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4a5a8c6f, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5e8f0c54, org.springframework.security.web.context.SecurityContextPersistenceFilter@a642c54, org.springframework.security.web.header.HeaderWriterFilter@25c756f0, org.springframework.web.filter.CorsFilter@2aaed928, org.springframework.security.web.authentication.logout.LogoutFilter@6f749a1f, com.whydigit.wms.security.TokenAuthenticationFilter@5345552f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4b59a1c1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@73418044, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@155cf9f6, org.springframework.security.web.session.SessionManagementFilter@18206382, org.springframework.security.web.access.ExceptionTranslationFilter@4bf6bc2d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7af4286]
+2024-02-14 11:39:21 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 11:39:22 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 9.608 seconds (JVM running for 10.405)
+2024-02-14 11:40:02 [http-nio-8066-exec-2] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 11:40:02 [http-nio-8066-exec-2] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 6 ms
+2024-02-14 11:40:50 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 11:40:50 [RMI TCP Connection(4)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 11:40:53 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 8956 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 11:40:53 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 11:40:53 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 11:40:54 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 11:40:55 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 172 ms. Found 16 JPA repository interfaces.
+2024-02-14 11:40:56 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 11:40:56 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2738 ms
+2024-02-14 11:40:58 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 11:40:59 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 11:40:59 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 11:41:00 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 11:41:00 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@60052518, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@39336f5, org.springframework.security.web.context.SecurityContextPersistenceFilter@53f18591, org.springframework.security.web.header.HeaderWriterFilter@530aa75c, org.springframework.web.filter.CorsFilter@36b86248, org.springframework.security.web.authentication.logout.LogoutFilter@6df605f, com.whydigit.wms.security.TokenAuthenticationFilter@37f0fb02, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2bb03136, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@78a46d7b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@cbd9494, org.springframework.security.web.session.SessionManagementFilter@4a0a93ce, org.springframework.security.web.access.ExceptionTranslationFilter@7b8d1537, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7594d189]
+2024-02-14 11:41:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 11:41:01 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 8.733 seconds (JVM running for 9.663)
+2024-02-14 11:41:18 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 11:41:18 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 2 ms
+2024-02-14 11:41:18 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getStateByCountry() 
+2024-02-14 11:41:18 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 11:41:18 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 11:41:18 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getStateByCountry() 
+2024-02-14 11:41:31 [http-nio-8066-exec-6] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getStateByCountry() 
+2024-02-14 11:41:31 [http-nio-8066-exec-6] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 11:41:31 [http-nio-8066-exec-6] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 11:41:31 [http-nio-8066-exec-6] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getStateByCountry() 
+2024-02-14 12:30:10 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getStateByCountry() 
+2024-02-14 12:30:10 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 12:30:10 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 12:30:10 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getStateByCountry() 
+2024-02-14 17:01:59 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 18360 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:01:59 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:01:59 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:02:00 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:02:00 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 180 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:02:01 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:02:01 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2682 ms
+2024-02-14 17:02:03 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:02:03 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:02:04 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:02:04 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:02:05 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1adc38a0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b5df8b7, org.springframework.security.web.context.SecurityContextPersistenceFilter@2cc7b63d, org.springframework.security.web.header.HeaderWriterFilter@2726b2f3, org.springframework.web.filter.CorsFilter@1651bd68, org.springframework.security.web.authentication.logout.LogoutFilter@18ada4e1, com.whydigit.wms.security.TokenAuthenticationFilter@37f0fb02, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@54626326, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6f4e39b3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@44a25dc7, org.springframework.security.web.session.SessionManagementFilter@1f9a5d3b, org.springframework.security.web.access.ExceptionTranslationFilter@2bb03136, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4e301795]
+2024-02-14 17:02:05 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8066 is already in use
+2024-02-14 17:02:05 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:02:05 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2024-02-14 17:02:05 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8066 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8066 or configure this application to listen on another port.
+
+2024-02-14 17:02:09 [RMI TCP Connection(266)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 17:02:09 [RMI TCP Connection(266)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:02:13 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 16784 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:02:13 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:02:13 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:02:14 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:02:14 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 124 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:02:15 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:02:15 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2252 ms
+2024-02-14 17:02:17 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:02:17 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:02:18 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:02:18 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:02:19 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@35bcf3a6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1adc38a0, org.springframework.security.web.context.SecurityContextPersistenceFilter@3a8cc099, org.springframework.security.web.header.HeaderWriterFilter@2726b2f3, org.springframework.web.filter.CorsFilter@1b5df8b7, org.springframework.security.web.authentication.logout.LogoutFilter@78977b59, com.whydigit.wms.security.TokenAuthenticationFilter@5d10e2b6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1c00a9f0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@203ba07, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1651bd68, org.springframework.security.web.session.SessionManagementFilter@55d35f7a, org.springframework.security.web.access.ExceptionTranslationFilter@2bb03136, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3cb4f1a6]
+2024-02-14 17:02:19 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 17:02:20 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 7.63 seconds (JVM running for 8.437)
+2024-02-14 17:02:27 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 17:02:27 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 2 ms
+2024-02-14 17:02:41 [http-nio-8066-exec-2] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getAllCountry() 
+2024-02-14 17:02:41 [http-nio-8066-exec-2] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 17:02:41 [http-nio-8066-exec-2] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 17:02:41 [http-nio-8066-exec-2] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getAllCountry() 
+2024-02-14 17:02:55 [http-nio-8066-exec-3] ERROR c.w.w.s.RestAuthenticationEntryPoint : Responding with unauthorized error. Message - Full authentication is required to access this resource
+2024-02-14 17:03:33 [RMI TCP Connection(3)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 17:03:33 [RMI TCP Connection(3)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:03:36 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 7776 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:03:36 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:03:36 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:03:37 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:03:37 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 116 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:03:38 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:03:38 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2233 ms
+2024-02-14 17:03:40 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:03:40 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:03:40 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:03:41 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:03:42 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6aeb769d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@51f412e6, org.springframework.security.web.context.SecurityContextPersistenceFilter@7b6558aa, org.springframework.security.web.header.HeaderWriterFilter@24673720, org.springframework.web.filter.CorsFilter@7234db3, org.springframework.security.web.authentication.logout.LogoutFilter@55d35f7a, com.whydigit.wms.security.TokenAuthenticationFilter@7136ad9a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7fec6c2f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@67e12e28, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@189c6683, org.springframework.security.web.session.SessionManagementFilter@704ddfad, org.springframework.security.web.access.ExceptionTranslationFilter@5e609b42, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@31e5d408]
+2024-02-14 17:03:42 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 17:03:43 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 7.58 seconds (JVM running for 8.445)
+2024-02-14 17:03:47 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 17:03:47 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 4 ms
+2024-02-14 17:27:58 [RMI TCP Connection(26)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 17:27:58 [RMI TCP Connection(26)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:28:01 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 10048 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:28:01 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:28:01 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:28:02 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:28:03 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 130 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:28:03 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:28:03 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2237 ms
+2024-02-14 17:28:05 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:28:06 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:28:06 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:28:07 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:28:07 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1adc38a0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b5df8b7, org.springframework.security.web.context.SecurityContextPersistenceFilter@7ea91c39, org.springframework.security.web.header.HeaderWriterFilter@56adb75e, org.springframework.web.filter.CorsFilter@1651bd68, org.springframework.security.web.authentication.logout.LogoutFilter@51d50b5f, com.whydigit.wms.security.TokenAuthenticationFilter@376bae20, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@12ef7db5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@c725dfa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@44a25dc7, org.springframework.security.web.session.SessionManagementFilter@6179551b, org.springframework.security.web.access.ExceptionTranslationFilter@1f9a5d3b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4e301795]
+2024-02-14 17:28:08 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 17:28:08 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 7.442 seconds (JVM running for 8.402)
+2024-02-14 17:28:21 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 17:28:21 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 2 ms
+2024-02-14 17:28:21 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getAllCRegions() 
+2024-02-14 17:28:22 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 17:28:22 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 17:28:22 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getAllCRegions() 
+2024-02-14 17:28:48 [http-nio-8066-exec-2] ERROR c.w.w.s.RestAuthenticationEntryPoint : Responding with unauthorized error. Message - Full authentication is required to access this resource
+2024-02-14 17:29:23 [RMI TCP Connection(5)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 17:29:23 [RMI TCP Connection(5)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:29:27 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 12588 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:29:27 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:29:27 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:29:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:29:28 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 137 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:29:29 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:29:29 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2631 ms
+2024-02-14 17:29:32 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:29:32 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:29:32 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:29:33 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:29:33 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@fe58644, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2ecb87b2, org.springframework.security.web.context.SecurityContextPersistenceFilter@7ea91c39, org.springframework.security.web.header.HeaderWriterFilter@56adb75e, org.springframework.web.filter.CorsFilter@1704437b, org.springframework.security.web.authentication.logout.LogoutFilter@51d50b5f, com.whydigit.wms.security.TokenAuthenticationFilter@376bae20, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@12ef7db5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@c725dfa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1f4083ac, org.springframework.security.web.session.SessionManagementFilter@6179551b, org.springframework.security.web.access.ExceptionTranslationFilter@1f9a5d3b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@c11ec9b]
+2024-02-14 17:29:34 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 17:29:34 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 8.366 seconds (JVM running for 9.349)
+2024-02-14 17:29:38 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 17:29:38 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 3 ms
+2024-02-14 17:32:59 [http-nio-8066-exec-7] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getAllGroup() 
+2024-02-14 17:32:59 [http-nio-8066-exec-7] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 17:32:59 [http-nio-8066-exec-7] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 17:32:59 [http-nio-8066-exec-7] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getAllGroup() 
+2024-02-14 17:33:18 [http-nio-8066-exec-10] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :createGroup() 
+2024-02-14 17:33:18 [http-nio-8066-exec-10] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 17:33:18 [http-nio-8066-exec-10] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 17:33:18 [http-nio-8066-exec-10] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :createGroup() 
+2024-02-14 17:33:37 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :updateGroup() 
+2024-02-14 17:33:37 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 17:33:37 [http-nio-8066-exec-1] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 17:33:37 [http-nio-8066-exec-1] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :updateGroup() 
+2024-02-14 17:37:17 [http-nio-8066-exec-2] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getAllCountry() 
+2024-02-14 17:37:17 [http-nio-8066-exec-2] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 17:37:17 [http-nio-8066-exec-2] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 17:37:17 [http-nio-8066-exec-2] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getAllCountry() 
+2024-02-14 17:41:42 [RMI TCP Connection(16)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 17:41:42 [RMI TCP Connection(16)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:41:49 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 18252 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:41:49 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:41:49 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:41:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:41:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 142 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:41:51 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:41:52 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2646 ms
+2024-02-14 17:41:54 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:41:54 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:41:54 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:41:55 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:41:56 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@51f412e6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7234db3, org.springframework.security.web.context.SecurityContextPersistenceFilter@7b6558aa, org.springframework.security.web.header.HeaderWriterFilter@24673720, org.springframework.web.filter.CorsFilter@189c6683, org.springframework.security.web.authentication.logout.LogoutFilter@55d35f7a, com.whydigit.wms.security.TokenAuthenticationFilter@376bae20, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7fec6c2f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@67e12e28, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2972b493, org.springframework.security.web.session.SessionManagementFilter@704ddfad, org.springframework.security.web.access.ExceptionTranslationFilter@5e609b42, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7aaf0f0a]
+2024-02-14 17:41:56 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 17:41:57 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 8.562 seconds (JVM running for 9.683)
+2024-02-14 17:42:01 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 17:42:01 [http-nio-8066-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 4 ms
+2024-02-14 17:43:31 [http-nio-8066-exec-8] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getAllCountry() 
+2024-02-14 17:43:31 [http-nio-8066-exec-8] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 17:43:31 [http-nio-8066-exec-8] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 17:43:31 [http-nio-8066-exec-8] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getAllCountry() 
+2024-02-14 17:45:52 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 16712 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:45:52 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:45:52 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:45:53 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:45:53 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 130 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:45:54 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:45:54 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2392 ms
+2024-02-14 17:45:56 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:45:56 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:45:57 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:45:57 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:45:58 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1b5df8b7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1651bd68, org.springframework.security.web.context.SecurityContextPersistenceFilter@3a8cc099, org.springframework.security.web.header.HeaderWriterFilter@2726b2f3, org.springframework.web.filter.CorsFilter@44a25dc7, org.springframework.security.web.authentication.logout.LogoutFilter@78977b59, com.whydigit.wms.security.TokenAuthenticationFilter@5d10e2b6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1c00a9f0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@203ba07, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3fc064cb, org.springframework.security.web.session.SessionManagementFilter@55d35f7a, org.springframework.security.web.access.ExceptionTranslationFilter@2bb03136, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7b1a9ab3]
+2024-02-14 17:45:58 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'; nested exception is org.springframework.boot.web.server.PortInUseException: Port 8066 is already in use
+2024-02-14 17:45:58 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:45:59 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2024-02-14 17:45:59 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8066 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8066 or configure this application to listen on another port.
+
+2024-02-14 17:46:02 [RMI TCP Connection(7)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 17:46:02 [RMI TCP Connection(7)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:46:06 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 13768 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:46:06 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:46:06 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:46:07 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:46:07 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 148 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:46:08 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8066 (http)
+2024-02-14 17:46:09 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2856 ms
+2024-02-14 17:46:11 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:46:12 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:46:12 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:46:13 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:46:14 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@35bcf3a6, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1adc38a0, org.springframework.security.web.context.SecurityContextPersistenceFilter@3a8cc099, org.springframework.security.web.header.HeaderWriterFilter@2726b2f3, org.springframework.web.filter.CorsFilter@1b5df8b7, org.springframework.security.web.authentication.logout.LogoutFilter@78977b59, com.whydigit.wms.security.TokenAuthenticationFilter@5d10e2b6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1c00a9f0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@203ba07, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1651bd68, org.springframework.security.web.session.SessionManagementFilter@55d35f7a, org.springframework.security.web.access.ExceptionTranslationFilter@2bb03136, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3cb4f1a6]
+2024-02-14 17:46:14 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8066 (http) with context path ''
+2024-02-14 17:46:15 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 9.708 seconds (JVM running for 10.605)
+2024-02-14 17:46:27 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 17:46:27 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:46:31 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 10728 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 17:46:31 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 17:46:31 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 17:46:32 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 17:46:32 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 151 ms. Found 16 JPA repository interfaces.
+2024-02-14 17:46:33 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8085 (http)
+2024-02-14 17:46:33 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2761 ms
+2024-02-14 17:46:36 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 17:46:37 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 17:46:37 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 17:46:38 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 17:46:38 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@126ae0ca, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@59e24c62, org.springframework.security.web.context.SecurityContextPersistenceFilter@12dd3501, org.springframework.security.web.header.HeaderWriterFilter@7aff1db3, org.springframework.web.filter.CorsFilter@5379488c, org.springframework.security.web.authentication.logout.LogoutFilter@7b8d1537, com.whydigit.wms.security.TokenAuthenticationFilter@5d10e2b6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@650e6569, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4a10e65b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@744c16fb, org.springframework.security.web.session.SessionManagementFilter@29ceefb3, org.springframework.security.web.access.ExceptionTranslationFilter@6ed87b1c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@36003e90]
+2024-02-14 17:46:39 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8085 (http) with context path ''
+2024-02-14 17:46:39 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 9.325 seconds (JVM running for 10.146)
+2024-02-14 17:46:51 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 17:46:51 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 3 ms
+2024-02-14 18:24:34 [http-nio-8085-exec-8] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getStateByCountry() 
+2024-02-14 18:24:35 [http-nio-8085-exec-8] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 18:24:35 [http-nio-8085-exec-8] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 18:24:35 [http-nio-8085-exec-8] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getStateByCountry() 
+2024-02-14 18:25:32 [RMI TCP Connection(38)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 18:25:32 [RMI TCP Connection(38)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:25:35 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 18344 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 18:25:35 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 18:25:35 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 18:25:37 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 18:25:37 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 133 ms. Found 16 JPA repository interfaces.
+2024-02-14 18:25:37 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8085 (http)
+2024-02-14 18:25:38 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2311 ms
+2024-02-14 18:25:40 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:25:40 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 18:25:40 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 18:25:41 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 18:25:41 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@38f2342b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@68312b85, org.springframework.security.web.context.SecurityContextPersistenceFilter@7fec6c2f, org.springframework.security.web.header.HeaderWriterFilter@704ddfad, org.springframework.web.filter.CorsFilter@5ab0168, org.springframework.security.web.authentication.logout.LogoutFilter@c725dfa, com.whydigit.wms.security.TokenAuthenticationFilter@37f0fb02, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@36109a76, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@96271d8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5c6ee543, org.springframework.security.web.session.SessionManagementFilter@3ed4c822, org.springframework.security.web.access.ExceptionTranslationFilter@24673720, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@45b37003]
+2024-02-14 18:25:42 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8085 (http) with context path ''
+2024-02-14 18:25:42 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 7.628 seconds (JVM running for 8.423)
+2024-02-14 18:26:32 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 18:26:32 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 3 ms
+2024-02-14 18:26:42 [http-nio-8085-exec-2] DEBUG c.w.w.c.CommonMasterController : STARTING METHOD :getAllCountry() 
+2024-02-14 18:26:43 [http-nio-8085-exec-2] DEBUG c.w.wms.controller.BaseController : STARTING METHOD :createServiceResponse() 
+2024-02-14 18:26:43 [http-nio-8085-exec-2] DEBUG c.w.wms.controller.BaseController : ENDING METHOD :createServiceResponse() 
+2024-02-14 18:26:43 [http-nio-8085-exec-2] DEBUG c.w.w.c.CommonMasterController : ENDING METHOD :getAllCountry() 
+2024-02-14 18:27:23 [RMI TCP Connection(5)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 18:27:23 [RMI TCP Connection(5)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:27:29 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 11100 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 18:27:29 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 18:27:29 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 18:27:31 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 18:27:31 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 124 ms. Found 16 JPA repository interfaces.
+2024-02-14 18:27:32 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8085 (http)
+2024-02-14 18:27:32 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2209 ms
+2024-02-14 18:27:34 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:27:34 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 18:27:34 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 18:27:34 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'commonMasterController': Unsatisfied dependency expressed through field 'commonMasterService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'commonMasterServiceImpl': Unsatisfied dependency expressed through field 'countryVORepo'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'countryVORepository' defined in com.whydigit.wms.repo.CountryVORepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'
+2024-02-14 18:27:34 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:27:34 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2024-02-14 18:27:34 [main] ERROR o.s.boot.SpringApplication : Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'commonMasterController': Unsatisfied dependency expressed through field 'commonMasterService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'commonMasterServiceImpl': Unsatisfied dependency expressed through field 'countryVORepo'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'countryVORepository' defined in com.whydigit.wms.repo.CountryVORepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:713)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:693)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:408)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:921)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292)
+	at com.whydigit.wms.WMSApplication.main(WMSApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'commonMasterServiceImpl': Unsatisfied dependency expressed through field 'countryVORepo'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'countryVORepository' defined in com.whydigit.wms.repo.CountryVORepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:713)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:693)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:408)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:710)
+	... 20 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'countryVORepository' defined in com.whydigit.wms.repo.CountryVORepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Invocation of init method failed; nested exception is org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:710)
+	... 34 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long); Reason: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'; nested exception is java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:107)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$mapMethodsToQuery$1(QueryExecutorMethodInterceptor.java:95)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Iterator.forEachRemaining(Iterator.java:133)
+	at java.base/java.util.Collections$UnmodifiableCollection$1.forEachRemaining(Collections.java:1061)
+	at java.base/java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1845)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:97)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:87)
+	at java.base/java.util.Optional.map(Optional.java:260)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:87)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:365)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$5(RepositoryFactoryBeanSupport.java:323)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:231)
+	at org.springframework.data.util.Lazy.get(Lazy.java:115)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:329)
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:144)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800)
+	... 44 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional com.whydigit.wms.repo.CountryVORepository.findCountryById(java.lang.Long)! No property 'id' found for type 'CountryVO'
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:96)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:119)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:259)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:93)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:103)
+	... 66 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'id' found for type 'CountryVO'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:91)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:438)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:414)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:367)
+	at java.base/java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:330)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:349)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:332)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:250)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:251)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:384)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:385)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:96)
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:89)
+	... 70 common frames omitted
+2024-02-14 18:29:45 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 7360 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 18:29:45 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 18:29:45 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 18:29:46 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 18:29:46 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 133 ms. Found 16 JPA repository interfaces.
+2024-02-14 18:29:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8085 (http)
+2024-02-14 18:29:47 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2280 ms
+2024-02-14 18:29:49 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:29:49 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 18:29:50 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 18:29:50 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 18:29:51 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2ab87cb8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4ac1544f, org.springframework.security.web.context.SecurityContextPersistenceFilter@78a46d7b, org.springframework.security.web.header.HeaderWriterFilter@64404db6, org.springframework.web.filter.CorsFilter@4578d654, org.springframework.security.web.authentication.logout.LogoutFilter@5d729af6, com.whydigit.wms.security.TokenAuthenticationFilter@5de6c7d7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3509f32d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1f9a5d3b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25865fca, org.springframework.security.web.session.SessionManagementFilter@53f18591, org.springframework.security.web.access.ExceptionTranslationFilter@593d0173, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@39336f5]
+2024-02-14 18:29:51 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8085 (http) with context path ''
+2024-02-14 18:29:52 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 7.625 seconds (JVM running for 8.434)
+2024-02-14 18:29:54 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+2024-02-14 18:29:54 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet : Completed initialization in 3 ms
+2024-02-14 18:31:18 [RMI TCP Connection(5)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 18:31:18 [RMI TCP Connection(5)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:31:25 [main] INFO  com.whydigit.wms.WMSApplication : Starting WMSApplication using Java 17 on DESKTOP-K8H1MVP with PID 18376 (D:\WMS\target\classes started by WDS032 in D:\WMS)
+2024-02-14 18:31:25 [main] DEBUG com.whydigit.wms.WMSApplication : Running with Spring Boot v2.7.16, Spring v5.3.30
+2024-02-14 18:31:25 [main] INFO  com.whydigit.wms.WMSApplication : No active profile set, falling back to 1 default profile: "default"
+2024-02-14 18:31:26 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-14 18:31:26 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 143 ms. Found 16 JPA repository interfaces.
+2024-02-14 18:31:27 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat initialized with port(s): 8085 (http)
+2024-02-14 18:31:28 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2799 ms
+2024-02-14 18:31:30 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-14 18:31:30 [main] DEBUG c.w.wms.security.TokenProvider : getHMacSHA512Key byte : [12, -25, -38, 72, -63, 43, -10, -1, -92, -96, -43, -90, 36, 125, -26, -107, -114, 15, -111, 33, -46, -73, -123, -5, -53, -128, -52, -40, 30, -29, 118, 91, -14, 63, -92, -52, -67, -111, -57, 117, 90, -46, 15, -79, 115, -86, -3, 20, 114, -44, 26, -4, -5, 76, 65, 22, 23, -82, 115, 7, 111, 98, 119, 13]
+2024-02-14 18:31:30 [main] DEBUG c.w.w.s.TokenAuthenticationFilter : Filter 'tokenAuthenticationFilter' configured for use
+2024-02-14 18:31:31 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-14 18:31:32 [main] INFO  o.s.s.web.DefaultSecurityFilterChain : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4e301795, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7b1a9ab3, org.springframework.security.web.context.SecurityContextPersistenceFilter@203ba07, org.springframework.security.web.header.HeaderWriterFilter@12ef7db5, org.springframework.web.filter.CorsFilter@605c2b9f, org.springframework.security.web.authentication.logout.LogoutFilter@25c756f0, com.whydigit.wms.security.TokenAuthenticationFilter@5de6c7d7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@709353b9, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@69c53b72, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7bfedff3, org.springframework.security.web.session.SessionManagementFilter@3a8cc099, org.springframework.security.web.access.ExceptionTranslationFilter@7ea91c39, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@fe58644]
+2024-02-14 18:31:33 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer : Tomcat started on port(s): 8085 (http) with context path ''
+2024-02-14 18:31:34 [main] INFO  com.whydigit.wms.WMSApplication : Started WMSApplication in 9.321 seconds (JVM running for 10.1)
+2024-02-14 19:33:42 [RMI TCP Connection(66)-127.0.0.1] INFO  o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-02-14 19:33:42 [RMI TCP Connection(66)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
