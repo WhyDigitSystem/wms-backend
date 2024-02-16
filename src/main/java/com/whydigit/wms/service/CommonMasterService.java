@@ -12,6 +12,7 @@ import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -156,4 +157,20 @@ public interface CommonMasterService {
 	Optional<CustomerVO> updateCustomer(CustomerVO customerVO,ClientVO clientVO);
 
 	void deleteCustomer(Long customerid);
+	
+	
+	List<FinancialYearVO>getAllFinyear();
+	
+	Optional<FinancialYearVO> getFinyearById(Long finyearid);
+	
+	List<FinancialYearVO> getFinyearByCompany(String company);
+
+	FinancialYearVO createFinyear(FinancialYearVO finyear);
+	
+	Optional<FinancialYearVO> updateFinyear(FinancialYearVO finyear);	
+
+	void deleteFinyear(Long finyearid);
+
+	
+	
 }

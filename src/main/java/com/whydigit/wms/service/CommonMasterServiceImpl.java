@@ -13,6 +13,7 @@ import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -24,6 +25,7 @@ import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.CompanyRepo;
 import com.whydigit.wms.repo.CountryRepository;
 import com.whydigit.wms.repo.CustomerRepo;
+import com.whydigit.wms.repo.FinancialYearRepo;
 import com.whydigit.wms.repo.GroupRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.RegionRepo;
@@ -65,6 +67,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	CustomerRepo customerRepo;
+	
+	@Autowired
+	FinancialYearRepo financialYearRepo;
 	
 	// Country
 
@@ -431,7 +436,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		public Optional<CustomerVO> updateCustomer(CustomerVO customerVO,ClientVO clientVO) {
 			if (customerRepo.existsById(customerVO.getCustomerid())) {
 				customerVO.setDupchk(customerVO.getCustomer() + customerVO.getCompany());
-				clientVO.setClient(clientVO.getClient()+clientVO.getCompany());
+				clientVO.setDupchk(clientVO.getClient()+clientVO.getCompany());
 				return Optional.of(customerRepo.save(customerVO));
 			} else {
 				return Optional.empty();
@@ -441,5 +446,48 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		@Override
 		public void deleteCustomer(Long customerid) {
 			customerRepo.deleteById(customerid);
+		}
+		
+		
+		// Financial Year
+
+		@Override
+		public List<FinancialYearVO> getAllFinyear() {
+			
+			return financialYearRepo.findAll();
+		}
+
+		@Override
+		public Optional<FinancialYearVO> getFinyearById(Long finyearid) {
+			return financialYearRepo.findById(finyearid);
+		}
+		
+		@Override
+		public List<FinancialYearVO> getFinyearByCompany(String company) {
+			
+			return financialYearRepo.findFinyearByCompany(company);
+			
+		}
+
+		@Override
+		public FinancialYearVO createFinyear(FinancialYearVO finyear) {
+			
+			return financialYearRepo.save(finyear);
+		}
+
+		@Override
+		public Optional<FinancialYearVO> updateFinyear(FinancialYearVO finyear) {
+			if (financialYearRepo.existsById(finyear.getFinyearid())) {
+				return Optional.of(financialYearRepo.save(finyear));
+			} else {
+				return Optional.empty();
+			}
+			
+		}
+
+		@Override
+		public void deleteFinyear(Long finyearid) {
+			financialYearRepo.deleteById(finyearid);
+			
 		}
 }
