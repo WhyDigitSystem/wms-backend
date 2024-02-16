@@ -2,6 +2,7 @@ package com.whydigit.wms.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -35,16 +36,18 @@ public class UserVO {
 	private String email;
 	private String userName;
 	private String password;
-//	private String phone;
-//	private String secondaryPhone;
 	private boolean loginStatus;
 	private boolean isActive;
-//	@Enumerated(EnumType.STRING)
-//	private Gender gender;
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-dd-MM")
-//	private LocalDate dob;
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
+	private String userid;
+	private boolean active;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

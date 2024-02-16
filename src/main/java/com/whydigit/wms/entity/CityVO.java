@@ -25,14 +25,18 @@ public class CityVO {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long cityid;
 	
-	@Column(unique = true)
 	private String citycode;
 	private String country;
-	@Column(unique = true)
     private String cityname;
     private String state;
     private boolean active;
     private String userid;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

@@ -31,7 +31,7 @@ public class CustomerVO {
 	private Long customerid;
 	private String customer;
 	private String company;
-	private String shortname;
+	private String customershortname;
 	private String panno;
 	private String contactperson;
 	private String landlinenumber;
@@ -48,7 +48,6 @@ public class CustomerVO {
 	private String zipcode;
 	private String country;
 	private String fax;
-	private String cancel;
 	private String cancelremarks;
 	private String createdby;
 	private String updatedby;
@@ -56,6 +55,7 @@ public class CustomerVO {
 	private String dupchk;
 	private boolean active;
 	private String userid;
+	private boolean cancel;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "customerVO", cascade = CascadeType.ALL)

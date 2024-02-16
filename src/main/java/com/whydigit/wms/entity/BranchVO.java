@@ -38,7 +38,7 @@ public class BranchVO {
 	private String statecode;
 	private String region;
 	private String lccurrency;
-	private String cancel;
+	private boolean cancel;
 	private String cancelremarks;
 	private String createdby;
 	private String updatedby;

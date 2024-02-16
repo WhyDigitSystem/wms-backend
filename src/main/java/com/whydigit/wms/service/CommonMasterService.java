@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.BranchVO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.ClientVO;
@@ -170,5 +171,16 @@ public interface CommonMasterService {
 
 	void deleteWarehouse(Long warehouseid);
 
-	
+	// Carrier
+
+	List<CarrierVO> getAllCarrier();
+
+	Optional<CarrierVO> getCarrierById(Long carrierid);
+
+	CarrierVO createCarrier(CarrierVO carrierVO);
+
+	Optional<CarrierVO> updateCarrier(CarrierVO carrierVO);
+
+	void deleteCarrier(Long carrierid);
+
 }

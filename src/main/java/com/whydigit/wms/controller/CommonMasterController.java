@@ -22,6 +22,7 @@ import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.BranchVO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.ClientVO;
@@ -1205,14 +1206,15 @@ public class CommonMasterController extends BaseController {
 	}
 
 	@PutMapping("/customer")
-	public ResponseEntity<ResponseDTO> updateCustomer(@RequestBody CustomerVO customerVO,@RequestBody ClientVO clientVO) {
+	public ResponseEntity<ResponseDTO> updateCustomer(@RequestBody CustomerVO customerVO,
+			@RequestBody ClientVO clientVO) {
 		String methodName = "updateCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CustomerVO updatedCustomerVO = commonMasterService.updateCustomer(customerVO,clientVO).orElse(null);
+			CustomerVO updatedCustomerVO = commonMasterService.updateCustomer(customerVO, clientVO).orElse(null);
 			if (updatedCustomerVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer updated successfully");
 				responseObjectsMap.put("customerVO", updatedCustomerVO);
@@ -1230,9 +1232,9 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	// Warehouse
-	
+
 	@GetMapping("/warehouse")
 	public ResponseEntity<ResponseDTO> getAllWarehouse() {
 		String methodName = "getAllWarehouse()";
@@ -1334,4 +1336,106 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	// Carrier
+
+	@GetMapping("/carrier")
+	public ResponseEntity<ResponseDTO> getAllcarrier() {
+		String methodName = "getAllcarrier()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CarrierVO> carrierVO = new ArrayList<>();
+		try {
+			carrierVO = commonMasterService.getAllCarrier();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier information get successfully");
+			responseObjectsMap.put("carrierVO", carrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Carrier information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/carrier/{carrierid}")
+	public ResponseEntity<ResponseDTO> getCarrierById(@PathVariable Long carrierid) {
+		String methodName = "getCarrierById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		CarrierVO carrierVO = null;
+		try {
+			carrierVO = commonMasterService.getCarrierById(carrierid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier found by ID");
+			responseObjectsMap.put("Carrier", carrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Carrier not found for ID: " + carrierid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Carrier not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/carrier")
+	public ResponseEntity<ResponseDTO> createCarrier(@RequestBody CarrierVO carrierVO) {
+		String methodName = "createCarrier()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CarrierVO createdCarrierVO = commonMasterService.createCarrier(carrierVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier created successfully");
+			responseObjectsMap.put("carrierVO", createdCarrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Company, carrearName, carrearShortName and ControlBranch already Exist ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/carrier")
+	public ResponseEntity<ResponseDTO> updateCarrier(@RequestBody CarrierVO carrierVO) {
+		String methodName = "updateCarrier()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CarrierVO updatedCarrierVO = commonMasterService.updateCarrier(carrierVO).orElse(null);
+			if (updatedCarrierVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier updated successfully");
+				responseObjectsMap.put("carrierVO", updatedCarrierVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Carrier not found for Carrier ID: " + carrierVO.getCarrierid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Carrier update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Company, carrearName, carrearShortName and ControlBranch already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

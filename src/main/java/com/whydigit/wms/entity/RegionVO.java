@@ -24,12 +24,16 @@ public class RegionVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long regionid;
-	private long userid;
-	@Column(unique = true)
+	private String userid;
 	private String regioncode;
-	@Column(unique = true)
 	private String regionname;
 	private boolean active;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

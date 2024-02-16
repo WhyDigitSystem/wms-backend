@@ -26,11 +26,16 @@ public class CurrencyVO {
 	private Long currencyid;
 	private String userid;
 	private String country;
-	@Column(unique = true)
 	private String currency;
     private String subcurrency;
     private String currencysymbol;
     private boolean active;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
