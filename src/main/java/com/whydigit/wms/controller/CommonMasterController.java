@@ -1183,14 +1183,14 @@ public class CommonMasterController extends BaseController {
 	}
 
 	@PostMapping("/customer")
-	public ResponseEntity<ResponseDTO> createCustomer(@RequestBody CustomerVO customerVO) {
+	public ResponseEntity<ResponseDTO> createCustomer(@RequestBody CustomerVO customerVO, ClientVO clientVO) {
 		String methodName = "createCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CustomerVO createdCustomerVO = commonMasterService.createCustomer(customerVO);
+			CustomerVO createdCustomerVO = commonMasterService.createCustomer(customerVO, clientVO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer created successfully");
 			responseObjectsMap.put("customerVO", createdCustomerVO);
 			responseDTO = createServiceResponse(responseObjectsMap);

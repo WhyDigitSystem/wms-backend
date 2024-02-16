@@ -152,7 +152,7 @@ public interface CommonMasterService {
 
 	Optional<CustomerVO> getCustomerById(Long customerid);
 
-	CustomerVO createCustomer(CustomerVO customerVO);
+	CustomerVO createCustomer(CustomerVO customerVO, ClientVO clientVO);
 
 	Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
 
@@ -169,6 +169,6 @@ public interface CommonMasterService {
 	Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
 
 	void deleteWarehouse(Long warehouseid);
-	
+
 	
 }
