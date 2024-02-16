@@ -401,6 +401,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public BranchVO createBranch(BranchVO branchVO) {
 		branchVO.setBranchname(branchVO.getBranchname().toUpperCase());
 		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
+		branchVO.setUpdatedby(branchVO.getUserid());
+		branchVO.setDupchk(branchVO.getCompany() + branchVO.getBranchcode());
 		return branchRepo.save(branchVO);
 	}
 
@@ -409,6 +411,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		if (branchRepo.existsById(branchVO.getBranchid())) {
 			branchVO.setUpdatedby(branchVO.getUserid());
 			branchVO.setDupchk(branchVO.getCompany() + branchVO.getBranchcode());
+			branchVO.setBranchname(branchVO.getBranchname().toUpperCase());
+			branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
 			return Optional.of(branchRepo.save(branchVO));
 		} else {
 			return Optional.empty();
@@ -433,7 +437,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public CustomerVO createCustomer(CustomerVO customerVO) {
+	public CustomerVO createCustomer(CustomerVO customerVO, ClientVO clientVO) {
+		customerVO.setDupchk(customerVO.getCustomer() + customerVO.getCompany());
+		clientVO.setClient(clientVO.getClient() + clientVO.getCompany());
 		return customerRepo.save(customerVO);
 	}
 
@@ -441,6 +447,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO) {
 		if (customerRepo.existsById(customerVO.getCustomerid())) {
+			customerVO.setUpdatedby(customerVO.getUserid());
 			customerVO.setDupchk(customerVO.getCustomer() + customerVO.getCompany());
 			clientVO.setClient(clientVO.getClient() + clientVO.getCompany());
 			return Optional.of(customerRepo.save(customerVO));
@@ -468,6 +475,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Override
 	public WarehouseVO createWarehouse(WarehouseVO warehouseVO) {
+		warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
 		warehouseVO.setWarehousename(warehouseVO.getWarehousename().toUpperCase());
 		warehouseVO.setBranchcode(warehouseVO.getBranchcode().toUpperCase());
 		return warehouseRepo.save(warehouseVO);
@@ -476,8 +484,10 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO) {
 		if (warehouseRepo.existsById(warehouseVO.getWarehouseid())) {
-			warehouseVO
-					.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
+			warehouseVO.setUpdatedby(warehouseVO.getUserid());
+			warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
+			warehouseVO.setWarehousename(warehouseVO.getWarehousename().toUpperCase());
+			warehouseVO.setBranchcode(warehouseVO.getBranchcode().toUpperCase());
 			return Optional.of(warehouseRepo.save(warehouseVO));
 		} else {
 			return Optional.empty();
