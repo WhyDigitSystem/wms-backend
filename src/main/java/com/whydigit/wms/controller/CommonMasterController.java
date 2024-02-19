@@ -295,6 +295,8 @@ public class CommonMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
+		
+		
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "city information get successfully");
 			responseObjectsMap.put("cityVO", cityVO);
