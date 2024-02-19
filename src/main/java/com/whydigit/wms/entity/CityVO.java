@@ -24,13 +24,13 @@ public class CityVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long cityid;
-	
-	@Column(unique = true)
 	private String citycode;
 	private String country;
-	@Column(unique = true)
     private String cityname;
     private String state;
+    private String company;
+    @Column(unique = true)
+	private String dupchk;
     private boolean active;
     private String userid;
     @Embedded

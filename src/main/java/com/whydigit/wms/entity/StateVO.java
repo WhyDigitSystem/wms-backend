@@ -24,17 +24,15 @@ public class StateVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long stateid;
-		
-	@Column(unique = true)
 	private String statecode;
-	
-	@Column(unique = true)
 	private String statename;
-	
     private String country;
     private String region;
     private boolean active;
     private String userid;
+    private String company;
+	@Column(unique = true)
+	private String dupchk;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

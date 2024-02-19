@@ -24,7 +24,9 @@ public class CompanyVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long companyid;
+	@Column(unique = true)
 	private String companycode;
+	@Column(unique = true)
 	private String companyname;
     private String country;
 	private String currency;

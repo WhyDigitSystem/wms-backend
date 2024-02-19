@@ -24,10 +24,12 @@ public class GroupVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long groupid;
-	@Column(unique = true)
 	private String groupname;
 	private String userid;
 	private boolean active;
+	private String company;
+	@Column(unique = true)
+	private String dupchk;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

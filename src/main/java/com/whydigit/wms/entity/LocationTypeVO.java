@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,9 @@ public class LocationTypeVO {
 	private String locationtype;
 	private String userid;
 	private boolean active;
+	private String company;
+	@Column(unique = true)
+	private String dupchk;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

@@ -25,11 +25,13 @@ public class UnitVO {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long unitid;
 	private String userid;
-	@Column(unique = true)
 	private String uom;
 	private String unitname;
 	private String unittype;
 	private boolean active;
+	private String company;
+	@Column(unique = true)
+	private String dupchk;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
