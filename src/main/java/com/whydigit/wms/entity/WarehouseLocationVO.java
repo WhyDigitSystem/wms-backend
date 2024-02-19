@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,25 +20,35 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "warehouse")
-@Data
-@AllArgsConstructor
+@Table(name="warehouselocation")
 @NoArgsConstructor
-public class WarehouseVO {
+@AllArgsConstructor
+@Data
+public class WarehouseLocationVO {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long warehouseid;
-	private String warehousename;
+	private Long warehouselocationid;
+	private String branchname;
 	private String branchcode;
-	private String company;
-	private String dupchk;
+	private String warehouse;
+	private String locationtype;
+	private String rowno;
+	private String level;
+	private String cellfrom;
+	private String cellto;
+	private boolean cancel;
 	private boolean active;
+	private String createdby;
+	private String updatedby;
 	private String userid;
-
-	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
+	private String company;
+	
+	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<WarehouseClientVO> warehouseClientVO;
-
+	private List<WarehouseLocationDetailsVO>warehouseLocationDetailsVO;
+	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }

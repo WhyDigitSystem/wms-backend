@@ -165,13 +165,14 @@ public interface CommonMasterService {
 	List<WarehouseVO> getAllWarehouse();
 
 	Optional<WarehouseVO> getWarehouseById(Long warehouseid);
+	
+	List<WarehouseVO>getWarehouseByCompany(String company);
 
 	WarehouseVO createWarehouse(WarehouseVO warehouseVO);
 
 	Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
 
 	void deleteWarehouse(Long warehouseid);
-	
-	
 }
+
 

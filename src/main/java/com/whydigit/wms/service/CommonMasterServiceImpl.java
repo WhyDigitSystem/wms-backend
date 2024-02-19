@@ -13,7 +13,6 @@ import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CustomerVO;
-import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -465,7 +464,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<WarehouseVO> getWarehouseById(Long warehouseid) {
 		return warehouseRepo.findById(warehouseid);
 	}
-
+	
+	@Override
+	public List<WarehouseVO> getWarehouseByCompany(String company) {
+		// TODO Auto-generated method stub
+		return warehouseRepo.findWarehouseByCompany(company);
+	}
 	@Override
 	public WarehouseVO createWarehouse(WarehouseVO warehouseVO) {
 		warehouseVO.setWarehousename(warehouseVO.getWarehousename().toUpperCase());
@@ -488,4 +492,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public void deleteWarehouse(Long warehouseid) {
 		warehouseRepo.deleteById(warehouseid);
 	}
+
+	
 }
