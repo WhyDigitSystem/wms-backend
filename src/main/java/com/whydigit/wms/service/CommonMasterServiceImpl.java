@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.CompanyRepo;
 import com.whydigit.wms.repo.CountryRepository;
 import com.whydigit.wms.repo.FinancialYearRepo;
+import com.whydigit.wms.repo.GlobalParameterRepo;
 import com.whydigit.wms.repo.RegionRepo;
 import com.whydigit.wms.repo.StateRepo;
 
@@ -40,6 +42,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	
 	@Autowired
 	FinancialYearRepo financialYearRepo;
+	
+	@Autowired
+	GlobalParameterRepo globalParameterRepo;
 	
 	// Country
 
@@ -220,6 +225,24 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public void deleteCompany(Long companyid) {
 		companyRepo.deleteById(companyid);
+	}
+
+	
+	// Global Parameter
+	
+	@Override
+	public GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam) {
+		// TODO Auto-generated method stub
+		return globalParameterRepo.save(globalParam);
+	}
+
+	@Override
+	public Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO) {
+		if (globalParameterRepo.existsById(globalParameterVO.getGlobalid())) {
+			return Optional.of(globalParameterRepo.save(globalParameterVO));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 		

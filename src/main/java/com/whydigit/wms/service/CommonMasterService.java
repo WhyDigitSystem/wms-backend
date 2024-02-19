@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 
@@ -78,6 +79,13 @@ public interface CommonMasterService {
 
 	void deleteCompany(Long companyid);
 
+	
+	// Global Parameter
+	
+	GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam);
+
+	Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO);
+	
 	
 }
 

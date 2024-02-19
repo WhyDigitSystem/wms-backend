@@ -33,11 +33,12 @@ public class SecurityConfig {
 						"/**/*.html", "/**/*.css", "/**/*.js")
 				.permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
-						"/swagger-ui.html", "/swagger-ui/*", "/api/user/signup", "/api/user/login", "/api/user/logout",
+						"/swagger-ui.html", "/swagger-ui/*", "/api/auth/signup", "/api/auth/login", "/api/auth/logout",
 						"/api/auth/getRefreshToken","/api/country","/api/state","/api/city","/api/state/country/{country}","/api/region","/api/group","/api/group/{groupid}",
 						"/api/unit","/api/unit/{unitid}","/api/locationType/{locationtypeid}","/api/locationType","/api/cellType","/api/cellType/{celltypeid}","/api/company","/api/country/{countryid}",
 						"/api/company/{companyid}","/api/branch","/api/branch/{branchid}","/api/getAllBranchByCompany/{company}","/api/customer","/api/customer/{customerid}",
-						"/api/warehouse/company","/api/warehouse","/api/warehouselocation/{warehouselocationid}","/api/warehouselocation","/warehouselocation/company")
+						"/api/warehouse/company","/api/warehouse","/api/warehouselocation/{warehouselocationid}","/api/warehouselocation","/warehouselocation/company",
+						"/api/globalparam")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
