@@ -20,25 +20,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "warehouse")
+@Table(name = "carrier")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WarehouseVO {
+public class CarrierVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long warehouseid;
-	private String warehousename;
-	private String branchcode;
-	private String company;
+	private Long carrierid;
+	private String carriername;
+	private String shortname;
+	private String shipmentmode;
+	private String controlbranch;
 	@Column(unique = true)
 	private String dupchk;
+	private String company;
 	private boolean active;
-	private String userid;
-
-	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
+	private long userid;
+	private String cancel;
+	private String cancelremarks;
+	private String createdby;
+	private String updatedby;
+	
 	@JsonManagedReference
-	private List<WarehouseClientVO> warehouseClientVO;
+	@OneToMany(mappedBy = "carrierVO", cascade = CascadeType.ALL)
+	private List<CarrierDetailsVO> carrierDetailsVO;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
