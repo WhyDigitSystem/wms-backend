@@ -12,6 +12,7 @@ import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
+import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
@@ -20,6 +21,7 @@ import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.GroupRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
+import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.UnitRepo;
 import com.whydigit.wms.repo.WarehouseLocationRepo;
 import com.whydigit.wms.repo.WarehouseRepo;
@@ -51,6 +53,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	
 	@Autowired
 	WarehouseLocationRepo warehouseLocationRepo ;
+	
+	@Autowired
+	MaterialRepo materialRepo;
 	
 	
 	// Group
@@ -337,6 +342,47 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public void deleteWarehouseLocation(Long warehouselocationid) {
 		warehouseLocationRepo.deleteById(warehouselocationid);
 		
+	}
+
+	@Override
+	public List<MaterialVO> getAllMaterials() {
+		// TODO Auto-generated method stub
+		return materialRepo.findAll();
+	}
+
+	@Override
+	public List<MaterialVO> getAllMaterialsByCompanyAndClient(String company,String client) {
+		// TODO Auto-generated method stub
+		return materialRepo.findAllByCompanyAndClient(company,client);
+	}
+
+	@Override
+	public Optional<MaterialVO> getMaterialById(Long materialid) {
+		// TODO Auto-generated method stub
+		return materialRepo.findById(materialid);
+	}
+
+	@Override
+	public MaterialVO createMaterial(MaterialVO materialVO) {
+		// TODO Auto-generated method stub
+		materialVO.setDupchk(materialVO.getCompany()+materialVO.getCustomer()+materialVO.getClient()+materialVO.getPartno()+materialVO.getPartdesc());;
+		return materialRepo.save(materialVO);
+	}
+
+	@Override
+	public Optional<MaterialVO> updateMaterial(MaterialVO materialVO) {
+		if (materialRepo.existsById(materialVO.getMaterialid())) {
+			materialVO.setDupchk(materialVO.getCompany()+materialVO.getCustomer()+materialVO.getClient()+materialVO.getPartno()+materialVO.getPartdesc());
+			materialVO.setUpdatedby(materialVO.getUpdatedby());
+			return Optional.of(materialRepo.save(materialVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteMaterial(Long materialid) {
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -38,11 +38,12 @@ public class SecurityConfig {
 						"/api/unit","/api/unit/{unitid}","/api/locationType/{locationtypeid}","/api/locationType","/api/cellType","/api/cellType/{celltypeid}","/api/company","/api/country/{countryid}",
 						"/api/company/{companyid}","/api/branch","/api/branch/{branchid}","/api/getAllBranchByCompany/{company}","/api/customer","/api/customer/{customerid}",
 						"/api/warehouse/company","/api/warehouse","/api/warehouselocation/{warehouselocationid}","/api/warehouselocation","/warehouselocation/company",
-						"/api/globalparam")
+						"/api/globalparam","/api/material/company/client","/api//material/{materialid}","/api//material")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
+	
 }

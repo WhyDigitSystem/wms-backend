@@ -28,6 +28,7 @@ import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
+import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
@@ -910,7 +911,7 @@ public class WarehouseMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Warehouse Location creation", errorMsg);
+					"Warehouse Location creation Failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -942,5 +943,135 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	// Warehouse Location
+
+		@GetMapping("/material")
+		public ResponseEntity<ResponseDTO> getAllMaterials() {
+			String methodName = "getAllMaterials()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<MaterialVO> materialVO = new ArrayList<>();
+			try {
+				materialVO = warehouseMasterService.getAllMaterials();
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Material information get successfully");
+				responseObjectsMap.put("materialVO", materialVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "Material information receive failed",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
 		
+		@GetMapping("/material/company/client")
+		public ResponseEntity<ResponseDTO> getAllMaterialsByCompanyAndClient(@RequestParam String company,@RequestParam String client){
+			String methodName = "getAllMaterialsByCompanyAndClient()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<MaterialVO> materialVO = new ArrayList<>();
+			try {
+				materialVO = warehouseMasterService.getAllMaterialsByCompanyAndClient(company,client);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isEmpty(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Material founded");
+				responseObjectsMap.put("materialVO", materialVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Material not found ";
+				responseDTO = createServiceResponseError(responseObjectsMap, "Materials not found", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/material/{materialid}")
+		public ResponseEntity<ResponseDTO> getMaterialById(@PathVariable Long materialid) {
+			String methodName = "getMaterialById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			MaterialVO materialVO = null;
+			try {
+				materialVO = warehouseMasterService.getMaterialById(materialid).orElse(null);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isEmpty(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Material found by ID");
+				responseObjectsMap.put("materialVO", materialVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Material not found for ID: " + materialid;
+				responseDTO = createServiceResponseError(responseObjectsMap, "Material not found", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@PostMapping("/material")
+		public ResponseEntity<ResponseDTO> createMaterial(@RequestBody MaterialVO materialVO) {
+			String methodName = "createMaterial()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				MaterialVO createMaterialVO = warehouseMasterService.createMaterial(materialVO);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Material created successfully");
+				responseObjectsMap.put("Material", createMaterialVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Material creation Failed, Material Already Exist", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@PutMapping("/material")
+		public ResponseEntity<ResponseDTO> updateMaterial(@RequestBody MaterialVO materialVO) {
+			String methodName = "updateWarehouseLocation()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				MaterialVO updatedmaterMaterialVO = warehouseMasterService.updateMaterial(materialVO).orElse(null);
+				if (updatedmaterMaterialVO != null) {
+					responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Material updated successfully");
+					responseObjectsMap.put("updatedmaterMaterialVO", updatedmaterMaterialVO);
+					responseDTO = createServiceResponse(responseObjectsMap);
+				} else {
+					errorMsg = "Material not found for Material ID: " + materialVO.getMaterialid();
+					responseDTO = createServiceResponseError(responseObjectsMap, "Material update failed, Material Already Exist", errorMsg);
+				}
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Material Update failed,Material Already Exist", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+	
 }

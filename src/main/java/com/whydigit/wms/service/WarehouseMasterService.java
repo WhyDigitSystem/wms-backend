@@ -11,116 +11,131 @@ import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
+import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 
 @Service
 public interface WarehouseMasterService {
-	
+
 	// Group
 
-		List<GroupVO> getAllGroup();
+	List<GroupVO> getAllGroup();
 
-		Optional<GroupVO> getGroupById(Long groupid);
+	Optional<GroupVO> getGroupById(Long groupid);
 
-		GroupVO createGroup(GroupVO groupVO);
+	GroupVO createGroup(GroupVO groupVO);
 
-		Optional<GroupVO> updateGroup(GroupVO groupVO);
+	Optional<GroupVO> updateGroup(GroupVO groupVO);
 
-		void deleteGroup(Long groupid);
+	void deleteGroup(Long groupid);
 
-		// Unit
+	// Unit
 
-		List<UnitVO> getAllUnit();
+	List<UnitVO> getAllUnit();
 
-		Optional<UnitVO> getUnitById(Long unitid);
+	Optional<UnitVO> getUnitById(Long unitid);
 
-		UnitVO createUnit(UnitVO unitVO);
+	UnitVO createUnit(UnitVO unitVO);
 
-		Optional<UnitVO> updateUnit(UnitVO unitVO);
+	Optional<UnitVO> updateUnit(UnitVO unitVO);
 
-		void deleteUnit(Long unitid);
+	void deleteUnit(Long unitid);
 
-		// Location Type
+	// Location Type
 
-		List<LocationTypeVO> getAllLocationType();
+	List<LocationTypeVO> getAllLocationType();
 
-		Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid);
+	Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid);
 
-		LocationTypeVO createLocationType(LocationTypeVO locationTypeVO);
+	LocationTypeVO createLocationType(LocationTypeVO locationTypeVO);
 
-		Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO);
+	Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO);
 
-		void deleteLocationType(Long locationtypeid);
+	void deleteLocationType(Long locationtypeid);
 
-		// CellType
+	// CellType
 
-		List<CellTypeVO> getAllCellType();
+	List<CellTypeVO> getAllCellType();
 
-		Optional<CellTypeVO> getCellTypeById(Long celltypeid);
+	Optional<CellTypeVO> getCellTypeById(Long celltypeid);
 
-		CellTypeVO createCellType(CellTypeVO cellTypeVO);
+	CellTypeVO createCellType(CellTypeVO cellTypeVO);
 
-		Optional<CellTypeVO> updateCellType(CellTypeVO cellTypeVO);
+	Optional<CellTypeVO> updateCellType(CellTypeVO cellTypeVO);
 
-		void deleteCellType(Long celltypeid);
+	void deleteCellType(Long celltypeid);
 
 	// Branch
 
-		List<BranchVO> getAllBranch();
+	List<BranchVO> getAllBranch();
 
-		List<BranchVO> getAllBranchByCompany(String company);
+	List<BranchVO> getAllBranchByCompany(String company);
 
-		Optional<BranchVO> getBranchById(Long branchid);
+	Optional<BranchVO> getBranchById(Long branchid);
 
-		BranchVO createBranch(BranchVO branchVO);
+	BranchVO createBranch(BranchVO branchVO);
 
-		Optional<BranchVO> updateBranch(BranchVO branchVO);
+	Optional<BranchVO> updateBranch(BranchVO branchVO);
 
-		void deleteBranch(Long branchid);
+	void deleteBranch(Long branchid);
 
-		// Customer & client
+	// Customer & client
 
-		List<CustomerVO> getAllCustomer();
+	List<CustomerVO> getAllCustomer();
 
-		Optional<CustomerVO> getCustomerById(Long customerid);
+	Optional<CustomerVO> getCustomerById(Long customerid);
 
-		CustomerVO createCustomer(CustomerVO customerVO);
+	CustomerVO createCustomer(CustomerVO customerVO);
 
-		Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
+	Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
 
-		void deleteCustomer(Long customerid);
+	void deleteCustomer(Long customerid);
 
+	// Warehouse
 
-		// Warehouse
+	List<WarehouseVO> getAllWarehouse();
 
-		List<WarehouseVO> getAllWarehouse();
+	Optional<WarehouseVO> getWarehouseById(Long warehouseid);
 
-		Optional<WarehouseVO> getWarehouseById(Long warehouseid);
-		
-		List<WarehouseVO>getWarehouseByCompany(String company);
+	List<WarehouseVO> getWarehouseByCompany(String company);
 
-		WarehouseVO createWarehouse(WarehouseVO warehouseVO);
+	WarehouseVO createWarehouse(WarehouseVO warehouseVO);
 
-		Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
+	Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
 
-		void deleteWarehouse(Long warehouseid);
-	
+	void deleteWarehouse(Long warehouseid);
+
 	// Warehouse Location
 	List<WarehouseLocationVO> getAllWarehouseLocation(); // Method names should be in camelCase
-	
+
 	List<WarehouseLocationVO> getAllWarehouseLocationByCompany(String company);
-	
+
 	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
 
 	WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO); // Return the created entity
-	
+
 	Optional<WarehouseLocationVO> updateWarehouseLocation(WarehouseLocationVO warehouseLocationVO);
 
 	void deleteWarehouseLocation(Long warehouselocationid);
 
 	
+	
+	// Material Master
+	
+	List<MaterialVO> getAllMaterials(); // Method names should be in camelCase
+
+	List<MaterialVO> getAllMaterialsByCompanyAndClient(String company,String client);
+
+	Optional<MaterialVO> getMaterialById(Long materialid);
+
+	MaterialVO createMaterial(MaterialVO materialVO); // Return the created entity
+
+	Optional<MaterialVO> updateMaterial(MaterialVO materialVO);
+
+	void deleteMaterial(Long materialid);
+
 	
 
 }
