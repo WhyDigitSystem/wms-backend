@@ -2,6 +2,7 @@ package com.whydigit.wms.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -106,12 +107,21 @@ public interface WarehouseMasterService {
 	Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
 
 	void deleteWarehouse(Long warehouseid);
+	
 
 	// Warehouse Location
 	List<WarehouseLocationVO> getAllWarehouseLocation(); // Method names should be in camelCase
 
 	List<WarehouseLocationVO> getAllWarehouseLocationByCompany(String company);
+	
+	Set<Object> getAllLocationTypebyCompanyAndWarehouse(String company,String warehouse);
+	
+	Set<Object> getAllRownoByCompanyAndWarehouseAndLocationType(String company,String warehouse,String locationtype);
+	
+	Set<Object> getAllLevelByCompanyAndWarehouseAndLocationTypeAndRowno(String company,String warehouse,String locationtype,String rowno);
 
+	Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company,String warehouse,String locationtype,String rowno,String level);
+	
 	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
 
 	WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO); // Return the created entity

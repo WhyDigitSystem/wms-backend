@@ -38,7 +38,8 @@ public class SecurityConfig {
 						"/api/unit","/api/unit/{unitid}","/api/locationType/{locationtypeid}","/api/locationType","/api/cellType","/api/cellType/{celltypeid}","/api/company","/api/country/{countryid}",
 						"/api/company/{companyid}","/api/branch","/api/branch/{branchid}","/api/getAllBranchByCompany/{company}","/api/customer","/api/customer/{customerid}",
 						"/api/warehouse/company","/api/warehouse","/api/warehouselocation/{warehouselocationid}","/api/warehouselocation","/warehouselocation/company",
-						"/api/globalparam","/api/material/company/client","/api//material/{materialid}","/api//material")
+						"/api/globalparam","/api/material/company/client","/api//material/{materialid}","/api//material","/api/material/company/client1",
+						"/api/locationtype/warehouse","/api/rowno/locationtype/warehouse","/api/levelno/rowno/locationtype/warehouse","/api/bins/levelno/rowno/locationtype/warehouse")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
