@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.BranchVO;
+import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
@@ -18,6 +19,7 @@ import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.repo.BranchRepo;
+import com.whydigit.wms.repo.BuyerRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.GroupRepo;
@@ -54,12 +56,15 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	WarehouseLocationRepo warehouseLocationRepo;
-	
+
 	@Autowired
 	WarehouseLocationDetailsRepo warehouseLocationDetailsRepo;
 
 	@Autowired
 	MaterialRepo materialRepo;
+	
+	@Autowired
+	BuyerRepo buyerRepo ;
 
 	// Group
 
@@ -286,8 +291,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO) {
 		if (warehouseRepo.existsById(warehouseVO.getWarehouseid())) {
-			warehouseVO
-					.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
+			warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
 			return Optional.of(warehouseRepo.save(warehouseVO));
 		} else {
 			return Optional.empty();
@@ -344,11 +348,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	// Get All Bins based on Company, warehouse,locationtype,rowno and Level
 	@Override
-	public Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company, String warehouse,
-			String locationtype, String rowno,String level) {
+	public Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company,
+			String warehouse, String locationtype, String rowno, String level) {
 
-		return warehouseLocationDetailsRepo.findAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(company, warehouse,
-				locationtype, rowno,level);
+		return warehouseLocationDetailsRepo.findAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(company,
+				warehouse, locationtype, rowno, level);
 	}
 
 	@Override
@@ -416,5 +420,37 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public void deleteMaterial(Long materialid) {
 	}
+	
+	// Buyer
 
+		@Override
+		public List<BuyerVO> getAllBuyer() {
+			return buyerRepo.findAll();
+		}
+
+		@Override
+		public Optional<BuyerVO> getBuyerById(Long buyerid) {
+			return buyerRepo.findById(buyerid);
+		}
+
+		@Override
+		public BuyerVO createBuyer(BuyerVO buyerVO) {
+			buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer()+buyerVO.getBuyername() +buyerVO.getBuyershortname() );
+			return buyerRepo.save(buyerVO);
+		}
+
+		@Override
+		public Optional<BuyerVO> updateBuyer(BuyerVO buyerVO) {
+			if (buyerRepo.existsById(buyerVO.getBuyerid())) {
+				buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer()+buyerVO.getBuyername() +buyerVO.getBuyershortname() );
+				return Optional.of(buyerRepo.save(buyerVO));
+			} else {
+				return Optional.empty();
+			}
+		}
+
+		@Override
+		public void deleteBuyer(Long buyerid) {
+			buyerRepo.deleteById(buyerid);
+		}
 }

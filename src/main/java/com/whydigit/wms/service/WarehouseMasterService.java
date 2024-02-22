@@ -1,4 +1,4 @@
-package com.whydigit.wms.service;
+ package com.whydigit.wms.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.BranchVO;
+import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
@@ -146,6 +147,14 @@ public interface WarehouseMasterService {
 
 	void deleteMaterial(Long materialid);
 
-	
+	//Buyer Master
+	List<BuyerVO> getAllBuyer();
 
+	Optional<BuyerVO> getBuyerById(Long buyerid);
+
+	BuyerVO createBuyer(BuyerVO buyerVO);
+
+	Optional<BuyerVO> updateBuyer(BuyerVO buyerVO);
+
+	void deleteBuyer(Long buyerid);
 }

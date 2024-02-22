@@ -25,6 +25,7 @@ import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.BranchVO;
+import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
@@ -1209,5 +1210,108 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	// Buyer
+
+		@GetMapping("/buyer")
+		public ResponseEntity<ResponseDTO> getAllBuyer() {
+			String methodName = "getAllBuyer()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<BuyerVO> buyerVO = new ArrayList<>();
+			try {
+				buyerVO = warehouseMasterService.getAllBuyer();
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyer information get successfully");
+				responseObjectsMap.put("buyerVO", buyerVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "Buyer information receive failed",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@GetMapping("/buyer/{buyerid}")
+		public ResponseEntity<ResponseDTO> getBuyerById(@PathVariable Long buyerid) {
+			String methodName = "getBuyerById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			BuyerVO buyerVO = null;
+			try {
+				buyerVO = warehouseMasterService.getBuyerById(buyerid).orElse(null);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isEmpty(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyer found by ID");
+				responseObjectsMap.put("Buyer", buyerVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Buyer not found for ID: " + buyerid;
+				responseDTO = createServiceResponseError(responseObjectsMap, "Buyer not found", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@PostMapping("/buyer")
+		public ResponseEntity<ResponseDTO> createBuyer(@RequestBody BuyerVO buyerVO) {
+			String methodName = "createBuyer()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				BuyerVO createdBuyerVO = warehouseMasterService.createBuyer(buyerVO);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyer created successfully");
+				responseObjectsMap.put("BuyerVO", createdBuyerVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"BuyerName, BuyerShortName and BranchCode Client already Exist ", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@PutMapping("/buyer")
+		public ResponseEntity<ResponseDTO> updateBuyer(@RequestBody BuyerVO buyerVO) {
+			String methodName = "updateBuyer()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				BuyerVO updatedBuyerVO = warehouseMasterService.updateBuyer(buyerVO).orElse(null);
+				if (updatedBuyerVO != null) {
+					responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyer updated successfully");
+					responseObjectsMap.put("BuyerVO", updatedBuyerVO);
+					responseDTO = createServiceResponse(responseObjectsMap);
+				} else {
+					errorMsg = "Buyer not found for Buyer ID: " + buyerVO.getBuyerid();
+					responseDTO = createServiceResponseError(responseObjectsMap, "Buyer update failed", errorMsg);
+				}
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"BuyerName, BuyerShortName and Client already Exist", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
 
 }
