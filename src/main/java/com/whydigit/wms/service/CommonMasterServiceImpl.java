@@ -263,16 +263,15 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Override
 	public GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam) {
-		// TODO Auto-generated method stub
-		return null;
+		return globalParameterRepo.save(globalParam);
 	}
 
 	@Override
 	public Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		if (globalParameterRepo.existsById(globalParameterVO.getGlobalid())) {
+			return Optional.of(globalParameterRepo.save(globalParameterVO));
+		} else {
+			return Optional.empty();
+		}
 	}
-
-	
-  
 }

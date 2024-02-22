@@ -35,6 +35,10 @@ public class WarehouseVO {
 	private String dupchk;
 	private boolean active;
 	private String userid;
+	private String createdby;
+	private String updatedby;
+	private boolean cancel;
+	
 
 	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
