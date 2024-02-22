@@ -53,8 +53,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Autowired
 	GlobalParameterRepo globalParameterRepo;
 	
-  @Autowired
-	WarehouseRepo warehouseRepo;
 
 	@Autowired
 	CarrierRepo carrierRepo;
@@ -227,150 +225,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		regionRepo.deleteById(regionid);
 	}
 
-  // Group
-
-	@Override
-	public List<GroupVO> getAllGroup() {
-		return groupRepo.findAll();
-	}
-
-	@Override
-	public Optional<GroupVO> getGroupById(Long groupid) {
-		return groupRepo.findById(groupid);
-	}
-
-	@Override
-	public GroupVO createGroup(GroupVO groupVO) {
-		groupVO.setGroupname(groupVO.getGroupname().toUpperCase());
-		groupVO.setActive(true);
-		groupVO.setActive(true);
-		groupVO.setDupchk(groupVO.getGroupname() + groupVO.getCompany());
-		return groupRepo.save(groupVO);
-	}
-
-	@Override
-	public Optional<GroupVO> updateGroup(GroupVO groupVO) {
-		if (groupRepo.existsById(groupVO.getGroupid())) {
-			groupVO.setGroupname(groupVO.getGroupname().toUpperCase());
-			groupVO.setUpdatedby(groupVO.getUserid());
-			return Optional.of(groupRepo.save(groupVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteGroup(Long groupid) {
-		groupRepo.deleteById(groupid);
-	}
-
-	// Unit
-
-	@Override
-	public List<UnitVO> getAllUnit() {
-		return unitRepo.findAll();
-	}
-
-	@Override
-	public Optional<UnitVO> getUnitById(Long unitid) {
-		return unitRepo.findById(unitid);
-	}
-
-	@Override
-	public UnitVO createUnit(UnitVO unitVO) {
-		unitVO.setActive(true);
-		unitVO.setActive(true);
-		unitVO.setDupchk(unitVO.getUnitname() + unitVO.getCompany());
-		return unitRepo.save(unitVO);
-	}
-
-	@Override
-	public Optional<UnitVO> updateUnit(UnitVO unitVO) {
-		if (unitRepo.existsById(unitVO.getUnitid())) {
-			unitVO.setUpdatedby(unitVO.getUserid());
-			unitVO.setDupchk(unitVO.getUnitname() + unitVO.getCompany());
-			return Optional.of(unitRepo.save(unitVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteUnit(Long unitid) {
-		unitRepo.deleteById(unitid);
-	}
-
-	// LocationType
-
-	@Override
-	public List<LocationTypeVO> getAllLocationType() {
-		return locationTypeRepo.findAll();
-	}
-
-	@Override
-	public Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid) {
-		return locationTypeRepo.findById(locationtypeid);
-	}
-
-	@Override
-	public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
-		locationTypeVO.setActive(true);
-		locationTypeVO.setActive(true);
-		locationTypeVO.setDupchk(locationTypeVO.getLocationtype() + locationTypeVO.getCompany());
-		return locationTypeRepo.save(locationTypeVO);
-	}
-
-	@Override
-	public Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO) {
-		if (locationTypeRepo.existsById(locationTypeVO.getLocationtypeid())) {
-			locationTypeVO.setUpdatedby(locationTypeVO .getUserid());
-			locationTypeVO.setDupchk(locationTypeVO.getLocationtype() + locationTypeVO.getCompany());
-			return Optional.of(locationTypeRepo.save(locationTypeVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteLocationType(Long locationtypeid) {
-		locationTypeRepo.deleteById(locationtypeid);
-	}
-
-	// CellType
-
-	@Override
-	public List<CellTypeVO> getAllCellType() {
-		return cellTypeRepo.findAll();
-	}
-
-	@Override
-	public Optional<CellTypeVO> getCellTypeById(Long celltypeid) {
-		return cellTypeRepo.findById(celltypeid);
-	}
-
-	@Override
-	public CellTypeVO createCellType(CellTypeVO cellTypeVO) {
-		cellTypeVO.setActive(true);
-		cellTypeVO.setActive(true);
-		cellTypeVO.setDupchk(cellTypeVO.getCelltype() + cellTypeVO.getCompany());
-		return cellTypeRepo.save(cellTypeVO);
-	}
-
-	@Override
-	public Optional<CellTypeVO> updateCellType(CellTypeVO cellTypeVO) {
-		if (cellTypeRepo.existsById(cellTypeVO.getCelltypeid())) {
-			cellTypeVO.setUpdatedby(cellTypeVO .getUserid());
-			cellTypeVO.setDupchk(cellTypeVO.getCelltype() + cellTypeVO.getCompany());
-			return Optional.of(cellTypeRepo.save(cellTypeVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteCellType(Long celltypeid) {
-		cellTypeRepo.deleteById(celltypeid);
-	}
+  
 
 	// Company
 
@@ -406,153 +261,18 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyRepo.deleteById(companyid);
 	}
 
-  // Branch
-
 	@Override
-	public List<BranchVO> getAllBranch() {
-		return branchRepo.findAll();
-	}
-
-	public List<BranchVO> getAllBranchByCompany(String company) {
-		return branchRepo.findAllByCompany(company);
+	public GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public Optional<BranchVO> getBranchById(Long branchid) {
-		return branchRepo.findById(branchid);
+	public Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO) {
+		// TODO Auto-generated method stub
+		return Optional.empty();
 	}
 
-	@Override
-	public BranchVO createBranch(BranchVO branchVO) {
-		branchVO.setBranchname(branchVO.getBranchname().toUpperCase());
-		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
-		branchVO.setActive(true);
-		branchVO.setActive(true);
-		branchVO.setDupchk(branchVO.getBranchname() +branchVO.getBranchcode() + branchVO.getCompany());
-		return branchRepo.save(branchVO);
-	}
-
-	@Override
-	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
-		if (branchRepo.existsById(branchVO.getBranchid())) {
-			branchVO.setUpdatedby(branchVO.getUserid());
-			branchVO.setDupchk(branchVO.getBranchname() +branchVO.getBranchcode() + branchVO.getCompany());			branchVO.setBranchname(branchVO.getBranchname().toUpperCase());
-			branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
-			return Optional.of(branchRepo.save(branchVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteBranch(Long branchid) {
-		branchRepo.deleteById(branchid);
-	}
-
-	// Customer&client
-
-	@Override
-	public List<CustomerVO> getAllCustomer() {
-		return customerRepo.findAll();
-	}
-
-	@Override
-	public Optional<CustomerVO> getCustomerById(Long customerid) {
-		return customerRepo.findById(customerid);
-	}
-
-	@Override
-	public CustomerVO createCustomer(CustomerVO customerVO, ClientVO clientVO) {
-		customerVO.setDupchk(customerVO.getCustomer() + customerVO.getCompany());
-		customerVO.setActive(true);
-		customerVO.setActive(true);
-		customerVO.setDupchk(customerVO.getCustomer() +customerVO.getCustomershortname() + customerVO.getCompany());
-		clientVO.setClient(clientVO.getClient() + clientVO.getCompany());
-		return customerRepo.save(customerVO);
-	}
-
-	@Override
-	public Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO) {
-		if (customerRepo.existsById(customerVO.getCustomerid())) {
-			customerVO.setUpdatedby(customerVO.getUserid());
-			customerVO.setDupchk(customerVO.getCustomer() +customerVO.getCustomershortname() + customerVO.getCompany());
-			clientVO.setClient(clientVO.getClient() + clientVO.getCompany());
-			return Optional.of(customerRepo.save(customerVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteCustomer(Long customerid) {
-		customerRepo.deleteById(customerid);
-	}
-
-	// Warehouse
-
-	@Override
-	public List<WarehouseVO> getAllWarehouse() {
-		return warehouseRepo.findAll();
-	}
-
-	@Override
-	public Optional<WarehouseVO> getWarehouseById(Long warehouseid) {
-		return warehouseRepo.findById(warehouseid);
-	}
-
-	@Override
-	public WarehouseVO createWarehouse(WarehouseVO warehouseVO) {
-		warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
-		warehouseVO.setActive(true);
-		warehouseVO.setActive(true);
-		warehouseVO.setWarehousename(warehouseVO.getWarehousename().toUpperCase());
-		warehouseVO.setBranchcode(warehouseVO.getBranchcode().toUpperCase());
-		return warehouseRepo.save(warehouseVO);
-	}
-
-	@Override
-	public void deleteWarehouse(Long warehouseid) {
-		warehouseRepo.deleteById(warehouseid);
-	}
-
-	// Carrier
-
-	@Override
-	public List<CarrierVO> getAllCarrier() {
-		return carrierRepo.findAll();
-	}
-
-	@Override
-	public Optional<CarrierVO> getCarrierById(Long carrierid) {
-		return carrierRepo.findById(carrierid);
-	}
-
-	@Override
-	public CarrierVO createCarrier(CarrierVO carrierVO) {
-		carrierVO.setDupchk(carrierVO.getCompany() + carrierVO.getCarriername() + carrierVO.getCarriershortname()+ carrierVO.getControlbranch());
-		carrierVO.setCarriername(carrierVO.getCarriername().toUpperCase());
-		carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
-		carrierVO.setCancel(false);
-		carrierVO.setActive(true);
-		return carrierRepo.save(carrierVO);
-	}
-
-	@Override
-	public Optional<CarrierVO> updateCarrier(CarrierVO carrierVO) {
-		if (carrierRepo.existsById(carrierVO.getCarrierid())) {
-			carrierVO.setUpdatedby(carrierVO.getUserid());
-			carrierVO.setDupchk(carrierVO.getCompany() + carrierVO.getCarriername() + carrierVO.getCarriershortname()+ carrierVO.getControlbranch());
-			carrierVO.setCarriername(carrierVO.getCarriername().toUpperCase());
-			carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
-			return Optional.of(carrierRepo.save(carrierVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteCarrier(Long carrierid) {
-		carrierRepo.deleteById(carrierid);
-	}
-
+	
+  
 }

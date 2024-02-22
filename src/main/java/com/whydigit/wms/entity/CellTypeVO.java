@@ -26,9 +26,6 @@ public class CellTypeVO {
 	private Long celltypeid;
 	private String celltype;
 	private String userid;
-	private String company;
-	@Column(unique = true)
-	private String dupchk;
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;
