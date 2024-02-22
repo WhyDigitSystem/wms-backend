@@ -15,6 +15,7 @@ import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
+import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
@@ -25,6 +26,7 @@ import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.GroupRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
+import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
 import com.whydigit.wms.repo.WarehouseLocationDetailsRepo;
 import com.whydigit.wms.repo.WarehouseLocationRepo;
@@ -62,9 +64,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	MaterialRepo materialRepo;
-	
+
 	@Autowired
-	BuyerRepo buyerRepo ;
+	BuyerRepo buyerRepo;
+
+	@Autowired
+	SupplierRepo supplierRepo;
 
 	// Group
 
@@ -291,7 +296,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO) {
 		if (warehouseRepo.existsById(warehouseVO.getWarehouseid())) {
-			warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
+			warehouseVO
+					.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehousename() + warehouseVO.getCompany());
 			return Optional.of(warehouseRepo.save(warehouseVO));
 		} else {
 			return Optional.empty();
@@ -420,37 +426,74 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public void deleteMaterial(Long materialid) {
 	}
-	
+
 	// Buyer
 
-		@Override
-		public List<BuyerVO> getAllBuyer() {
-			return buyerRepo.findAll();
-		}
+	@Override
+	public List<BuyerVO> getAllBuyer(String company, String client) {
+		return buyerRepo.findAllByCompanyAndClient(company,client);
+	}
 
-		@Override
-		public Optional<BuyerVO> getBuyerById(Long buyerid) {
-			return buyerRepo.findById(buyerid);
-		}
+	@Override
+	public Optional<BuyerVO> getBuyerById(Long buyerid) {
+		return buyerRepo.findById(buyerid);
+	}
 
-		@Override
-		public BuyerVO createBuyer(BuyerVO buyerVO) {
-			buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer()+buyerVO.getBuyername() +buyerVO.getBuyershortname() );
-			return buyerRepo.save(buyerVO);
-		}
+	@Override
+	public BuyerVO createBuyer(BuyerVO buyerVO) {
+		buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer() + buyerVO.getBuyername()
+				+ buyerVO.getBuyershortname());
+		return buyerRepo.save(buyerVO);
+	}
 
-		@Override
-		public Optional<BuyerVO> updateBuyer(BuyerVO buyerVO) {
-			if (buyerRepo.existsById(buyerVO.getBuyerid())) {
-				buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer()+buyerVO.getBuyername() +buyerVO.getBuyershortname() );
-				return Optional.of(buyerRepo.save(buyerVO));
-			} else {
-				return Optional.empty();
-			}
+	@Override
+	public Optional<BuyerVO> updateBuyer(BuyerVO buyerVO) {
+		if (buyerRepo.existsById(buyerVO.getBuyerid())) {
+			buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer()
+					+ buyerVO.getBuyername() + buyerVO.getBuyershortname());
+			return Optional.of(buyerRepo.save(buyerVO));
+		} else {
+			return Optional.empty();
 		}
+	}
 
-		@Override
-		public void deleteBuyer(Long buyerid) {
-			buyerRepo.deleteById(buyerid);
+	@Override
+	public void deleteBuyer(Long buyerid) {
+		buyerRepo.deleteById(buyerid);
+	}
+
+	// Supplier
+
+	@Override
+	public List<SupplierVO> getAllSupplier(String company, String client) {
+		return supplierRepo.findAllByCompanyAndClient(company, client);
+	}
+
+	@Override
+	public Optional<SupplierVO> getSupplierById(Long supplierid) {
+		return supplierRepo.findById(supplierid);
+	}
+
+	@Override
+	public SupplierVO createSupplier(SupplierVO supplierVO) {
+		supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getCompany() + supplierVO.getCustomer()
+				+ supplierVO.getClient() + supplierVO.getSuppliername() + supplierVO.getSuppliershortname());
+		return supplierRepo.save(supplierVO);
+	}
+
+	@Override
+	public Optional<SupplierVO> updateSupplier(SupplierVO supplierVO) {
+		if (supplierRepo.existsById(supplierVO.getSupplierid())) {
+ 			supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getCompany() + supplierVO.getCustomer()
+					+ supplierVO.getClient() + supplierVO.getSuppliername() + supplierVO.getSuppliershortname());
+			return Optional.of(supplierRepo.save(supplierVO));
+		} else {
+			return Optional.empty();
 		}
+	}
+
+	@Override
+	public void deleteSupplier(Long supplierid) {
+		supplierRepo.deleteById(supplierid);
+	}
 }

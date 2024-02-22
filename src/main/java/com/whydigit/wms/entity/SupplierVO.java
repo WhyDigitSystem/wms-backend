@@ -15,37 +15,34 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "buyer")
+@Table(name = "supplier")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuyerVO {
+public class SupplierVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long buyerid;
-	private String buyername;
-	private String buyershortname;
-	private String buyertype;
-	private String buyergroupof;
-	private String contactperson;
-	private String landlinenumber;
+	private Long supplierid;
+	private String suppliername;
+	private String suppliershortname;
+	private String suppliertype;
+	private String suppliergroupof;
+	private String category;
 	private String panno;
 	private String tanno;
-	private String zipcode;
-	private String emailid;
-	private String gst;
-	private String gstno;
+	private String contactperson;
+	private String landlinenumber;
 	private String mobilenumber;
 	private String addressline1;
 	private String addressline2;
 	private String city;
+	private String controlbranch;
 	private String state;
 	private String country;
+	private String zipcode;
+	private String emailid;
 	private String eccno;
 	private String rangeaddress;
-	private String rangeaddress1;
-	private String commissionerate;
-	private String controlbranch;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
