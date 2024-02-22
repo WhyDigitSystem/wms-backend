@@ -40,7 +40,7 @@ public class WarehouseVO {
 	private String createdby;
 	private String updatedby;
 
-	@OneToMany(mappedBy = "warehouseEntity", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<WarehouseClientVO> warehouseClientVO;
 
