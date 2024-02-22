@@ -86,19 +86,5 @@ public interface CommonMasterService {
 
 	Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO);
 	
-	
-}
-
-	// Carrier
-
-	List<CarrierVO> getAllCarrier();
-
-	Optional<CarrierVO> getCarrierById(Long carrierid);
-
-	CarrierVO createCarrier(CarrierVO carrierVO);
-
-	Optional<CarrierVO> updateCarrier(CarrierVO carrierVO);
-
-	void deleteCarrier(Long carrierid);
 
 }
