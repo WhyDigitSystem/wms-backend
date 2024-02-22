@@ -35,6 +35,11 @@ public class CompanyVO {
     private String addressline3;
     private String userid;
     private boolean active;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private boolean cancel;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

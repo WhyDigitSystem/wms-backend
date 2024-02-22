@@ -89,4 +89,16 @@ public interface CommonMasterService {
 	
 }
 
+	// Carrier
 
+	List<CarrierVO> getAllCarrier();
+
+	Optional<CarrierVO> getCarrierById(Long carrierid);
+
+	CarrierVO createCarrier(CarrierVO carrierVO);
+
+	Optional<CarrierVO> updateCarrier(CarrierVO carrierVO);
+
+	void deleteCarrier(Long carrierid);
+
+}

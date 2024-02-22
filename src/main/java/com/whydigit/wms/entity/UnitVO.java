@@ -29,9 +29,12 @@ public class UnitVO {
 	private String unitname;
 	private String unittype;
 	private boolean active;
-	private String company;
 	@Column(unique = true)
 	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

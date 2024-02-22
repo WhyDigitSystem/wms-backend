@@ -30,6 +30,12 @@ public class CellTypeVO {
 	@Column(unique = true)
 	private String dupchk;
 	private boolean active;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

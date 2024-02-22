@@ -29,15 +29,15 @@ public class CarrierVO {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long carrierid;
 	private String carriername;
-	private String shortname;
+	private String carriershortname;
 	private String shipmentmode;
 	private String controlbranch;
 	@Column(unique = true)
 	private String dupchk;
 	private String company;
 	private boolean active;
-	private long userid;
-	private String cancel;
+	private String userid;
+	private boolean cancel;
 	private String cancelremarks;
 	private String createdby;
 	private String updatedby;

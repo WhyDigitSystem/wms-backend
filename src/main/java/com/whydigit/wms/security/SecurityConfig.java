@@ -36,10 +36,7 @@ public class SecurityConfig {
 						"/swagger-ui.html", "/swagger-ui/*", "/api/auth/signup", "/api/auth/login", "/api/auth/logout",
 						"/api/auth/getRefreshToken","/api/country","/api/state","/api/city","/api/state/country/{country}","/api/region","/api/group","/api/group/{groupid}",
 						"/api/unit","/api/unit/{unitid}","/api/locationType/{locationtypeid}","/api/locationType","/api/cellType","/api/cellType/{celltypeid}","/api/company","/api/country/{countryid}",
-						"/api/company/{companyid}","/api/branch","/api/branch/{branchid}","/api/getAllBranchByCompany/{company}","/api/customer","/api/customer/{customerid}",
-						"/api/warehouse/company","/api/warehouse","/api/warehouselocation/{warehouselocationid}","/api/warehouselocation","/warehouselocation/company",
-						"/api/globalparam","/api/material/company/client","/api//material/{materialid}","/api//material","/api/material/company/client1",
-						"/api/locationtype/warehouse","/api/rowno/locationtype/warehouse","/api/levelno/rowno/locationtype/warehouse","/api/bins/levelno/rowno/locationtype/warehouse")
+						"/api/company/{companyid}","/api/branch","/api/branch/{branchid}","/api/getAllBranchByCompany/{company}","/api/customer","/api/customer/{customerid}","/api/carrier","/api/carrier/{carrierid}")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

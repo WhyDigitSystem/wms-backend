@@ -34,6 +34,11 @@ public class ClientVO {
 	private int fifofife;
 	@Column(unique = true)
 	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private boolean cancel;
+	private String userid;
+	private String active;
 
 	@ManyToOne
 	@JsonBackReference
