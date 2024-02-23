@@ -3,12 +3,13 @@ package com.whydigit.wms.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
+import org.apache.catalina.valves.rewrite.InternalRewriteMap.UpperCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
@@ -22,6 +23,7 @@ import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.repo.BranchRepo;
 import com.whydigit.wms.repo.BuyerRepo;
+import com.whydigit.wms.repo.CarrierRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.GroupRepo;
@@ -72,10 +74,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	SupplierRepo supplierRepo;
-	
+
 	@Autowired
 	LocationMappingRepo locationMappingRepo;
 
+	@Autowired
+	CarrierRepo carrierRepo;
 	// Group
 
 	@Override
@@ -431,7 +435,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<BuyerVO> getAllBuyer(String company, String client) {
-		return buyerRepo.findAllByCompanyAndClient(company,client);
+		return buyerRepo.findAllByCompanyAndClient(company, client);
 	}
 
 	@Override
@@ -484,7 +488,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<SupplierVO> updateSupplier(SupplierVO supplierVO) {
 		if (supplierRepo.existsById(supplierVO.getSupplierid())) {
- 			supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getCompany() + supplierVO.getCustomer()
+			supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getCompany() + supplierVO.getCustomer()
 					+ supplierVO.getClient() + supplierVO.getSuppliername() + supplierVO.getSuppliershortname());
 			return Optional.of(supplierRepo.save(supplierVO));
 		} else {
@@ -497,7 +501,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		supplierRepo.deleteById(supplierid);
 	}
 
-	//LocationMapping
+	// LocationMapping
 
 	@Override
 	public List<LocationMappingVO> getAllLocationMapping() {
@@ -526,5 +530,43 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public void deleteLocationMapping(Long locationmappingid) {
 		locationMappingRepo.deleteById(locationmappingid);
+	}
+
+	// Carrier
+
+	@Override
+	public List<CarrierVO> getAllCarrier() {
+		return carrierRepo.findAll();
+	}
+
+	@Override
+	public Optional<CarrierVO> getCarrierById(Long carrierid) {
+		return carrierRepo.findById(carrierid);
+	}
+
+	@Override
+	public CarrierVO createCarrier(CarrierVO carrierVO) {
+		carrierVO.setCarriername(carrierVO.getCarriername().toUpperCase());
+		carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
+		carrierVO.setDupchk(carrierVO.getCompany() + carrierVO.getCarriername() + carrierVO.getCarriershortname());
+		return carrierRepo.save(carrierVO);
+	}
+
+	@Override
+	public Optional<CarrierVO> updateCarrier(CarrierVO carrierVO) {
+		if (carrierRepo.existsById(carrierVO.getCarrierid())) {
+			carrierVO.setUpdatedby(carrierVO.getUserid());
+			carrierVO.setCarriername(carrierVO.getCarriername().toUpperCase());
+			carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
+			carrierVO.setDupchk(carrierVO.getCompany() + carrierVO.getCarriername() + carrierVO.getCarriershortname());
+			return Optional.of(carrierRepo.save(carrierVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteCarrier(Long carrierid) {
+		carrierRepo.deleteById(carrierid);
 	}
 }

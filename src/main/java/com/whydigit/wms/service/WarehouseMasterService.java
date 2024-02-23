@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
@@ -183,5 +184,16 @@ public interface WarehouseMasterService {
 	Optional<LocationMappingVO> updateLocationMapping(LocationMappingVO locationMappingVO);
 
 	void deleteLocationMapping(Long locationMappingid);
+	
+	//Carrier
 
+	List<CarrierVO> getAllCarrier();
+
+	Optional<CarrierVO> getCarrierById(Long carrierid);
+
+	CarrierVO createCarrier(CarrierVO carrierVO);
+
+	Optional<CarrierVO> updateCarrier(CarrierVO carrierVO);
+
+	void deleteCarrier(Long carrierid);
 }
