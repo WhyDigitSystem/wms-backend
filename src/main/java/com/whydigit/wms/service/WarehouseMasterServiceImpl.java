@@ -8,21 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.BranchVO;
+import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
+import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.repo.BranchRepo;
+import com.whydigit.wms.repo.BuyerRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.GroupRepo;
+import com.whydigit.wms.repo.LocationMappingRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
+import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
 import com.whydigit.wms.repo.WarehouseLocationDetailsRepo;
 import com.whydigit.wms.repo.WarehouseLocationRepo;
@@ -54,12 +60,21 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	WarehouseLocationRepo warehouseLocationRepo;
-	
+
 	@Autowired
 	WarehouseLocationDetailsRepo warehouseLocationDetailsRepo;
 
 	@Autowired
 	MaterialRepo materialRepo;
+
+	@Autowired
+	BuyerRepo buyerRepo;
+
+	@Autowired
+	SupplierRepo supplierRepo;
+	
+	@Autowired
+	LocationMappingRepo locationMappingRepo;
 
 	// Group
 
@@ -272,7 +287,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<WarehouseVO> getWarehouseByCompany(String company) {
-		// TODO Auto-generated method stub
 		return warehouseRepo.findWarehouseByCompany(company);
 	}
 
@@ -309,7 +323,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<WarehouseLocationVO> getAllWarehouseLocationByCompany(String company) {
-		// TODO Auto-generated method stub
 		return warehouseLocationRepo.findAllByCompany(company);
 	}
 
@@ -344,11 +357,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	// Get All Bins based on Company, warehouse,locationtype,rowno and Level
 	@Override
-	public Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company, String warehouse,
-			String locationtype, String rowno,String level) {
+	public Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company,
+			String warehouse, String locationtype, String rowno, String level) {
 
-		return warehouseLocationDetailsRepo.findAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(company, warehouse,
-				locationtype, rowno,level);
+		return warehouseLocationDetailsRepo.findAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(company,
+				warehouse, locationtype, rowno, level);
 	}
 
 	@Override
@@ -377,19 +390,16 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<MaterialVO> getAllMaterials() {
-		// TODO Auto-generated method stub
 		return materialRepo.findAll();
 	}
 
 	@Override
 	public List<MaterialVO> getAllMaterialsByCompanyAndClient(String company, String client) {
-		// TODO Auto-generated method stub
 		return materialRepo.findAllByCompanyAndClient(company, client);
 	}
 
 	@Override
 	public Optional<MaterialVO> getMaterialById(Long materialid) {
-		// TODO Auto-generated method stub
 		return materialRepo.findById(materialid);
 	}
 
@@ -417,4 +427,104 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public void deleteMaterial(Long materialid) {
 	}
 
+	// Buyer
+
+	@Override
+	public List<BuyerVO> getAllBuyer(String company, String client) {
+		return buyerRepo.findAllByCompanyAndClient(company,client);
+	}
+
+	@Override
+	public Optional<BuyerVO> getBuyerById(Long buyerid) {
+		return buyerRepo.findById(buyerid);
+	}
+
+	@Override
+	public BuyerVO createBuyer(BuyerVO buyerVO) {
+		buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer() + buyerVO.getBuyername()
+				+ buyerVO.getBuyershortname());
+		return buyerRepo.save(buyerVO);
+	}
+
+	@Override
+	public Optional<BuyerVO> updateBuyer(BuyerVO buyerVO) {
+		if (buyerRepo.existsById(buyerVO.getBuyerid())) {
+			buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getCompany() + buyerVO.getCustomer()
+					+ buyerVO.getBuyername() + buyerVO.getBuyershortname());
+			return Optional.of(buyerRepo.save(buyerVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteBuyer(Long buyerid) {
+		buyerRepo.deleteById(buyerid);
+	}
+
+	// Supplier
+
+	@Override
+	public List<SupplierVO> getAllSupplier(String company, String client) {
+		return supplierRepo.findAllByCompanyAndClient(company, client);
+	}
+
+	@Override
+	public Optional<SupplierVO> getSupplierById(Long supplierid) {
+		return supplierRepo.findById(supplierid);
+	}
+
+	@Override
+	public SupplierVO createSupplier(SupplierVO supplierVO) {
+		supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getCompany() + supplierVO.getCustomer()
+				+ supplierVO.getClient() + supplierVO.getSuppliername() + supplierVO.getSuppliershortname());
+		return supplierRepo.save(supplierVO);
+	}
+
+	@Override
+	public Optional<SupplierVO> updateSupplier(SupplierVO supplierVO) {
+		if (supplierRepo.existsById(supplierVO.getSupplierid())) {
+ 			supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getCompany() + supplierVO.getCustomer()
+					+ supplierVO.getClient() + supplierVO.getSuppliername() + supplierVO.getSuppliershortname());
+			return Optional.of(supplierRepo.save(supplierVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteSupplier(Long supplierid) {
+		supplierRepo.deleteById(supplierid);
+	}
+
+	//LocationMapping
+
+	@Override
+	public List<LocationMappingVO> getAllLocationMapping() {
+		return locationMappingRepo.findAll();
+	}
+
+	@Override
+	public Optional<LocationMappingVO> getLocationMappingById(Long locationmappingid) {
+		return locationMappingRepo.findById(locationmappingid);
+	}
+
+	@Override
+	public LocationMappingVO createLocationMapping(LocationMappingVO locationMappingVO) {
+		return locationMappingRepo.save(locationMappingVO);
+	}
+
+	@Override
+	public Optional<LocationMappingVO> updateLocationMapping(LocationMappingVO locationMappingVO) {
+		if (locationMappingRepo.existsById(locationMappingVO.getLocationmappingid())) {
+			return Optional.of(locationMappingRepo.save(locationMappingVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteLocationMapping(Long locationmappingid) {
+		locationMappingRepo.deleteById(locationmappingid);
+	}
 }

@@ -7,12 +7,15 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.BranchVO;
+import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
+import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
@@ -107,21 +110,22 @@ public interface WarehouseMasterService {
 	Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
 
 	void deleteWarehouse(Long warehouseid);
-	
 
 	// Warehouse Location
 	List<WarehouseLocationVO> getAllWarehouseLocation(); // Method names should be in camelCase
 
 	List<WarehouseLocationVO> getAllWarehouseLocationByCompany(String company);
-	
-	Set<Object> getAllLocationTypebyCompanyAndWarehouse(String company,String warehouse);
-	
-	Set<Object> getAllRownoByCompanyAndWarehouseAndLocationType(String company,String warehouse,String locationtype);
-	
-	Set<Object> getAllLevelByCompanyAndWarehouseAndLocationTypeAndRowno(String company,String warehouse,String locationtype,String rowno);
 
-	Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company,String warehouse,String locationtype,String rowno,String level);
-	
+	Set<Object> getAllLocationTypebyCompanyAndWarehouse(String company, String warehouse);
+
+	Set<Object> getAllRownoByCompanyAndWarehouseAndLocationType(String company, String warehouse, String locationtype);
+
+	Set<Object> getAllLevelByCompanyAndWarehouseAndLocationTypeAndRowno(String company, String warehouse,
+			String locationtype, String rowno);
+
+	Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company, String warehouse,
+			String locationtype, String rowno, String level);
+
 	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
 
 	WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO); // Return the created entity
@@ -130,13 +134,11 @@ public interface WarehouseMasterService {
 
 	void deleteWarehouseLocation(Long warehouselocationid);
 
-	
-	
 	// Material Master
-	
+
 	List<MaterialVO> getAllMaterials(); // Method names should be in camelCase
 
-	List<MaterialVO> getAllMaterialsByCompanyAndClient(String company,String client);
+	List<MaterialVO> getAllMaterialsByCompanyAndClient(String company, String client);
 
 	Optional<MaterialVO> getMaterialById(Long materialid);
 
@@ -146,6 +148,40 @@ public interface WarehouseMasterService {
 
 	void deleteMaterial(Long materialid);
 
+	// Buyer Master
+
+	List<BuyerVO> getAllBuyer(String company, String client);
+
+	Optional<BuyerVO> getBuyerById(Long buyerid);
+
+	BuyerVO createBuyer(BuyerVO buyerVO);
+
+	Optional<BuyerVO> updateBuyer(BuyerVO buyerVO);
+
+	void deleteBuyer(Long buyerid);
+
+	// Supplier Master
+
+	List<SupplierVO> getAllSupplier(String company, String client);
+
+	Optional<SupplierVO> getSupplierById(Long supplierid);
+
+	SupplierVO createSupplier(SupplierVO supplierVO);
+
+	Optional<SupplierVO> updateSupplier(SupplierVO supplierVO);
+
+	void deleteSupplier(Long supplierid);
+
+	// LocationMapping
 	
+	List<LocationMappingVO> getAllLocationMapping();
+
+	Optional<LocationMappingVO> getLocationMappingById(Long locationmappingid);
+
+	LocationMappingVO createLocationMapping(LocationMappingVO locationMappingVO);
+
+	Optional<LocationMappingVO> updateLocationMapping(LocationMappingVO locationMappingVO);
+
+	void deleteLocationMapping(Long locationMappingid);
 
 }
