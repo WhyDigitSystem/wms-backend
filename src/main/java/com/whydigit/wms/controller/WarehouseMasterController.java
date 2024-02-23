@@ -30,6 +30,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
@@ -1217,7 +1218,7 @@ public class WarehouseMasterController extends BaseController {
 	// Buyer
 
 	@GetMapping("/buyer")
-	public ResponseEntity<ResponseDTO> getAllBuyer(@RequestParam String company,@RequestParam String client) {
+	public ResponseEntity<ResponseDTO> getAllBuyer(@RequestParam String company, @RequestParam String client) {
 		String methodName = "getAllBuyer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1225,7 +1226,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<BuyerVO> buyerVO = new ArrayList<>();
 		try {
-			buyerVO = warehouseMasterService.getAllBuyer(company,client);
+			buyerVO = warehouseMasterService.getAllBuyer(company, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1327,7 +1328,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<SupplierVO> supplierVO = new ArrayList<>();
 		try {
-			supplierVO = warehouseMasterService.getAllSupplier(company,client);
+			supplierVO = warehouseMasterService.getAllSupplier(company, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1414,6 +1415,112 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"SupplierName, SupplierShortName and Client already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// LocationMapping
+
+	@GetMapping("/locationmapping")
+	public ResponseEntity<ResponseDTO> getAllLocationMapping() {
+		String methodName = "getAllLocationMapping()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<LocationMappingVO> locationMappingVO = new ArrayList<>();
+		try {
+			locationMappingVO = warehouseMasterService.getAllLocationMapping();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationMapping information get successfully");
+			responseObjectsMap.put("locationMappingVO", locationMappingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/locationmapping/{locationmappingid}")
+	public ResponseEntity<ResponseDTO> getLocationMappingById(@PathVariable Long locationmappingid) {
+		String methodName = "getLocationMappingById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		LocationMappingVO locationMappingVO = null;
+		try {
+			locationMappingVO = warehouseMasterService.getLocationMappingById(locationmappingid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationMapping found by ID");
+			responseObjectsMap.put("LocationMapping", locationMappingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "LocationMapping not found for ID: " + locationmappingid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/Locationmapping")
+	public ResponseEntity<ResponseDTO> createLocationMapping(@RequestBody LocationMappingVO locationMappingVO) {
+		String methodName = "createLocationMapping()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LocationMappingVO createdLocationMappingVO = warehouseMasterService
+					.createLocationMapping(locationMappingVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationMapping created successfully");
+			responseObjectsMap.put("LocationMappingVO", createdLocationMappingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping & branch already Exist ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/locationmapping")
+	public ResponseEntity<ResponseDTO> updateLocationMapping(@RequestBody LocationMappingVO locationMappingVO) {
+		String methodName = "updateLocationMapping()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LocationMappingVO updatedLocationMappingVO = warehouseMasterService.updateLocationMapping(locationMappingVO)
+					.orElse(null);
+			if (updatedLocationMappingVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationMapping updated successfully");
+				responseObjectsMap.put("LocationMappingVO", updatedLocationMappingVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "LocationMapping not found for LocationMapping ID: "
+						+ locationMappingVO.getLocationmappingid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping & branch already Exist",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

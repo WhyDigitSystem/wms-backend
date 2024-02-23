@@ -16,27 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
-import com.whydigit.wms.entity.BranchVO;
-import com.whydigit.wms.entity.CarrierVO;
-import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.CityVO;
-import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
-import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
-import com.whydigit.wms.entity.GroupVO;
-import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
-import com.whydigit.wms.entity.UnitVO;
-import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.service.CommonMasterService;
 
 @RestController

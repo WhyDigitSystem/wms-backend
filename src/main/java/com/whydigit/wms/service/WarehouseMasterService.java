@@ -12,6 +12,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
@@ -170,4 +171,17 @@ public interface WarehouseMasterService {
 	Optional<SupplierVO> updateSupplier(SupplierVO supplierVO);
 
 	void deleteSupplier(Long supplierid);
+
+	// LocationMapping
+	
+	List<LocationMappingVO> getAllLocationMapping();
+
+	Optional<LocationMappingVO> getLocationMappingById(Long locationmappingid);
+
+	LocationMappingVO createLocationMapping(LocationMappingVO locationMappingVO);
+
+	Optional<LocationMappingVO> updateLocationMapping(LocationMappingVO locationMappingVO);
+
+	void deleteLocationMapping(Long locationMappingid);
+
 }

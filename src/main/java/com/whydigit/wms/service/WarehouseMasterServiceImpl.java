@@ -13,6 +13,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
@@ -24,6 +25,7 @@ import com.whydigit.wms.repo.BuyerRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.GroupRepo;
+import com.whydigit.wms.repo.LocationMappingRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.SupplierRepo;
@@ -70,6 +72,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	SupplierRepo supplierRepo;
+	
+	@Autowired
+	LocationMappingRepo locationMappingRepo;
 
 	// Group
 
@@ -282,7 +287,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<WarehouseVO> getWarehouseByCompany(String company) {
-		// TODO Auto-generated method stub
 		return warehouseRepo.findWarehouseByCompany(company);
 	}
 
@@ -319,7 +323,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<WarehouseLocationVO> getAllWarehouseLocationByCompany(String company) {
-		// TODO Auto-generated method stub
 		return warehouseLocationRepo.findAllByCompany(company);
 	}
 
@@ -387,19 +390,16 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<MaterialVO> getAllMaterials() {
-		// TODO Auto-generated method stub
 		return materialRepo.findAll();
 	}
 
 	@Override
 	public List<MaterialVO> getAllMaterialsByCompanyAndClient(String company, String client) {
-		// TODO Auto-generated method stub
 		return materialRepo.findAllByCompanyAndClient(company, client);
 	}
 
 	@Override
 	public Optional<MaterialVO> getMaterialById(Long materialid) {
-		// TODO Auto-generated method stub
 		return materialRepo.findById(materialid);
 	}
 
@@ -495,5 +495,36 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public void deleteSupplier(Long supplierid) {
 		supplierRepo.deleteById(supplierid);
+	}
+
+	//LocationMapping
+
+	@Override
+	public List<LocationMappingVO> getAllLocationMapping() {
+		return locationMappingRepo.findAll();
+	}
+
+	@Override
+	public Optional<LocationMappingVO> getLocationMappingById(Long locationmappingid) {
+		return locationMappingRepo.findById(locationmappingid);
+	}
+
+	@Override
+	public LocationMappingVO createLocationMapping(LocationMappingVO locationMappingVO) {
+		return locationMappingRepo.save(locationMappingVO);
+	}
+
+	@Override
+	public Optional<LocationMappingVO> updateLocationMapping(LocationMappingVO locationMappingVO) {
+		if (locationMappingRepo.existsById(locationMappingVO.getLocationmappingid())) {
+			return Optional.of(locationMappingRepo.save(locationMappingVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteLocationMapping(Long locationmappingid) {
+		locationMappingRepo.deleteById(locationmappingid);
 	}
 }
