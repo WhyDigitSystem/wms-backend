@@ -48,12 +48,13 @@ public class UserVO {
 	private String client;
 	private boolean loginStatus;
 	private String isActive;
-	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 	
+	@OneToMany(mappedBy = "userVO",cascade = CascadeType.ALL)
+	private List<UserLoginRolesVO>roleAccessVO;
 
 	@OneToMany(mappedBy = "userVO", cascade = CascadeType.ALL)
 	private List<UserLoginClientAccessVO> clientAccessVO;

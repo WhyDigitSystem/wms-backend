@@ -23,10 +23,12 @@ import com.whydigit.wms.dto.ResetPasswordFormDTO;
 import com.whydigit.wms.dto.SignUpFormDTO;
 import com.whydigit.wms.dto.UserLoginBranchAccessDTO;
 import com.whydigit.wms.dto.UserLoginClientAccessDTO;
+import com.whydigit.wms.dto.UserLoginRoleAccessDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.TokenVO;
 import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;
 import com.whydigit.wms.entity.UserLoginClientAccessVO;
+import com.whydigit.wms.entity.UserLoginRolesVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.TokenRepo;
@@ -209,11 +211,16 @@ public class AuthServiceImpl implements AuthService {
 //		return userVO;
 //	}
 	
-	private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO) {
+	private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		
 		UserVO userVO = new UserVO();
         userVO.setUserName(signUpFormDTO.getUserName());
-        userVO.setPassword(signUpFormDTO.getPassword());
+        try {
+        	  userVO.setPassword(encoder.encode(CryptoUtils.decrypt( signUpFormDTO.getPassword())));
+        }catch (Exception e) {
+        	LOGGER.error(e.getMessage());
+        	throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+		}
         userVO.setEmployeeName(signUpFormDTO.getEmployeeName());
         userVO.setNickName(signUpFormDTO.getNickName());
         userVO.setEmail(signUpFormDTO.getEmail());
@@ -221,15 +228,32 @@ public class AuthServiceImpl implements AuthService {
         userVO.setUserType(signUpFormDTO.getUserType());
         userVO.setIsActive(signUpFormDTO.getIsActive());
         
+        List<UserLoginRolesVO>rolesVO=new ArrayList<>();
+        if(signUpFormDTO.getRoleAccessDTO()!=null)
+        {
+        	for(UserLoginRoleAccessDTO accessDTO:signUpFormDTO.getRoleAccessDTO()) 
+        	{
+        		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
+        		loginRolesVO.setRole(accessDTO.getRole());
+        		loginRolesVO.setStartdate(accessDTO.getStartdate());
+        		loginRolesVO.setEnddate(accessDTO.getEnddate());
+        		rolesVO.add(loginRolesVO);
+        	}
+        }
+        
+        userVO.setRoleAccessVO(rolesVO);
+        
         List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
-        if (signUpFormDTO.getClientAccessDTOList() != null) {
-            for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList()) {
+        if (signUpFormDTO.getClientAccessDTOList() != null) 
+        {
+            for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList())
+            {
                 UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
                 clientAccessVO.setClient(clientAccessDTO.getClient());
                 clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
                 clientAccessVO.setUserVO(userVO);
                 clientAccessVOList.add(clientAccessVO);
-            }
+            }	
         }
         userVO.setClientAccessVO(clientAccessVOList);
         

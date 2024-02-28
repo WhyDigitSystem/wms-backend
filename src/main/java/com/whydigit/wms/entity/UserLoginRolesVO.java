@@ -1,5 +1,7 @@
 package com.whydigit.wms.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,23 +19,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ul_roles")
+@Table(name = "user_rolesaccess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLoginRolesVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long rolesid;
 	private String role;
-	private String startdate;
-	private String enddate;
-	private boolean active;
+	private LocalDate startdate;
+	private LocalDate enddate;
 	
 	@JsonBackReference
 	@ManyToOne
     @JoinColumn(name = "usersId")
-    private UserVO usereVO;
+    private UserVO userVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
