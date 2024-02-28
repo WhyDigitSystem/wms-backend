@@ -17,22 +17,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ul_clientaccess")
+@Table(name = "user_clientaccess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLoginClientAccessVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long clientaccessid;
 	private String client;
 	private String customer;
-	private boolean active;
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "userloginid")
-    private UserLoginVO userLoginVO;
+    @JoinColumn(name = "usersId")
+    private UserVO userVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

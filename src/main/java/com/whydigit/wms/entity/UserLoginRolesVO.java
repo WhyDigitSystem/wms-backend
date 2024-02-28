@@ -32,8 +32,8 @@ public class UserLoginRolesVO {
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "userloginid")
-    private UserLoginVO userLoginVO;
+    @JoinColumn(name = "usersId")
+    private UserVO usereVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

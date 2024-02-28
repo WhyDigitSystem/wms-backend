@@ -20,7 +20,6 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
-import com.whydigit.wms.entity.UserLoginVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.repo.BranchRepo;
@@ -36,7 +35,6 @@ import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
-import com.whydigit.wms.repo.UserLoginRepo;
 import com.whydigit.wms.repo.WarehouseLocationDetailsRepo;
 import com.whydigit.wms.repo.WarehouseLocationRepo;
 import com.whydigit.wms.repo.WarehouseRepo;
@@ -89,8 +87,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Autowired
 	EmployeeRepo employeeRepo;
 
-	@Autowired
-	UserLoginRepo userLoginRepo;
+	
 
 	@Autowired
 	ClientBranchRepo clientBranchRepo;
@@ -625,37 +622,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	// UserLogin
 
-	@Override
-	public List<UserLoginVO> getAllUserLogin() {
-		return userLoginRepo.findAll();
-	}
-
-	@Override
-	public Optional<UserLoginVO> getUserLoginById(Long userloginid) {
-		return userLoginRepo.findById(userloginid);
-	}
-
-	@Override
-	public UserLoginVO createUserLogin(UserLoginVO userLoginVO) {
-		userLoginVO.setDupchk(userLoginVO.getCompany() + userLoginVO.getUserid());
-		return userLoginRepo.save(userLoginVO);
-	}
-
-	@Override
-	public Optional<UserLoginVO> updateUserLogin(UserLoginVO userLoginVO) {
-		if (userLoginRepo.existsById(userLoginVO.getUserloginid())) {
-			userLoginVO.setUpdatedby(userLoginVO.getUserid());
-			userLoginVO.setDupchk(userLoginVO.getCompany() + userLoginVO.getUserid());
-			return Optional.of(userLoginRepo.save(userLoginVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteUserLogin(Long userloginid) {
-		userLoginRepo.deleteById(userloginid);
-	}
+	
 
 	@Override
 	public Set<Object[]> getAllNameAndEmployeeCodeByCompany(String company) {

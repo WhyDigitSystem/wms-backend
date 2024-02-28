@@ -37,7 +37,6 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
-import com.whydigit.wms.entity.UserLoginVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.service.WarehouseMasterService;
@@ -1732,108 +1731,7 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	// UserLogin
-
-	@GetMapping("/userlogin")
-	public ResponseEntity<ResponseDTO> getAllUserLogin() {
-		String methodName = "getAllUserLogin()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<UserLoginVO> userLoginVO = new ArrayList<>();
-		try {
-			userLoginVO = warehouseMasterService.getAllUserLogin();
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin information get successfully");
-			responseObjectsMap.put("UserLoginVO", userLoginVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "UserLogin information receive failed",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/userlogin/{userloginid}")
-	public ResponseEntity<ResponseDTO> getUserLoginById(@PathVariable Long userloginid) {
-		String methodName = "getUserLoginById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		UserLoginVO userLoginVO = null;
-		try {
-			userLoginVO = warehouseMasterService.getUserLoginById(userloginid).orElse(null);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin found by ID");
-			responseObjectsMap.put("UserLogin", userLoginVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "UserLogin not found for ID: " + userloginid;
-			responseDTO = createServiceResponseError(responseObjectsMap, "UserLogin not found", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PostMapping("/userlogin")
-	public ResponseEntity<ResponseDTO> createUserLogin(@RequestBody UserLoginVO userLoginVO) {
-		String methodName = "createUserLogin()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			UserLoginVO createdUserLoginVO = warehouseMasterService.createUserLogin(userLoginVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin created successfully");
-			responseObjectsMap.put("UserLoginVO", createdUserLoginVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, " UserLogin & EmployeeCode already Exist ",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PutMapping("/userlogin")
-	public ResponseEntity<ResponseDTO> updateUserLogin(@RequestBody UserLoginVO userLoginVO) {
-		String methodName = "updateUserLogin()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			UserLoginVO updatedUserLoginVO = warehouseMasterService.updateUserLogin(userLoginVO).orElse(null);
-			if (updatedUserLoginVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin updated successfully");
-				responseObjectsMap.put("UserLoginVO", updatedUserLoginVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "UserLogin not found for UserLogin ID: " + userLoginVO.getUserloginid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "UserLogin update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Company & UserLogin already Exist", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
+	
 //getAllNameAndEmployeeCodeByCompany
 
 	@GetMapping("/getAllNameAndEmployeeCodeByCompany")
