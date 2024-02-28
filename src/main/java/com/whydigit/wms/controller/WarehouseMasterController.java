@@ -26,15 +26,18 @@ import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.entity.UserLoginVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.service.WarehouseMasterService;
@@ -1525,5 +1528,432 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	// Carrier
 
+	@GetMapping("/carrier")
+	public ResponseEntity<ResponseDTO> getAllCarrier() {
+		String methodName = "getAllCarrier()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CarrierVO> carrierVO = new ArrayList<>();
+		try {
+			carrierVO = warehouseMasterService.getAllCarrier();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier information get successfully");
+			responseObjectsMap.put("carrierVO", carrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Carrier information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/carrier/{carrierid}")
+	public ResponseEntity<ResponseDTO> getCarrierById(@PathVariable Long carrierid) {
+		String methodName = "getCarrierById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		CarrierVO carrierVO = null;
+		try {
+			carrierVO = warehouseMasterService.getCarrierById(carrierid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier found by ID");
+			responseObjectsMap.put("Carrier", carrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Carrier not found for ID: " + carrierid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Carrier not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/carrier")
+	public ResponseEntity<ResponseDTO> createCarrier(@RequestBody CarrierVO carrierVO) {
+		String methodName = "createCarrier()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CarrierVO createdCarrierVO = warehouseMasterService.createCarrier(carrierVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier created successfully");
+			responseObjectsMap.put("CarrierVO", createdCarrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Carrier, Company & CarrierShortName already Exist ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/carrier")
+	public ResponseEntity<ResponseDTO> updateCarrier(@RequestBody CarrierVO carrierVO) {
+		String methodName = "updateCarrier()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			CarrierVO updatedCarrierVO = warehouseMasterService.updateCarrier(carrierVO).orElse(null);
+			if (updatedCarrierVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier updated successfully");
+				responseObjectsMap.put("CarrierVO", updatedCarrierVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Carrier not found for Carrier ID: " + carrierVO.getCarrierid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Carrier update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Carrier, Company & CarrearShortName already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	// Employee
+
+	@GetMapping("/employee")
+	public ResponseEntity<ResponseDTO> getAllEmployee() {
+		String methodName = "getAllEmployee()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<EmployeeVO> employeeVO = new ArrayList<>();
+		try {
+			employeeVO = warehouseMasterService.getAllEmployee();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee information get successfully");
+			responseObjectsMap.put("employeeVO", employeeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/employee/{employeeid}")
+	public ResponseEntity<ResponseDTO> getEmployeeById(@PathVariable Long employeeid) {
+		String methodName = "getEmployeeById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		EmployeeVO employeeVO = null;
+		try {
+			employeeVO = warehouseMasterService.getEmployeeById(employeeid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee found by ID");
+			responseObjectsMap.put("Employee", employeeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Employee not found for ID: " + employeeid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/employee")
+	public ResponseEntity<ResponseDTO> createEmployee(@RequestBody EmployeeVO employeeVO) {
+		String methodName = "createEmployee()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			EmployeeVO createdEmployeeVO = warehouseMasterService.createEmployee(employeeVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee created successfully");
+			responseObjectsMap.put("EmployeeVO", createdEmployeeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, " Company & EmployeeCode already Exist ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/employee")
+	public ResponseEntity<ResponseDTO> updateEmployee(@RequestBody EmployeeVO employeeVO) {
+		String methodName = "updateEmployee()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			EmployeeVO updatedEmployeeVO = warehouseMasterService.updateEmployee(employeeVO).orElse(null);
+			if (updatedEmployeeVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee updated successfully");
+				responseObjectsMap.put("EmployeeVO", updatedEmployeeVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Employee not found for Employee ID: " + employeeVO.getEmployeeid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Employee update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Company & EmployeeCode already Exist",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	// UserLogin
+
+	@GetMapping("/userlogin")
+	public ResponseEntity<ResponseDTO> getAllUserLogin() {
+		String methodName = "getAllUserLogin()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<UserLoginVO> userLoginVO = new ArrayList<>();
+		try {
+			userLoginVO = warehouseMasterService.getAllUserLogin();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin information get successfully");
+			responseObjectsMap.put("UserLoginVO", userLoginVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "UserLogin information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/userlogin/{userloginid}")
+	public ResponseEntity<ResponseDTO> getUserLoginById(@PathVariable Long userloginid) {
+		String methodName = "getUserLoginById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		UserLoginVO userLoginVO = null;
+		try {
+			userLoginVO = warehouseMasterService.getUserLoginById(userloginid).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin found by ID");
+			responseObjectsMap.put("UserLogin", userLoginVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "UserLogin not found for ID: " + userloginid;
+			responseDTO = createServiceResponseError(responseObjectsMap, "UserLogin not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PostMapping("/userlogin")
+	public ResponseEntity<ResponseDTO> createUserLogin(@RequestBody UserLoginVO userLoginVO) {
+		String methodName = "createUserLogin()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			UserLoginVO createdUserLoginVO = warehouseMasterService.createUserLogin(userLoginVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin created successfully");
+			responseObjectsMap.put("UserLoginVO", createdUserLoginVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, " UserLogin & EmployeeCode already Exist ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/userlogin")
+	public ResponseEntity<ResponseDTO> updateUserLogin(@RequestBody UserLoginVO userLoginVO) {
+		String methodName = "updateUserLogin()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			UserLoginVO updatedUserLoginVO = warehouseMasterService.updateUserLogin(userLoginVO).orElse(null);
+			if (updatedUserLoginVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserLogin updated successfully");
+				responseObjectsMap.put("UserLoginVO", updatedUserLoginVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "UserLogin not found for UserLogin ID: " + userLoginVO.getUserloginid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "UserLogin update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Company & UserLogin already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+//getAllNameAndEmployeeCodeByCompany
+
+	@GetMapping("/getAllNameAndEmployeeCodeByCompany")
+	public ResponseEntity<ResponseDTO> getAllNameAndEmployeeCodeByCompany(@RequestParam String company) {
+
+		String methodName = "getAllNameAndEmployeeCodeByCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> employeeVO = new HashSet<>();
+		try {
+			employeeVO = warehouseMasterService.getAllNameAndEmployeeCodeByCompany(company);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>> formattedEmployees = formatEmployees(employeeVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "employee Founded");
+			responseObjectsMap.put("Employee", formattedEmployees);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "employee not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "employee not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatEmployees(Set<Object[]> employeeVO) {
+		List<Map<String, String>> formattedEmployees = new ArrayList<>();
+		for (Object[] employee : employeeVO) {
+			Map<String, String> formattedEmployee = new HashMap<>();
+			formattedEmployee.put("EmployeeCode", employee[0].toString());
+			formattedEmployee.put("EmployeeName", employee[1].toString());
+			formattedEmployees.add(formattedEmployee);
+		}
+		return formattedEmployees;
+	}
+
+	// findAllCustomerAndClientByCompany
+
+	@GetMapping("/getAllCustomerAndClientByCompany")
+	public ResponseEntity<ResponseDTO> getAllCustomerAndClientByCompany(@RequestParam String company) {
+
+		String methodName = "getAllCustomerAndClientByCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> customerVO = new HashSet<>();
+		try {
+			customerVO = warehouseMasterService.getAllCustomerAndClientByCompany(company);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>> formattedCustomers = formatCustomers(customerVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "customer Founded");
+			responseObjectsMap.put("Customer", formattedCustomers);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "customer not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "customer not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatCustomers(Set<Object[]> customerVO) {
+		List<Map<String, String>> formattedCustomers = new ArrayList<>();
+		for (Object[] customer : customerVO) {
+			Map<String, String> formattedCustomer = new HashMap<>();
+			formattedCustomer.put("Customer", customer[0].toString());
+			formattedCustomer.put("Client", customer[1].toString());
+			formattedCustomers.add(formattedCustomer);
+		}
+		return formattedCustomers;
+	}
+
+	// getAllBranchCodeAndBranchByCompany
+
+	@GetMapping("/getAllBranchCodeAndBranchByCompany")
+	public ResponseEntity<ResponseDTO> getAllBranchCodeAndBranchByCompany(@RequestParam String client,
+			@RequestParam String company) {
+
+		String methodName = "getAllBranchCodeAndBranchByCompany()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> branchVO = new HashSet<>();
+		try {
+			branchVO = warehouseMasterService.getAllBranchCodeAndBranchByCompany(client, company);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>> formattedBranches = formatBranches(branchVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch Founded");
+			responseObjectsMap.put("Branch", formattedBranches);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "branch not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "branch not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatBranches(Set<Object[]> branchVO) {
+		List<Map<String, String>> formattedBranches = new ArrayList<>();
+		for (Object[] branch : branchVO) {
+			Map<String, String> formattedBranch = new HashMap<>();
+			formattedBranch.put("BranchCode", branch[0].toString());
+			formattedBranches.add(formattedBranch);
+		}
+		return formattedBranches;
+	}
 }
