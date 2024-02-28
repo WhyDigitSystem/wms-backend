@@ -12,12 +12,14 @@ import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.entity.UserLoginVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 
@@ -174,7 +176,7 @@ public interface WarehouseMasterService {
 	void deleteSupplier(Long supplierid);
 
 	// LocationMapping
-	
+
 	List<LocationMappingVO> getAllLocationMapping();
 
 	Optional<LocationMappingVO> getLocationMappingById(Long locationmappingid);
@@ -184,8 +186,8 @@ public interface WarehouseMasterService {
 	Optional<LocationMappingVO> updateLocationMapping(LocationMappingVO locationMappingVO);
 
 	void deleteLocationMapping(Long locationMappingid);
-	
-	//Carrier
+
+	// Carrier
 
 	List<CarrierVO> getAllCarrier();
 
@@ -196,4 +198,34 @@ public interface WarehouseMasterService {
 	Optional<CarrierVO> updateCarrier(CarrierVO carrierVO);
 
 	void deleteCarrier(Long carrierid);
+
+	// employee
+
+	List<EmployeeVO> getAllEmployee();
+
+	Optional<EmployeeVO> getEmployeeById(Long employeeid);
+
+	EmployeeVO createEmployee(EmployeeVO employeeVO);
+
+	Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO);
+
+	void deleteEmployee(Long employeeid);
+	
+	//UserLogin
+
+	List<UserLoginVO> getAllUserLogin();
+
+	Optional<UserLoginVO> getUserLoginById(Long userloginid);
+
+	UserLoginVO createUserLogin(UserLoginVO userLoginVO);
+
+	Optional<UserLoginVO> updateUserLogin(UserLoginVO userLoginVO);
+
+	void deleteUserLogin(Long userloginid);
+	
+	 Set<Object[]> getAllNameAndEmployeeCodeByCompany(String company);
+	
+	 Set<Object[]>  getAllCustomerAndClientByCompany(String company);
+	
+	 Set<Object[]> getAllBranchCodeAndBranchByCompany(String client,String company);
 }

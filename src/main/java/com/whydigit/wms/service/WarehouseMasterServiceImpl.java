@@ -3,7 +3,7 @@ package com.whydigit.wms.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.apache.catalina.valves.rewrite.InternalRewriteMap.UpperCase;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,25 +13,30 @@ import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.entity.UserLoginVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.repo.BranchRepo;
 import com.whydigit.wms.repo.BuyerRepo;
 import com.whydigit.wms.repo.CarrierRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
+import com.whydigit.wms.repo.ClientBranchRepo;
 import com.whydigit.wms.repo.CustomerRepo;
+import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.GroupRepo;
 import com.whydigit.wms.repo.LocationMappingRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
+import com.whydigit.wms.repo.UserLoginRepo;
 import com.whydigit.wms.repo.WarehouseLocationDetailsRepo;
 import com.whydigit.wms.repo.WarehouseLocationRepo;
 import com.whydigit.wms.repo.WarehouseRepo;
@@ -80,6 +85,16 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	CarrierRepo carrierRepo;
+
+	@Autowired
+	EmployeeRepo employeeRepo;
+
+	@Autowired
+	UserLoginRepo userLoginRepo;
+
+	@Autowired
+	ClientBranchRepo clientBranchRepo;
+
 	// Group
 
 	@Override
@@ -569,4 +584,92 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public void deleteCarrier(Long carrierid) {
 		carrierRepo.deleteById(carrierid);
 	}
+
+	// Employee
+
+	@Override
+	public List<EmployeeVO> getAllEmployee() {
+		return employeeRepo.findAll();
+	}
+
+	@Override
+	public Optional<EmployeeVO> getEmployeeById(Long employeeid) {
+		return employeeRepo.findById(employeeid);
+	}
+
+	@Override
+	public EmployeeVO createEmployee(EmployeeVO employeeVO) {
+		employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
+		employeeVO.setEmployeename(employeeVO.getEmployeename().toUpperCase());
+		employeeVO.setDupchk(employeeVO.getCompany() + employeeVO.getEmployeecode());
+		return employeeRepo.save(employeeVO);
+	}
+
+	@Override
+	public Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO) {
+		if (employeeRepo.existsById(employeeVO.getEmployeeid())) {
+			employeeVO.setUpdatedby(employeeVO.getUserid());
+			employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
+			employeeVO.setEmployeename(employeeVO.getEmployeename().toUpperCase());
+			employeeVO.setDupchk(employeeVO.getCompany() + employeeVO.getEmployeecode());
+			return Optional.of(employeeRepo.save(employeeVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteEmployee(Long employeeid) {
+		employeeRepo.deleteById(employeeid);
+	}
+
+	// UserLogin
+
+	@Override
+	public List<UserLoginVO> getAllUserLogin() {
+		return userLoginRepo.findAll();
+	}
+
+	@Override
+	public Optional<UserLoginVO> getUserLoginById(Long userloginid) {
+		return userLoginRepo.findById(userloginid);
+	}
+
+	@Override
+	public UserLoginVO createUserLogin(UserLoginVO userLoginVO) {
+		userLoginVO.setDupchk(userLoginVO.getCompany() + userLoginVO.getUserid());
+		return userLoginRepo.save(userLoginVO);
+	}
+
+	@Override
+	public Optional<UserLoginVO> updateUserLogin(UserLoginVO userLoginVO) {
+		if (userLoginRepo.existsById(userLoginVO.getUserloginid())) {
+			userLoginVO.setUpdatedby(userLoginVO.getUserid());
+			userLoginVO.setDupchk(userLoginVO.getCompany() + userLoginVO.getUserid());
+			return Optional.of(userLoginRepo.save(userLoginVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	@Override
+	public void deleteUserLogin(Long userloginid) {
+		userLoginRepo.deleteById(userloginid);
+	}
+
+	@Override
+	public Set<Object[]> getAllNameAndEmployeeCodeByCompany(String company) {
+		return employeeRepo.findAllNameAndEmployeeCodeByCompany(company);
+	}
+
+	@Override
+	public Set<Object[]> getAllCustomerAndClientByCompany(String company) {
+		return customerRepo.findAllCustomerAndClientByCompany(company);
+	}
+
+	@Override
+	public Set<Object[]> getAllBranchCodeAndBranchByCompany(String client,String company) {
+		return clientBranchRepo.findAllBranchCodeAndBranchByCompany(client,company);
+	}
+
 }
