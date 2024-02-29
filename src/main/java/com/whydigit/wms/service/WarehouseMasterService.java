@@ -19,7 +19,6 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
-import com.whydigit.wms.entity.UserLoginVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 
@@ -213,15 +212,7 @@ public interface WarehouseMasterService {
 	
 	//UserLogin
 
-	List<UserLoginVO> getAllUserLogin();
-
-	Optional<UserLoginVO> getUserLoginById(Long userloginid);
-
-	UserLoginVO createUserLogin(UserLoginVO userLoginVO);
-
-	Optional<UserLoginVO> updateUserLogin(UserLoginVO userLoginVO);
-
-	void deleteUserLogin(Long userloginid);
+	
 	
 	 Set<Object[]> getAllNameAndEmployeeCodeByCompany(String company);
 	

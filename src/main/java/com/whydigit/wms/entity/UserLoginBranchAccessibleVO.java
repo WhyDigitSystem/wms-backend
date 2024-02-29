@@ -17,22 +17,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ul_branchaccessible")
+@Table(name = "user_branchaccess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLoginBranchAccessibleVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long branchaccessibleid;
 	private String branch;
 	private String branchcode;
-	private boolean active;
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "userloginid")
-    private UserLoginVO userLoginVO;
+    @JoinColumn(name = "usersId")
+    private UserVO userVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

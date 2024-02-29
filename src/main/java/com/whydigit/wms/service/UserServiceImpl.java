@@ -39,11 +39,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	TokenRepo tokenRepo;
 
-	public void createUserAction(String userName, long userId, String actionType) {
+	public void createUserAction(String userName, long usersId, String actionType) {
 		try {
 			UserActionVO userActionVO = new UserActionVO();
 			userActionVO.setUserName(userName);
-			userActionVO.setUserId(userId);
+			userActionVO.setUsersId(usersId);
 			userActionVO.setActionType(actionType);
 			userActionRepo.save(userActionVO);
 		} catch (Exception e) {
@@ -52,13 +52,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO getUserById(Long userId) {
+	public UserVO getUserById(Long usersId) {
 		String methodName = "getUserById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (ObjectUtils.isEmpty(userId)) {
+		if (ObjectUtils.isEmpty(usersId)) {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_ID);
 		}
-		UserVO userVO = userRepo.getUserById(userId);
+		UserVO userVO = userRepo.getUserById(usersId);
 		if (ObjectUtils.isEmpty(userVO)) {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 		}
@@ -91,10 +91,10 @@ public class UserServiceImpl implements UserService {
 			if (ObjectUtils.isEmpty(userVO)) {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 			}
-			userVO.setActive(false);
+//			userVO.setActive(false);
 			userVO.setAccountRemovedDate(new Date());
 			userRepo.save(userVO);
-			createUserAction(userVO.getUserName(), userVO.getUserId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
+			createUserAction(userVO.getUserName(), userVO.getUsersId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
 		}

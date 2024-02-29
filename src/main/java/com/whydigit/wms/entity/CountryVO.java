@@ -33,7 +33,6 @@ public class CountryVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
 	private boolean cancel;
 	
 	@Embedded

@@ -76,7 +76,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
 		countryVO.setActive(true);
 		countryVO.setActive(true);
-		countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountryname() + countryVO.getCompany());
+		countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountryname());
 		return countryVORepo.save(countryVO);
 
 	}
@@ -87,7 +87,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 			countryVO.setUpdatedby(countryVO.getUserid());
 			countryVO.setCountryname(countryVO.getCountryname().toUpperCase());
 			countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
-			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountryname() + countryVO.getCompany());
+			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountryname());
 			return Optional.of(countryVORepo.save(countryVO));
 		} else {
 			return Optional.empty();

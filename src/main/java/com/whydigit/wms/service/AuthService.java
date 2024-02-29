@@ -1,8 +1,11 @@
 package com.whydigit.wms.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.ChangePasswordFormDTO;
+import com.whydigit.wms.dto.ClientAccessDTO;
 import com.whydigit.wms.dto.LoginFormDTO;
 import com.whydigit.wms.dto.RefreshTokenDTO;
 import com.whydigit.wms.dto.ResetPasswordFormDTO;
@@ -24,5 +27,7 @@ public interface AuthService {
 	public void resetPassword(ResetPasswordFormDTO resetPasswordRequest);
 
 	public RefreshTokenDTO getRefreshToken(String userName, String tokenId) throws ApplicationException;
+
+	
 
 }
