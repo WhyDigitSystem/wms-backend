@@ -87,8 +87,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Autowired
 	EmployeeRepo employeeRepo;
 
-	
-
 	@Autowired
 	ClientBranchRepo clientBranchRepo;
 
@@ -622,8 +620,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	// UserLogin
 
-	
-
 	@Override
 	public Set<Object[]> getAllNameAndEmployeeCodeByCompany(String company) {
 		return employeeRepo.findAllNameAndEmployeeCodeByCompany(company);
@@ -635,8 +631,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public Set<Object[]> getAllBranchCodeAndBranchByCompany(String client,String company) {
-		return clientBranchRepo.findAllBranchCodeAndBranchByCompany(client,company);
+	public Set<Object[]> getAllBranchCodeAndBranchByCompany(String client, String company) {
+		return clientBranchRepo.findAllBranchCodeAndBranchByCompany(client, company);
 	}
 
 }

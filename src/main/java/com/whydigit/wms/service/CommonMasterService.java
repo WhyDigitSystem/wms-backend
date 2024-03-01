@@ -65,8 +65,6 @@ public interface CommonMasterService {
 
 	void deleteRegion(Long regionid);
 
-	
-
 	// Company
 
 	List<CompanyVO> getAllCompany();
@@ -79,12 +77,11 @@ public interface CommonMasterService {
 
 	void deleteCompany(Long companyid);
 
-	
 	// Global Parameter
-	
+
 	GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam);
 
 	Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO);
-	
 
+	
 }
