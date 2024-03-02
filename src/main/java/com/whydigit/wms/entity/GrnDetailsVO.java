@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class GrnDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long grndetailsid;
+	private Long id;
 	private String qrcode;
 	private String lrnohawbno;
 	private String invoiceno;
@@ -39,7 +39,6 @@ public class GrnDetailsVO {
 	private String recqty;
 	private String shortqty;
 	private String damageqty;
-	private String grnqty;
 	private String substockqty;
 	private String batchpalletqty;
 	private String batchqty;
@@ -48,19 +47,15 @@ public class GrnDetailsVO {
 	private String noofpallet;
 	private String pkgs;
 	private String weight;
-	private String address;
-	private String billofenrtyno;
-	private String containerno;
-	private String fifoflag;
-	private String flag;
-	private String source;
-	private String screen;
-	private String stockdate;
-	private String vas;
-	private String vehicleno;
-	private String vehicledetails;
-	private String vesselno;
-
+	private String wraehouse;;
+	private String batchno;
+	private String batchdt;
+	private String locationtype;
+	private String partcode;
+	private String qcflag;
+	private String shipmentno;
+	private String sqty;
+	private String wm_itemid;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
@@ -70,11 +65,12 @@ public class GrnDetailsVO {
 	private String userid;
 	private String cancelremark;
 	private String active;
-
-	@ManyToOne
+	
 	@JsonBackReference
-	@JoinColumn(name = "grn_id")
-	GrnVO grnVO;
+	@ManyToOne
+	@JoinColumn(name = "grnid")
+	private GrnVO grnVO;
+	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

@@ -29,12 +29,18 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 	@Override
 	public GrnVO createGrn(GrnVO grnVO) {
+		grnVO.setScreencode("GRN");
+		grnVO.setDupchk(grnVO.getOrgId() + grnVO.getCustomer() + grnVO.getClient() + grnVO.getWarehouse()
+				+ grnVO.getBranchcode() + grnVO.getEntryno());
 		return grnRepo.save(grnVO);
 	}
 
 	@Override
 	public Optional<GrnVO> updateGrn(GrnVO grnVO) {
-		if (grnRepo.existsById(grnVO.getGrnid())) {
+		if (grnRepo.existsById(grnVO.getId())) {
+			grnVO.setScreencode("GRN");
+			grnVO.setDupchk(grnVO.getOrgId() + grnVO.getCustomer() + grnVO.getClient() + grnVO.getWarehouse()
+					+ grnVO.getBranchcode() + grnVO.getEntryno());
 			return Optional.of(grnRepo.save(grnVO));
 		} else {
 			return Optional.empty();

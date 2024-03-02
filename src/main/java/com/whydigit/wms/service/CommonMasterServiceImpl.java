@@ -5,20 +5,14 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.whydigit.wms.entity.BranchVO;
-import com.whydigit.wms.entity.CarrierVO;
-import com.whydigit.wms.entity.CellTypeVO;
+
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
-import com.whydigit.wms.entity.UnitVO;
-import com.whydigit.wms.entity.WarehouseVO;
-import com.whydigit.wms.repo.BranchRepo;
 import com.whydigit.wms.repo.CarrierRepo;
-import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.CompanyRepo;
 import com.whydigit.wms.repo.CountryRepository;
@@ -42,22 +36,20 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Autowired
 	RegionRepo regionRepo;
 
-	
-
 	@Autowired
 	CompanyRepo companyRepo;
-	
+
 	@Autowired
 	FinancialYearRepo financialYearRepo;
-	
+
 	@Autowired
 	GlobalParameterRepo globalParameterRepo;
-	
 
 	@Autowired
 	CarrierRepo carrierRepo;
 
-  // Country
+
+	// Country
 
 	@Override
 	public List<CountryVO> getAllCountry() {
@@ -225,8 +217,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		regionRepo.deleteById(regionid);
 	}
 
-  
-
 	// Company
 
 	@Override
@@ -249,7 +239,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CompanyVO> updateCompany(CompanyVO companyVO) {
 		if (companyRepo.existsById(companyVO.getCompanyid())) {
-			companyVO.setUpdatedby(companyVO .getUserid());
+			companyVO.setUpdatedby(companyVO.getUserid());
 			return Optional.of(companyRepo.save(companyVO));
 		} else {
 			return Optional.empty();

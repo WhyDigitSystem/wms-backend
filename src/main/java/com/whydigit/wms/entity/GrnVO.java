@@ -1,17 +1,17 @@
 package com.whydigit.wms.entity;
 
-import javax.persistence.Entity;
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Table;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import java.time.LocalDate;
-
-import javax.persistence.CascadeType;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -28,12 +28,12 @@ import lombok.NoArgsConstructor;
 public class GrnVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long grnid;
+	private Long id;
 	private String direct;
 	private String docid;
 	private LocalDate docdate;
 	private String entryno;
-	private String date;
+	private LocalDate entrydate;
 	private String tax;
 	private String gatepassid;
 	private LocalDate gatepassdate;
@@ -46,11 +46,12 @@ public class GrnVO {
 	private String noofpackage;
 	private String totalamount;
 	private String totalgrnqty;
+	private String screencode;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private String cancel;
 	private String userid;
 	private String cancelremark;
@@ -59,18 +60,23 @@ public class GrnVO {
 	private String branchname;
 	private String client;
 	private String customer;
-	private String batchno;
-	private String batchdt;
-	private String locationtype;
-	private String partcode;
-	private String qcflag;
-	private String shipmentno;
-	private String sqty;
-	private String wm_itemid;
+	private String address;
+	private String billofenrtyno;
+	private String contailnerno;
+	private String fifoflag;
+	private String warehouse;
+	private String flag;
+	private String source;
+	private String screen;
+	private String stockdate;
+	private String vas;
+	private String vehicleno;
+	private String vehicledetails;
+	private String vesselno;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
-	GrnDetailsVO grnDetailsVO;
+	List<GrnDetailsVO> grnDetailsVO;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

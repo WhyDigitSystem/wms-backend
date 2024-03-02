@@ -119,7 +119,7 @@ public class InwardTransactionController extends BaseController {
 				responseObjectsMap.put("GrnVO", updatedGrnVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Grn not found for Grn ID: " + grnVO.getGrnid();
+				errorMsg = "Grn not found for Grn ID: " + grnVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Grn update failed", errorMsg);
 			}
 		} catch (Exception e) {
