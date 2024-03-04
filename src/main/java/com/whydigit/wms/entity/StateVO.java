@@ -23,7 +23,7 @@ public class StateVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long stateid;
+	private Long id;
 	private String statecode;
 	private String statename;
     private String country;
@@ -34,7 +34,7 @@ public class StateVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

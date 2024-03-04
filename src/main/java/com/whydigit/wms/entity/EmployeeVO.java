@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long employeeid;
+	private Long id;
 	private String employeecode;
 	private String employeename;
 	private String gender;
@@ -36,7 +36,7 @@ public class EmployeeVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;

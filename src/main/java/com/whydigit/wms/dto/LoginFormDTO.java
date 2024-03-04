@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginFormDTO {
 
-	@NotBlank(message = "Email is Required")
+	@NotBlank
 	@Size(max = 30)
-	@Email
 	private String userName;
 
 	@NotBlank

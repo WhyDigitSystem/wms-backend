@@ -23,7 +23,7 @@ public class WarehouseLocationDetailsVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long warehouselocationdetailsid;
+	private Long id;
 	private String branchname;
 	private String branchcode;
 	private String warehouse;
@@ -36,7 +36,7 @@ public class WarehouseLocationDetailsVO {
 	private String bincategory;
 	private String status;
 	private String core;
-	private String company;
+	private Long orgId;
 
 	@ManyToOne
 	@JsonBackReference

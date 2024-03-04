@@ -27,10 +27,11 @@ import lombok.NoArgsConstructor;
 public class WarehouseVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long warehouseid;
-	private String warehousename;
+	private Long id;
+	private String warehouse;
 	private String branchcode;
-	private String company;
+	private String branch;
+	private Long orgId;
 	@Column(unique = true)
 	private String dupchk;
 	private boolean active;

@@ -25,9 +25,9 @@ public class ClientBranchVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long clientbranchid;
+	private Long id;
 	private String branchcode;
-	private String company;
+	private Long orgId;
 	private String address;
 
 	@ManyToOne

@@ -22,19 +22,20 @@ import lombok.NoArgsConstructor;
 public class LocationMappingVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long locationmappingid;
+	private Long id;
 	private String branch;
 	private String warehouse;
 	private String locationtype;
 	private String clienttype;
 	private String rowno;
+	private String customer;
 	private String levelno;
 	private String client;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;

@@ -23,12 +23,13 @@ public class GroupVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long groupid;
+	private Long id;
 	private String groupname;
 	private String userid;
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;
+	private Long orgId;
 	private String createdby;
 	private String updatedby;
 	private String company;

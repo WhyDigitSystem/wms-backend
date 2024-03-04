@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class CarrierDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long carrierdetailsid;
+	private Long id;
 	private String addresstype;
 	private String address;
 	private String city;

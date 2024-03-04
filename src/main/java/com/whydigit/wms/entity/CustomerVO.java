@@ -28,13 +28,12 @@ public class CustomerVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long customerid;
+	private Long id;
 	private String customer;
-	private String company;
+	private Long orgId;
 	private String customershortname;
 	private String panno;
 	private String contactperson;
-	private String landlinenumber;
 	private String mobilenumber;
 	private String gstregistration;
 	private String emailid;
@@ -45,9 +44,7 @@ public class CustomerVO {
 	private String gstno;
 	private String city;
 	private String state;
-	private String zipcode;
 	private String country;
-	private String fax;
 	private String cancelremarks;
 	private String createdby;
 	private String updatedby;

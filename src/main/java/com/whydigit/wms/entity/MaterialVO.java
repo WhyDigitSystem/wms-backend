@@ -22,12 +22,12 @@ import lombok.NoArgsConstructor;
 public class MaterialVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long materialid;
+	private Long id;
 	private String partno;
 	private String partdesc;
 	private String sku;
 	private String ssku;
-	private String company;
+	private Long orgId;
 	private String customer;
 	private String client;
 	private String warehouse;

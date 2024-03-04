@@ -2,6 +2,7 @@ package com.whydigit.wms.dto;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,14 +15,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDTO {
-	private Long userId;
-	private String firstName;
-	private String lastName;
-	private String email;
+	private Long usersId;
 	private String userName;
+	private String employeeName;
+	private String email;
+	private String userType;
+	private Long orgId;
+	private String customer;
+	private String warehouse;
+	private String branch;
+	private String client;
 	private boolean loginStatus;
-	private boolean isActive;
-	@Enumerated(EnumType.STRING)
+	private String isActive;
 	private Role role;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

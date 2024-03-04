@@ -23,11 +23,11 @@ public class CountryVO {
 	
 	@Id
 	@GeneratedValue(strategy =GenerationType.AUTO)
-	private Long countryid;
-	
+	private Long id;
 	private String countryname;
 	private String countrycode;
 	private boolean active;
+	private Long orgId;
 	private String userid;
 	@Column(unique = true)
 	private String dupchk;

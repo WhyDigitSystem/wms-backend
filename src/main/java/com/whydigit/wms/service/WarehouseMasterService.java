@@ -27,7 +27,7 @@ public interface WarehouseMasterService {
 
 	// Group
 
-	List<GroupVO> getAllGroup();
+	List<GroupVO> getAllGroup(Long orgid);
 
 	Optional<GroupVO> getGroupById(Long groupid);
 
@@ -39,7 +39,7 @@ public interface WarehouseMasterService {
 
 	// Unit
 
-	List<UnitVO> getAllUnit();
+	List<UnitVO> getAllUnit(Long orgid);
 
 	Optional<UnitVO> getUnitById(Long unitid);
 
@@ -51,7 +51,7 @@ public interface WarehouseMasterService {
 
 	// Location Type
 
-	List<LocationTypeVO> getAllLocationType();
+	List<LocationTypeVO> getAllLocationType(Long orgid);
 
 	Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid);
 
@@ -63,7 +63,7 @@ public interface WarehouseMasterService {
 
 	// CellType
 
-	List<CellTypeVO> getAllCellType();
+	List<CellTypeVO> getAllCellType(Long orgid);
 
 	Optional<CellTypeVO> getCellTypeById(Long celltypeid);
 
@@ -75,9 +75,7 @@ public interface WarehouseMasterService {
 
 	// Branch
 
-	List<BranchVO> getAllBranch();
-
-	List<BranchVO> getAllBranchByCompany(String company);
+	List<BranchVO> getAllBranch(Long orgid);
 
 	Optional<BranchVO> getBranchById(Long branchid);
 
@@ -89,7 +87,7 @@ public interface WarehouseMasterService {
 
 	// Customer & client
 
-	List<CustomerVO> getAllCustomer();
+	List<CustomerVO> getAllCustomer(Long orgid);
 
 	Optional<CustomerVO> getCustomerById(Long customerid);
 
@@ -101,11 +99,9 @@ public interface WarehouseMasterService {
 
 	// Warehouse
 
-	List<WarehouseVO> getAllWarehouse();
+	List<WarehouseVO> getAllWarehouse(Long orgid,String branch);
 
 	Optional<WarehouseVO> getWarehouseById(Long warehouseid);
-
-	List<WarehouseVO> getWarehouseByCompany(String company);
 
 	WarehouseVO createWarehouse(WarehouseVO warehouseVO);
 
@@ -114,18 +110,16 @@ public interface WarehouseMasterService {
 	void deleteWarehouse(Long warehouseid);
 
 	// Warehouse Location
-	List<WarehouseLocationVO> getAllWarehouseLocation(); // Method names should be in camelCase
+	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid,String warehouse,String branch); // Method names should be in camelCase
 
-	List<WarehouseLocationVO> getAllWarehouseLocationByCompany(String company);
+	Set<Object> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse);
 
-	Set<Object> getAllLocationTypebyCompanyAndWarehouse(String company, String warehouse);
+	Set<Object> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
 
-	Set<Object> getAllRownoByCompanyAndWarehouseAndLocationType(String company, String warehouse, String locationtype);
-
-	Set<Object> getAllLevelByCompanyAndWarehouseAndLocationTypeAndRowno(String company, String warehouse,
+	Set<Object> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
 			String locationtype, String rowno);
 
-	Set<Object[]> getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(String company, String warehouse,
+	Set<Object[]> getAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,
 			String locationtype, String rowno, String level);
 
 	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
@@ -138,9 +132,7 @@ public interface WarehouseMasterService {
 
 	// Material Master
 
-	List<MaterialVO> getAllMaterials(); // Method names should be in camelCase
-
-	List<MaterialVO> getAllMaterialsByCompanyAndClient(String company, String client);
+	List<MaterialVO> getAllMaterialsByOrgIdAndClientAndCbranch(Long orgid, String client,String cbranch);
 
 	Optional<MaterialVO> getMaterialById(Long materialid);
 
@@ -152,7 +144,7 @@ public interface WarehouseMasterService {
 
 	// Buyer Master
 
-	List<BuyerVO> getAllBuyer(String company, String client);
+	List<BuyerVO> getAllBuyer(Long orgid, String client,String cbranch);
 
 	Optional<BuyerVO> getBuyerById(Long buyerid);
 
@@ -164,7 +156,7 @@ public interface WarehouseMasterService {
 
 	// Supplier Master
 
-	List<SupplierVO> getAllSupplier(String company, String client);
+	List<SupplierVO> getAllSupplier(Long orgid, String client,String cbranch);
 
 	Optional<SupplierVO> getSupplierById(Long supplierid);
 
@@ -176,7 +168,7 @@ public interface WarehouseMasterService {
 
 	// LocationMapping
 
-	List<LocationMappingVO> getAllLocationMapping();
+	List<LocationMappingVO> getAllLocationMapping(Long orgid, String client,String branch,String warehouse);
 
 	Optional<LocationMappingVO> getLocationMappingById(Long locationmappingid);
 
@@ -188,7 +180,7 @@ public interface WarehouseMasterService {
 
 	// Carrier
 
-	List<CarrierVO> getAllCarrier();
+	List<CarrierVO> getAllCarrier(Long orgid, String client,String cbranch);
 
 	Optional<CarrierVO> getCarrierById(Long carrierid);
 
@@ -200,7 +192,7 @@ public interface WarehouseMasterService {
 
 	// employee
 
-	List<EmployeeVO> getAllEmployee();
+	List<EmployeeVO> getAllEmployeeByOrgId(Long orgid);
 
 	Optional<EmployeeVO> getEmployeeById(Long employeeid);
 
@@ -211,12 +203,14 @@ public interface WarehouseMasterService {
 	void deleteEmployee(Long employeeid);
 	
 	//UserLogin
+	
+	 Set<Object[]> getAllNameAndEmployeeCodeByOrgId(Long orgid);
+	
+	 Set<Object[]>  getAllCustomerAndClientByOrgId(Long orgid);
+	
+	 Set<Object[]> getAllBranchCodeAndBranchByOrgId(String client,Long orgid);
+	 
+	 
 
-	
-	
-	 Set<Object[]> getAllNameAndEmployeeCodeByCompany(String company);
-	
-	 Set<Object[]>  getAllCustomerAndClientByCompany(String company);
-	
-	 Set<Object[]> getAllBranchCodeAndBranchByCompany(String client,String company);
+
 }

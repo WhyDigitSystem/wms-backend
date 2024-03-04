@@ -23,8 +23,10 @@ public class RegionVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long regionid;
+	private Long id;
 	private String userid;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private String docid;
 	private String regioncode;
 	private String regionname;
 	private boolean active;
@@ -32,7 +34,7 @@ public class RegionVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
