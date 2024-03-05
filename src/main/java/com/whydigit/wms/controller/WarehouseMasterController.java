@@ -28,6 +28,7 @@ import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
+import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.EmployeeVO;
@@ -661,6 +662,61 @@ public class WarehouseMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, "Customer and Client already Exisit",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	// Client 
+	
+	@GetMapping("/client")
+	public ResponseEntity<ResponseDTO> getAllClientByCustomer(@RequestParam Long orgid,@RequestParam String customer) {
+		String methodName = "getAllClientByCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<ClientVO> clientVO = new ArrayList<>();
+		try {
+			clientVO = warehouseMasterService.getAllClientByCustomer(orgid, customer);
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Client information get successfully");
+			responseObjectsMap.put("clientVO", clientVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Client information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	//Client Branch
+	@GetMapping("/client/branch")
+	public ResponseEntity<ResponseDTO> getAllBranchByCustomer(@RequestParam Long orgid,@RequestParam String customer) {
+		String methodName = "getAllBranchByCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<ClientBranchVO> clientBranchVO = new ArrayList<>();
+		try {
+			clientBranchVO = warehouseMasterService.getAllClientBranchByCustomer(orgid, customer);
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Client Branch information get successfully");
+			responseObjectsMap.put("clientBranchVO", clientBranchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Client Branch information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

@@ -7,12 +7,15 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.CityVO;
+import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
+import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.entity.UserVO;
 
 @Service
 public interface CommonMasterService {
@@ -102,16 +105,18 @@ public interface CommonMasterService {
 	
 	// Global Parameter
 	
-	GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam);
-
-	Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO);
+	Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid,String username);
 	
-	// Get logged In User Company for Global Parameter
+	GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO);
 	
-	Set<Object[]> getGlobalParametersByUserName(String userName);
+		
+	// to getAcces Global Param Dteails
 	
-	Set<Object[]>getBranchbyUserName(Long userName);
-
+	Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid,String userName);
+	
+	List<CustomerVO>getAllAccessCustomerForLogin(Long orgid,String userName,String branchcode);
+	
+	List<ClientVO>getAllAccessClientForLogin(Long orgid,String userName,String branchcode,String customer);
 	
 	
 

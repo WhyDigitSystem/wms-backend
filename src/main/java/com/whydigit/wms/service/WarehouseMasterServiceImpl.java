@@ -11,6 +11,7 @@ import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
+import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.EmployeeVO;
@@ -27,6 +28,7 @@ import com.whydigit.wms.repo.BuyerRepo;
 import com.whydigit.wms.repo.CarrierRepo;
 import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.ClientBranchRepo;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.GroupRepo;
@@ -53,12 +55,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	CellTypeRepo cellTypeRepo;
+	
+	@Autowired
+	ClientBranchRepo clientBranchRepo;
 
 	@Autowired
 	BranchRepo branchRepo;
 
 	@Autowired
 	CustomerRepo customerRepo;
+	
+	@Autowired
+	ClientRepo clientRepo;
 
 	@Autowired
 	WarehouseRepo warehouseRepo;
@@ -86,12 +94,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	EmployeeRepo employeeRepo;
-
 	
-
-	@Autowired
-	ClientBranchRepo clientBranchRepo;
-
 	// Group
 
 	@Override
@@ -283,6 +286,21 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public void deleteCustomer(Long customerid) {
 		customerRepo.deleteById(customerid);
+	}
+	
+	
+	//Client
+	
+	@Override
+	public List<ClientVO> getAllClientByCustomer(Long orgid, String customer) {
+		
+		return clientRepo.findAllClientByCustomer(orgid,customer);
+	}
+	
+	@Override
+	public List<ClientBranchVO> getAllClientBranchByCustomer(Long orgid, String customer) {
+		
+		return clientBranchRepo.findAllBranchByCustomer(orgid,customer);
 	}
 
 	// Warehouse
@@ -619,6 +637,10 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getAllBranchCodeAndBranchByOrgId(String client,Long orgid) {
 		return clientBranchRepo.findAllBranchCodeAndBranchByOrgId(client,orgid);
 	}
+
+	
+
+	
 
 	
 

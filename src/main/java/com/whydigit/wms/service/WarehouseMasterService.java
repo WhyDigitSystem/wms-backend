@@ -10,6 +10,7 @@ import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
+import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.EmployeeVO;
@@ -96,6 +97,12 @@ public interface WarehouseMasterService {
 	Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
 
 	void deleteCustomer(Long customerid);
+	
+	//Client
+	
+	List<ClientVO> getAllClientByCustomer(Long orgid,String customer);
+	
+	List<ClientBranchVO> getAllClientBranchByCustomer(Long orgid,String customer);
 
 	// Warehouse
 

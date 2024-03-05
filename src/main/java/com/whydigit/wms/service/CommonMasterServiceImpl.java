@@ -7,27 +7,25 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.whydigit.wms.entity.BranchVO;
-import com.whydigit.wms.entity.CarrierVO;
-import com.whydigit.wms.entity.CellTypeVO;
+
 import com.whydigit.wms.entity.CityVO;
+import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
+import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
-import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.UserVO;
-import com.whydigit.wms.entity.WarehouseVO;
-import com.whydigit.wms.repo.BranchRepo;
 import com.whydigit.wms.repo.CarrierRepo;
-import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.CityRepo;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.CompanyRepo;
 import com.whydigit.wms.repo.CountryRepository;
 import com.whydigit.wms.repo.CurrencyRepo;
+import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.FinancialYearRepo;
 import com.whydigit.wms.repo.GlobalParameterRepo;
@@ -82,6 +80,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	
 	@Autowired
 	EmployeeRepo employeeRepo;
+	
+	@Autowired
+	CustomerRepo customerRepo;
+	
+	@Autowired
+	ClientRepo clientRepo;
 	
 
   // Country
@@ -317,19 +321,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyRepo.deleteById(companyid);
 	}
 
-	@Override
-	public GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam) {
-		return globalParameterRepo.save(globalParam);
-	}
-
-	@Override
-	public Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO) {
-		if (globalParameterRepo.existsById(globalParameterVO.getGlobalid())) {
-			return Optional.of(globalParameterRepo.save(globalParameterVO));
-		} else {
-			return Optional.empty();
-		}
-	}
+	
 
 	
 // Currency 
@@ -368,18 +360,62 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		
 	}
 
-	@Override
-	public Set<Object[]> getGlobalParametersByUserName(String userName) {
+	
+
 		
-		return userRepo.findGlobalParametersByUserName(userName);
+	// 
+	@Override
+	public Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid, String username) {
+		
+		return globalParameterRepo.findGlobalParamByOrgIdAndUserName(orgid,username);
+	}
+	
+	
+	// Change Global Parameter or update Parameters
+	@Override
+	public GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO) {
+		
+		GlobalParameterVO existingRecord = globalParameterRepo.findGlobalParam(globalParameterVO.getOrgId(), globalParameterVO.getUserid());
+	    
+	    if (existingRecord != null) {
+	        // If the record exists, it's a PUT operation
+	        existingRecord.setBranch(globalParameterVO.getBranch());
+	        existingRecord.setBranchcode(globalParameterVO.getBranchcode());
+	        existingRecord.setCustomer(globalParameterVO.getCustomer());
+	        existingRecord.setClient(globalParameterVO.getClient());
+	        existingRecord.setWarehouse(globalParameterVO.getWarehouse());
+	        existingRecord.setOrgId(globalParameterVO.getOrgId());
+	        
+	        return globalParameterRepo.save(existingRecord);
+	    } else {
+	        // If the record doesn't exist, it's a POST operation
+	        return globalParameterRepo.save(globalParameterVO);
+	    }
+		
+		
+	}
+	// get access Branch
+	@Override
+	public Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid,String userName) {
+		
+		return userBranchAccessRepo.findGlobalParametersBranchByUserName(orgid,userName);
 	}
 
 	@Override
-	public Set<Object[]> getBranchbyUserName(Long userName) {
+	public List<CustomerVO> getAllAccessCustomerForLogin(Long orgid, String userName, String branchcode) {
 		
-		return userBranchAccessRepo.findBranchByUserName(userName);
+		return customerRepo.findAllAccessCustomerByUserName(orgid,userName,branchcode);
 	}
 
+	@Override
+	public List<ClientVO> getAllAccessClientForLogin(Long orgid, String userName, String branchcode,String customer) {
+		// TODO Auto-generated method stub
+		return clientRepo.findAllAccessClientByUserName(orgid,userName,branchcode,customer);
+	}
+	
+	
+
+	
 	
 
 	

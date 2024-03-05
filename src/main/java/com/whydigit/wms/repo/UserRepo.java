@@ -1,5 +1,6 @@
 package com.whydigit.wms.repo;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,9 +18,12 @@ public interface UserRepo extends JpaRepository<UserVO, Long> {
 	@Query(value = "select u from UserVO u where u.usersId =?1")
 	UserVO getUserById(Long usersId);
 
-	UserVO findByUserNameAndUsersId(String userName, Long usersId);
+//	UserVO findByUserNameAndUsersId(String userName, Long usersId);
 
-	@Query(nativeQuery = true,value="select b.companyname from users a,company b where a.org_id=b.id and a.user_name=?1 ")
-	Set<Object[]> findGlobalParametersByUserName(String userName);
+
+
+	
+	
+
 
 }
