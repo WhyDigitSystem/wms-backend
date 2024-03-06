@@ -21,63 +21,50 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "grn")
+@Table(name = "gatepassin")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GrnVO {
+public class GatePassInVO {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String direct;
-	private String docid;
-	private LocalDate docdate = LocalDate.now();
+	private String transactiontype;
 	private String entryno;
-	private LocalDate entrydate;
-	private String tax;
-	private String gatepassid;
-	private LocalDate gatepassdate;
-	private String customerpo;
-	private String suppliershortname;
+	private String orgId;
+	private LocalDate docdate = LocalDate.now();
+	private LocalDate date;
 	private String supplier;
-	private String carrier;
-	private String lotno;
 	private String modeofshipment;
-	private String noofpackage;
-	private String totalamount;
-	private String totalgrnqty;
-	private String screencode;
+	private String carriertransport;
+	private String vehicletype;
+	private String vehicleno;
+	private String drivername;
+	private String contact;
+	private String goodsdescription;
+	private String securityname;
+	private String lotno;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private Long orgId;
-	private String cancel;
+	private String company;
+	private boolean cancel;
 	private String userid;
 	private String cancelremark;
-	private String active;
+	private boolean active;                                                                                           
 	private String branchcode;
-	private String branchname;
+	private String branch;
+	private String screencode;
 	private String client;
 	private String customer;
-	private String address;
-	private String billofenrtyno;
-	private String contailnerno;
-	private String fifoflag;
-	private String warehouse;
-	private String flag;
-	private String source;
-	private String screen;
-	private String stockdate;
-	private String vas;
-	private String vehicleno;
-	private String vehicledetails;
-	private String vesselno;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
-	List<GrnDetailsVO> grnDetailsVO;
+	@OneToMany(mappedBy = "gatePassInVO", cascade = CascadeType.ALL)
+	private List<GatePassLrNoDetailsVO> GatePassDetailsList;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.service.InwardTransactionService;
 
@@ -131,4 +134,104 @@ public class InwardTransactionController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	// GatePassIn
+
+		@GetMapping("/gatePassIn")
+		public ResponseEntity<ResponseDTO> getAllGatePassIn() {
+			String methodName = "getAllGatePassIn()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<GatePassInVO> gatePassInVO = new ArrayList<>();
+			try {
+				gatePassInVO = inwardTransactionService.getAllGatePassIn();
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn information get successfully");
+				responseObjectsMap.put("gatePassInVO", gatePassInVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn information receive failed", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@GetMapping("/gatePassIn/{id}")
+		public ResponseEntity<ResponseDTO> getGatePassInById(@PathVariable Long id) {
+			String methodName = "getGatePassInById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			GatePassInVO gatePassInVO = null;
+			try {
+				gatePassInVO = inwardTransactionService.getGatePassInById(id).orElse(null);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isEmpty(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn found by ID");
+				responseObjectsMap.put("GatePassIn", gatePassInVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "GatePassIn not found for ID: " + id;
+				responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn not found", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@PostMapping("/gatePassIn")
+		public ResponseEntity<ResponseDTO> createGatePassIn(@RequestBody GatePassInVO gatePassInVO) {
+			String methodName = "createGatePassIn()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				GatePassInVO createdGatePassInVO = inwardTransactionService.createGatePassIn(gatePassInVO);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn created successfully");
+				responseObjectsMap.put("GatePassInVO", createdGatePassInVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, " GatePassIn, client & customer already Exist ", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@PutMapping("/gatePassIn")
+		public ResponseEntity<ResponseDTO> updateGatePassIn(@RequestBody GatePassInVO gatePassInVO) {
+			String methodName = "updateGatePassIn()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			try {
+				GatePassInVO updatedGatePassInVO = inwardTransactionService.updateGatePassIn(gatePassInVO).orElse(null);
+				if (updatedGatePassInVO != null) {
+					responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn updated successfully");
+					responseObjectsMap.put("GatePassInVO", updatedGatePassInVO);
+					responseDTO = createServiceResponse(responseObjectsMap);
+				} else {
+					errorMsg = "GatePassIn not found for Grn ID: " + gatePassInVO.getId();
+					responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn update failed", errorMsg);
+				}
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"GatePassIn, client & customer already Exist ", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
 }
