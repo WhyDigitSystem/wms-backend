@@ -24,7 +24,6 @@ import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
-import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.service.CommonMasterService;
@@ -560,83 +559,8 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/company")
-	public ResponseEntity<ResponseDTO> updateCompany(@RequestBody CompanyVO companyVO) {
-		String methodName = "updateCompany()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			CompanyVO companyvo = commonMasterService.updateCompany(companyVO).orElse(null);
-			if (companyVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company Updated successfully");
-				responseObjectsMap.put("companyVO", companyvo);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Company not found for ID: " + companyvo.getCompanyid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Company Update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Company Name Update failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-	
 
 	
   
-	// Global Parameter
-	
-	@PostMapping("/globalparam")
-	public ResponseEntity<ResponseDTO> createGlobalParam(@RequestBody GlobalParameterVO globalParameterVO) {
-		String methodName = "createGlobalParam()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			GlobalParameterVO createdGlobalParameterVO = commonMasterService.createGlobaParameter(globalParameterVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter created successfully");
-			responseObjectsMap.put("GlobalParameter", createdGlobalParameterVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter creation failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PutMapping("/globalparam")
-	public ResponseEntity<ResponseDTO> updateGlobalParam(@RequestBody GlobalParameterVO globalParameterVO) {
-		String methodName = "updateGlobalParam()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			GlobalParameterVO updategloGlobalParameterVO = commonMasterService.updateGlobaParameter(globalParameterVO).orElse(null);
-			if (updategloGlobalParameterVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter Updated successfully");
-				responseObjectsMap.put("GlobalParameterVO", updategloGlobalParameterVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Global Parameter not found for ID: " + globalParameterVO.getGlobalid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Update failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
 	
 }
