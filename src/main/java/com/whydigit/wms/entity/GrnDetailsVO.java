@@ -2,7 +2,6 @@ package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class GrnDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,37 +41,24 @@ public class GrnDetailsVO {
 	private String shortqty;
 	private String damageqty;
 	private String substockqty;
-	private String batchpalletqty;
 	private String batchqty;
-	private String expdate;
 	private String pallteqty;
 	private String noofpallet;
 	private String pkgs;
 	private String weight;
-	private String wraehouse;;
+	private String wraehouse;
 	private String batchno;
-	private String batchdt;
-	private String locationtype;
-	private String partcode;
+	private LocalDate batchdt;
 	private String qcflag;
 	private String shipmentno;
 	private String sqty;
-	private String wm_itemid;
-	@Column(unique = true)
-	private String dupchk;
-	private String createdby;
-	private String updatedby;
-	private String company;
-	private String cancel;
-	private String userid;
 	private String cancelremark;
-	private String active;
-	
+
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "grnid")
 	private GrnVO grnVO;
-	
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
