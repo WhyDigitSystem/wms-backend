@@ -38,11 +38,13 @@ public class UserVO {
 	private String employeeName;
 	private String nickName;
 	private String email;
+	private Long orgId;
 	private String mobileNo;
 	private String userType;
 	private String customer;
 	private String warehouse;
 	private String branch;
+	private String branchcode;
 	private String client;
 	private boolean loginStatus;
 	private String isActive;

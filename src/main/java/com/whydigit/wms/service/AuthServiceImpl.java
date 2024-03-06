@@ -75,6 +75,67 @@ public class AuthServiceImpl implements AuthService {
 		userService.createUserAction(userVO.getUserName(), userVO.getUsersId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
+	
+private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
+		
+		UserVO userVO = new UserVO();
+        userVO.setUserName(signUpFormDTO.getUserName());
+        try {
+        	  userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt( signUpFormDTO.getPassword())));
+        }catch (Exception e) {
+        	LOGGER.error(e.getMessage());
+        	throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+		}
+        userVO.setEmployeeName(signUpFormDTO.getEmployeeName());
+        userVO.setNickName(signUpFormDTO.getNickName());
+        userVO.setEmail(signUpFormDTO.getEmail());
+        userVO.setMobileNo(signUpFormDTO.getMobileNo());
+        userVO.setUserType(signUpFormDTO.getUserType());
+        userVO.setIsActive(signUpFormDTO.getIsActive());
+        
+        List<UserLoginRolesVO>rolesVO=new ArrayList<>();
+        if(signUpFormDTO.getRoleAccessDTO()!=null)
+        {
+        	for(UserLoginRoleAccessDTO accessDTO:signUpFormDTO.getRoleAccessDTO()) 
+        	{
+        		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
+        		loginRolesVO.setRole(accessDTO.getRole());
+        		loginRolesVO.setStartdate(accessDTO.getStartdate());
+        		loginRolesVO.setEnddate(accessDTO.getEnddate());
+        		rolesVO.add(loginRolesVO);
+        	}
+        }
+        
+        userVO.setRoleAccessVO(rolesVO);
+        
+        List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
+        if (signUpFormDTO.getClientAccessDTOList() != null) 
+        {
+            for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList())
+            {
+                UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
+                clientAccessVO.setClient(clientAccessDTO.getClient());
+                clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
+                clientAccessVO.setUserVO(userVO);
+                clientAccessVOList.add(clientAccessVO);
+            }	
+        }
+        userVO.setClientAccessVO(clientAccessVOList);
+        
+        List<UserLoginBranchAccessibleVO>branchAccessList=new ArrayList<>();
+        if (signUpFormDTO.getBranchAccessDTOList() != null) {
+            for (UserLoginBranchAccessDTO userLoginBranchAccessDTO : signUpFormDTO.getBranchAccessDTOList()) {
+                UserLoginBranchAccessibleVO branchAccessibleVO = new UserLoginBranchAccessibleVO();
+                branchAccessibleVO.setBranch(userLoginBranchAccessDTO.getBranch());
+                branchAccessibleVO.setBranchcode(userLoginBranchAccessDTO.getBranchcode());
+                branchAccessibleVO.setUserVO(userVO);
+                branchAccessList.add(branchAccessibleVO);
+            }
+        }
+        userVO.setBranchAccessibleVO(branchAccessList);
+
+        return userVO;
+    }
 
 	@Override
 	public UserResponseDTO login(LoginFormDTO loginRequest) {
@@ -85,6 +146,7 @@ public class AuthServiceImpl implements AuthService {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_LOGIN_INFORMATION);
 		}
 		UserVO userVO = userRepo.findByUserName(loginRequest.getUserName());
+		
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			if (compareEncodedPasswordWithEncryptedPassword(loginRequest.getPassword(), userVO.getPassword())) {
 				updateUserLoginInformation(userVO);
@@ -103,6 +165,21 @@ public class AuthServiceImpl implements AuthService {
 		return userResponseDTO;
 	}
 	
+	/**
+	 * @param encryptedPassword -> Data from user;
+	 * @param encodedPassword   ->Data from DB;
+	 * @return
+	 */
+	private boolean compareEncodedPasswordWithEncryptedPassword(String encryptedPassword, String encodedPassword) {
+		boolean userStatus = false;
+		try {
+			userStatus = encoder.matches(CryptoUtils.getDecrypt(encryptedPassword), encodedPassword);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+		}
+		return userStatus;
+	}
 
 	@Override
 	public void logout(String userName) {
@@ -211,86 +288,13 @@ public class AuthServiceImpl implements AuthService {
 //		return userVO;
 //	}
 	
-	private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
-		
-		UserVO userVO = new UserVO();
-        userVO.setUserName(signUpFormDTO.getUserName());
-        try {
-        	  userVO.setPassword(encoder.encode(CryptoUtils.decrypt( signUpFormDTO.getPassword())));
-        }catch (Exception e) {
-        	LOGGER.error(e.getMessage());
-        	throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
-		}
-        userVO.setEmployeeName(signUpFormDTO.getEmployeeName());
-        userVO.setNickName(signUpFormDTO.getNickName());
-        userVO.setEmail(signUpFormDTO.getEmail());
-        userVO.setMobileNo(signUpFormDTO.getMobileNo());
-        userVO.setUserType(signUpFormDTO.getUserType());
-        userVO.setIsActive(signUpFormDTO.getIsActive());
-        
-        List<UserLoginRolesVO>rolesVO=new ArrayList<>();
-        if(signUpFormDTO.getRoleAccessDTO()!=null)
-        {
-        	for(UserLoginRoleAccessDTO accessDTO:signUpFormDTO.getRoleAccessDTO()) 
-        	{
-        		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
-        		loginRolesVO.setRole(accessDTO.getRole());
-        		loginRolesVO.setStartdate(accessDTO.getStartdate());
-        		loginRolesVO.setEnddate(accessDTO.getEnddate());
-        		rolesVO.add(loginRolesVO);
-        	}
-        }
-        
-        userVO.setRoleAccessVO(rolesVO);
-        
-        List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
-        if (signUpFormDTO.getClientAccessDTOList() != null) 
-        {
-            for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList())
-            {
-                UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
-                clientAccessVO.setClient(clientAccessDTO.getClient());
-                clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
-                clientAccessVO.setUserVO(userVO);
-                clientAccessVOList.add(clientAccessVO);
-            }	
-        }
-        userVO.setClientAccessVO(clientAccessVOList);
-        
-        List<UserLoginBranchAccessibleVO>branchAccessList=new ArrayList<>();
-        if (signUpFormDTO.getBranchAccessDTOList() != null) {
-            for (UserLoginBranchAccessDTO userLoginBranchAccessDTO : signUpFormDTO.getBranchAccessDTOList()) {
-                UserLoginBranchAccessibleVO branchAccessibleVO = new UserLoginBranchAccessibleVO();
-                branchAccessibleVO.setBranch(userLoginBranchAccessDTO.getBranch());
-                branchAccessibleVO.setBranchcode(userLoginBranchAccessDTO.getBranchcode());
-                branchAccessibleVO.setUserVO(userVO);
-                branchAccessList.add(branchAccessibleVO);
-            }
-        }
-        userVO.setBranchAccessibleVO(branchAccessList);
-
-        return userVO;
-    }
+	
 	
 
 	
 	
 
-	/**
-	 * @param encryptedPassword -> Data from user;
-	 * @param encodedPassword   ->Data from DB;
-	 * @return
-	 */
-	private boolean compareEncodedPasswordWithEncryptedPassword(String encryptedPassword, String encodedPassword) {
-		boolean userStatus = false;
-		try {
-			userStatus = encoder.matches(CryptoUtils.getDecrypt(encryptedPassword), encodedPassword);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
-		}
-		return userStatus;
-	}
+	
 
 	/**
 	 * @param userVO
@@ -321,11 +325,18 @@ public class AuthServiceImpl implements AuthService {
 
 	public static UserResponseDTO mapUserVOToDTO(UserVO userVO) {
 		UserResponseDTO userDTO = new UserResponseDTO();
-		userDTO.setUserId(userVO.getUsersId());
+		userDTO.setUsersId(userVO.getUsersId());
+		userDTO.setBranch(userVO.getBranch());
+		userDTO.setEmployeeName(userVO.getEmployeeName());
+		userDTO.setCustomer(userVO.getCustomer());
+		userDTO.setClient(userVO.getClient());
+		userDTO.setOrgId(userVO.getOrgId());
+		userDTO.setWarehouse(userVO.getWarehouse());
+		userDTO.setUserType(userVO.getUserType());
 		userDTO.setEmail(userVO.getEmail());
 		userDTO.setUserName(userVO.getUserName());
 		userDTO.setLoginStatus(userVO.isLoginStatus());
-//		userDTO.setActive(userVO.isActive());
+		userDTO.setIsActive(userVO.getIsActive());
 		userDTO.setRole(userVO.getRole());
 		userDTO.setCommonDate(userVO.getCommonDate());
 		userDTO.setAccountRemovedDate(userVO.getAccountRemovedDate());

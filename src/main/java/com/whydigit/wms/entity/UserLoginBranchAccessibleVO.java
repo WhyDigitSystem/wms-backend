@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class UserLoginBranchAccessibleVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long branchaccessibleid;
+	private long id;
 	private String branch;
 	private String branchcode;
 	

@@ -11,16 +11,20 @@ import com.whydigit.wms.entity.WarehouseLocationVO;
 public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO, Long> {
 
 	
-//	@Query(nativeQuery = true,value="select * from WarehouseLocationVO where company=?1 ")
-	List<WarehouseLocationVO> findAllByCompany(String company);
+	@Query(nativeQuery = true,value="select a from WarehouseLocationVO where orgId=?1 and a.warehouse=?2 and a.branch=?3")
+	List<WarehouseLocationVO> findAll(Long orgid, String warehouse, String branch);
 
-	@Query("select e.locationtype from WarehouseLocationVO e where e.company=?1 and e.warehouse=?2")
-	Set<Object> findAllLocationTypeByCompanyAndWarehouse(String company, String warehouse);
+	@Query("select e.locationtype from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2")
+	Set<Object> findAllLocationTypeByOrgIdAndWarehouse(Long orgid, String warehouse);
 
-	@Query("select e.rowno from WarehouseLocationVO e where e.company=?1 and e.warehouse=?2 and e.locationtype=?3")
-	Set<Object> findAllRownoByCompanyAndWarehouseAndLocationType(String company, String warehouse, String locationtype);
+	@Query("select e.rowno from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.locationtype=?3")
+	Set<Object> findAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
 	
-	@Query("select e.level from WarehouseLocationVO e where e.company=?1 and e.warehouse=?2 and e.locationtype=?3 and e.rowno=?4")
-	Set<Object> findAllLevelByCompanyAndWarehouseAndLocationTypeAndRowno(String company, String warehouse,String locationtype, String rowno);
+	@Query("select e.level from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.locationtype=?3 and e.rowno=?4")
+	Set<Object> findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,String locationtype, String rowno);
+
+	
+
+	
 
 }

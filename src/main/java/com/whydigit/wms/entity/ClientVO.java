@@ -26,8 +26,8 @@ public class ClientVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long clientid;
-	private String company;
+	private Long id;
+	private Long orgId;
 	private String client; // caps
 	private String clientcode; // caps
 	private String clienttype;

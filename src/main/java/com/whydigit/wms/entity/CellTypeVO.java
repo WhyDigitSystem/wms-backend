@@ -23,7 +23,7 @@ public class CellTypeVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long celltypeid;
+	private Long id;
 	private String celltype;
 	private String userid;
 	private boolean active;
@@ -31,7 +31,7 @@ public class CellTypeVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
 
 	@Embedded

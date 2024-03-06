@@ -28,8 +28,8 @@ public class WarehouseLocationVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long warehouselocationid;
-	private String branchname;
+	private Long id;
+	private String branch;
 	private String branchcode;
 	private String warehouse;
 	private String locationtype;
@@ -42,7 +42,7 @@ public class WarehouseLocationVO {
 	private String createdby;
 	private String updatedby;
 	private String userid;
-	private String company;
+	private Long orgId;
 	
 	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference

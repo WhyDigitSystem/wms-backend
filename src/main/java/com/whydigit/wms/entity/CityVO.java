@@ -23,7 +23,7 @@ public class CityVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long cityid;
+	private Long id;
 	private String citycode;
 	private String country;
     private String cityname;
@@ -34,7 +34,7 @@ public class CityVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

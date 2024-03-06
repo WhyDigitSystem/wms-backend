@@ -28,6 +28,7 @@ import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.CellTypeVO;
+import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.EmployeeVO;
@@ -52,7 +53,7 @@ public class WarehouseMasterController extends BaseController {
 	// Group
 
 	@GetMapping("/group")
-	public ResponseEntity<ResponseDTO> getAllGroup() {
+	public ResponseEntity<ResponseDTO> getAllGroup(@RequestParam Long orgid) {
 		String methodName = "getAllGroup()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -60,7 +61,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<GroupVO> groupVO = new ArrayList<>();
 		try {
-			groupVO = warehouseMasterService.getAllGroup();
+			groupVO = warehouseMasterService.getAllGroup(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -139,7 +140,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("groupVO", groupvo);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Group not found for ID: " + groupvo.getGroupid();
+				errorMsg = "Group not found for ID: " + groupvo.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap,
 						"Group Update failed, Group Name already Exist", errorMsg);
 			}
@@ -156,7 +157,7 @@ public class WarehouseMasterController extends BaseController {
 	// Unit
 
 	@GetMapping("/unit")
-	public ResponseEntity<ResponseDTO> getAllUnit() {
+	public ResponseEntity<ResponseDTO> getAllUnit(@RequestParam Long orgid) {
 		String methodName = "getAllUnit()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -164,7 +165,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<UnitVO> unitVO = new ArrayList<>();
 		try {
-			unitVO = warehouseMasterService.getAllUnit();
+			unitVO = warehouseMasterService.getAllUnit(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -243,7 +244,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("unitVO", unitvo);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Unit not found for ID: " + unitvo.getUnitid();
+				errorMsg = "Unit not found for ID: " + unitvo.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap,
 						"Unit Update failed, Unit Name already Exist", errorMsg);
 			}
@@ -259,7 +260,7 @@ public class WarehouseMasterController extends BaseController {
 	// LocationType
 
 	@GetMapping("/locationType")
-	public ResponseEntity<ResponseDTO> getAllLocationType() {
+	public ResponseEntity<ResponseDTO> getAllLocationType(@RequestParam Long orgid) {
 		String methodName = "getAllLocationType()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -267,7 +268,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<LocationTypeVO> locationTypeVO = new ArrayList<>();
 		try {
-			locationTypeVO = warehouseMasterService.getAllLocationType();
+			locationTypeVO = warehouseMasterService.getAllLocationType(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -362,7 +363,7 @@ public class WarehouseMasterController extends BaseController {
 	// CellType
 
 	@GetMapping("/cellType")
-	public ResponseEntity<ResponseDTO> getAllCellType() {
+	public ResponseEntity<ResponseDTO> getAllCellType(@RequestParam Long orgid) {
 		String methodName = "getAllCellType()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -370,7 +371,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<CellTypeVO> cellTypeVO = new ArrayList<>();
 		try {
-			cellTypeVO = warehouseMasterService.getAllCellType();
+			cellTypeVO = warehouseMasterService.getAllCellType(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -449,7 +450,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("cellTypeVO", cellTypevo);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Celltype not found for ID: " + cellTypevo.getCelltypeid();
+				errorMsg = "Celltype not found for ID: " + cellTypevo.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -463,7 +464,7 @@ public class WarehouseMasterController extends BaseController {
 
 	// Branch
 	@GetMapping("/branch")
-	public ResponseEntity<ResponseDTO> getAllBranch() {
+	public ResponseEntity<ResponseDTO> getAllBranch(@RequestParam Long orgid) {
 		String methodName = "getAllBranch()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -471,7 +472,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<BranchVO> branchVO = new ArrayList<>();
 		try {
-			branchVO = warehouseMasterService.getAllBranch();
+			branchVO = warehouseMasterService.getAllBranch(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -513,32 +514,7 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getAllBranchByCompany/{company}")
-	public ResponseEntity<ResponseDTO> getAllBranchByCompany(@PathVariable String company) {
-		String methodName = "getAllBranchByCompany()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<BranchVO> branchVO = null;
-		try {
-			branchVO = warehouseMasterService.getAllBranchByCompany(company);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "getAllBranchByCompany found by ID");
-			responseObjectsMap.put("getAllBranchByCompany", branchVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "getAllBranchByCompany not found for ID: " + company;
-			responseDTO = createServiceResponseError(responseObjectsMap, "getAllBranchByCompany not found", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
+	
 	@PostMapping("/branch")
 	public ResponseEntity<ResponseDTO> createBranch(@RequestBody BranchVO branchVO) {
 		String methodName = "createBranch()";
@@ -575,7 +551,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("branchVO", updatedBranchVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Branch not found for BranchID: " + branchVO.getBranchid();
+				errorMsg = "Branch not found for BranchID: " + branchVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Branch update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -591,7 +567,7 @@ public class WarehouseMasterController extends BaseController {
 	// Customer
 
 	@GetMapping("/customer")
-	public ResponseEntity<ResponseDTO> getAllCustomer() {
+	public ResponseEntity<ResponseDTO> getAllCustomer(@RequestParam Long orgid) {
 		String methodName = "getAllCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -599,7 +575,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<CustomerVO> customerVO = new ArrayList<>();
 		try {
-			customerVO = warehouseMasterService.getAllCustomer();
+			customerVO = warehouseMasterService.getAllCustomer(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -679,7 +655,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("customerVO", updatedCustomerVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Customer not found for CustomerID: " + customerVO.getCustomerid();
+				errorMsg = "Customer not found for CustomerID: " + customerVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Customer update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -691,11 +667,66 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	// Client 
+	
+	@GetMapping("/client")
+	public ResponseEntity<ResponseDTO> getAllClientByCustomer(@RequestParam Long orgid,@RequestParam String customer) {
+		String methodName = "getAllClientByCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<ClientVO> clientVO = new ArrayList<>();
+		try {
+			clientVO = warehouseMasterService.getAllClientByCustomer(orgid, customer);
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Client information get successfully");
+			responseObjectsMap.put("clientVO", clientVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Client information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	//Client Branch
+	@GetMapping("/client/branch")
+	public ResponseEntity<ResponseDTO> getAllBranchByCustomer(@RequestParam Long orgid,@RequestParam String customer) {
+		String methodName = "getAllBranchByCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<ClientBranchVO> clientBranchVO = new ArrayList<>();
+		try {
+			clientBranchVO = warehouseMasterService.getAllClientBranchByCustomer(orgid, customer);
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Client Branch information get successfully");
+			responseObjectsMap.put("clientBranchVO", clientBranchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Client Branch information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	// Warehouse
 
 	@GetMapping("/warehouse")
-	public ResponseEntity<ResponseDTO> getAllWarehouse() {
+	public ResponseEntity<ResponseDTO> getAllWarehouse(@RequestParam Long orgid,@RequestParam String branch) {
 		String methodName = "getAllWarehouse()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -703,7 +734,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<WarehouseVO> warehouseVO = new ArrayList<>();
 		try {
-			warehouseVO = warehouseMasterService.getAllWarehouse();
+			warehouseVO = warehouseMasterService.getAllWarehouse(orgid,branch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -746,32 +777,6 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/warehouse/company")
-	public ResponseEntity<ResponseDTO> getAllWarehouseByCompany(@RequestParam String company) {
-		String methodName = "getAllWarehouseByCompany()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<WarehouseVO> warehouseVO = null;
-		try {
-			warehouseVO = warehouseMasterService.getWarehouseByCompany(company);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse found");
-			responseObjectsMap.put("Warehouse", warehouseVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "Warehouse not found: ";
-			responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse not found", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
 	@PostMapping("/warehouse")
 	public ResponseEntity<ResponseDTO> createWarehouse(@RequestBody WarehouseVO warehouseVO) {
 		String methodName = "createWarehouse()";
@@ -808,7 +813,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("warehouseVO", updatedWarehouseVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Warehouse not found for Warehouse ID: " + warehouseVO.getWarehouseid();
+				errorMsg = "Warehouse not found for Warehouse ID: " + warehouseVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -824,7 +829,7 @@ public class WarehouseMasterController extends BaseController {
 	// Warehouse Location
 
 	@GetMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> getAllWarehouseLocation() {
+	public ResponseEntity<ResponseDTO> getAllWarehouseLocation(@RequestParam Long orgid,@RequestParam String warehouse,@RequestParam String branch) {
 		String methodName = "getAllWarehouseLocation()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -832,7 +837,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<WarehouseLocationVO> warehouseLocationVO = new ArrayList<>();
 		try {
-			warehouseLocationVO = warehouseMasterService.getAllWarehouseLocation();
+			warehouseLocationVO = warehouseMasterService.getAllWarehouseLocation(orgid,warehouse,branch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -849,36 +854,9 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/warehouselocation/company")
-	public ResponseEntity<ResponseDTO> getAllWarehouseLocationByCompany(@RequestParam String Company) {
-
-		String methodName = "getAllWarehouseLocationByCompany()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<WarehouseLocationVO> warehouseLocationVO = new ArrayList<>();
-		try {
-			warehouseLocationVO = warehouseMasterService.getAllWarehouseLocationByCompany(Company);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse Location found by ID");
-			responseObjectsMap.put("warehouseLocationVO", warehouseLocationVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "WarehouseLocation not found for Company: " + Company;
-			responseDTO = createServiceResponseError(responseObjectsMap, "WarehouseLocation not found", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
 	// Get location Type by Company and Warehouse
 	@GetMapping("/locationtype/warehouse")
-	public ResponseEntity<ResponseDTO> getAllLocationTypeByCompanyAndWarehouse(@RequestParam String company,
+	public ResponseEntity<ResponseDTO> getAllLocationTypeByCompanyAndWarehouse(@RequestParam Long orgid,
 			@RequestParam String warehouse) {
 
 		String methodName = "getAllLocationTypeByCompanyAndWarehouse()";
@@ -888,7 +866,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object> Locationtype = new HashSet<Object>();
 		try {
-			Locationtype = warehouseMasterService.getAllLocationTypebyCompanyAndWarehouse(company, warehouse);
+			Locationtype = warehouseMasterService.getAllLocationTypebyOrgIdAndWarehouse(orgid, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -907,7 +885,7 @@ public class WarehouseMasterController extends BaseController {
 
 	// Get Rowno based on Company warehouse and Location type
 	@GetMapping("/rowno/locationtype/warehouse")
-	public ResponseEntity<ResponseDTO> getAllRownoByCompanyAndWarehouseAndLocationType(@RequestParam String company,
+	public ResponseEntity<ResponseDTO> getAllRownoByCompanyAndWarehouseAndLocationType(@RequestParam Long orgid,
 			@RequestParam String warehouse, @RequestParam String locationtype) {
 
 		String methodName = "getAllRownoByCompanyAndWarehouseAndLocationType()";
@@ -917,7 +895,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object> Rowno = new HashSet<Object>();
 		try {
-			Rowno = warehouseMasterService.getAllRownoByCompanyAndWarehouseAndLocationType(company, warehouse,
+			Rowno = warehouseMasterService.getAllRownoByOrgIdAndWarehouseAndLocationType(orgid, warehouse,
 					locationtype);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -938,7 +916,7 @@ public class WarehouseMasterController extends BaseController {
 	// Get Level No based on Company warehouse,Location type and Rowno
 	@GetMapping("/levelno/rowno/locationtype/warehouse")
 	public ResponseEntity<ResponseDTO> getAllLevelnoByCompanyAndWarehouseAndLocationTypeAndRowno(
-			@RequestParam String company, @RequestParam String warehouse, @RequestParam String locationtype,
+			@RequestParam Long orgid, @RequestParam String warehouse, @RequestParam String locationtype,
 			@RequestParam String rowno) {
 		String methodName = "getAllLevelnoByCompanyAndWarehouseAndLocationTypeAndRowno()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -947,7 +925,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object> Levelno = new HashSet<Object>();
 		try {
-			Levelno = warehouseMasterService.getAllLevelByCompanyAndWarehouseAndLocationTypeAndRowno(company, warehouse,
+			Levelno = warehouseMasterService.getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(orgid, warehouse,
 					locationtype, rowno);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -968,7 +946,7 @@ public class WarehouseMasterController extends BaseController {
 	// Get Bins based on Company warehouse,Location type, Rowno and level
 	@GetMapping("/bins/levelno/rowno/locationtype/warehouse")
 	public ResponseEntity<ResponseDTO> getAllbinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(
-			@RequestParam String company, @RequestParam String warehouse, @RequestParam String locationtype,
+			@RequestParam Long orgid, @RequestParam String warehouse, @RequestParam String locationtype,
 			@RequestParam String rowno, @RequestParam String level) {
 		String methodName = "getAllbinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -977,7 +955,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> bins = new HashSet<>();
 		try {
-			bins = warehouseMasterService.getAllBinsByCompanyAndWarehouseAndLocationTypeAndRownoAndLevel(company,
+			bins = warehouseMasterService.getAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(orgid,
 					warehouse, locationtype, rowno, level);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -1073,7 +1051,7 @@ public class WarehouseMasterController extends BaseController {
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "Warehouse Location not found for Warehouse LocationID: "
-						+ warehouseLocationVO.getWarehouselocationid();
+						+ warehouseLocationVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse Location update failed",
 						errorMsg);
 			}
@@ -1086,10 +1064,10 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	// Warehouse Location
+	// Material
 
 	@GetMapping("/material")
-	public ResponseEntity<ResponseDTO> getAllMaterials() {
+	public ResponseEntity<ResponseDTO> getAllMaterials(@RequestParam Long orgid,@RequestParam String client,@RequestParam String cbranch) {
 		String methodName = "getAllMaterials()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1097,7 +1075,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<MaterialVO> materialVO = new ArrayList<>();
 		try {
-			materialVO = warehouseMasterService.getAllMaterials();
+			materialVO = warehouseMasterService.getAllMaterialsByOrgIdAndClientAndCbranch(orgid,client,cbranch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1109,33 +1087,6 @@ public class WarehouseMasterController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Material information receive failed",
 					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/material/company/client")
-	public ResponseEntity<ResponseDTO> getAllMaterialsByCompanyAndClient(@RequestParam String company,
-			@RequestParam String client) {
-		String methodName = "getAllMaterialsByCompanyAndClient()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<MaterialVO> materialVO = new ArrayList<>();
-		try {
-			materialVO = warehouseMasterService.getAllMaterialsByCompanyAndClient(company, client);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Material founded");
-			responseObjectsMap.put("materialVO", materialVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "Material not found ";
-			responseDTO = createServiceResponseError(responseObjectsMap, "Materials not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -1203,7 +1154,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("updatedmaterMaterialVO", updatedmaterMaterialVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Material not found for Material ID: " + materialVO.getMaterialid();
+				errorMsg = "Material not found for Material ID: " + materialVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap,
 						"Material update failed, Material Already Exist", errorMsg);
 			}
@@ -1220,7 +1171,7 @@ public class WarehouseMasterController extends BaseController {
 	// Buyer
 
 	@GetMapping("/buyer")
-	public ResponseEntity<ResponseDTO> getAllBuyer(@RequestParam String company, @RequestParam String client) {
+	public ResponseEntity<ResponseDTO> getAllBuyer(@RequestParam Long orgid, @RequestParam String client,@RequestParam String cbranch) {
 		String methodName = "getAllBuyer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1228,7 +1179,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<BuyerVO> buyerVO = new ArrayList<>();
 		try {
-			buyerVO = warehouseMasterService.getAllBuyer(company, client);
+			buyerVO = warehouseMasterService.getAllBuyer(orgid, client,cbranch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1306,7 +1257,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("BuyerVO", updatedBuyerVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Buyer not found for Buyer ID: " + buyerVO.getBuyerid();
+				errorMsg = "Buyer not found for Buyer ID: " + buyerVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Buyer update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -1322,7 +1273,7 @@ public class WarehouseMasterController extends BaseController {
 	// Supplier
 
 	@GetMapping("/supplier")
-	public ResponseEntity<ResponseDTO> getAllSupplier(String company, String client) {
+	public ResponseEntity<ResponseDTO> getAllSupplier(@RequestParam Long orgid, @RequestParam String client,@RequestParam String cbranch) {
 		String methodName = "getAllSupplier()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1330,7 +1281,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<SupplierVO> supplierVO = new ArrayList<>();
 		try {
-			supplierVO = warehouseMasterService.getAllSupplier(company, client);
+			supplierVO = warehouseMasterService.getAllSupplier(orgid, client,cbranch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1409,7 +1360,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("SupplierVO", updatedSupplierVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Supplier not found for Supplier ID: " + supplierVO.getSupplierid();
+				errorMsg = "Supplier not found for Supplier ID: " + supplierVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Supplier update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -1425,7 +1376,7 @@ public class WarehouseMasterController extends BaseController {
 	// LocationMapping
 
 	@GetMapping("/locationmapping")
-	public ResponseEntity<ResponseDTO> getAllLocationMapping() {
+	public ResponseEntity<ResponseDTO> getAllLocationMapping(@RequestParam Long orgid,@RequestParam String client,@RequestParam String branch,@RequestParam String warehouse) {
 		String methodName = "getAllLocationMapping()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1433,7 +1384,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<LocationMappingVO> locationMappingVO = new ArrayList<>();
 		try {
-			locationMappingVO = warehouseMasterService.getAllLocationMapping();
+			locationMappingVO = warehouseMasterService.getAllLocationMapping(orgid,client,branch,warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1515,7 +1466,7 @@ public class WarehouseMasterController extends BaseController {
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "LocationMapping not found for LocationMapping ID: "
-						+ locationMappingVO.getLocationmappingid();
+						+ locationMappingVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -1530,7 +1481,7 @@ public class WarehouseMasterController extends BaseController {
 	// Carrier
 
 	@GetMapping("/carrier")
-	public ResponseEntity<ResponseDTO> getAllCarrier() {
+	public ResponseEntity<ResponseDTO> getAllCarrier(@RequestParam Long orgid,@RequestParam String client,@RequestParam String cbranch) {
 		String methodName = "getAllCarrier()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1538,7 +1489,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<CarrierVO> carrierVO = new ArrayList<>();
 		try {
-			carrierVO = warehouseMasterService.getAllCarrier();
+			carrierVO = warehouseMasterService.getAllCarrier(orgid,client,cbranch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1617,7 +1568,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("CarrierVO", updatedCarrierVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Carrier not found for Carrier ID: " + carrierVO.getCarrierid();
+				errorMsg = "Carrier not found for Carrier ID: " + carrierVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Carrier update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -1632,7 +1583,7 @@ public class WarehouseMasterController extends BaseController {
 	// Employee
 
 	@GetMapping("/employee")
-	public ResponseEntity<ResponseDTO> getAllEmployee() {
+	public ResponseEntity<ResponseDTO> getAllEmployee(@RequestParam Long orgid) {
 		String methodName = "getAllEmployee()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1640,7 +1591,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<EmployeeVO> employeeVO = new ArrayList<>();
 		try {
-			employeeVO = warehouseMasterService.getAllEmployee();
+			employeeVO = warehouseMasterService.getAllEmployeeByOrgId(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1719,7 +1670,7 @@ public class WarehouseMasterController extends BaseController {
 				responseObjectsMap.put("EmployeeVO", updatedEmployeeVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Employee not found for Employee ID: " + employeeVO.getEmployeeid();
+				errorMsg = "Employee not found for Employee ID: " + employeeVO.getId();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Employee update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -1735,7 +1686,7 @@ public class WarehouseMasterController extends BaseController {
 //getAllNameAndEmployeeCodeByCompany
 
 	@GetMapping("/getAllNameAndEmployeeCodeByCompany")
-	public ResponseEntity<ResponseDTO> getAllNameAndEmployeeCodeByCompany(@RequestParam String company) {
+	public ResponseEntity<ResponseDTO> getAllNameAndEmployeeCodeByCompany(@RequestParam Long orgid) {
 
 		String methodName = "getAllNameAndEmployeeCodeByCompany()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -1744,7 +1695,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> employeeVO = new HashSet<>();
 		try {
-			employeeVO = warehouseMasterService.getAllNameAndEmployeeCodeByCompany(company);
+			employeeVO = warehouseMasterService.getAllNameAndEmployeeCodeByOrgId(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1776,7 +1727,7 @@ public class WarehouseMasterController extends BaseController {
 	// findAllCustomerAndClientByCompany
 
 	@GetMapping("/getAllCustomerAndClientByCompany")
-	public ResponseEntity<ResponseDTO> getAllCustomerAndClientByCompany(@RequestParam String company) {
+	public ResponseEntity<ResponseDTO> getAllCustomerAndClientByCompany(@RequestParam Long orgid) {
 
 		String methodName = "getAllCustomerAndClientByCompany()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -1785,7 +1736,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> customerVO = new HashSet<>();
 		try {
-			customerVO = warehouseMasterService.getAllCustomerAndClientByCompany(company);
+			customerVO = warehouseMasterService.getAllCustomerAndClientByOrgId(orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1818,7 +1769,7 @@ public class WarehouseMasterController extends BaseController {
 
 	@GetMapping("/getAllBranchCodeAndBranchByCompany")
 	public ResponseEntity<ResponseDTO> getAllBranchCodeAndBranchByCompany(@RequestParam String client,
-			@RequestParam String company) {
+			@RequestParam Long orgid) {
 
 		String methodName = "getAllBranchCodeAndBranchByCompany()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -1827,7 +1778,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> branchVO = new HashSet<>();
 		try {
-			branchVO = warehouseMasterService.getAllBranchCodeAndBranchByCompany(client, company);
+			branchVO = warehouseMasterService.getAllBranchCodeAndBranchByOrgId(client, orgid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

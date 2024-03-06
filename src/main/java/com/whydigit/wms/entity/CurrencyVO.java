@@ -23,12 +23,13 @@ public class CurrencyVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long currencyid;
+	private Long id;
 	private String userid;
 	private String country;
 	private String currency;
     private String subcurrency;
     private String currencysymbol;
+    private Long orgId;
     private boolean active;
 	@Column(unique = true)
 	private String dupchk;

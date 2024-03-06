@@ -25,7 +25,7 @@ public class WarehouseClientVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long warehouseclientid;
+	private Long id;
 	private String client;
 	private String clientcode;
 	private boolean active;

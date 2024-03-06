@@ -23,7 +23,7 @@ public class UnitVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long unitid;
+	private Long id;
 	private String userid;
 	private String uom;
 	private String unitname;
@@ -33,7 +33,7 @@ public class UnitVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

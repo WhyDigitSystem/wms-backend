@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class UserLoginRolesVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long rolesid;
+	private long id;
 	private String role;
 	private LocalDate startdate;
 	private LocalDate enddate;

@@ -22,13 +22,12 @@ import lombok.NoArgsConstructor;
 public class BuyerVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long buyerid;
-	private String buyername;
+	private Long id;
+	private String buyer;
 	private String buyershortname;
 	private String buyertype;
 	private String buyergroupof;
 	private String contactperson;
-	private String landlinenumber;
 	private String panno;
 	private String tanno;
 	private String zipcode;
@@ -42,21 +41,18 @@ public class BuyerVO {
 	private String state;
 	private String country;
 	private String eccno;
-	private String rangeaddress;
-	private String rangeaddress1;
-	private String commissionerate;
-	private String controlbranch;
+	private String cbranch;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;
 	private boolean active;
 	private String branchcode;
-	private String branchname;
+	private String branch;
 	private String client;
 	private String customer;
 	private String warehouse;

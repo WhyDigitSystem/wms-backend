@@ -23,10 +23,10 @@ public class BranchVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long branchid;
+	private Long id;
 	private String branchname;
 	private String branchcode;
-	private String company;
+	private Long orgId;
 	private String addressline1;
 	private String addressline2;
 	private String PANno;

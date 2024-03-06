@@ -24,9 +24,11 @@ import lombok.NoArgsConstructor;
 public class UserLoginClientAccessVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long clientaccessid;
+	private long id;
 	private String client;
 	private String customer;
+	private String branch;
+	private String branchcode;
 	
 	@JsonBackReference
 	@ManyToOne

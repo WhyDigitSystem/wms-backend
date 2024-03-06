@@ -23,7 +23,7 @@ public class LocationTypeVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long locationtypeid;
+	private Long id;
 	private String locationtype;
 	private String userid;
 	private boolean active;
@@ -31,7 +31,7 @@ public class LocationTypeVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private String company;
+	private Long orgId;
 	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

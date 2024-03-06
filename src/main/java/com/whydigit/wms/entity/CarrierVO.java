@@ -27,14 +27,15 @@ import lombok.NoArgsConstructor;
 public class CarrierVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long carrierid;
-	private String carriername;
+	private Long id;
+	private String carrier;
 	private String carriershortname;
 	private String shipmentmode;
-	private String controlbranch;
+	private String cbranch;
+	private String client;
 	@Column(unique = true)
 	private String dupchk;
-	private String company;
+	private Long orgId;
 	private boolean active;
 	private String userid;
 	private boolean cancel;

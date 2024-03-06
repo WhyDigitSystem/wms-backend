@@ -21,7 +21,7 @@ public class FinancialYearVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long finyearid;
+	private Long id;
 	private int finyr;
 	private int finyridentifier;
 	private LocalDate startdate;

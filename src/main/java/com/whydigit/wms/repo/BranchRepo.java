@@ -11,7 +11,7 @@ import com.whydigit.wms.entity.BranchVO;
 @Repository
 public interface BranchRepo extends JpaRepository<BranchVO, Long> {
 
-	@Query(value = "SELECT * from branch where company=?1 ", nativeQuery = true)
-	List<BranchVO> findAllByCompany(String company);
+	@Query(value = "SELECT a from BranchVO a where a.orgId=?1 ")
+	List<BranchVO> findAll(Long orgid);
 
 }

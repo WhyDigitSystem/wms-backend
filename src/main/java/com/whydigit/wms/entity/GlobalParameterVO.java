@@ -1,5 +1,7 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,10 +22,10 @@ public class GlobalParameterVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long globalid;
-	private String company;
+	private Long orgId;
 	private String userid;
 	private String warehouse;
-	private String branchname;
+	private String branch;
 	private String branchcode;
 	private String customer;
 	private String client;
