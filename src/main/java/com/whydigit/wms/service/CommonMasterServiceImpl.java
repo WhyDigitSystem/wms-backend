@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
+import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.repo.CarrierRepo;
@@ -235,10 +236,32 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		return companyRepo.save(companyVO);
 	}
 
+	@Override
+	public Optional<CompanyVO> updateCompany(CompanyVO companyVO) {
+		if (companyRepo.existsById(companyVO.getCompanyid())) {
+			companyVO.setUpdatedby(companyVO.getUserid());
+			return Optional.of(companyRepo.save(companyVO));
+		} else {
+			return Optional.empty();
+		}
+	}
 
 	@Override
 	public void deleteCompany(Long companyid) {
 		companyRepo.deleteById(companyid);
 	}
 
+	@Override
+	public GlobalParameterVO createGlobaParameter(GlobalParameterVO globalParam) {
+		return globalParameterRepo.save(globalParam);
+	}
+
+	@Override
+	public Optional<GlobalParameterVO> updateGlobaParameter(GlobalParameterVO globalParameterVO) {
+		if (globalParameterRepo.existsById(globalParameterVO.getGlobalid())) {
+			return Optional.of(globalParameterRepo.save(globalParameterVO));
+		} else {
+			return Optional.empty();
+		}
+	}
 }
