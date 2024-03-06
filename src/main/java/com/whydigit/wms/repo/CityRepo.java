@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.whydigit.wms.entity.CityVO;
-import com.whydigit.wms.entity.StateVO;
 
 	public interface CityRepo extends JpaRepository<CityVO, Long> {
 

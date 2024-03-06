@@ -2,10 +2,7 @@ package com.whydigit.wms.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
