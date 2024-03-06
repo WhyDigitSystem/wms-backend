@@ -94,8 +94,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	EmployeeRepo employeeRepo;
-	
-	// Group
+
+	@Autowired
+	ClientBranchRepo clientBranchRepo;
+
+  // Group
 
 	@Override
 	public List<GroupVO> getAllGroup(Long orgid) {
@@ -620,8 +623,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	// UserLogin
-
-	
 
 	@Override
 	public Set<Object[]> getAllNameAndEmployeeCodeByOrgId(Long orgid) {

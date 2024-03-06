@@ -88,8 +88,6 @@ public interface CommonMasterService {
 
 	void deleteRegion(Long regionid);
 
-	
-
 	// Company
 
 	List<CompanyVO> getAllCompany();
@@ -102,14 +100,12 @@ public interface CommonMasterService {
 
 	void deleteCompany(Long companyid);
 
-	
 	// Global Parameter
 	
 	Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid,String username);
 	
 	GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO);
 	
-		
 	// to getAcces Global Param Dteails
 	
 	Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid,String userName);
@@ -119,5 +115,4 @@ public interface CommonMasterService {
 	List<ClientVO>getAllAccessClientForLogin(Long orgid,String userName,String branchcode,String customer);
 	
 	
-
 }

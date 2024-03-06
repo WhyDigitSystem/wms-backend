@@ -59,17 +59,17 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	UserRepo userRepo;
+ 
+  @Autowired
+	CompanyRepo companyRepo;
 
 	@Autowired
-	CompanyRepo companyRepo;
-	
-	@Autowired
 	FinancialYearRepo financialYearRepo;
-	
+
 	@Autowired
 	GlobalParameterRepo globalParameterRepo;
-	
-	@Autowired
+
+  @Autowired
 	CarrierRepo carrierRepo;
 	
 	@Autowired
@@ -88,7 +88,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	ClientRepo clientRepo;
 	
 
-  // Country
+
+	// Country
 
 	@Override
 	public List<CountryVO> getAllCountry(Long orgid) {
@@ -270,8 +271,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public void deleteRegion(Long regionid) {
 		regionRepo.deleteById(regionid);
 	}
-
-  
 
 	// Company
 
