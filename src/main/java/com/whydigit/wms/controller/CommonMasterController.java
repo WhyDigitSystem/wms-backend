@@ -26,11 +26,9 @@ import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.CityVO;
-import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
-import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
@@ -817,7 +815,7 @@ public class CommonMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<CustomerVO>customerVO=new ArrayList<>();
+		Set<Object[]>customerVO=new HashSet<>();
 		try {
 			customerVO = commonMasterService.getAllAccessCustomerForLogin(orgid, userName, branchcode);
 		} catch (Exception e) {
@@ -825,8 +823,9 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>>getCustomer=formatCustomer(customerVO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter Customer information get successfully");
-			responseObjectsMap.put("GlopalParameterCustomer", customerVO);
+			responseObjectsMap.put("GlopalParameterCustomer", getCustomer);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Customer information receive failed",
@@ -836,6 +835,16 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	private List<Map<String, String>> formatCustomer(Set<Object[]> customerVO) {
+		List<Map<String, String>>getCustomer=new ArrayList<>();
+		for(Object[]parameters:customerVO) {
+			Map<String, String>param=new HashMap<>();
+			param.put("customer", parameters[0].toString());
+			getCustomer.add(param);
+		}
+		return getCustomer;
+	}
+
 	@GetMapping("/globalparamClientByUserName")
 	public ResponseEntity<ResponseDTO> getGlobalParameterClientByUserName(@RequestParam Long orgid,@RequestParam String userName, @RequestParam String branchcode,@RequestParam String customer) {
 		String methodName = "getGlobalParameterClientByUserName()";
@@ -843,7 +852,7 @@ public class CommonMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<ClientVO>clientVO=new ArrayList<>();
+		Set<Object[]>clientVO=new HashSet<>();
 		try {
 			clientVO = commonMasterService.getAllAccessClientForLogin(orgid, userName, branchcode,customer);
 		} catch (Exception e) {
@@ -851,8 +860,9 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>>getClient=format(clientVO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter Client information get successfully");
-			responseObjectsMap.put("GlopalParameterClient", clientVO);
+			responseObjectsMap.put("GlopalParameterClient", getClient);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Client information receive failed",
@@ -863,6 +873,16 @@ public class CommonMasterController extends BaseController {
 	}
 	// get Global Param
 	
+	private List<Map<String, String>> format(Set<Object[]> clientVO) {
+		List<Map<String, String>>getClient=new ArrayList<>();
+			for(Object[]parameters:clientVO) {
+				Map<String, String>param=new HashMap<>();
+				param.put("customer", parameters[0].toString());
+				getClient.add(param);
+			}
+			return getClient;
+	}
+
 	@GetMapping("/globalparam/username")
 	public ResponseEntity<ResponseDTO> getGlobalParamByOrgIdAndUserName(@RequestParam Long orgid,@RequestParam String username) {
 		String methodName = "getCountryById()";
@@ -951,6 +971,10 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	// Create Client Access
+	
+	
 	
 	
 

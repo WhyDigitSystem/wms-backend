@@ -9,11 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.CityVO;
-import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
-import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -59,17 +57,17 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	UserRepo userRepo;
- 
-  @Autowired
-	CompanyRepo companyRepo;
 
+	@Autowired
+	CompanyRepo companyRepo;
+	
 	@Autowired
 	FinancialYearRepo financialYearRepo;
-
+	
 	@Autowired
 	GlobalParameterRepo globalParameterRepo;
-
-  @Autowired
+	
+	@Autowired
 	CarrierRepo carrierRepo;
 	
 	@Autowired
@@ -88,8 +86,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	ClientRepo clientRepo;
 	
 
-
-	// Country
+  // Country
 
 	@Override
 	public List<CountryVO> getAllCountry(Long orgid) {
@@ -272,6 +269,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		regionRepo.deleteById(regionid);
 	}
 
+  
+
 	// Company
 
 	@Override
@@ -401,16 +400,19 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public List<CustomerVO> getAllAccessCustomerForLogin(Long orgid, String userName, String branchcode) {
+	public Set<Object[]> getAllAccessCustomerForLogin(Long orgid, String userName, String branchcode) {
 		
 		return customerRepo.findAllAccessCustomerByUserName(orgid,userName,branchcode);
 	}
 
 	@Override
-	public List<ClientVO> getAllAccessClientForLogin(Long orgid, String userName, String branchcode,String customer) {
+	public Set<Object[]> getAllAccessClientForLogin(Long orgid, String userName, String branchcode,String customer) {
 		// TODO Auto-generated method stub
 		return clientRepo.findAllAccessClientByUserName(orgid,userName,branchcode,customer);
 	}
+	
+	
+	
 	
 	
 

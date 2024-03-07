@@ -1,18 +1,13 @@
 package com.whydigit.wms.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
@@ -38,14 +33,18 @@ public class CarrierVO {
 	private Long orgId;
 	private boolean active;
 	private String userid;
+	private String customer;
+	private String warehouse;
+	private String branch;
+	private String branchcode;
 	private boolean cancel;
 	private String cancelremarks;
 	private String createdby;
 	private String updatedby;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "carrierVO", cascade = CascadeType.ALL)
-	private List<CarrierDetailsVO> carrierDetailsVO;
+//	@JsonManagedReference
+//	@OneToMany(mappedBy = "carrierVO", cascade = CascadeType.ALL)
+//	private List<CarrierDetailsVO> carrierDetailsVO;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
