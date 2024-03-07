@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +54,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	LocationTypeRepo locationTypeRepo;
-
+	
 	@Autowired
+	
 	CellTypeRepo cellTypeRepo;
 	
 	@Autowired
@@ -94,8 +97,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	EmployeeRepo employeeRepo;
-
-  // Group
+	
+	// Group
 
 	@Override
 	public List<GroupVO> getAllGroup(Long orgid) {
@@ -171,18 +174,24 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
-		return locationTypeRepo.save(locationTypeVO);
-	}
-
+    public Optional<LocationTypeVO> findLocationTypeById(Long id) {
+        return locationTypeRepo.findById(id);
+    }
+	
 	@Override
-	public Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO) {
-		if (locationTypeRepo.existsById(locationTypeVO.getId())) {
-			return Optional.of(locationTypeRepo.save(locationTypeVO));
-		} else {
-			return Optional.empty();
-		}
-	}
+    public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
+        return locationTypeRepo.save(locationTypeVO);
+    }
+
+    public LocationTypeVO updateLocationType(LocationTypeVO locationTypeVO) {
+        Optional<LocationTypeVO> existingLocationType = locationTypeRepo.findById(locationTypeVO.getId());
+        if (existingLocationType.isPresent()) {
+            // If the entity exists, update it
+            return locationTypeRepo.save(locationTypeVO);
+        } else {
+            throw new EntityNotFoundException("LocationType not found for ID: " + locationTypeVO.getId());
+        }
+    }
 
 	@Override
 	public void deleteLocationType(Long locationtypeid) {
@@ -229,6 +238,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Optional<BranchVO> getBranchById(Long branchid) {
+		
 		return branchRepo.findById(branchid);
 	}
 
@@ -236,6 +246,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public BranchVO createBranch(BranchVO branchVO) {
 		branchVO.setBranchname(branchVO.getBranchname().toUpperCase());
 		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
+		branchVO.setDupchk(branchVO.getOrgId()+branchVO.getBranchname()+branchVO.getBranchcode());	
 		return branchRepo.save(branchVO);
 	}
 
@@ -243,7 +254,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
 		if (branchRepo.existsById(branchVO.getId())) {
 			branchVO.setUpdatedby(branchVO.getUserid());
-			branchVO.setDupchk(branchVO.getOrgId() + branchVO.getBranchcode());
+			branchVO.setDupchk(branchVO.getOrgId() +branchVO.getBranchname()+ branchVO.getBranchcode());
 			return Optional.of(branchRepo.save(branchVO));
 		} else {
 			return Optional.empty();
@@ -301,6 +312,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public List<ClientBranchVO> getAllClientBranchByCustomer(Long orgid, String customer) {
 		
 		return clientBranchRepo.findAllBranchByCustomer(orgid,customer);
+	}
+	
+	@Override
+	public Set<Object[]> getAllClientByOrgidAndAccessBranch(Long orgid, String branchcode) {
+	
+		return clientRepo.findAllClientByOrgIdAndAccessBranch(orgid,branchcode);
 	}
 
 	// Warehouse
@@ -621,6 +638,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	// UserLogin
 
+	
+
 	@Override
 	public Set<Object[]> getAllNameAndEmployeeCodeByOrgId(Long orgid) {
 		return employeeRepo.findAllNameAndEmployeeCodeByOrgId(orgid);
@@ -635,6 +654,16 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getAllBranchCodeAndBranchByOrgId(String client,Long orgid) {
 		return clientBranchRepo.findAllBranchCodeAndBranchByOrgId(client,orgid);
 	}
+
+	// find All Warehouse By Branch
+	@Override
+	public Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode) {
+		
+		return warehouseRepo.findAllWarehouseByBranch(orgid,branchcode);
+	}
+
+
+	
 
 	
 

@@ -27,7 +27,6 @@ public class CarrierDetailsVO {
 	private Long id;
 	private String addresstype;
 	private String address;
-	private String city;
 	private String state;
 	private String zipcode;
 	private String country;
