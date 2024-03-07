@@ -127,11 +127,11 @@ public interface WarehouseMasterService {
 																									// should be in
 																									// camelCase
 
-	Set<Object> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse);
+	Set<Object[]> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse);
 
-	Set<Object> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
+	Set<Object[]> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
 
-	Set<Object> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse, String locationtype,
+	Set<Object[]> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse, String locationtype,
 			String rowno);
 
 	Set<Object[]> getAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,

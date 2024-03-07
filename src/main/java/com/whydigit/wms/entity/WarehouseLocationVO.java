@@ -4,6 +4,7 @@ package com.whydigit.wms.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,6 +44,8 @@ public class WarehouseLocationVO {
 	private String updatedby;
 	private String userid;
 	private Long orgId;
+	@Column(unique = true)
+	private String dupchk;
 	
 	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference

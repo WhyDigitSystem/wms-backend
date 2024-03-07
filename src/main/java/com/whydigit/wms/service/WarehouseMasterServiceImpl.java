@@ -145,6 +145,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public UnitVO createUnit(UnitVO unitVO) {
+		unitVO.setCancel(false);
 		return unitRepo.save(unitVO);
 	}
 
@@ -335,6 +336,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public WarehouseVO createWarehouse(WarehouseVO warehouseVO) {
+		warehouseVO.setCancel(false);
 		warehouseVO.setWarehouse(warehouseVO.getWarehouse().toUpperCase());
 		warehouseVO.setBranchcode(warehouseVO.getBranchcode().toUpperCase());
 		warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehouse() + warehouseVO.getOrgId());
@@ -371,14 +373,14 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public Set<Object> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse) {
+	public Set<Object[]> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse) {
 
 		return warehouseLocationRepo.findAllLocationTypeByOrgIdAndWarehouse(orgid, warehouse);
 	}
 
 	// get All Row no based on company and Warehouse and Location type
 	@Override
-	public Set<Object> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse,
+	public Set<Object[]> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse,
 			String locationtype) {
 
 		return warehouseLocationRepo.findAllRownoByOrgIdAndWarehouseAndLocationType(orgid, warehouse, locationtype);
@@ -386,7 +388,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	// get All Level no based on company and Warehouse , Location type and Rowno
 	@Override
-	public Set<Object> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
+	public Set<Object[]> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
 			String locationtype, String rowno) {
 
 		return warehouseLocationRepo.findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(orgid, warehouse,
@@ -406,6 +408,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
 		warehouseLocationVO.setActive(true);
 		warehouseLocationVO.setCancel(false);
+		warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getLocationtype());
 		return warehouseLocationRepo.save(warehouseLocationVO);
 
 	}
@@ -413,6 +416,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<WarehouseLocationVO> updateWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
 		if (warehouseLocationRepo.existsById(warehouseLocationVO.getId())) {
+			warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getLocationtype());
 			return Optional.of(warehouseLocationRepo.save(warehouseLocationVO));
 		} else {
 			return Optional.empty();

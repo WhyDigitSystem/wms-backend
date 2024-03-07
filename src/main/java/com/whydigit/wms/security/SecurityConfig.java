@@ -47,7 +47,8 @@ public class SecurityConfig {
 						"/api/currency/{currencyid}","/api/part/upload","/api/globalparamBranchByUserName","/api/city/orgid","/api/currency/orgid",
 						"/api/city/state","/api/state/country","/api/globalparam","/api/globalparam/username","/api/globalparamCustomerByOrgAndBranchcode"
 						,"/api/client","/api//client/branch","/api/globalparamClientByUserName","/api/globalparamCustomerByUserName","/api/warehouse","/api/warehouselocation",
-						"/api/ClientAccess","/api/warehouse","/api/client/branchaccess","/api/warehouse/branch","/api/qty")
+						"/api/ClientAccess","/api/warehouse","/api/client/branchaccess","/api/warehouse/branch","/api/material","/api/locationtype/warehouse",
+						"/api/rowno/locationtype/warehouse","/api/levelno/rowno/locationtype/warehouse")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

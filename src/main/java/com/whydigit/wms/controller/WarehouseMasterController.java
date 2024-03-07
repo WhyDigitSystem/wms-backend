@@ -960,7 +960,7 @@ public class WarehouseMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object> Locationtype = new HashSet<Object>();
+		Set<Object[]> Locationtype = new HashSet<>();
 		try {
 			Locationtype = warehouseMasterService.getAllLocationTypebyOrgIdAndWarehouse(orgid, warehouse);
 		} catch (Exception e) {
@@ -968,8 +968,9 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>>getAlllocation=fomratLocation(Locationtype);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Location Type Founded");
-			responseObjectsMap.put("Locationtype", Locationtype);
+			responseObjectsMap.put("Locationtype", getAlllocation);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			errorMsg = "Location Type not found";
@@ -977,6 +978,16 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> fomratLocation(Set<Object[]> locationtype) {
+		List<Map<String, String>> getAlllocation = new ArrayList<>();
+		for (Object[] war : locationtype) {
+			Map<String, String> getware = new HashMap<>();
+			getware.put("ltype", war[0].toString());
+			getAlllocation.add(getware);
+		}
+		return getAlllocation;
 	}
 
 	// Get Rowno based on Company warehouse and Location type
@@ -989,7 +1000,7 @@ public class WarehouseMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object> Rowno = new HashSet<Object>();
+		Set<Object[]> Rowno = new HashSet<>();
 		try {
 			Rowno = warehouseMasterService.getAllRownoByOrgIdAndWarehouseAndLocationType(orgid, warehouse,
 					locationtype);
@@ -998,8 +1009,9 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>>getAllRow=fomratRow(Rowno);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Rowno Founded");
-			responseObjectsMap.put("Rowno", Rowno);
+			responseObjectsMap.put("Rowno", getAllRow);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			errorMsg = "Rowno not found";
@@ -1007,6 +1019,16 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> fomratRow(Set<Object[]> rowno) {
+		List<Map<String, String>> getAllRow = new ArrayList<>();
+		for (Object[] war : rowno) {
+			Map<String, String> getware = new HashMap<>();
+			getware.put("rowno", war[0].toString());
+			getAllRow.add(getware);
+		}
+		return getAllRow;
 	}
 
 	// Get Level No based on Company warehouse,Location type and Rowno
@@ -1019,7 +1041,7 @@ public class WarehouseMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object> Levelno = new HashSet<Object>();
+		Set<Object[]> Levelno = new HashSet<>();
 		try {
 			Levelno = warehouseMasterService.getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(orgid, warehouse,
 					locationtype, rowno);
@@ -1028,8 +1050,9 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>>getAllLevel=fomratLevel(Levelno);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Levelno Founded");
-			responseObjectsMap.put("Levelno", Levelno);
+			responseObjectsMap.put("Levelno", getAllLevel);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			errorMsg = "Levelno not found";
@@ -1037,6 +1060,16 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> fomratLevel(Set<Object[]> levelno) {
+		List<Map<String, String>> getAllLevel = new ArrayList<>();
+		for (Object[] war : levelno) {
+			Map<String, String> getware = new HashMap<>();
+			getware.put("level", war[0].toString());
+			getAllLevel.add(getware);
+		}
+		return getAllLevel;
 	}
 
 	// Get Bins based on Company warehouse,Location type, Rowno and level

@@ -34,6 +34,7 @@ public class WarehouseVO {
 	private Long orgId;
 	@Column(unique = true)
 	private String dupchk;
+	
 	private boolean active;
 	private String userid;
 	private String createdby;

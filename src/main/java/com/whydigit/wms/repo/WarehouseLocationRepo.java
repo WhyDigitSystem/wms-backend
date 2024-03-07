@@ -15,13 +15,13 @@ public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO
 	List<WarehouseLocationVO> findAll(Long orgid, String warehouse, String branch);
 
 	@Query("select e.locationtype from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2")
-	Set<Object> findAllLocationTypeByOrgIdAndWarehouse(Long orgid, String warehouse);
+	Set<Object[]> findAllLocationTypeByOrgIdAndWarehouse(Long orgid, String warehouse);
 
 	@Query("select e.rowno from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.locationtype=?3")
-	Set<Object> findAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
+	Set<Object[]> findAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
 	
 	@Query("select e.level from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.locationtype=?3 and e.rowno=?4")
-	Set<Object> findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,String locationtype, String rowno);
+	Set<Object[]> findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,String locationtype, String rowno);
 
 	
 
