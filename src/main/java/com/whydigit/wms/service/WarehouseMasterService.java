@@ -56,11 +56,9 @@ public interface WarehouseMasterService {
 
 	Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid);
 
-	Optional<LocationTypeVO> findLocationTypeById(Long id);
-
 	LocationTypeVO createLocationType(LocationTypeVO locationTypeVO);
 
-	LocationTypeVO updateLocationType(LocationTypeVO locationTypeVO);
+	Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO);
 
 	void deleteLocationType(Long locationtypeid);
 
@@ -224,5 +222,9 @@ public interface WarehouseMasterService {
 	Set<Object[]> getAllCustomerAndClientByOrgId(Long orgid);
 
 	Set<Object[]> getAllBranchCodeAndBranchByOrgId(String client, Long orgid);
+	
+	
+	// Create Pallet No
+	Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level,int startno,int endno);
 
 }

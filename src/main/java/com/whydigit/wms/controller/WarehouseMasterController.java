@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -320,30 +319,13 @@ public class WarehouseMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-
 		try {
-			Optional<LocationTypeVO> existingLocationType = warehouseMasterService
-					.findLocationTypeById(locationTypeVO.getId());
-
-			if (existingLocationType.isPresent()) {
-				// If the entity exists, update it
-				LocationTypeVO updatedLocationType = warehouseMasterService.updateLocationType(locationTypeVO);
-				if (updatedLocationType != null) {
-					responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType updated successfully");
-					responseObjectsMap.put("locationTypeVO", updatedLocationType);
-					responseDTO = createServiceResponse(responseObjectsMap);
-				} else {
-					errorMsg = "Failed to update LocationType";
-					responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-				}
-			} else {
-				// If the entity does not exist, create it
-				LocationTypeVO createdLocationType = warehouseMasterService.createLocationType(locationTypeVO);
+			 LocationTypeVO createdLocationType = warehouseMasterService.createLocationType(locationTypeVO);
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType created successfully");
 				responseObjectsMap.put("createdLocationTypeVO", createdLocationType);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			}
-		} catch (Exception e) {
+		 catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, "LocationType creation/update failed",
@@ -354,31 +336,31 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	@PutMapping("/locationType")
-//	public ResponseEntity<ResponseDTO> updateLocationType(@RequestBody LocationTypeVO locationTypeVO) {
-//		String methodName = "updateLocationType()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		try {
-//			LocationTypeVO locationTypevo = warehouseMasterService.updateLocationType(locationTypeVO).orElse(null);
-//			if (locationTypeVO != null) {
-//				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType Updated successfully");
-//				responseObjectsMap.put("locationTypeVO", locationTypevo);
-//				responseDTO = createServiceResponse(responseObjectsMap);
-//			} else {
-//				errorMsg = "LocationType not found for ID: " + locationTypevo.getLocationtype();
-//				responseDTO = createServiceResponseError(responseObjectsMap, "LocationType Update failed", errorMsg);
-//			}
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//			responseDTO = createServiceResponseError(responseObjectsMap, "LocationType Name Update failed", errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
+	@PutMapping("/locationType")
+	public ResponseEntity<ResponseDTO> updateLocationType(@RequestBody LocationTypeVO locationTypeVO) {
+		String methodName = "updateLocationType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LocationTypeVO updatelocationTypeVO = warehouseMasterService.updateLocationType(locationTypeVO).orElse(null);
+			if (updatelocationTypeVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Location Type Updated successfully");
+				responseObjectsMap.put("locationtype", updatelocationTypeVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Location Type not found for ID: " + locationTypeVO.getId();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Location Type Update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	// CellType
 
@@ -1936,6 +1918,46 @@ public class WarehouseMasterController extends BaseController {
 			formattedBranches.add(formattedBranch);
 		}
 		return formattedBranches;
+	}
+	
+	
+	// Get Palletno from Rowno,Level,And Start and End no
+	
+	@GetMapping("/getPalletno")
+	public ResponseEntity<ResponseDTO> getPalletno(@RequestParam String rowno,@RequestParam String level,@RequestParam int startno,@RequestParam int endno) {
+		String methodName = "getPalletno()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> pallet = new HashSet<>();
+		try {
+			pallet = warehouseMasterService.getPalletnoByRownoAndLevelAndStartAndEnd(rowno, level, startno, endno);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>> palletno = formatPallet(pallet);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Pallet Founded");
+			responseObjectsMap.put("pallet", palletno);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Pallet not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "Pallet not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatPallet(Set<Object[]> pallet) {
+		List<Map<String, String>> palletno = new ArrayList<>();
+		for (Object[] plt : pallet) {
+			Map<String, String> formattedplt = new HashMap<>();
+			formattedplt.put("Bin", plt[0].toString());
+			palletno.add(formattedplt);
+		}
+		return palletno;
 	}
 
 }

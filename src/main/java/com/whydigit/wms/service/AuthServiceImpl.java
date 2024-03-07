@@ -1,6 +1,8 @@
 package com.whydigit.wms.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +21,14 @@ import com.whydigit.wms.dto.LoginFormDTO;
 import com.whydigit.wms.dto.RefreshTokenDTO;
 import com.whydigit.wms.dto.ResetPasswordFormDTO;
 import com.whydigit.wms.dto.SignUpFormDTO;
+import com.whydigit.wms.dto.UserLoginBranchAccessDTO;
+import com.whydigit.wms.dto.UserLoginClientAccessDTO;
+import com.whydigit.wms.dto.UserLoginRoleAccessDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.TokenVO;
+import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;
+import com.whydigit.wms.entity.UserLoginClientAccessVO;
+import com.whydigit.wms.entity.UserLoginRolesVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.ClientRepo;
@@ -89,46 +97,46 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
         userVO.setUserType(signUpFormDTO.getUserType());
         userVO.setIsActive(signUpFormDTO.getIsActive());
         
-//        List<UserLoginRolesVO>rolesVO=new ArrayList<>();
-//        if(signUpFormDTO.getRoleAccessDTO()!=null)
-//        {
-//        	for(UserLoginRoleAccessDTO accessDTO:signUpFormDTO.getRoleAccessDTO()) 
-//        	{
-//        		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
-//        		loginRolesVO.setRole(accessDTO.getRole());
-//        		loginRolesVO.setStartdate(accessDTO.getStartdate());
-//        		loginRolesVO.setEnddate(accessDTO.getEnddate());
-//        		rolesVO.add(loginRolesVO);
-//        	}
-//        }
-//        
-//        userVO.setRoleAccessVO(rolesVO);
-//        
-//        List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
-//        if (signUpFormDTO.getClientAccessDTOList() != null) 
-//        {
-//            for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList())
-//            {
-//                UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
-//                clientAccessVO.setClient(clientAccessDTO.getClient());
-//                clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
-//                clientAccessVO.setUserVO(userVO);
-//                clientAccessVOList.add(clientAccessVO);
-//            }	
-//        }
-//        userVO.setClientAccessVO(clientAccessVOList);
-//        
-//        List<UserLoginBranchAccessibleVO>branchAccessList=new ArrayList<>();
-//        if (signUpFormDTO.getBranchAccessDTOList() != null) {
-//            for (UserLoginBranchAccessDTO userLoginBranchAccessDTO : signUpFormDTO.getBranchAccessDTOList()) {
-//                UserLoginBranchAccessibleVO branchAccessibleVO = new UserLoginBranchAccessibleVO();
-//                branchAccessibleVO.setBranch(userLoginBranchAccessDTO.getBranch());
-//                branchAccessibleVO.setBranchcode(userLoginBranchAccessDTO.getBranchcode());
-//                branchAccessibleVO.setUserVO(userVO);
-//                branchAccessList.add(branchAccessibleVO);
-//            }
-//        }
-//        userVO.setBranchAccessibleVO(branchAccessList);
+        List<UserLoginRolesVO>rolesVO=new ArrayList<>();
+        if(signUpFormDTO.getRoleAccessDTO()!=null)
+        {
+        	for(UserLoginRoleAccessDTO accessDTO:signUpFormDTO.getRoleAccessDTO()) 
+        	{
+        		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
+        		loginRolesVO.setRole(accessDTO.getRole());
+        		loginRolesVO.setStartdate(accessDTO.getStartdate());
+        		loginRolesVO.setEnddate(accessDTO.getEnddate());
+        		rolesVO.add(loginRolesVO);
+        	}
+        }
+        
+        userVO.setRoleAccessVO(rolesVO);
+        
+        List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
+        if (signUpFormDTO.getClientAccessDTOList() != null) 
+        {
+            for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList())
+            {
+                UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
+                clientAccessVO.setClient(clientAccessDTO.getClient());
+                clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
+                clientAccessVO.setUserVO(userVO);
+                clientAccessVOList.add(clientAccessVO);
+            }	
+        }
+        userVO.setClientAccessVO(clientAccessVOList);
+        
+        List<UserLoginBranchAccessibleVO>branchAccessList=new ArrayList<>();
+        if (signUpFormDTO.getBranchAccessDTOList() != null) {
+            for (UserLoginBranchAccessDTO userLoginBranchAccessDTO : signUpFormDTO.getBranchAccessDTOList()) {
+                UserLoginBranchAccessibleVO branchAccessibleVO = new UserLoginBranchAccessibleVO();
+                branchAccessibleVO.setBranch(userLoginBranchAccessDTO.getBranch());
+                branchAccessibleVO.setBranchcode(userLoginBranchAccessDTO.getBranchcode());
+                branchAccessibleVO.setUserVO(userVO);
+                branchAccessList.add(branchAccessibleVO);
+            }
+        }
+        userVO.setBranchAccessibleVO(branchAccessList);
 
         return userVO;
     }

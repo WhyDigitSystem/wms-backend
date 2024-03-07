@@ -24,7 +24,7 @@ public class WarehouseLocationDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String branchname;
+	private String branch;
 	private String branchcode;
 	private String warehouse;
 	private String locationtype;

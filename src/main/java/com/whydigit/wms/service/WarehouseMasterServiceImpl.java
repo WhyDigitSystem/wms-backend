@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -173,25 +171,23 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid) {
 		return locationTypeRepo.findById(locationtypeid);
 	}
-
-	@Override
-    public Optional<LocationTypeVO> findLocationTypeById(Long id) {
-        return locationTypeRepo.findById(id);
-    }
 	
 	@Override
     public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
-        return locationTypeRepo.save(locationTypeVO);
+		
+		locationTypeVO.setCancel(false);
+		locationTypeVO.setDupchk(locationTypeVO.getOrgId()+locationTypeVO.getLocationtype());
+		return locationTypeRepo.save(locationTypeVO);
     }
 
-    public LocationTypeVO updateLocationType(LocationTypeVO locationTypeVO) {
-        Optional<LocationTypeVO> existingLocationType = locationTypeRepo.findById(locationTypeVO.getId());
-        if (existingLocationType.isPresent()) {
-            // If the entity exists, update it
-            return locationTypeRepo.save(locationTypeVO);
-        } else {
-            throw new EntityNotFoundException("LocationType not found for ID: " + locationTypeVO.getId());
-        }
+    public Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO) {
+    	if (locationTypeRepo.existsById(locationTypeVO.getId())) {
+    		locationTypeVO.setCancel(false);
+    		locationTypeVO.setDupchk(locationTypeVO.getOrgId()+locationTypeVO.getLocationtype());
+			return Optional.of(locationTypeRepo.save(locationTypeVO));
+		} else {
+			return Optional.empty();
+		}
     }
 
 	@Override
@@ -665,6 +661,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode) {
 		
 		return warehouseRepo.findAllWarehouseByBranch(orgid,branchcode);
+	}
+
+	@Override
+	public Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level, int startno, int endno) {
+		
+		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno,level,startno,endno);
 	}
 
 
