@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class GrnVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -57,7 +59,7 @@ public class GrnVO {
 	private String cancelremark;
 	private String active;
 	private String branchcode;
-	private String branchname;
+	private String branch;
 	private String client;
 	private String customer;
 	private String address;
@@ -66,9 +68,7 @@ public class GrnVO {
 	private String fifoflag;
 	private String warehouse;
 	private String flag;
-	private String source;
-	private String screen;
-	private String stockdate;
+	private LocalDate stockdate;
 	private String vas;
 	private String vehicleno;
 	private String vehicledetails;
@@ -79,5 +79,6 @@ public class GrnVO {
 	List<GrnDetailsVO> grnDetailsVO;
 
 	@Embedded
+	
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

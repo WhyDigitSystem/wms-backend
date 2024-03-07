@@ -73,8 +73,6 @@ public class HandlingStockInVO {
 	private String userid;
 	private String cancelremark;
 	private boolean active;
-	private String brnachcode;
-	private String brnachname;
 	private String screencode;
 
 	@Embedded

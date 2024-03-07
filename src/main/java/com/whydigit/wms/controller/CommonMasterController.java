@@ -34,7 +34,6 @@ import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
-import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.service.CommonMasterService;
 
 @RestController

@@ -95,9 +95,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Autowired
 	EmployeeRepo employeeRepo;
 
-	@Autowired
-	ClientBranchRepo clientBranchRepo;
-
   // Group
 
 	@Override

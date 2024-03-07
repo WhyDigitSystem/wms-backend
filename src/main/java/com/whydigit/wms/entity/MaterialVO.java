@@ -23,10 +23,35 @@ public class MaterialVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private String itemtype;
 	private String partno;
 	private String partdesc;
+	private String custpartno;
+	private String groupname;
+	private String barcode;
+	private String stylecode;
+	private String basesku;
+	private String adddesc;
+	private String purchaseunit;
+	private String storageunit;
+	private String fixedcapacrosslocn;
+	private String fsn;
+	private String saleunit;
+	private String type;
+	private String serialnoflag;
 	private String sku;
+	private String skuqty;
 	private String ssku;
+	private String sskuqty;
+	private String zonetype;
+	private String weightofskuanduom;
+	private String hsncode;
+	private String parentchildkey;
+	private String controlbranch;
+	private String criticalstocklevel;
+	private String criticalstock;
+	private String bchk;
+	private String status;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -47,9 +72,8 @@ public class MaterialVO {
 	private Float weight;
 	@Column(unique = true)
 	private String dupchk;
-	
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-		
-	
+
 }

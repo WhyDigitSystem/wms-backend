@@ -95,6 +95,13 @@ public class StockDetailsVO {
 	private String istatus;
 	private String sflag;
 	private String lotno;
+	private String company;
+	private String userid;
+	private boolean active;	
+	private String branchname;
+	private String updatedby;
+	private String cancelremark;
+	private String screencode;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

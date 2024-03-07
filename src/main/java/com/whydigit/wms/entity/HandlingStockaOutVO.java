@@ -52,8 +52,8 @@ public class HandlingStockaOutVO {
 	private String userid;
 	private String cancelremark;
 	private boolean active;
-	private String brnachcode;
-	private String brnachname;
+	private String branchcode;
+	private String branch;
 	private String screencode;
 	private String client;
 

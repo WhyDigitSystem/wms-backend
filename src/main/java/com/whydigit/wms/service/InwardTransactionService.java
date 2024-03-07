@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 
@@ -17,7 +18,7 @@ public interface InwardTransactionService {
 
 	Optional<GrnVO> getGrnById(Long grnid);
 
-	GrnVO createGrn(GrnVO grnVO);
+	GrnVO createGrn(GrnDTO grnDTO);
 
 	Optional<GrnVO> updateGrn(GrnVO grnVO);
 
