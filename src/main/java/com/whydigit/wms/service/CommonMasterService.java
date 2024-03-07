@@ -7,11 +7,9 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.entity.CityVO;
-import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
-import com.whydigit.wms.entity.CustomerVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
@@ -87,6 +85,8 @@ public interface CommonMasterService {
 
 	void deleteRegion(Long regionid);
 
+	
+
 	// Company
 
 	List<CompanyVO> getAllCompany();
@@ -99,19 +99,25 @@ public interface CommonMasterService {
 
 	void deleteCompany(Long companyid);
 
+	
 	// Global Parameter
 	
 	Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid,String username);
 	
 	GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO);
 	
+		
 	// to getAcces Global Param Dteails
 	
 	Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid,String userName);
 	
-	List<CustomerVO>getAllAccessCustomerForLogin(Long orgid,String userName,String branchcode);
+	Set<Object[]>getAllAccessCustomerForLogin(Long orgid,String userName,String branchcode);
 	
-	List<ClientVO>getAllAccessClientForLogin(Long orgid,String userName,String branchcode,String customer);
+	Set<Object[]>getAllAccessClientForLogin(Long orgid,String userName,String branchcode,String customer);
 	
 	
+	
+	
+	
+
 }

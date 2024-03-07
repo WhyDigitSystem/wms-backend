@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.whydigit.wms.entity.MaterialVO;
 
-public interface MaterialRepo extends JpaRepository<MaterialVO, Long> {
+public interface MaterialRepo extends JpaRepository<MaterialVO, Long>{
 
+	
 	@Query("select a from MaterialVO a where a.orgId=?1 and a.client=?2 and (a.cbranch='ALL'or a.cbranch=?3)")
 	List<MaterialVO> findAllByOrgIdAndClient(Long orgid, String client, String cbranch);
 
