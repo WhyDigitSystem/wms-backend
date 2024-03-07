@@ -36,9 +36,7 @@ public class ClientVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private boolean cancel;
 	private String userid;
-	private String active;
 
 	@ManyToOne
 	@JsonBackReference

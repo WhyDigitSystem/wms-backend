@@ -28,7 +28,6 @@ public class ClientBranchVO {
 	private Long id;
 	private String branchcode;
 	private Long orgId;
-	private String address;
 
 	@ManyToOne
 	@JsonBackReference

@@ -42,9 +42,6 @@ public class CustomerVO {
 	private String address1;
 	private String address2;
 	private String gstno;
-	private String city;
-	private String state;
-	private String country;
 	private String cancelremarks;
 	private String createdby;
 	private String updatedby;

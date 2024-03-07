@@ -269,14 +269,15 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public CustomerVO createCustomer(CustomerVO customerVO) {
+		customerVO.setCancel(false);
+		customerVO.setDupchk(customerVO.getOrgId()+customerVO.getCustomer());
 		return customerRepo.save(customerVO);
 	}
 
 	@Override
 	public Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO) {
 		if (customerRepo.existsById(customerVO.getId())) {
-			customerVO.setDupchk(customerVO.getCustomer() + customerVO.getOrgId());
-			clientVO.setClient(clientVO.getClient() + clientVO.getOrgId());
+			customerVO.setDupchk(customerVO.getOrgId()+customerVO.getCustomer());
 			return Optional.of(customerRepo.save(customerVO));
 		} else {
 			return Optional.empty();
