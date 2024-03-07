@@ -47,7 +47,7 @@ public class GrnVO {
 	private String modeofshipment;
 	private String noofpackage;
 	private String totalamount;
-	private String totalgrnqty;
+	private int totalgrnqty;
 	private String screencode;
 	@Column(unique = true)
 	private String dupchk;
