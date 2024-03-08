@@ -24,18 +24,17 @@ public class BranchVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String branchname;
+	private String branch;
 	private String branchcode;
 	private Long orgId;
 	private String addressline1;
 	private String addressline2;
-	private String PANno;
-	private String GSTin;
+	private String pan;
+	private String gstin;
 	private String state;
 	private String city;
 	private String pincode;
-	private String stateno;
-	private String statecode;
+	private String country;
 	private String region;
 	private String lccurrency;
 	private boolean cancel;

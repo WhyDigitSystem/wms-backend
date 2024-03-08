@@ -241,9 +241,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public BranchVO createBranch(BranchVO branchVO) {
-		branchVO.setBranchname(branchVO.getBranchname().toUpperCase());
+		branchVO.setBranch(branchVO.getBranch().toUpperCase());
 		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
-		branchVO.setDupchk(branchVO.getOrgId()+branchVO.getBranchname()+branchVO.getBranchcode());	
+		branchVO.setDupchk(branchVO.getOrgId()+branchVO.getBranch()+branchVO.getBranchcode());	
 		return branchRepo.save(branchVO);
 	}
 
@@ -251,7 +251,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
 		if (branchRepo.existsById(branchVO.getId())) {
 			branchVO.setUpdatedby(branchVO.getUserid());
-			branchVO.setDupchk(branchVO.getOrgId() +branchVO.getBranchname()+ branchVO.getBranchcode());
+			branchVO.setDupchk(branchVO.getOrgId() +branchVO.getBranch()+ branchVO.getBranchcode());
 			return Optional.of(branchRepo.save(branchVO));
 		} else {
 			return Optional.empty();

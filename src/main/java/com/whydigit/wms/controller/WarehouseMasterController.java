@@ -1955,6 +1955,9 @@ public class WarehouseMasterController extends BaseController {
 		for (Object[] plt : pallet) {
 			Map<String, String> formattedplt = new HashMap<>();
 			formattedplt.put("Bin", plt[0].toString());
+			formattedplt.put("cellcategory", plt[1].toString());
+			formattedplt.put("status", plt[2].toString());
+			formattedplt.put("core", plt[3].toString());
 			palletno.add(formattedplt);
 		}
 		return palletno;

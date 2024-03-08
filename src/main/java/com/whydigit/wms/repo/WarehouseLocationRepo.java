@@ -34,7 +34,7 @@ public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO
 			+ "  CASE \r\n"
 			+ "    WHEN CHAR_LENGTH(level) = 1 THEN CONCAT(?1, '-', ?2, LPAD(level, 2, '0'))\r\n"
 			+ "    ELSE CONCAT(?1, '-', ?2, LPAD(level, 2, '0'))\r\n"
-			+ "  END AS num\r\n"
+			+ "  END AS pallet,'ACTIVE' cellcategory,'T' status,'Multi' core\r\n"
 			+ "FROM NumberSequence\r\n"
 			+ "WHERE level BETWEEN ?3 AND ?4")
 	Set<Object[]> getPalletnoByRownoAndLevelno(String rowno, String level, int startno, int endno);
