@@ -1954,10 +1954,11 @@ public class WarehouseMasterController extends BaseController {
 		List<Map<String, String>> palletno = new ArrayList<>();
 		for (Object[] plt : pallet) {
 			Map<String, String> formattedplt = new HashMap<>();
-			formattedplt.put("Bin", plt[0].toString());
-			formattedplt.put("cellcategory", plt[1].toString());
-			formattedplt.put("status", plt[2].toString());
-			formattedplt.put("core", plt[3].toString());
+			formattedplt.put("id", plt[0].toString());
+			formattedplt.put("Bin", plt[1].toString());
+			formattedplt.put("cellcategory", plt[2].toString());
+			formattedplt.put("status", plt[3].toString());
+			formattedplt.put("core", plt[4].toString());
 			palletno.add(formattedplt);
 		}
 		return palletno;

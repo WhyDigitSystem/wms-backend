@@ -30,7 +30,7 @@ public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO
 			+ "  FROM NumberSequence\r\n"
 			+ "  WHERE level < ?4\r\n"
 			+ ")\r\n"
-			+ "SELECT \r\n"
+			+ "SELECT ROW_NUMBER() OVER () AS id,\r\n"
 			+ "  CASE \r\n"
 			+ "    WHEN CHAR_LENGTH(level) = 1 THEN CONCAT(?1, '-', ?2, LPAD(level, 2, '0'))\r\n"
 			+ "    ELSE CONCAT(?1, '-', ?2, LPAD(level, 2, '0'))\r\n"
