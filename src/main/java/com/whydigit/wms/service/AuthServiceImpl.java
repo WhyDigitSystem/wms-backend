@@ -96,6 +96,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
         userVO.setMobileNo(signUpFormDTO.getMobileNo());
         userVO.setUserType(signUpFormDTO.getUserType());
         userVO.setIsActive(signUpFormDTO.getIsActive());
+        userVO.setOrgId(signUpFormDTO.getOrgId());
         
         List<UserLoginRolesVO>rolesVO=new ArrayList<>();
         if(signUpFormDTO.getRoleAccessDTO()!=null)

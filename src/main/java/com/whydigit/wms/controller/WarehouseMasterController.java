@@ -1089,9 +1089,12 @@ public class WarehouseMasterController extends BaseController {
 		List<Map<String, String>> formattedBins = new ArrayList<>();
 		for (Object[] bin : bins) {
 			Map<String, String> formattedBin = new HashMap<>();
-			formattedBin.put("Rowno", bin[0].toString());
-			formattedBin.put("Level", bin[1].toString());
-			formattedBin.put("Bin", bin[2].toString());
+			formattedBin.put("id", bin[0].toString());
+			formattedBin.put("rowno", bin[1].toString());
+			formattedBin.put("level", bin[2].toString());
+			formattedBin.put("bin", bin[3].toString());
+			formattedBin.put("core", bin[4].toString());
+			formattedBin.put("status", bin[5].toString());
 			formattedBins.add(formattedBin);
 		}
 		return formattedBins;

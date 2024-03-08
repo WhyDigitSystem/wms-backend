@@ -28,6 +28,7 @@ public class UnitVO {
 	private String uom;
 	private String unitname;
 	private String unittype;
+	
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;

@@ -15,6 +15,7 @@ public class SignUpFormDTO {
     private String employeeName;
     private String nickName;
     private String email;
+    private Long orgId;
     private String mobileNo;
     private String userType;
     private String isActive;
@@ -89,9 +90,14 @@ public class SignUpFormDTO {
 	public void setRoleAccessDTO(List<UserLoginRoleAccessDTO> roleAccessDTO) {
 		this.roleAccessDTO = roleAccessDTO;
 	}
+	public Long getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
     
-    
-    
+	
 
 	
 }

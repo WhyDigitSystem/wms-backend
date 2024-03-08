@@ -404,7 +404,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
 		warehouseLocationVO.setActive(true);
 		warehouseLocationVO.setCancel(false);
-		warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getLocationtype());
+		warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getWarehouse()+warehouseLocationVO.getLocationtype()+warehouseLocationVO.getRowno()+warehouseLocationVO.getLevel());
 		return warehouseLocationRepo.save(warehouseLocationVO);
 
 	}
@@ -412,7 +412,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<WarehouseLocationVO> updateWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
 		if (warehouseLocationRepo.existsById(warehouseLocationVO.getId())) {
-			warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getLocationtype());
+			warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getWarehouse()+warehouseLocationVO.getLocationtype()+warehouseLocationVO.getRowno()+warehouseLocationVO.getLevel());
 			return Optional.of(warehouseLocationRepo.save(warehouseLocationVO));
 		} else {
 			return Optional.empty();
