@@ -68,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
 		}
 		UserVO userVO = getUserVOFromSignUpFormDTO(signUpRequest);
 		userRepo.save(userVO);
-		userService.createUserAction(userVO.getUserName(), userVO.getUsersId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
+		userService.createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
 	
@@ -154,7 +154,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 					UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND_AND_ASKING_SIGNUP);
 		}
 		UserResponseDTO userResponseDTO = mapUserVOToDTO(userVO);
-		TokenVO tokenVO = tokenProvider.createToken(userVO.getUsersId(), loginRequest.getUserName());
+		TokenVO tokenVO = tokenProvider.createToken(userVO.getId(), loginRequest.getUserName());
 		userResponseDTO.setToken(tokenVO.getToken());
 		userResponseDTO.setTokenId(tokenVO.getId());
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -212,7 +212,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 					throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 				}
 				userRepo.save(userVO);
-				userService.createUserAction(userVO.getUserName(), userVO.getUsersId(),
+				userService.createUserAction(userVO.getUserName(), userVO.getId(),
 						UserConstants.USER_ACTION_TYPE_CHANGE_PASSWORD);
 			} else {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_OLD_PASSWORD_MISMATCH);
@@ -239,7 +239,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 			}
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getUsersId(),
+			userService.createUserAction(userVO.getUserName(), userVO.getId(),
 					UserConstants.USER_ACTION_TYPE_RESET_PASSWORD);
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
@@ -299,7 +299,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		try {
 			userVO.setLoginStatus(true);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getUsersId(),
+			userService.createUserAction(userVO.getUserName(), userVO.getId(),
 					UserConstants.USER_ACTION_TYPE_LOGIN);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -311,7 +311,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		try {
 			userVO.setLoginStatus(false);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getUsersId(),
+			userService.createUserAction(userVO.getUserName(), userVO.getId(),
 					UserConstants.USER_ACTION_TYPE_LOGOUT);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -321,12 +321,12 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 
 	public static UserResponseDTO mapUserVOToDTO(UserVO userVO) {
 		UserResponseDTO userDTO = new UserResponseDTO();
-		userDTO.setUsersId(userVO.getUsersId());
+		userDTO.setUsersId(userVO.getId());
 		userDTO.setBranch(userVO.getBranch());
 		userDTO.setEmployeeName(userVO.getEmployeeName());
 		userDTO.setCustomer(userVO.getCustomer());
 		userDTO.setClient(userVO.getClient());
-		userDTO.setOrgId(userVO.getOrgId());
+		userDTO.setOrgId(userVO.getOrgid());
 		userDTO.setWarehouse(userVO.getWarehouse());
 		userDTO.setUserType(userVO.getUserType());
 		userDTO.setEmail(userVO.getEmail());
