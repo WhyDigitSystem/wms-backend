@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PutAwayVO {
 
 	@Id
@@ -42,12 +45,27 @@ public class PutAwayVO {
 	private String status;
 	private String lotno;
 	private String enteredperson;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
+	private String userid;
+	private String cancelremark;
+	private boolean active;                                                                                           
+	private String branchcode;
+	private String branch;
+	private String screencode;
+	private String client;
+	private String customer;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "putAwayVO", cascade = CascadeType.ALL)
 	private List<PutAwayDetailsVO> putAwayDetailsVO;
 
 	@Embedded
+	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
 }
