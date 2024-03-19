@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -29,16 +30,19 @@ public class UserVO {
 
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long usersId;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "usersgen")
+	@SequenceGenerator(name = "usersgen",sequenceName = "usersVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="usersid")
+	private Long id;
 	@Column(unique = true)
 	private String userName;
 	private String password;
 	private String employeeName;
 	private String nickName;
 	private String email;
-	private Long orgId;
+	private Long orgid;
 	private String mobileNo;
 	private String userType;
 	private String customer;

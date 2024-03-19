@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -21,12 +22,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BranchVO {
 
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "branchgen")
+	@SequenceGenerator(name = "branchgen",sequenceName = "branchVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="branchid")
 	private Long id;
-	private String branchname;
+	private String branch;
 	private String branchcode;
-	private Long orgId;
+	private Long orgid;
 	private String addressline1;
 	private String addressline2;
 	private String PANno;
@@ -41,7 +45,7 @@ public class BranchVO {
 	private boolean cancel;
 	private String cancelremarks;
 	private String createdby;
-	private String updatedby;
+	private String modifiedby;
 	@Column(unique = true)
 	private String dupchk;
 	private boolean active;

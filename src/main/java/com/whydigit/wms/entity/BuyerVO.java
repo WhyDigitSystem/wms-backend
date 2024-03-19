@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -21,7 +22,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BuyerVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "buyergen")
+	@SequenceGenerator(name = "buyergen",sequenceName = "buyerVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="buyerid")
 	private Long id;
 	private String buyer;
 	private String buyershortname;
@@ -45,8 +48,8 @@ public class BuyerVO {
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
-	private String updatedby;
-	private Long orgId;
+	private String modifiedby;
+	private Long orgid;
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -21,7 +22,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CarrierVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "carriergen")
+	@SequenceGenerator(name = "carriergen",sequenceName = "carrierVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="carrierid")
 	private Long id;
 	private String carrier;
 	private String carriershortname;
@@ -40,7 +43,7 @@ public class CarrierVO {
 	private boolean cancel;
 	private String cancelremarks;
 	private String createdby;
-	private String updatedby;
+	private String modifiedby;
 	
 //	@JsonManagedReference
 //	@OneToMany(mappedBy = "carrierVO", cascade = CascadeType.ALL)

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -22,7 +23,9 @@ import lombok.NoArgsConstructor;
 public class UnitVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "unitgen")
+	@SequenceGenerator(name = "unitgen",sequenceName = "unitVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="unitid")
 	private Long id;
 	private String userid;
 	private String uom;
@@ -32,8 +35,8 @@ public class UnitVO {
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
-	private String updatedby;
-	private Long orgId;
+	private String modifiedby;
+	private Long orgid;
 	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

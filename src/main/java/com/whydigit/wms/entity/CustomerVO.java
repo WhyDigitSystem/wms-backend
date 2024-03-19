@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -26,11 +27,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerVO {
 
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "customergen")
+	@SequenceGenerator(name = "customergen",sequenceName = "customerVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="customerid")
 	private Long id;
 	private String customer;
-	private Long orgId;
+	private Long orgid;
 	private String customershortname;
 	private String panno;
 	private String contactperson;
@@ -47,7 +51,7 @@ public class CustomerVO {
 	private String country;
 	private String cancelremarks;
 	private String createdby;
-	private String updatedby;
+	private String modifiedby;
 	@Column(unique = true)
 	private String dupchk;
 	private boolean active;

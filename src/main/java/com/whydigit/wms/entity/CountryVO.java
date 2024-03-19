@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -22,17 +23,19 @@ import lombok.NoArgsConstructor;
 public class CountryVO {
 	
 	@Id
-	@GeneratedValue(strategy =GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "countrygen")
+	@SequenceGenerator(name = "countrygen",sequenceName = "countryVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="countryid")
 	private Long id;
-	private String countryname;
+	private String country;
 	private String countrycode;
 	private boolean active;
-	private Long orgId;
+	private Long orgid;
 	private String userid;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
-	private String updatedby;
+	private String modifiedby;
 	private boolean cancel;
 	
 	@Embedded

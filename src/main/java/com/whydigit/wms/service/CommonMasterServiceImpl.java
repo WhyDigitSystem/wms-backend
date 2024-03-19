@@ -110,11 +110,11 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public CountryVO createCountry(CountryVO countryVO) {
 
 		countryVO.setCancel(false);
-		countryVO.setCountryname(countryVO.getCountryname().toUpperCase());
+		countryVO.setCountry(countryVO.getCountry().toUpperCase());
 		countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
 		countryVO.setActive(true);
 		countryVO.setCancel(false);
-		countryVO.setDupchk(countryVO.getOrgId()+countryVO.getCountrycode() + countryVO.getCountryname());
+		countryVO.setDupchk(countryVO.getOrgid()+countryVO.getCountrycode() + countryVO.getCountry());
 		return countryVORepo.save(countryVO);
 
 	}
@@ -122,10 +122,10 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CountryVO> updateCountry(CountryVO countryVO) {
 		if (countryVORepo.existsById(countryVO.getId())) {
-			countryVO.setUpdatedby(countryVO.getUserid());
-			countryVO.setCountryname(countryVO.getCountryname().toUpperCase());
+			countryVO.setModifiedby(countryVO.getUserid());
+			countryVO.setCountry(countryVO.getCountry().toUpperCase());
 			countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
-			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountryname());
+			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountry());
 			return Optional.of(countryVORepo.save(countryVO));
 		} else {
 			return Optional.empty();
@@ -158,20 +158,20 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public StateVO createState(StateVO stateVO) {
 		stateVO.setCancel(false);
-		stateVO.setStatename(stateVO.getStatename().toUpperCase());
+		stateVO.setState(stateVO.getState().toUpperCase());
 		stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
 		stateVO.setActive(true);
-		stateVO.setDupchk(stateVO.getOrgId()+stateVO.getStatecode() + stateVO.getStatename());
+		stateVO.setDupchk(stateVO.getOrgid()+stateVO.getStatecode() + stateVO.getState());
 		return stateRepo.save(stateVO);
 	}
 
 	@Override
 	public Optional<StateVO> updateState(StateVO stateVO) {
 		if (stateRepo.existsById(stateVO.getId())) {
-			stateVO.setUpdatedby(stateVO.getUserid());
-			stateVO.setStatename(stateVO.getStatename().toUpperCase());
+			stateVO.setModifiedby(stateVO.getUserid());
+			stateVO.setState(stateVO.getState().toUpperCase());
 			stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
-			stateVO.setDupchk(stateVO.getOrgId()+stateVO.getStatecode() + stateVO.getStatename());
+			stateVO.setDupchk(stateVO.getOrgid()+stateVO.getStatecode() + stateVO.getState());
 			return Optional.of(stateRepo.save(stateVO));
 		} else {
 			return Optional.empty();
@@ -204,9 +204,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public CityVO createCity(CityVO cityVO) {
 		cityVO.setCancel(false);
 		cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
-		cityVO.setCityname(cityVO.getCityname().toUpperCase());
+		cityVO.setCity(cityVO.getCity().toUpperCase());
 		cityVO.setActive(true);
-		cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCityname() + cityVO.getOrgId());
+		cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgid());
 		return cityRepo.save(cityVO);
 	}
 
@@ -214,9 +214,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<CityVO> updateCity(CityVO cityVO) {
 		if (cityRepo.existsById(cityVO.getId())) {
 			cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
-			cityVO.setCityname(cityVO.getCityname().toUpperCase());
-			cityVO.setUpdatedby(cityVO.getUserid());
-			cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCityname() + cityVO.getOrgId());
+			cityVO.setCity(cityVO.getCity().toUpperCase());
+			cityVO.setModifiedby(cityVO.getUserid());
+			cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgid());
 			return Optional.of(cityRepo.save(cityVO));
 		} else {
 			return Optional.empty();
@@ -244,10 +244,10 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public RegionVO createRegion(RegionVO regionVO) {
 		regionVO.setCancel(false);	
 		regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
-		regionVO.setRegionname(regionVO.getRegionname().toUpperCase());
+		regionVO.setRegion(regionVO.getRegion().toUpperCase());
 		regionVO.setActive(true);
 		regionVO.setDocid("MAA");
-		regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegionname() + regionVO.getOrgId());
+		regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgid());
 		return regionRepo.save(regionVO);
 	}
 
@@ -255,9 +255,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<RegionVO> updateRegion(RegionVO regionVO) {
 		if (regionRepo.existsById(regionVO.getId())) {
 			regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
-			regionVO.setRegionname(regionVO.getRegionname().toUpperCase());
-			regionVO.setUpdatedby(regionVO.getUserid());
-			regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegionname() + regionVO.getOrgId());
+			regionVO.setRegion(regionVO.getRegion().toUpperCase());
+			regionVO.setModifiedby(regionVO.getUserid());
+			regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgid());
 			return Optional.of(regionRepo.save(regionVO));
 		} else {
 			return Optional.empty();
@@ -287,17 +287,17 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public CompanyVO createCompany(CompanyVO companyVO) throws Exception {
 		companyVO.setCancel(false);
 		companyVO.setEmployeecode(companyVO.getEmployeecode().toUpperCase());
-		companyVO.setEmployeeName(companyVO.getEmployeeName().toUpperCase());
+		companyVO.setEmployeename(companyVO.getEmployeename().toUpperCase());
 		companyVO.setActive(true);
 		CompanyVO company=companyRepo.save(companyVO);
 		EmployeeVO emp=new EmployeeVO();
 		emp.setEmployeecode(company.getEmployeecode());
-		emp.setEmployeename(company.getEmployeeName());
-		emp.setOrgId(company.getId());
+		emp.setEmployee(company.getEmployeename());
+		emp.setOrgid(company.getId());
 		employeeRepo.save(emp);
 		UserVO userVO=new UserVO();
 		userVO.setUserName(company.getEmployeecode());
-		userVO.setOrgId(company.getId());
+		userVO.setOrgid(company.getId());
 		userVO.setUserType("ROLE_ADMIN");
 		userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(company.getPassword())));
 		userRepo.save(userVO);
@@ -307,7 +307,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CompanyVO> updateCompany(CompanyVO companyVO) {
 		if (companyRepo.existsById(companyVO.getId())) {
-			companyVO.setUpdatedby(companyVO .getUserid());
+			companyVO.setModifiedby(companyVO .getUserid());
 			return Optional.of(companyRepo.save(companyVO));
 		} else {
 			return Optional.empty();
@@ -338,7 +338,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public CurrencyVO createCurrency(CurrencyVO currencyVO) {
 		currencyVO.setCancel(false);
-		currencyVO.setDupchk(currencyVO.getOrgId()+currencyVO.getCountry() +currencyVO.getCurrency());
+		currencyVO.setDupchk(currencyVO.getOrgid()+currencyVO.getCountry() +currencyVO.getCurrency());
 		return currencyRepo.save(currencyVO);
 	}
 

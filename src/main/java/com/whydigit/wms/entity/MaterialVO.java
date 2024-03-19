@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -21,7 +22,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MaterialVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "materialgen")
+	@SequenceGenerator(name = "materialgen",sequenceName = "materialVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="materialid")
 	private Long id;
 	private String itemtype;
 	private String partno;
@@ -52,7 +55,7 @@ public class MaterialVO {
 	private String criticalstock;
 	private String bchk;
 	private String status;
-	private Long orgId;
+	private Long orgid;
 	private String customer;
 	private String client;
 	private String warehouse;
@@ -65,7 +68,7 @@ public class MaterialVO {
 	private boolean cancel;
 	private String parentchild;
 	private String createdby;
-	private String updatedby;
+	private String modifiedby;
 	private Float length;
 	private Float breadth;
 	private Float height;

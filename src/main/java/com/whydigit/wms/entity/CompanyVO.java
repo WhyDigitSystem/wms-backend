@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -22,12 +23,14 @@ import lombok.NoArgsConstructor;
 public class CompanyVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "companygen")
+	@SequenceGenerator(name = "companygen",sequenceName = "companyVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="companyid")
 	private Long id;
 	@Column(unique = true)
 	private String companycode;
 	@Column(unique = true)
-	private String companyname;
+	private String company;
     private String country;
 	private String currency;
 	private String address;
@@ -42,11 +45,11 @@ public class CompanyVO {
     private boolean active;
 	@Column(unique = true)
 	private String dupchk;
-	private String employeeName;
+	private String employeename;
 	private String employeecode;
 	private String password;
 	private String createdby;
-	private String updatedby;
+	private String modifiedby;
 	private boolean cancel;
 	
     @Embedded

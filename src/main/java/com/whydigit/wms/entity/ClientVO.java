@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -24,10 +25,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClientVO {
 
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "clientgen")
+	@SequenceGenerator(name = "clientgen",sequenceName = "clientVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="clientid")
 	private Long id;
-	private Long orgId;
+	private Long orgid;
 	private String client; // caps
 	private String clientcode; // caps
 	private String clienttype;
@@ -35,7 +39,7 @@ public class ClientVO {
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
-	private String updatedby;
+	private String modifiedby;
 	private boolean cancel;
 	private String userid;
 	private String active;

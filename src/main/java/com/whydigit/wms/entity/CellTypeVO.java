@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -15,14 +16,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "cell_type")
+@Table(name = "celltype")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CellTypeVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "celltypegen")
+	@SequenceGenerator(name = "celltypegen",sequenceName = "celltypeVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="celltypeid")
 	private Long id;
 	private String celltype;
 	private String userid;
@@ -30,8 +33,8 @@ public class CellTypeVO {
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
-	private String updatedby;
-	private Long orgId;
+	private String modifiedby;
+	private Long orgid;
 	private boolean cancel;
 
 	@Embedded
