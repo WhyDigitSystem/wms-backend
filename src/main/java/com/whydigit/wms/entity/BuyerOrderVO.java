@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -28,7 +29,9 @@ import lombok.NoArgsConstructor;
 public class BuyerOrderVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "buyerordergen")
+	@SequenceGenerator(name = "buyerordergen",sequenceName = "buyerorderVO",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="buyerorderid")
 	private Long id;
 	private String orderno;
 	private LocalDate docdate;
@@ -47,8 +50,8 @@ public class BuyerOrderVO {
 	private String remarks;
 	@Column(unique = true)
 	private String dupchk;
-	private String createdby;
-	private String updatedby;
+	private String createdon;
+	private String modifiedon;
 	private String company;
 	private boolean cancel;
 	private String userid;
