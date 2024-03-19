@@ -26,23 +26,23 @@ public class HandlingStockInVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String orgId;
+	private Long orgId;
 	private String refno;
 	private String grnno;
 	private LocalDate refdate;
 	private String partno;
 	private LocalDate grndate;
 	private String partdesc;
-	private String rpqty;
+	private int rpqty;
 	private String noofpallet;
 	private String locationtype;
-	private String sqty;
-	private String ssqty;
-	private String invqty;
-	private String recqty;
-	private String damageqty;
-	private String shortqty;
-	private String palletqty;
+	private int sqty;
+	private int ssqty;
+	private int invqty;
+	private int recqty;
+	private int damageqty;
+	private int shortqty;
+	private int palletqty;
 	private String rate;
 	private String amount;
 	private String qcflag;
@@ -60,6 +60,7 @@ public class HandlingStockInVO {
 	private String sku;
 	private String sdocid;
 	private LocalDate stockdate;
+	private LocalDate sdocdate;
 	private String sourcscreen;
 	private String expdate;
 	private String batchno;
@@ -73,6 +74,7 @@ public class HandlingStockInVO {
 	private String userid;
 	private String cancelremark;
 	private boolean active;
+	private String ssku;
 	private String screencode;
 
 	@Embedded

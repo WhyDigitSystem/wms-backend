@@ -33,6 +33,7 @@ public class GrnVO {
 	private Long id;
 	private String direct;
 	private String docid;
+	@Builder.Default
 	private LocalDate docdate = LocalDate.now();
 	private String entryno;
 	private LocalDate entrydate;
@@ -54,10 +55,10 @@ public class GrnVO {
 	private String createdby;
 	private String updatedby;
 	private Long orgId;
-	private String cancel;
+	private boolean cancel;
 	private String userid;
 	private String cancelremark;
-	private String active;
+	private boolean active;
 	private String branchcode;
 	private String branch;
 	private String client;
@@ -73,12 +74,13 @@ public class GrnVO {
 	private String vehicleno;
 	private String vehicledetails;
 	private String vesselno;
+	private String finyr;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
-	List<GrnDetailsVO> grnDetailsVO;
+	private List<GrnDetailsVO> grnDetailsVO;
 
 	@Embedded
-	
+	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
