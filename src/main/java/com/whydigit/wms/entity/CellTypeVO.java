@@ -27,14 +27,29 @@ public class CellTypeVO {
 	@SequenceGenerator(name = "celltypegen",sequenceName = "celltypeVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="celltypeid")
 	private Long id;
+	
+	@Column(name="celltype")
 	private String celltype;
+	
+	@Column(name="userid")
 	private String userid;
+	
+	@Column(name="active")
 	private boolean active;
+	
 	@Column(unique = true)
 	private String dupchk;
+	
+	@Column(name="createdby")
 	private String createdby;
-	private String modifiedby;
-	private Long orgid;
+	
+	@Column(name="modifiedby")
+	private String updatedby;
+	
+	@Column(name="orgid")
+	private Long orgId;
+	
+	@Column(name="cancel")
 	private boolean cancel;
 
 	@Embedded

@@ -31,17 +31,38 @@ public class ClientVO {
 	@SequenceGenerator(name = "clientgen",sequenceName = "clientVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="clientid")
 	private Long id;
-	private Long orgid;
+	
+	@Column(name="orgid")
+	private Long orgId;
+	
+	@Column(name="client")
 	private String client; // caps
+	
+	@Column(name="clientcode")
 	private String clientcode; // caps
+	
+	@Column(name="clienttype")
 	private String clienttype;
+	
+	@Column(name="fiofife")
 	private int fifofife;
+	
 	@Column(unique = true)
 	private String dupchk;
+	
+	@Column(name="createdby")
 	private String createdby;
-	private String modifiedby;
+	
+	@Column(name="modifiedby")
+	private String updatedby;
+	
+	@Column(name="cancel")
 	private boolean cancel;
+	
+	@Column(name="userid")
 	private String userid;
+	
+	@Column(name="active")
 	private String active;
 
 	@ManyToOne

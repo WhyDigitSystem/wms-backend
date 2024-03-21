@@ -1,6 +1,5 @@
 package com.whydigit.wms.entity;
 
-
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,36 +21,64 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="warehouselocation")
+@Table(name = "warehouselocation")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class WarehouseLocationVO {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "warehouselocationgen")
-	@SequenceGenerator(name = "warehouselocationgen",sequenceName = "warehouselocationVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="warehouselocationid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouselocationgen")
+	@SequenceGenerator(name = "warehouselocationgen", sequenceName = "warehouselocationVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "warehouselocationid")
 	private Long id;
+
+	@Column(name = "branch")
 	private String branch;
+
+	@Column(name = "branchcode")
 	private String branchcode;
+
+	@Column(name = "warehouse")
 	private String warehouse;
+
+	@Column(name = "locationtype")
 	private String locationtype;
+
+	@Column(name = "rowno")
 	private String rowno;
+
+	@Column(name = "level")
 	private String level;
+
+	@Column(name = "cellform")
 	private String cellfrom;
+
+	@Column(name = "cellto")
 	private String cellto;
+
+	@Column(name = "cancel")
 	private boolean cancel;
+
+	@Column(name = "active")
 	private boolean active;
-	private String createdon;
-	private String modifiedon;
+
+	@Column(name = "createdby")
+	private String createdby;
+
+	@Column(name = "modifiedby")
+	private String updatedby;
+
+	@Column(name = "userid")
 	private String userid;
-	private Long orgid;
-	
+
+	@Column(name = "orgid")
+	private Long orgId;
+
 	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<WarehouseLocationDetailsVO>warehouseLocationDetailsVO;
-	
+	private List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO;
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 

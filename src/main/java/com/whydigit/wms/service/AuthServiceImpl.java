@@ -326,7 +326,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		userDTO.setEmployeeName(userVO.getEmployeeName());
 		userDTO.setCustomer(userVO.getCustomer());
 		userDTO.setClient(userVO.getClient());
-		userDTO.setOrgId(userVO.getOrgid());
+		userDTO.setOrgId(userVO.getOrgId());
 		userDTO.setWarehouse(userVO.getWarehouse());
 		userDTO.setUserType(userVO.getUserType());
 		userDTO.setEmail(userVO.getEmail());

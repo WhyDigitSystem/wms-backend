@@ -20,19 +20,27 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name="warehouseclient")
+@Table(name = "warehouseclient")
 @NoArgsConstructor
 @AllArgsConstructor
 public class WarehouseClientVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "warehouseclientgen")
-	@SequenceGenerator(name = "warehouseclient",sequenceName = "warehouseclientVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="warehouseclientid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouseclientgen")
+	@SequenceGenerator(name = "warehouseclient", sequenceName = "warehouseclientVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "warehouseclientid")
 	private Long id;
+
+	@Column(name = "client")
 	private String client;
+
+	@Column(name = "clientcode")
 	private String clientcode;
+
+	@Column(name = "active")
 	private boolean active;
+
+	@Column(name = "userid")
 	private String userid;
 
 	@ManyToOne

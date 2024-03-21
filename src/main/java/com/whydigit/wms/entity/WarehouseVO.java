@@ -31,16 +31,35 @@ public class WarehouseVO {
 	@SequenceGenerator(name = "warehousegen",sequenceName = "warehouseVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="warehouseid")
 	private Long id;
+	
+	@Column(name="warehouse")
 	private String warehouse;
+	
+	@Column(name="branchcode")
 	private String branchcode;
+	
+	@Column(name="branch")
 	private String branch;
-	private Long orgid;
+	
+	@Column(name="orgid")
+	private Long orgId;
+	
 	@Column(unique = true)
 	private String dupchk;
+	
+	@Column(name="active")
 	private boolean active;
+	
+	@Column(name="userid")
 	private String userid;
+	
+	@Column(name="createdby")
 	private String createdby;
-	private String modifiedby;
+	
+	@Column(name="modifiedby")
+	private String updatedby;
+	
+	@Column(name="cancel")
 	private boolean cancel;
 	
 

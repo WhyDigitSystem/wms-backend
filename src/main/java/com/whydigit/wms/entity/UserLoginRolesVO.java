@@ -32,8 +32,14 @@ public class UserLoginRolesVO {
 	@SequenceGenerator(name = "userloginroles",sequenceName = "userloginrolesVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="userloginrolesid")
 	private long id;
+	
+	@Column(name="role")
 	private String role;
+	
+	@Column(name="startdate")
 	private LocalDate startdate;
+	
+	@Column(name="enddate")
 	private LocalDate enddate;
 	
 	@JsonBackReference

@@ -29,7 +29,11 @@ public class UserLoginBranchAccessibleVO {
 	@SequenceGenerator(name = "userloginbranchaccessiblegen",sequenceName = "userloginbranchaccessibleVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="userloginbranchaccessibleid")
 	private long id;
+	
+	@Column(name="branch")
 	private String branch;
+	
+	@Column(name="branchcode")
 	private String branchcode;
 	
 	@JsonBackReference

@@ -39,13 +39,13 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	CountryRepository countryVORepo;
-	
+
 	@Autowired
 	CurrencyRepo currencyRepo;
 
 	@Autowired
 	StateRepo stateRepo;
-	
+
 	@Autowired
 	PasswordEncoder encoder;
 
@@ -60,33 +60,32 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	CompanyRepo companyRepo;
-	
+
 	@Autowired
 	FinancialYearRepo financialYearRepo;
-	
+
 	@Autowired
 	GlobalParameterRepo globalParameterRepo;
-	
+
 	@Autowired
 	CarrierRepo carrierRepo;
-	
+
 	@Autowired
 	UserBranchAccessRepo userBranchAccessRepo;
-	
+
 	@Autowired
 	UserClientAccessRepo userClientAccessRepo;
-	
+
 	@Autowired
 	EmployeeRepo employeeRepo;
-	
+
 	@Autowired
 	CustomerRepo customerRepo;
-	
+
 	@Autowired
 	ClientRepo clientRepo;
-	
 
-  // Country
+	// Country
 
 	@Override
 	public List<CountryVO> getAllCountry(Long orgid) {
@@ -97,9 +96,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<CountryVO> getCountryById(Long countryid) {
 		return countryVORepo.findById(countryid);
 	}
-	
-	
-	
+
 	@Override
 	public Set<Object[]> getCountryAndCountryid(Long orgid) {
 		// TODO Auto-generated method stub
@@ -114,7 +111,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
 		countryVO.setActive(true);
 		countryVO.setCancel(false);
-		countryVO.setDupchk(countryVO.getOrgid()+countryVO.getCountrycode() + countryVO.getCountry());
+		countryVO.setDupchk(countryVO.getOrgId() + countryVO.getCountrycode() + countryVO.getCountry());
 		return countryVORepo.save(countryVO);
 
 	}
@@ -122,7 +119,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CountryVO> updateCountry(CountryVO countryVO) {
 		if (countryVORepo.existsById(countryVO.getId())) {
-			countryVO.setModifiedby(countryVO.getUserid());
+			countryVO.setUpdatedby(countryVO.getUserid());
 			countryVO.setCountry(countryVO.getCountry().toUpperCase());
 			countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
 			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountry());
@@ -150,9 +147,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public List<StateVO> getStatesByCountry(Long orgid,String country) {
+	public List<StateVO> getStatesByCountry(Long orgid, String country) {
 
-		return stateRepo.findByCountry(orgid,country);
+		return stateRepo.findByCountry(orgid, country);
 	}
 
 	@Override
@@ -161,17 +158,17 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		stateVO.setState(stateVO.getState().toUpperCase());
 		stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
 		stateVO.setActive(true);
-		stateVO.setDupchk(stateVO.getOrgid()+stateVO.getStatecode() + stateVO.getState());
+		stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getState());
 		return stateRepo.save(stateVO);
 	}
 
 	@Override
 	public Optional<StateVO> updateState(StateVO stateVO) {
 		if (stateRepo.existsById(stateVO.getId())) {
-			stateVO.setModifiedby(stateVO.getUserid());
+			stateVO.setUpdatedby(stateVO.getUserid());
 			stateVO.setState(stateVO.getState().toUpperCase());
 			stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
-			stateVO.setDupchk(stateVO.getOrgid()+stateVO.getStatecode() + stateVO.getState());
+			stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getState());
 			return Optional.of(stateRepo.save(stateVO));
 		} else {
 			return Optional.empty();
@@ -189,24 +186,25 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public List<CityVO> getAllgetAllCities(Long orgid) {
 		return cityRepo.findAll(orgid);
 	}
-	
+
 	@Override
 	public List<CityVO> getAllCitiesByState(Long orgid, String state) {
-		
-		return cityRepo.findAll(orgid,state);
+
+		return cityRepo.findAll(orgid, state);
 	}
 
 	@Override
 	public Optional<CityVO> getCityById(Long cityid) {
 		return cityRepo.findById(cityid);
 	}
+
 	@Override
 	public CityVO createCity(CityVO cityVO) {
 		cityVO.setCancel(false);
 		cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
 		cityVO.setCity(cityVO.getCity().toUpperCase());
 		cityVO.setActive(true);
-		cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgid());
+		cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgId());
 		return cityRepo.save(cityVO);
 	}
 
@@ -215,8 +213,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		if (cityRepo.existsById(cityVO.getId())) {
 			cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
 			cityVO.setCity(cityVO.getCity().toUpperCase());
-			cityVO.setModifiedby(cityVO.getUserid());
-			cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgid());
+			cityVO.setUpdatedby(cityVO.getUserid());
+			cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgId());
 			return Optional.of(cityRepo.save(cityVO));
 		} else {
 			return Optional.empty();
@@ -242,12 +240,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Override
 	public RegionVO createRegion(RegionVO regionVO) {
-		regionVO.setCancel(false);	
+		regionVO.setCancel(false);
 		regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
 		regionVO.setRegion(regionVO.getRegion().toUpperCase());
 		regionVO.setActive(true);
 		regionVO.setDocid("MAA");
-		regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgid());
+		regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgId());
 		return regionRepo.save(regionVO);
 	}
 
@@ -256,8 +254,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		if (regionRepo.existsById(regionVO.getId())) {
 			regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
 			regionVO.setRegion(regionVO.getRegion().toUpperCase());
-			regionVO.setModifiedby(regionVO.getUserid());
-			regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgid());
+			regionVO.setUpdatedby(regionVO.getUserid());
+			regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgId());
 			return Optional.of(regionRepo.save(regionVO));
 		} else {
 			return Optional.empty();
@@ -268,8 +266,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public void deleteRegion(Long regionid) {
 		regionRepo.deleteById(regionid);
 	}
-
-  
 
 	// Company
 
@@ -287,17 +283,17 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public CompanyVO createCompany(CompanyVO companyVO) throws Exception {
 		companyVO.setCancel(false);
 		companyVO.setEmployeecode(companyVO.getEmployeecode().toUpperCase());
-		companyVO.setEmployeename(companyVO.getEmployeename().toUpperCase());
+		companyVO.setEmployeeName(companyVO.getEmployeeName().toUpperCase());
 		companyVO.setActive(true);
-		CompanyVO company=companyRepo.save(companyVO);
-		EmployeeVO emp=new EmployeeVO();
+		CompanyVO company = companyRepo.save(companyVO);
+		EmployeeVO emp = new EmployeeVO();
 		emp.setEmployeecode(company.getEmployeecode());
-		emp.setEmployee(company.getEmployeename());
-		emp.setOrgid(company.getId());
+		emp.setEmployeeName(company.getEmployeeName());
+		emp.setOrgId(company.getId());
 		employeeRepo.save(emp);
-		UserVO userVO=new UserVO();
+		UserVO userVO = new UserVO();
 		userVO.setUserName(company.getEmployeecode());
-		userVO.setOrgid(company.getId());
+		userVO.setOrgId(company.getId());
 		userVO.setUserType("ROLE_ADMIN");
 		userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(company.getPassword())));
 		userRepo.save(userVO);
@@ -307,7 +303,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CompanyVO> updateCompany(CompanyVO companyVO) {
 		if (companyRepo.existsById(companyVO.getId())) {
-			companyVO.setModifiedby(companyVO .getUserid());
+			companyVO.setUpdatedby(companyVO.getUserid());
 			return Optional.of(companyRepo.save(companyVO));
 		} else {
 			return Optional.empty();
@@ -319,33 +315,30 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyRepo.deleteById(companyid);
 	}
 
-	
-
-	
 // Currency 
 	@Override
 	public List<CurrencyVO> getAllCurrency(Long orgid) {
-		
+
 		return currencyRepo.findAll(orgid);
 	}
 
 	@Override
 	public Optional<CurrencyVO> getCurrencyById(Long currencyid) {
-		
+
 		return currencyRepo.findById(currencyid);
 	}
-	
+
 	@Override
 	public CurrencyVO createCurrency(CurrencyVO currencyVO) {
 		currencyVO.setCancel(false);
-		currencyVO.setDupchk(currencyVO.getOrgid()+currencyVO.getCountry() +currencyVO.getCurrency());
+		currencyVO.setDupchk(currencyVO.getOrgId() + currencyVO.getCountry() + currencyVO.getCurrency());
 		return currencyRepo.save(currencyVO);
 	}
 
 	@Override
 	public Optional<CurrencyVO> updateCurrency(CurrencyVO currencyVO) {
 		if (currencyRepo.existsById(currencyVO.getId())) {
-			currencyVO.setDupchk(currencyVO.getCountry()+currencyVO.getCurrency());
+			currencyVO.setDupchk(currencyVO.getCountry() + currencyVO.getCurrency());
 			return Optional.of(currencyRepo.save(currencyVO));
 		} else {
 			return Optional.empty();
@@ -355,71 +348,57 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public void deleteCurrency(Long currencyid) {
 		currencyRepo.deleteById(currencyid);
-		
+
 	}
 
-	
-
-		
-	// 
+	//
 	@Override
 	public Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid, String username) {
-		
-		return globalParameterRepo.findGlobalParamByOrgIdAndUserName(orgid,username);
+
+		return globalParameterRepo.findGlobalParamByOrgIdAndUserName(orgid, username);
 	}
-	
-	
+
 	// Change Global Parameter or update Parameters
 	@Override
 	public GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO) {
-		
-		GlobalParameterVO existingRecord = globalParameterRepo.findGlobalParam(globalParameterVO.getOrgId(), globalParameterVO.getUserid());
-	    
-	    if (existingRecord != null) {
-	        // If the record exists, it's a PUT operation
-	        existingRecord.setBranch(globalParameterVO.getBranch());
-	        existingRecord.setBranchcode(globalParameterVO.getBranchcode());
-	        existingRecord.setCustomer(globalParameterVO.getCustomer());
-	        existingRecord.setClient(globalParameterVO.getClient());
-	        existingRecord.setWarehouse(globalParameterVO.getWarehouse());
-	        existingRecord.setOrgId(globalParameterVO.getOrgId());
-	        
-	        return globalParameterRepo.save(existingRecord);
-	    } else {
-	        // If the record doesn't exist, it's a POST operation
-	        return globalParameterRepo.save(globalParameterVO);
-	    }
-		
-		
+
+		GlobalParameterVO existingRecord = globalParameterRepo.findGlobalParam(globalParameterVO.getOrgId(),
+				globalParameterVO.getUserid());
+
+		if (existingRecord != null) {
+			// If the record exists, it's a PUT operation
+			existingRecord.setBranch(globalParameterVO.getBranch());
+			existingRecord.setBranchcode(globalParameterVO.getBranchcode());
+			existingRecord.setCustomer(globalParameterVO.getCustomer());
+			existingRecord.setClient(globalParameterVO.getClient());
+			existingRecord.setWarehouse(globalParameterVO.getWarehouse());
+			existingRecord.setOrgId(globalParameterVO.getOrgId());
+
+			return globalParameterRepo.save(existingRecord);
+		} else {
+			// If the record doesn't exist, it's a POST operation
+			return globalParameterRepo.save(globalParameterVO);
+		}
+
 	}
+
 	// get access Branch
 	@Override
-	public Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid,String userName) {
-		
-		return userBranchAccessRepo.findGlobalParametersBranchByUserName(orgid,userName);
+	public Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid, String userName) {
+
+		return userBranchAccessRepo.findGlobalParametersBranchByUserName(orgid, userName);
 	}
 
 	@Override
 	public Set<Object[]> getAllAccessCustomerForLogin(Long orgid, String userName, String branchcode) {
-		
-		return customerRepo.findAllAccessCustomerByUserName(orgid,userName,branchcode);
+
+		return customerRepo.findAllAccessCustomerByUserName(orgid, userName, branchcode);
 	}
 
 	@Override
-	public Set<Object[]> getAllAccessClientForLogin(Long orgid, String userName, String branchcode,String customer) {
+	public Set<Object[]> getAllAccessClientForLogin(Long orgid, String userName, String branchcode, String customer) {
 		// TODO Auto-generated method stub
-		return clientRepo.findAllAccessClientByUserName(orgid,userName,branchcode,customer);
+		return clientRepo.findAllAccessClientByUserName(orgid, userName, branchcode, customer);
 	}
-	
-	
-	
-	
-	
 
-	
-	
-
-	
-
-	
 }

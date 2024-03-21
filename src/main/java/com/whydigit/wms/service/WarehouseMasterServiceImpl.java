@@ -247,15 +247,15 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public BranchVO createBranch(BranchVO branchVO) {
 		branchVO.setBranch(branchVO.getBranch().toUpperCase());
 		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
-		branchVO.setDupchk(branchVO.getOrgid() + branchVO.getBranch() + branchVO.getBranchcode());
+		branchVO.setDupchk(branchVO.getOrgId() + branchVO.getBranch() + branchVO.getBranchcode());
 		return branchRepo.save(branchVO);
 	}
 
 	@Override
 	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
 		if (branchRepo.existsById(branchVO.getId())) {
-			branchVO.setModifiedby(branchVO.getUserid());
-			branchVO.setDupchk(branchVO.getOrgid() + branchVO.getBranch() + branchVO.getBranchcode());
+			branchVO.setUpdatedby(branchVO.getUserid());
+			branchVO.setDupchk(branchVO.getOrgId() + branchVO.getBranch() + branchVO.getBranchcode());
 			return Optional.of(branchRepo.save(branchVO));
 		} else {
 			return Optional.empty();
@@ -287,8 +287,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO) {
 		if (customerRepo.existsById(customerVO.getId())) {
-			customerVO.setDupchk(customerVO.getCustomer() + customerVO.getOrgid());
-			clientVO.setClient(clientVO.getClient() + clientVO.getOrgid());
+			customerVO.setDupchk(customerVO.getCustomer() + customerVO.getOrgId());
+			clientVO.setClient(clientVO.getClient() + clientVO.getOrgId());
 			return Optional.of(customerRepo.save(customerVO));
 		} else {
 			return Optional.empty();
@@ -336,14 +336,14 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public WarehouseVO createWarehouse(WarehouseVO warehouseVO) {
 		warehouseVO.setWarehouse(warehouseVO.getWarehouse().toUpperCase());
 		warehouseVO.setBranchcode(warehouseVO.getBranchcode().toUpperCase());
-		warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehouse() + warehouseVO.getOrgid());
+		warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehouse() + warehouseVO.getOrgId());
 		return warehouseRepo.save(warehouseVO);
 	}
 
 	@Override
 	public Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO) {
 		if (warehouseRepo.existsById(warehouseVO.getId())) {
-			warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehouse() + warehouseVO.getOrgid());
+			warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehouse() + warehouseVO.getOrgId());
 			return Optional.of(warehouseRepo.save(warehouseVO));
 		} else {
 			return Optional.empty();
@@ -437,7 +437,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public MaterialVO createMaterial(MaterialVO materialVO) {
-		materialVO.setDupchk(materialVO.getOrgid() + materialVO.getCustomer() + materialVO.getClient()
+		materialVO.setDupchk(materialVO.getOrgId() + materialVO.getCustomer() + materialVO.getClient()
 				+ materialVO.getPartno() + materialVO.getPartdesc());
 		;
 		return materialRepo.save(materialVO);
@@ -446,9 +446,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<MaterialVO> updateMaterial(MaterialVO materialVO) {
 		if (materialRepo.existsById(materialVO.getId())) {
-			materialVO.setDupchk(materialVO.getOrgid() + materialVO.getCustomer() + materialVO.getClient()
+			materialVO.setDupchk(materialVO.getOrgId() + materialVO.getCustomer() + materialVO.getClient()
 					+ materialVO.getPartno() + materialVO.getPartdesc());
-			materialVO.setModifiedby(materialVO.getModifiedby());
+			materialVO.setUpdatedby(materialVO.getUpdatedby());
 			return Optional.of(materialRepo.save(materialVO));
 		} else {
 			return Optional.empty();
@@ -473,7 +473,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public BuyerVO createBuyer(BuyerVO buyerVO) {
-		buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getOrgid() + buyerVO.getCustomer() + buyerVO.getBuyer()
+		buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getOrgId() + buyerVO.getCustomer() + buyerVO.getBuyer()
 				+ buyerVO.getBuyershortname());
 		return buyerRepo.save(buyerVO);
 	}
@@ -481,7 +481,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<BuyerVO> updateBuyer(BuyerVO buyerVO) {
 		if (buyerRepo.existsById(buyerVO.getId())) {
-			buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getOrgid() + buyerVO.getCustomer() + buyerVO.getBuyer()
+			buyerVO.setDupchk(buyerVO.getClient() + buyerVO.getOrgId() + buyerVO.getCustomer() + buyerVO.getBuyer()
 					+ buyerVO.getBuyershortname());
 			return Optional.of(buyerRepo.save(buyerVO));
 		} else {
@@ -508,7 +508,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public SupplierVO createSupplier(SupplierVO supplierVO) {
-		supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getOrgid() + supplierVO.getCustomer()
+		supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getOrgId() + supplierVO.getCustomer()
 				+ supplierVO.getClient() + supplierVO.getSupplier() + supplierVO.getSuppliershortname());
 		return supplierRepo.save(supplierVO);
 	}
@@ -516,7 +516,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<SupplierVO> updateSupplier(SupplierVO supplierVO) {
 		if (supplierRepo.existsById(supplierVO.getId())) {
-			supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getOrgid() + supplierVO.getCustomer()
+			supplierVO.setDupchk(supplierVO.getSuppliertype() + supplierVO.getOrgId() + supplierVO.getCustomer()
 					+ supplierVO.getClient() + supplierVO.getSupplier() + supplierVO.getSuppliershortname());
 			return Optional.of(supplierRepo.save(supplierVO));
 		} else {
@@ -583,7 +583,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<CarrierVO> updateCarrier(CarrierVO carrierVO) {
 		if (carrierRepo.existsById(carrierVO.getId())) {
-			carrierVO.setModifiedby(carrierVO.getUserid());
+			carrierVO.setUpdatedby(carrierVO.getUserid());
 			carrierVO.setCarrier(carrierVO.getCarrier().toUpperCase());
 			carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
 			carrierVO.setDupchk(carrierVO.getOrgId() + carrierVO.getCarrier() + carrierVO.getCarriershortname());
@@ -613,18 +613,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public EmployeeVO createEmployee(EmployeeVO employeeVO) {
 		employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
-		employeeVO.setEmployee(employeeVO.getEmployee().toUpperCase());
-		employeeVO.setDupchk(employeeVO.getOrgid() + employeeVO.getEmployeecode());
+		employeeVO.setEmployeeName(employeeVO.getEmployeeName().toUpperCase());
+		employeeVO.setDupchk(employeeVO.getOrgId() + employeeVO.getEmployeecode());
 		return employeeRepo.save(employeeVO);
 	}
 
 	@Override
 	public Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO) {
 		if (employeeRepo.existsById(employeeVO.getId())) {
-			employeeVO.setModifiedby(employeeVO.getUserid());
+			employeeVO.setUpdatedby(employeeVO.getUserid());
 			employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
-			employeeVO.setEmployee(employeeVO.getEmployee().toUpperCase());
-			employeeVO.setDupchk(employeeVO.getOrgid() + employeeVO.getEmployeecode());
+			employeeVO.setEmployeeName(employeeVO.getEmployeeName().toUpperCase());
+			employeeVO.setDupchk(employeeVO.getOrgId() + employeeVO.getEmployeecode());
 			return Optional.of(employeeRepo.save(employeeVO));
 		} else {
 			return Optional.empty();

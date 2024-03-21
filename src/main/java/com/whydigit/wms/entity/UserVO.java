@@ -34,26 +34,60 @@ public class UserVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "usersgen")
 	@SequenceGenerator(name = "usersgen",sequenceName = "usersVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="usersid")
+	@Column(name="userid")
 	private Long id;
-	@Column(unique = true)
+	
+	@Column(name="username")
 	private String userName;
+	
+	@Column(name="password")
 	private String password;
+	
+	@Column(name="employeename")
 	private String employeeName;
+	
+	@Column(name="nickname")
 	private String nickName;
+	
+	@Column(name="email")
 	private String email;
-	private Long orgid;
+	
+	@Column(name="orgid")
+	private Long orgId;
+	
+	@Column(name="mobileno")
 	private String mobileNo;
+	
+	@Column(name="usertype")
 	private String userType;
+	
+	@Column(name="customer")
 	private String customer;
+	
+	@Column(name="warehouse")
 	private String warehouse;
+	
+	@Column(name="branch")
 	private String branch;
+	
+	@Column(name="branchcode")
 	private String branchcode;
+	
+	@Column(name="client")
 	private String client;
+	
+	@Column(name="loginstatus")
 	private boolean loginStatus;
+	
+	@Column(name="active")
 	private String isActive;
+	
+	@Column(name="role")
 	private Role role;
 
+	@Column(name="usersid")
+	private Role usersId;
+	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 	

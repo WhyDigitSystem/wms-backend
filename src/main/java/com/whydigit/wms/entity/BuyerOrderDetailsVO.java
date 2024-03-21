@@ -24,16 +24,30 @@ import lombok.NoArgsConstructor;
 public class BuyerOrderDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "buyerorderdetailsgen")
-	@SequenceGenerator(name = "buyerorderdetailsgen",sequenceName = "buyerorderdetailsVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="buyerorderdetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyerorderdetailsgen")
+	@SequenceGenerator(name = "buyerorderdetailsgen", sequenceName = "buyerorderdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "buyerorderdetailsid")
 	private Long id;
+
+	@Column(name = "partno")
 	private String partno;
+
+	@Column(name = "partdesc")
 	private String partdesc;
+
+	@Column(name = "qty")
 	private String qty;
+
+	@Column(name = "batchno")
 	private String batchno;
+
+	@Column(name = "availqty")
 	private String availqty;
+
+	@Column(name = "sku")
 	private String sku;
+
+	@Column(name = "remarks")
 	private String remarks;
 
 	@JsonBackReference

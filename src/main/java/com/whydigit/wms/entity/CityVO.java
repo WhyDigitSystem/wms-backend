@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,18 +26,39 @@ public class CityVO {
 	@SequenceGenerator(name = "citygen",sequenceName = "cityVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="cityid")
 	private Long id;
+	
+	@Column(name="citycode")
 	private String citycode;
+	
+	@Column(name="country")
 	private String country;
+	
+	@Column(name="city")
     private String city;
+	
+	@Column(name="state")
     private String state;
+	
+	@Column(name="active")
     private boolean active;
+	
+	@Column(name="userif")
     private String userid;
+	
 	@Column(unique = true)
 	private String dupchk;
+	
+	@Column(name="createdby")
 	private String createdby;
-	private String modifiedby;
-	private Long orgid;
+	
+	@Column(name="modifiedby")
+	private String updatedby;
+	
+	@Column(name="orgid")
+	private Long orgId;
+	
+	@Column(name="cancel")
 	private boolean cancel;
-    @Embedded
+
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

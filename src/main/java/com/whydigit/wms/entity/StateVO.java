@@ -27,17 +27,38 @@ public class StateVO {
 	@SequenceGenerator(name = "stategen",sequenceName = "stateVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="stateid")
 	private Long id;
+	
+	@Column(name="statecode")
 	private String statecode;
+	
+	@Column(name="state")
 	private String state;
+	
+	@Column(name="country")
     private String country;
+	
+	@Column(name="region")
     private String region;
+	
+	@Column(name="active")
     private boolean active;
+	
+	@Column(name="userid")
     private String userid;
+	
     @Column(unique = true)
 	private String dupchk;
-	private String createdby;
-	private String modifiedby;
-	private Long orgid;
+	
+    @Column(name="createdby")
+    private String createdby;
+    
+    @Column(name="modifiedby")
+	private String updatedby;
+    
+    @Column(name="orgid")
+	private Long orgId;
+    
+    @Column(name="cancel")
 	private boolean cancel;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

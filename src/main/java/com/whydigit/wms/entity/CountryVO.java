@@ -27,15 +27,32 @@ public class CountryVO {
 	@SequenceGenerator(name = "countrygen",sequenceName = "countryVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="countryid")
 	private Long id;
+	
+	@Column(name="country")
 	private String country;
+	
+	@Column(name="countrycode")
 	private String countrycode;
+	
+	@Column(name="active")
 	private boolean active;
-	private Long orgid;
+	
+	@Column(name="orgid")
+	private Long orgId;
+
+	@Column(name="userid")
 	private String userid;
+	
 	@Column(unique = true)
 	private String dupchk;
+	
+	@Column(name="createdby")
 	private String createdby;
-	private String modifiedby;
+	
+	@Column(name="modifiedby")
+	private String updatedby;
+	
+	@Column(name="cancel")
 	private boolean cancel;
 	
 	@Embedded

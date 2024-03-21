@@ -28,17 +28,38 @@ public class CurrencyVO {
 	@SequenceGenerator(name = "currencygen",sequenceName = "currencyVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="currencyid")
 	private Long id;
+	
+	@Column(name="userid")
 	private String userid;
+	
+	@Column(name="counrty")
 	private String country;
+	
+	@Column(name="currency")
 	private String currency;
+	
+	@Column(name="subcurrency")
     private String subcurrency;
+	
+	@Column(name="currencysymbol")
     private String currencysymbol;
-    private Long orgid;
+    
+	@Column(name="orgid")
+    private Long orgId;
+	
+	@Column(name="active")
     private boolean active;
+	
 	@Column(unique = true)
 	private String dupchk;
+
+	@Column(name="createdby")
 	private String createdby;
-	private String modifiedby;
+	
+	@Column(name="modifiedby")
+	private String updatedby;
+	
+	@Column(name="cancel")
 	private boolean cancel;
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

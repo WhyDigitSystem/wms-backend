@@ -17,36 +17,60 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="warehouselocationdetails")
+@Table(name = "warehouselocationdetails")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class WarehouseLocationDetailsVO {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "warehouselocationdetailsgen")
-	@SequenceGenerator(name = "warehouselocationdetailsgen",sequenceName = "warehouselocationdetailsVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="warehouselocationdetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouselocationdetailsgen")
+	@SequenceGenerator(name = "warehouselocationdetailsgen", sequenceName = "warehouselocationdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "warehouselocationdetailsid")
 	private Long id;
+
+	@Column(name = "branchname")
 	private String branchname;
+
+	@Column(name = "branchcode")
 	private String branchcode;
+
+	@Column(name = "warehouse")
 	private String warehouse;
+
+	@Column(name = "locatintype")
 	private String locationtype;
+
+	@Column(name = "rowno")
 	private String rowno;
+
+	@Column(name = "level")
 	private String level;
+
+	@Column(name = "cellfrom")
 	private String cellfrom;
+
+	@Column(name = "cellto")
 	private String cellto;
+
+	@Column(name = "bin")
 	private String bin;
+
+	@Column(name = "bincategory")
 	private String bincategory;
+
+	@Column(name = "status")
 	private String status;
+
+	@Column(name = "core")
 	private String core;
-	private Long orgid;
+
+	@Column(name = "orgid")
+	private Long orgId;
 
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name="warehouselocationid")
+	@JoinColumn(name = "warehouselocationid")
 	private WarehouseLocationVO warehouseLocationVO;
-	
-	
-	
+
 }

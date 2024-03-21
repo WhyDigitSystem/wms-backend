@@ -29,7 +29,11 @@ public class UserLoginClientAccessVO {
 	@SequenceGenerator(name = "userloginclientaccessgen",sequenceName = "userloginclientaccessVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="userloginclientaccessid")
 	private long id;
+	
+	@Column(name="client")
 	private String client;
+	
+	@Column(name="customer")
 	private String customer;
 	
 	@JsonBackReference

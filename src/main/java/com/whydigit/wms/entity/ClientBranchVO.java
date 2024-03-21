@@ -25,21 +25,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClientBranchVO {
 
-	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "clientbranchgen")
-	@SequenceGenerator(name = "clientbranchgen",sequenceName = "clientbranchVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="clientbranchid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientbranchgen")
+	@SequenceGenerator(name = "clientbranchgen", sequenceName = "clientbranchVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "clientbranchid")
 	private Long id;
+
+	@Column(name = "branchcode")
 	private String branchcode;
-	private Long orgid;
+
+	@Column(name = "orgid")
+	private Long orgId;
+
+	@Column(name = "address")
 	private String address;
 
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "customerid")
 	private CustomerVO customerVO;
-	
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

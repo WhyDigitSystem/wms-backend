@@ -29,35 +29,83 @@ import lombok.NoArgsConstructor;
 public class BuyerOrderVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "buyerordergen")
-	@SequenceGenerator(name = "buyerordergen",sequenceName = "buyerorderVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="buyerorderid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyerordergen")
+	@SequenceGenerator(name = "buyerordergen", sequenceName = "buyerorderVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "buyerorderid")
 	private Long id;
+
+	@Column(name = "orderno")
 	private String orderno;
+
+	@Column(name = "docdate")
 	private LocalDate docdate;
+
+	@Column(name = "orderdate")
 	private LocalDate orderdate;
+
+	@Column(name = "invoiceno")
 	private String invoiceno;
+
+	@Column(name = "refno")
 	private String refno;
+
+	@Column(name = "invoicedate")
 	private LocalDate invoicedate;
+
+	@Column(name = "refdate")
 	private LocalDate refdate;
+
+	@Column(name = "buyershortname")
 	private String buyershortname;
+
+	@Column(name = "currency")
 	private String currency;
+
+	@Column(name = "exrate")
 	private String exrate;
+
+	@Column(name = "location")
 	private String location;
+
+	@Column(name = "billto")
 	private String billto;
+
+	@Column(name = "tax")
 	private String tax;
+
+	@Column(name = "shipto")
 	private String shipto;
+
+	@Column(name = "remarks")
 	private String remarks;
+
 	@Column(unique = true)
 	private String dupchk;
-	private String createdon;
-	private String modifiedon;
+
+	@Column(name = "createdby")
+	private String createdby;
+
+	@Column(name = "modifiedby")
+	private String updatedby;
+
+	@Column(name = "company")
 	private String company;
+
+	@Column(name = "cancel")
 	private boolean cancel;
+
+	@Column(name = "userid")
 	private String userid;
+
+	@Column(name = "cancelremark")
 	private String cancelremark;
+
+	@Column(name = "active")
 	private boolean active;
+
+	@Column(name = "screencode")
 	private String screencode;
+
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "buyerOrderVO")
 	private List<BuyerOrderDetailsVO> buyerOrderDetailsVO;

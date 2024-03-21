@@ -28,27 +28,68 @@ public class BranchVO {
 	@SequenceGenerator(name = "branchgen",sequenceName = "branchVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="branchid")
 	private Long id;
+	
+	@Column(name="branch")
 	private String branch;
+	
+	@Column(name="branchcode")
 	private String branchcode;
-	private Long orgid;
+	
+	@Column(name="orgid")
+	private Long orgId;
+
+	@Column(name="addressline1")
 	private String addressline1;
+	
+	@Column(name="addressline2")
 	private String addressline2;
+	
+	@Column(name="panno")
 	private String PANno;
+	
+	@Column(name="gstin")
 	private String GSTin;
+	
+	@Column(name="state")
 	private String state;
+	
+	@Column(name="city")
 	private String city;
+	
+	@Column(name="pincode")
 	private String pincode;
+	
+	@Column(name="stateno")
 	private String stateno;
+	
+	@Column(name="statecode")
 	private String statecode;
+	
+	@Column(name="region")
 	private String region;
+	
+	@Column(name="lccurrency")
 	private String lccurrency;
+	
+	@Column(name="cancel0")
 	private boolean cancel;
+	
+	@Column(name="cancelremarks")
 	private String cancelremarks;
+	
+	@Column(name="createdby")
 	private String createdby;
-	private String modifiedby;
+	
+	@Column(name="modifiedby")
+	private String updatedby;
+
 	@Column(unique = true)
 	private String dupchk;
+	
+	@Column(name="active")
 	private boolean active;
+	
+	@Column(name="userid")
 	private String userid;
 
 	@Embedded

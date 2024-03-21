@@ -22,23 +22,40 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RegionVO {
 
-	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "regiongen")
-	@SequenceGenerator(name = "regiongen",sequenceName = "regionVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="regionid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "regiongen")
+	@SequenceGenerator(name = "regiongen", sequenceName = "regionVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "regionid")
 	private Long id;
+
+	@Column(name = "userid")
 	private String userid;
+
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String docid;
+
+	@Column(name = "regioncode")
 	private String regioncode;
+
+	@Column(name = "region")
 	private String region;
+
+	@Column(name = "active")
 	private boolean active;
+
 	@Column(unique = true)
 	private String dupchk;
+
+	@Column(name = "createdby")
 	private String createdby;
-	private String modifiedby;
-	private Long orgid;
+
+	@Column(name = "modifiedby")
+	private String updatedby;
+
+	@Column(name = "orgid")
+	private Long orgId;
+
+	@Column(name = "cancel")
 	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
