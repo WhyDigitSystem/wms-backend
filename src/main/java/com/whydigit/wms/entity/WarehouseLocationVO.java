@@ -43,8 +43,8 @@ public class WarehouseLocationVO {
 	private String cellto;
 	private boolean cancel;
 	private boolean active;
-	private String createdon;
-	private String modifiedon;
+	private String createdby;
+	private String modifiedby;
 	private String userid;
 	private Long orgid;
 	

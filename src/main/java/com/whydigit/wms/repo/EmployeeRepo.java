@@ -12,10 +12,10 @@ import com.whydigit.wms.entity.EmployeeVO;
 @Repository
 public interface EmployeeRepo extends JpaRepository<EmployeeVO, Long>{
 
-	@Query(value="SELECT e.employeecode , e.employeename FROM EmployeeVO e WHERE e.orgId=?1")
-	Set<Object[]> findAllNameAndEmployeeCodeByOrgId(Long orgid);
+	@Query(value="SELECT e.employeecode , e.employee FROM EmployeeVO e WHERE e.orgid=?1")
+	Set<Object[]> findAllNameAndEmployeeCodeByOrgid(Long orgid);
 
-	List<EmployeeVO> findAllEmployeeByOrgId(Long orgid);
+	List<EmployeeVO> findAllEmployeeByOrgid(Long orgid);
 
 	
 

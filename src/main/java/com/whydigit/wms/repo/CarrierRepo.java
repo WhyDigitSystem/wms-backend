@@ -9,7 +9,7 @@ import com.whydigit.wms.entity.CarrierVO;
 
 public interface CarrierRepo extends JpaRepository<CarrierVO, Long>{
 
-	@Query("select a from CarrierVO a where a.orgId=?1 and a.client=?2 and (a.cbranch='ALL' or a.cbranch=?3)")
+	@Query("select a from CarrierVO a where a.orgid=?1 and a.client=?2 and (a.cbranch='ALL' or a.cbranch=?3)")
 	List<CarrierVO> findAll(Long orgid, String client, String cbranch);
 
 }

@@ -296,9 +296,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		emp.setOrgid(company.getId());
 		employeeRepo.save(emp);
 		UserVO userVO=new UserVO();
-		userVO.setUserName(company.getEmployeecode());
+		userVO.setUsername(company.getEmployeecode());
 		userVO.setOrgid(company.getId());
-		userVO.setUserType("ROLE_ADMIN");
+		userVO.setUsertype("ROLE_ADMIN");
 		userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(company.getPassword())));
 		userRepo.save(userVO);
 		return company;
@@ -373,7 +373,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO) {
 		
-		GlobalParameterVO existingRecord = globalParameterRepo.findGlobalParam(globalParameterVO.getOrgId(), globalParameterVO.getUserid());
+		GlobalParameterVO existingRecord = globalParameterRepo.findGlobalParam(globalParameterVO.getOrgid(), globalParameterVO.getUserid());
 	    
 	    if (existingRecord != null) {
 	        // If the record exists, it's a PUT operation
@@ -382,7 +382,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	        existingRecord.setCustomer(globalParameterVO.getCustomer());
 	        existingRecord.setClient(globalParameterVO.getClient());
 	        existingRecord.setWarehouse(globalParameterVO.getWarehouse());
-	        existingRecord.setOrgId(globalParameterVO.getOrgId());
+	        existingRecord.setOrgid(globalParameterVO.getOrgid());
 	        
 	        return globalParameterRepo.save(existingRecord);
 	    } else {

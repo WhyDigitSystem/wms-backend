@@ -9,7 +9,7 @@ import com.whydigit.wms.entity.GroupVO;
 
 public interface GroupRepo extends JpaRepository<GroupVO, Long>{
 
-	@Query("select a from GroupVO a where a.orgId=?1")
+	@Query("select a from GroupVO a where a.orgid=?1")
 	List<GroupVO> findAll(Long orgid);
 
 }

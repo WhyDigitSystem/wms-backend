@@ -10,10 +10,10 @@ import com.whydigit.wms.entity.CountryVO;
 
 public interface CountryRepository extends JpaRepository<CountryVO,Long>{
 
-	@Query("select a.id,a.countryname from CountryVO a where a.orgId=?1")
+	@Query("select a.id,a.country from CountryVO a where a.orgid=?1")
 	Set<Object[]> findCountryAndCountryid(Long orgid);
 
-	@Query("select a from CountryVO a where orgId=?1")
+	@Query("select a from CountryVO a where orgid=?1")
 	List<CountryVO> findAll(Long orgid);
 
 	

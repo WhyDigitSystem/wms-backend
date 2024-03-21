@@ -9,10 +9,10 @@ import com.whydigit.wms.entity.CityVO;
 
 	public interface CityRepo extends JpaRepository<CityVO, Long> {
 
-		@Query("select a from CityVO a where a.orgId=?1")
+		@Query("select a from CityVO a where a.orgid=?1")
 		List<CityVO> findAll(Long orgid);
 
-		@Query("select a from CityVO a where a.orgId=?1 and a.state=?2")
+		@Query("select a from CityVO a where a.orgid=?1 and a.state=?2")
 		List<CityVO> findAll(Long orgid, String state);
 		
 

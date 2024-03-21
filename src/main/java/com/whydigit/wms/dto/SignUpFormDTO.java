@@ -8,23 +8,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignUpFormDTO {
 
-	private String userName;
+	private String username;
     private String password;
-    private String employeeName;
-    private String nickName;
+    private String employeename;
+    private String nickname;
     private String email;
-    private String mobileNo;
-    private String userType;
-    private String isActive;
-//    private List<UserLoginRoleAccessDTO>roleAccessDTO;
-//    private List<UserLoginClientAccessDTO> clientAccessDTOList;
-//    private List<UserLoginBranchAccessDTO> branchAccessDTOList;
- 
-	public String getUserName() {
-		return userName;
+    private String mobileno;
+    private String usertype;
+    private String active;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -32,17 +28,17 @@ public class SignUpFormDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getEmployeeName() {
-		return employeeName;
+	public String getEmployeename() {
+		return employeename;
 	}
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
+	public void setEmployeename(String employeename) {
+		this.employeename = employeename;
 	}
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	public String getEmail() {
 		return email;
@@ -50,46 +46,25 @@ public class SignUpFormDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getMobileNo() {
-		return mobileNo;
+	public String getMobileno() {
+		return mobileno;
 	}
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
+	public void setMobileno(String mobileno) {
+		this.mobileno = mobileno;
 	}
-	public String getUserType() {
-		return userType;
+	public String getUsertype() {
+		return usertype;
 	}
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
 	}
-	
-//	public List<UserLoginClientAccessDTO> getClientAccessDTOList() {
-//		return clientAccessDTOList;
-//	}
-//	public void setClientAccessDTOList(List<UserLoginClientAccessDTO> clientAccessDTOList) {
-//		this.clientAccessDTOList = clientAccessDTOList;
-//	}
-	public String getIsActive() {
-		return isActive;
+	public String getActive() {
+		return active;
 	}
-	public void setIsActive(String isActive) {
-		this.isActive = isActive;
-	}
-//	public List<UserLoginBranchAccessDTO> getBranchAccessDTOList() {
-//		return branchAccessDTOList;
-//	}
-//	public void setBranchAccessDTOList(List<UserLoginBranchAccessDTO> branchAccessDTOList) {
-//		this.branchAccessDTOList = branchAccessDTOList;
-//	}
-//	public List<UserLoginRoleAccessDTO> getRoleAccessDTO() {
-//		return roleAccessDTO;
-//	}
-//	public void setRoleAccessDTO(List<UserLoginRoleAccessDTO> roleAccessDTO) {
-//		this.roleAccessDTO = roleAccessDTO;
-//	}
-    
-    
-    
-
-	
-}
+	public void setActive(String active) {
+		this.active = active;
+	}}
+//    private List<UserLoginRoleAccessDTO>roleAccessDTO;
+//    private List<UserLoginClientAccessDTO> clientAccessDTOList;
+//    private List<UserLoginBranchAccessDTO> branchAccessDTOList;
+ 

@@ -20,7 +20,7 @@ public class GlobalParameterVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long globalid;
-	private Long orgId;
+	private Long orgid;
 	private String userid;
 	private String warehouse;
 	private String branch;

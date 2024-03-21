@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 		String methodName = "getUserByUserName()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (StringUtils.isNotEmpty(userName)) {
-			UserVO userVO = userRepo.findByUserName(userName);
+			UserVO userVO = userRepo.findByUsername(userName);
 			if (ObjectUtils.isEmpty(userVO)) {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 			}
@@ -87,14 +87,14 @@ public class UserServiceImpl implements UserService {
 		String methodName = "removeUser()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (StringUtils.isNotEmpty(userName)) {
-			UserVO userVO = userRepo.findByUserName(userName);
+			UserVO userVO = userRepo.findByUsername(userName);
 			if (ObjectUtils.isEmpty(userVO)) {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 			}
 //			userVO.setActive(false);
 			userVO.setAccountRemovedDate(new Date());
 			userRepo.save(userVO);
-			createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
+			createUserAction(userVO.getUsername(), userVO.getUsersid(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
 		}

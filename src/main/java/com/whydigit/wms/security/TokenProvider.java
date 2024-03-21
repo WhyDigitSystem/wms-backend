@@ -137,10 +137,10 @@ public class TokenProvider {
 		Date expiryDate = new Date(now.getTime() + tokenExpInMSec);
 		Key hmacSHA512Key = new SecretKeySpec(hmacSHA512Byte, HMAC_SHA512);
 		Claims claims = Jwts.claims();
-		claims.put("id", userVO.getId());
+		claims.put("id", userVO.getUsersid());
 		tokenVO.setExpDate(new Date(now.getTime() + refreshTokenExpInMSec));
 		tokenRepo.save(tokenVO);
-		String token = Jwts.builder().setClaims(claims).setSubject(userVO.getUserName()).setIssuedAt(now)
+		String token = Jwts.builder().setClaims(claims).setSubject(userVO.getUsername()).setIssuedAt(now)
 				.setExpiration(expiryDate).signWith(hmacSHA512Key, SignatureAlgorithm.HS512).compact();
 		tokenVO.setToken(token);
 		return tokenVO;

@@ -31,7 +31,7 @@ public class LocationTypeVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private Long orgId;
+	private Long orgid;
 	private boolean cancel;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

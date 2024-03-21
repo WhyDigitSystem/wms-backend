@@ -9,7 +9,7 @@ import com.whydigit.wms.entity.UnitVO;
 
 public interface UnitRepo extends JpaRepository<UnitVO, Long> {
 
-	@Query("select a from UnitVO a where a.orgId=?1")
+	@Query("select a from UnitVO a where a.orgid=?1")
 	List<UnitVO> findAll(Long orgid);
 
 }

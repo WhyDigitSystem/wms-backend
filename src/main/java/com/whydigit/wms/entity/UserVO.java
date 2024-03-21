@@ -35,23 +35,24 @@ public class UserVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "usersgen")
 	@SequenceGenerator(name = "usersgen",sequenceName = "usersVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="usersid")
-	private Long id;
+	private Long usersid;
 	@Column(unique = true)
-	private String userName;
+	private String userid;
+	private String username;
 	private String password;
-	private String employeeName;
-	private String nickName;
+	private String employeename;
+	private String nickname;
 	private String email;
 	private Long orgid;
-	private String mobileNo;
-	private String userType;
+	private String mobileno;
+	private String usertype;
 	private String customer;
 	private String warehouse;
 	private String branch;
 	private String branchcode;
 	private String client;
-	private boolean loginStatus;
-	private String isActive;
+	private boolean loginstatus;
+	private String active;
 	private Role role;
 
 	@Embedded

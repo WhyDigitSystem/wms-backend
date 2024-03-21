@@ -7,13 +7,13 @@ import com.whydigit.wms.entity.UserVO;
 
 public interface UserRepo extends JpaRepository<UserVO, Long> {
 
-	boolean existsByUserNameOrEmail(String userName, String email);
+	boolean existsByUsernameOrEmail(String username, String email);
 
-	@Query("select a from UserVO a where a.userName=?1")
-	UserVO findByUserName(String userName);
+	@Query("select a from UserVO a where a.username=?1")
+	UserVO findByUsername(String username);
 
-	@Query(value = "select u from UserVO u where u.usersId =?1")
-	UserVO getUserById(Long usersId);
+	@Query(value = "select u from UserVO u where u.usersid =?1")
+	UserVO getUserById(Long usersid);
 
 //	UserVO findByUserNameAndUsersId(String userName, Long usersId);
 
