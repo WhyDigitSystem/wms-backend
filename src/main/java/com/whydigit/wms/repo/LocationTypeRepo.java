@@ -11,7 +11,7 @@ import com.whydigit.wms.entity.LocationTypeVO;
 @Repository
 public interface LocationTypeRepo extends JpaRepository<LocationTypeVO, Long> {
 
-	@Query("select a from LocationTypeVO a where a.orgid=?1")
+	@Query("select a from LocationTypeVO a where a.orgId=?1")
 	List<LocationTypeVO> findAll(Long orgid);
 
 }

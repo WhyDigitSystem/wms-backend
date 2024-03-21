@@ -30,7 +30,7 @@ public class BuyerOrderVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "buyerordergen")
-	@SequenceGenerator(name = "buyerordergen",sequenceName = "buyerordervo",initialValue = 1000000001,allocationSize = 1)
+	@SequenceGenerator(name = "buyerordergen",sequenceName = "buyerorderVO",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="buyerorderid")
 	private Long id;
 	private String orderno;
@@ -50,8 +50,8 @@ public class BuyerOrderVO {
 	private String remarks;
 	@Column(unique = true)
 	private String dupchk;
-	private String createdby;
-	private String modifiedby;
+	private String createdon;
+	private String modifiedon;
 	private String company;
 	private boolean cancel;
 	private String userid;

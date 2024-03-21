@@ -35,7 +35,7 @@ public class LocationMappingVO {
 	private String dupchk;
 	private String createdby;
 	private String updatedby;
-	private Long orgid;
+	private Long orgId;
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;

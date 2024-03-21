@@ -28,7 +28,7 @@ public class GatePassLrNoDetailsVO {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String sno;
-	private String orgid;
+	private String orgId;
 	private String lrnohaw;
 	private String invoiceno;
 	private LocalDate invoicedate;

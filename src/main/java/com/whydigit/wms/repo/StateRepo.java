@@ -12,10 +12,10 @@ import com.whydigit.wms.entity.StateVO;
 @Repository
 public interface StateRepo extends JpaRepository<StateVO, Long> {
 
-	@Query("select a from StateVO a where a.orgid=?1 and a.country=?2")
+	@Query("select a from StateVO a where a.orgId=?1 and a.country=?2")
 	List<StateVO> findByCountry(Long orgid,String country);
 
-	@Query("select a from StateVO a where a.orgid=?1")
+	@Query("select a from StateVO a where a.orgId=?1")
 	List<StateVO> findAllByOrgId(Long orgid);
 	
 }

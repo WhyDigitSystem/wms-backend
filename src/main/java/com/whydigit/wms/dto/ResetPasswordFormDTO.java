@@ -16,9 +16,9 @@ public class ResetPasswordFormDTO {
 	@NotBlank(message = "Email is Required")
 	@Size(max = 30)
 	@Email
-	private String username;
+	private String userName;
 
 	@NotBlank
 	@Size(min = 6, max = 100, message = "New Password is required")
-	private String newpassword;
+	private String newPassword;
 }

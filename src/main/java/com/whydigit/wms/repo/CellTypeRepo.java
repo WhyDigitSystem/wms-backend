@@ -12,7 +12,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 public interface CellTypeRepo extends JpaRepository<CellTypeVO, Long>{
 
 
-	@Query("select a from CellTypeVO a where a.orgid=?1")
+	@Query("select a from CellTypeVO a where a.orgId=?1")
 	List<CellTypeVO> findAll(Long orgid);
 
 }

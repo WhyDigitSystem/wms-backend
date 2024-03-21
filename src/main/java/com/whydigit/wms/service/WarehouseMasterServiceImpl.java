@@ -576,7 +576,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public CarrierVO createCarrier(CarrierVO carrierVO) {
 		carrierVO.setCarrier(carrierVO.getCarrier().toUpperCase());
 		carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
-		carrierVO.setDupchk(carrierVO.getOrgid() + carrierVO.getCarrier() + carrierVO.getCarriershortname());
+		carrierVO.setDupchk(carrierVO.getOrgId() + carrierVO.getCarrier() + carrierVO.getCarriershortname());
 		return carrierRepo.save(carrierVO);
 	}
 
@@ -586,7 +586,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			carrierVO.setModifiedby(carrierVO.getUserid());
 			carrierVO.setCarrier(carrierVO.getCarrier().toUpperCase());
 			carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
-			carrierVO.setDupchk(carrierVO.getOrgid() + carrierVO.getCarrier() + carrierVO.getCarriershortname());
+			carrierVO.setDupchk(carrierVO.getOrgId() + carrierVO.getCarrier() + carrierVO.getCarriershortname());
 			return Optional.of(carrierRepo.save(carrierVO));
 		} else {
 			return Optional.empty();
@@ -602,7 +602,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<EmployeeVO> getAllEmployeeByOrgId(Long orgid) {
-		return employeeRepo.findAllEmployeeByOrgid(orgid);
+		return employeeRepo.findAllEmployeeByOrgId(orgid);
 	}
 
 	@Override
@@ -640,7 +640,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Set<Object[]> getAllNameAndEmployeeCodeByOrgId(Long orgid) {
-		return employeeRepo.findAllNameAndEmployeeCodeByOrgid(orgid);
+		return employeeRepo.findAllNameAndEmployeeCodeByOrgId(orgid);
 	}
 
 	@Override

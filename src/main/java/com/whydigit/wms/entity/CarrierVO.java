@@ -33,7 +33,7 @@ public class CarrierVO {
 	private String client;
 	@Column(unique = true)
 	private String dupchk;
-	private Long orgid;
+	private Long orgId;
 	private boolean active;
 	private String userid;
 	private String customer;

@@ -29,7 +29,7 @@ public class GroupVO {
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;
-	private Long orgid;
+	private Long orgId;
 	private String createdby;
 	private String updatedby;
 	private String company;

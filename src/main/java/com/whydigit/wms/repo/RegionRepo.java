@@ -11,7 +11,7 @@ import com.whydigit.wms.entity.RegionVO;
 @Repository
 public interface RegionRepo extends JpaRepository<RegionVO, Long> {
 
-	@Query("select a from RegionVO a where a.orgid=?1")
+	@Query("select a from RegionVO a where a.orgId=?1")
 	List<RegionVO> findAll(Long orgid);
 
 	

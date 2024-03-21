@@ -12,7 +12,7 @@ import com.whydigit.wms.entity.CurrencyVO;
 @Repository
 public interface CurrencyRepo extends JpaRepository<CurrencyVO, Long> {
 
-	@Query("select a from CurrencyVO a where a.orgid=?1")
+	@Query("select a from CurrencyVO a where a.orgId=?1")
 	List<CurrencyVO> findAll(Long orgid);
 	
 

@@ -12,22 +12,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDTO {
-	private Long usersid;
-	private String username;
-	private String employeename;
+	private Long usersId;
+	private String userName;
+	private String employeeName;
 	private String email;
-	private String usertype;
-	private Long orgid;
+	private String userType;
+	private Long orgId;
 	private String customer;
 	private String warehouse;
 	private String branch;
 	private String client;
-	private boolean loginstatus;
-	private String active;
+	private boolean loginStatus;
+	private String isActive;
 	private Role role;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	private Date accountremoveddate;
+	private Date accountRemovedDate;
 	private String token;
-	private String tokenid;
+	private String tokenId;
 }
