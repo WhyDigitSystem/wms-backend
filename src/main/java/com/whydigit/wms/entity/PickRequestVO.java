@@ -17,34 +17,37 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "putaway")
+@Table(name = "pickrequest")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PutAwayVO {
+public class PickRequestVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	private String transcationtype;
+	private String docid;
+	private String buyerrefno;
 	private LocalDate docdate;
-	private String grnno;
-	private LocalDate grndate;
-	private String entryno;
-	private String core;
-	private String suppliershortname;
-	private String supplier;
-	private String modeodshipment;
-	private String carrier;
-	private String locationtype;
-	private String status;
-	private String lotno;
-	private String enteredperson;
+	private String shipmentmethod;
+	private String buyerorderno;
+	private String buyersreference;
+	private String invoiceno;
+	private String clientname;
+	private String clientshortname;
+	private String clientaddress;
+	private String dispatch;
+	private String customername;
+	private String customeraddress;
+	private String duedays;
+	private String noofboxes;
+	private String pickorder;
+	private String outtime;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
@@ -53,19 +56,13 @@ public class PutAwayVO {
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;
-	private boolean active;                                                                                           
-	private String branchcode;
-	private String branch;
+	private boolean active;
 	private String screencode;
-	private String client;
-	private String customer;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "putAwayVO", cascade = CascadeType.ALL)
-	private List<PutAwayDetailsVO> putAwayDetailsVO;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pickRequestVO")
+	private List<PickRequestDetailsVO> pickRequestDetailsVO;
 
 	@Embedded
-	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-
 }

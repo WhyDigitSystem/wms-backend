@@ -15,20 +15,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreatedUpdatedDate {
-	private LocalDateTime createdDate;
-	private LocalDateTime updatedDate;
+	private LocalDateTime createdon;
+	private LocalDateTime modifiedon;
 
 	@PrePersist
 	public void onSave() {
 		LocalDateTime currentDate = LocalDateTime.now();
-		this.createdDate = currentDate;
-		this.updatedDate = currentDate;
+		this.createdon = currentDate;
+		this.modifiedon = currentDate;
 	}
 
 	@PostLoad
 	public void onUpdate() {
 		LocalDateTime currentDate = LocalDateTime.now();
-		this.updatedDate = currentDate;
+		this.modifiedon = currentDate;
 	}
 
 }

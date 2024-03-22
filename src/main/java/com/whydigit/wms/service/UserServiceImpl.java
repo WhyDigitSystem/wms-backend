@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 //			userVO.setActive(false);
 			userVO.setAccountRemovedDate(new Date());
 			userRepo.save(userVO);
-			createUserAction(userVO.getUserName(), userVO.getUsersId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
+			createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
 		}

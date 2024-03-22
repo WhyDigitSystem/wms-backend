@@ -3,7 +3,6 @@ package com.whydigit.wms.entity;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -17,34 +16,34 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "putaway")
+@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PutAwayVO {
+public class ManualPickVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String transactiontype;
+	private String docid;
 	private LocalDate docdate;
-	private String grnno;
-	private LocalDate grndate;
-	private String entryno;
-	private String core;
-	private String suppliershortname;
-	private String supplier;
-	private String modeodshipment;
-	private String carrier;
-	private String locationtype;
-	private String status;
-	private String lotno;
-	private String enteredperson;
+	private String buyerrefno;
+	private String buyerorderno;
+	private LocalDate buyerrefdate;
+	private String invoiceno;
+	private String clientname;
+	private String shortname;
+	private String clientaddress;
+	private String customername;
+	private String customeraddress;
+	private String noodboxes;
+	private String duedays;
+	private String outtime;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;
@@ -53,19 +52,14 @@ public class PutAwayVO {
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;
-	private boolean active;                                                                                           
-	private String branchcode;
-	private String branch;
+	private boolean active;
 	private String screencode;
-	private String client;
-	private String customer;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "putAwayVO", cascade = CascadeType.ALL)
-	private List<PutAwayDetailsVO> putAwayDetailsVO;
+	@OneToMany(mappedBy = "manualPickVO")
+	private List<ManualPickDetailsVO> manualPickDetailsVO;
 
 	@Embedded
-	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
 }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -21,27 +22,62 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CarrierVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "carriergen")
+	@SequenceGenerator(name = "carriergen", sequenceName = "carrierVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "carrierid")
 	private Long id;
+
+	@Column(name = "carrier")
 	private String carrier;
+
+	@Column(name = "carriershortname")
 	private String carriershortname;
+
+	@Column(name = "shipmentmode")
 	private String shipmentmode;
+
+	@Column(name = "cbranch")
 	private String cbranch;
+
+	@Column(name = "client")
 	private String client;
+
 	@Column(unique = true)
 	private String dupchk;
+
+	@Column(name = "orgid")
 	private Long orgId;
+
+	@Column(name = "active")
 	private boolean active;
+
+	@Column(name = "userid")
 	private String userid;
+
+	@Column(name = "customer")
 	private String customer;
+
+	@Column(name = "warehouse")
 	private String warehouse;
+
+	@Column(name = "branch")
 	private String branch;
+
+	@Column(name = "branchcode")
 	private String branchcode;
+
+	@Column(name = "cancel")
 	private boolean cancel;
+
+	@Column(name = "cancelremarks")
 	private String cancelremarks;
+
+	@Column(name = "createdby")
 	private String createdby;
+
+	@Column(name = "modifiedby")
 	private String updatedby;
-	
+
 //	@JsonManagedReference
 //	@OneToMany(mappedBy = "carrierVO", cascade = CascadeType.ALL)
 //	private List<CarrierDetailsVO> carrierDetailsVO;

@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class GrnDTO {
-	private Long id;
 	private String direct;
 	private String docid;
 	private LocalDate docdate;
@@ -28,14 +27,16 @@ public class GrnDTO {
 	private String lotno;
 	private String modeofshipment;
 	private Long orgId;
-	private String cancel;
+	private boolean cancel;
 	private String userid;
 	private String cancelremark;
-	private String active;
+	private boolean active;
 	private String branchcode;
 	private String branch;
 	private String client;
 	private String customer;
+	private String warehouse;
+	private String finyr;
 	List<GrnDetailsDTO> grnDetailsDTO;
 
 }

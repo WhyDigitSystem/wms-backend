@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,42 +14,49 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "putawaydetails")
+@Table(name = "manualpickdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PutAwayDetailsVO {
+public class ManualPickDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String partno;
-	private String batch;
+	private String serialno;
+	private String partcode;
 	private String partdescripition;
-	private String sku;
-	private String invqty;
-	private String recqty;
-	private String putawayqty;
-	private String putawaypiecesqty;
+	private String batchno;
+	private String grnno;
 	private String location;
+	private String lotno;
+	private String sku;
+	private String orderqty;
+	private String avlqty;
+	private String pickqty;
 	private String weight;
 	private String rate;
 	private String amount;
-	private String remarks;
+	@Column(unique = true)
+	private String dupchk;
+	private String createdby;
+	private String updatedby;
+	private String company;
+	private boolean cancel;
+	private String userid;
+	private String cancelremark;
+	private boolean active;
+	private String screencode;
 
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "putawayid")
-	private PutAwayVO putAwayVO;
+	@JoinColumn(name = "manualpickid", referencedColumnName = "id")
+	private ManualPickVO manualPickVO;
 
 	@Embedded
-	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-
 }
