@@ -43,14 +43,14 @@ public class BranchVO {
 	
 	@Column(name="addressline2")
 	private String addressline2;
-	
-	@Column(name="panno")
-	private String PANno;
-	
-	@Column(name="gstin")
-	private String GSTin;
-	
-	@Column(name="state")
+
+  @Column(name="panno")
+	private String pan;
+ 
+  @Column(name="gstin")
+	private String gstin;
+
+  @Column(name="state")
 	private String state;
 	
 	@Column(name="city")
@@ -58,6 +58,10 @@ public class BranchVO {
 	
 	@Column(name="pincode")
 	private String pincode;
+
+  @Column(name="country")
+	private String country;
+
 	
 	@Column(name="stateno")
 	private String stateno;

@@ -51,17 +51,11 @@ public class MaterialVO {
 	@Column(name = "basesku")
 	private String basesku;
 
-	@Column(name = "adddesc")
-	private String adddesc;
-
 	@Column(name = "purchaseunit")
 	private String purchaseunit;
 
 	@Column(name = "storageunit")
 	private String storageunit;
-
-	@Column(name = "fixedcapacrosslocn")
-	private String fixedcapacrosslocn;
 
 	@Column(name = "fsn")
 	private String fsn;
@@ -72,8 +66,6 @@ public class MaterialVO {
 	@Column(name = "type")
 	private String type;
 
-	@Column(name = "serialnoflag")
-	private String serialnoflag;
 
 	@Column(name = "sku")
 	private String sku;
@@ -87,9 +79,6 @@ public class MaterialVO {
 	@Column(name = "sskuqty")
 	private String sskuqty;
 
-	@Column(name = "zonetype")
-	private String zonetype;
-
 	@Column(name = "weightofskuanduom")
 	private String weightofskuanduom;
 
@@ -99,17 +88,11 @@ public class MaterialVO {
 	@Column(name = "parentchildkey")
 	private String parentchildkey;
 
-	@Column(name = "controlbranch")
-	private String controlbranch;
+	@Column(name = "cbranch")
+	private String cbranch;
 
 	@Column(name = "criticalstocklevel")
 	private String criticalstocklevel;
-
-	@Column(name = "criticalstock")
-	private String criticalstock;
-
-	@Column(name = "bchk")
-	private String bchk;
 
 	@Column(name = "status")
 	private String status;
@@ -126,8 +109,8 @@ public class MaterialVO {
 	@Column(name = "warehouse")
 	private String warehouse;
 
-	@Column(name = "branchname")
-	private String branchname;
+  @Column(name = "branch")
+	private String branch;
 
 	@Column(name = "branchcode")
 	private String branchcode;
@@ -138,17 +121,11 @@ public class MaterialVO {
 	@Column(name = "palletqty")
 	private String palletqty;
 
-	@Column(name = "cbranch")
-	private String cbranch;
-
 	@Column(name = "active")
 	private boolean active;
 
 	@Column(name = "cancel")
 	private boolean cancel;
-
-	@Column(name = "parentchild")
-	private String parentchild;
 
 	@Column(name = "createdby")
 	private String createdby;

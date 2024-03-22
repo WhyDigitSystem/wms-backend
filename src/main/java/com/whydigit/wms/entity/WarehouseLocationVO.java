@@ -75,6 +75,9 @@ public class WarehouseLocationVO {
 	@Column(name = "orgid")
 	private Long orgId;
 
+	@Column(unique = true)
+	private String dupchk;
+	
 	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO;

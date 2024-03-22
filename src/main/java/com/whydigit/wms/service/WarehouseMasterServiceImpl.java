@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -145,6 +143,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public UnitVO createUnit(UnitVO unitVO) {
+		unitVO.setCancel(false);
 		return unitRepo.save(unitVO);
 
 	}
@@ -173,26 +172,24 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid) {
 		return locationTypeRepo.findById(locationtypeid);
 	}
-
+	
 	@Override
-	public Optional<LocationTypeVO> findLocationTypeById(Long id) {
-		return locationTypeRepo.findById(id);
-	}
-
-	@Override
-	public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
+    public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
+		
+		locationTypeVO.setCancel(false);
+		locationTypeVO.setDupchk(locationTypeVO.getOrgId()+locationTypeVO.getLocationtype());
 		return locationTypeRepo.save(locationTypeVO);
-	}
+    }
 
-	public LocationTypeVO updateLocationType(LocationTypeVO locationTypeVO) {
-		Optional<LocationTypeVO> existingLocationType = locationTypeRepo.findById(locationTypeVO.getId());
-		if (existingLocationType.isPresent()) {
-			// If the entity exists, update it
-			return locationTypeRepo.save(locationTypeVO);
+    public Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO) {
+    	if (locationTypeRepo.existsById(locationTypeVO.getId())) {
+    		locationTypeVO.setCancel(false);
+    		locationTypeVO.setDupchk(locationTypeVO.getOrgId()+locationTypeVO.getLocationtype());
+			return Optional.of(locationTypeRepo.save(locationTypeVO));
 		} else {
-			throw new EntityNotFoundException("LocationType not found for ID: " + locationTypeVO.getId());
+			return Optional.empty();
 		}
-	}
+    }
 
 	@Override
 	public void deleteLocationType(Long locationtypeid) {
@@ -247,7 +244,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public BranchVO createBranch(BranchVO branchVO) {
 		branchVO.setBranch(branchVO.getBranch().toUpperCase());
 		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
-		branchVO.setDupchk(branchVO.getOrgId() + branchVO.getBranch() + branchVO.getBranchcode());
+
+		branchVO.setDupchk(branchVO.getOrgId()+branchVO.getBranch()+branchVO.getBranchcode());	
 		return branchRepo.save(branchVO);
 	}
 
@@ -255,7 +253,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
 		if (branchRepo.existsById(branchVO.getId())) {
 			branchVO.setUpdatedby(branchVO.getUserid());
-			branchVO.setDupchk(branchVO.getOrgId() + branchVO.getBranch() + branchVO.getBranchcode());
+
+			branchVO.setDupchk(branchVO.getOrgId() +branchVO.getBranch()+ branchVO.getBranchcode());
 			return Optional.of(branchRepo.save(branchVO));
 		} else {
 			return Optional.empty();
@@ -281,14 +280,15 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public CustomerVO createCustomer(CustomerVO customerVO) {
+		customerVO.setCancel(false);
+		customerVO.setDupchk(customerVO.getOrgId()+customerVO.getCustomer());
 		return customerRepo.save(customerVO);
 	}
 
 	@Override
 	public Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO) {
 		if (customerRepo.existsById(customerVO.getId())) {
-			customerVO.setDupchk(customerVO.getCustomer() + customerVO.getOrgId());
-			clientVO.setClient(clientVO.getClient() + clientVO.getOrgId());
+			customerVO.setDupchk(customerVO.getOrgId()+customerVO.getCustomer());
 			return Optional.of(customerRepo.save(customerVO));
 		} else {
 			return Optional.empty();
@@ -334,6 +334,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public WarehouseVO createWarehouse(WarehouseVO warehouseVO) {
+		warehouseVO.setCancel(false);
 		warehouseVO.setWarehouse(warehouseVO.getWarehouse().toUpperCase());
 		warehouseVO.setBranchcode(warehouseVO.getBranchcode().toUpperCase());
 		warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehouse() + warehouseVO.getOrgId());
@@ -370,14 +371,14 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public Set<Object> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse) {
+	public Set<Object[]> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse) {
 
 		return warehouseLocationRepo.findAllLocationTypeByOrgIdAndWarehouse(orgid, warehouse);
 	}
 
 	// get All Row no based on company and Warehouse and Location type
 	@Override
-	public Set<Object> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse,
+	public Set<Object[]> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse,
 			String locationtype) {
 
 		return warehouseLocationRepo.findAllRownoByOrgIdAndWarehouseAndLocationType(orgid, warehouse, locationtype);
@@ -385,7 +386,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	// get All Level no based on company and Warehouse , Location type and Rowno
 	@Override
-	public Set<Object> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
+	public Set<Object[]> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
 			String locationtype, String rowno) {
 
 		return warehouseLocationRepo.findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(orgid, warehouse,
@@ -405,6 +406,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
 		warehouseLocationVO.setActive(true);
 		warehouseLocationVO.setCancel(false);
+		warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getWarehouse()+warehouseLocationVO.getLocationtype()+warehouseLocationVO.getRowno()+warehouseLocationVO.getLevel());
 		return warehouseLocationRepo.save(warehouseLocationVO);
 
 	}
@@ -412,6 +414,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Optional<WarehouseLocationVO> updateWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
 		if (warehouseLocationRepo.existsById(warehouseLocationVO.getId())) {
+			warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId()+warehouseLocationVO.getWarehouse()+warehouseLocationVO.getLocationtype()+warehouseLocationVO.getRowno()+warehouseLocationVO.getLevel());
 			return Optional.of(warehouseLocationRepo.save(warehouseLocationVO));
 		} else {
 			return Optional.empty();
@@ -656,6 +659,17 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	// find All Warehouse By Branch
 	@Override
 	public Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode) {
+
+		
+		return warehouseRepo.findAllWarehouseByBranch(orgid,branchcode);
+	}
+
+	@Override
+	public Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level, int startno, int endno) {
+		
+		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno,level,startno,endno);
+	}
+
 
 		return warehouseRepo.findAllWarehouseByBranch(orgid, branchcode);
 	}

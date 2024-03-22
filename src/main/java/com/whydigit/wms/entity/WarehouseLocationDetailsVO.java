@@ -29,10 +29,10 @@ public class WarehouseLocationDetailsVO {
 	@Column(name = "warehouselocationdetailsid")
 	private Long id;
 
-	@Column(name = "branchname")
-	private String branchname;
+  @Column(name = "branch")
+	private String branch;
 
-	@Column(name = "branchcode")
+  @Column(name = "branchcode")
 	private String branchcode;
 
 	@Column(name = "warehouse")

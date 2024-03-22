@@ -47,6 +47,7 @@ public class WarehouseVO {
 	@Column(unique = true)
 	private String dupchk;
 	
+
 	@Column(name="active")
 	private boolean active;
 	

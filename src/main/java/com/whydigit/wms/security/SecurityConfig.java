@@ -23,7 +23,6 @@ public class SecurityConfig {
 	RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
 		return new RestAuthenticationEntryPoint();
 	}
-
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf()
@@ -44,15 +43,13 @@ public class SecurityConfig {
 						"/api/supplier", "/api/supplier/{supplierid}", "/api/locationmapping",
 						"/api/locationmapping/{locationmappingid}", "/api/employee", "/api/employee/{employeeid}",
 						"/api/userlogin", "/api/userlogin/{userloginid}", "/api/getAllNameAndEmployeeCodeByCompany",
-						"/api/getAllCustomerAndClientByCompany", "/api/getAllBranchCodeAndBranchByCompany",
-						"/api/country/countryid", "/api/currency", "/api/currency/{currencyid}", "/api/part/upload",
-						"/api/globalparamBranchByUserName", "/api/city/orgid", "/api/currency/orgid", "/api/city/state",
-						"/api/state/country", "/api/globalparam", "/api/globalparam/username",
-						"/api/globalparamCustomerByOrgAndBranchcode", "/api/client", "/api//client/branch",
-						"/api/globalparamClientByUserName", "/api/globalparamCustomerByUserName", "/api/ClientAccess",
-						"/api/warehouse", "/api/client/branchaccess", "/api/warehouse/branch", "/api/qty", "/api/grn",
-						"/api/grn/{id}")
-
+						"/api/getAllCustomerAndClientByCompany","/api/getAllBranchCodeAndBranchByCompany","/api/country/countryid","/api/currency",
+						"/api/currency/{currencyid}","/api/part/upload","/api/globalparamBranchByUserName","/api/city/orgid","/api/currency/orgid",
+						"/api/city/state","/api/state/country","/api/globalparam","/api/globalparam/username","/api/globalparamCustomerByOrgAndBranchcode"
+						,"/api/client","/api//client/branch","/api/globalparamClientByUserName","/api/globalparamCustomerByUserName","/api/warehouse","/api/warehouselocation",
+						"/api/ClientAccess","/api/warehouse","/api/client/branchaccess","/api/warehouse/branch","/api/material","/api/locationtype/warehouse",
+						"/api/rowno/locationtype/warehouse","/api/levelno/rowno/locationtype/warehouse","/api/getPalletno","/api/client/branchaccess", "/api/warehouse/branch", "/api/qty", "/api/grn",
+						"/api/grn/{id}","/api/bins/levelno/rowno/locationtype/warehouse","/api/locationmapping")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

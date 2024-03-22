@@ -37,9 +37,6 @@ public class ClientBranchVO {
 	@Column(name = "orgid")
 	private Long orgId;
 
-	@Column(name = "address")
-	private String address;
-
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "customerid")

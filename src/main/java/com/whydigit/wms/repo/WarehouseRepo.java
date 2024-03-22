@@ -12,7 +12,7 @@ import com.whydigit.wms.entity.WarehouseVO;
 @Repository
 public interface WarehouseRepo  extends JpaRepository<WarehouseVO, Long> {
 
-	@Query(nativeQuery = true,value="select a from WarehouseVO a where a.orgId=?1 and a.branch=?2")
+	@Query(value="select a from WarehouseVO a where a.orgId=?1 and a.branch=?2")
 	List<WarehouseVO> findAll(Long orgid, String branch);
 
 	@Query(nativeQuery = true,value = "select a.warehouse from warehouse a where a.branchcode='MAAW'and a.org_id='5'group by a.warehouse")

@@ -1,5 +1,7 @@
 package com.whydigit.wms.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -13,12 +15,13 @@ public class SignUpFormDTO {
     private String employeeName;
     private String nickName;
     private String email;
+    private Long orgId;
     private String mobileNo;
     private String userType;
     private String isActive;
-//    private List<UserLoginRoleAccessDTO>roleAccessDTO;
-//    private List<UserLoginClientAccessDTO> clientAccessDTOList;
-//    private List<UserLoginBranchAccessDTO> branchAccessDTOList;
+    private List<UserLoginRoleAccessDTO>roleAccessDTO;
+    private List<UserLoginClientAccessDTO> clientAccessDTOList;
+    private List<UserLoginBranchAccessDTO> branchAccessDTOList;
  
 	public String getUserName() {
 		return userName;
@@ -63,33 +66,38 @@ public class SignUpFormDTO {
 		this.userType = userType;
 	}
 	
-//	public List<UserLoginClientAccessDTO> getClientAccessDTOList() {
-//		return clientAccessDTOList;
-//	}
-//	public void setClientAccessDTOList(List<UserLoginClientAccessDTO> clientAccessDTOList) {
-//		this.clientAccessDTOList = clientAccessDTOList;
-//	}
+	public List<UserLoginClientAccessDTO> getClientAccessDTOList() {
+		return clientAccessDTOList;
+	}
+	public void setClientAccessDTOList(List<UserLoginClientAccessDTO> clientAccessDTOList) {
+		this.clientAccessDTOList = clientAccessDTOList;
+	}
 	public String getIsActive() {
 		return isActive;
 	}
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
 	}
-//	public List<UserLoginBranchAccessDTO> getBranchAccessDTOList() {
-//		return branchAccessDTOList;
-//	}
-//	public void setBranchAccessDTOList(List<UserLoginBranchAccessDTO> branchAccessDTOList) {
-//		this.branchAccessDTOList = branchAccessDTOList;
-//	}
-//	public List<UserLoginRoleAccessDTO> getRoleAccessDTO() {
-//		return roleAccessDTO;
-//	}
-//	public void setRoleAccessDTO(List<UserLoginRoleAccessDTO> roleAccessDTO) {
-//		this.roleAccessDTO = roleAccessDTO;
-//	}
+	public List<UserLoginBranchAccessDTO> getBranchAccessDTOList() {
+		return branchAccessDTOList;
+	}
+	public void setBranchAccessDTOList(List<UserLoginBranchAccessDTO> branchAccessDTOList) {
+		this.branchAccessDTOList = branchAccessDTOList;
+	}
+	public List<UserLoginRoleAccessDTO> getRoleAccessDTO() {
+		return roleAccessDTO;
+	}
+	public void setRoleAccessDTO(List<UserLoginRoleAccessDTO> roleAccessDTO) {
+		this.roleAccessDTO = roleAccessDTO;
+	}
+	public Long getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
     
-    
-    
+	
 
 	
 }
