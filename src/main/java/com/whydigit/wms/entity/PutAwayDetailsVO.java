@@ -1,5 +1,7 @@
 package com.whydigit.wms.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,15 +34,24 @@ public class PutAwayDetailsVO {
 	private String batch;
 	private String partdescripition;
 	private String sku;
-	private String invqty;
-	private String recqty;
-	private String putawayqty;
-	private String putawaypiecesqty;
+	private int invqty;
+	private int recqty;
+	private int ssqty;
+	private int putawayqty;
+	private int putawaypiecesqty;
 	private String location;
 	private String weight;
 	private String rate;
 	private String amount;
 	private String remarks;
+	private String locationtype;
+	private int shortqty;
+	private int sqty;
+	private String ssku;
+	private String locationclass;
+	private String celltype;
+	private LocalDate batchdate;
+	private String status;
 
 	@JsonBackReference
 	@ManyToOne

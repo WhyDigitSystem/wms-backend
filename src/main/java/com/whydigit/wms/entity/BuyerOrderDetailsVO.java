@@ -29,25 +29,25 @@ public class BuyerOrderDetailsVO {
 	@Column(name = "buyerorderdetailsid")
 	private Long id;
 
-	@Column(name = "partno")
+	@Column(name = "partno", length = 30)
 	private String partno;
 
-	@Column(name = "partdesc")
+	@Column(name = "partdesc", length = 30)
 	private String partdesc;
 
-	@Column(name = "qty")
+	@Column(name = "qty", length = 30)
 	private String qty;
 
-	@Column(name = "batchno")
+	@Column(name = "batchno", length = 30)
 	private String batchno;
 
-	@Column(name = "availqty")
+	@Column(name = "availqty", length = 30)
 	private String availqty;
 
-	@Column(name = "sku")
+	@Column(name = "sku", length = 30)
 	private String sku;
 
-	@Column(name = "remarks")
+	@Column(name = "remarks", length = 30)
 	private String remarks;
 
 	@JsonBackReference

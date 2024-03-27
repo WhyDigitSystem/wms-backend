@@ -53,14 +53,16 @@ public class PutAwayVO {
 	private boolean cancel;
 	private String userid;
 	private String cancelremark;
-	private boolean active;                                                                                           
+	private boolean active;
 	private String branchcode;
 	private String branch;
 	private String screencode;
 	private String client;
 	private String customer;
-
-	@JsonManagedReference
+	private String finyear;
+	private String docid;
+	private String warehouse;
+ 	@JsonManagedReference
 	@OneToMany(mappedBy = "putAwayVO", cascade = CascadeType.ALL)
 	private List<PutAwayDetailsVO> putAwayDetailsVO;
 

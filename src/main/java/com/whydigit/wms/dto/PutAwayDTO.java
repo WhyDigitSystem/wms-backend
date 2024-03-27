@@ -26,5 +26,6 @@ public class PutAwayDTO {
 	private String status;
 	private String lotno;
 	private String enteredperson;
+	private String warehouse;
 	List<PutAwayDetailsDTO> putAwayDetailsDTO;
 }

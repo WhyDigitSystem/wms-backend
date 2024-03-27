@@ -32,13 +32,13 @@ public class WarehouseVO {
 	@Column(name="warehouseid")
 	private Long id;
 	
-	@Column(name="warehouse")
+	@Column(name="warehouse", length = 30)
 	private String warehouse;
 	
-	@Column(name="branchcode")
+	@Column(name="branchcode", length = 30)
 	private String branchcode;
 	
-	@Column(name="branch")
+	@Column(name="branch", length = 30)
 	private String branch;
 	
 	@Column(name="orgid")
@@ -51,13 +51,13 @@ public class WarehouseVO {
 	@Column(name="active")
 	private boolean active;
 	
-	@Column(name="userid")
+	@Column(name="userid", length = 30)
 	private String userid;
 	
-	@Column(name="createdby")
+	@Column(name="createdby", length = 30)
 	private String createdby;
 	
-	@Column(name="modifiedby")
+	@Column(name="modifiedby", length = 30)
 	private String updatedby;
 	
 	@Column(name="cancel")

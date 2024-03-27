@@ -33,7 +33,7 @@ public class UserLoginRolesVO {
 	@Column(name="userloginrolesid")
 	private long id;
 	
-	@Column(name="role")
+	@Column(name="role", length = 30)
 	private String role;
 	
 	@Column(name="startdate")

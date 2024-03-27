@@ -45,7 +45,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 	@Autowired
 	PutAwayDetailsRepo putAwayDetailsRepo;
-	
+
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
 
@@ -255,9 +255,52 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		PutAwayVO putAwayVO = createPutAwayVOByPutAwayDTO(putAwayDTO);
 		putAwayVO.setScreencode("PC");
 		putAwayRepo.save(putAwayVO);
+
+		PutAwayVO savedPutAwayVO = putAwayRepo.save(putAwayVO);
+		List<PutAwayDetailsVO> putAwayDetailsVOLists = savedPutAwayVO.getPutAwayDetailsVO();
+		if (putAwayDetailsVOLists != null && !putAwayDetailsVOLists.isEmpty())
+			for (PutAwayDetailsVO putAwayDetailsVO : putAwayDetailsVOLists) {
+
+				StockDetailsVO stockDetailsVO = new StockDetailsVO();
+				savedPutAwayVO.setScreencode("PC");
+				stockDetailsVO.setScreencode("PC");
+				
+				stockDetailsVO.setCustomer(savedPutAwayVO.getCustomer());
+				stockDetailsVO.setCore(savedPutAwayVO.getCore());
+				stockDetailsVO.setGrnno(savedPutAwayVO.getGrnno());
+				stockDetailsVO.setStockdate(savedPutAwayVO.getGrndate());
+				stockDetailsVO.setGrndate(savedPutAwayVO.getGrndate());
+				stockDetailsVO.setLotno(savedPutAwayVO.getLotno());
+				stockDetailsVO.setWarehouse(savedPutAwayVO.getWarehouse());
+				stockDetailsVO.setFinyear(savedPutAwayVO.getFinyear());
+				stockDetailsVO.setBranch(savedPutAwayVO.getBranch());
+				stockDetailsVO.setBranchcode(savedPutAwayVO.getBranchcode());
+				stockDetailsVO.setRefno(savedPutAwayVO.getDocid());
+				stockDetailsVO.setRefdate(savedPutAwayVO.getDocdate());
+				stockDetailsVO.setLocationtype(savedPutAwayVO.getLocationtype());
+				stockDetailsVO.setCarrier(savedPutAwayVO.getCarrier());
+				stockDetailsVO.setGrndate(savedPutAwayVO.getGrndate());
+				stockDetailsVO.setScreencode(savedPutAwayVO.getScreencode());
+				stockDetailsVO.setInvqty(putAwayDetailsVO.getInvqty());
+				stockDetailsVO.setRecqty(putAwayDetailsVO.getRecqty());
+				stockDetailsVO.setShortqty(putAwayDetailsVO.getShortqty());
+				stockDetailsVO.setRecqty(putAwayDetailsVO.getRecqty());
+				stockDetailsVO.setSqty(putAwayDetailsVO.getSqty());
+				stockDetailsVO.setSsku(putAwayDetailsVO.getSsku());
+				stockDetailsVO.setLocationclass(putAwayDetailsVO.getLocationclass());
+				stockDetailsVO.setWeight(putAwayDetailsVO.getWeight());
+				stockDetailsVO.setBatchdate(putAwayDetailsVO.getBatchdate());
+				stockDetailsVO.setPartno(putAwayDetailsVO.getPartno());
+				stockDetailsVO.setPartdesc(putAwayDetailsVO.getPartdescripition());
+				stockDetailsVO.setSku(putAwayDetailsVO.getSku());
+				stockDetailsVO.setAmount(putAwayDetailsVO.getAmount());
+				stockDetailsVO.setSsqty(putAwayDetailsVO.getSsqty());
+				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
+				stockDetailsRepo.save(stockDetailsVO);
+			}
 		return putAwayVO;
-	}	
-		
+	}
+
 	private PutAwayVO createPutAwayVOByPutAwayDTO(PutAwayDTO putAwayDTO) {
 		List<PutAwayDetailsVO> putAwayDetailsVOList = new ArrayList<>();
 		PutAwayVO putAwayVO = PutAwayVO.builder().docdate(putAwayDTO.getDocdate()).grnno(putAwayDTO.getGrnno())
@@ -265,18 +308,20 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 				.suppliershortname(putAwayDTO.getSuppliershortname()).supplier(putAwayDTO.getSupplier())
 				.modeodshipment(putAwayDTO.getModeodshipment()).carrier(putAwayDTO.getCarrier())
 				.locationtype(putAwayDTO.getLocationtype()).status(putAwayDTO.getStatus()).lotno(putAwayDTO.getLotno())
-				.enteredperson(putAwayDTO.getEnteredperson()).putAwayDetailsVO(putAwayDetailsVOList).build();
+				.warehouse(putAwayDTO.getWarehouse()).enteredperson(putAwayDTO.getEnteredperson())
+				.putAwayDetailsVO(putAwayDetailsVOList).build();
 
 		putAwayDetailsVOList = putAwayDTO.getPutAwayDetailsDTO().stream()
 				.map(putaway -> PutAwayDetailsVO.builder().partno(putaway.getPartno()).batch(putaway.getBatch())
-						.partdescripition(putaway.getPartdescripition()).sku(putaway.getSku()).invqty(putaway.getInvqty())
-						.recqty(putaway.getRecqty()).putawayqty(putaway.getPutawayqty()).putawaypiecesqty(putaway.getPutawaypiecesqty())
-						.location(putaway.getLocation()).weight(putaway.getWeight()).amount(putaway.getAmount())
-						.rate(putaway.getRate()).remarks(putaway.getRemarks()).build()).collect(Collectors.toList());
+						.partdescripition(putaway.getPartdescripition()).sku(putaway.getSku())
+						.invqty(putaway.getInvqty()).recqty(putaway.getRecqty()).putawayqty(putaway.getPutawayqty())
+						.putawaypiecesqty(putaway.getPutawaypiecesqty()).location(putaway.getLocation())
+						.weight(putaway.getWeight()).amount(putaway.getAmount()).rate(putaway.getRate())
+						.remarks(putaway.getRemarks()).build())
+				.collect(Collectors.toList());
 		putAwayVO.setPutAwayDetailsVO(putAwayDetailsVOList);
 		return putAwayVO;
 	}
-
 
 	@Override
 	public Optional<PutAwayVO> updatePutAway(PutAwayVO putAwayVO) {
@@ -293,4 +338,3 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	}
 
 }
- 

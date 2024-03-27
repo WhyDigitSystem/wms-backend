@@ -16,7 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "stockdetils")
+@Table(name = "stockdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -63,7 +63,7 @@ public class StockDetailsVO {
 	private String pallet;
 	private String warehouse;
 	private String sku;
-	private int ssku;
+	private String ssku;
 	private int ssqty;
 	private int sqty;
 	private int pqty;
@@ -80,8 +80,8 @@ public class StockDetailsVO {
 	private String stylecode;
 	private String expdate;
 	private String buyerorderno;
-	private String batchno;
-	private String batchdt;
+	private String batch;
+	private LocalDate batchdate;
 	private String weight;
 	private String pckey;
 	private String sdactual;
@@ -101,6 +101,8 @@ public class StockDetailsVO {
 	private String updatedby;
 	private String cancelremark;
 	private String screencode;
+	private String finyear;
+	 
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

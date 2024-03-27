@@ -37,43 +37,43 @@ public class UserVO {
 	@Column(name="userid")
 	private Long id;
 	
-	@Column(name="username")
+	@Column(name="username", length = 30)
 	private String userName;
 	
-	@Column(name="password")
+	@Column(name="password", length = 30)
 	private String password;
 	
-	@Column(name="employeename")
+	@Column(name="employeename", length = 30)
 	private String employeeName;
 	
-	@Column(name="nickname")
+	@Column(name="nickname", length = 30)
 	private String nickName;
 	
-	@Column(name="email")
+	@Column(name="email", length = 30)
 	private String email;
 	
 	@Column(name="orgid")
 	private Long orgId;
 	
-	@Column(name="mobileno")
+	@Column(name="mobileno", length = 30)
 	private String mobileNo;
 	
-	@Column(name="usertype")
+	@Column(name="usertype", length = 30)
 	private String userType;
 	
-	@Column(name="customer")
+	@Column(name="customer", length = 30)
 	private String customer;
 	
-	@Column(name="warehouse")
+	@Column(name="warehouse", length = 30)
 	private String warehouse;
 	
-	@Column(name="branch")
+	@Column(name="branch", length = 30)
 	private String branch;
 	
-	@Column(name="branchcode")
+	@Column(name="branchcode", length = 30)
 	private String branchcode;
 	
-	@Column(name="client")
+	@Column(name="client", length = 30)
 	private String client;
 	
 	@Column(name="loginstatus")

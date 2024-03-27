@@ -27,100 +27,100 @@ public class BuyerVO {
 	@Column(name = "buyerid")
 	private Long id;
 
-	@Column(name = "buyer")
+	@Column(name = "buyer", length = 30)
 	private String buyer;
 
-	@Column(name = "buyershortname")
+	@Column(name = "buyershortname", length = 30)
 	private String buyershortname;
 
-	@Column(name = "buyertype")
+	@Column(name = "buyertype", length = 30)
 	private String buyertype;
 
-	@Column(name = "buyergroupof")
+	@Column(name = "buyergroupof", length = 30)
 	private String buyergroupof;
 
-	@Column(name = "contactperson")
+	@Column(name = "contactperson", length = 30)
 	private String contactperson;
 
-	@Column(name = "panno")
+	@Column(name = "panno", length = 30)
 	private String panno;
 
-	@Column(name = "tanno")
+	@Column(name = "tanno", length = 30)
 	private String tanno;
 
-	@Column(name = "zipcode")
+	@Column(name = "zipcode", length = 30)
 	private String zipcode;
 
-	@Column(name = "emailid")
+	@Column(name = "emailid", length = 30)
 	private String emailid;
 
-	@Column(name = "gst")
+	@Column(name = "gst", length = 30)
 	private String gst;
 
-	@Column(name = "gstno")
+	@Column(name = "gstno", length = 30)
 	private String gstno;
 
-	@Column(name = "mobilenumber1")
+	@Column(name = "mobilenumber1", length = 30)
 	private String mobilenumber;
 
-	@Column(name = "addressline1")
+	@Column(name = "addressline1", length = 30)
 	private String addressline1;
 
-	@Column(name = "addressline2")
+	@Column(name = "addressline2", length = 30)
 	private String addressline2;
 
-	@Column(name = "city")
+	@Column(name = "city", length = 30)
 	private String city;
 
-	@Column(name = "state")
+	@Column(name = "state", length = 30)
 	private String state;
 
-	@Column(name = "country")
+	@Column(name = "country", length = 30)
 	private String country;
 
-	@Column(name = "eccno")
+	@Column(name = "eccno", length = 30)
 	private String eccno;
 
-	@Column(name = "cbranch")
+	@Column(name = "cbranch", length = 30)
 	private String cbranch;
 
 	@Column(unique = true)
 	private String dupchk;
 
-	@Column(name = "createdby")
+	@Column(name = "createdby", length = 30)
 	private String createdby;
 
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
 
-	@Column(name = "orgid")
+	@Column(name = "orgid", length = 30)
 	private Long orgId;
 
 	@Column(name = "cancel")
 	private boolean cancel;
 
-	@Column(name = "userid")
+	@Column(name = "userid", length = 30)
 	private String userid;
 
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks", length = 30)
 	private String cancelremark;
 
 	@Column(name = "active")
 	private boolean active;
 
-	@Column(name = "branchcode")
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
 
-	@Column(name = "branch")
+	@Column(name = "branch", length = 30)
 	private String branch;
 
-	@Column(name = "client")
+	@Column(name = "client", length = 30)
 	private String client;
 
-	@Column(name = "customer")
+	@Column(name = "customer", length = 30)
 	private String customer;
 
-	@Column(name = "warehouse")
+	@Column(name = "warehouse", length = 30)
 	private String warehouse;
 
 	@Embedded
