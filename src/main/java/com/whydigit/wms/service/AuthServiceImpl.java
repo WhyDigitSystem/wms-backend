@@ -1,6 +1,8 @@
 package com.whydigit.wms.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,12 +20,18 @@ import com.whydigit.wms.dto.ChangePasswordFormDTO;
 import com.whydigit.wms.dto.LoginFormDTO;
 import com.whydigit.wms.dto.RefreshTokenDTO;
 import com.whydigit.wms.dto.ResetPasswordFormDTO;
-import com.whydigit.wms.dto.Role;
 import com.whydigit.wms.dto.SignUpFormDTO;
+import com.whydigit.wms.dto.UserLoginBranchAccessDTO;
+import com.whydigit.wms.dto.UserLoginClientAccessDTO;
+import com.whydigit.wms.dto.UserLoginRoleAccessDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.TokenVO;
+import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;
+import com.whydigit.wms.entity.UserLoginClientAccessVO;
+import com.whydigit.wms.entity.UserLoginRolesVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.TokenRepo;
 import com.whydigit.wms.repo.UserActionRepo;
 import com.whydigit.wms.repo.UserRepo;
@@ -43,6 +51,9 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	UserActionRepo userActionRepo;
+	
+	@Autowired
+	ClientRepo clientRepo;
 
 	@Autowired
 	TokenProvider tokenProvider;
@@ -65,9 +76,71 @@ public class AuthServiceImpl implements AuthService {
 		}
 		UserVO userVO = getUserVOFromSignUpFormDTO(signUpRequest);
 		userRepo.save(userVO);
-		userService.createUserAction(userVO.getUserName(), userVO.getUserId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
+		userService.createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
+	
+private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
+		
+		UserVO userVO = new UserVO();
+        userVO.setUserName(signUpFormDTO.getUserName());
+        try {
+        	  userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt( signUpFormDTO.getPassword())));
+        }catch (Exception e) {
+        	LOGGER.error(e.getMessage());
+        	throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+		}
+        userVO.setEmployeeName(signUpFormDTO.getEmployeeName());
+        userVO.setNickName(signUpFormDTO.getNickName());
+        userVO.setEmail(signUpFormDTO.getEmail());
+        userVO.setMobileNo(signUpFormDTO.getMobileNo());
+        userVO.setUserType(signUpFormDTO.getUserType());
+        userVO.setIsActive(signUpFormDTO.getIsActive());
+        userVO.setOrgId(signUpFormDTO.getOrgId());
+        
+        List<UserLoginRolesVO>rolesVO=new ArrayList<>();
+        if(signUpFormDTO.getRoleAccessDTO()!=null)
+        {
+        	for(UserLoginRoleAccessDTO accessDTO:signUpFormDTO.getRoleAccessDTO()) 
+        	{
+        		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
+        		loginRolesVO.setRole(accessDTO.getRole());
+        		loginRolesVO.setStartdate(accessDTO.getStartdate());
+        		loginRolesVO.setEnddate(accessDTO.getEnddate());
+        		rolesVO.add(loginRolesVO);
+        	}
+        }
+        
+        userVO.setRoleAccessVO(rolesVO);
+        
+        List<UserLoginClientAccessVO> clientAccessVOList = new ArrayList<>();
+        if (signUpFormDTO.getClientAccessDTOList() != null) 
+        {
+            for (UserLoginClientAccessDTO clientAccessDTO : signUpFormDTO.getClientAccessDTOList())
+            {
+                UserLoginClientAccessVO clientAccessVO = new UserLoginClientAccessVO();
+                clientAccessVO.setClient(clientAccessDTO.getClient());
+                clientAccessVO.setCustomer(clientAccessDTO.getCustomer());
+                clientAccessVO.setUserVO(userVO);
+                clientAccessVOList.add(clientAccessVO);
+            }	
+        }
+        userVO.setClientAccessVO(clientAccessVOList);
+        
+        List<UserLoginBranchAccessibleVO>branchAccessList=new ArrayList<>();
+        if (signUpFormDTO.getBranchAccessDTOList() != null) {
+            for (UserLoginBranchAccessDTO userLoginBranchAccessDTO : signUpFormDTO.getBranchAccessDTOList()) {
+                UserLoginBranchAccessibleVO branchAccessibleVO = new UserLoginBranchAccessibleVO();
+                branchAccessibleVO.setBranch(userLoginBranchAccessDTO.getBranch());
+                branchAccessibleVO.setBranchcode(userLoginBranchAccessDTO.getBranchcode());
+                branchAccessibleVO.setUserVO(userVO);
+                branchAccessList.add(branchAccessibleVO);
+            }
+        }
+        userVO.setBranchAccessibleVO(branchAccessList);
+
+        return userVO;
+    }
 
 	@Override
 	public UserResponseDTO login(LoginFormDTO loginRequest) {
@@ -78,6 +151,7 @@ public class AuthServiceImpl implements AuthService {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_LOGIN_INFORMATION);
 		}
 		UserVO userVO = userRepo.findByUserName(loginRequest.getUserName());
+		
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			if (compareEncodedPasswordWithEncryptedPassword(loginRequest.getPassword(), userVO.getPassword())) {
 				updateUserLoginInformation(userVO);
@@ -89,11 +163,27 @@ public class AuthServiceImpl implements AuthService {
 					UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND_AND_ASKING_SIGNUP);
 		}
 		UserResponseDTO userResponseDTO = mapUserVOToDTO(userVO);
-		TokenVO tokenVO = tokenProvider.createToken(userVO.getUserId(), loginRequest.getUserName());
+		TokenVO tokenVO = tokenProvider.createToken(userVO.getId(), loginRequest.getUserName());
 		userResponseDTO.setToken(tokenVO.getToken());
 		userResponseDTO.setTokenId(tokenVO.getId());
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return userResponseDTO;
+	}
+	
+	/**
+	 * @param encryptedPassword -> Data from user;
+	 * @param encodedPassword   ->Data from DB;
+	 * @return
+	 */
+	private boolean compareEncodedPasswordWithEncryptedPassword(String encryptedPassword, String encodedPassword) {
+		boolean userStatus = false;
+		try {
+			userStatus = encoder.matches(CryptoUtils.getDecrypt(encryptedPassword), encodedPassword);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+		}
+		return userStatus;
 	}
 
 	@Override
@@ -131,7 +221,7 @@ public class AuthServiceImpl implements AuthService {
 					throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 				}
 				userRepo.save(userVO);
-				userService.createUserAction(userVO.getUserName(), userVO.getUserId(),
+				userService.createUserAction(userVO.getUserName(), userVO.getId(),
 						UserConstants.USER_ACTION_TYPE_CHANGE_PASSWORD);
 			} else {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_OLD_PASSWORD_MISMATCH);
@@ -158,7 +248,7 @@ public class AuthServiceImpl implements AuthService {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 			}
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getUserId(),
+			userService.createUserAction(userVO.getUserName(), userVO.getId(),
 					UserConstants.USER_ACTION_TYPE_RESET_PASSWORD);
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
@@ -184,38 +274,32 @@ public class AuthServiceImpl implements AuthService {
 		return refreshTokenDTO;
 	}
 
-	private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpRequest) {
-		UserVO userVO = new UserVO();
-		userVO.setFirstName(signUpRequest.getFirstName());
-		userVO.setLastName(signUpRequest.getLastName());
-		userVO.setUserName(signUpRequest.getUserName());
-		userVO.setEmail(signUpRequest.getEmail());
-		try {
-			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(signUpRequest.getPassword())));
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
-		}
-		userVO.setRole(Role.ROLE_USER);
-		userVO.setActive(true);
-		return userVO;
-	}
+//	private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpRequest) {
+//		UserVO userVO = new UserVO();
+//		userVO.setUserName(signUpRequest.getUserName());
+//		userVO.setEmail(signUpRequest.getEmail());
+//		try {
+//			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(signUpRequest.getPassword())));
+//		} catch (Exception e) {
+//			LOGGER.error(e.getMessage());
+//			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+//		}
+//		userVO.setRole(Role.ROLE_USER);
+//		userVO.setEmployeeName(signUpRequest.getEmployeeName());
+//		userVO.setUserType(signUpRequest.getUserType());
+//		userVO.setNickName(signUpRequest.getNickName());
+//		userVO.setMobileNo(signUpRequest.getMobileNo());
+//		userVO.setActive(true);
+//		return userVO;
+//	}
+	
+	
+	
 
-	/**
-	 * @param encryptedPassword -> Data from user;
-	 * @param encodedPassword   ->Data from DB;
-	 * @return
-	 */
-	private boolean compareEncodedPasswordWithEncryptedPassword(String encryptedPassword, String encodedPassword) {
-		boolean userStatus = false;
-		try {
-			userStatus = encoder.matches(CryptoUtils.getDecrypt(encryptedPassword), encodedPassword);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
-		}
-		return userStatus;
-	}
+	
+	
+
+	
 
 	/**
 	 * @param userVO
@@ -224,7 +308,7 @@ public class AuthServiceImpl implements AuthService {
 		try {
 			userVO.setLoginStatus(true);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getUserId(),
+			userService.createUserAction(userVO.getUserName(), userVO.getId(),
 					UserConstants.USER_ACTION_TYPE_LOGIN);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -236,7 +320,7 @@ public class AuthServiceImpl implements AuthService {
 		try {
 			userVO.setLoginStatus(false);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getUserId(),
+			userService.createUserAction(userVO.getUserName(), userVO.getId(),
 					UserConstants.USER_ACTION_TYPE_LOGOUT);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -246,16 +330,23 @@ public class AuthServiceImpl implements AuthService {
 
 	public static UserResponseDTO mapUserVOToDTO(UserVO userVO) {
 		UserResponseDTO userDTO = new UserResponseDTO();
-		userDTO.setUserId(userVO.getUserId());
-		userDTO.setFirstName(userVO.getFirstName());
-		userDTO.setLastName(userVO.getLastName());
+		userDTO.setUsersId(userVO.getId());
+		userDTO.setBranch(userVO.getBranch());
+		userDTO.setEmployeeName(userVO.getEmployeeName());
+		userDTO.setCustomer(userVO.getCustomer());
+		userDTO.setClient(userVO.getClient());
+		userDTO.setOrgId(userVO.getOrgId());
+		userDTO.setWarehouse(userVO.getWarehouse());
+		userDTO.setUserType(userVO.getUserType());
 		userDTO.setEmail(userVO.getEmail());
 		userDTO.setUserName(userVO.getUserName());
 		userDTO.setLoginStatus(userVO.isLoginStatus());
-		userDTO.setActive(userVO.isActive());
+		userDTO.setIsActive(userVO.getIsActive());
 		userDTO.setRole(userVO.getRole());
 		userDTO.setCommonDate(userVO.getCommonDate());
 		userDTO.setAccountRemovedDate(userVO.getAccountRemovedDate());
 		return userDTO;
 	}
+
+	
 }

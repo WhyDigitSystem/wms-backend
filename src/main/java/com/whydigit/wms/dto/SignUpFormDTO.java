@@ -1,54 +1,103 @@
-/*
- * ========================================================================
- * This file is the intellectual property of GSM Outdoors.it
- * may not be copied in whole or in part without the express written
- * permission of GSM Outdoors.
- * ========================================================================
- * Copyrights(c) 2023 GSM Outdoors. All rights reserved.
- * ========================================================================
- */
 package com.whydigit.wms.dto;
 
-//import javax.persistence.EnumType;
-//import javax.persistence.Enumerated;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpFormDTO {
-	@NotBlank(message = "First Name is required")
-	private String firstName;
-
-	private String lastName;
 
 	private String userName;
+    private String password;
+    private String employeeName;
+    private String nickName;
+    private String email;
+    private Long orgId;
+    private String mobileNo;
+    private String userType;
+    private String isActive;
+    private List<UserLoginRoleAccessDTO>roleAccessDTO;
+    private List<UserLoginClientAccessDTO> clientAccessDTOList;
+    private List<UserLoginBranchAccessDTO> branchAccessDTOList;
+ 
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getEmployeeName() {
+		return employeeName;
+	}
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	public List<UserLoginClientAccessDTO> getClientAccessDTOList() {
+		return clientAccessDTOList;
+	}
+	public void setClientAccessDTOList(List<UserLoginClientAccessDTO> clientAccessDTOList) {
+		this.clientAccessDTOList = clientAccessDTOList;
+	}
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	public List<UserLoginBranchAccessDTO> getBranchAccessDTOList() {
+		return branchAccessDTOList;
+	}
+	public void setBranchAccessDTOList(List<UserLoginBranchAccessDTO> branchAccessDTOList) {
+		this.branchAccessDTOList = branchAccessDTOList;
+	}
+	public List<UserLoginRoleAccessDTO> getRoleAccessDTO() {
+		return roleAccessDTO;
+	}
+	public void setRoleAccessDTO(List<UserLoginRoleAccessDTO> roleAccessDTO) {
+		this.roleAccessDTO = roleAccessDTO;
+	}
+	public Long getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(Long orgId) {
+		this.orgId = orgId;
+	}
+    
+	
 
-	@NotBlank(message = "Email is required")
-	@Size(max = 30)
-	@Email
-	private String email;
-
-	@NotBlank
-	@Size(min = 6, max = 100, message = "Password is required")
-	private String password;
-
-//	@Size(min = 2, max = 13, message = "Please provide Valid Phone Number")
-//	private String phoneNumber;
-//
-//	private String secondaryPhone;
-
-//	@Enumerated(EnumType.STRING)
-//	private Gender gender;
-
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-//	@Past(message = "The date of birth must be in the past.")
-//	private LocalDate dob;
-
+	
 }
