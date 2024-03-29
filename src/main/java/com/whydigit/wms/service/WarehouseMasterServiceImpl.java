@@ -671,7 +671,5 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 
-		return warehouseRepo.findAllWarehouseByBranch(orgid, branchcode);
-	}
 
 }
