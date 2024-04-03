@@ -540,6 +540,6 @@ public class InwardTransactionController extends BaseController {
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
+		return ResponseEntity.ok().body(responseDTO); 
 	}
 }
