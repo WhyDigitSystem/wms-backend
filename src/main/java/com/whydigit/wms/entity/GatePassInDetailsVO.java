@@ -3,7 +3,6 @@ package com.whydigit.wms.entity;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +13,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
