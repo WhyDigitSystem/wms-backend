@@ -18,6 +18,8 @@ public class GrnDTO {
 	private LocalDate docdate;
 	private String entryno;
 	private LocalDate entrydate;
+	private LocalDate grndate;
+	private boolean vas;
 	private String gatepassid;
 	private LocalDate gatepassdate;
 	private String customerpo;
@@ -37,6 +39,10 @@ public class GrnDTO {
 	private String customer;
 	private String warehouse;
 	private String finyr;
+	private String noofpackages;
+	private String totalamount;
+	private int totalgrnqty;//
+	private String createdby;//both
 	List<GrnDetailsDTO> grnDetailsDTO;
 
 }

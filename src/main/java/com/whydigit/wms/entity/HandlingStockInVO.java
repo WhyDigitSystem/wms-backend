@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.whydigit.wms.dto.CreatedUpdatedDate;
@@ -24,7 +25,9 @@ import lombok.NoArgsConstructor;
 public class HandlingStockInVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "handlingstockingen")
+	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockinVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "handlingstockinid")
 	private Long id;
 	private Long orgId;
 	private String refno;
@@ -61,7 +64,7 @@ public class HandlingStockInVO {
 	private String sdocid;
 	private LocalDate stockdate;
 	private LocalDate sdocdate;
-	private String sourcscreen;
+	private String sourcescreen;
 	private String expdate;
 	private String batchno;
 	private String batchdt;

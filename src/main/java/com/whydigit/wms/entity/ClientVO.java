@@ -35,13 +35,13 @@ public class ClientVO {
 	@Column(name="orgid")
 	private Long orgId;
 	
-	@Column(name="client")
+	@Column(name="client", length = 30)
 	private String client; // caps
 	
-	@Column(name="clientcode")
+	@Column(name="clientcode", length = 30)
 	private String clientcode; // caps
 	
-	@Column(name="clienttype")
+	@Column(name="clienttype", length = 30)
 	private String clienttype;
 	
 	@Column(name="fiofife")

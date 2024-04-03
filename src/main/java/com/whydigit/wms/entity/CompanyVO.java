@@ -28,43 +28,46 @@ public class CompanyVO {
 	@Column(name="companyid")
 	private Long id;
 	
-	@Column(unique = true)
+	@Column(unique = true, length = 30)
 	private String companycode;
 
-	@Column(unique = true)
-	private String company;
+	@Column(unique = true, length = 30)
+	private String companyname;
 	
-	@Column(name="country")
+	@Column(name="country", length = 30)
     private String country;
 	
-	@Column(name="currency")
+	@Column(name="currency", length = 30)
 	private String currency;
 	
-	@Column(name="address")
+	@Column(name = "maincurrency", length = 30)
+	private String mainCurrency;
+	
+	@Column(name="address", length = 30)
 	private String address;
 	
-	@Column(name="zipcode")
-	private String zipcode;
+	@Column(name="zipcode"	, length = 30)
+	private String zip;
 	
-	@Column(name="city")
+	@Column(name="city", length = 30)
 	private String city;
 	
-	@Column(name="state")
+	@Column(name="state", length = 30)
 	private String state;
 	
-	@Column(name="phone")
+	@Column(name="phone", length = 30)
 	private String phone;
 	
-	@Column(name="email")
+	@Column(name="email", length = 30)
 	private String email;
 	
-	@Column(name="website")
-	private String website;
+	@Column(name="website", length = 30)
+	private String webSite;
 	
-	@Column(name="notes")
-	private String notes;
+	@Column(name="notes", length = 30)
+	private String note;
 	
-	@Column(name="userid")
+	@Column(name="userid", length = 30)
     private String userid;
 	
 	@Column(name="active")
@@ -73,19 +76,19 @@ public class CompanyVO {
 	@Column(unique = true)
 	private String dupchk;
 	
-	@Column(name="employeename")
+	@Column(name="employeename", length = 30)
 	private String employeeName;
 	
-	@Column(name="employeecode")
+	@Column(name="employeecode", length = 30)
 	private String employeecode;
 	
-	@Column(name="password")
+	@Column(name="password", length = 255)
 	private String password;
 	
-	@Column(name="createdby")
+	@Column(name="createdby", length = 30)
 	private String createdby;
 	
-	@Column(name="modifiedby")
+	@Column(name="modifiedby", length = 30)
 	private String updatedby;
 	
 	@Column(name="cancel")

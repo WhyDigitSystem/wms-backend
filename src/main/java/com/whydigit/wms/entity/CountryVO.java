@@ -28,10 +28,10 @@ public class CountryVO {
 	@Column(name="countryid")
 	private Long id;
 	
-	@Column(name="country")
-	private String country;
+	@Column(name="country", length = 30)
+	private String countryname;
 	
-	@Column(name="countrycode")
+	@Column(name="countrycode", length = 30)
 	private String countrycode;
 	
 	@Column(name="active")
@@ -40,16 +40,17 @@ public class CountryVO {
 	@Column(name="orgid")
 	private Long orgId;
 
-	@Column(name="userid")
+	@Column(name="userid", length = 30)
 	private String userid;
 	
 	@Column(unique = true)
 	private String dupchk;
 	
-	@Column(name="createdby")
+	@Column(name="createdby", length = 30)
 	private String createdby;
 	
-	@Column(name="modifiedby")
+	
+	@Column(name="modifiedby", length = 30)
 	private String updatedby;
 	
 	@Column(name="cancel")

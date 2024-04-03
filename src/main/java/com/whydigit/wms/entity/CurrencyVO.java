@@ -29,19 +29,19 @@ public class CurrencyVO {
 	@Column(name="currencyid")
 	private Long id;
 	
-	@Column(name="userid")
+	@Column(name="userid", length = 30)
 	private String userid;
 	
-	@Column(name="counrty")
+	@Column(name="country", length = 30)
 	private String country;
 	
-	@Column(name="currency")
+	@Column(name="currency", length = 30)
 	private String currency;
 	
-	@Column(name="subcurrency")
+	@Column(name="subcurrency", length = 30)
     private String subcurrency;
 	
-	@Column(name="currencysymbol")
+	@Column(name="currencysymbol", length = 30)
     private String currencysymbol;
     
 	@Column(name="orgid")
@@ -53,10 +53,10 @@ public class CurrencyVO {
 	@Column(unique = true)
 	private String dupchk;
 
-	@Column(name="createdby")
+	@Column(name="createdby", length = 30)
 	private String createdby;
 	
-	@Column(name="modifiedby")
+	@Column(name="modifiedby", length = 30)
 	private String updatedby;
 	
 	@Column(name="cancel")
