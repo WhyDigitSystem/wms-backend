@@ -52,7 +52,7 @@ public class UserVO {
 	@Column(name="email", length = 30)
 	private String email;
 	
-	@Column(name="orgid")
+
 	private Long orgId;
 	
 	@Column(name="mobileno", length = 30)
@@ -76,10 +76,10 @@ public class UserVO {
 	@Column(name="client", length = 30)
 	private String client;
 	
-	@Column(name="loginstatus")
+
 	private boolean loginStatus;
 	
-	@Column(name="active")
+
 	private String isActive;
 	
 	@Column(name="createdby", length = 30)
@@ -91,7 +91,7 @@ public class UserVO {
 	@Column(name="role")
 	private Role role;
 
-	@Column(name="usersid")
+	
 	private Role usersId;
 	
 	@Embedded
