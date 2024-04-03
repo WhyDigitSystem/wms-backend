@@ -27,98 +27,98 @@ public class MaterialVO {
 	@Column(name = "materialid")
 	private Long id;
 
-	@Column(name = "itemtype")
+	@Column(name = "itemtype", length = 30)
 	private String itemtype;
 
-	@Column(name = "partno")
+	@Column(name = "partno", length = 30)
 	private String partno;
 
-	@Column(name = "partdesc")
+	@Column(name = "partdesc", length = 30)
 	private String partdesc;
 
-	@Column(name = "custpartno")
+	@Column(name = "custpartno", length = 30)
 	private String custpartno;
 
-	@Column(name = "groupname")
+	@Column(name = "groupname", length = 30)
 	private String groupname;
 
-	@Column(name = "barcode")
+	@Column(name = "barcode", length = 30)
 	private String barcode;
 
-	@Column(name = "stylecode")
+	@Column(name = "stylecode", length = 30)
 	private String stylecode;
 
-	@Column(name = "basesku")
+	@Column(name = "basesku", length = 30)
 	private String basesku;
 
-	@Column(name = "purchaseunit")
+	@Column(name = "purchaseunit", length = 30)
 	private String purchaseunit;
 
-	@Column(name = "storageunit")
+	@Column(name = "storageunit", length = 30)
 	private String storageunit;
 
-	@Column(name = "fsn")
+	@Column(name = "fsn", length = 30)
 	private String fsn;
 
-	@Column(name = "saleunit")
+	@Column(name = "saleunit", length = 30)
 	private String saleunit;
 
-	@Column(name = "type")
+	@Column(name = "type", length = 30)
 	private String type;
 
 
-	@Column(name = "sku")
+	@Column(name = "sku", length = 30)
 	private String sku;
 
-	@Column(name = "skuqty")
+	@Column(name = "skuqty", length = 30)
 	private String skuqty;
 
-	@Column(name = "ssku")
+	@Column(name = "ssku", length = 30)
 	private String ssku;
 
-	@Column(name = "sskuqty")
+	@Column(name = "sskuqty", length = 30)
 	private String sskuqty;
 
-	@Column(name = "weightofskuanduom")
+	@Column(name = "weightofskuanduom", length = 30)
 	private String weightofskuanduom;
 
-	@Column(name = "hsncode")
+	@Column(name = "hsncode", length = 30)
 	private String hsncode;
 
-	@Column(name = "parentchildkey")
+	@Column(name = "parentchildkey", length = 30)
 	private String parentchildkey;
 
-	@Column(name = "cbranch")
+	@Column(name = "cbranch", length = 30)
 	private String cbranch;
 
-	@Column(name = "criticalstocklevel")
+	@Column(name = "criticalstocklevel", length = 30)
 	private String criticalstocklevel;
 
-	@Column(name = "status")
+	@Column(name = "status", length = 30)
 	private String status;
 
-	@Column(name = "orgid")
+	@Column(name = "orgid", length = 30)
 	private Long orgId;
 
-	@Column(name = "customer")
+	@Column(name = "customer", length = 30)
 	private String customer;
 
-	@Column(name = "client")
+	@Column(name = "client", length = 30)
 	private String client;
 
-	@Column(name = "warehouse")
+	@Column(name = "warehouse", length = 30)
 	private String warehouse;
 
-  @Column(name = "branch")
+  @Column(name = "branch", length = 30)
 	private String branch;
 
-	@Column(name = "branchcode")
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
 
-	@Column(name = "userid")
+	@Column(name = "userid", length = 30)
 	private String userid;
 
-	@Column(name = "palletqty")
+	@Column(name = "palletqty", length = 30)
 	private String palletqty;
 
 	@Column(name = "active")
@@ -127,10 +127,10 @@ public class MaterialVO {
 	@Column(name = "cancel")
 	private boolean cancel;
 
-	@Column(name = "createdby")
+	@Column(name = "createdby", length = 30)
 	private String createdby;
 
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
 
 	@Column(name = "length")

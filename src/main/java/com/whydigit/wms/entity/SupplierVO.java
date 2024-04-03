@@ -93,8 +93,8 @@ public class SupplierVO {
 	@Column(name = "createdby", length = 30)
 	private String createdby;
 
-	@Column(name = "modifiedbt", length = 30)
-	private String modifiedby;
+	@Column(name = "modifiedby", length = 30)
+	private String updatedby;
 
 	@Column(name = "orgid")
 	private Long orgId;

@@ -38,7 +38,7 @@ public class RegionVO {
 	private String regioncode;
 
 	@Column(name = "region", length = 30)
-	private String region;
+	private String regionname;
 
 	@Column(name = "active")
 	private boolean active;

@@ -32,7 +32,7 @@ public class CompanyVO {
 	private String companycode;
 
 	@Column(unique = true, length = 30)
-	private String company;
+	private String companyname;
 	
 	@Column(name="country", length = 30)
     private String country;
@@ -40,11 +40,14 @@ public class CompanyVO {
 	@Column(name="currency", length = 30)
 	private String currency;
 	
+	@Column(name = "maincurrency", length = 30)
+	private String mainCurrency;
+	
 	@Column(name="address", length = 30)
 	private String address;
 	
-	@Column(name="zipcode", length = 30)
-	private String zipcode;
+	@Column(name="zipcode"	, length = 30)
+	private String zip;
 	
 	@Column(name="city", length = 30)
 	private String city;
@@ -59,10 +62,10 @@ public class CompanyVO {
 	private String email;
 	
 	@Column(name="website", length = 30)
-	private String website;
+	private String webSite;
 	
 	@Column(name="notes", length = 30)
-	private String notes;
+	private String note;
 	
 	@Column(name="userid", length = 30)
     private String userid;
@@ -79,7 +82,7 @@ public class CompanyVO {
 	@Column(name="employeecode", length = 30)
 	private String employeecode;
 	
-	@Column(name="password", length = 30)
+	@Column(name="password", length = 255)
 	private String password;
 	
 	@Column(name="createdby", length = 30)

@@ -40,7 +40,7 @@ public class UserVO {
 	@Column(name="username", length = 30)
 	private String userName;
 	
-	@Column(name="password", length = 30)
+	@Column(name="password", length = 255)
 	private String password;
 	
 	@Column(name="employeename", length = 30)
@@ -81,6 +81,12 @@ public class UserVO {
 	
 	@Column(name="active")
 	private String isActive;
+	
+	@Column(name="createdby", length = 30)
+	private String createdby;
+	
+	@Column(name="modifiedby", length = 30)
+	private String updatedby;
 	
 	@Column(name="role")
 	private Role role;

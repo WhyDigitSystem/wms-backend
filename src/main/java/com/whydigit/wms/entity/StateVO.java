@@ -32,13 +32,16 @@ public class StateVO {
 	private String statecode;
 	
 	@Column(name="state", length = 30)
-	private String state;
+	private String statename;
 	
 	@Column(name="country", length = 30)
     private String country;
 	
 	@Column(name="region", length = 30)
     private String region;
+	
+	@Column(name="stateno", length = 30)
+    private int statenumber;
 	
 	@Column(name="active")
     private boolean active;

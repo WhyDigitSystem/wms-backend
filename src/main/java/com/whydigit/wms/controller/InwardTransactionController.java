@@ -2,8 +2,10 @@ package com.whydigit.wms.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
@@ -29,7 +32,7 @@ import com.whydigit.wms.entity.PutAwayVO;
 import com.whydigit.wms.service.InwardTransactionService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/inward")
 public class InwardTransactionController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(InwardTransactionController.class);
@@ -88,6 +91,109 @@ public class InwardTransactionController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getAllGatePassNumberByClientAndBranch")
+	public ResponseEntity<ResponseDTO> getAllGatePassNumberByClientAndBranch(@RequestParam Long orgid,
+			@RequestParam String client, @RequestParam String customer, @RequestParam String branchcode) {
+		String methodName = "getAllGatePassNumberByClientAndBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> grn = new HashSet<>();
+		try {
+			grn = inwardTransactionService.getAllGatePassNumberByClientAndBranch(orgid, client, customer, branchcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formattedParameters = formatParameter(grn);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"getAllGatePassNumberByClientAndBranch information get successfully");
+			responseObjectsMap.put("getAllGatePassNumberByClientAndBranch", formattedParameters);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"getAllGatePassNumberByClientAndBranch information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatParameter(Set<Object[]> grn) {
+		List<Map<String, String>> formattedParameters = new ArrayList<>();
+		for (Object[] parameters : grn) {
+			Map<String, String> param = new HashMap<>();
+			param.put("entryno", parameters[0].toString());
+			param.put("gatepassid", parameters[1].toString());
+			param.put("gatepassdate", parameters[2].toString());
+			param.put("suppliershortname", parameters[3].toString());
+			param.put("supplier", parameters[4].toString());
+			param.put("modeofshipment", parameters[5].toString());
+			param.put("carrier", parameters[6].toString());
+			param.put("vehicletype", parameters[7].toString());
+			param.put("contact", parameters[8].toString());
+			param.put("drivername", parameters[9].toString());
+			param.put("securityname", parameters[10].toString());
+			param.put("goodsdescription", parameters[11].toString());
+			param.put("vehicleno", parameters[12].toString());
+			formattedParameters.add(param);
+		}
+		return formattedParameters;
+	}
+
+	@GetMapping("/getGatePassDetailsByGatePassNo")
+	public ResponseEntity<ResponseDTO> getGatePassDetailsByGatePassNo(@RequestParam Long orgid,
+			@RequestParam String client, @RequestParam String entryno, @RequestParam Long docid,
+			@RequestParam String branchcode) {
+		String methodName = "getGatePassDetailsByGatePassNo()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> grn = new HashSet<>();
+		try {
+			grn = inwardTransactionService.getGatePassDetailsByGatePassNo(orgid, client, entryno, docid, branchcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formattParameters = formateeParameter(grn);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"getGatePassDetailsByGatePassNo information get successfully");
+			responseObjectsMap.put("getGatePassDetailsByGatePassNo", formattParameters);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"getGatePassDetailsByGatePassNo information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formateeParameter(Set<Object[]> grn) {
+		List<Map<String, String>> formattedParameters = new ArrayList<>();
+		for (Object[] parameters : grn) {
+			Map<String, String> param = new HashMap<>();
+			param.put("lrnohaw", parameters[0].toString());
+			param.put("invoiceno", parameters[1].toString());
+			param.put("invoicedate", parameters[2].toString());
+			param.put("partno", parameters[3].toString());
+			param.put("partdesc", parameters[4].toString());
+			param.put("sku", parameters[5].toString());
+			param.put("invqty", parameters[6].toString());
+			param.put("recqty", parameters[7].toString());
+			param.put("damageqty", parameters[8].toString());
+			param.put("batchno", parameters[9].toString());
+			param.put("weight", parameters[10].toString());
+			param.put("rate", parameters[11].toString());
+			param.put("rowno", parameters[12].toString());
+			formattedParameters.add(param);
+		}
+		return formattedParameters;
 	}
 
 	@PostMapping("/grn")
@@ -191,6 +297,48 @@ public class InwardTransactionController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getAllPartnoByCustomer")
+	public ResponseEntity<ResponseDTO> getAllPartnoByCustomer(@RequestParam Long orgid, @RequestParam String client,
+			@RequestParam String customer, @RequestParam String cbranch) {
+		String methodName = "getAllPartnoByCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> gatePassIn = new HashSet<>();
+		try {
+			gatePassIn = inwardTransactionService.getAllPartnoByCustomer(orgid, client, customer, cbranch);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formattedParameters = formattParameter(gatePassIn);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"getAllPartnoByCustomer information get successfully");
+			responseObjectsMap.put("getAllPartnoByCustomer", formattedParameters);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"getAllPartnoByCustomer information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formattParameter(Set<Object[]> gatepass) {
+		List<Map<String, String>> formattedParameters = new ArrayList<>();
+		for (Object[] parameters : gatepass) {
+			Map<String, String> param = new HashMap<>();
+			param.put("partno", parameters[0].toString());
+			param.put("partdesc", parameters[1].toString());
+			param.put("sku", parameters[2].toString());
+			param.put("ssku", parameters[3].toString());
+			formattedParameters.add(param);
+		}
+		return formattedParameters;
+	}
+
 	@PostMapping("/gatePassIn")
 	public ResponseEntity<ResponseDTO> createGatePassIn(@RequestBody GatePassInVO gatePassInVO) {
 		String methodName = "createGatePassIn()";
@@ -291,6 +439,59 @@ public class InwardTransactionController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getGrnNoForPutAway")
+	public ResponseEntity<ResponseDTO> getGrnNoForPutAway(@RequestParam Long orgid, @RequestParam String client,
+			@RequestParam String branch, @RequestParam String finyear, @RequestParam String branchcode) {
+		String methodName = "getGrnNoForPutAway()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> putaway = new HashSet<>();
+		try {
+			putaway = inwardTransactionService.getGrnNoForPutAway(orgid, client, branch, finyear, branchcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formatteddParameters = formatParameterr(putaway);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "getGrnNoForPutAway information get successfully");
+			responseObjectsMap.put("getGrnNoForPutAway", formatteddParameters);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"getGrnNoForPutAway information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatParameterr(Set<Object[]> putaway) {
+		List<Map<String, String>> formattedParameters = new ArrayList<>();
+		for (Object[] parameters : putaway) {
+			Map<String, String> param = new HashMap<>();
+			param.put("grnno", getStringValue(parameters[0]));
+			param.put("grndate", getStringValue(parameters[1]));
+			param.put("entryno", getStringValue(parameters[3]));
+			param.put("entrydate", getStringValue(parameters[4]));
+			param.put("vehicleno", getStringValue(parameters[5]));
+			param.put("drivername", getStringValue(parameters[6]));
+			param.put("contact", getStringValue(parameters[7]));
+			param.put("goodsdescripition", getStringValue(parameters[8]));
+			param.put("modeofshipment",getStringValue(parameters[9]));
+			param.put("vehicletype", getStringValue(parameters[10]));
+			param.put("securityname", getStringValue(parameters[11]));
+			param.put("putqty", getStringValue(parameters[12]));
+			formattedParameters.add(param);
+		}
+		return formattedParameters;
+	}
+
+	private String getStringValue(Object obj) {
+		return obj != null ? obj.toString() : " ";
 	}
 
 	@PostMapping("/putaway")

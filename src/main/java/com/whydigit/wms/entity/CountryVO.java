@@ -29,7 +29,7 @@ public class CountryVO {
 	private Long id;
 	
 	@Column(name="country", length = 30)
-	private String country;
+	private String countryname;
 	
 	@Column(name="countrycode", length = 30)
 	private String countrycode;
@@ -48,6 +48,7 @@ public class CountryVO {
 	
 	@Column(name="createdby", length = 30)
 	private String createdby;
+	
 	
 	@Column(name="modifiedby", length = 30)
 	private String updatedby;

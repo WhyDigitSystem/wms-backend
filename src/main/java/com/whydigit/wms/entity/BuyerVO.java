@@ -34,7 +34,7 @@ public class BuyerVO {
 	private String buyershortname;
 
 	@Column(name = "buyertype", length = 30)
-	private String buyertype;
+	private String buyer_type;
 
 	@Column(name = "buyergroupof", length = 30)
 	private String buyergroupof;

@@ -13,7 +13,7 @@ public class SignUpFormDTO {
 	private String userName;
     private String password;
     private String employeeName;
-    private String nickName;
+    private String nickName; 
     private String email;
     private Long orgId;
     private String mobileNo;

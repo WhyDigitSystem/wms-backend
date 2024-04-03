@@ -68,7 +68,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/country/countryid")
 	public ResponseEntity<ResponseDTO> getAllcountriesAndCountrid(@RequestParam Long orgid) {
 		String methodName = "getAllcountriesAndCountrid()";
@@ -84,7 +84,7 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String, String>>formattedCountry=formattCountry(country);
+			List<Map<String, String>> formattedCountry = formattCountry(country);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "countries information get successfully");
 			responseObjectsMap.put("country", formattedCountry);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -97,9 +97,9 @@ public class CommonMasterController extends BaseController {
 	}
 
 	private List<Map<String, String>> formattCountry(Set<Object[]> country) {
-		List<Map<String, String>>formattedCountry=new ArrayList<>();
-		for(Object[] formateCountry:country) {
-			Map<String, String>FormatCountry=new HashMap<>();
+		List<Map<String, String>> formattedCountry = new ArrayList<>();
+		for (Object[] formateCountry : country) {
+			Map<String, String> FormatCountry = new HashMap<>();
 			FormatCountry.put("countryid", formateCountry[0].toString());
 			FormatCountry.put("country", formateCountry[1].toString());
 			formattedCountry.add(FormatCountry);
@@ -239,7 +239,7 @@ public class CommonMasterController extends BaseController {
 	}
 
 	@GetMapping("/state/country")
-	public ResponseEntity<ResponseDTO> getStateByCountry(@RequestParam Long orgid,@RequestParam String country) {
+	public ResponseEntity<ResponseDTO> getStateByCountry(@RequestParam Long orgid, @RequestParam String country) {
 		String methodName = "getStateByCountry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -247,7 +247,7 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<StateVO> stateVO = null;
 		try {
-			stateVO = commonMasterService.getStatesByCountry(orgid,country);
+			stateVO = commonMasterService.getStatesByCountry(orgid, country);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -331,8 +331,7 @@ public class CommonMasterController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
-		
+
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "city information get successfully");
 			responseObjectsMap.put("cityVO", cityVO);
@@ -343,9 +342,9 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/city/state")
-	public ResponseEntity<ResponseDTO> getAllCitiesByState(@RequestParam Long orgid,@RequestParam String state) {
+	public ResponseEntity<ResponseDTO> getAllCitiesByState(@RequestParam Long orgid, @RequestParam String state) {
 		String methodName = "getAllCitiesByState()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -353,13 +352,12 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<CityVO> cityVO = new ArrayList<>();
 		try {
-			cityVO = commonMasterService.getAllCitiesByState(orgid,state);
+			cityVO = commonMasterService.getAllCitiesByState(orgid, state);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
-		
+
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "city information get successfully");
 			responseObjectsMap.put("cityVO", cityVO);
@@ -397,7 +395,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/city")
 	public ResponseEntity<ResponseDTO> createCity(@RequestBody CityVO cityVO) {
 		String methodName = "createCity()";
@@ -553,7 +551,7 @@ public class CommonMasterController extends BaseController {
 	}
 
 	// Currency
-	
+
 	@GetMapping("/currency")
 	public ResponseEntity<ResponseDTO> getAllCurrency(@RequestParam Long orgid) {
 		String methodName = "getAllCurrency()";
@@ -569,12 +567,12 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Currency"
-					+ " information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Currency" + " information get successfully");
 			responseObjectsMap.put("currencyVO", currencyVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Currency information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Currency information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -608,8 +606,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
 	@PostMapping("/currency")
 	public ResponseEntity<ResponseDTO> createCurrency(@RequestBody CurrencyVO currencyVO) {
 		String methodName = "createCurrency()";
@@ -659,7 +656,6 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
 
 	// Company
 
@@ -762,14 +758,12 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
 
-	
-  
 	// Global Parameter
-	
+
 	@GetMapping("/globalparamBranchByUserName")
-	public ResponseEntity<ResponseDTO> getGlobalParameterBranchByUserName(@RequestParam Long orgid,@RequestParam String userName) {
+	public ResponseEntity<ResponseDTO> getGlobalParameterBranchByUserName(@RequestParam Long orgid,
+			@RequestParam String userName) {
 		String methodName = "getAllGlobalParameterByUserName()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -777,45 +771,48 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> globalParameters = new HashSet<>();
 		try {
-			globalParameters = commonMasterService.getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(orgid,userName);
+			globalParameters = commonMasterService.getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(orgid,
+					userName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String,String>>formattedParameters=formattParameter(globalParameters);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter Branch information get successfully");
+			List<Map<String, String>> formattedParameters = formattParameter(globalParameters);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Global Parameter Branch information get successfully");
 			responseObjectsMap.put("GlopalParameters", formattedParameters);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Branch information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Global Parameter Branch information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	private List<Map<String, String>> formattParameter(Set<Object[]> globalParameters) {
-		List<Map<String, String>>formattedParameters=new ArrayList<>();
-		for(Object[]parameters:globalParameters) {
-			Map<String, String>param=new HashMap<>();
+		List<Map<String, String>> formattedParameters = new ArrayList<>();
+		for (Object[] parameters : globalParameters) {
+			Map<String, String> param = new HashMap<>();
 			param.put("branch", parameters[0].toString());
 			param.put("branchcode", parameters[1].toString());
 			formattedParameters.add(param);
 		}
 		return formattedParameters;
 	}
-	
+
 	// get Access Customers
-	
+
 	@GetMapping("/globalparamCustomerByUserName")
-	public ResponseEntity<ResponseDTO> getGlobalParameterCustomerByUserName(@RequestParam Long orgid,@RequestParam String userName, @RequestParam String branchcode) {
+	public ResponseEntity<ResponseDTO> getGlobalParameterCustomerByUserName(@RequestParam Long orgid,
+			@RequestParam String userName, @RequestParam String branchcode) {
 		String methodName = "getGlobalParameterCustomerByUserName()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object[]>customerVO=new HashSet<>();
+		Set<Object[]> customerVO = new HashSet<>();
 		try {
 			customerVO = commonMasterService.getAllAccessCustomerForLogin(orgid, userName, branchcode);
 		} catch (Exception e) {
@@ -823,22 +820,23 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String, String>>getCustomer=formatCustomer(customerVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter Customer information get successfully");
+			List<Map<String, String>> getCustomer = formatCustomer(customerVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Global Parameter Customer information get successfully");
 			responseObjectsMap.put("GlopalParameterCustomer", getCustomer);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Customer information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Global Parameter Customer information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	private List<Map<String, String>> formatCustomer(Set<Object[]> customerVO) {
-		List<Map<String, String>>getCustomer=new ArrayList<>();
-		for(Object[]parameters:customerVO) {
-			Map<String, String>param=new HashMap<>();
+		List<Map<String, String>> getCustomer = new ArrayList<>();
+		for (Object[] parameters : customerVO) {
+			Map<String, String> param = new HashMap<>();
 			param.put("customer", parameters[0].toString());
 			getCustomer.add(param);
 		}
@@ -846,45 +844,49 @@ public class CommonMasterController extends BaseController {
 	}
 
 	@GetMapping("/globalparamClientByUserName")
-	public ResponseEntity<ResponseDTO> getGlobalParameterClientByUserName(@RequestParam Long orgid,@RequestParam String userName, @RequestParam String branchcode,@RequestParam String customer) {
+	public ResponseEntity<ResponseDTO> getGlobalParameterClientByUserName(@RequestParam Long orgid,
+			@RequestParam String userName, @RequestParam String branchcode, @RequestParam String customer) {
 		String methodName = "getGlobalParameterClientByUserName()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object[]>clientVO=new HashSet<>();
+		Set<Object[]> clientVO = new HashSet<>();
 		try {
-			clientVO = commonMasterService.getAllAccessClientForLogin(orgid, userName, branchcode,customer);
+			clientVO = commonMasterService.getAllAccessClientForLogin(orgid, userName, branchcode, customer);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String, String>>getClient=format(clientVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter Client information get successfully");
+			List<Map<String, String>> getClient = format(clientVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Global Parameter Client information get successfully");
 			responseObjectsMap.put("GlopalParameterClient", getClient);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Client information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Global Parameter Client information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	// get Global Param
-	
+
 	private List<Map<String, String>> format(Set<Object[]> clientVO) {
-		List<Map<String, String>>getClient=new ArrayList<>();
-			for(Object[]parameters:clientVO) {
-				Map<String, String>param=new HashMap<>();
-				param.put("customer", parameters[0].toString());
-				getClient.add(param);
-			}
-			return getClient;
+		List<Map<String, String>> getClient = new ArrayList<>();
+		for (Object[] parameters : clientVO) {
+			Map<String, String> param = new HashMap<>();
+			param.put("customer", parameters[0].toString());
+			getClient.add(param);
+		}
+		return getClient;
 	}
 
 	@GetMapping("/globalparam/username")
-	public ResponseEntity<ResponseDTO> getGlobalParamByOrgIdAndUserName(@RequestParam Long orgid,@RequestParam String username) {
+	public ResponseEntity<ResponseDTO> getGlobalParamByOrgIdAndUserName(@RequestParam Long orgid,
+			@RequestParam String username) {
 		String methodName = "getCountryById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -908,7 +910,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 //	@GetMapping("/globalparamCustomerByOrgAndBranchcode")
 //	public ResponseEntity<ResponseDTO> globalparamCustomerByOrgAndBranchcode(@RequestParam Long orgid,@RequestParam String branchcode) {
 //		String methodName = "globalparamCustomerByOrgAndBranchcode()";
@@ -935,11 +937,11 @@ public class CommonMasterController extends BaseController {
 //		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 //		return ResponseEntity.ok().body(responseDTO);
 //	}
-	
+
 	private List<Map<String, String>> formattCustomer(Set<Object[]> globalCustomer) {
-		List<Map<String, String>>formattedCustomers=new ArrayList<>();
-		for(Object[]customer:globalCustomer) {
-			Map<String, String>cust=new HashMap<>();
+		List<Map<String, String>> formattedCustomers = new ArrayList<>();
+		for (Object[] customer : globalCustomer) {
+			Map<String, String> cust = new HashMap<>();
 			cust.put("customer", customer[0].toString());
 			formattedCustomers.add(cust);
 		}
@@ -960,8 +962,9 @@ public class CommonMasterController extends BaseController {
 				responseObjectsMap.put("GlobalParameterVO", gloParameterVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Global Parameter not found for ID: " + globalParameterVO.getGlobalid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Update failed", errorMsg);
+				errorMsg = "Global Parameter not found for ID: " + globalParameterVO.getId();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Update failed",
+						errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -971,12 +974,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	// Create Client Access
-	
-	
-	
-	
 
-	
+	// Create Client Access
+
 }

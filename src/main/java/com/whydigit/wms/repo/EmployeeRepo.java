@@ -10,13 +10,11 @@ import org.springframework.stereotype.Repository;
 import com.whydigit.wms.entity.EmployeeVO;
 
 @Repository
-public interface EmployeeRepo extends JpaRepository<EmployeeVO, Long>{
+public interface EmployeeRepo extends JpaRepository<EmployeeVO, Long> {
 
-	@Query(value="SELECT e.employeecode , e.employeeName FROM EmployeeVO e WHERE e.orgId=?1")
+	@Query(value = "SELECT e.employeecode , e.employeename FROM EmployeeVO e WHERE e.orgId=?1")
 	Set<Object[]> findAllNameAndEmployeeCodeByOrgId(Long orgId);
 
 	List<EmployeeVO> findAllEmployeeByOrgId(Long orgId);
-
-	
 
 }

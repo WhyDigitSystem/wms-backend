@@ -53,9 +53,11 @@ public class SecurityConfig {
 						"/api/warehouselocation", "/api/ClientAccess", "/api/warehouse", "/api/client/branchaccess",
 						"/api/warehouse/branch", "/api/material", "/api/locationtype/warehouse",
 						"/api/rowno/locationtype/warehouse", "/api/levelno/rowno/locationtype/warehouse",
-						"/api/getPalletno", "/api/client/branchaccess", "/api/warehouse/branch", "/api/qty", "/api/grn",
-						"/api/grn/{id}", "/api/bins/levelno/rowno/locationtype/warehouse", "/api/locationmapping",
-						"/api/putaway", "/api/putaway/{id}")
+						"/api/getPalletno", "/api/client/branchaccess", "/api/warehouse/branch", "/	api/qty",
+						"/api/inward/grn", "/api/inward/grn/{id}", "/api/bins/levelno/rowno/locationtype/warehouse",
+						"/api/locationmapping", "/api/inward/putaway", "/api/inward/putaway/{id}",
+						"/api/inward/gatepassin", "/api/inward/gatepassin/{id}", "/api/inward/getAllPartnoByCustomer",
+						"/api/inward/getAllGatePassNumberByClientAndBranch","/api/inward/gatePassIn","/api/inward/getGatePassDetails","/api/inward/getGrnNoForPutAway")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

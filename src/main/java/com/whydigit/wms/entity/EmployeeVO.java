@@ -32,7 +32,7 @@ public class EmployeeVO {
 	private String employeecode;
 	
 	@Column(name="employee", length = 30)
-	private String employeeName;
+	private String employeename;
 	
 	@Column(name="gender", length = 30)
 	private String gender;

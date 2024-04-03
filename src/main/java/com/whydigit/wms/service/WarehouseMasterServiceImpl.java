@@ -620,7 +620,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public EmployeeVO createEmployee(EmployeeVO employeeVO) {
 		employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
-		employeeVO.setEmployeeName(employeeVO.getEmployeeName().toUpperCase());
+		employeeVO.setEmployeename(employeeVO.getEmployeename().toUpperCase());
 		employeeVO.setDupchk(employeeVO.getOrgId() + employeeVO.getEmployeecode());
 		return employeeRepo.save(employeeVO);
 	}
@@ -630,7 +630,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		if (employeeRepo.existsById(employeeVO.getId())) {
 			employeeVO.setUpdatedby(employeeVO.getUserid());
 			employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
-			employeeVO.setEmployeeName(employeeVO.getEmployeeName().toUpperCase());
+			employeeVO.setEmployeename(employeeVO.getEmployeename().toUpperCase());
 			employeeVO.setDupchk(employeeVO.getOrgId() + employeeVO.getEmployeecode());
 			return Optional.of(employeeRepo.save(employeeVO));
 		} else {

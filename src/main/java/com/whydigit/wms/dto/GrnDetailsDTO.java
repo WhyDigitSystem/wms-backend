@@ -38,4 +38,9 @@ public class GrnDetailsDTO {
 	private String shipmentno; 
 	private String warehouse;
 	private int sqty; 
+	private int grnqty;
+	private String batchpalletno;
+	private LocalDate expdate;
+	private String mrp;
+	
 }

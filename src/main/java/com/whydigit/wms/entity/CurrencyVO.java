@@ -32,7 +32,7 @@ public class CurrencyVO {
 	@Column(name="userid", length = 30)
 	private String userid;
 	
-	@Column(name="counrty", length = 30)
+	@Column(name="country", length = 30)
 	private String country;
 	
 	@Column(name="currency", length = 30)

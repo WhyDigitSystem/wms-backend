@@ -34,7 +34,7 @@ public class CityVO {
 	private String country;
 	
 	@Column(name="city", length = 30)
-    private String city;
+    private String cityname;
 	
 	@Column(name="state", length = 30)
     private String state;

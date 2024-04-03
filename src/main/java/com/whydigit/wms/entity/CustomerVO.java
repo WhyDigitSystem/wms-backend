@@ -84,7 +84,7 @@ public class CustomerVO {
 	@Column(name = "cancelremarks", length = 30)
 	private String cancelremarks;
 
-	@Column(name = "createdby", length = 30)
+	@Column(name   = "createdby", length = 30)
 	private String createdby;
 
 	@Column(name = "modifiedby", length = 30)
