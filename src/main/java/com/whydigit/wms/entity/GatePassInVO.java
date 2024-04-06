@@ -1,6 +1,7 @@
 package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -56,14 +58,14 @@ public class GatePassInVO {
 	private String supplier;
 
 	@Column(name = "suppliershortname", length = 30)
-	private String suppliershortname;	
-	
+	private String suppliershortname;
+
 	@Column(name = "modeofshipment", length = 30)
 	private String modeofshipment;
 
 	@Column(name = "carrier", length = 30)
 	private String carrier;
-	
+
 	@Column(name = "carriertransport", length = 30)
 	private String carriertransport;
 
@@ -120,12 +122,15 @@ public class GatePassInVO {
 
 	@Column(name = "screencode", length = 30)
 	private String screencode;
-	
+
 	@Column(name = "client", length = 30)
 	private String client;
 
 	@Column(name = "customer", length = 30)
 	private String customer;
+
+	@Column(name = "finyr", length = 30)
+	private String finyr;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "gatePassInVO", cascade = CascadeType.ALL)
@@ -134,4 +139,20 @@ public class GatePassInVO {
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
+	@PrePersist
+	private void setDefaultFinyr() {
+		// Execute the logic to set the default value for finyr
+		String fyFull = calculateFinyr();
+		this.finyr = fyFull;
+	}
+
+	private String calculateFinyr() {
+		// Logic to calculate finyr based on the provided SQL query
+		String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
+		String fyFull = (currentMonthDay.compareTo("0331") > 0)
+				? LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))
+				: LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
+		return fyFull;
+
+	}
 }

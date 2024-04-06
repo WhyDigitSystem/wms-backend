@@ -302,7 +302,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 				stockDetailsVO.setGrndate(savedPutAwayVO.getGrndate());
 				stockDetailsVO.setLotno(savedPutAwayVO.getLotno());
 				stockDetailsVO.setWarehouse(savedPutAwayVO.getWarehouse());
-				stockDetailsVO.setFinyear(savedPutAwayVO.getFinyear());
+				stockDetailsVO.setFinyear(savedPutAwayVO.getFinyr());
 				stockDetailsVO.setBranch(savedPutAwayVO.getBranch());
 				stockDetailsVO.setBranchcode(savedPutAwayVO.getBranchcode());
 				stockDetailsVO.setRefno(savedPutAwayVO.getDocid());
@@ -339,9 +339,9 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 				handlingStockInVO.setBranch(savedPutAwayVO.getBranch());
 				handlingStockInVO.setClient(savedPutAwayVO.getClient());
 				handlingStockInVO.setCustomer(savedPutAwayVO.getCustomer());
-				handlingStockInVO.setFinyr(savedPutAwayVO.getFinyear());
+				handlingStockInVO.setFinyr(savedPutAwayVO.getFinyr());
 				handlingStockInVO.setRefno(savedPutAwayVO.getDocid());
-				handlingStockInVO.setSdocid(savedPutAwayVO.getFinyear());
+				handlingStockInVO.setSdocid(savedPutAwayVO.getFinyr());
 				handlingStockInVO.setWarehouse(savedPutAwayVO.getWarehouse());
 				// Putaway details to handlingStockIn
 				handlingStockInVO.setPartno(putAwayDetailsVO.getPartno());

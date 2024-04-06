@@ -38,7 +38,7 @@ public class UserLoginClientAccessVO {
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "usersId")
+    @JoinColumn(name = "usersid")
     private UserVO userVO;
 	
 	@Embedded

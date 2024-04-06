@@ -320,12 +320,11 @@ public class WarehouseMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			 LocationTypeVO createdLocationType = warehouseMasterService.createLocationType(locationTypeVO);
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType created successfully");
-				responseObjectsMap.put("createdLocationTypeVO", createdLocationType);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			}
-		 catch (Exception e) {
+			LocationTypeVO createdLocationType = warehouseMasterService.createLocationType(locationTypeVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType created successfully");
+			responseObjectsMap.put("createdLocationTypeVO", createdLocationType);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, "LocationType creation/update failed",
@@ -344,7 +343,8 @@ public class WarehouseMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			LocationTypeVO updatelocationTypeVO = warehouseMasterService.updateLocationType(locationTypeVO).orElse(null);
+			LocationTypeVO updatelocationTypeVO = warehouseMasterService.updateLocationType(locationTypeVO)
+					.orElse(null);
 			if (updatelocationTypeVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Location Type Updated successfully");
 				responseObjectsMap.put("locationtype", updatelocationTypeVO);
@@ -950,7 +950,7 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			List<Map<String, String>>getAlllocation=fomratLocation(Locationtype);
+			List<Map<String, String>> getAlllocation = fomratLocation(Locationtype);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Location Type Founded");
 			responseObjectsMap.put("Locationtype", getAlllocation);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -991,7 +991,7 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			List<Map<String, String>>getAllRow=fomratRow(Rowno);
+			List<Map<String, String>> getAllRow = fomratRow(Rowno);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Rowno Founded");
 			responseObjectsMap.put("Rowno", getAllRow);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -1032,7 +1032,7 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			List<Map<String, String>>getAllLevel=fomratLevel(Levelno);
+			List<Map<String, String>> getAllLevel = fomratLevel(Levelno);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Levelno Founded");
 			responseObjectsMap.put("Levelno", getAllLevel);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -1438,6 +1438,45 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getSupplierNameByCustomer")
+	public ResponseEntity<ResponseDTO> getSupplierNameByCustomer(@RequestParam Long orgid, @RequestParam String client,
+			@RequestParam String cbranch) {
+
+		String methodName = "getSupplierNameByCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> supplier = new HashSet<>();
+		try {
+			supplier = warehouseMasterService.getSupplierNameByCustomer(orgid,client,cbranch);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>> formattedBranches = formatBranchess(supplier);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Supplier Name Founded");
+			responseObjectsMap.put("Supplier", formattedBranches);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Supplier Name not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "Supplier Name not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatBranchess(Set<Object[]> supplier) {
+		List<Map<String, String>> formattedBranches = new ArrayList<>();
+		for (Object[] supplierVO : supplier) {
+			Map<String, String> formattedBranch = new HashMap<>();
+			formattedBranch.put("suppliername", supplierVO[0].toString());
+			formattedBranches.add(formattedBranch);
+		}
+		return formattedBranches;
 	}
 
 	@PostMapping("/supplier")
@@ -1922,12 +1961,12 @@ public class WarehouseMasterController extends BaseController {
 		}
 		return formattedBranches;
 	}
-	
-	
+
 	// Get Palletno from Rowno,Level,And Start and End no
-	
+
 	@GetMapping("/getPalletno")
-	public ResponseEntity<ResponseDTO> getPalletno(@RequestParam String rowno,@RequestParam String level,@RequestParam int startno,@RequestParam int endno) {
+	public ResponseEntity<ResponseDTO> getPalletno(@RequestParam String rowno, @RequestParam String level,
+			@RequestParam int startno, @RequestParam int endno) {
 		String methodName = "getPalletno()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;

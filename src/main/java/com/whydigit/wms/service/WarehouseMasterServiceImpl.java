@@ -536,6 +536,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		supplierRepo.deleteById(supplierid);
 	}
 
+	@Override
+	public Set<Object[]> getSupplierNameByCustomer(Long orgid, String client, String cbranch) {
+		return supplierRepo.findSupplierNameByCustomer(orgid,client,cbranch);
+	}
+
 	// LocationMapping
 
 	@Override

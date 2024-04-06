@@ -129,8 +129,8 @@ public interface WarehouseMasterService {
 
 	Set<Object[]> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
 
-	Set<Object[]> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse, String locationtype,
-			String rowno);
+	Set<Object[]> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
+			String locationtype, String rowno);
 
 	Set<Object[]> getAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,
 			String locationtype, String rowno, String level);
@@ -179,6 +179,8 @@ public interface WarehouseMasterService {
 
 	void deleteSupplier(Long supplierid);
 
+	Set<Object[]> getSupplierNameByCustomer(Long orgid, String client, String cbranch);
+
 	// LocationMapping
 
 	List<LocationMappingVO> getAllLocationMapping(Long orgid, String client, String branch, String warehouse);
@@ -222,9 +224,8 @@ public interface WarehouseMasterService {
 	Set<Object[]> getAllCustomerAndClientByOrgId(Long orgid);
 
 	Set<Object[]> getAllBranchCodeAndBranchByOrgId(String client, Long orgid);
-	
-	
+
 	// Create Pallet No
-	Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level,int startno,int endno);
+	Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level, int startno, int endno);
 
 }

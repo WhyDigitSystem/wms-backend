@@ -44,7 +44,7 @@ public class UserLoginRolesVO {
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "usersId")
+    @JoinColumn(name = "usersid")
     private UserVO userVO;
 	
 	@Embedded
