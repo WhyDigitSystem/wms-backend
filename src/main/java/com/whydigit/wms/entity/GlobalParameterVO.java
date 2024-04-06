@@ -27,22 +27,16 @@ public class GlobalParameterVO {
 
 	@Column(name = "orgid")
 	private Long orgId;
-
 	@Column(name = "userid", length = 30)
 	private String userid;
-
 	@Column(name = "warehouse", length = 30)
 	private String warehouse;
-
 	@Column(name = "branch", length = 30)
 	private String branch;
-
 	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-
 	@Column(name = "customer", length = 30)
 	private String customer;
-
 	@Column(name = "client", length = 30)
 	private String client;
 }

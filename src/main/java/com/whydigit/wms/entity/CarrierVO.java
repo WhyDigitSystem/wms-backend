@@ -29,52 +29,36 @@ public class CarrierVO {
 
 	@Column(name = "carrier", length = 30)
 	private String carrier;
-
 	@Column(name = "carriershortname", length = 30)
 	private String carriershortname;
-
 	@Column(name = "shipmentmode", length = 30)
 	private String shipmentmode;
-
 	@Column(name = "cbranch", length = 30)
 	private String cbranch;
-
 	@Column(name = "client", length = 30)
 	private String client;
-
 	@Column(unique = true)
 	private String dupchk;
-
 	@Column(name = "orgid")
 	private Long orgId;
-
 	@Column(name = "active")
 	private boolean active;
-
 	@Column(name = "userid", length = 30)
 	private String userid;
-
 	@Column(name = "customer", length = 30)
 	private String customer;
-
 	@Column(name = "warehouse", length = 30)
 	private String warehouse;
-
 	@Column(name = "branch", length = 30)
 	private String branch;
-
 	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-
 	@Column(name = "cancel")
 	private boolean cancel;
-
 	@Column(name = "cancelremarks", length = 30)
 	private String cancelremarks;
-
 	@Column(name = "createdby", length = 30)
 	private String createdby;
-
 	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
 

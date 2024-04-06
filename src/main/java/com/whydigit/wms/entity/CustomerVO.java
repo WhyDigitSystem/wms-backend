@@ -35,70 +35,48 @@ public class CustomerVO {
 
 	@Column(name = "customer", length = 30)
 	private String customer;
-
 	@Column(name = "orgid")
 	private Long orgId;
-
 	@Column(name = "customershortname", length = 30)
 	private String customershortname;
-
 	@Column(name = "panno", length = 30)
 	private String panno;
-
 	@Column(name = "contactperson", length = 30)
 	private String contactperson;
-
 	@Column(name = "mobilenumber", length = 30)
 	private String mobilenumber;
-
 	@Column(name = "gstregistration", length = 30)
 	private String gstregistration;
-
 	@Column(name = "emailid", length = 30)
 	private String emailid;
-
 	@Column(name = "groupof", length = 30)
 	private String groupof;
-
 	@Column(name = "tanno", length = 30)
 	private String tanno;
-
 	@Column(name = "address1", length = 30)
 	private String address1;
-
 	@Column(name = "address2", length = 30)
 	private String address2;
-
 	@Column(name = "gstno", length = 30)
 	private String gstno;
-
 	@Column(name = "city", length = 30)
 	private String city;
-
 	@Column(name = "state", length = 30)
 	private String state;
-
 	@Column(name = "country", length = 30)
 	private String country;
-
 	@Column(name = "cancelremarks", length = 30)
 	private String cancelremarks;
-
-	@Column(name   = "createdby", length = 30)
+	@Column(name = "createdby", length = 30)
 	private String createdby;
-
 	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-
 	@Column(unique = true)
 	private String dupchk;
-
 	@Column(name = "active")
 	private boolean active;
-
 	@Column(name = "userid")
 	private String userid;
-
 	@Column(name = "cancel")
 	private boolean cancel;
 

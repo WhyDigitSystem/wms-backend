@@ -29,42 +29,30 @@ public class WarehouseLocationDetailsVO {
 	@Column(name = "warehouselocationdetailsid")
 	private Long id;
 
-  @Column(name = "branch", length = 30)
+	@Column(name = "branch", length = 30)
 	private String branch;
-
-  @Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-
 	@Column(name = "warehouse", length = 30)
 	private String warehouse;
-
 	@Column(name = "locatintype", length = 30)
 	private String locationtype;
-
 	@Column(name = "rowno")
 	private String rowno;
-
 	@Column(name = "level", length = 30)
 	private String level;
-
 	@Column(name = "cellfrom", length = 30)
 	private String cellfrom;
-
 	@Column(name = "cellto", length = 30)
 	private String cellto;
-
 	@Column(name = "bin", length = 30)
 	private String bin;
-
 	@Column(name = "bincategory", length = 30)
 	private String bincategory;
-
 	@Column(name = "status", length = 30)
 	private String status;
-
 	@Column(name = "core", length = 30)
 	private String core;
-
 	@Column(name = "orgid")
 	private Long orgId;
 

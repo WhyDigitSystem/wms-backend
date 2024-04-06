@@ -27,42 +27,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WarehouseVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "warehousegen")
-	@SequenceGenerator(name = "warehousegen",sequenceName = "warehouseVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="warehouseid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehousegen")
+	@SequenceGenerator(name = "warehousegen", sequenceName = "warehouseVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "warehouseid")
 	private Long id;
-	
-	@Column(name="warehouse", length = 30)
+
+	@Column(name = "warehouse", length = 30)
 	private String warehouse;
-	
-	@Column(name="branchcode", length = 30)
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-	
-	@Column(name="branch", length = 30)
+	@Column(name = "branch", length = 30)
 	private String branch;
-	
-	@Column(name="orgid")
+	@Column(name = "orgid")
 	private Long orgId;
-	
 	@Column(unique = true)
 	private String dupchk;
-	
-
-	@Column(name="active")
+	@Column(name = "active")
 	private boolean active;
-	
-	@Column(name="userid", length = 30)
+	@Column(name = "userid", length = 30)
 	private String userid;
-	
-	@Column(name="createdby", length = 30)
+	@Column(name = "createdby", length = 30)
 	private String createdby;
-	
-	@Column(name="modifiedby", length = 30)
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-	
-	@Column(name="cancel")
+	@Column(name = "cancel")
 	private boolean cancel;
-	
 
 	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
 	@JsonManagedReference

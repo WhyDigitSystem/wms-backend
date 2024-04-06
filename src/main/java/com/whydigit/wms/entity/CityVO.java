@@ -29,34 +29,24 @@ public class CityVO {
 	
 	@Column(name="citycode", length = 30)
 	private String citycode;
-	
 	@Column(name="country", length = 30)
 	private String country;
-	
 	@Column(name="city", length = 30)
     private String cityname;
-	
 	@Column(name="state", length = 30)
     private String state;
-	
 	@Column(name="active")
     private boolean active;
-	
 	@Column(name="userif", length = 30)
     private String userid;
-	
 	@Column(unique = true)
 	private String dupchk;
-	
 	@Column(name="createdby", length = 30)
 	private String createdby;
-	
 	@Column(name="modifiedby", length = 30)
 	private String updatedby;
-	
 	@Column(name="orgid")
 	private Long orgId;
-	
 	@Column(name="cancel")
 	private boolean cancel;
 

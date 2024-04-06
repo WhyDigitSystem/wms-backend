@@ -30,28 +30,20 @@ public class UnitVO {
 
 	@Column(name = "userid", length = 30)
 	private String userid;
-
 	@Column(name = "uom", length = 30)
 	private String uom;
-
 	@Column(name = "unitname", length = 30)
 	private String unitname;
-
 	@Column(name = "unittype", length = 30)
 	private String unittype;
-
 	@Column(name = "active")
 	private boolean active;
-
 	@Column(unique = true)
 	private String dupchk;
-
 	@Column(name = "createdby", length = 30)
 	private String createdby;
-
 	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-
 	@Column(name = "orgid")
 	private Long orgId;
 

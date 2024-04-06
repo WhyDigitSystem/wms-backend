@@ -35,10 +35,8 @@ public class UserLoginRolesVO {
 	
 	@Column(name="role", length = 30)
 	private String role;
-	
 	@Column(name="startdate")
 	private LocalDate startdate;
-	
 	@Column(name="enddate")
 	private LocalDate enddate;
 	

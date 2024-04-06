@@ -32,7 +32,6 @@ public class UserLoginBranchAccessibleVO {
 	
 	@Column(name="branch", length = 30)
 	private String branch;
-	
 	@Column(name="branchcode", length = 30)
 	private String branchcode;
 	

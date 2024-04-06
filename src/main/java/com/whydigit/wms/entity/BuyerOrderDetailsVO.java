@@ -31,25 +31,19 @@ public class BuyerOrderDetailsVO {
 
 	@Column(name = "partno", length = 30)
 	private String partno;
-
 	@Column(name = "partdesc", length = 30)
 	private String partdesc;
-
 	@Column(name = "qty", length = 30)
 	private String qty;
-
 	@Column(name = "batchno", length = 30)
 	private String batchno;
-
 	@Column(name = "availqty", length = 30)
 	private String availqty;
-
 	@Column(name = "sku", length = 30)
 	private String sku;
-
 	@Column(name = "remarks", length = 30)
 	private String remarks;
-
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "buyer_order_id")

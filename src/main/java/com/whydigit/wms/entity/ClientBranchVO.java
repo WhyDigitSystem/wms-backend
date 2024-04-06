@@ -33,7 +33,6 @@ public class ClientBranchVO {
 
 	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-
 	@Column(name = "orgid", length = 30)
 	private Long orgId;
 

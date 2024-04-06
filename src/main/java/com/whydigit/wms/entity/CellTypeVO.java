@@ -30,25 +30,18 @@ public class CellTypeVO {
 	
 	@Column(name="celltype", length = 30)
 	private String celltype;
-	
 	@Column(name="userid", length = 30)
 	private String userid;
-	
 	@Column(name="active")
 	private boolean active;
-	
 	@Column(unique = true)
 	private String dupchk;
-	
 	@Column(name="createdby", length = 30)
 	private String createdby;
-	
 	@Column(name="modifiedby", length = 30)
 	private String updatedby;
-	
 	@Column(name="orgid", length = 30)
 	private Long orgId;
-	
 	@Column(name="cancel")
 	private boolean cancel;
 

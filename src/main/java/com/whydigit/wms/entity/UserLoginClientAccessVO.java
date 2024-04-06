@@ -32,7 +32,6 @@ public class UserLoginClientAccessVO {
 	
 	@Column(name="client", length = 30)
 	private String client;
-	
 	@Column(name="customer", length = 30)
 	private String customer;
 	

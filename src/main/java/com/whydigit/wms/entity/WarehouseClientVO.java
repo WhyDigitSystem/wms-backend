@@ -33,13 +33,10 @@ public class WarehouseClientVO {
 
 	@Column(name = "client", length = 30)
 	private String client;
-
 	@Column(name = "clientcode", length = 30)
 	private String clientcode;
-
 	@Column(name = "active")
 	private boolean active;
-
 	@Column(name = "userid", length = 30)
 	private String userid;
 

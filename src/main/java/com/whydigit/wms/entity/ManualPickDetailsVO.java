@@ -33,70 +33,48 @@ public class ManualPickDetailsVO {
 
 	@Column(name = "serialno", length = 30)
 	private String serialno;
-
 	@Column(name = "partcode", length = 30)
 	private String partcode;
-
 	@Column(name = "partdescripition", length = 30)
 	private String partdescripition;
-
 	@Column(name = "batchno", length = 30)
 	private String batchno;
-
 	@Column(name = "grnno", length = 30)
 	private String grnno;
-
 	@Column(name = "location", length = 30)
 	private String location;
-
 	@Column(name = "lotno", length = 30)
 	private String lotno;
-
 	@Column(name = "sku", length = 30)
 	private String sku;
-
 	@Column(name = "orderqty")
 	private int orderqty;
-
 	@Column(name = "avlqty")
 	private int avlqty;
-
 	@Column(name = "pickqty")
 	private int pickqty;
-
 	@Column(name = "weight", length = 30)
 	private String weight;
-
 	@Column(name = "rate", length = 30)
 	private String rate;
-
 	@Column(name = "amount", length = 30)
 	private String amount;
-
 	@Column(unique = true)
 	private String dupchk;
-
 	@Column(name = "createdby", length = 30)
 	private String createdby;
-
 	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-
 	@Column(name = "company", length = 30)
 	private String company;
-
 	@Column(name = "cancel", length = 30)
 	private boolean cancel;
-
 	@Column(name = "userid", length = 30)
 	private String userid;
-
 	@Column(name = "cancelremark", length = 30)
 	private String cancelremark;
-
 	@Column(name = "active")
 	private boolean active;
-
 	@Column(name = "screencode", length = 30)
 	private String screencode;
 

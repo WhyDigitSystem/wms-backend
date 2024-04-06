@@ -38,67 +38,46 @@ public class GatePassInVO {
 
 	@Column(name = "transactiontype", length = 30)
 	private String transactiontype;
-
 	@Column(name = "entryno", length = 30)
 	private String entryno;//
-
 	@Column(name = "orgid", length = 30)
 	private Long orgId;
-
 	@Column(name = "docid")
 	private Long docid;
-
 	@Column(name = "docdate", length = 30)
 	private LocalDate docdate = LocalDate.now();
-
 	@Column(name = "date", length = 30)
 	private LocalDate date;
-
 	@Column(name = "supplier", length = 30)
 	private String supplier;
-
 	@Column(name = "suppliershortname", length = 30)
 	private String suppliershortname;
-
 	@Column(name = "modeofshipment", length = 30)
 	private String modeofshipment;
-
 	@Column(name = "carrier", length = 30)
 	private String carrier;
-
 	@Column(name = "carriertransport", length = 30)
 	private String carriertransport;
-
 	@Column(name = "vehicletype", length = 30)
 	private String vehicletype;
-
 	@Column(name = "vehicleno", length = 30)
 	private String vehicleno;
-
 	@Column(name = "drivername", length = 30)
 	private String drivername;
-
 	@Column(name = "contact", length = 30)
 	private String contact;
-
 	@Column(name = "goodsdescription", length = 30)
 	private String goodsdescription;
-
 	@Column(name = "securityname", length = 30)
 	private String securityname;
-
 	@Column(name = "lotno", length = 30)
 	private String lotno;
-
 	@Column(unique = true)
 	private String dupchk;
-
 	@Column(name = "createdby", length = 30)
 	private String createdby;
-
 	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-
 	@Column(name = "company", length = 30)
 	private String company;
 
