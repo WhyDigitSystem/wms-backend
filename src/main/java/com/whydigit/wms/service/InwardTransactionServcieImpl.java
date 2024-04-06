@@ -231,7 +231,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	@Override
 	public GatePassInVO createGatePassIn(GatePassInVO gatePassInVO) {
 		gatePassInVO.setScreencode("GRN");
-		gatePassInVO.setDupchk(gatePassInVO.getOrgId() + gatePassInVO.getCustomer() + gatePassInVO.getClient());
+		gatePassInVO.setDupchk(gatePassInVO.getOrgId() + gatePassInVO.getCustomer() + gatePassInVO.getClient()+gatePassInVO.getEntryno());
 		return gatePassInRepo.save(gatePassInVO);
 	}
 

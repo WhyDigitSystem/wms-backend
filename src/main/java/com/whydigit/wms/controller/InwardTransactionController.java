@@ -355,7 +355,7 @@ public class InwardTransactionController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					" GatePassIn, client & customer already Exist ", errorMsg);
+					" GatePassIn, client, customer & entryNo already Exist ", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
