@@ -29,35 +29,63 @@ public class HandlingStockaOutVO {
 	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockoutVO", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "handlingstockoutid")
 	private Long id;
-	private String orgId;
+	@Column(name = "orgid")
+	private Long orgId;
+	@Column(name = "refno", length = 30)
 	private String refno;
+	@Column(name = "partno", length = 30)
 	private String partno;
+	@Column(name = "refdate", length = 30)
 	private LocalDate refdate;
+	@Column(name = "partdesc", length = 30)
 	private String partdesc;
-	private String rpqty;
+	@Column(name = "rpqty")
+	private int rpqty;
+	@Column(name = "customer", length = 30)
 	private String customer;
+	@Column(name = "warehouse", length = 30)
 	private String warehouse;
-	private String sqty;
+	@Column(name = "sqty")
+	private int sqty;
+	@Column(name = "pickrequestno", length = 30)
 	private String pickrequestno;
+	@Column(name = "pickrequestdate", length = 30)
 	private LocalDate pickrequestdate;
+	@Column(name = "buyerorderno", length = 30)
 	private String buyerorderno;
+	@Column(name = "sku", length = 30)
 	private String sku;
+	@Column(name = "buyerorderdate", length = 30)
 	private LocalDate buyerorderdate;
-	private String pickqty;
+	@Column(name = "pickqty")
+	private int pickqty;
+	@Column(name = "buyerordno", length = 30)
 	private String buyerordno;
+	@Column(name = "sdocid", length = 30)
 	private String sdocid;
 	@Column(unique = true)
 	private String dupchk;
+	@Column(name = "createdby", length = 30)
 	private String createdby;
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
+	@Column(name = "company", length = 30)
 	private String company;
+	@Column(name = "cancel")
 	private boolean cancel;
+	@Column(name = "userid", length = 30)
 	private String userid;
+	@Column(name = "cancelremark", length = 30)
 	private String cancelremark;
+	@Column(name = "active")
 	private boolean active;
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
+	@Column(name = "branch", length = 30)
 	private String branch;
+	@Column(name = "screencode", length = 30)
 	private String screencode;
+	@Column(name = "client", length = 30)
 	private String client;
 
 	@Embedded
