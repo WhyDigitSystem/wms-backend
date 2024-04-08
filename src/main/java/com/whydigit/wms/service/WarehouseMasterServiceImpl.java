@@ -583,6 +583,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Optional<CarrierVO> getCarrierById(Long carrierid) {
 		return carrierRepo.findById(carrierid);
 	}
+	
+	@Override
+	public Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch) {
+		return carrierRepo.findCarrierNameByCustomer(orgid,client,cbranch);
+	}
 
 	@Override
 	public CarrierVO createCarrier(CarrierVO carrierVO) {

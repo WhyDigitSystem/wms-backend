@@ -1386,7 +1386,6 @@ public class WarehouseMasterController extends BaseController {
 	}
 
 	// Supplier
-
 	@GetMapping("/supplier")
 	public ResponseEntity<ResponseDTO> getAllSupplier(@RequestParam Long orgid, @RequestParam String client,
 			@RequestParam String cbranch) {
@@ -1451,7 +1450,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> supplier = new HashSet<>();
 		try {
-			supplier = warehouseMasterService.getSupplierNameByCustomer(orgid,client,cbranch);
+			supplier = warehouseMasterService.getSupplierNameByCustomer(orgid, client, cbranch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1474,6 +1473,7 @@ public class WarehouseMasterController extends BaseController {
 		for (Object[] supplierVO : supplier) {
 			Map<String, String> formattedBranch = new HashMap<>();
 			formattedBranch.put("suppliername", supplierVO[0].toString());
+			formattedBranch.put("suppliershortname", supplierVO[1].toString());
 			formattedBranches.add(formattedBranch);
 		}
 		return formattedBranches;
@@ -1686,6 +1686,45 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getCarrierNameByCustomer")
+	public ResponseEntity<ResponseDTO> getCarrierNameByCustomer(@RequestParam Long orgid, @RequestParam String client,
+			@RequestParam String cbranch) {
+		String methodName = "getCarrierNameByCustomer()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> carrier = new HashSet<>();
+		try {
+			carrier = warehouseMasterService.getCarrierNameByCustomer(orgid, client, cbranch);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>> formattedBranches = formattBranchess(carrier);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier Name Founded");
+			responseObjectsMap.put("Carrier", formattedBranches);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Carrier Name not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "Carrier Name not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formattBranchess(Set<Object[]> carrier) {
+		List<Map<String, String>> formattedBranches = new ArrayList<>();
+		for (Object[] carrierVO : carrier) {
+			Map<String, String> formattedBranch = new HashMap<>();
+			formattedBranch.put("carriername", carrierVO[0].toString());
+//			formattedBranch.put("carriershortname", supplierVO[1].toString());
+			formattedBranches.add(formattedBranch);
+		}
+		return formattedBranches;
 	}
 
 	@PostMapping("/carrier")

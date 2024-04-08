@@ -204,6 +204,8 @@ public interface WarehouseMasterService {
 	Optional<CarrierVO> updateCarrier(CarrierVO carrierVO);
 
 	void deleteCarrier(Long carrierid);
+	
+	Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch);
 
 	// employee
 

@@ -58,7 +58,8 @@ public class SecurityConfig {
 						"/api/locationmapping", "/api/inward/putaway", "/api/inward/putaway/{id}",
 						"/api/inward/gatepassin", "/api/inward/gatepassin/{id}", "/api/inward/getAllPartnoByCustomer",
 						"/api/inward/getAllGatePassNumberByClientAndBranch", "/api/inward/gatePassIn",
-						"/api/inward/getGatePassDetails", "/api/inward/getGrnNoForPutAway","/api/getSupplierNameByCustomer")
+						"/api/inward/getGatePassDetails", "/api/inward/getGrnNoForPutAway",
+						"/api/getSupplierNameByCustomer","/api/getCarrierNameByCustomer")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
