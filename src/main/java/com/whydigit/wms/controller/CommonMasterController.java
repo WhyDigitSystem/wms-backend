@@ -938,15 +938,15 @@ public class CommonMasterController extends BaseController {
 //		return ResponseEntity.ok().body(responseDTO);
 //	}
 
-	private List<Map<String, String>> formattCustomer(Set<Object[]> globalCustomer) {
-		List<Map<String, String>> formattedCustomers = new ArrayList<>();
-		for (Object[] customer : globalCustomer) {
-			Map<String, String> cust = new HashMap<>();
-			cust.put("customer", customer[0].toString());
-			formattedCustomers.add(cust);
-		}
-		return formattedCustomers;
-	}
+//	private List<Map<String, String>> formattCustomer(Set<Object[]> globalCustomer) {
+//		List<Map<String, String>> formattedCustomers = new ArrayList<>();
+//		for (Object[] customer : globalCustomer) {
+//			Map<String, String> cust = new HashMap<>();
+//			cust.put("customer", customer[0].toString());
+//			formattedCustomers.add(cust);
+//		}
+//		return formattedCustomers;
+//	}
 	
 	@GetMapping("/getWarehouseNameByOrgIdAndBranchAndClient")
 	public ResponseEntity<ResponseDTO> getWarehouseNameByOrgIdAndBranchAndClient(@RequestParam Long orgid,
