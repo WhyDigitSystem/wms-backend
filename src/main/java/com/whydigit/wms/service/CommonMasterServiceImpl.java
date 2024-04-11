@@ -351,11 +351,17 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	}
 
-	//
+	// Global Parametre
+
 	@Override
 	public Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid, String username) {
 
 		return globalParameterRepo.findGlobalParamByOrgIdAndUserName(orgid, username);
+	}
+
+	@Override
+	public Set<Object[]> getWarehouseNameByOrgIdAndBranchAndClient(Long orgid, String branch, String client) {
+		return globalParameterRepo.findWarehouseNameByOrgIdAndBranchAndClient(orgid, branch, client);
 	}
 
 	// Change Global Parameter or update Parameters

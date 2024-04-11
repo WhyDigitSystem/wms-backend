@@ -441,33 +441,7 @@ public class InwardTransactionController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getGrnNoForPutAway")
-	public ResponseEntity<ResponseDTO> getGrnNoForPutAway(@RequestParam Long orgid, @RequestParam String client,
-			@RequestParam String branch, @RequestParam String finyear, @RequestParam String branchcode) {
-		String methodName = "getGrnNoForPutAway()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		Set<Object[]> putaway = new HashSet<>();
-		try {
-			putaway = inwardTransactionService.getGrnNoForPutAway(orgid, client, branch, finyear, branchcode);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String, String>> formatteddParameters = formatParameterr(putaway);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "getGrnNoForPutAway information get successfully");
-			responseObjectsMap.put("getGrnNoForPutAway", formatteddParameters);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"getGrnNoForPutAway information receive failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+	 
 
 	private List<Map<String, String>> formatParameterr(Set<Object[]> putaway) {
 		List<Map<String, String>> formattedParameters = new ArrayList<>();

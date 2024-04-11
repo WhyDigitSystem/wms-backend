@@ -947,6 +947,47 @@ public class CommonMasterController extends BaseController {
 		}
 		return formattedCustomers;
 	}
+	
+	@GetMapping("/getWarehouseNameByOrgIdAndBranchAndClient")
+	public ResponseEntity<ResponseDTO> getWarehouseNameByOrgIdAndBranchAndClient(@RequestParam Long orgid,
+			@RequestParam String branch, @RequestParam String client) {
+		String methodName = "getWarehouseNameByOrgIdAndBranchAndClient()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> global = new HashSet<>();
+		try {
+			global = commonMasterService.getWarehouseNameByOrgIdAndBranchAndClient(orgid, branch, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> getGlobal = formatt(global);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Global Parameter Warehouse information get successfully");
+			responseObjectsMap.put("GlopalParameterWarehouse", getGlobal);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Global Parameter Warehouse information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// get Global Param
+
+	private List<Map<String, String>> formatt(Set<Object[]> global) {
+		List<Map<String, String>> getglobal = new ArrayList<>();
+		for (Object[] parameters : global) {
+			Map<String, String> param = new HashMap<>();
+			param.put("warehouse", parameters[0].toString());
+			getglobal.add(param);
+		}
+		return getglobal;
+	}
 
 	@PutMapping("/globalparam")
 	public ResponseEntity<ResponseDTO> updateGlobalParam(@RequestBody GlobalParameterVO globalParameterVO) {

@@ -2001,7 +2001,7 @@ public class WarehouseMasterController extends BaseController {
 		return formattedBranches;
 	}
 
-	// Get Palletno from Rowno,Level,And Start and End no
+	// Get Palletno from Rowno,Level,And Start and End No
 
 	@GetMapping("/getPalletno")
 	public ResponseEntity<ResponseDTO> getPalletno(@RequestParam String rowno, @RequestParam String level,
@@ -2044,5 +2044,4 @@ public class WarehouseMasterController extends BaseController {
 		}
 		return palletno;
 	}
-
 }

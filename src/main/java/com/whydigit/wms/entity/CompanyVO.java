@@ -38,7 +38,7 @@ public class CompanyVO {
 	private String currency;
 	@Column(name = "maincurrency", length = 30)
 	private String mainCurrency;
-	@Column(name = "address", length = 30)
+	@Column(name = "address", length = 255)
 	private String address;
 	@Column(name = "zipcode", length = 30)
 	private String zip;

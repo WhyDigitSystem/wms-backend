@@ -14,7 +14,4 @@ public interface CurrencyRepo extends JpaRepository<CurrencyVO, Long> {
 
 	@Query("select a from CurrencyVO a where a.orgId=?1")
 	List<CurrencyVO> findAll(Long orgid);
-	
-
 }
-

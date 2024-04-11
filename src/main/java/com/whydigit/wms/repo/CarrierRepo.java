@@ -16,3 +16,4 @@ public interface CarrierRepo extends JpaRepository<CarrierVO, Long>{
 	@Query(nativeQuery = true,value="select c.carrier from carrier c where c.orgid=?1 and c.client=?2 and c.cbranch =?3")
 	Set<Object[]> findCarrierNameByCustomer(Long orgid, String client, String cbranch);
 }
+
