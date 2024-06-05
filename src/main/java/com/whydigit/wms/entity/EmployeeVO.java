@@ -21,63 +21,48 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeVO {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "employeegen")
-	@SequenceGenerator(name = "employeegen",sequenceName = "employeeVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="employeeid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employeegen")
+	@SequenceGenerator(name = "employeegen", sequenceName = "employeeVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "employeeid")
 	private Long id;
-	
-	@Column(name="employeecode")
+
+	@Column(name = "employeecode", length = 30)
 	private String employeecode;
-	
-	@Column(name="employee")
-	private String employeeName;
-	
-	@Column(name="gender")
+	@Column(name = "employee", length = 30)
+	private String employeename;
+	@Column(name = "gender", length = 30)
 	private String gender;
-	
-	@Column(name="branch")
+	@Column(name = "branch", length = 30)
 	private String branch;
-	
-	@Column(name="branchcode")
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-	
-	@Column(name="department")
+	@Column(name = "department", length = 30)
 	private String department;
-	
-	@Column(name="designation")
+	@Column(name = "designation", length = 30)
 	private String designation;
-	
-	@Column(name="dateofbirth")
+	@Column(name = "dateofbirth", length = 30)
 	private String dateofbirth;
-	
-	@Column(name="joiningdate")
+	@Column(name = "joiningdate", length = 30)
 	private String joiningdate;
-	
 	@Column(unique = true)
 	private String dupchk;
-	
-	@Column(name="createdby")
+	@Column(name = "createdby", length = 30)
 	private String createdby;
-	
-	@Column(name="modifiedby")
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-	
-	@Column(name="orgid")
+	@Column(name = "orgid", length = 30)
 	private Long orgId;
-	
-	@Column(name="cancel")
+	@Column(name = "cancel")
 	private boolean cancel;
-
-	@Column(name="userid")
+	@Column(name = "userid", length = 30)
 	private String userid;
-	
-	@Column(name="cancelremarks")
+	@Column(name = "cancelremarks", length = 30)
 	private String cancelremark;
-	
-	@Column(name="active")
+	@Column(name = "active")
 	private boolean active;
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

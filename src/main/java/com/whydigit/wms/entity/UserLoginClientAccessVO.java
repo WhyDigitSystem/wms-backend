@@ -30,15 +30,14 @@ public class UserLoginClientAccessVO {
 	@Column(name="userloginclientaccessid")
 	private long id;
 	
-	@Column(name="client")
+	@Column(name="client", length = 30)
 	private String client;
-	
-	@Column(name="customer")
+	@Column(name="customer", length = 30)
 	private String customer;
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "usersId")
+    @JoinColumn(name = "usersid")
     private UserVO userVO;
 	
 	@Embedded

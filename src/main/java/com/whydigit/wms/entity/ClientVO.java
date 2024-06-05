@@ -25,32 +25,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClientVO {
 
-	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "clientgen")
-	@SequenceGenerator(name = "clientgen",sequenceName = "clientVO",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="clientid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientgen")
+	@SequenceGenerator(name = "clientgen", sequenceName = "clientVO", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "clientid")
 	private Long id;
-	
-	@Column(name="orgid")
-	private Long orgId;
-	
-	@Column(name="client")
-	private String client; // caps
-	
-	@Column(name="clientcode")
-	private String clientcode; // caps
-	
-	@Column(name="clienttype")
-	private String clienttype;
-	
-	@Column(name="fiofife")
-	private int fifofife;
 
-	
+	@Column(name = "orgid")
+	private Long orgId;
+	@Column(name = "client", length = 30)
+	private String client; // caps
+	@Column(name = "clientcode", length = 30)
+	private String clientcode; // caps
+	@Column(name = "clienttype", length = 30)
+	private String clienttype;
+	@Column(name = "fiofife")
+	private int fifofife;
 	@Column(unique = true)
 	private String dupchk;
-
 
 	@ManyToOne
 	@JsonBackReference

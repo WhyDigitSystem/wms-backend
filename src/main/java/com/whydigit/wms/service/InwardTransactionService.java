@@ -2,6 +2,7 @@ package com.whydigit.wms.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,10 @@ public interface InwardTransactionService {
 
 	void deleteGrn(Long id);
 
+	Set<Object[]> getAllGatePassNumberByClientAndBranch(Long orgId, String client, String customer, String branchcode);
+
+	Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid, String branchcode);
+
 	// GatePassIn
 
 	List<GatePassInVO> getAllGatePassIn();
@@ -38,6 +43,8 @@ public interface InwardTransactionService {
 
 	void deleteGatePassIn(Long id);
 
+	Set<Object[]> getAllPartnoByCustomer(Long orgId, String client, String customer, String cbranch);
+
 //	Putaway
 	List<PutAwayVO> getAllPutAway();
 
@@ -48,5 +55,7 @@ public interface InwardTransactionService {
 	Optional<PutAwayVO> updatePutAway(PutAwayVO PutAwayVO);
 
 	void deletePutAway(Long idLong);
+	
+	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
 
 }

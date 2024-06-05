@@ -33,18 +33,16 @@ public class UserLoginRolesVO {
 	@Column(name="userloginrolesid")
 	private long id;
 	
-	@Column(name="role")
+	@Column(name="role", length = 30)
 	private String role;
-	
 	@Column(name="startdate")
 	private LocalDate startdate;
-	
 	@Column(name="enddate")
 	private LocalDate enddate;
 	
 	@JsonBackReference
 	@ManyToOne
-    @JoinColumn(name = "usersId")
+    @JoinColumn(name = "usersid")
     private UserVO userVO;
 	
 	@Embedded

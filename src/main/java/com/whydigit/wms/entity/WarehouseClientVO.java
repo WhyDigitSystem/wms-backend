@@ -31,16 +31,13 @@ public class WarehouseClientVO {
 	@Column(name = "warehouseclientid")
 	private Long id;
 
-	@Column(name = "client")
+	@Column(name = "client", length = 30)
 	private String client;
-
-	@Column(name = "clientcode")
+	@Column(name = "clientcode", length = 30)
 	private String clientcode;
-
 	@Column(name = "active")
 	private boolean active;
-
-	@Column(name = "userid")
+	@Column(name = "userid", length = 30)
 	private String userid;
 
 	@ManyToOne

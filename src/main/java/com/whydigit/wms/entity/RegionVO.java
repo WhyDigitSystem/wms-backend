@@ -28,35 +28,27 @@ public class RegionVO {
 	@Column(name = "regionid")
 	private Long id;
 
-	@Column(name = "userid")
+	@Column(name = "userid", length = 30)
 	private String userid;
-
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String docid;
-
-	@Column(name = "regioncode")
+	@Column(name = "regioncode", length = 30)
 	private String regioncode;
-
-	@Column(name = "region")
-	private String region;
-
+	@Column(name = "region", length = 30)
+	private String regionname;
 	@Column(name = "active")
 	private boolean active;
-
 	@Column(unique = true)
 	private String dupchk;
-
-	@Column(name = "createdby")
+	@Column(name = "createdby", length = 30)
 	private String createdby;
-
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-
-	@Column(name = "orgid")
+	@Column(name = "orgid", length = 30)
 	private Long orgId;
-
 	@Column(name = "cancel")
 	private boolean cancel;
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

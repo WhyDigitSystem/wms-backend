@@ -34,76 +34,51 @@ public class BuyerOrderVO {
 	@Column(name = "buyerorderid")
 	private Long id;
 
-	@Column(name = "orderno")
+	@Column(name = "orderno", length = 30)
 	private String orderno;
-
 	@Column(name = "docdate")
 	private LocalDate docdate;
-
 	@Column(name = "orderdate")
 	private LocalDate orderdate;
-
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno", length = 30)
 	private String invoiceno;
-
-	@Column(name = "refno")
+	@Column(name = "refno", length = 30)
 	private String refno;
-
 	@Column(name = "invoicedate")
 	private LocalDate invoicedate;
-
 	@Column(name = "refdate")
 	private LocalDate refdate;
-
-	@Column(name = "buyershortname")
+	@Column(name = "buyershortname", length = 30)
 	private String buyershortname;
-
-	@Column(name = "currency")
+	@Column(name = "currency", length = 30)
 	private String currency;
-
-	@Column(name = "exrate")
+	@Column(name = "exrate", length = 30)
 	private String exrate;
-
-	@Column(name = "location")
+	@Column(name = "location", length = 30)
 	private String location;
-
-	@Column(name = "billto")
+	@Column(name = "billto", length = 30)
 	private String billto;
-
-	@Column(name = "tax")
+	@Column(name = "tax", length = 30)
 	private String tax;
-
-	@Column(name = "shipto")
+	@Column(name = "shipto", length = 30)
 	private String shipto;
-
-	@Column(name = "remarks")
+	@Column(name = "remarks", length = 30)
 	private String remarks;
-
-	@Column(unique = true)
+	@Column(unique = true, length = 30)
 	private String dupchk;
-
-	@Column(name = "createdby")
+	@Column(name = "createdby", length = 30)
 	private String createdby;
-
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-
-	@Column(name = "company")
+	@Column(name = "company", length = 30)
 	private String company;
-
 	@Column(name = "cancel")
 	private boolean cancel;
-
-	@Column(name = "userid")
+	@Column(name = "userid", length = 30)
 	private String userid;
-
 	@Column(name = "cancelremark")
 	private String cancelremark;
-
-	@Column(name = "active")
-	private boolean active;
-
-	@Column(name = "screencode")
+	@Column(name = "screencode", length = 30)
 	private String screencode;
 
 	@JsonManagedReference

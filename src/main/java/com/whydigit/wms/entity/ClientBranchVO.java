@@ -31,10 +31,9 @@ public class ClientBranchVO {
 	@Column(name = "clientbranchid")
 	private Long id;
 
-	@Column(name = "branchcode")
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-
-	@Column(name = "orgid")
+	@Column(name = "orgid", length = 30)
 	private Long orgId;
 
 	@ManyToOne

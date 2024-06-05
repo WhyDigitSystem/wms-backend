@@ -107,11 +107,11 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public CountryVO createCountry(CountryVO countryVO) {
 
 		countryVO.setCancel(false);
-		countryVO.setCountry(countryVO.getCountry().toUpperCase());
+		countryVO.setCountryname(countryVO.getCountryname().toUpperCase());
 		countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
 		countryVO.setActive(true);
 		countryVO.setCancel(false);
-		countryVO.setDupchk(countryVO.getOrgId() + countryVO.getCountrycode() + countryVO.getCountry());
+		countryVO.setDupchk(countryVO.getOrgId() + countryVO.getCountrycode() + countryVO.getCountryname());
 		return countryVORepo.save(countryVO);
 
 	}
@@ -120,9 +120,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<CountryVO> updateCountry(CountryVO countryVO) {
 		if (countryVORepo.existsById(countryVO.getId())) {
 			countryVO.setUpdatedby(countryVO.getUserid());
-			countryVO.setCountry(countryVO.getCountry().toUpperCase());
+			countryVO.setCountryname(countryVO.getCountryname().toUpperCase());
 			countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
-			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountry());
+			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountryname());
 			return Optional.of(countryVORepo.save(countryVO));
 		} else {
 			return Optional.empty();
@@ -155,10 +155,10 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public StateVO createState(StateVO stateVO) {
 		stateVO.setCancel(false);
-		stateVO.setState(stateVO.getState().toUpperCase());
+		stateVO.setStatename(stateVO.getStatename().toUpperCase());
 		stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
 		stateVO.setActive(true);
-		stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getState());
+		stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getStatename());
 		return stateRepo.save(stateVO);
 	}
 
@@ -166,9 +166,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<StateVO> updateState(StateVO stateVO) {
 		if (stateRepo.existsById(stateVO.getId())) {
 			stateVO.setUpdatedby(stateVO.getUserid());
-			stateVO.setState(stateVO.getState().toUpperCase());
+			stateVO.setStatename(stateVO.getStatename().toUpperCase());
 			stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
-			stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getState());
+			stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getStatename());
 			return Optional.of(stateRepo.save(stateVO));
 		} else {
 			return Optional.empty();
@@ -202,9 +202,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public CityVO createCity(CityVO cityVO) {
 		cityVO.setCancel(false);
 		cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
-		cityVO.setCity(cityVO.getCity().toUpperCase());
+		cityVO.setCityname(cityVO.getCityname().toUpperCase());
 		cityVO.setActive(true);
-		cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgId());
+		cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCityname() + cityVO.getOrgId());
 		return cityRepo.save(cityVO);
 	}
 
@@ -212,9 +212,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<CityVO> updateCity(CityVO cityVO) {
 		if (cityRepo.existsById(cityVO.getId())) {
 			cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
-			cityVO.setCity(cityVO.getCity().toUpperCase());
+			cityVO.setCityname(cityVO.getCityname().toUpperCase());
 			cityVO.setUpdatedby(cityVO.getUserid());
-			cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCity() + cityVO.getOrgId());
+			cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCityname() + cityVO.getOrgId());
 			return Optional.of(cityRepo.save(cityVO));
 		} else {
 			return Optional.empty();
@@ -242,10 +242,10 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public RegionVO createRegion(RegionVO regionVO) {
 		regionVO.setCancel(false);
 		regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
-		regionVO.setRegion(regionVO.getRegion().toUpperCase());
+		regionVO.setRegionname(regionVO.getRegionname().toUpperCase());
 		regionVO.setActive(true);
 		regionVO.setDocid("MAA");
-		regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgId());
+		regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegionname() + regionVO.getOrgId());
 		return regionRepo.save(regionVO);
 	}
 
@@ -253,9 +253,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<RegionVO> updateRegion(RegionVO regionVO) {
 		if (regionRepo.existsById(regionVO.getId())) {
 			regionVO.setRegioncode(regionVO.getRegioncode().toUpperCase());
-			regionVO.setRegion(regionVO.getRegion().toUpperCase());
+			regionVO.setRegionname(regionVO.getRegionname().toUpperCase());
 			regionVO.setUpdatedby(regionVO.getUserid());
-			regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegion() + regionVO.getOrgId());
+			regionVO.setDupchk(regionVO.getRegioncode() + regionVO.getRegionname() + regionVO.getOrgId());
 			return Optional.of(regionRepo.save(regionVO));
 		} else {
 			return Optional.empty();
@@ -288,7 +288,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		CompanyVO company = companyRepo.save(companyVO);
 		EmployeeVO emp = new EmployeeVO();
 		emp.setEmployeecode(company.getEmployeecode());
-		emp.setEmployeeName(company.getEmployeeName());
+		emp.setEmployeename(company.getEmployeeName());
 		emp.setOrgId(company.getId());
 		employeeRepo.save(emp);
 		UserVO userVO = new UserVO();
@@ -351,11 +351,17 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	}
 
-	//
+	// Global Parametre
+
 	@Override
 	public Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid, String username) {
 
 		return globalParameterRepo.findGlobalParamByOrgIdAndUserName(orgid, username);
+	}
+
+	@Override
+	public Set<Object[]> getWarehouseNameByOrgIdAndBranchAndClient(Long orgid, String branch, String client) {
+		return globalParameterRepo.findWarehouseNameByOrgIdAndBranchAndClient(orgid, branch, client);
 	}
 
 	// Change Global Parameter or update Parameters

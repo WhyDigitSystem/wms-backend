@@ -33,51 +33,37 @@ public class WarehouseLocationVO {
 	@Column(name = "warehouselocationid")
 	private Long id;
 
-	@Column(name = "branch")
+	@Column(name = "branch", length = 30)
 	private String branch;
-
-	@Column(name = "branchcode")
+	@Column(name = "branchcode", length = 30)
 	private String branchcode;
-
-	@Column(name = "warehouse")
+	@Column(name = "warehouse", length = 30)
 	private String warehouse;
-
-	@Column(name = "locationtype")
+	@Column(name = "locationtype", length = 30)
 	private String locationtype;
-
-	@Column(name = "rowno")
+	@Column(name = "rowno", length = 30)
 	private String rowno;
-
-	@Column(name = "level")
+	@Column(name = "level", length = 30)
 	private String level;
-
-	@Column(name = "cellform")
+	@Column(name = "cellform", length = 30)
 	private String cellfrom;
-
-	@Column(name = "cellto")
+	@Column(name = "cellto", length = 30)
 	private String cellto;
-
 	@Column(name = "cancel")
 	private boolean cancel;
-
 	@Column(name = "active")
 	private boolean active;
-
-	@Column(name = "createdby")
+	@Column(name = "createdby", length = 30)
 	private String createdby;
-
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby", length = 30)
 	private String updatedby;
-
-	@Column(name = "userid")
+	@Column(name = "userid", length = 30)
 	private String userid;
-
 	@Column(name = "orgid")
 	private Long orgId;
-
 	@Column(unique = true)
 	private String dupchk;
-	
+
 	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO;
