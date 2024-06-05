@@ -29,7 +29,8 @@ public interface InwardTransactionService {
 
 	Set<Object[]> getAllGatePassNumberByClientAndBranch(Long orgId, String client, String customer, String branchcode);
 
-	Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid, String branchcode);
+	Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
+			String branchcode);
 
 	// GatePassIn
 
@@ -45,7 +46,8 @@ public interface InwardTransactionService {
 
 	Set<Object[]> getAllPartnoByCustomer(Long orgId, String client, String customer, String cbranch);
 
-//	Putaway
+//	Put Away
+	
 	List<PutAwayVO> getAllPutAway();
 
 	Optional<PutAwayVO> getPutAwayById(Long id);
@@ -55,7 +57,7 @@ public interface InwardTransactionService {
 	Optional<PutAwayVO> updatePutAway(PutAwayVO PutAwayVO);
 
 	void deletePutAway(Long idLong);
-	
+
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
 
 }

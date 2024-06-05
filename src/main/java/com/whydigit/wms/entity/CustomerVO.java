@@ -53,9 +53,9 @@ public class CustomerVO {
 	private String groupof;
 	@Column(name = "tanno", length = 30)
 	private String tanno;
-	@Column(name = "address1", length = 30)
+	@Column(name = "address1", length = 255)
 	private String address1;
-	@Column(name = "address2", length = 30)
+	@Column(name = "address2", length = 255)
 	private String address2;
 	@Column(name = "gstno", length = 30)
 	private String gstno;

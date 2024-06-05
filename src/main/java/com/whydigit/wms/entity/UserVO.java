@@ -65,6 +65,7 @@ public class UserVO {
 	private String client;
 	@Column(name = "loginstatus")
 	private boolean loginStatus;
+	
 	@Column(name = "isActive", length = 30)
 	private String isActive;
 	@Column(name = "createdby", length = 30)
@@ -88,5 +89,5 @@ public class UserVO {
 	private List<UserLoginBranchAccessibleVO> branchAccessibleVO;
 
 	private Date accountRemovedDate;
-
+	
 }
