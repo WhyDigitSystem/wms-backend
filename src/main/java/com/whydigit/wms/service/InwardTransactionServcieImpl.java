@@ -61,12 +61,13 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	public Optional<GrnVO> getGrnById(Long id) {
 		return grnRepo.findById(id);
 	}
-	
+
 	@Override
 	public Set<Object[]> getAllGatePassNumberByClientAndBranch(Long orgId, String client, String customer,
 			String branchcode) {
-		return grnRepo.findAllGatePassNumberByClientAndBranch(orgId,client,customer,branchcode);
+		return grnRepo.findAllGatePassNumberByClientAndBranch(orgId, client, customer, branchcode);
 	}
+
 	@Override
 	public GrnVO createGrn(GrnDTO grnDTO) {
 		GrnVO grnVO = createGrnVOByGrnDTO(grnDTO);
@@ -76,6 +77,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		GrnVO savedGrnVO = grnRepo.save(grnVO);
 		List<GrnDetailsVO> grnDetailsVOLists = savedGrnVO.getGrnDetailsVO();
 		if (grnDetailsVOLists != null && !grnDetailsVOLists.isEmpty())
+
 			for (GrnDetailsVO grnDetailsVO : grnDetailsVOLists) {
 
 				HandlingStockInVO handlingStockInVO = new HandlingStockInVO();
@@ -231,7 +233,8 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	@Override
 	public GatePassInVO createGatePassIn(GatePassInVO gatePassInVO) {
 		gatePassInVO.setScreencode("GRN");
-		gatePassInVO.setDupchk(gatePassInVO.getOrgId() + gatePassInVO.getCustomer() + gatePassInVO.getClient()+gatePassInVO.getEntryno());
+		gatePassInVO.setDupchk(gatePassInVO.getOrgId() + gatePassInVO.getCustomer() + gatePassInVO.getClient()
+				+ gatePassInVO.getEntryno());
 		return gatePassInRepo.save(gatePassInVO);
 	}
 
@@ -250,19 +253,18 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	public void deleteGatePassIn(Long id) {
 		gatePassInRepo.deleteById(id);
 	}
-	
 
 	@Override
 	public Set<Object[]> getAllPartnoByCustomer(Long orgId, String client, String customer, String cbranch) {
-		return gatePassInRepo.findAllPartnoByCustomer(orgId, client, customer,cbranch);
+		return gatePassInRepo.findAllPartnoByCustomer(orgId, client, customer, cbranch);
 	}
 
 	@Override
-	public Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid, String branchcode) {
-		return gatePassInRepo.findGatePassDetailsByGatePassNo(orgId,client,entryno,docid,branchcode);
+	public Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
+			String branchcode) {
+		return gatePassInRepo.findGatePassDetailsByGatePassNo(orgId, client, entryno, docid, branchcode);
 	}
 
-	
 	// PutAway
 
 	@Override
@@ -274,12 +276,11 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	public Optional<PutAwayVO> getPutAwayById(Long id) {
 		return putAwayRepo.findById(id);
 	}
-	
+
 	@Override
 	public Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode) {
-		return putAwayRepo.findGrnNoForPutAway(orgId,client,branch,finyr,branchcode);
+		return putAwayRepo.findGrnNoForPutAway(orgId, client, branch, finyr, branchcode);
 	}
-
 
 	@Override
 	public PutAwayVO createPutAway(PutAwayDTO putAwayDTO) {
@@ -399,9 +400,5 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	public void deletePutAway(Long id) {
 		putAwayRepo.deleteById(id);
 	}
-
-
-
-
 
 }
