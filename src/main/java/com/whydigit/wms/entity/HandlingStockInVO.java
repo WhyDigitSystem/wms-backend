@@ -26,28 +26,28 @@ public class HandlingStockInVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "handlingstockingen")
-	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockinVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockinseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "handlingstockinid")
 	private Long id;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "refno", length = 30)
+	@Column(name = "refno")
 	private String refno;
-	@Column(name = "grnno", length = 30)
+	@Column(name = "grnno")
 	private String grnno;
-	@Column(name = "refdate", length = 30)
+	@Column(name = "refdate")
 	private LocalDate refdate;
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "grndate", length = 30)
+	@Column(name = "grndate")
 	private LocalDate grndate;
-	@Column(name = "partdesc", length = 30)
+	@Column(name = "partdesc")
 	private String partdesc;
 	@Column(name = "rpqty")
 	private int rpqty;
-	@Column(name = "noofpallet", length = 30)
+	@Column(name = "noofpallet")
 	private String noofpallet;
-	@Column(name = "locationtype", length = 30)
+	@Column(name = "locationtype")
 	private String locationtype;
 	@Column(name = "sqty")
 	private int sqty;
@@ -65,67 +65,67 @@ public class HandlingStockInVO {
 	private int palletqty;
 	@Column(name = "rate")
 	private String rate;
-	@Column(name = "amount", length = 30)
+	@Column(name = "amount")
 	private String amount;
-	@Column(name = "qcflag", length = 30)
+	@Column(name = "qcflag")
 	private String qcflag;
-	@Column(name = "remarks", length = 30)
+	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "finyr", length = 30)
+	@Column(name = "finyr")
 	private String finyr;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "branchid", length = 30)
+	@Column(name = "branchid")
 	private String branchid;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
-	@Column(name = "palletcount", length = 30)
+	@Column(name = "palletcount")
 	private String palletcount;
-	@Column(name = "indcno", length = 30)
+	@Column(name = "indcno")
 	private String indcno;
-	@Column(name = "lrhawbhblno", length = 30)
+	@Column(name = "lrhawbhblno")
 	private String lrhawbhblno;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
-	@Column(name = "sdocid", length = 30)
+	@Column(name = "sdocid")
 	private String sdocid;
-	@Column(name = "stockdate", length = 30)
+	@Column(name = "stockdate")
 	private LocalDate stockdate;
-	@Column(name = "sdocdate", length = 30)
+	@Column(name = "sdocdate")
 	private LocalDate sdocdate;
-	@Column(name = "sourcescreen", length = 30)
+	@Column(name = "sourcescreen")
 	private String sourcescreen;
-	@Column(name = "expdate", length = 30)
+	@Column(name = "expdate")
 	private String expdate;
-	@Column(name = "batchno", length = 30)
+	@Column(name = "batchno")
 	private String batchno;
-	@Column(name = "batchdt", length = 30)
+	@Column(name = "batchdt")
 	private String batchdt;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String createdby;
-	@Column(name = "updatedby", length = 30)
+	@Column(name = "updatedby")
 	private String updatedby;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 	@Column(name = "cancelremark")
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "ssku", length = 30)
+	@Column(name = "ssku")
 	private String ssku;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
 
 	@Embedded

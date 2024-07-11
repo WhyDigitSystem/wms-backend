@@ -27,31 +27,31 @@ public class GatePassInDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gatepassindetailsgen")
-	@SequenceGenerator(name = "gatepassindetailsgen", sequenceName = "gatepassindetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "gatepassindetailsgen", sequenceName = "gatepassindetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "gatepassindetailsid")
 	private Long id;
 
-	@Column(name = "sno", length = 30)
+	@Column(name = "sno")
 	private String sno;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private String orgId;
-	@Column(name = "lrnohaw", length = 30)
+	@Column(name = "lrnohaw")
 	private String lrnohaw;
-	@Column(name = "invoiceno", length = 30)
+	@Column(name = "invoiceno")
 	private String invoiceno;
-	@Column(name = "invoicedate", length = 30)
+	@Column(name = "invoicedate")
 	private LocalDate invoicedate;
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "partcode", length = 30)
+	@Column(name = "partcode")
 	private String partcode;
-	@Column(name = "partdescription", length = 30)
+	@Column(name = "partdescription")
 	private String partdescription;
-	@Column(name = "batchno", length = 30)
+	@Column(name = "batchno")
 	private String batchno;
-	@Column(name = "unit", length = 30)
+	@Column(name = "unit")
 	private String unit;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
 	@Column(name = "invqty")
 	private int invqty;
@@ -63,21 +63,21 @@ public class GatePassInDetailsVO {
 	private int damageqty;
 	@Column(name = "grnqty")
 	private int grnqty;
-	@Column(name = "subunit", length = 30)
+	@Column(name = "subunit")
 	private String subunit;
 	@Column(name = "substockshortqty")
 	private int substockshortqty;
 	@Column(name = "grnpieceqty")
 	private int grnpiecesqty;
-	@Column(name = "weight", length = 30)
+	@Column(name = "weight")
 	private String weight;
-	@Column(name = "rate", length = 30)
+	@Column(name = "rate")
 	private String rate;
-	@Column(name = "rowno", length = 30)
+	@Column(name = "rowno")
 	private String rowno;
-	@Column(name = "amount", length = 30)
+	@Column(name = "amount")
 	private String amount;
-	@Column(name = "remarks", length = 30)
+	@Column(name = "remarks")
 	private String remarks;
 
 	@JsonBackReference

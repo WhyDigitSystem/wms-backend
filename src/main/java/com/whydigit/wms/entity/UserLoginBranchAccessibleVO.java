@@ -19,14 +19,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user_branchaccess")
+@Table(name = "userbranchaccess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLoginBranchAccessibleVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "userloginbranchaccessiblegen")
-	@SequenceGenerator(name = "userloginbranchaccessiblegen",sequenceName = "userloginbranchaccessibleVO",initialValue = 1000000001,allocationSize = 1)
+	@SequenceGenerator(name = "userloginbranchaccessiblegen",sequenceName = "userloginbranchaccessibleseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="userloginbranchaccessibleid")
 	private long id;
 	
@@ -40,6 +40,6 @@ public class UserLoginBranchAccessibleVO {
     @JoinColumn(name = "usersid")
     private UserVO userVO;
 	
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+//	@Embedded
+//	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

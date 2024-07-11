@@ -24,23 +24,23 @@ public class CellTypeVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "celltypegen")
-	@SequenceGenerator(name = "celltypegen",sequenceName = "celltypeVO",initialValue = 1000000001,allocationSize = 1)
+	@SequenceGenerator(name = "celltypegen",sequenceName = "celltypeseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="celltypeid")
 	private Long id;
 	
-	@Column(name="celltype", length = 30)
+	@Column(name="celltype")
 	private String celltype;
-	@Column(name="userid", length = 30)
+	@Column(name="userid")
 	private String userid;
 	@Column(name="active")
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name="createdby", length = 30)
+	@Column(name="createdby")
 	private String createdby;
-	@Column(name="modifiedby", length = 30)
+	@Column(name="modifiedby")
 	private String updatedby;
-	@Column(name="orgid", length = 30)
+	@Column(name="orgid")
 	private Long orgId;
 	@Column(name="cancel")
 	private boolean cancel;

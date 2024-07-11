@@ -27,17 +27,17 @@ public class WarehouseClientVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouseclientgen")
-	@SequenceGenerator(name = "warehouseclient", sequenceName = "warehouseclientVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "warehouseclient", sequenceName = "warehouseclientseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "warehouseclientid")
 	private Long id;
 
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
-	@Column(name = "clientcode", length = 30)
+	@Column(name = "clientcode")
 	private String clientcode;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 
 	@ManyToOne
@@ -45,6 +45,6 @@ public class WarehouseClientVO {
 	@JoinColumn(name = "warehouseid")
 	private WarehouseVO warehouseVO;
 
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+//	
+//	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

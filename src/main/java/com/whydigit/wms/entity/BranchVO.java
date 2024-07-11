@@ -24,55 +24,55 @@ public class BranchVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "branchgen")
-	@SequenceGenerator(name = "branchgen", sequenceName = "branchVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "branchgen", sequenceName = "brancseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "branchid")
 	private Long id;
 
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "addressline1", length = 30)
+	@Column(name = "addressline1")
 	private String addressline1;
-	@Column(name = "addressline2", length = 30)
+	@Column(name = "addressline2")
 	private String addressline2;
-	@Column(name = "panno", length = 30)
+	@Column(name = "panno")
 	private String pan;
-	@Column(name = "gstin", length = 30)
+	@Column(name = "gstin")
 	private String gstin;
-	@Column(name = "phone", length = 30)
+	@Column(name = "phone")
 	private String phone;
-	@Column(name = "state", length = 30)
+	@Column(name = "state")
 	private String state;
-	@Column(name = "city", length = 30)
+	@Column(name = "city")
 	private String city;
-	@Column(name = "pincode", length = 30)
+	@Column(name = "pincode")
 	private String pincode;
-	@Column(name = "country", length = 30)
+	@Column(name = "country")
 	private String country;
-	@Column(name = "stateno", length = 30)
+	@Column(name = "stateno")
 	private String stateno;
-	@Column(name = "statecode", length = 30)
+	@Column(name = "statecode")
 	private String statecode;
-	@Column(name = "region", length = 30)
+	@Column(name = "region")
 	private String region;
-	@Column(name = "lccurrency", length = 30)
+	@Column(name = "lccurrency")
 	private String lccurrency;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremarks;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 	@Column(unique = true)
 	private String dupchk;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 
 	@Embedded

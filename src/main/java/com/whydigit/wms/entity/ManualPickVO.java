@@ -29,57 +29,57 @@ public class ManualPickVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "manualpickgen")
-	@SequenceGenerator(name = "manualpickgen", sequenceName = "manualpickVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "manualpickgen", sequenceName = "manualpickgen", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "manualpickid")
 	private Long id;
 
-	@Column(name = "transactiontype", length = 30)
+	@Column(name = "transactiontype")
 	private String transactiontype;
-	@Column(name = "docid", length = 30)
+	@Column(name = "docid")
 	private String docid;
-	@Column(name = "docdate", length = 30)
+	@Column(name = "docdate")
 	private LocalDate docdate;
-	@Column(name = "buyerrefno", length = 30)
+	@Column(name = "buyerrefno")
 	private String buyerrefno;
-	@Column(name = "buyerorderno", length = 30)
+	@Column(name = "buyerorderno")
 	private String buyerorderno;
-	@Column(name = "buyerrefdate", length = 30)
+	@Column(name = "buyerrefdate")
 	private LocalDate buyerrefdate;
-	@Column(name = "invoiceno", length = 30)
+	@Column(name = "invoiceno")
 	private String invoiceno;
-	@Column(name = "clientname", length = 30)
+	@Column(name = "clientname")
 	private String clientname;
-	@Column(name = "shortname", length = 30)
+	@Column(name = "shortname")
 	private String shortname;
-	@Column(name = "clientaddress", length = 30)
+	@Column(name = "clientaddress")
 	private String clientaddress;
-	@Column(name = "customername", length = 30)
+	@Column(name = "customername")
 	private String customername;
-	@Column(name = "customeraddress", length = 30)
+	@Column(name = "customeraddress")
 	private String customeraddress;
-	@Column(name = "noofboxes", length = 30)
+	@Column(name = "noofboxes")
 	private String noofboxes;
-	@Column(name = "duedays", length = 30)
+	@Column(name = "duedays")
 	private String duedays;
-	@Column(name = "outtime", length = 30)
+	@Column(name = "outtime")
 	private String outtime;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "cretaedby", length = 30)
+	@Column(name = "cretaedby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
 	@Column(name = "camcel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
 
 	@JsonManagedReference

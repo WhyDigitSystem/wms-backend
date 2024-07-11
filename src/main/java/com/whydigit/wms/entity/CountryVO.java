@@ -24,25 +24,25 @@ public class CountryVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "countrygen")
-	@SequenceGenerator(name = "countrygen", sequenceName = "countryVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "countrygen", sequenceName = "countryseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "countryid")
 	private Long id;
 
-	@Column(name = "country", length = 30)
+	@Column(name = "country")
 	private String countryname;
-	@Column(name = "countrycode", length = 30)
+	@Column(name = "countrycode")
 	private String countrycode;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 	@Column(name = "cancel")
 	private boolean cancel;

@@ -33,129 +33,129 @@ import lombok.NoArgsConstructor;
 public class GrnVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grngen")
-	@SequenceGenerator(name = "grngen", sequenceName = "grnVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "grngen", sequenceName = "grnseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "grnid")
 	private Long id;
 
-	@Column(name = "direct", length = 30)
+	@Column(name = "direct")
 	private String direct;
-	@Column(name = "docid", length = 30)
+	@Column(name = "docid")
 	private String docid;
 	@Builder.Default
 	private LocalDate docdate = LocalDate.now();
-	@Column(name = "entryno", length = 30)
+	@Column(name = "entryno")
 	private String entryno;
-	@Column(name = "entrydate", length = 30)
+	@Column(name = "entrydate")
 	private LocalDate entrydate;
-	@Column(name = "grndate", length = 30)
+	@Column(name = "grndate")
 	private LocalDate grndate;
-	@Column(name = "tax", length = 30)
+	@Column(name = "tax")
 	private String tax;
-	@Column(name = "gatepassid", length = 30)
+	@Column(name = "gatepassid")
 	private String gatepassid;
-	@Column(name = "gatepassdate", length = 30)
+	@Column(name = "gatepassdate")
 	private LocalDate gatepassdate;
-	@Column(name = "customerpo", length = 30)
+	@Column(name = "customerpo")
 	private String customerpo;
-	@Column(name = "suppliershortname", length = 30)
+	@Column(name = "suppliershortname")
 	private String suppliershortname;
-	@Column(name = "supplier", length = 30)
+	@Column(name = "supplier")
 	private String supplier;
-	@Column(name = "carrier", length = 30)
+	@Column(name = "carrier")
 	private String carrier;
-	@Column(name = "lotno", length = 30)
+	@Column(name = "lotno")
 	private String lotno;
-	@Column(name = "modeofshipment", length = 30)
+	@Column(name = "modeofshipment")
 	private String modeofshipment;
-	@Column(name = "noofpackage", length = 30)
+	@Column(name = "noofpackage")
 	private String noofpackage;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "cancel", length = 30)
+	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "address", length = 30)
+	@Column(name = "address")
 	private String address;
-	@Column(name = "billofentryno", length = 30)
+	@Column(name = "billofentryno")
 	private String billofenrtyno;
-	@Column(name = "containerno", length = 30)
+	@Column(name = "containerno")
 	private String containerno;
-	@Column(name = "fifoflag", length = 30)
+	@Column(name = "fifoflag")
 	private String fifoflag;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "flag", length = 30)
+	@Column(name = "flag")
 	private String flag;
-	@Column(name = "stockdate", length = 30)
+	@Column(name = "stockdate")
 	private LocalDate stockdate;
 	@Column(name = "vas")
 	private boolean vas;
-	@Column(name = "vehicleno", length = 30)
+	@Column(name = "vehicleno")
 	private String vehicleno;
-	@Column(name = "vehicledetails", length = 30)
+	@Column(name = "vehicledetails")
 	private String vehicledetails;
-	@Column(name = "finyr", length = 30)
+	@Column(name = "finyr")
 	private String finyr;
-	@Column(name = "noofpackages", length = 30)
+	@Column(name = "noofpackages")
 	private String noofpackages;
-	@Column(name = "totalamount", length = 30)
+	@Column(name = "totalamount")
 	private String totalamount;
 	@Column(name = "totalgrnqty")
 	private int totalgrnqty;//
-	@Column(name = "billofentry", length = 30)
+	@Column(name = "billofentry")
 	private String billofentry;
-	@Column(name = "capacity", length = 30)
+	@Column(name = "capacity")
 	private String capacity;
-	@Column(name = "sealno", length = 30)
+	@Column(name = "sealno")
 	private String sealno;
-	@Column(name = "vesselno", length = 30)
+	@Column(name = "vesselno")
 	private String vesselno;
-	@Column(name = "hsnno", length = 30)
+	@Column(name = "hsnno")
 	private String hsnno;
-	@Column(name = "securityname", length = 30)
+	@Column(name = "securityname")
 	private String securityname;
-	@Column(name = "vehicletype", length = 30)
+	@Column(name = "vehicletype")
 	private String vehicletype;
-	@Column(name = "vessedetails", length = 30)
+	@Column(name = "vessedetails")
 	private String vesseldetails;
-	@Column(name = "lrno", length = 30)
+	@Column(name = "lrno")
 	private String lrno;
-	@Column(name = "drivername", length = 30)
+	@Column(name = "drivername")
 	private String drivername;
-	@Column(name = "contact", length = 30)
+	@Column(name = "contact")
 	private String contact;
-	@Column(name = "lrdate", length = 30)
+	@Column(name = "lrdate")
 	private LocalDate lrdate;
-	@Column(name = "goodsdescripition", length = 30)
+	@Column(name = "goodsdescripition")
 	private String goodsdescripition;
-	@Column(name = "destinatiomfrom", length = 30)
+	@Column(name = "destinatiomfrom")
 	private String destinationfrom;
-	@Column(name = "destinationto", length = 30)
+	@Column(name = "destinationto")
 	private String destinationto;
-	@Column(name = "noofpallets", length = 30)
+	@Column(name = "noofpallets")
 	private String noofpallets;
-	@Column(name = "invoiceno", length = 30)
+	@Column(name = "invoiceno")
 	private String invoiceno;
 	
 	@JsonManagedReference

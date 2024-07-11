@@ -26,25 +26,25 @@ import lombok.NoArgsConstructor;
 public class CarrierDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "carrierdetailsgen")
-	@SequenceGenerator(name = "carrierdetailsgen", sequenceName = "carrierdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "carrierdetailsgen", sequenceName = "carrierdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "carrierdetailsid")
 	private Long id;
 
-	@Column(name = "addresstype", length = 30)
+	@Column(name = "addresstype")
 	private String addresstype;
-	@Column(name = "address", length = 30)
+	@Column(name = "address")
 	private String address;
-	@Column(name = "state", length = 30)
+	@Column(name = "state")
 	private String state;
-	@Column(name = "zipcode", length = 30)
+	@Column(name = "zipcode")
 	private String zipcode;
-	@Column(name = "country", length = 30)
+	@Column(name = "country")
 	private String country;
-	@Column(name = "contact", length = 30)
+	@Column(name = "contact")
 	private String contact;
-	@Column(name = "phone", length = 30)
+	@Column(name = "phone")
 	private String phone;
-	@Column(name = "emailid", length = 30)
+	@Column(name = "emailid")
 	private String emailid;
 
 	@ManyToOne

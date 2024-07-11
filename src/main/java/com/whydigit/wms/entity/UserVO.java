@@ -33,44 +33,44 @@ public class UserVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersgen")
-	@SequenceGenerator(name = "usersgen", sequenceName = "usersVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "usersgen", sequenceName = "usersseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "userid")
 	private Long id;
 
-	@Column(name = "username", length = 30)
+	@Column(name = "username")
 	private String userName;
 	@Column(name = "password", length = 255)
 	private String password;
-	@Column(name = "employeename", length = 30)
+	@Column(name = "employeename")
 	private String employeeName;
-	@Column(name = "nickname", length = 30)
+	@Column(name = "nickname")
 	private String nickName;
 	@Column(name = "email", length = 255)
 	private String email;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "mobileno", length = 30)
+	@Column(name = "mobileno")
 	private String mobileNo;
-	@Column(name = "usertype", length = 30)
+	@Column(name = "usertype")
 	private String userType;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
 	@Column(name = "loginstatus")
 	private boolean loginStatus;
 	
-	@Column(name = "isActive", length = 30)
+	@Column(name = "isActive")
 	private String isActive;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 	@Column(name = "role")
 	private Role role;

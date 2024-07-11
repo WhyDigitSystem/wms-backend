@@ -24,25 +24,25 @@ public class UnitVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unitgen")
-	@SequenceGenerator(name = "unitgen", sequenceName = "unitVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "unitgen", sequenceName = "unitseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "unitid")
 	private Long id;
 
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "uom", length = 30)
+	@Column(name = "uom")
 	private String uom;
-	@Column(name = "unitname", length = 30)
+	@Column(name = "unitname")
 	private String unitname;
-	@Column(name = "unittype", length = 30)
+	@Column(name = "unittype")
 	private String unittype;
 	@Column(name = "active")
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 	@Column(name = "orgid")
 	private Long orgId;

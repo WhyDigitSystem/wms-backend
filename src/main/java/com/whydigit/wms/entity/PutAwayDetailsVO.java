@@ -31,17 +31,17 @@ public class PutAwayDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "putawaydetailsgen")
-	@SequenceGenerator(name = "putawaydetailsgen", sequenceName = "putawaydetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "putawaydetailsgen", sequenceName = "putawaydetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "putawaydetailsid")
 	private Long id;
 
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "batch", length = 30)
+	@Column(name = "batch")
 	private String batch;
-	@Column(name = "partdescripition", length = 30)
+	@Column(name = "partdescripition")
 	private String partdescripition;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
 	@Column(name = "invqty")
 	private int invqty;
@@ -53,33 +53,33 @@ public class PutAwayDetailsVO {
 	private int putawayqty;
 	@Column(name = "putawaypieceqty")
 	private int putawaypiecesqty;
-	@Column(name = "location", length = 30)
+	@Column(name = "location")
 	private String location;
-	@Column(name = "weight", length = 30)
+	@Column(name = "weight")
 	private String weight;
-	@Column(name = "rate", length = 30)
+	@Column(name = "rate")
 	private String rate;
-	@Column(name = "amount", length = 30)
+	@Column(name = "amount")
 	private String amount;
-	@Column(name = "remarks", length = 30)
+	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "locationtype", length = 30)
+	@Column(name = "locationtype")
 	private String locationtype;
-	@Column(name = "shortqty", length = 30)
+	@Column(name = "shortqty")
 	private int shortqty;
 	@Column(name = "sqty")
 	private int sqty;
-	@Column(name = "ssku", length = 30)
+	@Column(name = "ssku")
 	private String ssku;
-	@Column(name = "locationclass", length = 30)
+	@Column(name = "locationclass")
 	private String locationclass;
-	@Column(name = "celltype", length = 30)
+	@Column(name = "celltype")
 	private String celltype;
-	@Column(name = "batchdate", length = 30)
+	@Column(name = "batchdate")
 	private LocalDate batchdate;
-	@Column(name = "status", length = 30)
+	@Column(name = "status")
 	private String status;
-	@Column(name = "qcflag", length = 30)
+	@Column(name = "qcflag")
 	private String qcflag;
 
 	@JsonBackReference
@@ -87,8 +87,6 @@ public class PutAwayDetailsVO {
 	@JoinColumn(name = "putawayid")
 	private PutAwayVO putAwayVO;
 
-	@Embedded
-	@Builder.Default
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	
 
 }

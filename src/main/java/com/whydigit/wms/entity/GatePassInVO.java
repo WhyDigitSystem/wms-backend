@@ -32,83 +32,83 @@ public class GatePassInVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gatepassingen")
-	@SequenceGenerator(name = "gatepassingen", sequenceName = "gatepassinVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "gatepassingen", sequenceName = "gatepassinseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "gatepassinid")
 	private Long id;
 
-	@Column(name = "transactiontype", length = 30)
+	@Column(name = "transactiontype")
 	private String transactiontype;
-	@Column(name = "entryno", length = 30)
+	@Column(name = "entryno")
 	private String entryno;//
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "docid")
 	private Long docid;
-	@Column(name = "docdate", length = 30)
+	@Column(name = "docdate")
 	private LocalDate docdate = LocalDate.now();
-	@Column(name = "date", length = 30)
+	@Column(name = "date")
 	private LocalDate date;
-	@Column(name = "supplier", length = 30)
+	@Column(name = "supplier")
 	private String supplier;
-	@Column(name = "suppliershortname", length = 30)
+	@Column(name = "suppliershortname")
 	private String suppliershortname;
-	@Column(name = "modeofshipment", length = 30)
+	@Column(name = "modeofshipment")
 	private String modeofshipment;
-	@Column(name = "carrier", length = 30)
+	@Column(name = "carrier")
 	private String carrier;
-	@Column(name = "carriertransport", length = 30)
+	@Column(name = "carriertransport")
 	private String carriertransport;
-	@Column(name = "vehicletype", length = 30)
+	@Column(name = "vehicletype")
 	private String vehicletype;
-	@Column(name = "vehicleno", length = 30)
+	@Column(name = "vehicleno")
 	private String vehicleno;
-	@Column(name = "drivername", length = 30)
+	@Column(name = "drivername")
 	private String drivername;
-	@Column(name = "contact", length = 30)
+	@Column(name = "contact")
 	private String contact;
-	@Column(name = "goodsdescription", length = 30)
+	@Column(name = "goodsdescription")
 	private String goodsdescription;
-	@Column(name = "securityname", length = 30)
+	@Column(name = "securityname")
 	private String securityname;
-	@Column(name = "lotno", length = 30)
+	@Column(name = "lotno")
 	private String lotno;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
 
 	@Column(name = "cancel")
 	private boolean cancel;
 
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremark;
 
 	@Column(name = "active")
 	private boolean active;
 
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
 
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
 
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
 
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
 
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
 
-	@Column(name = "finyr", length = 30)
+	@Column(name = "finyr")
 	private String finyr;
 
 	@JsonManagedReference

@@ -34,68 +34,68 @@ public class PutAwayVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "putawaygen")
-	@SequenceGenerator(name = "putawaygen", sequenceName = "putawayVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "putawaygen", sequenceName = "putawayseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "putawayid")
 	private Long id;
-	@Column(name = "docdate", length = 30)
+	@Column(name = "docdate")
 	private LocalDate docdate;
-	@Column(name = "grnno", length = 30)
+	@Column(name = "grnno")
 	private String grnno;
-	@Column(name = "docid", length = 30)
+	@Column(name = "docid")
 	private String docid;
-	@Column(name = "grndate", length = 30)
+	@Column(name = "grndate")
 	private LocalDate grndate;
-	@Column(name = "entryno", length = 30)
+	@Column(name = "entryno")
 	private String entryno;
-	@Column(name = "core", length = 30)
+	@Column(name = "core")
 	private String core;
-	@Column(name = "suppliershortname", length = 30)
+	@Column(name = "suppliershortname")
 	private String suppliershortname;
-	@Column(name = "supplier", length = 30)
+	@Column(name = "supplier")
 	private String supplier;
-	@Column(name = "modeofshipment", length = 30)
+	@Column(name = "modeofshipment")
 	private String modeodshipment;
-	@Column(name = "carrier", length = 30)
+	@Column(name = "carrier")
 	private String carrier;
-	@Column(name = "locationtype", length = 30)
+	@Column(name = "locationtype")
 	private String locationtype;
-	@Column(name = "status", length = 30)
+	@Column(name = "status")
 	private String status;
-	@Column(name = "lotno", length = 30)
+	@Column(name = "lotno")
 	private String lotno;
-	@Column(name = "enteredperson", length = 30)
+	@Column(name = "enteredperson")
 	private String enteredperson;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
-	@Column(name = "cancel", length = 30)
+	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremark;
-	@Column(name = "active", length = 30)
+	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "finyr", length = 30)
+	@Column(name = "finyr")
 	private String finyr;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private String orgId;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
 
 	@JsonManagedReference

@@ -23,79 +23,79 @@ import lombok.NoArgsConstructor;
 public class MaterialVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "materialgen")
-	@SequenceGenerator(name = "materialgen", sequenceName = "materialVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "materialgen", sequenceName = "materialseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "materialid")
 	private Long id;
 
-	@Column(name = "itemtype", length = 30)
+	@Column(name = "itemtype")
 	private String itemtype;
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "partdesc", length = 30)
+	@Column(name = "partdesc")
 	private String partdesc;
-	@Column(name = "custpartno", length = 30)
+	@Column(name = "custpartno")
 	private String custpartno;
-	@Column(name = "groupname", length = 30)
+	@Column(name = "groupname")
 	private String groupname;
-	@Column(name = "barcode", length = 30)
+	@Column(name = "barcode")
 	private String barcode;
-	@Column(name = "stylecode", length = 30)
+	@Column(name = "stylecode")
 	private String stylecode;
-	@Column(name = "basesku", length = 30)
+	@Column(name = "basesku")
 	private String basesku;
-	@Column(name = "purchaseunit", length = 30)
+	@Column(name = "purchaseunit")
 	private String purchaseunit;
-	@Column(name = "storageunit", length = 30)
+	@Column(name = "storageunit")
 	private String storageunit;
-	@Column(name = "fsn", length = 30)
+	@Column(name = "fsn")
 	private String fsn;
-	@Column(name = "saleunit", length = 30)
+	@Column(name = "saleunit")
 	private String saleunit;
-	@Column(name = "type", length = 30)
+	@Column(name = "type")
 	private String type;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
-	@Column(name = "skuqty", length = 30)
+	@Column(name = "skuqty")
 	private String skuqty;
-	@Column(name = "ssku", length = 30)
+	@Column(name = "ssku")
 	private String ssku;
-	@Column(name = "sskuqty", length = 30)
+	@Column(name = "sskuqty")
 	private String sskuqty;
-	@Column(name = "weightofskuanduom", length = 30)
+	@Column(name = "weightofskuanduom")
 	private String weightofskuanduom;
-	@Column(name = "hsncode", length = 30)
+	@Column(name = "hsncode")
 	private String hsncode;
-	@Column(name = "parentchildkey", length = 30)
+	@Column(name = "parentchildkey")
 	private String parentchildkey;
-	@Column(name = "cbranch", length = 30)
+	@Column(name = "cbranch")
 	private String cbranch;
-	@Column(name = "criticalstocklevel", length = 30)
+	@Column(name = "criticalstocklevel")
 	private String criticalstocklevel;
-	@Column(name = "status", length = 30)
+	@Column(name = "status")
 	private String status;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-  @Column(name = "branch", length = 30)
+  @Column(name = "branch")
 	private String branch;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "palletqty", length = 30)
+	@Column(name = "palletqty")
 	private String palletqty;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 	@Column(name = "length")
 	private Float length;

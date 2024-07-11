@@ -27,23 +27,23 @@ public class PickRequestDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pickrequestdetailsgen")
-	@SequenceGenerator(name = "pickrequestdetailsgen", sequenceName = "pickrequestdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "pickrequestdetailsgen", sequenceName = "pickrequestdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "pickrequestdetailsid")
 	private Long id;
 
-	@Column(name = "serialno", length = 30)
+	@Column(name = "serialno")
 	private String serialno;
-	@Column(name = "partcode", length = 30)
+	@Column(name = "partcode")
 	private String partcode;
-	@Column(name = "partdesc", length = 30)
+	@Column(name = "partdesc")
 	private String partdesc;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
-	@Column(name = "location", length = 30)
+	@Column(name = "location")
 	private String location;
-	@Column(name = "batchno", length = 30)
+	@Column(name = "batchno")
 	private String batchno;
-	@Column(name = "lotno", length = 30)
+	@Column(name = "lotno")
 	private String lotno;
 	@Column(name = "orderqty")
 	private int orderqty;
@@ -53,19 +53,19 @@ public class PickRequestDetailsVO {
 	private int pickqty;
 	@Column(name = "runningqty")
 	private int runningqty;
-	@Column(name = "picktyperlocation", length = 30)
+	@Column(name = "picktyperlocation")
 	private String pickqtyperlocation;
 	@Column(name = "remainingqty")
 	private String remainingqty;
-	@Column(name = "weight", length = 30)
+	@Column(name = "weight")
 	private String weight;
-	@Column(name = "rate", length = 30)
+	@Column(name = "rate")
 	private String rate;
-	@Column(name = "tax", length = 30)
+	@Column(name = "tax")
 	private String tax;
-	@Column(name = "amount", length = 30)
+	@Column(name = "amount")
 	private String amount;
-	@Column(name = "remarks", length = 30)
+	@Column(name = "remarks")
 	private String remarks;
 	
 	@JsonManagedReference
@@ -73,6 +73,4 @@ public class PickRequestDetailsVO {
 	@JoinColumn(name = "pick_request_id")
 	private PickRequestVO pickRequestVO;
 
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

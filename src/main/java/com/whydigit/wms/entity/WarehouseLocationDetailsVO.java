@@ -25,33 +25,33 @@ public class WarehouseLocationDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouselocationdetailsgen")
-	@SequenceGenerator(name = "warehouselocationdetailsgen", sequenceName = "warehouselocationdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "warehouselocationdetailsgen", sequenceName = "warehouselocationdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "warehouselocationdetailsid")
 	private Long id;
 
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "locatintype", length = 30)
+	@Column(name = "locatintype")
 	private String locationtype;
 	@Column(name = "rowno")
 	private String rowno;
-	@Column(name = "level", length = 30)
+	@Column(name = "level")
 	private String level;
-	@Column(name = "cellfrom", length = 30)
+	@Column(name = "cellfrom")
 	private String cellfrom;
-	@Column(name = "cellto", length = 30)
+	@Column(name = "cellto")
 	private String cellto;
-	@Column(name = "bin", length = 30)
+	@Column(name = "bin")
 	private String bin;
-	@Column(name = "bincategory", length = 30)
+	@Column(name = "bincategory")
 	private String bincategory;
-	@Column(name = "status", length = 30)
+	@Column(name = "status")
 	private String status;
-	@Column(name = "core", length = 30)
+	@Column(name = "core")
 	private String core;
 	@Column(name = "orgid")
 	private Long orgId;

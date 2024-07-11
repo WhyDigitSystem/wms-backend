@@ -27,13 +27,13 @@ public class ClientBranchVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientbranchgen")
-	@SequenceGenerator(name = "clientbranchgen", sequenceName = "clientbranchVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "clientbranchgen", sequenceName = "clientbranchseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "clientbranchid")
 	private Long id;
 
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
 
 	@ManyToOne

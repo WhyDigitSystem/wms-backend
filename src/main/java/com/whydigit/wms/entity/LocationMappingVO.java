@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -26,7 +27,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LocationMappingVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmappinggen")
+	@SequenceGenerator(name = "locationmappinggen", sequenceName = "locationmappingseq", initialValue = 1000000001, allocationSize = 1)
 	private Long id;
 	private String branch;
 	private String warehouse;

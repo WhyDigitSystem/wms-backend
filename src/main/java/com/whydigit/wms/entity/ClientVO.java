@@ -27,17 +27,17 @@ public class ClientVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientgen")
-	@SequenceGenerator(name = "clientgen", sequenceName = "clientVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "clientgen", sequenceName = "clientseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "clientid")
 	private Long id;
 
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client; // caps
-	@Column(name = "clientcode", length = 30)
+	@Column(name = "clientcode")
 	private String clientcode; // caps
-	@Column(name = "clienttype", length = 30)
+	@Column(name = "clienttype")
 	private String clienttype;
 	@Column(name = "fiofife")
 	private int fifofife;

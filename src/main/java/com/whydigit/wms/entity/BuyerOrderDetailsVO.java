@@ -25,23 +25,23 @@ public class BuyerOrderDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyerorderdetailsgen")
-	@SequenceGenerator(name = "buyerorderdetailsgen", sequenceName = "buyerorderdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "buyerorderdetailsgen", sequenceName = "buyerorderdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "buyerorderdetailsid")
 	private Long id;
 
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "partdesc", length = 30)
+	@Column(name = "partdesc")
 	private String partdesc;
-	@Column(name = "qty", length = 30)
+	@Column(name = "qty")
 	private String qty;
-	@Column(name = "batchno", length = 30)
+	@Column(name = "batchno")
 	private String batchno;
-	@Column(name = "availqty", length = 30)
+	@Column(name = "availqty")
 	private String availqty;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
-	@Column(name = "remarks", length = 30)
+	@Column(name = "remarks")
 	private String remarks;
 	
 	@JsonBackReference

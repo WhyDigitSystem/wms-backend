@@ -19,20 +19,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user_clientaccess")
+@Table(name = "userclientaccess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLoginClientAccessVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "userloginclientaccessgen")
-	@SequenceGenerator(name = "userloginclientaccessgen",sequenceName = "userloginclientaccessVO",initialValue = 1000000001,allocationSize = 1)
+	@SequenceGenerator(name = "userloginclientaccessgen",sequenceName = "userloginclientaccessseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="userloginclientaccessid")
 	private long id;
 	
-	@Column(name="client", length = 30)
+	@Column(name="client")
 	private String client;
-	@Column(name="customer", length = 30)
+	@Column(name="customer")
 	private String customer;
 	
 	@JsonBackReference
@@ -40,6 +40,6 @@ public class UserLoginClientAccessVO {
     @JoinColumn(name = "usersid")
     private UserVO userVO;
 	
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+//	@Embedded
+//	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

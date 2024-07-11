@@ -29,35 +29,35 @@ public class WarehouseLocationVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouselocationgen")
-	@SequenceGenerator(name = "warehouselocationgen", sequenceName = "warehouselocationVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "warehouselocationgen", sequenceName = "warehouselocationseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "warehouselocationid")
 	private Long id;
 
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "locationtype", length = 30)
+	@Column(name = "locationtype")
 	private String locationtype;
-	@Column(name = "rowno", length = 30)
+	@Column(name = "rowno")
 	private String rowno;
-	@Column(name = "level", length = 30)
+	@Column(name = "level")
 	private String level;
-	@Column(name = "cellform", length = 30)
+	@Column(name = "cellform")
 	private String cellfrom;
-	@Column(name = "cellto", length = 30)
+	@Column(name = "cellto")
 	private String cellto;
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 	@Column(name = "orgid")
 	private Long orgId;

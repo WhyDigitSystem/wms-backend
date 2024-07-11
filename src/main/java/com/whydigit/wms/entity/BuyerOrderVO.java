@@ -30,55 +30,55 @@ public class BuyerOrderVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyerordergen")
-	@SequenceGenerator(name = "buyerordergen", sequenceName = "buyerorderVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "buyerordergen", sequenceName = "buyerorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "buyerorderid")
 	private Long id;
 
-	@Column(name = "orderno", length = 30)
+	@Column(name = "orderno")
 	private String orderno;
 	@Column(name = "docdate")
 	private LocalDate docdate;
 	@Column(name = "orderdate")
 	private LocalDate orderdate;
-	@Column(name = "invoiceno", length = 30)
+	@Column(name = "invoiceno")
 	private String invoiceno;
-	@Column(name = "refno", length = 30)
+	@Column(name = "refno")
 	private String refno;
 	@Column(name = "invoicedate")
 	private LocalDate invoicedate;
 	@Column(name = "refdate")
 	private LocalDate refdate;
-	@Column(name = "buyershortname", length = 30)
+	@Column(name = "buyershortname")
 	private String buyershortname;
-	@Column(name = "currency", length = 30)
+	@Column(name = "currency")
 	private String currency;
-	@Column(name = "exrate", length = 30)
+	@Column(name = "exrate")
 	private String exrate;
-	@Column(name = "location", length = 30)
+	@Column(name = "location")
 	private String location;
-	@Column(name = "billto", length = 30)
+	@Column(name = "billto")
 	private String billto;
-	@Column(name = "tax", length = 30)
+	@Column(name = "tax")
 	private String tax;
-	@Column(name = "shipto", length = 30)
+	@Column(name = "shipto")
 	private String shipto;
-	@Column(name = "remarks", length = 30)
+	@Column(name = "remarks")
 	private String remarks;
-	@Column(unique = true, length = 30)
+	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 	@Column(name = "cancelremark")
 	private String cancelremark;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
 
 	@JsonManagedReference

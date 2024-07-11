@@ -24,51 +24,51 @@ public class CompanyVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "companygen")
-	@SequenceGenerator(name = "companygen", sequenceName = "companyVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "companygen", sequenceName = "companyseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "companyid")
 	private Long id;
 
-	@Column(unique = true, length = 30)
+	@Column(unique = true)
 	private String companycode;
-	@Column(unique = true, length = 30)
+	@Column(unique = true)
 	private String companyname;
-	@Column(name = "country", length = 30)
+	@Column(name = "country")
 	private String country;
-	@Column(name = "currency", length = 30)
+	@Column(name = "currency")
 	private String currency;
-	@Column(name = "maincurrency", length = 30)
+	@Column(name = "maincurrency")
 	private String mainCurrency;
-	@Column(name = "address", length = 255)
+	@Column(name = "address")
 	private String address;
-	@Column(name = "zipcode", length = 30)
+	@Column(name = "zipcode")
 	private String zip;
-	@Column(name = "city", length = 30)
+	@Column(name = "city")
 	private String city;
-	@Column(name = "state", length = 30)
+	@Column(name = "state")
 	private String state;
-	@Column(name = "phone", length = 30)
+	@Column(name = "phone")
 	private String phone;
-	@Column(name = "email", length = 30)
+	@Column(name = "email")
 	private String email;
-	@Column(name = "website", length = 30)
+	@Column(name = "website")
 	private String webSite;
-	@Column(name = "notes", length = 30)
+	@Column(name = "notes")
 	private String note;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 	@Column(name = "active")
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "employeename", length = 30)
+	@Column(name = "employeename")
 	private String employeeName;
-	@Column(name = "employeecode", length = 30)
+	@Column(name = "employeecode")
 	private String employeecode;
-	@Column(name = "password", length = 255)
+	@Column(name = "password")
 	private String password;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 	@Column(name = "cancel")
 	private boolean cancel;

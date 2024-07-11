@@ -24,27 +24,27 @@ public class RegionVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "regiongen")
-	@SequenceGenerator(name = "regiongen", sequenceName = "regionVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "regiongen", sequenceName = "regionseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "regionid")
 	private Long id;
 
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String docid;
-	@Column(name = "regioncode", length = 30)
+	@Column(name = "regioncode")
 	private String regioncode;
-	@Column(name = "region", length = 30)
+	@Column(name = "region")
 	private String regionname;
 	@Column(name = "active")
 	private boolean active;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel;

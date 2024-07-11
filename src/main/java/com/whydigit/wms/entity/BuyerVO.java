@@ -23,73 +23,73 @@ import lombok.NoArgsConstructor;
 public class BuyerVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buyergen")
-	@SequenceGenerator(name = "buyergen", sequenceName = "buyerVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "buyergen", sequenceName = "buyerseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "buyerid")
 	private Long id;
 
-	@Column(name = "buyer", length = 30)
+	@Column(name = "buyer")
 	private String buyer;
-	@Column(name = "buyershortname", length = 30)
+	@Column(name = "buyershortname")
 	private String buyershortname;
-	@Column(name = "buyertype", length = 30)
+	@Column(name = "buyertype")
 	private String buyer_type;
-	@Column(name = "buyergroupof", length = 30)
+	@Column(name = "buyergroupof")
 	private String buyergroupof;
-	@Column(name = "contactperson", length = 30)
+	@Column(name = "contactperson")
 	private String contactperson;
-	@Column(name = "panno", length = 30)
+	@Column(name = "panno")
 	private String panno;
-	@Column(name = "tanno", length = 30)
+	@Column(name = "tanno")
 	private String tanno;
-	@Column(name = "zipcode", length = 30)
+	@Column(name = "zipcode")
 	private String zipcode;
-	@Column(name = "emailid", length = 30)
+	@Column(name = "emailid")
 	private String emailid;
-	@Column(name = "gst", length = 30)
+	@Column(name = "gst")
 	private String gst;
-	@Column(name = "gstno", length = 30)
+	@Column(name = "gstno")
 	private String gstno;
-	@Column(name = "mobilenumber1", length = 30)
+	@Column(name = "mobilenumber1")
 	private String mobilenumber;
-	@Column(name = "addressline1", length = 30)
+	@Column(name = "addressline1")
 	private String addressline1;
-	@Column(name = "addressline2", length = 30)
+	@Column(name = "addressline2")
 	private String addressline2;
-	@Column(name = "city", length = 30)
+	@Column(name = "city")
 	private String city;
-	@Column(name = "state", length = 30)
+	@Column(name = "state")
 	private String state;
-	@Column(name = "country", length = 30)
+	@Column(name = "country")
 	private String country;
-	@Column(name = "eccno", length = 30)
+	@Column(name = "eccno")
 	private String eccno;
-	@Column(name = "cbranch", length = 30)
+	@Column(name = "cbranch")
 	private String cbranch;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
 
 	@Embedded

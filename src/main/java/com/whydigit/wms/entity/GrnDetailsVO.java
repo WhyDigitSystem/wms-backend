@@ -28,29 +28,29 @@ import lombok.NoArgsConstructor;
 public class GrnDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "grndetailsgen")
-	@SequenceGenerator(name = "grndetailsgen", sequenceName = "grndetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "grndetailsgen", sequenceName = "grndetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "grndetailsid")
 	private Long id;
 
-	@Column(name = "qrcode", length = 30)
+	@Column(name = "qrcode")
 	private String qrcode;
-	@Column(name = "lrnohawbno", length = 30)
+	@Column(name = "lrnohawbno")
 	private String lrnohawbno;
-	@Column(name = "invoiceno", length = 30)
+	@Column(name = "invoiceno")
 	private String invoiceno;
-	@Column(name = "invoicedate", length = 30)
+	@Column(name = "invoicedate")
 	private LocalDate invoicedate;
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "partdesc", length = 30)
+	@Column(name = "partdesc")
 	private String partdesc;
-	@Column(name = "locationtype", length = 30)
+	@Column(name = "locationtype")
 	private String locationtype;
-	@Column(name = "rate", length = 30)
+	@Column(name = "rate")
 	private String rate;
-	@Column(name = "amount", length = 30)
+	@Column(name = "amount")
 	private String amount;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
 	@Column(name = "invqty")
 	private int invqty;
@@ -66,37 +66,37 @@ public class GrnDetailsVO {
 	private int batchqty;
 	@Column(name = "palletqty")
 	private int palletqty;
-	@Column(name = "noofpallet", length = 30)
+	@Column(name = "noofpallet")
 	private String noofpallet;
-	@Column(name = "pkgs", length = 30)
+	@Column(name = "pkgs")
 	private String pkgs;
-	@Column(name = "weight", length = 30)
+	@Column(name = "weight")
 	private String weight;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "batchno", length = 30)
+	@Column(name = "batchno")
 	private String batchno;
-	@Column(name = "batchdt", length = 30)
+	@Column(name = "batchdt")
 	private LocalDate batchdt;
-	@Column(name = "qcflag", length = 30)
+	@Column(name = "qcflag")
 	private String qcflag;
-	@Column(name = "shipmentno", length = 30)
+	@Column(name = "shipmentno")
 	private String shipmentno;
 	@Column(name = "sqty")
 	private int sqty;
 	@Column(name = "grnqty")
 	private int grnqty;
-	@Column(name = "batchpalletno", length = 30)
+	@Column(name = "batchpalletno")
 	private String batchpalletno;
 
-	@Column(name = "expdate", length = 30)
+	@Column(name = "expdate")
 	private LocalDate expdate;
 
 
-	@Column(name = "mrp", length = 30)
+	@Column(name = "mrp")
 	private String mrp;
 
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremark;
 
 	@JsonBackReference

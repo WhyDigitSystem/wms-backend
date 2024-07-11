@@ -24,31 +24,31 @@ public class StateVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "stategen")
-	@SequenceGenerator(name = "stategen",sequenceName = "stateVO",initialValue = 1000000001,allocationSize = 1)
+	@SequenceGenerator(name = "stategen",sequenceName = "stateseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="stateid")
 	private Long id;
 	
-	@Column(name="statecode", length = 30)
+	@Column(name="statecode")
 	private String statecode;
-	@Column(name="state", length = 30)
+	@Column(name="state")
 	private String statename;
-	@Column(name="country", length = 30)
+	@Column(name="country")
     private String country;
-	@Column(name="region", length = 30)
+	@Column(name="region")
     private String region;
-	@Column(name="stateno", length = 30)
+	@Column(name="stateno")
     private int statenumber;
 	@Column(name="active")
     private boolean active;
-	@Column(name="userid", length = 30)
+	@Column(name="userid")
     private String userid;
     @Column(unique = true)
 	private String dupchk;
-    @Column(name="createdby", length = 30)
+    @Column(name="createdby")
     private String createdby;
-    @Column(name="modifiedby", length = 30)
+    @Column(name="modifiedby")
 	private String updatedby;
-    @Column(name="orgid", length = 30)
+    @Column(name="orgid")
 	private Long orgId;
     @Column(name="cancel")
 	private boolean cancel;

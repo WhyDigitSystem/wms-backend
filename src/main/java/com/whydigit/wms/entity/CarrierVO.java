@@ -23,19 +23,19 @@ import lombok.NoArgsConstructor;
 public class CarrierVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "carriergen")
-	@SequenceGenerator(name = "carriergen", sequenceName = "carrierVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "carriergen", sequenceName = "carrierseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "carrierid")
 	private Long id;
 
-	@Column(name = "carrier", length = 30)
+	@Column(name = "carrier")
 	private String carrier;
-	@Column(name = "carriershortname", length = 30)
+	@Column(name = "carriershortname")
 	private String carriershortname;
-	@Column(name = "shipmentmode", length = 30)
+	@Column(name = "shipmentmode")
 	private String shipmentmode;
-	@Column(name = "cbranch", length = 30)
+	@Column(name = "cbranch")
 	private String cbranch;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
 	@Column(unique = true)
 	private String dupchk;
@@ -43,23 +43,23 @@ public class CarrierVO {
 	private Long orgId;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremarks;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 
 //	@JsonManagedReference

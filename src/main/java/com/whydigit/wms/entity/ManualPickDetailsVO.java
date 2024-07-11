@@ -27,25 +27,25 @@ public class ManualPickDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "manualpickdetailsgen")
-	@SequenceGenerator(name = "manualpickdetailsgen", sequenceName = "manualpickdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "manualpickdetailsgen", sequenceName = "manualpickdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "manualpickdetailsid")
 	private Long id;
 
-	@Column(name = "serialno", length = 30)
+	@Column(name = "serialno")
 	private String serialno;
-	@Column(name = "partcode", length = 30)
+	@Column(name = "partcode")
 	private String partcode;
-	@Column(name = "partdescripition", length = 30)
+	@Column(name = "partdescripition")
 	private String partdescripition;
-	@Column(name = "batchno", length = 30)
+	@Column(name = "batchno")
 	private String batchno;
-	@Column(name = "grnno", length = 30)
+	@Column(name = "grnno")
 	private String grnno;
-	@Column(name = "location", length = 30)
+	@Column(name = "location")
 	private String location;
-	@Column(name = "lotno", length = 30)
+	@Column(name = "lotno")
 	private String lotno;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
 	@Column(name = "orderqty")
 	private int orderqty;
@@ -53,36 +53,33 @@ public class ManualPickDetailsVO {
 	private int avlqty;
 	@Column(name = "pickqty")
 	private int pickqty;
-	@Column(name = "weight", length = 30)
+	@Column(name = "weight")
 	private String weight;
-	@Column(name = "rate", length = 30)
+	@Column(name = "rate")
 	private String rate;
-	@Column(name = "amount", length = 30)
+	@Column(name = "amount")
 	private String amount;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
-	@Column(name = "cancel", length = 30)
+	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "cancelremark", length = 30)
+	@Column(name = "cancelremark")
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
 
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "manualpickid")
 	private ManualPickVO manualPickVO;
-
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

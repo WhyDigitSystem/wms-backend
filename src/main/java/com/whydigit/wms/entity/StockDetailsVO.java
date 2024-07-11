@@ -26,49 +26,49 @@ public class StockDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stockdetailsgen")
-	@SequenceGenerator(name = "stockdetailsgen", sequenceName = "stockdetailsVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "stockdetailsgen", sequenceName = "stockdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "stockdetailsid")
 	private Long id;
 
-	@Column(name = "cancel", length = 30)
+	@Column(name = "cancel")
 	private String cancel;
-	@Column(name = "orgid", length = 30)
+	@Column(name = "orgid")
 	private String orgId;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "cancelremarks", length = 30)
+	@Column(name = "cancelremarks")
 	private String cancelremarks;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "docid", length = 30)
+	@Column(name = "docid")
 	private String docid;
-	@Column(name = "docdate", length = 30)
+	@Column(name = "docdate")
 	private LocalDate docdate;
 	@Column(name = "qtypicked")
 	private int pickedqty;
-	@Column(name = "rate", length = 30)
+	@Column(name = "rate")
 	private String rate;
-	@Column(name = "amount", length = 30)
+	@Column(name = "amount")
 	private String amount;
-	@Column(name = "inoutitme", length = 30)
+	@Column(name = "inoutitme")
 	private String inouttime;
-	@Column(name = "refno", length = 30)
+	@Column(name = "refno")
 	private String refno;
-	@Column(name = "refdate", length = 30)
+	@Column(name = "refdate")
 	private LocalDate refdate;
 	@Column(name = "qty")
 	private int qty;
-	@Column(name = "lrhawbhblno", length = 30)
+	@Column(name = "lrhawbhblno")
 	private String lrhawbhblno;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
-	@Column(name = "stockdate", length = 30)
+	@Column(name = "stockdate")
 	private LocalDate stockdate;
-	@Column(name = "grnno", length = 30)
+	@Column(name = "grnno")
 	private String grnno;
-	@Column(name = "grndate", length = 30)
+	@Column(name = "grndate")
 	private LocalDate grndate;
-	@Column(name = "carrier", length = 30)
+	@Column(name = "carrier")
 	private String carrier;
 	@Column(name = "oqty")
 	private int oqty;
@@ -80,33 +80,33 @@ public class StockDetailsVO {
 	private int cqty;
 	@Column(name = "uqty")
 	private int uqty;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "partdesc", length = 30)
+	@Column(name = "partdesc")
 	private String partdesc;
-	@Column(name = "sourcescreen", length = 30)
+	@Column(name = "sourcescreen")
 	private String sourcescreen;
-	@Column(name = "remarks", length = 30)
+	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "locationtype", length = 30)
+	@Column(name = "locationtype")
 	private String locationtype;
-	@Column(name = "celltype", length = 30)
+	@Column(name = "celltype")
 	private String celltype;
-	@Column(name = "core", length = 30)
+	@Column(name = "core")
 	private String core;
 	@Column(name = "toqty")
 	private int toqty;
-	@Column(name = "pallet", length = 30)
+	@Column(name = "pallet")
 	private String pallet;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
-	@Column(name = "ssku", length = 30)
+	@Column(name = "ssku")
 	private String ssku;
 	@Column(name = "ssqty")
 	private int ssqty;
@@ -122,65 +122,65 @@ public class StockDetailsVO {
 	private int damageqty;
 	@Column(name = "shortqty")
 	private int shortqty;
-	@Column(name = "qcflag", length = 30)
+	@Column(name = "qcflag")
 	private String qcflag;
-	@Column(name = "subtypecode", length = 30)
+	@Column(name = "subtypecode")
 	private String subtypecode;
-	@Column(name = "pamount", length = 30)
+	@Column(name = "pamount")
 	private String pamount;
-	@Column(name = "locationclass", length = 30)
+	@Column(name = "locationclass")
 	private String locationclass;
-	@Column(name = "pgroup", length = 30)
+	@Column(name = "pgroup")
 	private String pgroup;
-	@Column(name = "barcode", length = 30)
+	@Column(name = "barcode")
 	private String barcode;
-	@Column(name = "stylecode", length = 30)
+	@Column(name = "stylecode")
 	private String stylecode;
-	@Column(name = "expdate", length = 30)
+	@Column(name = "expdate")
 	private String expdate;
-	@Column(name = "buyerorderno", length = 30)
+	@Column(name = "buyerorderno")
 	private String buyerorderno;
-	@Column(name = "batch", length = 30)
+	@Column(name = "batch")
 	private String batch;
-	@Column(name = "batchdate", length = 30)
+	@Column(name = "batchdate")
 	private LocalDate batchdate;
-	@Column(name = "weight", length = 30)
+	@Column(name = "weight")
 	private String weight;
-	@Column(name = "pckey", length = 30)
+	@Column(name = "pckey")
 	private String pckey;
-	@Column(name = "sdactual", length = 30)
+	@Column(name = "sdactual")
 	private String sdactual;
-	@Column(name = "tpartno", length = 30)
+	@Column(name = "tpartno")
 	private String tpartno;
-	@Column(name = "taskid", length = 30)
+	@Column(name = "taskid")
 	private String taskid;
-	@Column(name = "sdate", length = 30)
+	@Column(name = "sdate")
 	private LocalDate sdate;
-	@Column(name = "cdocdate", length = 30)
+	@Column(name = "cdocdate")
 	private LocalDate cdocdate;
-	@Column(name = "status", length = 30)
+	@Column(name = "status")
 	private String status;
-	@Column(name = "invoiceno", length = 30)
+	@Column(name = "invoiceno")
 	private String invoiceno;
-	@Column(name = "isstatus", length = 30)
+	@Column(name = "isstatus")
 	private String istatus;
-	@Column(name = "sflag", length = 30)
+	@Column(name = "sflag")
 	private String sflag;
-	@Column(name = "lotno", length = 30)
+	@Column(name = "lotno")
 	private String lotno;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchname", length = 30)
+	@Column(name = "branchname")
 	private String branchname;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
-	@Column(name = "finyear", length = 30)
+	@Column(name = "finyear")
 	private String finyear;
 
 	@Embedded

@@ -23,27 +23,27 @@ public class CityVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "citygen")
-	@SequenceGenerator(name = "citygen",sequenceName = "cityVO",initialValue = 1000000001,allocationSize = 1)
+	@SequenceGenerator(name = "citygen",sequenceName = "cityseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="cityid")
 	private Long id;
 	
-	@Column(name="citycode", length = 30)
+	@Column(name="citycode")
 	private String citycode;
-	@Column(name="country", length = 30)
+	@Column(name="country")
 	private String country;
-	@Column(name="city", length = 30)
+	@Column(name="city")
     private String cityname;
-	@Column(name="state", length = 30)
+	@Column(name="state")
     private String state;
 	@Column(name="active")
     private boolean active;
-	@Column(name="userif", length = 30)
+	@Column(name="userif")
     private String userid;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name="createdby", length = 30)
+	@Column(name="createdby")
 	private String createdby;
-	@Column(name="modifiedby", length = 30)
+	@Column(name="modifiedby")
 	private String updatedby;
 	@Column(name="orgid")
 	private Long orgId;

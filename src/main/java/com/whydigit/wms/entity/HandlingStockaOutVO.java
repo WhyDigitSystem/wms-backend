@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "handlingStockaOut")
+@Table(name = "handlingstockaout")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,66 +26,66 @@ public class HandlingStockaOutVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "handlingstockoutgen")
-	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockoutVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockoutseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "handlingstockoutid")
 	private Long id;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "refno", length = 30)
+	@Column(name = "refno")
 	private String refno;
-	@Column(name = "partno", length = 30)
+	@Column(name = "partno")
 	private String partno;
-	@Column(name = "refdate", length = 30)
+	@Column(name = "refdate")
 	private LocalDate refdate;
-	@Column(name = "partdesc", length = 30)
+	@Column(name = "partdesc")
 	private String partdesc;
 	@Column(name = "rpqty")
 	private int rpqty;
-	@Column(name = "customer", length = 30)
+	@Column(name = "customer")
 	private String customer;
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
 	@Column(name = "sqty")
 	private int sqty;
-	@Column(name = "pickrequestno", length = 30)
+	@Column(name = "pickrequestno")
 	private String pickrequestno;
-	@Column(name = "pickrequestdate", length = 30)
+	@Column(name = "pickrequestdate")
 	private LocalDate pickrequestdate;
-	@Column(name = "buyerorderno", length = 30)
+	@Column(name = "buyerorderno")
 	private String buyerorderno;
-	@Column(name = "sku", length = 30)
+	@Column(name = "sku")
 	private String sku;
-	@Column(name = "buyerorderdate", length = 30)
+	@Column(name = "buyerorderdate")
 	private LocalDate buyerorderdate;
 	@Column(name = "pickqty")
 	private int pickqty;
-	@Column(name = "buyerordno", length = 30)
+	@Column(name = "buyerordno")
 	private String buyerordno;
-	@Column(name = "sdocid", length = 30)
+	@Column(name = "sdocid")
 	private String sdocid;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
-	@Column(name = "company", length = 30)
+	@Column(name = "company")
 	private String company;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "cancelremark", length = 30)
+	@Column(name = "cancelremark")
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
-	@Column(name = "screencode", length = 30)
+	@Column(name = "screencode")
 	private String screencode;
-	@Column(name = "client", length = 30)
+	@Column(name = "client")
 	private String client;
 
 	@Embedded

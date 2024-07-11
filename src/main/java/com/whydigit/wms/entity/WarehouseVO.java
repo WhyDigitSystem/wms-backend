@@ -28,15 +28,15 @@ import lombok.NoArgsConstructor;
 public class WarehouseVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehousegen")
-	@SequenceGenerator(name = "warehousegen", sequenceName = "warehouseVO", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "warehousegen", sequenceName = "warehouseseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "warehouseid")
 	private Long id;
 
-	@Column(name = "warehouse", length = 30)
+	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "branchcode", length = 30)
+	@Column(name = "branchcode")
 	private String branchcode;
-	@Column(name = "branch", length = 30)
+	@Column(name = "branch")
 	private String branch;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -44,11 +44,11 @@ public class WarehouseVO {
 	private String dupchk;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid", length = 30)
+	@Column(name = "userid")
 	private String userid;
-	@Column(name = "createdby", length = 30)
+	@Column(name = "createdby")
 	private String createdby;
-	@Column(name = "modifiedby", length = 30)
+	@Column(name = "modifiedby")
 	private String updatedby;
 	@Column(name = "cancel")
 	private boolean cancel;
