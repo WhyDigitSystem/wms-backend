@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -39,13 +41,13 @@ public class UserVO {
 
 	@Column(name = "username")
 	private String userName;
-	@Column(name = "password", length = 255)
+	@Column(name = "password")
 	private String password;
 	@Column(name = "employeename")
 	private String employeeName;
 	@Column(name = "nickname")
 	private String nickName;
-	@Column(name = "email", length = 255)
+	@Column(name = "email")
 	private String email;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -67,7 +69,7 @@ public class UserVO {
 	private boolean loginStatus;
 	
 	@Column(name = "isActive")
-	private String isActive;
+	private Boolean isActive;
 	@Column(name = "createdby")
 	private String createdby;
 	@Column(name = "modifiedby")
@@ -88,5 +90,10 @@ public class UserVO {
 	private List<UserLoginBranchAccessibleVO> branchAccessibleVO;
 
 	private Date accountRemovedDate;
+	
+	@ManyToOne
+	@JoinColumn(name="companyid")
+	private CompanyVO companyVO;
+
 	
 }

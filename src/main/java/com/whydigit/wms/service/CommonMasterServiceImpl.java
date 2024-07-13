@@ -4,19 +4,28 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.CompanyDTO;
+import com.whydigit.wms.dto.Role;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
-import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;
+import com.whydigit.wms.entity.UserLoginRolesVO;
 import com.whydigit.wms.entity.UserVO;
+import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CarrierRepo;
 import com.whydigit.wms.repo.CityRepo;
 import com.whydigit.wms.repo.ClientRepo;
@@ -36,6 +45,9 @@ import com.whydigit.wms.util.CryptoUtils;
 
 @Service
 public class CommonMasterServiceImpl implements CommonMasterService {
+	
+	public static final Logger LOGGER = LoggerFactory.getLogger(CommonMasterServiceImpl.class);
+
 
 	@Autowired
 	CountryRepository countryVORepo;
@@ -279,31 +291,86 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		return companyRepo.findById(companyid);
 	}
 
-	@Override
-	public CompanyVO createCompany(CompanyVO companyVO) throws Exception {
-		companyVO.setCancel(false);
-		companyVO.setEmployeecode(companyVO.getEmployeecode().toUpperCase());
-		companyVO.setEmployeeName(companyVO.getEmployeeName().toUpperCase());
-		companyVO.setActive(true);
-		CompanyVO company = companyRepo.save(companyVO);
-		EmployeeVO emp = new EmployeeVO();
-		emp.setEmployeecode(company.getEmployeecode());
-		emp.setEmployeename(company.getEmployeeName());
-		emp.setOrgId(company.getId());
-		employeeRepo.save(emp);
-		UserVO userVO = new UserVO();
-		userVO.setUserName(company.getEmployeecode());
-		userVO.setOrgId(company.getId());
-		userVO.setUserType("ROLE_ADMIN");
-		userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(company.getPassword())));
-		userRepo.save(userVO);
-		return company;
-	}
+	 @Override
+	    @Transactional
+	    public CompanyVO createCompany(CompanyDTO companyDTO) throws Exception {
+
+	        if (companyRepo.existsByCompanyCode(companyDTO.getCompanyCode())) {
+	            throw new ApplicationException("The CompanyCode Already Exists");
+	        }
+
+	        if (companyRepo.existsByCompanyName(companyDTO.getCompanyName())) {
+	            throw new ApplicationException("The CompanyName Already Exists");
+	        }
+
+	        if (companyRepo.existsByEmployeeCode(companyDTO.getEmployeeCode())) {
+	            throw new ApplicationException("The EmployeeCode Already Exists");
+	        }
+
+	        CompanyVO companyVO = new CompanyVO();
+	        getCompanyVOFromCompanyDTO(companyVO, companyDTO);
+	        companyRepo.save(companyVO);
+
+	        UserVO userVO = new UserVO();
+	        userVO.setUserName(companyVO.getCompanyName());
+	        userVO.setEmployeeName(companyVO.getEmployeeName());
+	        userVO.setEmail(companyVO.getEmail());
+	        userVO.setMobileNo(companyVO.getPhone());
+	        userVO.setRole(Role.ROLE_USER);
+	        userVO.setCreatedby(companyVO.getCreatedBy());
+	        userVO.setUpdatedby(companyVO.getCreatedBy());
+	        userVO.setIsActive(true);
+	        userVO.setLoginStatus(false);
+	        userVO.setCompanyVO(companyVO);
+//	        UserLoginRolesVO userLoginRolesVO=new UserLoginRolesVO();
+//	        userLoginRolesVO.setRole(userVO.getRole());
+//	        UserLoginBranchAccessibleVO userLoginBranchAccessibleVO=new UserLoginBranchAccessibleVO();
+//	        userLoginBranchAccessibleVO.setBranch(companyVO.getCompanyName());
+//	        userLoginBranchAccessibleVO.setBranchcode(companyVO.getCompanyCode());
+
+	        try {
+	            userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
+	        } catch (Exception e) {
+	            LOGGER.error(e.getMessage());
+	            throw new ApplicationContextException("Unable To Encode Password");
+	        }
+
+	        userRepo.save(userVO);
+
+	        return companyVO;
+	    }
+
+	    private void getCompanyVOFromCompanyDTO(CompanyVO companyVO, CompanyDTO companyDTO) {
+	        companyVO.setCompanyCode(companyDTO.getCompanyCode());
+	        companyVO.setCompanyName(companyDTO.getCompanyName());
+	        companyVO.setCountry(companyDTO.getCountry());
+	        companyVO.setCurrency(companyDTO.getCurrency());
+	        companyVO.setMainCurrency(companyDTO.getMainCurrency());
+	        companyVO.setAddress(companyDTO.getAddress());
+	        companyVO.setZip(companyDTO.getZip());
+	        companyVO.setCity(companyDTO.getCity());
+	        companyVO.setState(companyDTO.getState());
+	        companyVO.setPhone(companyDTO.getPhone());
+	        companyVO.setEmail(companyDTO.getEmail());
+	        companyVO.setWebSite(companyDTO.getWebSite());
+	        companyVO.setNote(companyDTO.getNote());
+	        companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
+	        companyVO.setEmployeeName(companyDTO.getEmployeeName());
+	        companyVO.setCreatedBy(companyDTO.getCreatedBy());
+	        companyVO.setUpdatedBy(companyDTO.getCreatedBy());
+	        companyVO.setCancel(companyDTO.isCancel());
+	        try {
+	            companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
+	        } catch (Exception e) {
+	            LOGGER.error(e.getMessage());
+	            throw new ApplicationContextException("Unable To Encode Password");
+	        }
+	    }
 
 	@Override
 	public Optional<CompanyVO> updateCompany(CompanyVO companyVO) {
 		if (companyRepo.existsById(companyVO.getId())) {
-			companyVO.setUpdatedby(companyVO.getUserid());
+			companyVO.setCreatedBy(companyVO.getCreatedBy());
 			return Optional.of(companyRepo.save(companyVO));
 		} else {
 			return Optional.empty();

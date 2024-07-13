@@ -95,7 +95,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
         userVO.setEmail(signUpFormDTO.getEmail());
         userVO.setMobileNo(signUpFormDTO.getMobileNo());
         userVO.setUserType(signUpFormDTO.getUserType());
-        userVO.setIsActive(signUpFormDTO.getIsActive());
+      //  userVO.setIsActive(signUpFormDTO.getIsActive());
         userVO.setOrgId(signUpFormDTO.getOrgId());
         
         List<UserLoginRolesVO>rolesVO=new ArrayList<>();
@@ -343,7 +343,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		userDTO.setEmail(userVO.getEmail());
 		userDTO.setUserName(userVO.getUserName());
 		userDTO.setLoginStatus(userVO.isLoginStatus());
-		userDTO.setIsActive(userVO.getIsActive());
+		//userDTO.setIsActive(userVO.getIsActive());
 		userDTO.setRole(userVO.getRole());
 		userDTO.setCommonDate(userVO.getCommonDate());
 		userDTO.setAccountRemovedDate(userVO.getAccountRemovedDate());

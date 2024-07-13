@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 public class UserLoginRoleAccessDTO {
 	
 	private String role;
-	private LocalDate startdate;
-	private LocalDate enddate;
+	private LocalDate startdate=LocalDate.now();
+	private LocalDate enddate=LocalDate.now();
 	
 
 

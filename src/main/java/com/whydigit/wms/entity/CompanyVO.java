@@ -28,10 +28,10 @@ public class CompanyVO {
 	@Column(name = "companyid")
 	private Long id;
 
-	@Column(unique = true)
-	private String companycode;
-	@Column(unique = true)
-	private String companyname;
+    @Column(name = "companycode")
+	private String companyCode;
+    @Column(name = "companyname")
+	private String companyName;
 	@Column(name = "country")
 	private String country;
 	@Column(name = "currency")
@@ -54,22 +54,22 @@ public class CompanyVO {
 	private String webSite;
 	@Column(name = "notes")
 	private String note;
-	@Column(name = "userid")
-	private String userid;
+//	@Column(name = "userd")
+//	private String userId;
 	@Column(name = "active")
-	private boolean active;
+	private String isactive;
 	@Column(unique = true)
 	private String dupchk;
 	@Column(name = "employeename")
 	private String employeeName;
 	@Column(name = "employeecode")
-	private String employeecode;
+	private String employeeCode;
 	@Column(name = "password")
 	private String password;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "cancel")
 	private boolean cancel;
 

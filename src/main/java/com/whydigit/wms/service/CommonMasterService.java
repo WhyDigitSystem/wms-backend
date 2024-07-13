@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -93,7 +94,7 @@ public interface CommonMasterService {
 
 	Optional<CompanyVO> getCompanyById(Long companyid);
 
-	CompanyVO createCompany(CompanyVO companyVO) throws Exception;
+	CompanyVO createCompany(CompanyDTO companyDTO) throws Exception;
 
 	Optional<CompanyVO> updateCompany(CompanyVO companyVO);
 

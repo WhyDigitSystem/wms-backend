@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
+import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -713,14 +714,14 @@ public class CommonMasterController extends BaseController {
 	}
 
 	@PostMapping("/company")
-	public ResponseEntity<ResponseDTO> createCompany(@RequestBody CompanyVO companyVO) {
+	public ResponseEntity<ResponseDTO> createCompany(@RequestBody CompanyDTO companyDTO) {
 		String methodName = "createCompany()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CompanyVO createdCompanyVO = commonMasterService.createCompany(companyVO);
+			CompanyVO createdCompanyVO = commonMasterService.createCompany(companyDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company created successfully");
 			responseObjectsMap.put("createdCompanyVO", createdCompanyVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
