@@ -30,18 +30,18 @@ public class BranchVO {
 
 	@Column(name = "branch")
 	private String branch;
-	@Column(name = "branchcode")
-	private String branchcode;
+	@Column(name = "branchode")
+	private String branchCode;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "addressline1")
-	private String addressline1;
+	private String addressLine1;
 	@Column(name = "addressline2")
-	private String addressline2;
+	private String addressLine2;
 	@Column(name = "panno")
 	private String pan;
 	@Column(name = "gstin")
-	private String gstin;
+	private String gstIn;
 	@Column(name = "phone")
 	private String phone;
 	@Column(name = "state")
@@ -49,13 +49,13 @@ public class BranchVO {
 	@Column(name = "city")
 	private String city;
 	@Column(name = "pincode")
-	private String pincode;
+	private String pinCode;
 	@Column(name = "country")
 	private String country;
 	@Column(name = "stateno")
-	private String stateno;
+	private String stateNo;
 	@Column(name = "statecode")
-	private String statecode;
+	private String stateCode;
 	@Column(name = "region")
 	private String region;
 	@Column(name = "lccurrency")
@@ -63,11 +63,11 @@ public class BranchVO {
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "cancelremarks")
-	private String cancelremarks;
+	private String cancelRemarks;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(unique = true)
 	private String dupchk;
 	@Column(name = "active")

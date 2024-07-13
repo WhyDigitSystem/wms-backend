@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -23,6 +26,7 @@ import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
+import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.BranchRepo;
 import com.whydigit.wms.repo.BuyerRepo;
 import com.whydigit.wms.repo.CarrierRepo;
@@ -240,26 +244,48 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return branchRepo.findById(branchid);
 	}
 
-	@Override
-	public BranchVO createBranch(BranchVO branchVO) {
-		branchVO.setBranch(branchVO.getBranch().toUpperCase());
-		branchVO.setBranchcode(branchVO.getBranchcode().toUpperCase());
+	 @Override
+	    @Transactional
+	    public BranchVO createUpdateBranch(BranchDTO branchDTO) throws Exception {
+	        BranchVO branchVO;
 
-		branchVO.setDupchk(branchVO.getOrgId() + branchVO.getBranch() + branchVO.getBranchcode());
-		return branchRepo.save(branchVO);
-	}
+	        if (branchDTO.getId() != null) {
+	            // Update existing branch
+	            branchVO = branchRepo.findById(branchDTO.getId())
+	                .orElseThrow(() -> new ApplicationException("Branch not found with id: " + branchDTO.getId()));
+	        } else {
+	            // Create new branch
+	            branchVO = new BranchVO();
+	        }
 
-	@Override
-	public Optional<BranchVO> updateBranch(BranchVO branchVO) {
-		if (branchRepo.existsById(branchVO.getId())) {
-			branchVO.setUpdatedby(branchVO.getUserid());
+	        getBranchVOFromBranchDTO(branchVO, branchDTO);
 
-			branchVO.setDupchk(branchVO.getOrgId() + branchVO.getBranch() + branchVO.getBranchcode());
-			return Optional.of(branchRepo.save(branchVO));
-		} else {
-			return Optional.empty();
-		}
-	}
+	        return branchRepo.save(branchVO);
+	    }
+
+	    private void getBranchVOFromBranchDTO(BranchVO branchVO, BranchDTO branchDTO) {
+	        branchVO.setBranch(branchDTO.getBranch().toUpperCase());
+	        branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
+	        branchVO.setOrgId(branchDTO.getOrgId());
+	        branchVO.setAddressLine1(branchDTO.getAddressLine1());
+	        branchVO.setAddressLine2(branchDTO.getAddressLine2());
+	        branchVO.setPan(branchDTO.getPan());
+	        branchVO.setGstIn(branchDTO.getGstIn());
+	        branchVO.setPhone(branchDTO.getPhone());
+	        branchVO.setState(branchDTO.getState().toUpperCase());
+	        branchVO.setCity(branchDTO.getCity().toUpperCase());
+	        branchVO.setPinCode(branchDTO.getPinCode());
+	        branchVO.setCountry(branchDTO.getCountry().toUpperCase());
+	        branchVO.setStateNo(branchDTO.getStateNo().toUpperCase());
+	        branchVO.setStateCode(branchDTO.getStateCode().toUpperCase());
+	        branchVO.setLccurrency(branchDTO.getLccurrency());
+	        branchVO.setCancelRemarks(branchDTO.getCancelRemarks());
+	        branchVO.setCreatedBy(branchDTO.getCreatedBy());
+	        branchVO.setDupchk(branchDTO.getOrgId() + branchDTO.getBranchCode() + branchDTO.getBranchCode());
+	        branchVO.setActive(branchDTO.isActive());
+	        branchVO.setUserid(branchDTO.getUserid());
+	    }
+	
 
 	@Override
 	public void deleteBranch(Long branchid) {

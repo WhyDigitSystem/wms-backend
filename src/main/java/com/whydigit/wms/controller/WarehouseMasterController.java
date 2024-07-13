@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
+import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
@@ -516,15 +517,15 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/branch")
-	public ResponseEntity<ResponseDTO> createBranch(@RequestBody BranchVO branchVO) {
+	@PostMapping("/createUpdateBranch")
+	public ResponseEntity<ResponseDTO> createUpdateBranch(@RequestBody BranchDTO branchDTO) {
 		String methodName = "createBranch()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			BranchVO createdBranchVO = warehouseMasterService.createBranch(branchVO);
+			BranchVO createdBranchVO = warehouseMasterService.createUpdateBranch(branchDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch created successfully");
 			responseObjectsMap.put("branchVO", createdBranchVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -538,32 +539,6 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/branch")
-	public ResponseEntity<ResponseDTO> updateBranch(@RequestBody BranchVO branchVO) {
-		String methodName = "updateBranch()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			BranchVO updatedBranchVO = warehouseMasterService.updateBranch(branchVO).orElse(null);
-			if (updatedBranchVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch updated successfully");
-				responseObjectsMap.put("branchVO", updatedBranchVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Branch not found for BranchID: " + branchVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Branch update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Branch Update failed. Branch already Exisit",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// Customer
 

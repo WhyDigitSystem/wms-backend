@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -80,10 +81,9 @@ public interface WarehouseMasterService {
 
 	Optional<BranchVO> getBranchById(Long branchid);
 
-	BranchVO createBranch(BranchVO branchVO);
+	BranchVO createUpdateBranch(BranchDTO branchDTO) throws Exception;
 
-	Optional<BranchVO> updateBranch(BranchVO branchVO);
-
+	
 	void deleteBranch(Long branchid);
 
 	// Customer & client
