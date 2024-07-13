@@ -74,7 +74,6 @@ public class UserVO {
 	private String updatedby;
 	@Column(name = "role")
 	private Role role;
-	private Role usersId;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

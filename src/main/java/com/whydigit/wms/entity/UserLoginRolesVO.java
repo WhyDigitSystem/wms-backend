@@ -27,7 +27,7 @@ public class UserLoginRolesVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "userloginrolesgen")
-	@SequenceGenerator(name = "userloginroles",sequenceName = "userloginrolesseq",initialValue = 1000000001,allocationSize = 1)
+	@SequenceGenerator(name = "userloginrolesgen",sequenceName = "userloginrolesseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="userloginrolesid")
 	private long id;
 	

@@ -103,10 +103,12 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
         {
         	for(UserLoginRoleAccessDTO accessDTO:signUpFormDTO.getRoleAccessDTO()) 
         	{
+        		
         		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
         		loginRolesVO.setRole(accessDTO.getRole());
         		loginRolesVO.setStartdate(accessDTO.getStartdate());
         		loginRolesVO.setEnddate(accessDTO.getEnddate());
+        		loginRolesVO.setUserVO(userVO);
         		rolesVO.add(loginRolesVO);
         	}
         }

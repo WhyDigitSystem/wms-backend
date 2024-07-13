@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	TokenRepo tokenRepo;
 
-	public void createUserAction(String userName, long usersId, String actionType) {
+	public void createUserAction(String userName, Long usersId, String actionType) {
 		try {
 			UserActionVO userActionVO = new UserActionVO();
 			userActionVO.setUserName(userName);

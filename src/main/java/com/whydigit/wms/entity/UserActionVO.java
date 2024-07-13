@@ -23,9 +23,9 @@ public class UserActionVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "useractiongen")
 	@SequenceGenerator(name = "useractiongen", sequenceName = "useractionseq", initialValue = 1000000001, allocationSize = 1)
-	private long actionId;
+	private Long actionId;
 	private String userName;
-	private long usersId;
+	private Long usersId;
 	private String actionType;
 	private Date actionDate;
 	

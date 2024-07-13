@@ -1,24 +1,16 @@
 package com.whydigit.wms.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserLoginBranchAccessDTO {
 	
 	private String branch;
 	private String branchcode;
-	public String getBranch() {
-		return branch;
-	}
-	public void setBranch(String branch) {
-		this.branch = branch;
-	}
-	public String getBranchcode() {
-		return branchcode;
-	}
-	public void setBranchcode(String branchcode) {
-		this.branchcode = branchcode;
-	}
-	
-	
-	
 	
 
 }

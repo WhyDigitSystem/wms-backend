@@ -13,7 +13,7 @@ public interface UserRepo extends JpaRepository<UserVO, Long> {
 	@Query("select a from UserVO a where a.userName=?1")
 	UserVO findByUserName(String userName);
 
-	@Query(value = "select u from UserVO u where u.usersId =?1")
+	@Query(value = "select u from UserVO u where u.id =?1")
 	UserVO getUserById(Long usersId);
 
 //	UserVO findByUserNameAndUsersId(String userName, Long usersId);
