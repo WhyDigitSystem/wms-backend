@@ -29,21 +29,21 @@ public class CountryVO {
 	private Long id;
 
 	@Column(name = "country")
-	private String countryname;
+	private String countryName;
 	@Column(name = "countrycode")
-	private String countrycode;
+	private String countryCode;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "userid")
-	private String userid;
+	private String userId;
 	@Column(unique = true)
 	private String dupchk;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "cancel")
 	private boolean cancel;
 

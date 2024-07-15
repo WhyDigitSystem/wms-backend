@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.CompanyDTO;
+import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -70,43 +71,43 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/country/countryid")
-	public ResponseEntity<ResponseDTO> getAllcountriesAndCountrid(@RequestParam Long orgid) {
-		String methodName = "getAllcountriesAndCountrid()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		Set<Object[]> country = new HashSet<>();
-		try {
-			country = commonMasterService.getCountryAndCountryid(orgid);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String, String>> formattedCountry = formattCountry(country);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "countries information get successfully");
-			responseObjectsMap.put("country", formattedCountry);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "countries information receive failed",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	private List<Map<String, String>> formattCountry(Set<Object[]> country) {
-		List<Map<String, String>> formattedCountry = new ArrayList<>();
-		for (Object[] formateCountry : country) {
-			Map<String, String> FormatCountry = new HashMap<>();
-			FormatCountry.put("countryid", formateCountry[0].toString());
-			FormatCountry.put("country", formateCountry[1].toString());
-			formattedCountry.add(FormatCountry);
-		}
-		return formattedCountry;
-	}
+//	@GetMapping("/country/countryid")
+//	public ResponseEntity<ResponseDTO> getAllcountriesAndCountrid(@RequestParam Long orgid) {
+//		String methodName = "getAllcountriesAndCountrid()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		Set<Object[]> country = new HashSet<>();
+//		try {
+//			country = commonMasterService.getCountryAndCountryid(orgid);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//		}
+//		if (StringUtils.isBlank(errorMsg)) {
+//			List<Map<String, String>> formattedCountry = formattCountry(country);
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "countries information get successfully");
+//			responseObjectsMap.put("country", formattedCountry);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} else {
+//			responseDTO = createServiceResponseError(responseObjectsMap, "countries information receive failed",
+//					errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
+//
+//	private List<Map<String, String>> formattCountry(Set<Object[]> country) {
+//		List<Map<String, String>> formattedCountry = new ArrayList<>();
+//		for (Object[] formateCountry : country) {
+//			Map<String, String> FormatCountry = new HashMap<>();
+//			FormatCountry.put("countryid", formateCountry[0].toString());
+//			FormatCountry.put("country", formateCountry[1].toString());
+//			formattedCountry.add(FormatCountry);
+//		}
+//		return formattedCountry;
+//	}
 
 	@GetMapping("/country/{countryid}")
 	public ResponseEntity<ResponseDTO> getCountryById(@PathVariable Long countryid) {
@@ -134,15 +135,15 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/country")
-	public ResponseEntity<ResponseDTO> createCountry(@RequestBody CountryVO countryVO) {
+	@PostMapping("/createUpdateCountry")
+	public ResponseEntity<ResponseDTO> createUpdateCountry(@RequestBody CountryDTO countryDTO) {
 		String methodName = "createCountry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CountryVO createdCountryVO = commonMasterService.createCountry(countryVO);
+			CountryVO createdCountryVO = commonMasterService.createUpdateCountry(countryDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Country created successfully");
 			responseObjectsMap.put("countryVO", createdCountryVO);
 			responseDTO = createServiceResponse(responseObjectsMap);

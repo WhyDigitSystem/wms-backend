@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.CompanyDTO;
+import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -14,6 +15,7 @@ import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.exception.ApplicationException;
 
 @Service
 public interface CommonMasterService {
@@ -24,9 +26,9 @@ public interface CommonMasterService {
 
 	Optional<CountryVO> getCountryById(Long countryid);
 	
-	Set<Object[]>getCountryAndCountryid(Long orgid);
+	//Set<Object[]>getCountryAndCountryid(Long orgid);
 
-	CountryVO createCountry(CountryVO countryVO); // Return the created entity
+	CountryVO createUpdateCountry(CountryDTO countryDTO) throws ApplicationException; // Return the created entity
 
 	Optional<CountryVO> updateCountry(CountryVO countryVO); // The parameter name should be camelCase
 

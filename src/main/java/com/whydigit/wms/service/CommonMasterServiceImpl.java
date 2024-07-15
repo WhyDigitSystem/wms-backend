@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.CompanyDTO;
+import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.Role;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -22,8 +23,6 @@ import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
-import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;
-import com.whydigit.wms.entity.UserLoginRolesVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CarrierRepo;
@@ -45,9 +44,8 @@ import com.whydigit.wms.util.CryptoUtils;
 
 @Service
 public class CommonMasterServiceImpl implements CommonMasterService {
-	
-	public static final Logger LOGGER = LoggerFactory.getLogger(CommonMasterServiceImpl.class);
 
+	public static final Logger LOGGER = LoggerFactory.getLogger(CommonMasterServiceImpl.class);
 
 	@Autowired
 	CountryRepository countryVORepo;
@@ -109,32 +107,71 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		return countryVORepo.findById(countryid);
 	}
 
+//	@Override
+//	public Set<Object[]> getCountryAndCountryid(Long orgid) {
+//		// TODO Auto-generated method stub
+//		return countryVORepo.findCountryAndCountryid(orgid);
+//	}
+
 	@Override
-	public Set<Object[]> getCountryAndCountryid(Long orgid) {
-		// TODO Auto-generated method stub
-		return countryVORepo.findCountryAndCountryid(orgid);
+	public CountryVO createUpdateCountry(CountryDTO countryDTO) throws ApplicationException {
+
+		CountryVO countryVO;
+
+		if (countryVORepo.existsByCountryNameAndCountryCodeAndOrgId(countryDTO.getCountryName(),
+				countryDTO.getCountryCode(), countryDTO.getOrgId())) {
+			String errorMessage = String.format("The CountryName: %s and CountryCode: %s already exists in OrgId: %s.",
+					countryDTO.getCountryName(), countryDTO.getCountryCode(), countryDTO.getOrgId());
+			throw new ApplicationException(errorMessage);
+		}
+
+		if (countryVORepo.existsByCountryNameAndOrgId(countryDTO.getCountryName(), countryDTO.getOrgId())) {
+			String errorMessage = String.format("The CountryName: %s already exists in OrgId: %s.",
+					countryDTO.getCountryName(), countryDTO.getOrgId());
+			throw new ApplicationException(errorMessage);
+		}
+
+		if (countryVORepo.existsByCountryCodeAndOrgId(countryDTO.getCountryCode(), countryDTO.getOrgId())) {
+			String errorMessage = String.format("The CountryCode: %s already exists in OrgId: %s.",
+					countryDTO.getCountryCode(), countryDTO.getOrgId());
+			throw new ApplicationException(errorMessage);
+		}
+
+		if (countryDTO.getId() != null) {
+			// Update existing branch
+			countryVO = countryVORepo.findById(countryDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Branch not found with id: " + countryDTO.getId()));
+		} else {
+			// Create new branch
+			countryVO = new CountryVO();
+		}
+
+		getCountryVOFromCounytryDTO(countryVO, countryDTO);
+
+		return countryVORepo.save(countryVO);
 	}
 
-	@Override
-	public CountryVO createCountry(CountryVO countryVO) {
+	private void getCountryVOFromCounytryDTO(CountryVO countryVO, CountryDTO countryDTO) {
 
-		countryVO.setCancel(false);
-		countryVO.setCountryname(countryVO.getCountryname().toUpperCase());
-		countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
-		countryVO.setActive(true);
-		countryVO.setCancel(false);
-		countryVO.setDupchk(countryVO.getOrgId() + countryVO.getCountrycode() + countryVO.getCountryname());
-		return countryVORepo.save(countryVO);
+		countryVO.setCountryName(countryDTO.getCountryName().toUpperCase());
+		countryVO.setCountryCode(countryDTO.getCountryCode().toUpperCase());
+		countryVO.setActive(countryDTO.isActive());
+		countryVO.setOrgId(countryDTO.getOrgId());
+		countryVO.setUserId(countryDTO.getUserId());
+		countryVO.setDupchk(countryDTO.getOrgId() + countryDTO.getCountryName() + countryDTO.getCountryCode());
+		countryVO.setCreatedBy(countryDTO.getCreatedBy());
+		countryVO.setUpdatedBy(countryDTO.getCreatedBy());
+		countryVO.setCancel(countryDTO.isCancel());
 
 	}
 
 	@Override
 	public Optional<CountryVO> updateCountry(CountryVO countryVO) {
 		if (countryVORepo.existsById(countryVO.getId())) {
-			countryVO.setUpdatedby(countryVO.getUserid());
-			countryVO.setCountryname(countryVO.getCountryname().toUpperCase());
-			countryVO.setCountrycode(countryVO.getCountrycode().toUpperCase());
-			countryVO.setDupchk(countryVO.getCountrycode() + countryVO.getCountryname());
+			countryVO.setUpdatedBy(countryVO.getUserId());
+			countryVO.setCountryName(countryVO.getCountryName().toUpperCase());
+			countryVO.setCountryCode(countryVO.getCountryCode().toUpperCase());
+			countryVO.setDupchk(countryVO.getCountryCode() + countryVO.getCountryName());
 			return Optional.of(countryVORepo.save(countryVO));
 		} else {
 			return Optional.empty();
@@ -291,81 +328,81 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		return companyRepo.findById(companyid);
 	}
 
-	 @Override
-	    @Transactional
-	    public CompanyVO createCompany(CompanyDTO companyDTO) throws Exception {
+	@Override
+	@Transactional
+	public CompanyVO createCompany(CompanyDTO companyDTO) throws Exception {
 
-	        if (companyRepo.existsByCompanyCode(companyDTO.getCompanyCode())) {
-	            throw new ApplicationException("The CompanyCode Already Exists");
-	        }
+		if (companyRepo.existsByCompanyCode(companyDTO.getCompanyCode())) {
+			throw new ApplicationException("The CompanyCode Already Exists");
+		}
 
-	        if (companyRepo.existsByCompanyName(companyDTO.getCompanyName())) {
-	            throw new ApplicationException("The CompanyName Already Exists");
-	        }
+		if (companyRepo.existsByCompanyName(companyDTO.getCompanyName())) {
+			throw new ApplicationException("The CompanyName Already Exists");
+		}
 
-	        if (companyRepo.existsByEmployeeCode(companyDTO.getEmployeeCode())) {
-	            throw new ApplicationException("The EmployeeCode Already Exists");
-	        }
+		if (companyRepo.existsByEmployeeCode(companyDTO.getEmployeeCode())) {
+			throw new ApplicationException("The EmployeeCode Already Exists");
+		}
 
-	        CompanyVO companyVO = new CompanyVO();
-	        getCompanyVOFromCompanyDTO(companyVO, companyDTO);
-	        companyRepo.save(companyVO);
+		CompanyVO companyVO = new CompanyVO();
+		getCompanyVOFromCompanyDTO(companyVO, companyDTO);
+		companyRepo.save(companyVO);
 
-	        UserVO userVO = new UserVO();
-	        userVO.setUserName(companyVO.getCompanyName());
-	        userVO.setEmployeeName(companyVO.getEmployeeName());
-	        userVO.setEmail(companyVO.getEmail());
-	        userVO.setMobileNo(companyVO.getPhone());
-	        userVO.setRole(Role.ROLE_USER);
-	        userVO.setCreatedby(companyVO.getCreatedBy());
-	        userVO.setUpdatedby(companyVO.getCreatedBy());
-	        userVO.setIsActive(true);
-	        userVO.setLoginStatus(false);
-	        userVO.setCompanyVO(companyVO);
+		UserVO userVO = new UserVO();
+		userVO.setUserName(companyVO.getCompanyName());
+		userVO.setEmployeeName(companyVO.getEmployeeName());
+		userVO.setEmail(companyVO.getEmail());
+		userVO.setMobileNo(companyVO.getPhone());
+		userVO.setRole(Role.ROLE_USER);
+		userVO.setCreatedby(companyVO.getCreatedBy());
+		userVO.setUpdatedby(companyVO.getCreatedBy());
+		userVO.setIsActive(true);
+		userVO.setLoginStatus(false);
+		userVO.setCompanyVO(companyVO);
 //	        UserLoginRolesVO userLoginRolesVO=new UserLoginRolesVO();
 //	        userLoginRolesVO.setRole(userVO.getRole());
 //	        UserLoginBranchAccessibleVO userLoginBranchAccessibleVO=new UserLoginBranchAccessibleVO();
 //	        userLoginBranchAccessibleVO.setBranch(companyVO.getCompanyName());
 //	        userLoginBranchAccessibleVO.setBranchcode(companyVO.getCompanyCode());
 
-	        try {
-	            userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
-	        } catch (Exception e) {
-	            LOGGER.error(e.getMessage());
-	            throw new ApplicationContextException("Unable To Encode Password");
-	        }
+		try {
+			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw new ApplicationContextException("Unable To Encode Password");
+		}
 
-	        userRepo.save(userVO);
+		userRepo.save(userVO);
 
-	        return companyVO;
-	    }
+		return companyVO;
+	}
 
-	    private void getCompanyVOFromCompanyDTO(CompanyVO companyVO, CompanyDTO companyDTO) {
-	        companyVO.setCompanyCode(companyDTO.getCompanyCode());
-	        companyVO.setCompanyName(companyDTO.getCompanyName());
-	        companyVO.setCountry(companyDTO.getCountry());
-	        companyVO.setCurrency(companyDTO.getCurrency());
-	        companyVO.setMainCurrency(companyDTO.getMainCurrency());
-	        companyVO.setAddress(companyDTO.getAddress());
-	        companyVO.setZip(companyDTO.getZip());
-	        companyVO.setCity(companyDTO.getCity());
-	        companyVO.setState(companyDTO.getState());
-	        companyVO.setPhone(companyDTO.getPhone());
-	        companyVO.setEmail(companyDTO.getEmail());
-	        companyVO.setWebSite(companyDTO.getWebSite());
-	        companyVO.setNote(companyDTO.getNote());
-	        companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
-	        companyVO.setEmployeeName(companyDTO.getEmployeeName());
-	        companyVO.setCreatedBy(companyDTO.getCreatedBy());
-	        companyVO.setUpdatedBy(companyDTO.getCreatedBy());
-	        companyVO.setCancel(companyDTO.isCancel());
-	        try {
-	            companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
-	        } catch (Exception e) {
-	            LOGGER.error(e.getMessage());
-	            throw new ApplicationContextException("Unable To Encode Password");
-	        }
-	    }
+	private void getCompanyVOFromCompanyDTO(CompanyVO companyVO, CompanyDTO companyDTO) {
+		companyVO.setCompanyCode(companyDTO.getCompanyCode());
+		companyVO.setCompanyName(companyDTO.getCompanyName());
+		companyVO.setCountry(companyDTO.getCountry());
+		companyVO.setCurrency(companyDTO.getCurrency());
+		companyVO.setMainCurrency(companyDTO.getMainCurrency());
+		companyVO.setAddress(companyDTO.getAddress());
+		companyVO.setZip(companyDTO.getZip());
+		companyVO.setCity(companyDTO.getCity());
+		companyVO.setState(companyDTO.getState());
+		companyVO.setPhone(companyDTO.getPhone());
+		companyVO.setEmail(companyDTO.getEmail());
+		companyVO.setWebSite(companyDTO.getWebSite());
+		companyVO.setNote(companyDTO.getNote());
+		companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
+		companyVO.setEmployeeName(companyDTO.getEmployeeName());
+		companyVO.setCreatedBy(companyDTO.getCreatedBy());
+		companyVO.setUpdatedBy(companyDTO.getCreatedBy());
+		companyVO.setCancel(companyDTO.isCancel());
+		try {
+			companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw new ApplicationContextException("Unable To Encode Password");
+		}
+	}
 
 	@Override
 	public Optional<CompanyVO> updateCompany(CompanyVO companyVO) {

@@ -38,7 +38,7 @@ public class SecurityConfig {
 						"/api/state/country/{country}", "/api/region", "/api/group", "/api/group/{groupid}",
 						"/api/unit", "/api/unit/{unitid}", "/api/locationType/{locationtypeid}", "/api/locationType",
 						"/api/cellType", "/api/cellType/{celltypeid}", "/api/company", "/api/country/{countryid}",
-						"/api/company/{companyid}", "/api/branch", "/api/branch/{branchid}",
+						"/api/company/{companyid}", "/api/branch", "/api/branch/{branchid}","/api/createUpdateCountry",
 						"/api/getAllBranchByCompany/{company}", "/api/customer", "/api/customer/{customerid}",
 						"/api/carrier", "/api/carrier/{carrierid}", "/api/buyer", "/api/buyer/{buyerid}",
 						"/api/supplier", "/api/supplier/{supplierid}", "/api/locationmapping",

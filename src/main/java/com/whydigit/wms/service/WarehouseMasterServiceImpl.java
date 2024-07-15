@@ -244,48 +244,47 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return branchRepo.findById(branchid);
 	}
 
-	 @Override
-	    @Transactional
-	    public BranchVO createUpdateBranch(BranchDTO branchDTO) throws Exception {
-	        BranchVO branchVO;
+	@Override
+	@Transactional
+	public BranchVO createUpdateBranch(BranchDTO branchDTO) throws Exception {
+		BranchVO branchVO ;
 
-	        if (branchDTO.getId() != null) {
-	            // Update existing branch
-	            branchVO = branchRepo.findById(branchDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("Branch not found with id: " + branchDTO.getId()));
-	        } else {
-	            // Create new branch
-	            branchVO = new BranchVO();
-	        }
+		if (branchDTO.getId() != null) {
+			// Update existing branch
+			branchVO = branchRepo.findById(branchDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Branch not found with id: " + branchDTO.getId()));
+		} else {
+			// Create new branch
+			branchVO = new BranchVO();
+		}
 
-	        getBranchVOFromBranchDTO(branchVO, branchDTO);
+		getBranchVOFromBranchDTO(branchVO, branchDTO);
 
-	        return branchRepo.save(branchVO);
-	    }
+		return branchRepo.save(branchVO);
+	}
 
-	    private void getBranchVOFromBranchDTO(BranchVO branchVO, BranchDTO branchDTO) {
-	        branchVO.setBranch(branchDTO.getBranch().toUpperCase());
-	        branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
-	        branchVO.setOrgId(branchDTO.getOrgId());
-	        branchVO.setAddressLine1(branchDTO.getAddressLine1());
-	        branchVO.setAddressLine2(branchDTO.getAddressLine2());
-	        branchVO.setPan(branchDTO.getPan());
-	        branchVO.setGstIn(branchDTO.getGstIn());
-	        branchVO.setPhone(branchDTO.getPhone());
-	        branchVO.setState(branchDTO.getState().toUpperCase());
-	        branchVO.setCity(branchDTO.getCity().toUpperCase());
-	        branchVO.setPinCode(branchDTO.getPinCode());
-	        branchVO.setCountry(branchDTO.getCountry().toUpperCase());
-	        branchVO.setStateNo(branchDTO.getStateNo().toUpperCase());
-	        branchVO.setStateCode(branchDTO.getStateCode().toUpperCase());
-	        branchVO.setLccurrency(branchDTO.getLccurrency());
-	        branchVO.setCancelRemarks(branchDTO.getCancelRemarks());
-	        branchVO.setCreatedBy(branchDTO.getCreatedBy());
-	        branchVO.setDupchk(branchDTO.getOrgId() + branchDTO.getBranchCode() + branchDTO.getBranchCode());
-	        branchVO.setActive(branchDTO.isActive());
-	        branchVO.setUserid(branchDTO.getUserid());
-	    }
-	
+	private void getBranchVOFromBranchDTO(BranchVO branchVO, BranchDTO branchDTO) {
+		branchVO.setBranch(branchDTO.getBranch().toUpperCase());
+		branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
+		branchVO.setOrgId(branchDTO.getOrgId());
+		branchVO.setAddressLine1(branchDTO.getAddressLine1());
+		branchVO.setAddressLine2(branchDTO.getAddressLine2());
+		branchVO.setPan(branchDTO.getPan());
+		branchVO.setGstIn(branchDTO.getGstIn());
+		branchVO.setPhone(branchDTO.getPhone());
+		branchVO.setState(branchDTO.getState().toUpperCase());
+		branchVO.setCity(branchDTO.getCity().toUpperCase());
+		branchVO.setPinCode(branchDTO.getPinCode());
+		branchVO.setCountry(branchDTO.getCountry().toUpperCase());
+		branchVO.setStateNo(branchDTO.getStateNo().toUpperCase());
+		branchVO.setStateCode(branchDTO.getStateCode().toUpperCase());
+		branchVO.setLccurrency(branchDTO.getLccurrency());
+		branchVO.setCancelRemarks(branchDTO.getCancelRemarks());
+		branchVO.setCreatedBy(branchDTO.getCreatedBy());
+		branchVO.setDupchk(branchDTO.getOrgId() + branchDTO.getBranchCode() + branchDTO.getBranchCode());
+		branchVO.setActive(branchDTO.isActive());
+		branchVO.setUserid(branchDTO.getUserid());
+	}
 
 	@Override
 	public void deleteBranch(Long branchid) {
@@ -564,7 +563,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Set<Object[]> getSupplierNameByCustomer(Long orgid, String client, String cbranch) {
-		return supplierRepo.findSupplierNameByCustomer(orgid,client,cbranch);
+		return supplierRepo.findSupplierNameByCustomer(orgid, client, cbranch);
 	}
 
 	// LocationMapping
@@ -609,10 +608,10 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Optional<CarrierVO> getCarrierById(Long carrierid) {
 		return carrierRepo.findById(carrierid);
 	}
-	
+
 	@Override
 	public Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch) {
-		return carrierRepo.findCarrierNameByCustomer(orgid,client,cbranch);
+		return carrierRepo.findCarrierNameByCustomer(orgid, client, cbranch);
 	}
 
 	@Override
