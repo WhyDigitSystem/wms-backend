@@ -1,6 +1,7 @@
 package com.whydigit.wms.util;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Cipher;
