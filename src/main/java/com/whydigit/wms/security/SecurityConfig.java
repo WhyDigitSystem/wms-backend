@@ -41,7 +41,7 @@ public class SecurityConfig {
 						"/api/company/{companyid}", "/api/branch", "/api/branch/{branchid}","/api/createUpdateCountry",
 						"/api/getAllBranchByCompany/{company}", "/api/customer", "/api/customer/{customerid}",
 						"/api/carrier", "/api/carrier/{carrierid}", "/api/buyer", "/api/buyer/{buyerid}",
-						"/api/supplier", "/api/supplier/{supplierid}", "/api/locationmapping",
+						"/api/supplier", "/api/supplier/{supplierid}", "/api/locationmapping","/api/commonmaster/**",
 						"/api/locationmapping/{locationmappingid}", "/api/employee", "/api/employee/{employeeid}",
 						"/api/userlogin", "/api/userlogin/{userloginid}", "/api/getAllNameAndEmployeeCodeByCompany",
 						"/api/getAllCustomerAndClientByCompany", "/api/getAllBranchCodeAndBranchByCompany",
