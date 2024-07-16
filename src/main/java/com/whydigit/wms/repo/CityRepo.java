@@ -14,6 +14,12 @@ import com.whydigit.wms.entity.CityVO;
 
 		@Query("select a from CityVO a where a.orgId=?1 and a.state=?2")
 		List<CityVO> findAll(Long orgid, String state);
+
+		boolean existsByCityCodeAndCityNameAndOrgId(String cityCode, String cityName, Long orgId);
+
+		boolean existsByCityCodeAndOrgId(String cityCode, Long orgId);
+
+		boolean existsByCityNameAndOrgId(String cityName, Long orgId);
 		
 
 	}

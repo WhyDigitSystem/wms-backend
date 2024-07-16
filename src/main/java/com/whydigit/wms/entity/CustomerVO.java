@@ -33,32 +33,32 @@ public class CustomerVO {
 	@Column(name = "customerid")
 	private Long id;
 
-	@Column(name = "customer")
-	private String customer;
+	@Column(name = "customername")
+	private String customerName;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customershortname")
-	private String customershortname;
+	private String customerShortName;
 	@Column(name = "panno")
-	private String panno;
+	private String panNo;
 	@Column(name = "contactperson")
-	private String contactperson;
+	private String contactPerson;
 	@Column(name = "mobilenumber")
-	private String mobilenumber;
+	private String mobileNumber;
 	@Column(name = "gstregistration")
-	private String gstregistration;
+	private String gstRegistration;
 	@Column(name = "emailid")
-	private String emailid;
+	private String emailId;
 	@Column(name = "groupof")
-	private String groupof;
+	private String grouPof;
 	@Column(name = "tanno")
-	private String tanno;
-	@Column(name = "address1", length = 255)
+	private String tanNo;
+	@Column(name = "address1")
 	private String address1;
-	@Column(name = "address2", length = 255)
+	@Column(name = "address2")
 	private String address2;
 	@Column(name = "gstno")
-	private String gstno;
+	private String gstNo;
 	@Column(name = "city")
 	private String city;
 	@Column(name = "state")
@@ -66,17 +66,13 @@ public class CustomerVO {
 	@Column(name = "country")
 	private String country;
 	@Column(name = "cancelremarks")
-	private String cancelremarks;
+	private String cancelRemarks;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
-	@Column(unique = true)
-	private String dupchk;
+	private String updatedBy;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid")
-	private String userid;
 	@Column(name = "cancel")
 	private boolean cancel;
 

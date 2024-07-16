@@ -18,4 +18,6 @@ public interface WarehouseRepo extends JpaRepository<WarehouseVO, Long> {
 	@Query(nativeQuery = true, value = "select a.warehouse from warehouse a where a.branchcode=?2 and a.orgid=?1 group by a.warehouse")
 	Set<Object[]> findAllWarehouseByBranch(Long orgid, String branchcode);
 
+	boolean existsByWarehouseAndOrgId(String warehouse, Long orgId);
+
 }

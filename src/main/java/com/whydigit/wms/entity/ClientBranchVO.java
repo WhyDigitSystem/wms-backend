@@ -32,9 +32,9 @@ public class ClientBranchVO {
 	private Long id;
 
 	@Column(name = "branchcode")
-	private String branchcode;
-	@Column(name = "orgid")
-	private Long orgId;
+	private String branchCode;
+//	@Column(name = "orgid")
+//	private Long orgId;
 
 	@ManyToOne
 	@JsonBackReference

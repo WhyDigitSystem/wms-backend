@@ -6,8 +6,10 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
+import com.whydigit.wms.dto.StateDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -42,9 +44,8 @@ public interface CommonMasterService {
 
 	List<StateVO> getStatesByCountry(Long orgid,String country);
 
-	StateVO createState(StateVO stateVO);
+	StateVO createUpdateState(StateDTO stateDTO) throws ApplicationException;
 
-	Optional<StateVO> updateState(StateVO stateVO);
 
 	void deleteState(Long stateid);
 
@@ -57,9 +58,9 @@ public interface CommonMasterService {
 	Optional<CityVO> getCityById(Long cityid);
 
 	
-	CityVO createCity(CityVO cityVO);
+	CityVO createUpdateCity(CityDTO cityDTO) throws ApplicationException;
 
-	Optional<CityVO> updateCity(CityVO cityVO);
+	//Optional<CityVO> updateCity(CityVO cityVO);
 
 	void deleteCity(Long cityid);
 	

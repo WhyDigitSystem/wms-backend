@@ -24,9 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
+import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.dto.StateDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -34,10 +36,11 @@ import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.service.CommonMasterService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/commonmaster")
 public class CommonMasterController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(CommonMasterController.class);
@@ -268,54 +271,34 @@ public class CommonMasterController extends BaseController {
 	}
 
 	@PostMapping("/state")
-	public ResponseEntity<ResponseDTO> createState(@RequestBody StateVO stateVO) {
-		String methodName = "createState()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			StateVO statevO = commonMasterService.createState(stateVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "State created successfully");
-			responseObjectsMap.put("stateVO", statevO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"State creation failed. State Name or State Code already Exist ", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
+	public ResponseEntity<ResponseDTO> createUpdateState(@RequestBody StateDTO stateDTO) {
+	    String methodName = "createUpdateState()";
+	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	    String errorMsg = null;
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    try {
+	        StateVO stateVO = commonMasterService.createUpdateState(stateDTO);
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "State created successfully");
+	        responseObjectsMap.put("stateVO", stateVO);
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    } catch (ApplicationException e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        responseDTO = createServiceResponseError(responseObjectsMap,
+	                "State creation failed. State Name or State Code already exists",
+	                errorMsg);
+	    } catch (Exception e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        responseDTO = createServiceResponseError(responseObjectsMap,
+	                "State creation failed due to an unexpected error",
+	                errorMsg);
+	    }
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/state")
-	public ResponseEntity<ResponseDTO> updateState(@RequestBody StateVO stateVO) {
-		String methodName = "updateState()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			StateVO updatedStateVO = commonMasterService.updateState(stateVO).orElse(null);
-			if (updatedStateVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "State updated successfully");
-				responseObjectsMap.put("countryVO", updatedStateVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "State not found for State ID: " + stateVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"State Update failed, StateName and State Code Should Not Duplicate", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"State Update failed, StateName and State Code Should Not Duplicate", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// city
 
@@ -398,15 +381,15 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/city")
-	public ResponseEntity<ResponseDTO> createCity(@RequestBody CityVO cityVO) {
+	@PostMapping("/createUpdateCity")
+	public ResponseEntity<ResponseDTO> createUpdateCity(@RequestBody CityDTO cityDTO) {
 		String methodName = "createCity()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CityVO createdCityVO = commonMasterService.createCity(cityVO);
+			CityVO createdCityVO = commonMasterService.createUpdateCity(cityDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "city created successfully");
 			responseObjectsMap.put("cityVO", createdCityVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -420,33 +403,6 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/city")
-	public ResponseEntity<ResponseDTO> updateCity(@RequestBody CityVO cityVO) {
-		String methodName = "updateCity()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			CityVO updatedCityVO = commonMasterService.updateCity(cityVO).orElse(null);
-			if (updatedCityVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "City Updated successfully");
-				responseObjectsMap.put("cityVO", updatedCityVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "City not found for ID: " + cityVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"City Update failed, CityName and City Code Should Not Duplicate", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"City Update failed, CityName and City Code Should Not Duplicate", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// Region
 

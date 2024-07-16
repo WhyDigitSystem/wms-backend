@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.whydigit.wms.entity.ClientVO;
+import com.whydigit.wms.entity.CustomerVO;
 
 public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 	
@@ -18,6 +19,8 @@ public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 
 	@Query(nativeQuery = true,value = "select a.client,a.clientcode from client a,customer b,clientbranch c where a.customerid=b.customerid and b.customerid=c.customerid and a.orgid=?1 and c.branchcode=?2 group by a.client,a.clientcode")
 	Set<Object[]> findAllClientByOrgIdAndAccessBranch(Long orgid, String branchcode);
+
+	List<ClientVO> findByCustomerVO(CustomerVO customerVO);
 
 	
 

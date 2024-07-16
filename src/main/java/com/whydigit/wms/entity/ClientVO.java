@@ -31,18 +31,16 @@ public class ClientVO {
 	@Column(name = "clientid")
 	private Long id;
 
-	@Column(name = "orgid")
-	private Long orgId;
+//	@Column(name = "orgid")
+//	private Long orgId;
 	@Column(name = "client")
 	private String client; // caps
 	@Column(name = "clientcode")
-	private String clientcode; // caps
+	private String clientCode; // caps
 	@Column(name = "clienttype")
-	private String clienttype;
+	private String clientType;
 	@Column(name = "fiofife")
 	private int fifofife;
-	@Column(unique = true)
-	private String dupchk;
 
 	@ManyToOne
 	@JsonBackReference

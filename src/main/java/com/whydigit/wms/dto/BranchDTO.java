@@ -49,7 +49,7 @@ public class BranchDTO {
 
 	private String updatedBy;
 	
-	private String dupchk;
+//	private String dupchk;
 
 	private boolean active;
 	

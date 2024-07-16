@@ -13,9 +13,11 @@ import org.springframework.context.ApplicationContextException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.Role;
+import com.whydigit.wms.dto.StateDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -107,11 +109,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		return countryVORepo.findById(countryid);
 	}
 
-//	@Override
-//	public Set<Object[]> getCountryAndCountryid(Long orgid) {
-//		// TODO Auto-generated method stub
-//		return countryVORepo.findCountryAndCountryid(orgid);
-//	}
 
 	@Override
 	public CountryVO createUpdateCountry(CountryDTO countryDTO) throws ApplicationException {
@@ -120,20 +117,20 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 		if (countryVORepo.existsByCountryNameAndCountryCodeAndOrgId(countryDTO.getCountryName(),
 				countryDTO.getCountryCode(), countryDTO.getOrgId())) {
-			String errorMessage = String.format("The CountryName: %s and CountryCode: %s already exists in OrgId: %s.",
-					countryDTO.getCountryName(), countryDTO.getCountryCode(), countryDTO.getOrgId());
+			String errorMessage = String.format("The CountryName: %s and CountryCode: %s already exists This Organization.",
+					countryDTO.getCountryName(), countryDTO.getCountryCode());
 			throw new ApplicationException(errorMessage);
 		}
 
 		if (countryVORepo.existsByCountryNameAndOrgId(countryDTO.getCountryName(), countryDTO.getOrgId())) {
-			String errorMessage = String.format("The CountryName: %s already exists in OrgId: %s.",
-					countryDTO.getCountryName(), countryDTO.getOrgId());
+			String errorMessage = String.format("The CountryName: %s already exists This Organization.",
+					countryDTO.getCountryName());
 			throw new ApplicationException(errorMessage);
 		}
 
 		if (countryVORepo.existsByCountryCodeAndOrgId(countryDTO.getCountryCode(), countryDTO.getOrgId())) {
-			String errorMessage = String.format("The CountryCode: %s already exists in OrgId: %s.",
-					countryDTO.getCountryCode(), countryDTO.getOrgId());
+			String errorMessage = String.format("The CountryCode: %s already exists This Organization.",
+					countryDTO.getCountryCode());
 			throw new ApplicationException(errorMessage);
 		}
 
@@ -157,7 +154,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		countryVO.setCountryCode(countryDTO.getCountryCode().toUpperCase());
 		countryVO.setActive(countryDTO.isActive());
 		countryVO.setOrgId(countryDTO.getOrgId());
-		countryVO.setUserId(countryDTO.getUserId());
+	//	countryVO.setUserId(countryDTO.getUserId());
 		countryVO.setDupchk(countryDTO.getOrgId() + countryDTO.getCountryName() + countryDTO.getCountryCode());
 		countryVO.setCreatedBy(countryDTO.getCreatedBy());
 		countryVO.setUpdatedBy(countryDTO.getCreatedBy());
@@ -168,7 +165,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CountryVO> updateCountry(CountryVO countryVO) {
 		if (countryVORepo.existsById(countryVO.getId())) {
-			countryVO.setUpdatedBy(countryVO.getUserId());
+			//countryVO.setUpdatedBy(countryVO.getUserId());
 			countryVO.setCountryName(countryVO.getCountryName().toUpperCase());
 			countryVO.setCountryCode(countryVO.getCountryCode().toUpperCase());
 			countryVO.setDupchk(countryVO.getCountryCode() + countryVO.getCountryName());
@@ -202,28 +199,77 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public StateVO createState(StateVO stateVO) {
-		stateVO.setCancel(false);
-		stateVO.setStatename(stateVO.getStatename().toUpperCase());
-		stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
-		stateVO.setActive(true);
-		stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getStatename());
+	@Transactional
+	public StateVO createUpdateState(StateDTO stateDTO) throws ApplicationException {
+		StateVO stateVO ;
+		
+		if (stateRepo.existsByStateCodeAndStateNameAndStateNumberAndOrgId(
+		        stateDTO.getStateCode(),
+		        stateDTO.getStateName(),
+		        stateDTO.getStateNumber(),
+		        stateDTO.getOrgId())) {
+
+		    String errorMessage = String.format(
+		        "The StateCode: %s and StateName: %s and StateNumber: %s already exists in this Organization.",
+		        stateDTO.getStateCode(),
+		        stateDTO.getStateName(),
+		        stateDTO.getStateNumber()
+		    );
+		    throw new ApplicationException(errorMessage);
+		}
+		
+		if(stateRepo.existsByStateCodeAndOrgId(stateDTO.getStateCode(),stateDTO.getOrgId())) {
+			String errorMessage = String.format("The StateCode: %s already exists This Organization.",
+					stateDTO.getStateCode());
+			throw new ApplicationException(errorMessage);
+			
+		}if(stateRepo.existsByStateNumberAndOrgId(stateDTO.getStateNumber(),stateDTO.getOrgId())) {
+			
+			String errorMessage = String.format("The StateNumber: %s already exists This Organization.",
+					stateDTO.getStateNumber());
+			throw new ApplicationException(errorMessage);
+			
+		}if(stateRepo.existsByStateNameAndOrgId(stateDTO.getStateName(),stateDTO.getOrgId())) {
+		
+
+			String errorMessage = String.format("The StateName: %s already exists This Organization.",
+					stateDTO.getStateName());
+			throw new ApplicationException(errorMessage);
+			
+		}
+		
+		
+
+		if (stateDTO.getId() != null) {
+			// Update existing branch
+			stateVO = stateRepo.findById(stateDTO.getId())
+					.orElseThrow(() -> new ApplicationException("State not found with id: " + stateDTO.getId()));
+		} else {
+			// Create new branch
+			stateVO = new StateVO();
+		}
+
+		getStateVOFromStateDTO(stateVO, stateDTO);
+
 		return stateRepo.save(stateVO);
 	}
-
-	@Override
-	public Optional<StateVO> updateState(StateVO stateVO) {
-		if (stateRepo.existsById(stateVO.getId())) {
-			stateVO.setUpdatedby(stateVO.getUserid());
-			stateVO.setStatename(stateVO.getStatename().toUpperCase());
-			stateVO.setStatecode(stateVO.getStatecode().toUpperCase());
-			stateVO.setDupchk(stateVO.getOrgId() + stateVO.getStatecode() + stateVO.getStatename());
-			return Optional.of(stateRepo.save(stateVO));
-		} else {
-			return Optional.empty();
-		}
+	
+	private void getStateVOFromStateDTO(StateVO stateVO, StateDTO stateDTO) {
+		
+		stateVO.setStateCode(stateDTO.getStateCode().toUpperCase());
+		stateVO.setStateName(stateDTO.getStateName().toUpperCase());
+		stateVO.setStateNumber(stateDTO.getStateNumber().toUpperCase());
+		stateVO.setCountry(stateDTO.getCountry().toUpperCase());
+		stateVO.setRegion(stateDTO.getRegion().toUpperCase());
+		stateVO.setCreatedBy(stateDTO.getCreatedBy());
+		stateVO.setUpdatedBy(stateDTO.getCreatedBy());
+		stateVO.setActive(stateDTO.isActive());
+		stateVO.setCancel(stateDTO.isCancel());
+		stateVO.setOrgId(stateDTO.getOrgId());
+	//	stateVO.setDupchk(stateDTO.getOrgId()+stateDTO.getStateCode()+stateDTO.getStateName());
 	}
 
+	
 	@Override
 	public void deleteState(Long countryid) {
 		stateRepo.deleteById(countryid);
@@ -248,27 +294,61 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public CityVO createCity(CityVO cityVO) {
-		cityVO.setCancel(false);
-		cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
-		cityVO.setCityname(cityVO.getCityname().toUpperCase());
-		cityVO.setActive(true);
-		cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCityname() + cityVO.getOrgId());
+	@Transactional
+	public CityVO createUpdateCity(CityDTO cityDTO) throws ApplicationException {
+		CityVO cityVO;
+		if (cityRepo.existsByCityCodeAndCityNameAndOrgId(cityDTO.getCityCode(), cityDTO.getCityName(),
+				cityDTO.getOrgId())) {
+
+			String errorMessage = String.format(
+					"The CityCode: %s and CityName: %s already exists in this Organization.",
+					cityDTO.getCityCode(), cityDTO.getCityName(), cityDTO.getOrgId());
+			throw new ApplicationException(errorMessage);
+		}
+
+		if (cityRepo.existsByCityCodeAndOrgId(cityDTO.getCityCode(), cityDTO.getOrgId())) {
+			String errorMessage = String.format("The CityCode: %s already exists This Organization.",
+					cityDTO.getCityCode());
+			throw new ApplicationException(errorMessage);
+
+		}
+		if (cityRepo.existsByCityNameAndOrgId(cityDTO.getCityName(), cityDTO.getOrgId())) {
+
+			String errorMessage = String.format("The CityName: %s already exists This Organization.",
+					cityDTO.getCityName());
+			throw new ApplicationException(errorMessage);
+
+		}
+
+		if (cityDTO.getId() != null) {
+			// Update existing branch
+			cityVO = cityRepo.findById(cityDTO.getId())
+					.orElseThrow(() -> new ApplicationException("City not found with id: " + cityDTO.getId()));
+		} else {
+			// Create new branch
+			cityVO = new CityVO();
+		}
+
+		getCityVOFromCityDTO(cityVO, cityDTO);
+
 		return cityRepo.save(cityVO);
 	}
 
-	@Override
-	public Optional<CityVO> updateCity(CityVO cityVO) {
-		if (cityRepo.existsById(cityVO.getId())) {
-			cityVO.setCitycode(cityVO.getCitycode().toUpperCase());
-			cityVO.setCityname(cityVO.getCityname().toUpperCase());
-			cityVO.setUpdatedby(cityVO.getUserid());
-			cityVO.setDupchk(cityVO.getCitycode() + cityVO.getCityname() + cityVO.getOrgId());
-			return Optional.of(cityRepo.save(cityVO));
-		} else {
-			return Optional.empty();
-		}
+	private void getCityVOFromCityDTO(CityVO cityVO, CityDTO cityDTO) {
+
+		cityVO.setCityCode(cityDTO.getCityCode().toUpperCase());
+		cityVO.setCityName(cityDTO.getCityName().toUpperCase());
+		cityVO.setCountry(cityDTO.getCountry().toUpperCase());
+		cityVO.setState(cityDTO.getState().toUpperCase());
+		cityVO.setActive(cityDTO.isActive());
+	//	cityVO.setDupchk(cityDTO.getOrgId() + cityDTO.getCityName() + cityDTO.getCityCode());
+		cityVO.setCreatedBy(cityDTO.getCreatedBy());
+		cityVO.setUpdatedBy(cityDTO.getCreatedBy());
+		cityVO.setOrgId(cityDTO.getOrgId());
+		cityVO.setCancel(cityDTO.isCancel());
+
 	}
+
 
 	@Override
 	public void deleteCity(Long cityid) {

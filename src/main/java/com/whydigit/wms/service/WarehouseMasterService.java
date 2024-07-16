@@ -7,6 +7,8 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.BranchDTO;
+import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -23,6 +25,7 @@ import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
+import com.whydigit.wms.exception.ApplicationException;
 
 @Service
 public interface WarehouseMasterService {
@@ -92,7 +95,7 @@ public interface WarehouseMasterService {
 
 	Optional<CustomerVO> getCustomerById(Long customerid);
 
-	CustomerVO createCustomer(CustomerVO customerVO);
+	CustomerVO createUpdateCustomer(CustomerDTO customerDTO) throws ApplicationException;
 
 	Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
 
@@ -114,9 +117,9 @@ public interface WarehouseMasterService {
 
 	Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode);
 
-	WarehouseVO createWarehouse(WarehouseVO warehouseVO);
+	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
 
-	Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
+	//Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
 
 	void deleteWarehouse(Long warehouseid);
 

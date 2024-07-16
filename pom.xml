@@ -15,7 +15,7 @@
 	<name>wms</name>
 	<description>WMS project for Spring Boot</description>
 	<properties>
-		<java.vsersion>8</java.vsersion>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

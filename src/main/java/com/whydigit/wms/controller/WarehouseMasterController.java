@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.BranchDTO;
+import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -43,7 +45,7 @@ import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.service.WarehouseMasterService;
 
-@RequestMapping("/api")
+@RequestMapping("/api/warehousemastercontroller")
 @RestController
 public class WarehouseMasterController extends BaseController {
 	public static final Logger LOGGER = LoggerFactory.getLogger(WarehouseMasterController.class);
@@ -594,15 +596,15 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/customer")
-	public ResponseEntity<ResponseDTO> createCustomer(@RequestBody CustomerVO customerVO) {
-		String methodName = "createCustomer()";
+	@PostMapping("/createUpdateCustomer")
+	public ResponseEntity<ResponseDTO> createUpdateCustomer(@RequestBody CustomerDTO customerDTO) {
+		String methodName = "createUpdateCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CustomerVO createdCustomerVO = warehouseMasterService.createCustomer(customerVO);
+			CustomerVO createdCustomerVO = warehouseMasterService.createUpdateCustomer(customerDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer created successfully");
 			responseObjectsMap.put("customerVO", createdCustomerVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -829,15 +831,15 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/warehouse")
-	public ResponseEntity<ResponseDTO> createWarehouse(@RequestBody WarehouseVO warehouseVO) {
+	@PostMapping("/createUpdateWarehouse")
+	public ResponseEntity<ResponseDTO> createUpdateWarehouse(@RequestBody WarehouseDTO warehouseDTO) {
 		String methodName = "createWarehouse()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			WarehouseVO createdWarehouseVO = warehouseMasterService.createWarehouse(warehouseVO);
+			WarehouseVO createdWarehouseVO = warehouseMasterService.createUpdateWarehouse(warehouseDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse created successfully");
 			responseObjectsMap.put("warehouseVO", createdWarehouseVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -851,32 +853,32 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/warehouse")
-	public ResponseEntity<ResponseDTO> updateWarehouse(@RequestBody WarehouseVO warehouseVO) {
-		String methodName = "updateWarehouse()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			WarehouseVO updatedWarehouseVO = warehouseMasterService.updateWarehouse(warehouseVO).orElse(null);
-			if (updatedWarehouseVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse updated successfully");
-				responseObjectsMap.put("warehouseVO", updatedWarehouseVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Warehouse not found for Warehouse ID: " + warehouseVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"WarehouseName, Country and BranchCode already Exist", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@PutMapping("/warehouse")
+//	public ResponseEntity<ResponseDTO> updateWarehouse(@RequestBody WarehouseVO warehouseVO) {
+//		String methodName = "updateWarehouse()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		try {
+//			WarehouseVO updatedWarehouseVO = warehouseMasterService.updateWarehouse(warehouseVO).orElse(null);
+//			if (updatedWarehouseVO != null) {
+//				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse updated successfully");
+//				responseObjectsMap.put("warehouseVO", updatedWarehouseVO);
+//				responseDTO = createServiceResponse(responseObjectsMap);
+//			} else {
+//				errorMsg = "Warehouse not found for Warehouse ID: " + warehouseVO.getId();
+//				responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse update failed", errorMsg);
+//			}
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//			responseDTO = createServiceResponseError(responseObjectsMap,
+//					"WarehouseName, Country and BranchCode already Exist", errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 
 	// Warehouse Location
 

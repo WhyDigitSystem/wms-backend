@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +11,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,18 +25,18 @@ public class WarehouseClientVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "warehouseclientgen")
-	@SequenceGenerator(name = "warehouseclient", sequenceName = "warehouseclientseq", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "warehouseclientseq", sequenceName = "warehouseclientseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "warehouseclientid")
 	private Long id;
 
 	@Column(name = "client")
 	private String client;
 	@Column(name = "clientcode")
-	private String clientcode;
+	private String clientCode;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid")
-	private String userid;
+//	@Column(name = "userid")
+//	private String userid;
 
 	@ManyToOne
 	@JsonBackReference
