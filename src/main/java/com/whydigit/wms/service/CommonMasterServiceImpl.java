@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		return countryVORepo.findById(countryid);
 	}
 
-
 	@Override
 	public CountryVO createUpdateCountry(CountryDTO countryDTO) throws ApplicationException {
 
@@ -117,7 +117,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 		if (countryVORepo.existsByCountryNameAndCountryCodeAndOrgId(countryDTO.getCountryName(),
 				countryDTO.getCountryCode(), countryDTO.getOrgId())) {
-			String errorMessage = String.format("The CountryName: %s and CountryCode: %s already exists This Organization.",
+			String errorMessage = String.format(
+					"The CountryName: %s and CountryCode: %s already exists This Organization.",
 					countryDTO.getCountryName(), countryDTO.getCountryCode());
 			throw new ApplicationException(errorMessage);
 		}
@@ -154,7 +155,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		countryVO.setCountryCode(countryDTO.getCountryCode().toUpperCase());
 		countryVO.setActive(countryDTO.isActive());
 		countryVO.setOrgId(countryDTO.getOrgId());
-	//	countryVO.setUserId(countryDTO.getUserId());
+		// countryVO.setUserId(countryDTO.getUserId());
 		countryVO.setDupchk(countryDTO.getOrgId() + countryDTO.getCountryName() + countryDTO.getCountryCode());
 		countryVO.setCreatedBy(countryDTO.getCreatedBy());
 		countryVO.setUpdatedBy(countryDTO.getCreatedBy());
@@ -165,7 +166,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<CountryVO> updateCountry(CountryVO countryVO) {
 		if (countryVORepo.existsById(countryVO.getId())) {
-			//countryVO.setUpdatedBy(countryVO.getUserId());
+			// countryVO.setUpdatedBy(countryVO.getUserId());
 			countryVO.setCountryName(countryVO.getCountryName().toUpperCase());
 			countryVO.setCountryCode(countryVO.getCountryCode().toUpperCase());
 			countryVO.setDupchk(countryVO.getCountryCode() + countryVO.getCountryName());
@@ -201,44 +202,37 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	@Transactional
 	public StateVO createUpdateState(StateDTO stateDTO) throws ApplicationException {
-		StateVO stateVO ;
-		
-		if (stateRepo.existsByStateCodeAndStateNameAndStateNumberAndOrgId(
-		        stateDTO.getStateCode(),
-		        stateDTO.getStateName(),
-		        stateDTO.getStateNumber(),
-		        stateDTO.getOrgId())) {
+		StateVO stateVO;
 
-		    String errorMessage = String.format(
-		        "The StateCode: %s and StateName: %s and StateNumber: %s already exists in this Organization.",
-		        stateDTO.getStateCode(),
-		        stateDTO.getStateName(),
-		        stateDTO.getStateNumber()
-		    );
-		    throw new ApplicationException(errorMessage);
+		if (stateRepo.existsByStateCodeAndStateNameAndStateNumberAndOrgId(stateDTO.getStateCode(),
+				stateDTO.getStateName(), stateDTO.getStateNumber(), stateDTO.getOrgId())) {
+
+			String errorMessage = String.format(
+					"The StateCode: %s and StateName: %s and StateNumber: %s already exists in this Organization.",
+					stateDTO.getStateCode(), stateDTO.getStateName(), stateDTO.getStateNumber());
+			throw new ApplicationException(errorMessage);
 		}
-		
-		if(stateRepo.existsByStateCodeAndOrgId(stateDTO.getStateCode(),stateDTO.getOrgId())) {
+
+		if (stateRepo.existsByStateCodeAndOrgId(stateDTO.getStateCode(), stateDTO.getOrgId())) {
 			String errorMessage = String.format("The StateCode: %s already exists This Organization.",
 					stateDTO.getStateCode());
 			throw new ApplicationException(errorMessage);
-			
-		}if(stateRepo.existsByStateNumberAndOrgId(stateDTO.getStateNumber(),stateDTO.getOrgId())) {
-			
+
+		}
+		if (stateRepo.existsByStateNumberAndOrgId(stateDTO.getStateNumber(), stateDTO.getOrgId())) {
+
 			String errorMessage = String.format("The StateNumber: %s already exists This Organization.",
 					stateDTO.getStateNumber());
 			throw new ApplicationException(errorMessage);
-			
-		}if(stateRepo.existsByStateNameAndOrgId(stateDTO.getStateName(),stateDTO.getOrgId())) {
-		
+
+		}
+		if (stateRepo.existsByStateNameAndOrgId(stateDTO.getStateName(), stateDTO.getOrgId())) {
 
 			String errorMessage = String.format("The StateName: %s already exists This Organization.",
 					stateDTO.getStateName());
 			throw new ApplicationException(errorMessage);
-			
+
 		}
-		
-		
 
 		if (stateDTO.getId() != null) {
 			// Update existing branch
@@ -253,9 +247,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 		return stateRepo.save(stateVO);
 	}
-	
+
 	private void getStateVOFromStateDTO(StateVO stateVO, StateDTO stateDTO) {
-		
+
 		stateVO.setStateCode(stateDTO.getStateCode().toUpperCase());
 		stateVO.setStateName(stateDTO.getStateName().toUpperCase());
 		stateVO.setStateNumber(stateDTO.getStateNumber().toUpperCase());
@@ -266,10 +260,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		stateVO.setActive(stateDTO.isActive());
 		stateVO.setCancel(stateDTO.isCancel());
 		stateVO.setOrgId(stateDTO.getOrgId());
-	//	stateVO.setDupchk(stateDTO.getOrgId()+stateDTO.getStateCode()+stateDTO.getStateName());
+		// stateVO.setDupchk(stateDTO.getOrgId()+stateDTO.getStateCode()+stateDTO.getStateName());
 	}
 
-	
 	@Override
 	public void deleteState(Long countryid) {
 		stateRepo.deleteById(countryid);
@@ -301,8 +294,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 				cityDTO.getOrgId())) {
 
 			String errorMessage = String.format(
-					"The CityCode: %s and CityName: %s already exists in this Organization.",
-					cityDTO.getCityCode(), cityDTO.getCityName(), cityDTO.getOrgId());
+					"The CityCode: %s and CityName: %s already exists in this Organization.", cityDTO.getCityCode(),
+					cityDTO.getCityName(), cityDTO.getOrgId());
 			throw new ApplicationException(errorMessage);
 		}
 
@@ -341,14 +334,14 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		cityVO.setCountry(cityDTO.getCountry().toUpperCase());
 		cityVO.setState(cityDTO.getState().toUpperCase());
 		cityVO.setActive(cityDTO.isActive());
-	//	cityVO.setDupchk(cityDTO.getOrgId() + cityDTO.getCityName() + cityDTO.getCityCode());
+		// cityVO.setDupchk(cityDTO.getOrgId() + cityDTO.getCityName() +
+		// cityDTO.getCityCode());
 		cityVO.setCreatedBy(cityDTO.getCreatedBy());
 		cityVO.setUpdatedBy(cityDTO.getCreatedBy());
 		cityVO.setOrgId(cityDTO.getOrgId());
 		cityVO.setCancel(cityDTO.isCancel());
 
 	}
-
 
 	@Override
 	public void deleteCity(Long cityid) {
@@ -412,16 +405,47 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Transactional
 	public CompanyVO createCompany(CompanyDTO companyDTO) throws Exception {
 
-		if (companyRepo.existsByCompanyCode(companyDTO.getCompanyCode())) {
-			throw new ApplicationException("The CompanyCode Already Exists");
+		if (companyRepo.existsByCompanyCodeAndCompanyNameAndEmployeeCodeAndEmailAndPhoneAndId(
+				companyDTO.getCompanyCode(), companyDTO.getCompanyName(), companyDTO.getEmployeeCode(),
+				companyDTO.getEmail(), companyDTO.getPhone(), companyDTO.getId())) {
+
+			String errorMessage = String.format(
+					"The CompanyCode : %s And CompanyName : %s And EmployeeCode : %s And Email : %s And PhoneNumber : %s Already Exists"
+							+ "This Organization",
+					companyDTO.getCompanyCode(),companyDTO.getCompanyName(), companyDTO.getEmployeeCode(),
+					companyDTO.getEmail(), companyDTO.getPhone());
+			throw new ApplicationException(errorMessage);
 		}
 
-		if (companyRepo.existsByCompanyName(companyDTO.getCompanyName())) {
-			throw new ApplicationException("The CompanyName Already Exists");
+		if (companyRepo.existsByCompanyCodeAndId(companyDTO.getCompanyCode(), companyDTO.getId())) {
+
+			String errorMessage = String.format("The CompanyCode : %s Already Exists This Organization",
+					companyDTO.getCompanyCode());
+			throw new ApplicationException(errorMessage);
 		}
 
-		if (companyRepo.existsByEmployeeCode(companyDTO.getEmployeeCode())) {
-			throw new ApplicationException("The EmployeeCode Already Exists");
+		if (companyRepo.existsByCompanyNameAndId(companyDTO.getCompanyName(), companyDTO.getId())) {
+			String errorMessage = String.format("The CompanyName : %s Already Exists This Organization",
+					companyDTO.getCompanyName());
+			throw new ApplicationException(errorMessage);
+		}
+
+		if (companyRepo.existsByEmployeeCodeAndId(companyDTO.getEmployeeCode(), companyDTO.getId())) {
+			String errorMessage = String.format("The EmployeeCode : %s Already Exists This Organization",
+					companyDTO.getEmployeeCode());
+			throw new ApplicationException(errorMessage);
+		}
+
+		if (companyRepo.existsByEmailAndId(companyDTO.getEmail(), companyDTO.getId())) {
+			String errorMessage = String.format("The Email : %s Already Exists This Organization",
+					companyDTO.getEmail());
+			throw new ApplicationException(errorMessage);
+		}
+
+		if (companyRepo.existsByPhoneAndId(companyDTO.getPhone(), companyDTO.getId())) {
+			String errorMessage = String.format("The PhoneNumber : %s Already Exists This Organization",
+					companyDTO.getPhone());
+			throw new ApplicationException(errorMessage);
 		}
 
 		CompanyVO companyVO = new CompanyVO();
@@ -429,11 +453,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyRepo.save(companyVO);
 
 		UserVO userVO = new UserVO();
-		userVO.setUserName(companyVO.getCompanyName());
+		userVO.setUserName(companyVO.getEmployeeName());
 		userVO.setEmployeeName(companyVO.getEmployeeName());
 		userVO.setEmail(companyVO.getEmail());
 		userVO.setMobileNo(companyVO.getPhone());
 		userVO.setRole(Role.ROLE_USER);
+		userVO.setOrgId(companyVO.getId());
 		userVO.setCreatedby(companyVO.getCreatedBy());
 		userVO.setUpdatedby(companyVO.getCreatedBy());
 		userVO.setIsActive(true);
@@ -475,7 +500,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyVO.setEmployeeName(companyDTO.getEmployeeName());
 		companyVO.setCreatedBy(companyDTO.getCreatedBy());
 		companyVO.setUpdatedBy(companyDTO.getCreatedBy());
-		companyVO.setCancel(companyDTO.isCancel());
+		companyVO.setActive(companyDTO.getActive());
+		companyVO.setCancel(companyDTO.getCancel());
 		try {
 			companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
 		} catch (Exception e) {
@@ -485,13 +511,21 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public Optional<CompanyVO> updateCompany(CompanyVO companyVO) {
-		if (companyRepo.existsById(companyVO.getId())) {
-			companyVO.setCreatedBy(companyVO.getCreatedBy());
-			return Optional.of(companyRepo.save(companyVO));
-		} else {
-			return Optional.empty();
+	public CompanyVO updateCompany(CompanyDTO companyDTO) throws ApplicationException {
+		CompanyVO companyVO = new CompanyVO();
+		if (ObjectUtils.isNotEmpty(companyDTO.getId())) {
+			companyVO = companyRepo.findById(companyDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid Company details"));
 		}
+
+		getCompanyVOfromComapnyDTO(companyVO,companyDTO);
+		
+		return companyRepo.save(companyVO);
+	}
+	private void getCompanyVOfromComapnyDTO(CompanyVO companyVO, CompanyDTO companyDTO) {
+		
+		companyVO.setAddress(companyDTO.getAddress());
+		
 	}
 
 	@Override

@@ -691,32 +691,31 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/company")
-	public ResponseEntity<ResponseDTO> updateCompany(@RequestBody CompanyVO companyVO) {
+	@PutMapping("/updateCompany")
+	public ResponseEntity<ResponseDTO> updateCompany(@RequestBody CompanyDTO companyDTO) {
 		String methodName = "updateCompany()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CompanyVO companyvo = commonMasterService.updateCompany(companyVO).orElse(null);
-			if (companyVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Company Updated successfully");
-				responseObjectsMap.put("companyVO", companyvo);
+			CompanyVO updatedCompanyVO = commonMasterService.updateCompany(companyDTO);
+			if (updatedCompanyVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customers updated successfully");
+				responseObjectsMap.put("CompanyVO", updatedCompanyVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Company not found for ID: " + companyvo.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Company Update failed", errorMsg);
+				errorMsg = "Organization not found for ID: " + companyDTO.getId();
+				responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Company Name Update failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
 	// Global Parameter
 
 	@GetMapping("/globalparamBranchByUserName")

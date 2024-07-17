@@ -99,7 +99,7 @@ public interface CommonMasterService {
 
 	CompanyVO createCompany(CompanyDTO companyDTO) throws Exception;
 
-	Optional<CompanyVO> updateCompany(CompanyVO companyVO);
+	CompanyVO updateCompany(CompanyDTO companyDTO) throws ApplicationException;
 
 	void deleteCompany(Long companyid);
 

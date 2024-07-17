@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
@@ -57,9 +58,9 @@ public class CompanyVO {
 //	@Column(name = "userd")
 //	private String userId;
 	@Column(name = "active")
-	private String isactive;
-	@Column(unique = true)
-	private String dupchk;
+	private Boolean active;
+//	@Column(unique = true)
+//	private String dupchk;
 	@Column(name = "employeename")
 	private String employeeName;
 	@Column(name = "employeecode")
@@ -71,8 +72,24 @@ public class CompanyVO {
 	@Column(name = "modifiedby")
 	private String updatedBy;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private Boolean cancel;
+	
+	
+	 @JsonGetter("active")
+		public String getActive() {
+			return active ? "Active" : "In-Active";
+		}
+
+		// Optionally, if you want to control serialization for 'cancel' field similarly
+		@JsonGetter("cancel")
+		public String getCancel() {
+			return cancel ? "T" : "F";
+		}
+	    
+	
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
+	
 }

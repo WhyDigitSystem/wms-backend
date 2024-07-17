@@ -29,6 +29,7 @@ public class CompanyDTO {
 	private String password;
 	private String createdBy;
 	private String updatedBy;
-	private boolean cancel;
+	private Boolean cancel;
+	private Boolean active;
 
 }
