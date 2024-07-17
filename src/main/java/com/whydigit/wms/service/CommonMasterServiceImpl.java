@@ -156,7 +156,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		countryVO.setActive(countryDTO.isActive());
 		countryVO.setOrgId(countryDTO.getOrgId());
 		// countryVO.setUserId(countryDTO.getUserId());
-		countryVO.setDupchk(countryDTO.getOrgId() + countryDTO.getCountryName() + countryDTO.getCountryCode());
+		//countryVO.setDupchk(countryDTO.getOrgId() + countryDTO.getCountryName() + countryDTO.getCountryCode());
 		countryVO.setCreatedBy(countryDTO.getCreatedBy());
 		countryVO.setUpdatedBy(countryDTO.getCreatedBy());
 		countryVO.setCancel(countryDTO.isCancel());
@@ -500,8 +500,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyVO.setEmployeeName(companyDTO.getEmployeeName());
 		companyVO.setCreatedBy(companyDTO.getCreatedBy());
 		companyVO.setUpdatedBy(companyDTO.getCreatedBy());
-		companyVO.setActive(companyDTO.getActive());
-		companyVO.setCancel(companyDTO.getCancel());
+		companyVO.setActive(companyDTO.isActive());
+		companyVO.setCancel(companyDTO.isCancel());
 		try {
 			companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
 		} catch (Exception e) {
@@ -510,23 +510,41 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		}
 	}
 
-	@Override
-	public CompanyVO updateCompany(CompanyDTO companyDTO) throws ApplicationException {
-		CompanyVO companyVO = new CompanyVO();
-		if (ObjectUtils.isNotEmpty(companyDTO.getId())) {
-			companyVO = companyRepo.findById(companyDTO.getId())
-					.orElseThrow(() -> new ApplicationException("Invalid Company details"));
-		}
+	 public CompanyVO updateCompany(CompanyDTO companyDTO) throws ApplicationException {
+	        
+	        if (ObjectUtils.isEmpty(companyDTO.getId())) {
+	            throw new ApplicationException("Invalid Company Id");
+	        }
+	        
+	        CompanyVO companyVO = companyRepo.findById(companyDTO.getId())
+	                .orElseThrow(() -> new ApplicationException("Company not found for Id: " + companyDTO.getId()));
+	        
+	        mapCompanyDTOToCompanyVO(companyVO, companyDTO);
+	        
+	        return companyRepo.save(companyVO);
+	    }
 
-		getCompanyVOfromComapnyDTO(companyVO,companyDTO);
-		
-		return companyRepo.save(companyVO);
-	}
-	private void getCompanyVOfromComapnyDTO(CompanyVO companyVO, CompanyDTO companyDTO) {
-		
-		companyVO.setAddress(companyDTO.getAddress());
-		
-	}
+	    private void mapCompanyDTOToCompanyVO(CompanyVO companyVO, CompanyDTO companyDTO) {
+	        companyVO.setCompanyCode(companyDTO.getCompanyCode());
+	        companyVO.setCompanyName(companyDTO.getCompanyName());
+	        companyVO.setCountry(companyDTO.getCountry());
+	        companyVO.setCurrency(companyDTO.getCurrency());
+	        companyVO.setMainCurrency(companyDTO.getMainCurrency());
+	        companyVO.setAddress(companyDTO.getAddress());
+	        companyVO.setZip(companyDTO.getZip());
+	        companyVO.setCity(companyDTO.getCity());
+	        companyVO.setState(companyDTO.getState());
+	        companyVO.setPhone(companyDTO.getPhone());
+	        companyVO.setEmail(companyDTO.getEmail());
+	        companyVO.setWebSite(companyDTO.getWebSite());
+	        companyVO.setNote(companyDTO.getNote());
+	        companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
+	        companyVO.setEmployeeName(companyDTO.getEmployeeName());
+	        companyVO.setCreatedBy(companyDTO.getCreatedBy());
+	        companyVO.setUpdatedBy(companyDTO.getUpdatedBy());
+	        companyVO.setActive(companyDTO.isActive());
+	        companyVO.setCancel(companyDTO.isCancel());
+	    }
 
 	@Override
 	public void deleteCompany(Long companyid) {

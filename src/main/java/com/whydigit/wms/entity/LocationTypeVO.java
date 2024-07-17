@@ -27,8 +27,7 @@ public class LocationTypeVO {
 	@SequenceGenerator(name = "locationtypegen", sequenceName = "locationtypeseq", initialValue = 1000000001, allocationSize = 1)
 	private Long id;
 	private String locationtype;
-	private String userid;
-	private boolean active;
+	private String userid;   boolean active;
 	@Column(unique = true)
 	private String dupchk;
 	private String createdby;

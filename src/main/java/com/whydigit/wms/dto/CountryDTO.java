@@ -15,8 +15,8 @@ public class CountryDTO {
 	private String countryCode;
 	private boolean active;
 	private Long orgId;
-	private String userId;
-	private String dupchk;
+//	private String userId;
+//	private String dupchk;
 	private String createdBy;
 	private String updatedBy;
 	private boolean cancel;

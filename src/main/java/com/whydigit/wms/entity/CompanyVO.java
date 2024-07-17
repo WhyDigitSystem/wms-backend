@@ -58,7 +58,7 @@ public class CompanyVO {
 //	@Column(name = "userd")
 //	private String userId;
 	@Column(name = "active")
-	private Boolean active;
+	private boolean active;
 //	@Column(unique = true)
 //	private String dupchk;
 	@Column(name = "employeename")
@@ -72,7 +72,7 @@ public class CompanyVO {
 	@Column(name = "modifiedby")
 	private String updatedBy;
 	@Column(name = "cancel")
-	private Boolean cancel;
+	private boolean cancel;
 	
 	
 	 @JsonGetter("active")
