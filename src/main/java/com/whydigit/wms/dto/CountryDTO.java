@@ -18,6 +18,6 @@ public class CountryDTO {
 //	private String userId;
 //	private String dupchk;
 	private String createdBy;
-	private String updatedBy;
+//	private String updatedBy;
 	private boolean cancel;
 }

@@ -19,7 +19,7 @@ private Long id;
     private boolean active;
 	//private String dupchk;
     private String createdBy;
-	private String updatedBy;
+	//private String updatedBy;
 	private Long orgId;
 	private boolean cancel;
 
