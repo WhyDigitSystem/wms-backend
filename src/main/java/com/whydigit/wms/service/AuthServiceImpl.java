@@ -152,7 +152,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 				|| StringUtils.isBlank(loginRequest.getPassword())) {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_LOGIN_INFORMATION);
 		}
-		UserVO userVO = userRepo.findByUserNameOrEmployeeNameOrEmailOrMobileNo(loginRequest.getUserName(),loginRequest.getUserName(),loginRequest.getUserName(),loginRequest.getUserName());
+		UserVO userVO = userRepo.findByUserNameOrEmailOrMobileNo(loginRequest.getUserName(),loginRequest.getUserName(),loginRequest.getUserName());
 		
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			if (compareEncodedPasswordWithEncryptedPassword(loginRequest.getPassword(), userVO.getPassword())) {

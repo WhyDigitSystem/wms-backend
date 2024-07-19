@@ -26,14 +26,16 @@ public class LocationTypeVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationtypegen")
 	@SequenceGenerator(name = "locationtypegen", sequenceName = "locationtypeseq", initialValue = 1000000001, allocationSize = 1)
 	private Long id;
-	private String locationtype;
-	private String userid;   boolean active;
-	@Column(unique = true)
-	private String dupchk;
-	private String createdby;
-	private String updatedby;
+	@Column(name="locationtype")
+	private String locationType;
+	@Column(name="createdby")
+	private String createdBy;
+	@Column(name="updatedby")
+	private String updatedBy;
+	@Column(name="orgid")
 	private Long orgId;
 	private boolean cancel;
+	private boolean active;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

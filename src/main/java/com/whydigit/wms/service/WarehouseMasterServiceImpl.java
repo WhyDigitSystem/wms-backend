@@ -17,6 +17,7 @@ import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.ClientBranchDTO;
 import com.whydigit.wms.dto.ClientDTO;
 import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.WarehouseClientDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -194,21 +195,55 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public LocationTypeVO createLocationType(LocationTypeVO locationTypeVO) {
+	public LocationTypeVO createUpdateLocationType(LocationTypeDTO locationTypeDTO) throws ApplicationException {
+		LocationTypeVO locationTypeVO;
+		if (ObjectUtils.isEmpty(locationTypeDTO.getId())) {
 
-		locationTypeVO.setCancel(false);
-		locationTypeVO.setDupchk(locationTypeVO.getOrgId() + locationTypeVO.getLocationtype());
+			if (locationTypeRepo.existsByLocationTypeAndOrgId(locationTypeDTO.getLocationtype(),
+					locationTypeDTO.getOrgId())) {
+
+				String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
+						locationTypeDTO.getLocationtype());
+				throw new ApplicationException(errorMessage);
+
+			}
+		}
+
+		if (locationTypeDTO.getId() != null) {
+			locationTypeVO = locationTypeRepo.findById(locationTypeDTO.getId()).orElseThrow(
+					() -> new ApplicationException("LocationType Not Found This Id :" + locationTypeDTO.getOrgId()));
+
+			locationTypeVO.setUpdatedBy(locationTypeDTO.getCreatedBy());
+
+			if (!locationTypeVO.getLocationType().equalsIgnoreCase(locationTypeDTO.getLocationtype())) {
+				if (locationTypeRepo.existsByLocationTypeAndOrgId(locationTypeDTO.getLocationtype(),
+						locationTypeDTO.getOrgId())) {
+
+					String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
+							locationTypeDTO.getLocationtype());
+					throw new ApplicationException(errorMessage);
+
+				}
+				locationTypeVO.setLocationType(locationTypeDTO.getLocationtype());
+			}
+
+		} else {
+			locationTypeVO = new LocationTypeVO();
+			locationTypeVO.setUpdatedBy(locationTypeDTO.getCreatedBy());
+			locationTypeVO.setCreatedBy(locationTypeDTO.getCreatedBy());
+		}
+
+		getLocationTypeVOFromLocationTypeDTO(locationTypeVO, locationTypeDTO);
+
 		return locationTypeRepo.save(locationTypeVO);
+
 	}
 
-	public Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO) {
-		if (locationTypeRepo.existsById(locationTypeVO.getId())) {
-			locationTypeVO.setCancel(false);
-			locationTypeVO.setDupchk(locationTypeVO.getOrgId() + locationTypeVO.getLocationtype());
-			return Optional.of(locationTypeRepo.save(locationTypeVO));
-		} else {
-			return Optional.empty();
-		}
+	private void getLocationTypeVOFromLocationTypeDTO(LocationTypeVO locationTypeVO, LocationTypeDTO locationTypeDTO) {
+		locationTypeVO.setOrgId(locationTypeDTO.getOrgId());
+		locationTypeVO.setActive(locationTypeDTO.isActive());
+		locationTypeVO.setCancel(locationTypeDTO.isCancel());
+		locationTypeVO.setLocationType(locationTypeDTO.getLocationtype());
 	}
 
 	@Override
@@ -556,38 +591,51 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	@Transactional
 	public WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException {
-		WarehouseVO warehouseVO;
+		WarehouseVO warehouseVO = new WarehouseVO();
 
-		if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
+		if (ObjectUtils.isEmpty(warehouseDTO.getId())) {
+			if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
 
-			String errormessage = String.format("This Warehouse : %s Already Exists  This Organization .",
-					warehouseDTO.getWarehouse());
+				String errormessage = String.format("This Warehouse : %s Already Exists  This Organization .",
+						warehouseDTO.getWarehouse());
 
-			throw new ApplicationException(errormessage);
+				throw new ApplicationException(errormessage);
 
+			}
 		}
 
-		if (warehouseDTO.getId() != null && warehouseDTO.getId() != 0) {
+		if (warehouseDTO.getId() != null) {
 			// Update existing warehouse
 			warehouseVO = warehouseRepo.findById(warehouseDTO.getId()).orElseThrow(
 					() -> new ApplicationException("Warehouse not found with id: " + warehouseDTO.getId()));
-		} else {
-			// Create new warehouse
-			warehouseVO = new WarehouseVO();
-			// Populate header fields for new warehouse
-			getWarehouseVOFromWarehouseDTO(warehouseVO, warehouseDTO);
+			warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
+			if (!warehouseVO.getWarehouse().equalsIgnoreCase(warehouseDTO.getWarehouse())) {
+
+				if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
+
+					String errormessage = String.format("This Warehouse : %s Already Exists  This Organization .",
+							warehouseDTO.getWarehouse());
+
+					throw new ApplicationException(errormessage);
+				}
+				warehouseVO.setWarehouse(warehouseDTO.getWarehouse());
+
+			} else {
+				
+				warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
+				warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
+
+			}
+			
 		}
+		warehouseVO = getWarehouseVOFromWarehouseDTO(warehouseVO, warehouseDTO);
 
-		// Save warehouse before updating child entities to ensure consistency
-		warehouseVO = warehouseRepo.save(warehouseVO);
-
-		// Update child entities
-		updateWarehouseClient(warehouseVO, warehouseDTO.getWarehouseClientDTO());
-
+		
 		return warehouseRepo.save(warehouseVO);
 	}
 
-	private void getWarehouseVOFromWarehouseDTO(WarehouseVO warehouseVO, WarehouseDTO warehouseDTO) {
+	private WarehouseVO getWarehouseVOFromWarehouseDTO(WarehouseVO warehouseVO, WarehouseDTO warehouseDTO)
+			throws ApplicationException {
 		warehouseVO.setWarehouse(warehouseDTO.getWarehouse().toUpperCase());
 		warehouseVO.setBranchCode(warehouseDTO.getBranchCode().toUpperCase());
 		warehouseVO.setBranch(warehouseDTO.getBranch().toUpperCase());
@@ -596,45 +644,37 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
 		warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
 		warehouseVO.setCancel(warehouseDTO.isCancel());
-	}
 
-	private void updateWarehouseClient(WarehouseVO warehouseVO, List<WarehouseClientDTO> warehouseClientDTOs) {
-		// Delete existing clients
-		List<WarehouseClientVO> existingClients = warehouseClientRepo.findByWarehouseVO(warehouseVO);
-		warehouseClientRepo.deleteAll(existingClients);
+		if (warehouseDTO.getId() != null) {
+			List<WarehouseClientVO> warehouseClientVOs = warehouseClientRepo.findByWarehouseVO(warehouseVO);
+			warehouseClientRepo.deleteAll(warehouseClientVOs);
+		}
 
-		// Add new clients from DTO
-		List<WarehouseClientVO> warehouseClientVOs = new ArrayList<>();
-		for (WarehouseClientDTO warehouseClientDTO : warehouseClientDTOs) {
-			WarehouseClientVO warehouseClientVO = getWarehouseClientVO(warehouseClientDTO);
+		List<WarehouseClientVO> warehouseClientVOs = new ArrayList<WarehouseClientVO>();
+		for (WarehouseClientDTO warehouseClientDTO : warehouseDTO.getWarehouseClientDTO()) {
+			WarehouseClientVO warehouseClientVO = new WarehouseClientVO();
+			if (warehouseClientRepo.existsByClientAndOrgId(warehouseClientDTO.getClient(), warehouseDTO.getOrgId())) {
+				String errorMessage = String.format("This ClientName : %s Already Exists This Organization",
+						warehouseClientDTO.getClient());
+				throw new ApplicationException(errorMessage);
+			}
+			warehouseClientVO.setClient(warehouseClientDTO.getClient());
+
+			if (warehouseClientRepo.existsByClientCodeAndOrgId(warehouseClientDTO.getClientCode(),
+					warehouseDTO.getOrgId())) {
+				String errorMessage = String.format("This ClientCode : %s Already Exists This Organization",
+						warehouseClientDTO.getClientCode());
+				throw new ApplicationException(errorMessage);
+			}
+			warehouseClientVO.setClientCode(warehouseClientDTO.getClientCode());
+			warehouseClientVO.setActive(warehouseClientDTO.isActive());
+			warehouseClientVO.setCancel(warehouseClientDTO.isCancel());
+			warehouseClientVO.setOrgId(warehouseDTO.getOrgId());
 			warehouseClientVO.setWarehouseVO(warehouseVO);
 			warehouseClientVOs.add(warehouseClientVO);
 		}
-
 		warehouseVO.setWarehouseClientVO(warehouseClientVOs);
-	}
-
-	private WarehouseClientVO getWarehouseClientVO(WarehouseClientDTO warehouseClientDTO) {
-		WarehouseClientVO warehouseClientVO = new WarehouseClientVO();
-		warehouseClientVO.setClient(warehouseClientDTO.getClient());
-		warehouseClientVO.setClientCode(warehouseClientDTO.getClientCode());
-		warehouseClientVO.setActive(warehouseClientDTO.isActive());
-		return warehouseClientVO;
-	}
-
-//	@Override
-//	public Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO) {
-//		if (warehouseRepo.existsById(warehouseVO.getId())) {
-//			warehouseVO.setDupchk(warehouseVO.getBranchcode() + warehouseVO.getWarehouse() + warehouseVO.getOrgId());
-//			return Optional.of(warehouseRepo.save(warehouseVO));
-//		} else {
-//			return Optional.empty();
-//		}
-//	}
-
-	@Override
-	public void deleteWarehouse(Long warehouseid) {
-		warehouseRepo.deleteById(warehouseid);
+		return warehouseVO;
 	}
 
 	// Warehouse Location
@@ -962,6 +1002,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level, int startno, int endno) {
 
 		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno, level, startno, endno);
+	}
+
+	@Override
+	public void deleteWarehouse(Long warehouseid) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

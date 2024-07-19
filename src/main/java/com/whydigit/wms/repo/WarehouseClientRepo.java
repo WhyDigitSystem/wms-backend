@@ -11,4 +11,8 @@ public interface WarehouseClientRepo extends JpaRepository<WarehouseClientVO, Lo
 
 	List<WarehouseClientVO> findByWarehouseVO(WarehouseVO warehouseVO);
 
+	boolean existsByClientAndOrgId(String client, Long orgId);
+
+	boolean existsByClientCodeAndOrgId(String clientCode, Long orgId);
+
 }

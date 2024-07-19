@@ -35,6 +35,9 @@ public class WarehouseClientVO {
 	private String clientCode;
 	@Column(name = "active")
 	private boolean active;
+	private boolean cancel;
+	@Column(name="orgid")
+	private Long orgId;
 //	@Column(name = "userid")
 //	private String userid;
 
