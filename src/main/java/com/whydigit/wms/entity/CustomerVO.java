@@ -33,7 +33,7 @@ public class CustomerVO {
 	@Column(name = "customerid")
 	private Long id;
 
-	@Column(name = "customername")
+	@Column(name = "customer")
 	private String customerName;
 	@Column(name = "orgid")
 	private Long orgId;
