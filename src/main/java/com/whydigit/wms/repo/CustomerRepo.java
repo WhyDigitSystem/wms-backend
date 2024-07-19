@@ -18,7 +18,7 @@ public interface CustomerRepo extends JpaRepository<CustomerVO, Long> {
 	@Query(value = "SELECT a from CustomerVO a where a.orgId=?1 ")
 	List<CustomerVO> findAll(Long orgid);
 
-	@Query(nativeQuery = true,value ="select a.customer from customer a ,clientbranch b,user_clientaccess c,users d where a.customerid=b.customerid  and a.customer=c.customer and d.userid=c.users_id and a.orgid=?1 and d.username=?2  and b.branchcode=?3 group by a.customer")
+	@Query(nativeQuery = true,value ="select a.customer from customer a ,clientbranch b,userclientaccess c,users d where a.customerid=b.customerid  and a.customer=c.customer and d.userid=c.usersid and a.orgid=?1 and d.username=?2  and b.branchcode=?3 group by a.customer")
 	Set<Object[]> findAllAccessCustomerByUserName(Long orgid, String userName, String branchcode);
 
 	boolean existsByCustomerNameAndCustomerShortNameAndOrgId(String customerName, String customerShortName, Long orgId);

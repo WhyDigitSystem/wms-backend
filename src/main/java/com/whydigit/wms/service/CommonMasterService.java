@@ -108,7 +108,7 @@ public interface CommonMasterService {
 	
 	Set<Object[]>getWarehouseNameByOrgIdAndBranchAndClient(Long orgid, String branch, String client);
 	
-	Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid,String username);
+	Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid,String userId);
 	
 	GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO);
 	

@@ -842,8 +842,8 @@ public class CommonMasterController extends BaseController {
 	}
 
 	@GetMapping("/globalparam/username")
-	public ResponseEntity<ResponseDTO> getGlobalParamByOrgIdAndUserName(@RequestParam Long orgid,
-			@RequestParam String username) {
+	public ResponseEntity<ResponseDTO> getGlobalParamByOrgIdAndUserId(@RequestParam Long orgid,
+			@RequestParam String userId) {
 		String methodName = "getCountryById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -851,7 +851,7 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Optional<GlobalParameterVO> globalparam = null;
 		try {
-			globalparam = commonMasterService.getGlobalParamByOrgIdAndUserName(orgid, username);
+			globalparam = commonMasterService.getGlobalParamByOrgIdAndUserName(orgid, userId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
