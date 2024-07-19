@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +11,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,14 +31,14 @@ public class ClientBranchVO {
 
 	@Column(name = "branchcode")
 	private String branchCode;
-//	@Column(name = "orgid")
-//	private Long orgId;
+	@Column(name = "branch")
+	private String branch;
+	@Column(name = "orgid")
+	private Long orgId;
 
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "customerid")
 	private CustomerVO customerVO;
 
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

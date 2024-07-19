@@ -34,7 +34,7 @@ public class SecurityConfig {
 				.permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
 						"/swagger-ui.html", "/swagger-ui/*", "/api/auth/signup", "/api/auth/login", "/api/auth/logout",
-						"/api/auth/getRefreshToken", "/api/country", "/api/state", "/api/city",
+						"/api/auth/getRefreshToken", "/api/country", "/api/state", "/api/city","/api/warehousemastercontroller/**",
 						"/api/state/country/{country}", "/api/region", "/api/group", "/api/group/{groupid}",
 						"/api/unit", "/api/unit/{unitid}", "/api/locationType/{locationtypeid}", "/api/locationType",
 						"/api/cellType", "/api/cellType/{celltypeid}", "/api/company", "/api/country/{countryid}",

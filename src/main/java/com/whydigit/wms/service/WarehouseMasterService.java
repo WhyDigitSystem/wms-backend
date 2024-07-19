@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
@@ -60,9 +61,9 @@ public interface WarehouseMasterService {
 
 	Optional<LocationTypeVO> getLocationTypeById(Long locationtypeid);
 
-	LocationTypeVO createLocationType(LocationTypeVO locationTypeVO);
+	LocationTypeVO createUpdateLocationType(LocationTypeDTO locationTypeDTO) throws ApplicationException;
 
-	Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO);
+	//Optional<LocationTypeVO> updateLocationType(LocationTypeVO locationTypeVO);
 
 	void deleteLocationType(Long locationtypeid);
 
@@ -118,8 +119,6 @@ public interface WarehouseMasterService {
 	Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode);
 
 	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
-
-	//Optional<WarehouseVO> updateWarehouse(WarehouseVO warehouseVO);
 
 	void deleteWarehouse(Long warehouseid);
 

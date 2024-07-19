@@ -25,6 +25,7 @@ import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -315,15 +316,15 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/locationType")
-	public ResponseEntity<ResponseDTO> createLocationType(@RequestBody LocationTypeVO locationTypeVO) {
-		String methodName = "createOrUpdateLocationType()";
+	@PutMapping("/createUpdateLocationType")
+	public ResponseEntity<ResponseDTO> createUpdateLocationType(@RequestBody LocationTypeDTO locationTypeDTO) {
+		String methodName = "createUpdateLocationType()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			LocationTypeVO createdLocationType = warehouseMasterService.createLocationType(locationTypeVO);
+			LocationTypeVO createdLocationType = warehouseMasterService.createUpdateLocationType(locationTypeDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationType created successfully");
 			responseObjectsMap.put("createdLocationTypeVO", createdLocationType);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -338,32 +339,32 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/locationType")
-	public ResponseEntity<ResponseDTO> updateLocationType(@RequestBody LocationTypeVO locationTypeVO) {
-		String methodName = "updateLocationType()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			LocationTypeVO updatelocationTypeVO = warehouseMasterService.updateLocationType(locationTypeVO)
-					.orElse(null);
-			if (updatelocationTypeVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Location Type Updated successfully");
-				responseObjectsMap.put("locationtype", updatelocationTypeVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Location Type not found for ID: " + locationTypeVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Location Type Update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@PutMapping("/locationType")
+//	public ResponseEntity<ResponseDTO> updateLocationType(@RequestBody LocationTypeVO locationTypeVO) {
+//		String methodName = "updateLocationType()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		try {
+//			LocationTypeVO updatelocationTypeVO = warehouseMasterService.updateLocationType(locationTypeVO)
+//					.orElse(null);
+//			if (updatelocationTypeVO != null) {
+//				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Location Type Updated successfully");
+//				responseObjectsMap.put("locationtype", updatelocationTypeVO);
+//				responseDTO = createServiceResponse(responseObjectsMap);
+//			} else {
+//				errorMsg = "Location Type not found for ID: " + locationTypeVO.getId();
+//				responseDTO = createServiceResponseError(responseObjectsMap, "Location Type Update failed", errorMsg);
+//			}
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//			responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 
 	// CellType
 
@@ -853,32 +854,6 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	@PutMapping("/warehouse")
-//	public ResponseEntity<ResponseDTO> updateWarehouse(@RequestBody WarehouseVO warehouseVO) {
-//		String methodName = "updateWarehouse()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		try {
-//			WarehouseVO updatedWarehouseVO = warehouseMasterService.updateWarehouse(warehouseVO).orElse(null);
-//			if (updatedWarehouseVO != null) {
-//				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse updated successfully");
-//				responseObjectsMap.put("warehouseVO", updatedWarehouseVO);
-//				responseDTO = createServiceResponse(responseObjectsMap);
-//			} else {
-//				errorMsg = "Warehouse not found for Warehouse ID: " + warehouseVO.getId();
-//				responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse update failed", errorMsg);
-//			}
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//			responseDTO = createServiceResponseError(responseObjectsMap,
-//					"WarehouseName, Country and BranchCode already Exist", errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
 
 	// Warehouse Location
 

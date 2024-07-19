@@ -14,4 +14,8 @@ public interface BranchRepo extends JpaRepository<BranchVO, Long> {
 	@Query(value = "SELECT a from BranchVO a where a.orgId=?1 ")
 	List<BranchVO> findAll(Long orgid);
 
+	boolean existsByBranchAndOrgId(String branch, Long orgId);
+
+	boolean existsByBranchCodeAndOrgId(String branchCode, Long orgId);
+
 }

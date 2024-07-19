@@ -12,4 +12,5 @@ public class WarehouseClientDTO {
 	private String client;
 	private String clientCode;
 	private boolean active;
+	private boolean cancel;
 }

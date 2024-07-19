@@ -7,10 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientBranchDTO {
+public class LocationTypeDTO {
 	private Long id;
-	private String branchCode;
-	private String branch;
-//	private Long orgId;
+	private String locationtype;
+	private String createdBy;
+	private Long orgId;
+	private boolean cancel;
+	private boolean active;
 
 }
