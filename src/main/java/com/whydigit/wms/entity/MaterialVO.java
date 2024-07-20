@@ -28,49 +28,49 @@ public class MaterialVO {
 	private Long id;
 
 	@Column(name = "itemtype")
-	private String itemtype;
+	private String itemType;
 	@Column(name = "partno")
 	private String partno;
 	@Column(name = "partdesc")
-	private String partdesc;
+	private String partDesc;
 	@Column(name = "custpartno")
-	private String custpartno;
+	private String custPartno;
 	@Column(name = "groupname")
-	private String groupname;
+	private String groupName;
 	@Column(name = "barcode")
 	private String barcode;
-	@Column(name = "stylecode")
+	@Column(name = "styleCode")
 	private String stylecode;
-	@Column(name = "basesku")
+	@Column(name = "baseSku")
 	private String basesku;
 	@Column(name = "purchaseunit")
-	private String purchaseunit;
+	private String purchaseUnit;
 	@Column(name = "storageunit")
-	private String storageunit;
+	private String storageUnit;
 	@Column(name = "fsn")
 	private String fsn;
-	@Column(name = "saleunit")
-	private String saleunit;
+	@Column(name = "salenit")
+	private String saleUnit;
 	@Column(name = "type")
 	private String type;
 	@Column(name = "sku")
 	private String sku;
-	@Column(name = "skuqty")
-	private String skuqty;
+	@Column(name = "skuty")
+	private String skuQty;
 	@Column(name = "ssku")
 	private String ssku;
 	@Column(name = "sskuqty")
-	private String sskuqty;
+	private String sskuQty;
 	@Column(name = "weightofskuanduom")
-	private String weightofskuanduom;
+	private String weightofSkuAndUom;
 	@Column(name = "hsncode")
-	private String hsncode;
+	private String hsnCode;
 	@Column(name = "parentchildkey")
-	private String parentchildkey;
+	private String parentChildKey;
 	@Column(name = "cbranch")
 	private String cbranch;
 	@Column(name = "criticalstocklevel")
-	private String criticalstocklevel;
+	private String criticalStockLevel;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "orgid")
@@ -81,22 +81,20 @@ public class MaterialVO {
 	private String client;
 	@Column(name = "warehouse")
 	private String warehouse;
-  @Column(name = "branch")
+	@Column(name = "branch")
 	private String branch;
 	@Column(name = "branchcode")
-	private String branchcode;
-	@Column(name = "userid")
-	private String userid;
+	private String branchCode;
 	@Column(name = "palletqty")
-	private String palletqty;
+	private String palletQty;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "length")
 	private Float length;
 	@Column(name = "breadth")
@@ -105,8 +103,7 @@ public class MaterialVO {
 	private Float height;
 	@Column(name = "weight")
 	private Float weight;
-	@Column(unique = true)
-	private String dupchk;
+	
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

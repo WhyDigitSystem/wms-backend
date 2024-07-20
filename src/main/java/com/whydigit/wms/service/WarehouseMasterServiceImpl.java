@@ -18,6 +18,7 @@ import com.whydigit.wms.dto.ClientBranchDTO;
 import com.whydigit.wms.dto.ClientDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
+import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.WarehouseClientDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -764,28 +765,118 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public MaterialVO createMaterial(MaterialVO materialVO) {
-		materialVO.setDupchk(materialVO.getOrgId() + materialVO.getCustomer() + materialVO.getClient()
-				+ materialVO.getPartno() + materialVO.getPartdesc());
-		;
+	public MaterialVO createUpdateMaterial(MaterialDTO materialDTO) throws ApplicationException {
+		
+		MaterialVO materialVO= new MaterialVO();
+		if(ObjectUtils.isEmpty(materialDTO.getId()))
+		{
+			if(materialRepo.existsByOrgIdAndCustomerAndClientAndPartno(materialDTO.getOrgId(),materialDTO.getCustomer() , materialDTO.getClient(),materialDTO.getPartno()))
+			{
+				throw new ApplicationException("Partno Already exist for this Customer");
+			}
+			if(materialRepo.existsByOrgIdAndCustomerAndClientAndPartDesc(materialDTO.getOrgId(),materialDTO.getCustomer() , materialDTO.getClient(),materialDTO.getPartDesc()))
+			{
+				throw new ApplicationException("PartDesc Already exist for this Customer");
+			}
+			materialVO.setItemType(materialDTO.getItemType());
+	        materialVO.setPartno(materialDTO.getPartno());
+	        materialVO.setPartDesc(materialDTO.getPartDesc());
+	        materialVO.setCustPartno(materialDTO.getCustPartno());
+	        materialVO.setGroupName(materialDTO.getGroupName());
+	        materialVO.setBarcode(materialDTO.getBarcode());
+	        materialVO.setStylecode(materialDTO.getStyleCode());
+	        materialVO.setBasesku(materialDTO.getBaseSku());
+	        materialVO.setPurchaseUnit(materialDTO.getPurchaseUnit());
+	        materialVO.setStorageUnit(materialDTO.getStorageUnit());
+	        materialVO.setFsn(materialDTO.getFsn());
+	        materialVO.setSaleUnit(materialDTO.getSaleUnit());
+	        materialVO.setType(materialDTO.getType());
+	        materialVO.setSku(materialDTO.getSku());
+	        materialVO.setSkuQty(materialDTO.getSkuQty());
+	        materialVO.setSsku(materialDTO.getSsku());
+	        materialVO.setSskuQty(materialDTO.getSskuQty());
+	        materialVO.setWeightofSkuAndUom(materialDTO.getWeightOfSkuAndUom());
+	        materialVO.setHsnCode(materialDTO.getHsnCode());
+	        materialVO.setParentChildKey(materialDTO.getParentChildKey());
+	        materialVO.setCbranch(materialDTO.getCbranch());
+	        materialVO.setCriticalStockLevel(materialDTO.getCriticalStockLevel());
+	        materialVO.setStatus(materialDTO.getStatus());
+	        materialVO.setOrgId(materialDTO.getOrgId());
+	        materialVO.setCustomer(materialDTO.getCustomer());
+	        materialVO.setClient(materialDTO.getClient());
+	        materialVO.setWarehouse(materialDTO.getWarehouse());
+	        materialVO.setBranch(materialDTO.getBranch());
+	        materialVO.setBranchCode(materialDTO.getBranchCode());
+	        materialVO.setPalletQty(materialDTO.getPalletQty());
+	        materialVO.setActive(materialDTO.isActive());
+	        materialVO.setCreatedBy(materialDTO.getCreatedBy());
+	        materialVO.setUpdatedBy(materialDTO.getCreatedBy());
+	        materialVO.setLength(materialDTO.getLength());
+	        materialVO.setBreadth(materialDTO.getBreadth());
+	        materialVO.setHeight(materialDTO.getHeight());
+	        materialVO.setWeight(materialDTO.getWeight());
+		}
+		else
+		{
+			materialVO=materialRepo.findById(materialDTO.getId()).get();
+			
+			if(!materialVO.getPartno().equalsIgnoreCase(materialDTO.getPartno()))
+			{
+				if(materialRepo.existsByOrgIdAndCustomerAndClientAndPartno(materialDTO.getOrgId(),materialDTO.getCustomer() , materialDTO.getClient(),materialDTO.getPartno()))
+				{
+					throw new ApplicationException("Partno Already exist for this Customer");
+				}
+				materialVO.setPartno(materialDTO.getPartno());
+			}
+			if(!materialVO.getPartDesc().equalsIgnoreCase(materialDTO.getPartDesc()))
+			{
+				if(materialRepo.existsByOrgIdAndCustomerAndClientAndPartDesc(materialDTO.getOrgId(),materialDTO.getCustomer() , materialDTO.getClient(),materialDTO.getPartDesc()))
+				{
+					throw new ApplicationException("PartDesc Already exist for this Customer");
+				}
+				materialVO.setPartDesc(materialDTO.getPartDesc());
+			}
+			materialVO.setItemType(materialDTO.getItemType());
+	        materialVO.setCustPartno(materialDTO.getCustPartno());
+	        materialVO.setGroupName(materialDTO.getGroupName());
+	        materialVO.setBarcode(materialDTO.getBarcode());
+	        materialVO.setStylecode(materialDTO.getStyleCode());
+	        materialVO.setBasesku(materialDTO.getBaseSku());
+	        materialVO.setPurchaseUnit(materialDTO.getPurchaseUnit());
+	        materialVO.setStorageUnit(materialDTO.getStorageUnit());
+	        materialVO.setFsn(materialDTO.getFsn());
+	        materialVO.setSaleUnit(materialDTO.getSaleUnit());
+	        materialVO.setType(materialDTO.getType());
+	        materialVO.setSku(materialDTO.getSku());
+	        materialVO.setSkuQty(materialDTO.getSkuQty());
+	        materialVO.setSsku(materialDTO.getSsku());
+	        materialVO.setSskuQty(materialDTO.getSskuQty());
+	        materialVO.setWeightofSkuAndUom(materialDTO.getWeightOfSkuAndUom());
+	        materialVO.setHsnCode(materialDTO.getHsnCode());
+	        materialVO.setParentChildKey(materialDTO.getParentChildKey());
+	        materialVO.setCbranch(materialDTO.getCbranch());
+	        materialVO.setCriticalStockLevel(materialDTO.getCriticalStockLevel());
+	        materialVO.setStatus(materialDTO.getStatus());
+	        materialVO.setOrgId(materialDTO.getOrgId());
+	        materialVO.setCustomer(materialDTO.getCustomer());
+	        materialVO.setClient(materialDTO.getClient());
+	        materialVO.setWarehouse(materialDTO.getWarehouse());
+	        materialVO.setBranch(materialDTO.getBranch());
+	        materialVO.setBranchCode(materialDTO.getBranchCode());
+	        materialVO.setPalletQty(materialDTO.getPalletQty());
+	        materialVO.setActive(materialDTO.isActive());
+	        materialVO.setCreatedBy(materialDTO.getCreatedBy());
+	        materialVO.setUpdatedBy(materialDTO.getCreatedBy());
+	        materialVO.setLength(materialDTO.getLength());
+	        materialVO.setBreadth(materialDTO.getBreadth());
+	        materialVO.setHeight(materialDTO.getHeight());
+	        materialVO.setWeight(materialDTO.getWeight());
+		}
+		
 		return materialRepo.save(materialVO);
 	}
 
-	@Override
-	public Optional<MaterialVO> updateMaterial(MaterialVO materialVO) {
-		if (materialRepo.existsById(materialVO.getId())) {
-			materialVO.setDupchk(materialVO.getOrgId() + materialVO.getCustomer() + materialVO.getClient()
-					+ materialVO.getPartno() + materialVO.getPartdesc());
-			materialVO.setUpdatedby(materialVO.getUpdatedby());
-			return Optional.of(materialRepo.save(materialVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteMaterial(Long materialid) {
-	}
+	
 
 	// Buyer
 
@@ -1004,10 +1095,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno, level, startno, endno);
 	}
 
-	@Override
-	public void deleteWarehouse(Long warehouseid) {
-		// TODO Auto-generated method stub
+	
 
-	}
+	
 
 }

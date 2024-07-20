@@ -47,9 +47,4 @@ public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO
 			+ "FROM NumberSequence\r\n"
 			+ "WHERE level BETWEEN ?3 AND ?4")
 	Set<Object[]> getPalletnoByRownoAndLevelno(String rowno, String level, int startno, int endno);
-
-	
-
-	
-
 }
