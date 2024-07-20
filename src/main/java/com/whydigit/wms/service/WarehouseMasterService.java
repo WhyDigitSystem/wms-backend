@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
+import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
@@ -45,13 +47,13 @@ public interface WarehouseMasterService {
 
 	// Unit
 
-	List<UnitVO> getAllUnit(Long orgid);
+	List<UnitVO> getAllUnitByOrgId(Long orgid);
+	
+	List<UnitVO> getAllUnit();
 
 	Optional<UnitVO> getUnitById(Long unitid);
 
-	UnitVO createUnit(UnitVO unitVO);
-
-	Optional<UnitVO> updateUnit(UnitVO unitVO);
+	UnitVO createUpdateUnit(UnitDTO unitDTO) throws ApplicationException;
 
 	void deleteUnit(Long unitid);
 
@@ -210,14 +212,16 @@ public interface WarehouseMasterService {
 	Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch);
 
 	// employee
+	
+	List<EmployeeVO> getAllEmployee();
 
-	List<EmployeeVO> getAllEmployeeByOrgId(Long orgid);
+	List<EmployeeVO> getAllEmployeeByOrgId(Long orgId);
 
 	Optional<EmployeeVO> getEmployeeById(Long employeeid);
 
-	EmployeeVO createEmployee(EmployeeVO employeeVO);
+	EmployeeVO createEmployee(EmployeeDTO employeeDTO) throws ApplicationException;
 
-	Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO);
+	//Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO);
 
 	void deleteEmployee(Long employeeid);
 
@@ -231,5 +235,7 @@ public interface WarehouseMasterService {
 
 	// Create Pallet No
 	Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level, int startno, int endno);
+
+
 
 }
