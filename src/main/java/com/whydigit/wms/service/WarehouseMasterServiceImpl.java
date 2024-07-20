@@ -17,8 +17,10 @@ import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.ClientBranchDTO;
 import com.whydigit.wms.dto.ClientDTO;
 import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
+import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseClientDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -154,7 +156,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	// Unit
 
 	@Override
-	public List<UnitVO> getAllUnit(Long orgid) {
+	public List<UnitVO> getAllUnitByOrgId(Long orgid) {
+		
 		return unitRepo.findAll(orgid);
 	}
 
@@ -164,25 +167,39 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public UnitVO createUnit(UnitVO unitVO) {
-		unitVO.setCancel(false);
+	public UnitVO createUpdateUnit(UnitDTO unitDTO) throws ApplicationException {
+		UnitVO unitVO=new UnitVO();
+		if(unitDTO.getId()!=null) {
+			unitVO=unitRepo.findById(unitDTO.getId()).orElseThrow(()->
+			new ApplicationException("This Id Not Found Any Information ."+unitDTO.getId()));
+			unitVO.setUpdatedBy(unitDTO.getCreatedBy());
+		}else {
+			unitVO.setCreatedBy(unitDTO.getCreatedBy());
+			unitVO.setUpdatedBy(unitDTO.getCreatedBy());
+		}
+		getUnitVOAndUnitDTO(unitVO,unitDTO);
 		return unitRepo.save(unitVO);
-
 	}
+
+	private void getUnitVOAndUnitDTO(UnitVO unitVO, UnitDTO unitDTO) {
+		unitVO.setUnitName(unitDTO.getUnitName());
+		unitVO.setUnitType(unitDTO.getUnitType());
+		unitVO.setActive(unitDTO.isActive());
+		unitVO.setCancel(unitDTO.isCancel());
+		unitVO.setOrgId(unitDTO.getOrgId());
+	}
+
 
 	@Override
-	public Optional<UnitVO> updateUnit(UnitVO unitVO) {
-		if (unitRepo.existsById(unitVO.getId())) {
-			return Optional.of(unitRepo.save(unitVO));
-		} else {
-			return Optional.empty();
-		}
+	public List<UnitVO> getAllUnit() {
+		return unitRepo.findAll();
 	}
-
+	
 	@Override
 	public void deleteUnit(Long unitid) {
 		unitRepo.deleteById(unitid);
 	}
+	
 	// LocationType
 
 	@Override
@@ -219,7 +236,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			if (!locationTypeVO.getLocationType().equalsIgnoreCase(locationTypeDTO.getLocationtype())) {
 				if (locationTypeRepo.existsByLocationTypeAndOrgId(locationTypeDTO.getLocationtype(),
 						locationTypeDTO.getOrgId())) {
-
+ 
 					String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
 							locationTypeDTO.getLocationtype());
 					throw new ApplicationException(errorMessage);
@@ -678,6 +695,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return warehouseVO;
 	}
 
+	
+	@Override
+	public void deleteWarehouse(Long warehouseid) {
+		unitRepo.deleteById(warehouseid);
+	}
+	
 	// Warehouse Location
 
 	@Override
@@ -1030,35 +1053,70 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	// Employee
 
 	@Override
-	public List<EmployeeVO> getAllEmployeeByOrgId(Long orgid) {
-		return employeeRepo.findAllEmployeeByOrgId(orgid);
+	public List<EmployeeVO> getAllEmployeeByOrgId(Long orgId) {
+		return employeeRepo.findAllEmployeeByOrgId(orgId);
 	}
 
+	@Override
+	public List<EmployeeVO> getAllEmployee() {
+		return employeeRepo.findAll();
+	}
+
+	
 	@Override
 	public Optional<EmployeeVO> getEmployeeById(Long employeeid) {
 		return employeeRepo.findById(employeeid);
 	}
 
 	@Override
-	public EmployeeVO createEmployee(EmployeeVO employeeVO) {
-		employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
-		employeeVO.setEmployeename(employeeVO.getEmployeename().toUpperCase());
-		employeeVO.setDupchk(employeeVO.getOrgId() + employeeVO.getEmployeecode());
+	public EmployeeVO createEmployee(EmployeeDTO employeeDTO) throws ApplicationException {
+		EmployeeVO employeeVO=new EmployeeVO();
+		if(ObjectUtils.isEmpty(employeeDTO.getId())) {
+			if(employeeRepo.existsByEmployeeCodeAndOrgId(employeeDTO.getEmployeeCode(),employeeDTO.getOrgId())) {
+				String errorMessage=String.format("This EmployeeCode :%s Already Exists  This Organization", employeeDTO.getEmployeeCode());
+				throw new ApplicationException(errorMessage);
+			}
+		}
+		if (employeeDTO.getId() != null) {
+
+			employeeVO = employeeRepo.findById(employeeDTO.getId()).orElseThrow(
+					() -> new ApplicationException("ID is Not Found AnyInformation ." + employeeDTO.getId()));
+
+			employeeVO.setUpdatedBy(employeeDTO.getCreatedBy());
+			
+			if (!employeeVO.getEmployeeCode().equalsIgnoreCase(employeeDTO.getEmployeeCode())) {
+				if (employeeRepo.existsByEmployeeCodeAndOrgId(employeeDTO.getEmployeeCode(), employeeDTO.getOrgId())) {
+					String errorMessage = String.format("This EmployeeCode :%s Already Exists  This Organization",employeeDTO.getEmployeeCode());
+					throw new ApplicationException(errorMessage);
+				}
+				employeeVO.setEmployeeCode(employeeDTO.getEmployeeCode());
+			}
+			}else {
+				employeeVO.setUpdatedBy(employeeDTO.getCreatedBy());
+				employeeVO.setCreatedBy(employeeDTO.getCreatedBy());
+				
+			}
+	
+		getEmployeeVOFromEmployeeDTO(employeeVO,employeeDTO);
 		return employeeRepo.save(employeeVO);
 	}
-
-	@Override
-	public Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO) {
-		if (employeeRepo.existsById(employeeVO.getId())) {
-			employeeVO.setUpdatedby(employeeVO.getUserid());
-			employeeVO.setEmployeecode(employeeVO.getEmployeecode().toUpperCase());
-			employeeVO.setEmployeename(employeeVO.getEmployeename().toUpperCase());
-			employeeVO.setDupchk(employeeVO.getOrgId() + employeeVO.getEmployeecode());
-			return Optional.of(employeeRepo.save(employeeVO));
-		} else {
-			return Optional.empty();
-		}
-	}
+	private void getEmployeeVOFromEmployeeDTO(EmployeeVO employeeVO, EmployeeDTO employeeDTO) {
+		employeeVO.setEmployeeCode(employeeDTO.getEmployeeCode());
+		employeeVO.setEmployeeName(employeeDTO.getEmployeeName());
+		employeeVO.setGender(employeeDTO.getGender());
+		employeeVO.setBranch(employeeDTO.getBranch());
+		employeeVO.setBranchCode(employeeDTO.getBranchCode());
+		employeeVO.setDepartment(employeeDTO.getDepartment());
+		employeeVO.setDesignation(employeeDTO.getDesignation());
+		employeeVO.setDateOfBirth(employeeDTO.getDateOfBirth());
+		employeeVO.setJoiningDate(employeeDTO.getJoiningdate());
+		employeeVO.setOrgId(employeeDTO.getOrgId());
+		employeeVO.setCancel(employeeDTO.isCancel());
+		employeeVO.setActive(employeeDTO.isActive());
+		employeeVO.setCancelRemark(employeeDTO.getCancelRemark());
+		
+	}	
+	
 
 	@Override
 	public void deleteEmployee(Long employeeid) {
@@ -1095,8 +1153,5 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno, level, startno, endno);
 	}
 
-	
-
-	
 
 }

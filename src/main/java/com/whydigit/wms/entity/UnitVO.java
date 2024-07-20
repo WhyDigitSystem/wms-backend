@@ -28,22 +28,16 @@ public class UnitVO {
 	@Column(name = "unitid")
 	private Long id;
 
-	@Column(name = "userid")
-	private String userid;
-	@Column(name = "uom")
-	private String uom;
 	@Column(name = "unitname")
-	private String unitname;
+	private String unitName;
 	@Column(name = "unittype")
-	private String unittype;
+	private String unitType;
 	@Column(name = "active")
 	private boolean active;
-	@Column(unique = true)
-	private String dupchk;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 

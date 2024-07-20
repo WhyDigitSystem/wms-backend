@@ -643,14 +643,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public CurrencyVO createCurrency(CurrencyVO currencyVO) {
 		currencyVO.setCancel(false);
-		currencyVO.setDupchk(currencyVO.getOrgId() + currencyVO.getCountry() + currencyVO.getCurrency());
 		return currencyRepo.save(currencyVO);
 	}
 
 	@Override
 	public Optional<CurrencyVO> updateCurrency(CurrencyVO currencyVO) {
 		if (currencyRepo.existsById(currencyVO.getId())) {
-			currencyVO.setDupchk(currencyVO.getCountry() + currencyVO.getCurrency());
 			return Optional.of(currencyRepo.save(currencyVO));
 		} else {
 			return Optional.empty();
