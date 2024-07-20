@@ -27,6 +27,7 @@ import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
+import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
@@ -1186,15 +1187,15 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/material")
-	public ResponseEntity<ResponseDTO> createMaterial(@RequestBody MaterialVO materialVO) {
+	@PutMapping("/material")
+	public ResponseEntity<ResponseDTO> createMaterial(@RequestBody MaterialDTO materialDTO) {
 		String methodName = "createMaterial()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			MaterialVO createMaterialVO = warehouseMasterService.createMaterial(materialVO);
+			MaterialVO createMaterialVO = warehouseMasterService.createUpdateMaterial(materialDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Material created successfully");
 			responseObjectsMap.put("Material", createMaterialVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -1207,6 +1208,10 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+
+	
+
 
 	// Buyer
 

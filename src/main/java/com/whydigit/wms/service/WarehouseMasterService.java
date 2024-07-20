@@ -10,6 +10,8 @@ import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
+import com.whydigit.wms.dto.MaterialDTO;
+import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -122,7 +124,6 @@ public interface WarehouseMasterService {
 
 	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
 
-	void deleteWarehouse(Long warehouseid);
 
 	// Warehouse Location
 	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String warehouse, String branch); // Method names
@@ -147,17 +148,14 @@ public interface WarehouseMasterService {
 
 	void deleteWarehouseLocation(Long warehouselocationid);
 
+	
 	// Material Master
 
 	List<MaterialVO> getAllMaterialsByOrgIdAndClientAndCbranch(Long orgid, String client, String cbranch);
 
 	Optional<MaterialVO> getMaterialById(Long materialid);
 
-	MaterialVO createMaterial(MaterialVO materialVO); // Return the created entity
-
-	Optional<MaterialVO> updateMaterial(MaterialVO materialVO);
-
-	void deleteMaterial(Long materialid);
+	MaterialVO createUpdateMaterial(MaterialDTO materialDTO) throws ApplicationException; // Return the created entity
 
 	// Buyer Master
 
