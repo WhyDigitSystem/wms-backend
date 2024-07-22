@@ -1,17 +1,19 @@
 package com.whydigit.wms.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.BranchDTO;
+import com.whydigit.wms.dto.BuyerDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
-import com.whydigit.wms.dto.MaterialDTO;
+import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -163,11 +165,7 @@ public interface WarehouseMasterService {
 
 	Optional<BuyerVO> getBuyerById(Long buyerid);
 
-	BuyerVO createBuyer(BuyerVO buyerVO);
-
-	Optional<BuyerVO> updateBuyer(BuyerVO buyerVO);
-
-	void deleteBuyer(Long buyerid);
+	BuyerVO createUpdateBuyer(BuyerDTO buyerDTO) throws ApplicationException;
 
 	// Supplier Master
 
@@ -175,13 +173,9 @@ public interface WarehouseMasterService {
 
 	Optional<SupplierVO> getSupplierById(Long supplierid);
 
-	SupplierVO createSupplier(SupplierVO supplierVO);
+	Map<String, Object> createUpdateSupplier(SupplierDTO supplierDTO) throws ApplicationException;
 
-	Optional<SupplierVO> updateSupplier(SupplierVO supplierVO);
-
-	void deleteSupplier(Long supplierid);
-
-	Set<Object[]> getSupplierNameByCustomer(Long orgid, String client, String cbranch);
+	List<Map<String, Object>> getActiveSupplierNameByCustomer(Long orgid, String client, String cbranch);
 
 	// LocationMapping
 

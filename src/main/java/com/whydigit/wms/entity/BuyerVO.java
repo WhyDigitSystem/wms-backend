@@ -30,31 +30,31 @@ public class BuyerVO {
 	@Column(name = "buyer")
 	private String buyer;
 	@Column(name = "buyershortname")
-	private String buyershortname;
+	private String buyerShortName;
 	@Column(name = "buyertype")
-	private String buyer_type;
+	private String buyerType;
 	@Column(name = "buyergroupof")
-	private String buyergroupof;
+	private String buyerGroupOf;
 	@Column(name = "contactperson")
-	private String contactperson;
+	private String contactPerson;
 	@Column(name = "panno")
-	private String panno;
+	private String panNo;
 	@Column(name = "tanno")
-	private String tanno;
+	private String tanNo;
 	@Column(name = "zipcode")
-	private String zipcode;
-	@Column(name = "emailid")
-	private String emailid;
+	private String zipCode;
+	@Column(name = "email")
+	private String email;
 	@Column(name = "gst")
 	private String gst;
 	@Column(name = "gstno")
-	private String gstno;
-	@Column(name = "mobilenumber1")
-	private String mobilenumber;
+	private String gstNo;
+	@Column(name = "mobileno")
+	private String mobileNo;
 	@Column(name = "addressline1")
-	private String addressline1;
+	private String addressLine1;
 	@Column(name = "addressline2")
-	private String addressline2;
+	private String addressLine2;
 	@Column(name = "city")
 	private String city;
 	@Column(name = "state")
@@ -62,27 +62,23 @@ public class BuyerVO {
 	@Column(name = "country")
 	private String country;
 	@Column(name = "eccno")
-	private String eccno;
+	private String eccNo;
 	@Column(name = "cbranch")
 	private String cbranch;
-	@Column(unique = true)
-	private String dupchk;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
 	@Column(name = "cancelremarks")
-	private String cancelremark;
+	private String cancelRemark;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "client")

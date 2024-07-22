@@ -30,27 +30,27 @@ public class SupplierVO {
 	@Column(name = "supplier")
 	private String supplier;
 	@Column(name = "suppliershortname")
-	private String suppliershortname;
+	private String supplierShortName;
 	@Column(name = "suppliertype")
-	private String suppliertype;
+	private String supplierType;
 	@Column(name = "suppliergroupof")
-	private String suppliergroupof;
+	private String supplierGroupOf;
 	@Column(name = "category")
 	private String category;
 	@Column(name = "panno")
-	private String panno;
+	private String panNo;
 	@Column(name = "tanno")
-	private String tanno;
+	private String tanNo;
 	@Column(name = "contactperson")
-	private String contactperson;
+	private String contactPerson;
 	@Column(name = "landlinenumber")
-	private String landlinenumber;
-	@Column(name = "mobilenumber")
-	private String mobilenumber;
+	private String landLineNo;
+	@Column(name = "mobileno")
+	private String mobileNo;
 	@Column(name = "addressline1")
-	private String addressline1;
+	private String addressLine1;
 	@Column(name = "addressline2")
-	private String addressline2;
+	private String addressLine2;
 	@Column(name = "city")
 	private String city;
 	@Column(name = "cbranch")
@@ -60,31 +60,27 @@ public class SupplierVO {
 	@Column(name = "country")
 	private String country;
 	@Column(name = "zipcode")
-	private String zipcode;
-	@Column(name = "emailid")
-	private String emailid;
+	private String zipCode;
+	@Column(name = "email")
+	private String email;
 	@Column(name = "eccno")
-	private String eccno;
+	private String eccNo;
 	@Column(name = "rangeaddress")
-	private String rangeaddress;
-	@Column(unique = true)
-	private String dupchk;
+	private String rangeAddress;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
 	@Column(name = "cancelremarks")
-	private String cancelremark;
+	private String cancelRemark;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "client")

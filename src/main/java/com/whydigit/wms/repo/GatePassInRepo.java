@@ -11,7 +11,7 @@ import com.whydigit.wms.entity.GatePassInVO;
 @Repository
 public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 
-	@Query(value = "SELECT m.partno, m.partdesc, m.sku, m.ssku FROM MaterialVO m WHERE orgId = ?1 AND client = ?2 AND customer = ?3 AND (cbranch = 'ALL' OR cbranch = ?4)")
+	@Query(value = "SELECT m.partno, m.partDesc, m.sku, m.ssku FROM MaterialVO m WHERE orgId = ?1 AND client = ?2 AND customer = ?3 AND (cbranch = 'ALL' OR cbranch = ?4)")
 	Set<Object[]> findAllPartnoByCustomer(Long orgId, String client, String customer, String cbranch);
 
 	@Query(nativeQuery = true, value = "SELECT lrnohaw ,invoiceno , invoicedate ,c.partno,c.partdesc ,b.sku\r\n"
