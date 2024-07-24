@@ -30,6 +30,7 @@ import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.dto.ResponsibilityDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
@@ -1342,7 +1343,7 @@ public class WarehouseMasterController extends BaseController {
 	@GetMapping("/getActiveSupplierNameByCustomer")
 	public ResponseEntity<ResponseDTO> getActiveSupplierNameByCustomer(@RequestParam Long orgid,
 			@RequestParam String client, @RequestParam String cbranch) {
-		String methodName = "getSupplierNameByCustomer()";
+		String methodName = "getActiveSupplierNameByCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -1930,4 +1931,7 @@ public class WarehouseMasterController extends BaseController {
 		}
 		return palletno;
 	}
+	
+	
+	
 }

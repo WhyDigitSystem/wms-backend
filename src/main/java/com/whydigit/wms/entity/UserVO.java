@@ -88,7 +88,7 @@ public class UserVO {
 
 	@OneToMany(mappedBy = "userVO", cascade = CascadeType.ALL)
 	private List<UserLoginBranchAccessibleVO> branchAccessibleVO;
-
+	
 	private Date accountRemovedDate;
 	
 	@ManyToOne
