@@ -1,6 +1,8 @@
 package com.whydigit.wms.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +28,8 @@ import com.whydigit.wms.dto.LoginFormDTO;
 import com.whydigit.wms.dto.RefreshTokenDTO;
 import com.whydigit.wms.dto.ResetPasswordFormDTO;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.dto.ResponsibilityDTO;
+import com.whydigit.wms.dto.RolesDTO;
 import com.whydigit.wms.dto.SignUpFormDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.service.AuthService;
@@ -184,6 +189,74 @@ public class AuthController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, AuthConstant.REFRESH_TOKEN_FAILED_MESSAGE,
 					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PutMapping("/createUpdateResponsibility")
+	public ResponseEntity<ResponseDTO> createUpdateResponsibility(@RequestBody ResponsibilityDTO responsibilityDTO) {
+		String methodName = "createUpdateResponsibility()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> responsibile = authService.createUpdateResponsibilities(responsibilityDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, responsibile.get("message") );
+			responseObjectsMap.put("responsibilityVO", responsibile.get("responsibilityVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getActiveResponsibilityByOrgId")
+	public ResponseEntity<ResponseDTO> getActiveResponsibilityByOrgId(@RequestParam Long orgId) {
+		String methodName = "getActiveResponsibilityByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> responsibilityVO = new ArrayList<>();
+		try {
+			responsibilityVO = authService.getActiveResponsibilityByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Responsibility Founded");
+			responseObjectsMap.put("responsibilityVO", responsibilityVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Responsibility not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "Responsibility not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PutMapping("/createUpdateRoles")
+	public ResponseEntity<ResponseDTO> createUpdateRoles(@RequestBody RolesDTO rolesDTO) {
+		String methodName = "createUpdateResponsibility()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> roles = authService.createUpdateRoles(rolesDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, roles.get("message") );
+			responseObjectsMap.put("rolesVO", roles.get("rolesVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

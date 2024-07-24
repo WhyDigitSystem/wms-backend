@@ -2,7 +2,10 @@ package com.whydigit.wms.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,11 +23,19 @@ import com.whydigit.wms.dto.ChangePasswordFormDTO;
 import com.whydigit.wms.dto.LoginFormDTO;
 import com.whydigit.wms.dto.RefreshTokenDTO;
 import com.whydigit.wms.dto.ResetPasswordFormDTO;
+import com.whydigit.wms.dto.ResponsibilityDTO;
+import com.whydigit.wms.dto.RolesDTO;
+import com.whydigit.wms.dto.RolesResponsibilityDTO;
+import com.whydigit.wms.dto.ScreensDTO;
 import com.whydigit.wms.dto.SignUpFormDTO;
 import com.whydigit.wms.dto.UserLoginBranchAccessDTO;
 import com.whydigit.wms.dto.UserLoginClientAccessDTO;
 import com.whydigit.wms.dto.UserLoginRoleAccessDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
+import com.whydigit.wms.entity.ResponsibilityVO;
+import com.whydigit.wms.entity.RolesResponsibilityVO;
+import com.whydigit.wms.entity.RolesVO;
+import com.whydigit.wms.entity.ScreensVO;
 import com.whydigit.wms.entity.TokenVO;
 import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;
 import com.whydigit.wms.entity.UserLoginClientAccessVO;
@@ -32,6 +43,10 @@ import com.whydigit.wms.entity.UserLoginRolesVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.ClientRepo;
+import com.whydigit.wms.repo.ResponsibilitiesRepo;
+import com.whydigit.wms.repo.RolesRepo;
+import com.whydigit.wms.repo.RolesResponsibilityRepo;
+import com.whydigit.wms.repo.ScreensRepo;
 import com.whydigit.wms.repo.TokenRepo;
 import com.whydigit.wms.repo.UserActionRepo;
 import com.whydigit.wms.repo.UserRepo;
@@ -63,7 +78,20 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	UserService userService;
-
+	
+	@Autowired
+	ScreensRepo screenRepo;
+	
+	@Autowired
+	ResponsibilitiesRepo responsibilityRepo;
+	
+	@Autowired
+    RolesRepo rolesRepo;
+	
+	@Autowired
+	RolesResponsibilityRepo rolesResponsibilityRepo;
+	
+	
 	@Override
 	public void signup(SignUpFormDTO signUpRequest) {
 		String methodName = "signup()";
@@ -106,8 +134,8 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
         		
         		UserLoginRolesVO loginRolesVO=new UserLoginRolesVO();
         		loginRolesVO.setRole(accessDTO.getRole());
-        		loginRolesVO.setStartdate(accessDTO.getStartdate());
-        		loginRolesVO.setEnddate(accessDTO.getEnddate());
+        		loginRolesVO.setStartDate(accessDTO.getStartDate());
+        		loginRolesVO.setEndDate(accessDTO.getEndDate());
         		loginRolesVO.setUserVO(userVO);
         		rolesVO.add(loginRolesVO);
         	}
@@ -165,6 +193,41 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 					UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND_AND_ASKING_SIGNUP);
 		}
 		UserResponseDTO userResponseDTO = mapUserVOToDTO(userVO);
+		
+		List<Map<String, Object>> responsibilityVOList = new ArrayList<>();
+		List<Map<String, Object>> screenVOList = new ArrayList<>();
+		List<UserLoginRolesVO> loginRolesVOs = userVO.getRoleAccessVO();
+		userResponseDTO.setRoleVO(loginRolesVOs);
+	    // Iterate through UserLoginRolesVO to get RolesVO and then get RolesResponsibilityVO
+	    for (UserLoginRolesVO loginRolesVO : userVO.getRoleAccessVO()) {
+	        
+	        Long roleId = loginRolesVO.getRoleId();
+	        
+	        // Fetch the RolesVO using loginRolesVO.getRoleId()
+	        RolesVO rolesVO = rolesRepo.findById(roleId).orElse(null);
+
+	        if (rolesVO != null && rolesVO.getRolesReposibilitiesVO() != null) {
+	            for (RolesResponsibilityVO rolesResponsibilityVO : rolesVO.getRolesReposibilitiesVO()) {
+	                // Fetch the ResponsibilityVO to get associated screens
+	                ResponsibilityVO responsibilityVO = responsibilityRepo.findById(rolesResponsibilityVO.getResponsibilityId()).orElse(null);
+
+	                Map<String, Object> responsibilityMap = new HashMap<>();
+	                responsibilityMap.put("responsibility", rolesResponsibilityVO.getResponsibility());
+	                responsibilityVOList.add(responsibilityMap);
+	                if (responsibilityVO != null && responsibilityVO.getScreensVO() != null) {
+	                    for (ScreensVO screenVO : responsibilityVO.getScreensVO()) {
+	                        Map<String, Object> screenMap = new HashMap<>();
+	                        screenMap.put("screenName", screenVO.getScreenName());
+	                        screenVOList.add(screenMap);
+	                    }
+	                }
+	            }
+	        }
+	    }
+
+	    userResponseDTO.setScreensVO(screenVOList);
+	    // Set the responsibilities with screens in the response DTO
+	    userResponseDTO.setResponsibilityVO(responsibilityVOList);
 		TokenVO tokenVO = tokenProvider.createToken(userVO.getId(), loginRequest.getUserName());
 		userResponseDTO.setToken(tokenVO.getToken());
 		userResponseDTO.setTokenId(tokenVO.getId());
@@ -338,17 +401,176 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		userDTO.setCustomer(userVO.getCustomer());
 		userDTO.setClient(userVO.getClient());
 		userDTO.setOrgId(userVO.getOrgId());
+		userDTO.setActive(userVO.getIsActive());
 		userDTO.setWarehouse(userVO.getWarehouse());
 		userDTO.setUserType(userVO.getUserType());
 		userDTO.setEmail(userVO.getEmail());
 		userDTO.setUserName(userVO.getUserName());
 		userDTO.setLoginStatus(userVO.isLoginStatus());
 		//userDTO.setIsActive(userVO.getIsActive());
-		userDTO.setRole(userVO.getRole());
 		userDTO.setCommonDate(userVO.getCommonDate());
 		userDTO.setAccountRemovedDate(userVO.getAccountRemovedDate());
+				 
+		List<UserLoginRolesVO> loginRolesVOs = userVO.getRoleAccessVO();
+	    userDTO.setRoleVO(loginRolesVOs);
 		return userDTO;
 	}
+
+	@Override
+	public Map<String, Object> createUpdateResponsibilities(ResponsibilityDTO responsibilityDTO) throws ApplicationException {
+
+	    ResponsibilityVO responsibilityVO = new ResponsibilityVO();
+	    String message;
+	    // Check if the responsibilityDTO ID is empty (indicating a new entry)
+	    if (ObjectUtils.isEmpty(responsibilityDTO.getId())) {
+
+	        // Validate if responsibility already exists by responsibility name
+	        if (responsibilityRepo.existsByResponsibility(responsibilityDTO.getResponsibility())) {
+	            throw new ApplicationException("Responsibility Name already exists");
+	        }
+
+	        responsibilityVO.setCreatedBy(responsibilityDTO.getCreatedBy());
+	        responsibilityVO.setUpdatedBy(responsibilityDTO.getCreatedBy());
+	        // Set the values from responsibilityDTO to responsibilityVO
+	        mapResponsibilityDtoToResponsibilityVo(responsibilityDTO, responsibilityVO);
+	        message = "Responsibilites Created successfully";
+
+	    } else {
+
+	        // Retrieve the existing ResponsibilityVO from the repository
+	        responsibilityVO = responsibilityRepo.findById(responsibilityDTO.getId())
+	                .orElseThrow(() -> new ApplicationException("Responsibility not found"));
+
+	        // Validate and update unique fields if changed
+	        if (!responsibilityVO.getResponsibility().equalsIgnoreCase(responsibilityDTO.getResponsibility())) {
+	            if (responsibilityRepo.existsByResponsibility(responsibilityDTO.getResponsibility())) {
+	                throw new ApplicationException("Responsibility Name already exists");
+	            }
+	            responsibilityVO.setResponsibility(responsibilityDTO.getResponsibility());
+	        }
+	        
+	        List<ScreensVO> screensVOs= screenRepo.findByResponsibilityVO(responsibilityVO);
+	        screenRepo.deleteAll(screensVOs);
+
+	        responsibilityVO.setUpdatedBy(responsibilityDTO.getCreatedBy());
+	        // Update the remaining fields from responsibilityDTO to responsibilityVO
+	        mapResponsibilityDtoToResponsibilityVo(responsibilityDTO, responsibilityVO);
+	        message = "Responsibilites Updated successfully";
+	    }
+
+	   responsibilityRepo.save(responsibilityVO);
+	   Map<String, Object> response = new HashMap<>();
+	    response.put("responsibilityVO", responsibilityVO);
+	    response.put("message", message);
+	    return response;
+	}
+
+	// Helper method to map ResponsibilityDTO to ResponsibilityVO
+	private void mapResponsibilityDtoToResponsibilityVo(ResponsibilityDTO responsibilityDTO, ResponsibilityVO responsibilityVO) {
+	    responsibilityVO.setResponsibility(responsibilityDTO.getResponsibility());
+	    responsibilityVO.setOrgId(responsibilityDTO.getOrgId());
+	    responsibilityVO.setActive(responsibilityDTO.isActive());
+	    if (responsibilityDTO.getScreensDTO() != null) {
+	        List<ScreensVO> screensVOList = new ArrayList<>();
+	        for (ScreensDTO screensDTO : responsibilityDTO.getScreensDTO()) {
+	            ScreensVO screensVO = new ScreensVO();
+	            screensVO.setScreenName(screensDTO.getScreenName());
+	            screensVO.setOrgId(responsibilityDTO.getOrgId());
+	            screensVO.setResponsibilityVO(responsibilityVO);
+	            screensVOList.add(screensVO);
+	        }
+	        responsibilityVO.setScreensVO(screensVOList);
+	    }
+	}
+
+	@Override
+	public List<Map<String, Object>> getActiveResponsibilityByOrgId(Long orgId) {
+		Set<Object[]>activeResponsibility= responsibilityRepo.findActiveByOrgId(orgId);
+		return getActiveResponsibile(activeResponsibility);
+	}
+	private List<Map<String, Object>> getActiveResponsibile(Set<Object[]> activeResponsibility) {
+		List<Map<String, Object>>getResponse=new ArrayList<>();
+		for(Object[] response:activeResponsibility)
+		{
+			Map<String,Object>res= new  HashMap<>();
+			res.put("responsibilityId",response[0] !=null ? response[0].toString():"");
+			res.put("responsibility",response[1] !=null ? response[1].toString():"");
+			getResponse.add(res);
+			}
+		return getResponse;
+	}
+
+	@Override
+	public Map<String, Object> createUpdateRoles(RolesDTO rolesDTO) throws ApplicationException {
+	    RolesVO rolesVO = new RolesVO();
+	    String message;
+
+	    // Check if the rolesDTO ID is empty (indicating a new entry)
+	    if (ObjectUtils.isEmpty(rolesDTO.getId())) {
+
+	        // Validate if role already exists
+	        if (rolesRepo.existsByRoleAndOrgId(rolesDTO.getRole(),rolesDTO.getOrgId())) {
+	            throw new ApplicationException("Role already exists");
+	        }
+
+	        rolesVO.setCreatedBy(rolesDTO.getCreatedBy());
+	        rolesVO.setUpdatedBy(rolesDTO.getCreatedBy());
+	        // Set the values from rolesDTO to rolesVO
+	        mapRolesDtoToRolesVo(rolesDTO, rolesVO);
+	        message = "Roles Created successfully";
+
+	    } else {
+
+	        // Retrieve the existing RolesVO from the repository
+	        rolesVO = rolesRepo.findById(rolesDTO.getId())
+	                .orElseThrow(() -> new ApplicationException("Role not found"));
+
+	        // Validate and update unique fields if changed
+	        if (!rolesVO.getRole().equalsIgnoreCase(rolesDTO.getRole())) {
+	            if (rolesRepo.existsByRoleAndOrgId(rolesDTO.getRole(),rolesDTO.getOrgId())) {
+	                throw new ApplicationException("Role already exists");
+	            }
+	            rolesVO.setRole(rolesDTO.getRole());
+	        }
+
+	        List<RolesResponsibilityVO> rolesResponsibilityVOs = rolesResponsibilityRepo.findByRolesVO(rolesVO);
+	        rolesResponsibilityRepo.deleteAll(rolesResponsibilityVOs);
+
+	        rolesVO.setUpdatedBy(rolesDTO.getCreatedBy());
+	        // Update the remaining fields from rolesDTO to rolesVO
+	        mapRolesDtoToRolesVo(rolesDTO, rolesVO);
+	        message = "Roles Updated successfully";
+	    }
+
+	    rolesRepo.save(rolesVO);
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("rolesVO", rolesVO);
+	    response.put("message", message);
+	    return response;
+	}
+
+	// Helper method to map RolesDTO to RolesVO
+	private void mapRolesDtoToRolesVo(RolesDTO rolesDTO, RolesVO rolesVO) {
+	    rolesVO.setRole(rolesDTO.getRole());
+	    rolesVO.setOrgId(rolesDTO.getOrgId());
+	    rolesVO.setActive(rolesDTO.isActive());
+	    if (rolesDTO.getRolesResponsibilityDTO() != null) {
+	        List<RolesResponsibilityVO> rolesResponsibilityVOList = new ArrayList<>();
+	        for (RolesResponsibilityDTO rolesResponsibilityDTO : rolesDTO.getRolesResponsibilityDTO()) {
+	            RolesResponsibilityVO rolesResponsibilityVO = new RolesResponsibilityVO();
+	            rolesResponsibilityVO.setResponsibility(rolesResponsibilityDTO.getResponsibility());
+	            rolesResponsibilityVO.setResponsibilityId(rolesResponsibilityDTO.getResponsibilityId());
+	            rolesResponsibilityVO.setOrgId(rolesDTO.getOrgId());
+	            rolesResponsibilityVO.setRolesVO(rolesVO);
+	            rolesResponsibilityVOList.add(rolesResponsibilityVO);
+	        }
+	        rolesVO.setRolesReposibilitiesVO(rolesResponsibilityVOList);
+	    }
+	}
+
+	
+
+
 
 	
 }

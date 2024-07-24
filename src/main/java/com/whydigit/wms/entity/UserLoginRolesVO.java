@@ -1,6 +1,7 @@
 package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -33,15 +35,21 @@ public class UserLoginRolesVO {
 	
 	@Column(name="role")
 	private String role;
+	@Column(name="roleid")
+	private Long roleId;
 	@Column(name="startdate")
-	private LocalDate startdate;
+	private LocalDate startDate;
 	@Column(name="enddate")
-	private LocalDate enddate;
+	private LocalDate endDate;
 	
 	@JsonBackReference
 	@ManyToOne
     @JoinColumn(name = "usersid")
     private UserVO userVO;
+	
+	
+	
+	
 	
 //	@Embedded
 //	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

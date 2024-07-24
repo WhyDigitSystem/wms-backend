@@ -1,11 +1,16 @@
 package com.whydigit.wms.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.ChangePasswordFormDTO;
 import com.whydigit.wms.dto.LoginFormDTO;
 import com.whydigit.wms.dto.RefreshTokenDTO;
 import com.whydigit.wms.dto.ResetPasswordFormDTO;
+import com.whydigit.wms.dto.ResponsibilityDTO;
+import com.whydigit.wms.dto.RolesDTO;
 import com.whydigit.wms.dto.SignUpFormDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.exception.ApplicationException;
@@ -25,7 +30,11 @@ public interface AuthService {
 
 	public RefreshTokenDTO getRefreshToken(String userName, String tokenId) throws ApplicationException;
 	
+	Map<String, Object> createUpdateResponsibilities(ResponsibilityDTO responsibilityDTO) throws ApplicationException;
 	
+	List<Map<String, Object>> getActiveResponsibilityByOrgId(Long orgId);
+	
+	Map<String, Object> createUpdateRoles(RolesDTO rolesDTO) throws ApplicationException;
 
 	
 
