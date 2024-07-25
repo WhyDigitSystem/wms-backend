@@ -6,9 +6,6 @@ import java.util.Map;
 
 import javax.persistence.Embedded;
 
-import com.whydigit.wms.entity.ResponsibilityVO;
-import com.whydigit.wms.entity.UserLoginRolesVO;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,31 +26,18 @@ public class UserResponseDTO {
 	private String client;
 	private boolean loginStatus;
 	private boolean active;
-	private List<UserLoginRolesVO> roleVO;
+	private List<Map<String, Object>> roleVO;
 	private List<Map<String, Object>> responsibilityVO;
-	private List<Map<String, Object>> screensVO;// Changed type to List<Map<String, Object>>
+	private List<Map<String, Object>> screensVO;
+	
     @Embedded
     private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
     private Date accountRemovedDate;
     private String token;
     private String tokenId;
+	
 
     // Setter method to accept List<Map<String, Object>>
-    public void setResponsibilityVO(List<Map<String, Object>> responsibilityVOList) {
-        this.responsibilityVO = responsibilityVOList;
-    }
-    
-    // Getter methods (if necessary)
-    public List<Map<String, Object>> getResponsibilityVO() {
-        return responsibilityVO;
-    }
-    
-    public void setScreensVO(List<Map<String, Object>> screensVOList) {
-        this.screensVO = screensVOList;
-    }
-
-    public List<Map<String, Object>> getScreensVO() {
-        return screensVO;
-    }
+   
    
 }

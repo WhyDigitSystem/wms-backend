@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
+import com.whydigit.wms.dto.CarrierDTO;
 import com.whydigit.wms.dto.ClientBranchDTO;
 import com.whydigit.wms.dto.ClientDTO;
 import com.whydigit.wms.dto.CustomerDTO;
@@ -1130,25 +1131,80 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public CarrierVO createCarrier(CarrierVO carrierVO) {
-		carrierVO.setCarrier(carrierVO.getCarrier().toUpperCase());
-		carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
-		carrierVO.setDupchk(carrierVO.getOrgId() + carrierVO.getCarrier() + carrierVO.getCarriershortname());
-		return carrierRepo.save(carrierVO);
+	public Map<String, Object> createUpdateCarrier(CarrierDTO carrierDTO) throws ApplicationException {
+
+	    CarrierVO carrierVO = new CarrierVO();
+	    String message;
+
+	    // Check if the carrierDTO ID is empty (indicating a new entry)
+	    if (ObjectUtils.isEmpty(carrierDTO.getId())) {
+
+	        // Validate if the carrier already exists by unique fields
+	    	if (carrierRepo.existsByOrgIdAndCarrier(
+                    carrierDTO.getOrgId(),carrierDTO.getCarrier())) {
+                throw new ApplicationException("Carrier already exist ");
+            }
+	    	if (carrierRepo.existsByOrgIdAndCarrierShortName(
+                    carrierDTO.getOrgId(), carrierDTO.getCarrierShortName())) {
+                throw new ApplicationException("Carrier Short Name already exist ");
+            }
+
+	        carrierVO.setCreatedBy(carrierDTO.getCreatedBy());
+	        carrierVO.setUpdatedBy(carrierDTO.getCreatedBy());
+	        // Set the values from carrierDTO to carrierVO
+	        mapCarrierDtoToCarrierVo(carrierDTO, carrierVO);
+	        message = "Carrier Created Successfully";
+
+	    } else {
+
+	        // Retrieve the existing CarrierVO from the repository
+	        carrierVO = carrierRepo.findById(carrierDTO.getId()).orElseThrow(() -> new ApplicationException("Carrier not found"));
+
+	        // Validate and update unique fields if changed
+	        if (!carrierVO.getCarrier().equalsIgnoreCase(carrierDTO.getCarrier())) {
+	            if (carrierRepo.existsByOrgIdAndCarrier(
+	                    carrierDTO.getOrgId(),carrierDTO.getCarrier())) {
+	                throw new ApplicationException("Carrier already exist ");
+	            }
+	            carrierVO.setCarrier(carrierDTO.getCarrier());
+	        }
+
+	        if (!carrierVO.getCarrierShortName().equalsIgnoreCase(carrierDTO.getCarrierShortName())) {
+	            if (carrierRepo.existsByOrgIdAndCarrierShortName(
+	                    carrierDTO.getOrgId(), carrierDTO.getCarrierShortName())) {
+	                throw new ApplicationException("Carrier Short Name already exist ");
+	            }
+	            carrierVO.setCarrierShortName(carrierDTO.getCarrierShortName());
+	        }
+
+	        carrierVO.setUpdatedBy(carrierDTO.getCreatedBy());
+	        // Update the remaining fields from carrierDTO to carrierVO
+	        mapCarrierDtoToCarrierVo(carrierDTO, carrierVO);
+	        message = "Carrier Updated successfully";
+	    }
+
+	    carrierRepo.save(carrierVO);
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("carrierVO", carrierVO);
+	    response.put("message", message);
+	    return response;
 	}
 
-	@Override
-	public Optional<CarrierVO> updateCarrier(CarrierVO carrierVO) {
-		if (carrierRepo.existsById(carrierVO.getId())) {
-			carrierVO.setUpdatedby(carrierVO.getUserid());
-			carrierVO.setCarrier(carrierVO.getCarrier().toUpperCase());
-			carrierVO.setCarriershortname(carrierVO.getCarriershortname().toUpperCase());
-			carrierVO.setDupchk(carrierVO.getOrgId() + carrierVO.getCarrier() + carrierVO.getCarriershortname());
-			return Optional.of(carrierRepo.save(carrierVO));
-		} else {
-			return Optional.empty();
-		}
+	private void mapCarrierDtoToCarrierVo(CarrierDTO carrierDTO, CarrierVO carrierVO) {
+	    carrierVO.setCarrier(carrierDTO.getCarrier());
+	    carrierVO.setCarrierShortName(carrierDTO.getCarrierShortName());
+	    carrierVO.setShipmentMode(carrierDTO.getShipmentMode());
+	    carrierVO.setCbranch(carrierDTO.getCbranch());
+	    carrierVO.setClient(carrierDTO.getClient());
+	    carrierVO.setOrgId(carrierDTO.getOrgId());
+	    carrierVO.setActive(carrierDTO.isActive());
+	    carrierVO.setCustomer(carrierDTO.getCustomer());
+	    carrierVO.setWarehouse(carrierDTO.getWarehouse());
+	    carrierVO.setBranch(carrierDTO.getBranch());
+	    carrierVO.setBranchCode(carrierDTO.getBranchCode());
+	    // Additional fields mapping if any
 	}
+
 
 	@Override
 	public void deleteCarrier(Long carrierid) {
@@ -1257,6 +1313,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno, level, startno, endno);
 	}
+
+	
 
 
 }

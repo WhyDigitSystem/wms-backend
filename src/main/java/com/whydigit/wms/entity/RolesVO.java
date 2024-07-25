@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -45,6 +46,10 @@ public class RolesVO {
 	@OneToMany(mappedBy = "rolesVO", cascade = CascadeType.ALL)
 	private List<RolesResponsibilityVO> rolesReposibilitiesVO;
 
+	@JsonGetter("active")
+    public String getActive() {
+        return active ? "Active" : "In-Active";
+    }
 	
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
+import com.whydigit.wms.dto.CarrierDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
@@ -195,9 +196,7 @@ public interface WarehouseMasterService {
 
 	Optional<CarrierVO> getCarrierById(Long carrierid);
 
-	CarrierVO createCarrier(CarrierVO carrierVO);
-
-	Optional<CarrierVO> updateCarrier(CarrierVO carrierVO);
+	Map<String, Object> createUpdateCarrier(CarrierDTO carrierDTO)throws ApplicationException;
 
 	void deleteCarrier(Long carrierid);
 	

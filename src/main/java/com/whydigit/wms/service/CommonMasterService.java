@@ -1,6 +1,7 @@
 package com.whydigit.wms.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
+import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -16,6 +18,7 @@ import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
+import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.exception.ApplicationException;
 
@@ -122,6 +125,11 @@ public interface CommonMasterService {
 	Set<Object[]>getAllAccessClientForLogin(Long orgid,String userName,String branchcode,String customer);
 	
 	
+	Map<String, Object> createUpdateScreenNames(ScreenNamesDTO screenNamesDTO) throws ApplicationException;
+	
+	List<ScreenNamesVO>getAllScreenNames();
+
+	ScreenNamesVO getScreenNamesById(Long id) throws ApplicationException;
 	
 	
 	
