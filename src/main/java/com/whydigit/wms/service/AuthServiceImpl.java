@@ -35,6 +35,7 @@ import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.ResponsibilityVO;
 import com.whydigit.wms.entity.RolesResponsibilityVO;
 import com.whydigit.wms.entity.RolesVO;
+import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.ScreensVO;
 import com.whydigit.wms.entity.TokenVO;
 import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;
@@ -108,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
 	
-private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
+	private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		
 		UserVO userVO = new UserVO();
         userVO.setUserName(signUpFormDTO.getUserName());
@@ -193,41 +194,49 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 					UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND_AND_ASKING_SIGNUP);
 		}
 		UserResponseDTO userResponseDTO = mapUserVOToDTO(userVO);
-		
-		List<Map<String, Object>> responsibilityVOList = new ArrayList<>();
-		List<Map<String, Object>> screenVOList = new ArrayList<>();
-		List<UserLoginRolesVO> loginRolesVOs = userVO.getRoleAccessVO();
-		userResponseDTO.setRoleVO(loginRolesVOs);
-	    // Iterate through UserLoginRolesVO to get RolesVO and then get RolesResponsibilityVO
-	    for (UserLoginRolesVO loginRolesVO : userVO.getRoleAccessVO()) {
-	        
-	        Long roleId = loginRolesVO.getRoleId();
-	        
-	        // Fetch the RolesVO using loginRolesVO.getRoleId()
-	        RolesVO rolesVO = rolesRepo.findById(roleId).orElse(null);
 
-	        if (rolesVO != null && rolesVO.getRolesReposibilitiesVO() != null) {
-	            for (RolesResponsibilityVO rolesResponsibilityVO : rolesVO.getRolesReposibilitiesVO()) {
-	                // Fetch the ResponsibilityVO to get associated screens
-	                ResponsibilityVO responsibilityVO = responsibilityRepo.findById(rolesResponsibilityVO.getResponsibilityId()).orElse(null);
+		List<Map<String, Object>> roleVOList = new ArrayList<>();
 
-	                Map<String, Object> responsibilityMap = new HashMap<>();
-	                responsibilityMap.put("responsibility", rolesResponsibilityVO.getResponsibility());
-	                responsibilityVOList.add(responsibilityMap);
-	                if (responsibilityVO != null && responsibilityVO.getScreensVO() != null) {
-	                    for (ScreensVO screenVO : responsibilityVO.getScreensVO()) {
-	                        Map<String, Object> screenMap = new HashMap<>();
-	                        screenMap.put("screenName", screenVO.getScreenName());
-	                        screenVOList.add(screenMap);
-	                    }
-	                }
-	            }
-	        }
-	    }
+        // Iterate through UserLoginRolesVO to fetch roles and responsibilities
+        for (UserLoginRolesVO loginRolesVO : userVO.getRoleAccessVO()) {
+            Map<String, Object> roleMap = new HashMap<>();
+            roleMap.put("role", loginRolesVO.getRole());
+            roleMap.put("roleId", loginRolesVO.getRoleId());
+            roleMap.put("startDate", loginRolesVO.getStartDate());
+            roleMap.put("endDate", loginRolesVO.getEndDate());
+            // Initialize the list for responsibilities under this role
+            List<Map<String, Object>> responsibilityVOList = new ArrayList<>();
 
-	    userResponseDTO.setScreensVO(screenVOList);
-	    // Set the responsibilities with screens in the response DTO
-	    userResponseDTO.setResponsibilityVO(responsibilityVOList);
+            // Fetch the RolesVO using loginRolesVO.getRoleId()
+            RolesVO rolesVO = rolesRepo.findById(loginRolesVO.getRoleId()).orElse(null);
+            if (rolesVO != null && rolesVO.getRolesReposibilitiesVO() != null) {
+                for (RolesResponsibilityVO rolesResponsibilityVO : rolesVO.getRolesReposibilitiesVO()) {
+                    Map<String, Object> responsibilityMap = new HashMap<>();
+                    responsibilityMap.put("responsibilityVO", rolesResponsibilityVO.getResponsibility());
+
+                    ResponsibilityVO responsibilityVO = responsibilityRepo.findById(rolesResponsibilityVO.getResponsibilityId()).orElse(null);
+                    if (responsibilityVO != null && responsibilityVO.getScreensVO() != null) {
+                        List<Map<String, Object>> screensList = new ArrayList<>();
+                        for (ScreensVO screenVO : responsibilityVO.getScreensVO()) {
+                            Map<String, Object> screenMap = new HashMap<>();
+                            screenMap.put("screenName", screenVO.getScreenName());
+                            screensList.add(screenMap);
+                        }
+                        responsibilityMap.put("screensVO", screensList);
+                    }
+                    responsibilityVOList.add(responsibilityMap);
+                }
+            }
+
+            // Add the responsibilities list to the role map
+            roleMap.put("responsibilityVO", responsibilityVOList);
+
+            // Add the role map to the roleVOList
+            roleVOList.add(roleMap);
+        }
+
+        userResponseDTO.setRoleVO(roleVOList);
+
 		TokenVO tokenVO = tokenProvider.createToken(userVO.getId(), loginRequest.getUserName());
 		userResponseDTO.setToken(tokenVO.getToken());
 		userResponseDTO.setTokenId(tokenVO.getId());
@@ -412,7 +421,6 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 		userDTO.setAccountRemovedDate(userVO.getAccountRemovedDate());
 				 
 		List<UserLoginRolesVO> loginRolesVOs = userVO.getRoleAccessVO();
-	    userDTO.setRoleVO(loginRolesVOs);
 		return userDTO;
 	}
 
@@ -484,7 +492,7 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 	}
 
 	@Override
-	public List<Map<String, Object>> getActiveResponsibilityByOrgId(Long orgId) {
+	public List<Map<String, Object>> getResponsibilityForRolesByOrgId(Long orgId) {
 		Set<Object[]>activeResponsibility= responsibilityRepo.findActiveByOrgId(orgId);
 		return getActiveResponsibile(activeResponsibility);
 	}
@@ -567,8 +575,56 @@ private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpFormDTO){
 	        rolesVO.setRolesReposibilitiesVO(rolesResponsibilityVOList);
 	    }
 	}
-
 	
+	@Override
+	public List<RolesVO> getAllRoles(Long orgId) {
+		
+		return rolesRepo.findAllRolesByOrgId(orgId);
+	}
+
+	@Override
+	public List<RolesVO> getAllActiveRoles(Long orgId) {
+		
+		return rolesRepo.findAllActiveRolesByOrgId(orgId);
+	}
+
+	@Override
+	public RolesVO getRolesById(Long id) throws ApplicationException {
+		
+		if (ObjectUtils.isEmpty(id)) {
+            throw new ApplicationException("Invalid Roles Id");
+        }
+        
+		RolesVO rolesVO = rolesRepo.findById(id)
+                .orElseThrow(() -> new ApplicationException("Role not found for Id: " + id));
+		
+		return rolesVO;
+	}
+
+	@Override
+	public ResponsibilityVO getResponsibilityById(Long id) throws ApplicationException {
+		
+		if (ObjectUtils.isEmpty(id)) {
+            throw new ApplicationException("Invalid Responsibility Id");
+        }
+        
+		ResponsibilityVO responsibilityVO = responsibilityRepo.findById(id)
+                .orElseThrow(() -> new ApplicationException("Responsibility not found for Id: " + id));
+		
+		return responsibilityVO;
+	}
+
+	@Override
+	public List<ResponsibilityVO> getAllResponsibility(Long orgId) {
+		
+		return responsibilityRepo.findAllResponsibilityByOrgId(orgId);
+	}
+
+	@Override
+	public List<ResponsibilityVO> getAllActiveResponsibility(Long orgId) {
+		// TODO Auto-generated method stub
+		return responsibilityRepo.findAllActiveResponsibilityByOrgId(orgId);
+	}
 
 
 

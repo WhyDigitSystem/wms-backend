@@ -13,6 +13,9 @@ import com.whydigit.wms.dto.ResponsibilityDTO;
 import com.whydigit.wms.dto.RolesDTO;
 import com.whydigit.wms.dto.SignUpFormDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
+import com.whydigit.wms.entity.ResponsibilityVO;
+import com.whydigit.wms.entity.RolesVO;
+import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.exception.ApplicationException;
 
 @Service
@@ -30,11 +33,23 @@ public interface AuthService {
 
 	public RefreshTokenDTO getRefreshToken(String userName, String tokenId) throws ApplicationException;
 	
-	Map<String, Object> createUpdateResponsibilities(ResponsibilityDTO responsibilityDTO) throws ApplicationException;
-	
-	List<Map<String, Object>> getActiveResponsibilityByOrgId(Long orgId);
+	List<Map<String, Object>> getResponsibilityForRolesByOrgId(Long orgId);
 	
 	Map<String, Object> createUpdateRoles(RolesDTO rolesDTO) throws ApplicationException;
+	
+	public List<RolesVO> getAllRoles(Long orgId);
+
+	public List<RolesVO> getAllActiveRoles(Long orgId);
+	
+	RolesVO getRolesById(Long id) throws ApplicationException;
+	
+	Map<String, Object> createUpdateResponsibilities(ResponsibilityDTO responsibilityDTO) throws ApplicationException;
+	
+	public List<ResponsibilityVO> getAllResponsibility(Long orgId);
+
+	public List<ResponsibilityVO> getAllActiveResponsibility(Long orgId);
+	
+	ResponsibilityVO getResponsibilityById(Long id) throws ApplicationException;
 
 	
 

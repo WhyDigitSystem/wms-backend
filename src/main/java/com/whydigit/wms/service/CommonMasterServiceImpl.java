@@ -1,6 +1,8 @@
 package com.whydigit.wms.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.Role;
+import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
@@ -25,6 +28,7 @@ import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
+import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.StateVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
@@ -39,6 +43,7 @@ import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.FinancialYearRepo;
 import com.whydigit.wms.repo.GlobalParameterRepo;
 import com.whydigit.wms.repo.RegionRepo;
+import com.whydigit.wms.repo.ScreenNamesRepo;
 import com.whydigit.wms.repo.StateRepo;
 import com.whydigit.wms.repo.UserBranchAccessRepo;
 import com.whydigit.wms.repo.UserClientAccessRepo;
@@ -67,6 +72,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	RegionRepo regionRepo;
+	
+	@Autowired
+	ScreenNamesRepo screenNamesRepo;
 
 	@Autowired
 	UserRepo userRepo;
@@ -716,5 +724,81 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		// TODO Auto-generated method stub
 		return clientRepo.findAllAccessClientByUserName(orgid, userName, branchcode, customer);
 	}
+
+	@Override
+	public Map<String, Object> createUpdateScreenNames(ScreenNamesDTO screenNamesDTO) throws ApplicationException {
+		ScreenNamesVO screenNamesVO= new ScreenNamesVO();
+		String message=null;
+		
+		if (ObjectUtils.isEmpty(screenNamesDTO.getId())) {
+
+	        // Validate if responsibility already exists by responsibility name
+	        if (screenNamesRepo.existsByScreenName(screenNamesDTO.getScreenName())) {
+	            throw new ApplicationException("Screen Name already exists");
+	        }
+	        if (screenNamesRepo.existsByScreenCode(screenNamesDTO.getScreenCode())) {
+	            throw new ApplicationException("Screen Code already exists");
+	        }
+
+	        screenNamesVO.setCreatedBy(screenNamesDTO.getCreatedBy());
+	        screenNamesVO.setUpdatedBy(screenNamesDTO.getCreatedBy());
+	        screenNamesVO.setActive(screenNamesDTO.isActive());
+	        screenNamesVO.setScreenCode(screenNamesDTO.getScreenCode());
+	        screenNamesVO.setScreenName(screenNamesDTO.getScreenName());
+	        // Set the values from screenNamesDTO to responsibilityVO
+	        message = "ScreenName Created successfully";
+
+	    } else {
+
+	        // Retrieve the existing ResponsibilityVO from the repository
+	    	screenNamesVO = screenNamesRepo.findById(screenNamesDTO.getId())
+	                .orElseThrow(() -> new ApplicationException("Screen Name not found"));
+
+	        // Validate and update unique fields if changed
+	        if (!screenNamesVO.getScreenName().equalsIgnoreCase(screenNamesDTO.getScreenName())) {
+	        	if (screenNamesRepo.existsByScreenName(screenNamesDTO.getScreenName())) {
+		            throw new ApplicationException("Screen Name already exists");
+		        }
+	            screenNamesVO.setScreenName(screenNamesDTO.getScreenName());
+	        }
+	        if (!screenNamesVO.getScreenCode().equalsIgnoreCase(screenNamesDTO.getScreenCode())) {
+	        	if (screenNamesRepo.existsByScreenCode(screenNamesDTO.getScreenCode())) {
+		            throw new ApplicationException("Screen Code already exists");
+		        }
+	            screenNamesVO.setScreenCode(screenNamesDTO.getScreenCode());
+	        }
+	        screenNamesVO.setActive(screenNamesDTO.isActive());
+	        screenNamesVO.setUpdatedBy(screenNamesDTO.getCreatedBy());
+	        // Update the remaining fields from screenNamesDTO to responsibilityVO
+	        message = "ScreenName Updated successfully";
+	    }
+
+		screenNamesRepo.save(screenNamesVO);
+		   Map<String, Object> response = new HashMap<>();
+		    response.put("screenNamesVO", screenNamesVO);
+		    response.put("message", message);
+		return response;
+	}
+
+	@Override
+	public List<ScreenNamesVO> getAllScreenNames() {
+		
+		return screenNamesRepo.findAll();
+	}
+
+	@Override
+	public ScreenNamesVO getScreenNamesById(Long id) throws ApplicationException {
+		
+		if (ObjectUtils.isEmpty(id)) {
+            throw new ApplicationException("Invalid Company Id");
+        }
+        
+        ScreenNamesVO screenNamesVO = screenNamesRepo.findById(id)
+                .orElseThrow(() -> new ApplicationException("Screen Name not found for Id: " + id));
+		
+		return screenNamesVO;
+	}
+
+	
 
 }

@@ -30,21 +30,17 @@ public class CarrierVO {
 	@Column(name = "carrier")
 	private String carrier;
 	@Column(name = "carriershortname")
-	private String carriershortname;
+	private String carrierShortName;
 	@Column(name = "shipmentmode")
-	private String shipmentmode;
+	private String shipmentMode;
 	@Column(name = "cbranch")
 	private String cbranch;
 	@Column(name = "client")
 	private String client;
-	@Column(unique = true)
-	private String dupchk;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid")
-	private String userid;
 	@Column(name = "customer")
 	private String customer;
 	@Column(name = "warehouse")
@@ -52,15 +48,15 @@ public class CarrierVO {
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "cancel")
 	private boolean cancel;
 	@Column(name = "cancelremarks")
-	private String cancelremarks;
+	private String cancelRemarks;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 
 //	@JsonManagedReference
 //	@OneToMany(mappedBy = "carrierVO", cascade = CascadeType.ALL)

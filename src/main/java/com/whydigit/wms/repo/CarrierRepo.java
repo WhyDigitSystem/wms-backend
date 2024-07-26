@@ -13,7 +13,11 @@ public interface CarrierRepo extends JpaRepository<CarrierVO, Long>{
 	@Query("select a from CarrierVO a where a.orgId=?1 and a.client=?2 and (a.cbranch='ALL' or a.cbranch=?3)")
 	List<CarrierVO> findAll(Long orgid, String client, String cbranch);
 
-	@Query(nativeQuery = true,value="select c.carrier from carrier c where c.orgid=?1 and c.client=?2 and c.cbranch =?3")
+	@Query(nativeQuery = true,value="select c.carrier from carrier c where c.orgid=?1 and c.client=?2 and c.cbranch =?3 and c.active=1")
 	Set<Object[]> findCarrierNameByCustomer(Long orgid, String client, String cbranch);
+
+	boolean existsByOrgIdAndCarrierShortName(Long orgId, String carrierShortName);
+
+	boolean existsByOrgIdAndCarrier(Long orgId, String carrier);
 }
 
