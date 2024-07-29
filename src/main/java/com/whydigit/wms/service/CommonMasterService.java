@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
+import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
 import com.whydigit.wms.entity.CityVO;
@@ -86,9 +87,7 @@ public interface CommonMasterService {
 
 	Optional<RegionVO> getRegionById(Long regionid);
 
-	RegionVO createRegion(RegionVO regionVO);
-
-	Optional<RegionVO> updateRegion(RegionVO regionVO);
+	RegionVO createUpdateRegion(RegionDTO regionDTO) throws ApplicationException;
 
 	void deleteRegion(Long regionid);
 
