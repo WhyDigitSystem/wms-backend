@@ -11,6 +11,7 @@ import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
 import com.whydigit.wms.dto.CarrierDTO;
 import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.DocumentTypeDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
@@ -24,6 +25,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingVO;
@@ -226,6 +228,16 @@ public interface WarehouseMasterService {
 
 	// Create Pallet No
 	Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level, int startno, int endno);
+	
+	
+	
+	// Document Type 
+	
+	Map<String, Object> createUpdateDocumentType(DocumentTypeDTO documentTypeDTO)throws ApplicationException;
+	
+	DocumentTypeVO getDocumentTypeById(Long id);
+	
+	List<DocumentTypeVO>getAllDocumentTypeByOrgId(Long orgId);
 
 
 

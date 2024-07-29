@@ -21,6 +21,7 @@ import com.whydigit.wms.dto.CarrierDTO;
 import com.whydigit.wms.dto.ClientBranchDTO;
 import com.whydigit.wms.dto.ClientDTO;
 import com.whydigit.wms.dto.CustomerDTO;
+import com.whydigit.wms.dto.DocumentTypeDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
@@ -35,6 +36,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingVO;
@@ -53,6 +55,8 @@ import com.whydigit.wms.repo.CellTypeRepo;
 import com.whydigit.wms.repo.ClientBranchRepo;
 import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.CustomerRepo;
+import com.whydigit.wms.repo.DocumentTypeDetailsRepo;
+import com.whydigit.wms.repo.DocumentTypeRepo;
 import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.GroupRepo;
 import com.whydigit.wms.repo.LocationMappingRepo;
@@ -124,7 +128,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	EmployeeRepo employeeRepo;
-
+	
+	@Autowired
+	DocumentTypeRepo documentTypeRepo;
+	
+	@Autowired
+	DocumentTypeDetailsRepo documentTypeDetailsRepo;
 	// Group
 
 	@Override
@@ -1312,6 +1321,73 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getPalletnoByRownoAndLevelAndStartAndEnd(String rowno, String level, int startno, int endno) {
 
 		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno, level, startno, endno);
+	}
+
+	@Override
+	public Map<String, Object> createUpdateDocumentType(DocumentTypeDTO documentTypeDTO) throws ApplicationException {
+		DocumentTypeVO documentTypeVO=new DocumentTypeVO();
+		String message;
+		if(ObjectUtils.isEmpty(documentTypeDTO.getId()))
+		{
+			if (documentTypeRepo.existsByOrgIdAndScreenCode(
+					documentTypeDTO.getOrgId(),documentTypeDTO.getScreenCode())) {
+                throw new ApplicationException("ScreenCode already exist ");
+            }
+			
+			if (documentTypeRepo.existsByOrgIdAndDocCode(
+					documentTypeDTO.getOrgId(),documentTypeDTO.getDocCode())) {
+                throw new ApplicationException("Doc Code already exist ");
+            }
+			
+			documentTypeVO.setCreatedBy(documentTypeDTO.getCreatedBy());
+			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
+			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO,documentTypeVO);
+			message="Document Type Created successfully";
+		}
+		else
+		{
+			documentTypeVO=documentTypeRepo.findById(documentTypeDTO.getId()).orElse(null);
+			
+			if (!documentTypeVO.getScreenCode().equalsIgnoreCase(documentTypeDTO.getScreenCode())) {
+				if (documentTypeRepo.existsByOrgIdAndScreenCode(
+						documentTypeDTO.getOrgId(),documentTypeDTO.getScreenCode())) {
+	                throw new ApplicationException("ScreenCode already exist ");
+	            }
+				documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
+	        }
+
+	        if (!documentTypeVO.getDocCode().equalsIgnoreCase(documentTypeDTO.getDocCode())) {
+	        	if (documentTypeRepo.existsByOrgIdAndDocCode(
+						documentTypeDTO.getOrgId(),documentTypeDTO.getDocCode())) {
+	                throw new ApplicationException("Doc Code already exist ");
+	            }
+	            documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
+	        }
+
+	        documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
+	        // Update the remaining fields from carrierDTO to carrierVO
+	        mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
+	        message = "Document Type Updated successfully";
+			
+		}
+		return null;
+	}
+
+	private void mapDocumentTypeDTOToDocumentTypeVO(DocumentTypeDTO documentTypeDTO, DocumentTypeVO documentTypeVO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public DocumentTypeVO getDocumentTypeById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DocumentTypeVO> getAllDocumentTypeByOrgId(Long orgId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

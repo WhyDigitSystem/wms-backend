@@ -20,22 +20,35 @@ import com.whydigit.wms.dto.CreatedUpdatedDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Entity
-@Table(name="roles")
+@Table(name="m_documenttype")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class RolesVO {
+@NoArgsConstructor
+public class DocumentTypeVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rolesgen")
-	@SequenceGenerator(name = "rolesgen", sequenceName = "rolesseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "rolesid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documenttypegen")
+	@SequenceGenerator(name = "documenttypegen", sequenceName = "documenttypeseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "documenttypeid")
 	private Long id;
-	@Column(name = "role")
-	private String role;
+	
+	@Column(name = "screencode")
+	private String screenCode;
+	
+	@Column(name = "screenname")
+	private String screenName;
+	
+	@Column(name = "description")
+	private String description;
+	
+	@Column(name = "doccode")
+	private String docCode;
+	
 	@Column(name = "createdby")
 	private String createdBy;
+	
 	@Column(name = "modifiedby")
 	private String updatedBy;
 	
@@ -44,17 +57,16 @@ public class RolesVO {
 	
 	private boolean active;
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "documentTypeVO", cascade = CascadeType.ALL)
+	private List<DocumentTypeDetailsVO> documentTypeDetailsVO;
+	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "rolesVO", cascade = CascadeType.ALL)
-	private List<RolesResponsibilityVO> rolesReposibilitiesVO;
-
 	@JsonGetter("active")
     public String getActive() {
         return active ? "Active" : "In-Active";
     }
 	
-
 }
