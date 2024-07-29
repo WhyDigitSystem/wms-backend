@@ -166,7 +166,7 @@ public class TokenProvider {
 	@Autowired
 	TokenRepo tokenRepo;
 
-	@PostConstruct
+	@PostConstruct  
 	public void init() {
 		hmacSHA512Byte = generateHmacSHA512Key(tokenKey, tokenSecret);
 	}

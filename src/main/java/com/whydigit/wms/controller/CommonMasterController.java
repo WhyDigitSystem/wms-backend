@@ -27,8 +27,8 @@ import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
+import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.ResponseDTO;
-import com.whydigit.wms.dto.RolesDTO;
 import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
 import com.whydigit.wms.entity.CityVO;
@@ -461,15 +461,15 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/region")
-	public ResponseEntity<ResponseDTO> createRegion(@RequestBody RegionVO regionVO) {
-		String methodName = "createRegion()";
+	@PutMapping("/createUpdateRegion")
+	public ResponseEntity<ResponseDTO> createUpdateRegion(@RequestBody RegionDTO regionDTO) {
+		String methodName = "createUpdateRegion()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			RegionVO regionvo = commonMasterService.createRegion(regionVO);
+			RegionVO regionvo = commonMasterService.createUpdateRegion(regionDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Region created successfully");
 			responseObjectsMap.put("regionvo", regionvo);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -478,34 +478,6 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Region creation failed, Region and Region Code Should Not Duplicate", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PutMapping("/region")
-	public ResponseEntity<ResponseDTO> updateRegion(@RequestBody RegionVO regionVO) {
-		String methodName = "updateRegion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			RegionVO regionvo = commonMasterService.updateRegion(regionVO).orElse(null);
-			if (regionVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Region Updated successfully");
-				responseObjectsMap.put("regionvo", regionvo);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "City not found for ID: " + regionvo.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Region Update failed, Region and Region Code Should Not Duplicate", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Region Update failed, Region and Region Code Should Not Duplicate", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

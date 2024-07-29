@@ -80,6 +80,7 @@ public class BuyerOrderVO {
 	private String cancelremark;
 	@Column(name = "screencode")
 	private String screencode;
+	
 
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "buyerOrderVO")
