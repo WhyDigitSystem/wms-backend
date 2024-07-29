@@ -35,6 +35,7 @@ import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.ResponsibilityVO;
 import com.whydigit.wms.entity.RolesVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
+import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.service.AuthService;
 
 @RestController
@@ -45,7 +46,7 @@ public class AuthController extends BaseController {
 	@Autowired
 	AuthService authService;
 
-	@PostMapping("/signup")
+	@PutMapping("/signup")
 	public ResponseEntity<ResponseDTO> signup(@Valid @RequestBody SignUpFormDTO signUpRequest) {
 		String methodName = "signup()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -423,6 +424,85 @@ public class AuthController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Responsibility information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/allUsersByOrgId")
+	public ResponseEntity<ResponseDTO> getAllUsersByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllUsersByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<UserVO> userVO = new ArrayList<>();
+		try {
+			userVO = authService.getAllUsersByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Users information get successfully");
+			responseObjectsMap.put("userVO", userVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Users information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getUserById")
+	public ResponseEntity<ResponseDTO> getUserById(@RequestParam Long userId) {
+		String methodName = "getUserById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		UserVO userVO = null;
+		try {
+			userVO = authService.getUserById(userId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_ID, methodName, userId, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.GET_USER_INFORMATION_SUCCESS_MESSAGE);
+			responseObjectsMap.put(UserConstants.KEY_USER_VO, userVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					UserConstants.GET_USER_INFORMATION_FAILED_MESSAGE, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getUserByUserName")
+	public ResponseEntity<ResponseDTO> getUserByUserName(@RequestParam String userName) {
+		String methodName = "getUserByUserName()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		UserVO userVO = null;
+		try {
+			userVO = authService.getUserByUserName(userName);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_ID, methodName, userName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.GET_USER_INFORMATION_SUCCESS_MESSAGE);
+			responseObjectsMap.put(UserConstants.KEY_USER_VO, userVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					UserConstants.GET_USER_INFORMATION_FAILED_MESSAGE, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

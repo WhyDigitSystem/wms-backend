@@ -1,5 +1,7 @@
 package com.whydigit.wms.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,6 +20,9 @@ public interface UserRepo extends JpaRepository<UserVO, Long> {
 
 
 	UserVO findByUserNameOrEmailOrMobileNo(String userName, String userName2, String userName3);
+
+	@Query(value = "select u from UserVO u where u.orgId =?1")
+	List<UserVO> findAllByOrgId(Long orgId);
 
 
 //	UserVO findByUserNameAndUsersId(String userName, Long usersId);

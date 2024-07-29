@@ -12,6 +12,7 @@ import com.whydigit.wms.dto.BuyerDTO;
 import com.whydigit.wms.dto.CarrierDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.DocumentTypeDTO;
+import com.whydigit.wms.dto.DocumentTypeMappingDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
@@ -235,9 +236,13 @@ public interface WarehouseMasterService {
 	
 	Map<String, Object> createUpdateDocumentType(DocumentTypeDTO documentTypeDTO)throws ApplicationException;
 	
-	DocumentTypeVO getDocumentTypeById(Long id);
+	DocumentTypeVO getDocumentTypeById(Long id) throws ApplicationException;
 	
 	List<DocumentTypeVO>getAllDocumentTypeByOrgId(Long orgId);
+	
+	List<Map<String, Object>>getPendingDocumentTypeMapping(Long orgId,String branch,String branchCode,String finYear,String finYearIdentifier);
+	
+	Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)throws ApplicationException;
 
 
 

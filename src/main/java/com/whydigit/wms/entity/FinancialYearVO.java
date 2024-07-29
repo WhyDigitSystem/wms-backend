@@ -29,15 +29,25 @@ public class FinancialYearVO {
 	@SequenceGenerator(name = "financialyearegen", sequenceName = "financialyearseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "finyearid")
 	private Long id;
-	private int finyr;
-	private int finyridentifier;
-	private LocalDate startdate;
-	private LocalDate enddate;
-	private boolean currentfinyr;
+	@Column(name="finyear")
+	private int finYear;
+	@Column(name="finyearidentifier")
+	private int finYearIdentifier;
+	@Column(name="startdate")
+	private LocalDate startDate;
+	@Column(name="enddate")
+	private LocalDate endDate;
+	@Column(name="currentfinyear")
+	private boolean currentFinYear;
+	@Column(name="closed")
 	private boolean closed;
-	private String company;
-	private String dupchk;
-	private String userid;
+	@Column(name="orgid")
+	private String orgId;
+	@Column(name="createdby")
+	private String createdBy;
+	@Column(name="modifiedby")
+	private String updatedBy;
+	private boolean active;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

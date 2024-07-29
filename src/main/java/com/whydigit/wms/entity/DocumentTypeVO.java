@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
@@ -55,7 +54,6 @@ public class DocumentTypeVO {
 	@Column(name="orgid")
 	private Long orgId;
 	
-	private boolean active;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "documentTypeVO", cascade = CascadeType.ALL)
@@ -64,9 +62,6 @@ public class DocumentTypeVO {
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 	
-	@JsonGetter("active")
-    public String getActive() {
-        return active ? "Active" : "In-Active";
-    }
+	
 	
 }

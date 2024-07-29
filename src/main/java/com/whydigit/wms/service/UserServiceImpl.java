@@ -1,6 +1,7 @@
 package com.whydigit.wms.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,36 +52,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	@Override
-	public UserVO getUserById(Long usersId) {
-		String methodName = "getUserById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (ObjectUtils.isEmpty(usersId)) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_ID);
-		}
-		UserVO userVO = userRepo.getUserById(usersId);
-		if (ObjectUtils.isEmpty(userVO)) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return userVO;
-	}
-
-	@Override
-	public UserVO getUserByUserName(String userName) {
-		String methodName = "getUserByUserName()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (StringUtils.isNotEmpty(userName)) {
-			UserVO userVO = userRepo.findByUserName(userName);
-			if (ObjectUtils.isEmpty(userVO)) {
-				throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return userVO;
-		} else {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
-		}
-	}
+	
 
 	@Override
 	public void removeUser(String userName) {
@@ -99,5 +71,7 @@ public class UserServiceImpl implements UserService {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
 		}
 	}
+
+	
 
 }
