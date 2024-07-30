@@ -124,7 +124,7 @@ public class AuthServiceImpl implements AuthService {
         userVO.setEmail(signUpFormDTO.getEmail());
         userVO.setMobileNo(signUpFormDTO.getMobileNo());
         userVO.setUserType(signUpFormDTO.getUserType());
-      //  userVO.setIsActive(signUpFormDTO.getIsActive());
+        userVO.setActive(signUpFormDTO.isActive());
         userVO.setOrgId(signUpFormDTO.getOrgId());
         
         List<UserLoginRolesVO>rolesVO=new ArrayList<>();
@@ -137,6 +137,7 @@ public class AuthServiceImpl implements AuthService {
         		loginRolesVO.setRole(accessDTO.getRole());
         		loginRolesVO.setStartDate(accessDTO.getStartDate());
         		loginRolesVO.setEndDate(accessDTO.getEndDate());
+        		loginRolesVO.setRoleId(accessDTO.getRoleId());
         		loginRolesVO.setUserVO(userVO);
         		rolesVO.add(loginRolesVO);
         	}
@@ -163,7 +164,7 @@ public class AuthServiceImpl implements AuthService {
             for (UserLoginBranchAccessDTO userLoginBranchAccessDTO : signUpFormDTO.getBranchAccessDTOList()) {
                 UserLoginBranchAccessibleVO branchAccessibleVO = new UserLoginBranchAccessibleVO();
                 branchAccessibleVO.setBranch(userLoginBranchAccessDTO.getBranch());
-                branchAccessibleVO.setBranchcode(userLoginBranchAccessDTO.getBranchcode());
+                branchAccessibleVO.setBranchcode(userLoginBranchAccessDTO.getBranchCode());
                 branchAccessibleVO.setUserVO(userVO);
                 branchAccessList.add(branchAccessibleVO);
             }
@@ -410,7 +411,7 @@ public class AuthServiceImpl implements AuthService {
 		userDTO.setCustomer(userVO.getCustomer());
 		userDTO.setClient(userVO.getClient());
 		userDTO.setOrgId(userVO.getOrgId());
-		userDTO.setActive(userVO.getIsActive());
+		userDTO.setActive(userVO.isActive());
 		userDTO.setWarehouse(userVO.getWarehouse());
 		userDTO.setUserType(userVO.getUserType());
 		userDTO.setEmail(userVO.getEmail());
@@ -627,6 +628,41 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 
+	@Override
+	public List<UserVO> getAllUsersByOrgId(Long orgId) {
+		// TODO Auto-generated method stub
+		return userRepo.findAllByOrgId(orgId);
+	}
 
+	@Override
+	public UserVO getUserById(Long usersId) {
+		String methodName = "getUserById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		if (ObjectUtils.isEmpty(usersId)) {
+			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_ID);
+		}
+		UserVO userVO = userRepo.getUserById(usersId);
+		if (ObjectUtils.isEmpty(userVO)) {
+			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return userVO;
+	}
+
+	@Override
+	public UserVO getUserByUserName(String userName) {
+		String methodName = "getUserByUserName()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		if (StringUtils.isNotEmpty(userName)) {
+			UserVO userVO = userRepo.findByUserName(userName);
+			if (ObjectUtils.isEmpty(userVO)) {
+				throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return userVO;
+		} else {
+			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
+		}
+	}
 	
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class UserLoginBranchAccessDTO {
 	
 	private String branch;
-	private String branchcode;
+	private String branchCode;
 	
 
 }

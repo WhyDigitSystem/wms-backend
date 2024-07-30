@@ -16,6 +16,7 @@ import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.ResponsibilityVO;
 import com.whydigit.wms.entity.RolesVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
+import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
 
 @Service
@@ -50,6 +51,12 @@ public interface AuthService {
 	public List<ResponsibilityVO> getAllActiveResponsibility(Long orgId);
 	
 	ResponsibilityVO getResponsibilityById(Long id) throws ApplicationException;
+	
+	List<UserVO>getAllUsersByOrgId(Long orgId);
+	
+	public UserVO getUserById(Long userId);
+
+	public UserVO getUserByUserName(String userName);
 
 	
 

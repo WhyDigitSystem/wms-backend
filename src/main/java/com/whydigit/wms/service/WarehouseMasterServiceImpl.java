@@ -22,6 +22,9 @@ import com.whydigit.wms.dto.ClientBranchDTO;
 import com.whydigit.wms.dto.ClientDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.DocumentTypeDTO;
+import com.whydigit.wms.dto.DocumentTypeDetailsDTO;
+import com.whydigit.wms.dto.DocumentTypeMappingDTO;
+import com.whydigit.wms.dto.DocumentTypeMappingDetailsDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
@@ -36,12 +39,16 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.DocumentTypeDetailsVO;
+import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
+import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
+import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseClientVO;
@@ -56,6 +63,8 @@ import com.whydigit.wms.repo.ClientBranchRepo;
 import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.CustomerRepo;
 import com.whydigit.wms.repo.DocumentTypeDetailsRepo;
+import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
+import com.whydigit.wms.repo.DocumentTypeMappingRepo;
 import com.whydigit.wms.repo.DocumentTypeRepo;
 import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.GroupRepo;
@@ -134,6 +143,13 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	
 	@Autowired
 	DocumentTypeDetailsRepo documentTypeDetailsRepo;
+	
+	@Autowired
+	DocumentTypeMappingRepo documentTypeMappingRepo;
+	
+	@Autowired
+	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
 	// Group
 
 	@Override
@@ -1339,6 +1355,25 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
                 throw new ApplicationException("Doc Code already exist ");
             }
 			
+			List<DocumentTypeDetailsVO>documentTypeDetailsVO= new ArrayList<>();
+			if(documentTypeDTO.getDocumentTypeDetailsDTO()!=null)
+			{
+				for(DocumentTypeDetailsDTO documentTypeDetailsDTO:documentTypeDTO.getDocumentTypeDetailsDTO())
+				{
+					DocumentTypeDetailsVO documentTypeDetailsVO1= new DocumentTypeDetailsVO();
+					documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
+					documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
+					documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
+					documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
+					documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
+					documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
+					documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
+					documentTypeDetailsVO.add(documentTypeDetailsVO1);
+				}
+			}
+			documentTypeVO.setDocumentTypeDetailsVO(documentTypeDetailsVO);
+			documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
+			documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
 			documentTypeVO.setCreatedBy(documentTypeDTO.getCreatedBy());
 			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
 			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO,documentTypeVO);
@@ -1364,30 +1399,149 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	            documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
 	        }
 
+	        List<DocumentTypeDetailsVO>documentTypeDetailsVO= documentTypeVO.getDocumentTypeDetailsVO();
+			if(documentTypeDTO.getDocumentTypeDetailsDTO()!=null)
+			{
+				
+				for(DocumentTypeDetailsDTO documentTypeDetailsDTO:documentTypeDTO.getDocumentTypeDetailsDTO())
+				{
+					DocumentTypeDetailsVO documentTypeDetailsVO1= new DocumentTypeDetailsVO();
+					if(ObjectUtils.isEmpty(documentTypeDetailsDTO.getId()))
+					{
+					documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
+					documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
+					documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
+					documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
+					documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
+					documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
+					documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
+					documentTypeDetailsVO.add(documentTypeDetailsVO1);
+					}
+					else
+					{
+						documentTypeDetailsVO1=documentTypeDetailsRepo.findById(documentTypeDetailsDTO.getId()).orElse(null);
+						documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
+						documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
+						documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
+						documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
+						documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
+						documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
+						documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
+						documentTypeDetailsVO.add(documentTypeDetailsVO1);
+					}
+				}
+			}
+			documentTypeVO.setDocumentTypeDetailsVO(documentTypeDetailsVO);
 	        documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
 	        // Update the remaining fields from carrierDTO to carrierVO
 	        mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
 	        message = "Document Type Updated successfully";
 			
 		}
-		return null;
+		documentTypeRepo.save(documentTypeVO);
+		Map<String, Object> response = new HashMap<>();
+	    response.put("documentTypeVO", documentTypeVO);
+	    response.put("message", message);
+	    return response;
 	}
 
 	private void mapDocumentTypeDTOToDocumentTypeVO(DocumentTypeDTO documentTypeDTO, DocumentTypeVO documentTypeVO) {
-		// TODO Auto-generated method stub
 		
+		documentTypeVO.setDescription(documentTypeDTO.getDescription());
+		documentTypeVO.setOrgId(documentTypeDTO.getOrgId());
+		documentTypeVO.setScreenName(documentTypeDTO.getScreenName());		
 	}
 
 	@Override
-	public DocumentTypeVO getDocumentTypeById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public DocumentTypeVO getDocumentTypeById(Long id) throws ApplicationException {
+		if (ObjectUtils.isEmpty(id)) {
+			throw new ApplicationException("Invalid DocumentType Id");
+		}
+		DocumentTypeVO documentTypeVO = documentTypeRepo.findById(id)
+				.orElseThrow(() -> new ApplicationException("Document Type not found for Id: " + id));
+
+		return documentTypeVO;
 	}
 
 	@Override
 	public List<DocumentTypeVO> getAllDocumentTypeByOrgId(Long orgId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return documentTypeRepo.findAllByOrgId(orgId);
+	}
+
+	@Override
+	public Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)
+			throws ApplicationException {
+		String message;
+		DocumentTypeMappingVO documentTypeMappingVO= new DocumentTypeMappingVO();
+		documentTypeMappingVO.setBranch(documentTypeMappingDTO.getBranch());
+		documentTypeMappingVO.setBranchCode(documentTypeMappingDTO.getBranchCode());
+		documentTypeMappingVO.setFinYear(documentTypeMappingDTO.getFinYear());
+		documentTypeMappingVO.setFinYearIdentifier(documentTypeMappingDTO.getFinYearIdentifier());
+		documentTypeMappingVO.setOrgId(documentTypeMappingDTO.getOrgId());
+		documentTypeMappingVO.setCreatedBy(documentTypeMappingDTO.getCreatedBy());
+		documentTypeMappingVO.setUpdatedBy(documentTypeMappingDTO.getCreatedBy());
+		
+		List<DocumentTypeMappingDetailsVO> documentTypeMappingDetailsVO= new ArrayList<>();
+		
+		if(documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO()!=null)
+		{
+			for(DocumentTypeMappingDetailsDTO documentTypeMappingDetailsDTO: documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO())
+			{
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO1= new DocumentTypeMappingDetailsVO();
+				documentTypeMappingDetailsVO1.setScreenCode(documentTypeMappingDetailsDTO.getScreenCode());
+		        documentTypeMappingDetailsVO1.setScreenName(documentTypeMappingDetailsDTO.getScreenName());
+		        documentTypeMappingDetailsVO1.setClient(documentTypeMappingDetailsDTO.getClient());
+		        documentTypeMappingDetailsVO1.setClientCode(documentTypeMappingDetailsDTO.getClientCode());
+		        documentTypeMappingDetailsVO1.setDocCode(documentTypeMappingDetailsDTO.getDocCode());
+		        documentTypeMappingDetailsVO1.setBranch(documentTypeMappingDetailsDTO.getBranch());
+		        documentTypeMappingDetailsVO1.setBranchCode(documentTypeMappingDetailsDTO.getBranchCode());
+		        documentTypeMappingDetailsVO1.setPrefixField(documentTypeMappingDetailsDTO.getPrefixField());
+		        documentTypeMappingDetailsVO1.setFinYear(documentTypeMappingDetailsDTO.getFinYear());
+		        documentTypeMappingDetailsVO1.setFinYearIdentifier(documentTypeMappingDetailsDTO.getFinYearIdentifier());
+		        documentTypeMappingDetailsVO1.setConcatenation(documentTypeMappingDetailsDTO.getClient()+documentTypeMappingDetailsDTO.getClientCode()+documentTypeMappingDetailsDTO.getScreenCode()+documentTypeMappingDetailsDTO.getDocCode());
+		        documentTypeMappingDetailsVO1.setOrgId(documentTypeMappingDTO.getOrgId());
+		        documentTypeMappingDetailsVO1.setDocumentTypeMappingVO(documentTypeMappingVO);
+		        documentTypeMappingDetailsVO.add(documentTypeMappingDetailsVO1);
+			}
+		}
+		documentTypeMappingVO.setDocumentTypeMappingDetailsVO(documentTypeMappingDetailsVO);
+		documentTypeMappingRepo.save(documentTypeMappingVO);
+		message="Document Type created Successfully";
+		Map<String, Object> response = new HashMap<>();
+	    response.put("documentTypeMappingVO", documentTypeMappingVO);
+	    response.put("message", message);
+		return response;
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> getPendingDocumentTypeMapping(Long orgId,String branch, String branchCode, String finYear,
+			String finYearIdentifier) {
+		
+		Set<Object[]>pendingDocTypeDetails= documentTypeMappingRepo.getPendingDoctypeMapping(orgId,branch,branchCode,finYear,finYearIdentifier);
+		return getPendingDocType(pendingDocTypeDetails);
+	}
+
+	private List<Map<String, Object>> getPendingDocType(Set<Object[]> pendingDocTypeDetails) {
+		List<Map<String, Object>> doctypeMappingDetails= new ArrayList<>();
+		for(Object[] sup:pendingDocTypeDetails)
+		{
+			Map<String, Object> doctype = new HashMap<>();
+			doctype.put("screenName", sup[0] != null ? sup[0].toString() : "");
+			doctype.put("screenCode", sup[1] != null ? sup[1].toString() : "");
+			doctype.put("client", sup[2] != null ? sup[2].toString() : "");
+			doctype.put("clientCode", sup[3] != null ? sup[3].toString() : "");
+			doctype.put("docCode", sup[4] != null ? sup[4].toString() : "");
+			doctype.put("finYear", sup[5] != null ? sup[5].toString() : "");
+			doctype.put("branch", sup[6] != null ? sup[6].toString() : "");
+			doctype.put("branchCode", sup[7] != null ? sup[7].toString() : "");
+			doctype.put("finYearIdentifier", sup[8] != null ? sup[8].toString() : "");
+			doctype.put("prefixField", sup[9] != null ? sup[9].toString() : "");
+			doctypeMappingDetails.add(doctype);
+		}
+		
+		return doctypeMappingDetails;
 	}
 
 	

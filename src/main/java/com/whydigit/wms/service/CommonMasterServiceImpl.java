@@ -579,7 +579,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		userVO.setOrgId(companyVO.getId());
 		userVO.setCreatedby(companyVO.getCreatedBy());
 		userVO.setUpdatedby(companyVO.getCreatedBy());
-		userVO.setIsActive(true);
+		userVO.setActive(true);
 		userVO.setLoginStatus(false);
 		userVO.setCompanyVO(companyVO);
 //	        UserLoginRolesVO userLoginRolesVO=new UserLoginRolesVO();
