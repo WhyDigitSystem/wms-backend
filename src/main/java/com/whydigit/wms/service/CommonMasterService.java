@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
+import com.whydigit.wms.dto.CurrencyDTO;
+import com.whydigit.wms.dto.DesignationDTO;
 import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
@@ -17,6 +19,7 @@ import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
+import com.whydigit.wms.entity.DesignationVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
@@ -64,7 +67,6 @@ public interface CommonMasterService {
 	
 	CityVO createUpdateCity(CityDTO cityDTO) throws ApplicationException;
 
-	//Optional<CityVO> updateCity(CityVO cityVO);
 
 	void deleteCity(Long cityid);
 	
@@ -74,16 +76,16 @@ public interface CommonMasterService {
 
 	Optional<CurrencyVO> getCurrencyById(Long currencyid);
 	
-	CurrencyVO createCurrency(CurrencyVO currencyVO);
-
-	Optional<CurrencyVO> updateCurrency(CurrencyVO currencyVO);
+	CurrencyVO createUpdateCurrency(CurrencyDTO currencyDTO) throws ApplicationException;
 
 	void deleteCurrency(Long currencyid);
 	
 
 	// region
+	
+	List<RegionVO> getAllRegios();
 
-	List<RegionVO> getAllRegion(Long orgid);
+	List<RegionVO> getAllRegionsByOrgId(Long orgId);
 
 	Optional<RegionVO> getRegionById(Long regionid);
 
@@ -130,7 +132,14 @@ public interface CommonMasterService {
 
 	ScreenNamesVO getScreenNamesById(Long id) throws ApplicationException;
 	
+	//Designation
+
+	Map<String, Object> createUpdateDesignation(DesignationDTO designationDTO) throws ApplicationException;
+
+	List<DesignationVO> getAllDesignation();
 	
+	List<DesignationVO> getAllDesignationByOrgId(Long OrdId);
 	
+	Optional<DesignationVO> getAllDesignationById(Long id);
 
 }

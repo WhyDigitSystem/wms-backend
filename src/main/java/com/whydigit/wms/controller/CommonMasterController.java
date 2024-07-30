@@ -27,6 +27,8 @@ import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
+import com.whydigit.wms.dto.CurrencyDTO;
+import com.whydigit.wms.dto.DesignationDTO;
 import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.ScreenNamesDTO;
@@ -35,6 +37,7 @@ import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
+import com.whydigit.wms.entity.DesignationVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
@@ -77,43 +80,7 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	@GetMapping("/country/countryid")
-//	public ResponseEntity<ResponseDTO> getAllcountriesAndCountrid(@RequestParam Long orgid) {
-//		String methodName = "getAllcountriesAndCountrid()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		Set<Object[]> country = new HashSet<>();
-//		try {
-//			country = commonMasterService.getCountryAndCountryid(orgid);
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//		}
-//		if (StringUtils.isBlank(errorMsg)) {
-//			List<Map<String, String>> formattedCountry = formattCountry(country);
-//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "countries information get successfully");
-//			responseObjectsMap.put("country", formattedCountry);
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//		} else {
-//			responseDTO = createServiceResponseError(responseObjectsMap, "countries information receive failed",
-//					errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
-//
-//	private List<Map<String, String>> formattCountry(Set<Object[]> country) {
-//		List<Map<String, String>> formattedCountry = new ArrayList<>();
-//		for (Object[] formateCountry : country) {
-//			Map<String, String> FormatCountry = new HashMap<>();
-//			FormatCountry.put("countryid", formateCountry[0].toString());
-//			FormatCountry.put("country", formateCountry[1].toString());
-//			formattedCountry.add(FormatCountry);
-//		}
-//		return formattedCountry;
-//	}
+
 
 	@GetMapping("/country/{countryid}")
 	public ResponseEntity<ResponseDTO> getCountryById(@PathVariable Long countryid) {
@@ -408,17 +375,43 @@ public class CommonMasterController extends BaseController {
 
 
 	// Region
+	
 
-	@GetMapping("/region")
-	public ResponseEntity<ResponseDTO> getAllCRegions(@RequestParam Long orgid) {
-		String methodName = "getAllCRegions()";
+	@GetMapping("/getAllRegios")
+	public ResponseEntity<ResponseDTO> getAllRegios() {
+		String methodName = "getAllRegios()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<RegionVO> regionVO = new ArrayList<>();
 		try {
-			regionVO = commonMasterService.getAllRegion(orgid);
+			regionVO = commonMasterService.getAllRegios();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Region information get successfully");
+			responseObjectsMap.put("regionVO", regionVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Region information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getAllRegionsByOrgId")
+	public ResponseEntity<ResponseDTO> getAllRegionsByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllRegionsByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<RegionVO> regionVO = new ArrayList<>();
+		try {
+			regionVO = commonMasterService.getAllRegionsByOrgId(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -540,15 +533,15 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/currency")
-	public ResponseEntity<ResponseDTO> createCurrency(@RequestBody CurrencyVO currencyVO) {
-		String methodName = "createCurrency()";
+	@PutMapping("/createUpdateCurrency")
+	public ResponseEntity<ResponseDTO> createUpdateCurrency(@RequestBody CurrencyDTO currencyDTO) {
+		String methodName = "createUpdateCurrency()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CurrencyVO currency = commonMasterService.createCurrency(currencyVO);
+			CurrencyVO currency = commonMasterService.createUpdateCurrency(currencyDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Currency created successfully");
 			responseObjectsMap.put("currency", currency);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -562,33 +555,6 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/currency")
-	public ResponseEntity<ResponseDTO> updateCurrency(@RequestBody CurrencyVO currencyVO) {
-		String methodName = "updateCurrency()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			CurrencyVO updatedCurrencyVO = commonMasterService.updateCurrency(currencyVO).orElse(null);
-			if (updatedCurrencyVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Currency updated successfully");
-				responseObjectsMap.put("updatedCurrencyVO", updatedCurrencyVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Currency not found for State ID: " + currencyVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Currency Update failed, Currency already Exist", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Currency Update failed, Currency already Exist", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// Company
 
@@ -843,42 +809,6 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	@GetMapping("/globalparamCustomerByOrgAndBranchcode")
-//	public ResponseEntity<ResponseDTO> globalparamCustomerByOrgAndBranchcode(@RequestParam Long orgid,@RequestParam String branchcode) {
-//		String methodName = "globalparamCustomerByOrgAndBranchcode()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		Set<Object[]> globalCustomer = new HashSet<>();
-//		try {
-//			globalCustomer = commonMasterService.getGlobalParametersCustomerByOrgIdAndBranchcode(orgid, branchcode);
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//		}
-//		if (StringUtils.isBlank(errorMsg)) {
-//			List<Map<String,String>>formattedCustomers=formattCustomer(globalCustomer);
-//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Global Parameter Cusomer information get successfully");
-//			responseObjectsMap.put("GlopalParametersCustomer", formattedCustomers);
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//		} else {
-//			responseDTO = createServiceResponseError(responseObjectsMap, "Global Parameter Customer information receive failed",
-//					errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
-
-//	private List<Map<String, String>> formattCustomer(Set<Object[]> globalCustomer) {
-//		List<Map<String, String>> formattedCustomers = new ArrayList<>();
-//		for (Object[] customer : globalCustomer) {
-//			Map<String, String> cust = new HashMap<>();
-//			cust.put("customer", customer[0].toString());
-//			formattedCustomers.add(cust);
-//		}
-//		return formattedCustomers;
-//	}
 	
 	@GetMapping("/getWarehouseNameByOrgIdAndBranchAndClient")
 	public ResponseEntity<ResponseDTO> getWarehouseNameByOrgIdAndBranchAndClient(@RequestParam Long orgid,
@@ -1014,6 +944,113 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
 					"screenNames information get successfully");
 			responseObjectsMap.put("screenNamesVO", screenNamesVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"screenNames information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	//Designation
+	
+	@PutMapping("/createUpdateDesignation")
+	public ResponseEntity<ResponseDTO> createUpdateDesignation(@RequestBody DesignationDTO designationDTO) {
+	    String methodName = "createUpdateDesignation()";
+	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	    String errorMsg = null;
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    try {
+	        Map<String, Object> designationVO = commonMasterService.createUpdateDesignation(designationDTO);
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, designationVO.get("messages"));  // Correct the key to "message"
+	        responseObjectsMap.put("designationVO", designationVO.get("designationVO"));  // Directly put the designationVO map
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    } catch (Exception e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+	    }
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
+	}
+
+	
+	
+	
+	@GetMapping("/getAllDesignation")
+	public ResponseEntity<ResponseDTO> getAllDesignation() {
+		String methodName = "getAllDesignation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DesignationVO> designationVOs = new ArrayList<>();
+		try {
+			designationVOs = commonMasterService.getAllDesignation();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Designation information get successfully");
+			responseObjectsMap.put("designationVO", designationVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Designation information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllDesignationByOrgId")
+	public ResponseEntity<ResponseDTO> getAllDesignationByOrgId(Long orgId) {
+		String methodName = "getAllDesignationByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DesignationVO> designationVOs = new ArrayList<>();
+		try {
+			designationVOs = commonMasterService.getAllDesignationByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"screenNames information get successfully");
+			responseObjectsMap.put("designationVO", designationVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"screenNames information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllDesignationById")
+	public ResponseEntity<ResponseDTO> getAllDesignationById(Long id) {
+		String methodName = "getAllDesignationById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		DesignationVO designationVOs=null;
+		try {
+			designationVOs = commonMasterService.getAllDesignationById(id).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"screenNames information get successfully");
+			responseObjectsMap.put("designationVO", designationVOs);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
