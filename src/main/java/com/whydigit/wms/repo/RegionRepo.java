@@ -12,7 +12,7 @@ import com.whydigit.wms.entity.RegionVO;
 public interface RegionRepo extends JpaRepository<RegionVO, Long> {
 
 	@Query("select a from RegionVO a where a.orgId=?1")
-	List<RegionVO> findAll(Long orgid);
+	List<RegionVO> findAll(Long orgId);
 
 	boolean existsByRegionNameAndOrgId(String regionName,Long orgId);
 
