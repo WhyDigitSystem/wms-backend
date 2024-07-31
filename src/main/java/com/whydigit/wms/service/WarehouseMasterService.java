@@ -243,6 +243,10 @@ public interface WarehouseMasterService {
 	List<Map<String, Object>>getPendingDocumentTypeMapping(Long orgId,String branch,String branchCode,String finYear,String finYearIdentifier);
 	
 	Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)throws ApplicationException;
+	
+	String getDocIdForGRN(String branch,String client,String finYear,String screenCode);
+	
+	
 
 
 

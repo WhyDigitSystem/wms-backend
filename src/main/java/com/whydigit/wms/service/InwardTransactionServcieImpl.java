@@ -401,4 +401,10 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		putAwayRepo.deleteById(id);
 	}
 
+	@Override
+	public Set<Object> getGRNdocid(String branch, String client, String screencode, String finyr) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -203,9 +203,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			unitVO=unitRepo.findById(unitDTO.getId()).orElseThrow(()->
 			new ApplicationException("This Id Not Found Any Information ."+unitDTO.getId()));
 			unitVO.setUpdatedBy(unitDTO.getCreatedBy());
+			
+			
 		}else {
 			unitVO.setCreatedBy(unitDTO.getCreatedBy());
 			unitVO.setUpdatedBy(unitDTO.getCreatedBy());
+			String branch="CHENNAI";
+			String client="CASIO";
+			String finYear="2024";
+			String screenCode="PC";
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO=documentTypeMappingDetailsRepo.findByBranchAndClientAndFinYearAndScreenCode(branch,client,finYear,screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno()+1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 		}
 		getUnitVOAndUnitDTO(unitVO,unitDTO);
 		return unitRepo.save(unitVO);
@@ -1542,6 +1551,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		}
 		
 		return doctypeMappingDetails;
+	}
+
+	@Override
+	public String getDocIdForGRN(String branch, String client, String finYear,String screenCode) {
+		
+		String grnDocId=documentTypeMappingDetailsRepo.getGRNDocId(branch,client,finYear,screenCode);
+		
+		if(grnDocId==null)
+		{
+			grnDocId="";
+		}
+		return grnDocId;
 	}
 
 	
