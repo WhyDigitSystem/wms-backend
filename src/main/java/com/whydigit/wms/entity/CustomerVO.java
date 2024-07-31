@@ -51,7 +51,7 @@ public class CustomerVO {
 	@Column(name = "emailid")
 	private String emailId;
 	@Column(name = "groupof")
-	private String grouPof;
+	private String groupOf;
 	@Column(name = "tanno")
 	private String tanNo;
 	@Column(name = "address1")

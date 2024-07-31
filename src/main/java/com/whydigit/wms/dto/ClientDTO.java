@@ -13,6 +13,6 @@ public class ClientDTO {
 	private String client; // caps
 	private String clientCode; // caps
 	private String clientType;
-	private int fifofife;
+	private String fifofife;
 
 }

@@ -38,11 +38,7 @@ public class CityVO {
     private String state;
 	@Column(name="active")
     private boolean active;
-//	@Column(name="userif")
-//    private String userid;
-	@Column(unique = true)
-//	private String dupchk;
-//	@Column(name="createdby")
+	@Column(name="createdby")
 	private String createdBy;
 	@Column(name="modifiedby")
 	private String updatedBy;

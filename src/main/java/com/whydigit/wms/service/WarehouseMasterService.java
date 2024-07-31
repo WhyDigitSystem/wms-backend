@@ -61,7 +61,7 @@ public interface WarehouseMasterService {
 
 	Optional<UnitVO> getUnitById(Long unitid);
 
-	UnitVO createUpdateUnit(UnitDTO unitDTO) throws ApplicationException;
+	Map<String, Object> createUpdateUnit(UnitDTO unitDTO) throws ApplicationException;
 
 	void deleteUnit(Long unitid);
 
@@ -213,9 +213,7 @@ public interface WarehouseMasterService {
 
 	Optional<EmployeeVO> getEmployeeById(Long employeeid);
 
-	EmployeeVO createEmployee(EmployeeDTO employeeDTO) throws ApplicationException;
-
-	//Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO);
+	Map<String, Object> createEmployee(EmployeeDTO employeeDTO) throws ApplicationException;
 
 	void deleteEmployee(Long employeeid);
 

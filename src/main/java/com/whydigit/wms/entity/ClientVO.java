@@ -39,7 +39,7 @@ public class ClientVO {
 	@Column(name = "clienttype")
 	private String clientType;
 	@Column(name = "fiofife")
-	private int fifofife;
+	private String fifofife;
 	
 	private boolean active;
 	private boolean cancel;

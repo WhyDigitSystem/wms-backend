@@ -19,7 +19,7 @@ public class CustomerDTO {
 	private String mobileNumber;
 	private String gstRegistration;
 	private String emailId;
-	private String grouPof;
+	private String groupOf;
 	private String tanNo;
 	private String address1;
 	private String address2;
