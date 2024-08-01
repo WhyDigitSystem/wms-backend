@@ -500,7 +500,7 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
+ 
 	@PostMapping("/createUpdateBranch")
 	public ResponseEntity<ResponseDTO> createUpdateBranch(@RequestBody BranchDTO branchDTO) {
 		String methodName = "createBranch()";
@@ -509,9 +509,9 @@ public class WarehouseMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			BranchVO createdBranchVO = warehouseMasterService.createUpdateBranch(branchDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Branch created successfully");
-			responseObjectsMap.put("branchVO", createdBranchVO);
+			Map<String, Object> createdBranchVO = warehouseMasterService.createUpdateBranch(branchDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdBranchVO.get("message"));
+			responseObjectsMap.put("branchVO", createdBranchVO.get("branchVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 	        errorMsg = e.getMessage();

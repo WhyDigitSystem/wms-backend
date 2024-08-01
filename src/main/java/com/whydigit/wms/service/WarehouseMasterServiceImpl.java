@@ -357,90 +357,82 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	@Transactional
-	public BranchVO createUpdateBranch(BranchDTO branchDTO) throws Exception {
-		BranchVO branchVO;
+	public Map<String, Object> createUpdateBranch(BranchDTO branchDTO) throws Exception {
+	    BranchVO branchVO;
+	    String message = null;
 
-		if (ObjectUtils.isEmpty(branchDTO.getId())) {
+	    if (ObjectUtils.isEmpty(branchDTO.getId())) {
+	        // Check if the branch already exists for creation
+	        if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
+	            String errorMessage = String.format("This Branch: %s Already Exists in This Organization", branchDTO.getBranch());
+	            throw new ApplicationException(errorMessage);
+	        }
 
-			if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
+	        if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
+	            String errorMessage = String.format("This BranchCode: %s Already Exists in This Organization", branchDTO.getBranchCode());
+	            throw new ApplicationException(errorMessage);
+	        }
 
-				String errorMessage = String.format("This Branch :%s Already Exists This organization",
-						branchDTO.getBranch());
-				throw new ApplicationException(errorMessage);
-			}
+	        // Create new branch
+	        branchVO = new BranchVO();
+	        branchVO.setCreatedBy(branchDTO.getCreatedBy());
+	        branchVO.setUpdatedBy(branchDTO.getCreatedBy());
+	        message = "Branch Created Successfully";
+	    } else {
+	        // Update existing branch
+	        branchVO = branchRepo.findById(branchDTO.getId())
+	                .orElseThrow(() -> new ApplicationException("Branch not found with id: " + branchDTO.getId()));
 
-			if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
+	        branchVO.setUpdatedBy(branchDTO.getCreatedBy());
 
-				String errorMessage = String.format("This BranchCode :%s Already Exists This organization",
-						branchDTO.getBranchCode());
-				throw new ApplicationException(errorMessage);
-			}
+	        if (!branchVO.getBranch().equalsIgnoreCase(branchDTO.getBranch())) {
+	            if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
+	                String errorMessage = String.format("This Branch: %s Already Exists in This Organization", branchDTO.getBranch());
+	                throw new ApplicationException(errorMessage);
+	            }
+	            branchVO.setBranch(branchDTO.getBranch().toUpperCase());
+	        }
 
-		}
-		if (branchDTO.getId() != null) {
-			// Update existing branch
-			branchVO = branchRepo.findById(branchDTO.getId())
-					.orElseThrow(() -> new ApplicationException("Branch not found with id: " + branchDTO.getId()));
+	        if (!branchVO.getBranchCode().equalsIgnoreCase(branchDTO.getBranchCode())) {
+	            if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
+	                String errorMessage = String.format("This BranchCode: %s Already Exists in This Organization", branchDTO.getBranchCode());
+	                throw new ApplicationException(errorMessage);
+	            }
+	            branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
+	        }
 
-			branchVO.setUpdatedBy(branchDTO.getCreatedBy());
+	        message = "Branch Updated Successfully";
+	    }
 
-			if (!branchVO.getBranch().equalsIgnoreCase(branchDTO.getBranch())) {
+	    getBranchVOFromBranchDTO(branchVO, branchDTO);
+	    branchRepo.save(branchVO);
 
-				if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
-
-					String errorMessage = String.format("This Branch :%s Already Exists This organization",
-							branchDTO.getBranch());
-					throw new ApplicationException(errorMessage);
-				}
-				branchVO.setBranch(branchDTO.getBranch().toUpperCase());
-
-				if (branchDTO.getBranchCode().equalsIgnoreCase(branchDTO.getBranchCode())) {
-					if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
-
-						String errorMessage = String.format("This BranchCode :%s Already Exists This organization",
-								branchDTO.getBranchCode());
-						throw new ApplicationException(errorMessage);
-					}
-					branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
-
-				}
-
-			}
-
-		} else {
-			// Create new branch
-			branchVO = new BranchVO();
-			branchVO.setCreatedBy(branchDTO.getCreatedBy());
-			branchVO.setUpdatedBy(branchDTO.getCreatedBy());
-		}
-
-		getBranchVOFromBranchDTO(branchVO, branchDTO);
-
-		return branchRepo.save(branchVO);
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("message", message);
+	    response.put("branchVO", branchVO);
+	    return response;
 	}
 
 	private void getBranchVOFromBranchDTO(BranchVO branchVO, BranchDTO branchDTO) {
-		branchVO.setBranch(branchDTO.getBranch().toUpperCase());
-		branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
-		branchVO.setOrgId(branchDTO.getOrgId());
-		branchVO.setAddressLine1(branchDTO.getAddressLine1());
-		branchVO.setAddressLine2(branchDTO.getAddressLine2());
-		branchVO.setPan(branchDTO.getPan());
-		branchVO.setGstIn(branchDTO.getGstIn());
-		branchVO.setPhone(branchDTO.getPhone());
-		branchVO.setState(branchDTO.getState().toUpperCase());
-		branchVO.setCity(branchDTO.getCity().toUpperCase());
-		branchVO.setPinCode(branchDTO.getPinCode());
-		branchVO.setCountry(branchDTO.getCountry().toUpperCase());
-		branchVO.setStateNo(branchDTO.getStateNo().toUpperCase());
-		branchVO.setStateCode(branchDTO.getStateCode().toUpperCase());
-		branchVO.setLccurrency(branchDTO.getLccurrency());
-		branchVO.setCancelRemarks(branchDTO.getCancelRemarks());
-		// branchVO.setDupchk(branchDTO.getOrgId() + branchDTO.getBranchCode() +
-		// branchDTO.getBranchCode());
-		branchVO.setActive(branchDTO.isActive());
-		branchVO.setUserid(branchDTO.getUserid());
+	    branchVO.setBranch(branchDTO.getBranch().toUpperCase());
+	    branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
+	    branchVO.setOrgId(branchDTO.getOrgId());
+	    branchVO.setAddressLine1(branchDTO.getAddressLine1());
+	    branchVO.setAddressLine2(branchDTO.getAddressLine2());
+	    branchVO.setPan(branchDTO.getPan());
+	    branchVO.setGstIn(branchDTO.getGstIn());
+	    branchVO.setPhone(branchDTO.getPhone());
+	    branchVO.setState(branchDTO.getState().toUpperCase());
+	    branchVO.setCity(branchDTO.getCity().toUpperCase());
+	    branchVO.setPinCode(branchDTO.getPinCode());
+	    branchVO.setCountry(branchDTO.getCountry().toUpperCase());
+	    branchVO.setStateNo(branchDTO.getStateNo().toUpperCase());
+	    branchVO.setStateCode(branchDTO.getStateCode().toUpperCase());
+	    branchVO.setLccurrency(branchDTO.getLccurrency());
+	    branchVO.setCancelRemarks(branchDTO.getCancelRemarks());
+	    branchVO.setActive(branchDTO.isActive());
 	}
+
 
 	@Override
 	public void deleteBranch(Long branchid) {

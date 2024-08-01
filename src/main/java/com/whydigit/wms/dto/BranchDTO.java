@@ -47,10 +47,6 @@ public class BranchDTO {
 
 	private String createdBy;
 
-	private String updatedBy;
-	
-//	private String dupchk;
-
 	private boolean active;
 	
 	private String userid;

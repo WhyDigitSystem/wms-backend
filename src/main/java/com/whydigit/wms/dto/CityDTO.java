@@ -15,10 +15,7 @@ public class CityDTO {
 	private String cityName;
 	private String state;
 	private boolean active;
-	//private String userid;
-	//private String dupchk;
 	private String createdBy;
-	private String updatedBy;
 	private Long orgId;
 	private boolean cancel;
 }

@@ -95,7 +95,7 @@ public interface WarehouseMasterService {
 
 	Optional<BranchVO> getBranchById(Long branchid);
 
-	BranchVO createUpdateBranch(BranchDTO branchDTO) throws Exception;
+	Map<String, Object> createUpdateBranch(BranchDTO branchDTO) throws Exception;
 
 	
 	void deleteBranch(Long branchid);

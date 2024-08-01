@@ -17,9 +17,7 @@ private Long id;
     private String region;
     private String stateNumber;
     private boolean active;
-	//private String dupchk;
     private String createdBy;
-	//private String updatedBy;
 	private Long orgId;
 	private boolean cancel;
 
