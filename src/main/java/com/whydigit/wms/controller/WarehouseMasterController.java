@@ -1944,4 +1944,31 @@ public class WarehouseMasterController extends BaseController {
 	    return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getGRNDocId")
+	public ResponseEntity<ResponseDTO> getGRNDocId(@RequestParam String branch,@RequestParam String client,@RequestParam String finYear) {
+		String methodName = "getGRNDocId()";
+		String screenCode="PC";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String grnDocId="";
+		try {
+			 grnDocId = warehouseMasterService.getDocIdForGRN(branch, client, finYear, screenCode);	
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Document Type information get successfully");
+			responseObjectsMap.put("grnDocId", grnDocId);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 }
