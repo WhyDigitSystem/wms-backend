@@ -73,8 +73,6 @@ public class BranchVO {
 //	private String dupchk;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "userid")
-	private String userid;
 
 	@JsonGetter("active")
 	public String getActive() {

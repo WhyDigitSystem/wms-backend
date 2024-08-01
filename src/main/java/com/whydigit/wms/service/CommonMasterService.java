@@ -35,11 +35,7 @@ public interface CommonMasterService {
 
 	Optional<CountryVO> getCountryById(Long countryid);
 	
-	//Set<Object[]>getCountryAndCountryid(Long orgid);
-
-	CountryVO createUpdateCountry(CountryDTO countryDTO) throws ApplicationException; // Return the created entity
-
-	Optional<CountryVO> updateCountry(CountryVO countryVO); // The parameter name should be camelCase
+	Map<String, Object> createUpdateCountry(CountryDTO countryDTO) throws ApplicationException; // Return the created entity
 
 	void deleteCountry(Long countryid);
 
@@ -51,7 +47,7 @@ public interface CommonMasterService {
 
 	List<StateVO> getStatesByCountry(Long orgid,String country);
 
-	StateVO createUpdateState(StateDTO stateDTO) throws ApplicationException;
+	Map<String, Object> createUpdateState(StateDTO stateDTO) throws ApplicationException;
 
 
 	void deleteState(Long stateid);
@@ -65,7 +61,7 @@ public interface CommonMasterService {
 	Optional<CityVO> getCityById(Long cityid);
 
 	
-	CityVO createUpdateCity(CityDTO cityDTO) throws ApplicationException;
+	Map<String, Object> createUpdateCity(CityDTO cityDTO) throws ApplicationException;
 
 
 	void deleteCity(Long cityid);
@@ -76,7 +72,7 @@ public interface CommonMasterService {
 
 	Optional<CurrencyVO> getCurrencyById(Long currencyid);
 	
-	CurrencyVO createUpdateCurrency(CurrencyDTO currencyDTO) throws ApplicationException;
+	Map<String, Object> createUpdateCurrency(CurrencyDTO currencyDTO) throws ApplicationException;
 
 	void deleteCurrency(Long currencyid);
 	
@@ -89,7 +85,7 @@ public interface CommonMasterService {
 
 	Optional<RegionVO> getRegionById(Long regionid);
 
-	RegionVO createUpdateRegion(RegionDTO regionDTO) throws ApplicationException;
+	Map<String, Object> createUpdateRegion(RegionDTO regionDTO) throws ApplicationException;
 
 	void deleteRegion(Long regionid);
 

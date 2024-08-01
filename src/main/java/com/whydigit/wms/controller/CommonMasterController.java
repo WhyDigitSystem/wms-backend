@@ -80,8 +80,6 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-
-
 	@GetMapping("/country/{countryid}")
 	public ResponseEntity<ResponseDTO> getCountryById(@PathVariable Long countryid) {
 		String methodName = "getCountryById()";
@@ -112,50 +110,23 @@ public class CommonMasterController extends BaseController {
 	public ResponseEntity<ResponseDTO> createUpdateCountry(@RequestBody CountryDTO countryDTO) {
 		String methodName = "createCountry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		Map<String, Object> responseObjectsMap=new HashMap<String, Object>();
 		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CountryVO createdCountryVO = commonMasterService.createUpdateCountry(countryDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Country created successfully");
-			responseObjectsMap.put("countryVO", createdCountryVO);
+			Map<String, Object> createdCountryVO = commonMasterService.createUpdateCountry(countryDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdCountryVO.get("message") );
+			responseObjectsMap.put("countryVO", createdCountryVO.get("createdCountryVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Country creation failed. Country Name or Country Code already Exist ", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg ,errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/country")
-	public ResponseEntity<ResponseDTO> updateCountry(@RequestBody CountryVO countryVO) {
-		String methodName = "updateCountry()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			CountryVO updatedCountryVO = commonMasterService.updateCountry(countryVO).orElse(null);
-			if (updatedCountryVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Country updated successfully");
-				responseObjectsMap.put("countryVO", updatedCountryVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Country not found for CountryID: " + countryVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Country update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Country Update failed, Country Name or Country Code already Exisit", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// State
 
@@ -242,34 +213,24 @@ public class CommonMasterController extends BaseController {
 
 	@PostMapping("/state")
 	public ResponseEntity<ResponseDTO> createUpdateState(@RequestBody StateDTO stateDTO) {
-	    String methodName = "createUpdateState()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    try {
-	        StateVO stateVO = commonMasterService.createUpdateState(stateDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "State created successfully");
-	        responseObjectsMap.put("stateVO", stateVO);
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (ApplicationException e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap,
-	                "State creation failed. State Name or State Code already exists",
-	                errorMsg);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap,
-	                "State creation failed due to an unexpected error",
-	                errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+		String methodName = "createUpdateState()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> stateVO = commonMasterService.createUpdateState(stateDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,stateVO.get("message") );
+			responseObjectsMap.put("stateVO", stateVO.get("stateVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg ,errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
-
-
 	// city
 
 	@GetMapping("/city")
@@ -359,23 +320,20 @@ public class CommonMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CityVO createdCityVO = commonMasterService.createUpdateCity(cityDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "city created successfully");
-			responseObjectsMap.put("cityVO", createdCityVO);
+			Map<String, Object> createdCityVO = commonMasterService.createUpdateCity(cityDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdCityVO.get("message"));
+			responseObjectsMap.put("cityVO", createdCityVO.get("cityVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"City creation failed, CityName and City Code Should Not Duplicate", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+	    }
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
 	}
 
-
 	// Region
-	
 
 	@GetMapping("/getAllRegios")
 	public ResponseEntity<ResponseDTO> getAllRegios() {
@@ -462,18 +420,17 @@ public class CommonMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			RegionVO regionvo = commonMasterService.createUpdateRegion(regionDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Region created successfully");
-			responseObjectsMap.put("regionvo", regionvo);
+			Map<String, Object> regionvo = commonMasterService.createUpdateRegion(regionDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, regionvo.get("message"));
+			responseObjectsMap.put("regionvo", regionvo.get("regionVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Region creation failed, Region and Region Code Should Not Duplicate", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+	    }
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// Currency
@@ -541,20 +498,18 @@ public class CommonMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CurrencyVO currency = commonMasterService.createUpdateCurrency(currencyDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Currency created successfully");
-			responseObjectsMap.put("currency", currency);
+			Map<String, Object> currency = commonMasterService.createUpdateCurrency(currencyDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, currency.get("message"));
+			responseObjectsMap.put("currency", currency.get("currencyVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Currency creation failed. Currency already Exist ", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+	    }
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
 	}
-
 
 	// Company
 
@@ -809,7 +764,6 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 	@GetMapping("/getWarehouseNameByOrgIdAndBranchAndClient")
 	public ResponseEntity<ResponseDTO> getWarehouseNameByOrgIdAndBranchAndClient(@RequestParam Long orgid,
 			@RequestParam String branch, @RequestParam String client) {
@@ -877,7 +831,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PutMapping("/createUpdateScreenNames")
 	public ResponseEntity<ResponseDTO> createUpdateScreenNames(@RequestBody ScreenNamesDTO screenNamesDTO) {
 		String methodName = "createUpdateScreenNames()";
@@ -887,18 +841,18 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> screenNamesVO = commonMasterService.createUpdateScreenNames(screenNamesDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, screenNamesVO.get("message") );
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, screenNamesVO.get("message"));
 			responseObjectsMap.put("screenNamesVO", screenNamesVO.get("screenNamesVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/allScreenNames")
 	public ResponseEntity<ResponseDTO> getAllScreenNames() {
 		String methodName = "getAllScreenNames()";
@@ -914,18 +868,17 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"screenNames information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "screenNames information get successfully");
 			responseObjectsMap.put("screenNamesVO", screenNamesVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"screenNames information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "screenNames information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/screenNamesById")
 	public ResponseEntity<ResponseDTO> getScreenNamesById(@RequestParam Long id) {
 		String methodName = "getScreenNamesById()";
@@ -941,44 +894,42 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"screenNames information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "screenNames information get successfully");
 			responseObjectsMap.put("screenNamesVO", screenNamesVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"screenNames information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "screenNames information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	//Designation
-	
+
+	// Designation
+
 	@PutMapping("/createUpdateDesignation")
 	public ResponseEntity<ResponseDTO> createUpdateDesignation(@RequestBody DesignationDTO designationDTO) {
-	    String methodName = "createUpdateDesignation()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    try {
-	        Map<String, Object> designationVO = commonMasterService.createUpdateDesignation(designationDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, designationVO.get("messages"));  // Correct the key to "message"
-	        responseObjectsMap.put("designationVO", designationVO.get("designationVO"));  // Directly put the designationVO map
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+		String methodName = "createUpdateDesignation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> designationVO = commonMasterService.createUpdateDesignation(designationDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, designationVO.get("messages")); // Correct the key to
+																									// "message"
+			responseObjectsMap.put("designationVO", designationVO.get("designationVO")); // Directly put the
+																							// designationVO map
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
-	
-	
 	@GetMapping("/getAllDesignation")
 	public ResponseEntity<ResponseDTO> getAllDesignation() {
 		String methodName = "getAllDesignation()";
@@ -994,18 +945,17 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"Designation information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Designation information get successfully");
 			responseObjectsMap.put("designationVO", designationVOs);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Designation information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Designation information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllDesignationByOrgId")
 	public ResponseEntity<ResponseDTO> getAllDesignationByOrgId(Long orgId) {
 		String methodName = "getAllDesignationByOrgId()";
@@ -1021,18 +971,17 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"screenNames information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "screenNames information get successfully");
 			responseObjectsMap.put("designationVO", designationVOs);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"screenNames information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "screenNames information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllDesignationById")
 	public ResponseEntity<ResponseDTO> getAllDesignationById(Long id) {
 		String methodName = "getAllDesignationById()";
@@ -1040,7 +989,7 @@ public class CommonMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		DesignationVO designationVOs=null;
+		DesignationVO designationVOs = null;
 		try {
 			designationVOs = commonMasterService.getAllDesignationById(id).orElse(null);
 		} catch (Exception e) {
@@ -1048,16 +997,15 @@ public class CommonMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"screenNames information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "screenNames information get successfully");
 			responseObjectsMap.put("designationVO", designationVOs);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"screenNames information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "screenNames information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 }
