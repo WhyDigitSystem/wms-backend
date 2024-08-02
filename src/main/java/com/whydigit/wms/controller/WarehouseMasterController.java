@@ -26,10 +26,13 @@ import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
 import com.whydigit.wms.dto.CarrierDTO;
+import com.whydigit.wms.dto.CellTypeDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.DocumentTypeDTO;
 import com.whydigit.wms.dto.DocumentTypeMappingDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
+import com.whydigit.wms.dto.GroupDTO;
+import com.whydigit.wms.dto.LocationMappingDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.ResponseDTO;
@@ -117,55 +120,27 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/group")
-	public ResponseEntity<ResponseDTO> createGroup(@RequestBody GroupVO groupVO) {
-		String methodName = "createGroup()";
+	@PutMapping("/createUpdateGroup")
+	public ResponseEntity<ResponseDTO> createUpdateGroup(@RequestBody GroupDTO groupDTO) {
+		String methodName = "createUpdateGroup()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			GroupVO createdGroupVO = warehouseMasterService.createGroup(groupVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Group created successfully");
-			responseObjectsMap.put("createdGroupVO", createdGroupVO);
+			Map<String, Object> createdGroupVO = warehouseMasterService.createUpdateGroup(groupDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdGroupVO.get("message"));
+			responseObjectsMap.put("createdGroupVO", createdGroupVO.get("groupVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Group creation failed. Group Name already Exist ", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/group")
-	public ResponseEntity<ResponseDTO> updateGroup(@RequestBody GroupVO groupVO) {
-		String methodName = "updateGroup()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			GroupVO groupvo = warehouseMasterService.updateGroup(groupVO).orElse(null);
-			if (groupVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Group Updated successfully");
-				responseObjectsMap.put("groupVO", groupvo);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Group not found for ID: " + groupvo.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Group Update failed, Group Name already Exist", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Group Name Update failed, Group Name already Exist", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// Unit
 
@@ -349,16 +324,16 @@ public class WarehouseMasterController extends BaseController {
 
 	// CellType
 
-	@GetMapping("/cellType")
-	public ResponseEntity<ResponseDTO> getAllCellType(@RequestParam Long orgid) {
-		String methodName = "getAllCellType()";
+	@GetMapping("/getAllCellTypeByOrgId")
+	public ResponseEntity<ResponseDTO> getAllCellTypeByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllCellTypeByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<CellTypeVO> cellTypeVO = new ArrayList<>();
 		try {
-			cellTypeVO = warehouseMasterService.getAllCellType(orgid);
+			cellTypeVO = warehouseMasterService.getAllCellTypeByOrgId(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -375,6 +350,33 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getAllCellType")
+	public ResponseEntity<ResponseDTO> getAllCellType() {
+		String methodName = "getAllCellType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CellTypeVO> cellTypeVO = new ArrayList<>();
+		try {
+			cellTypeVO = warehouseMasterService.getAllCellType();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType information get successfully");
+			responseObjectsMap.put("cellTypeVO", cellTypeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "CellType information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	
 	@GetMapping("/cellType/{celltypeid}")
 	public ResponseEntity<ResponseDTO> getCellTypeById(@PathVariable Long celltypeid) {
 		String methodName = "getCellTypeById()";
@@ -402,52 +404,27 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/cellType")
-	public ResponseEntity<ResponseDTO> createCellType(@RequestBody CellTypeVO cellTypeVO) {
+	@PutMapping("/createUpdateCellType")
+	public ResponseEntity<ResponseDTO> createUpdateCellType(@RequestBody CellTypeDTO cellTypeDTO) {
 		String methodName = "createCellType()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CellTypeVO createdCellTypeVO = warehouseMasterService.createCellType(cellTypeVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType created successfully");
-			responseObjectsMap.put("createdCellTypeVO", createdCellTypeVO);
+			Map<String, Object> createdCellTypeVO = warehouseMasterService.createUpdateCellType(cellTypeDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdCellTypeVO.get("message"));
+			responseObjectsMap.put("createdCellTypeVO", createdCellTypeVO.get("cellTypeVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "CellType creation failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/cellType")
-	public ResponseEntity<ResponseDTO> updateCellType(@RequestBody CellTypeVO cellTypeVO) {
-		String methodName = "updateCellType()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			CellTypeVO cellTypevo = warehouseMasterService.updateCellType(cellTypeVO).orElse(null);
-			if (cellTypeVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CellType Updated successfully");
-				responseObjectsMap.put("cellTypeVO", cellTypevo);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Celltype not found for ID: " + cellTypevo.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "CellType Update failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	// Branch
 	@GetMapping("/branch")
@@ -583,7 +560,7 @@ public class WarehouseMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CustomerVO createdCustomerVO = warehouseMasterService.createUpdateCustomer(customerDTO);
+			Map<String, Object> createdCustomerVO = warehouseMasterService.createUpdateCustomer(customerDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer created successfully");
 			responseObjectsMap.put("customerVO", createdCustomerVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -1413,18 +1390,18 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/Locationmapping")
-	public ResponseEntity<ResponseDTO> createLocationMapping(@RequestBody LocationMappingVO locationMappingVO) {
-		String methodName = "createLocationMapping()";
+	@PutMapping("/createUpdateLocationMapping")
+	public ResponseEntity<ResponseDTO> createUpdateLocationMapping(@RequestBody LocationMappingDTO locationMappingDTO) {
+		String methodName = "createUpdateLocationMapping()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			LocationMappingVO createdLocationMappingVO = warehouseMasterService
-					.createLocationMapping(locationMappingVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationMapping created successfully");
-			responseObjectsMap.put("LocationMappingVO", createdLocationMappingVO);
+			Map<String, Object> createdLocationMappingVO = warehouseMasterService
+					.createUpdateLocationMapping(locationMappingDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdLocationMappingVO.get("message"));
+			responseObjectsMap.put("LocationMappingVO", createdLocationMappingVO.get("locationMappingVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -1436,33 +1413,6 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/locationmapping")
-	public ResponseEntity<ResponseDTO> updateLocationMapping(@RequestBody LocationMappingVO locationMappingVO) {
-		String methodName = "updateLocationMapping()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			LocationMappingVO updatedLocationMappingVO = warehouseMasterService.updateLocationMapping(locationMappingVO)
-					.orElse(null);
-			if (updatedLocationMappingVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationMapping updated successfully");
-				responseObjectsMap.put("LocationMappingVO", updatedLocationMappingVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "LocationMapping not found for LocationMapping ID: " + locationMappingVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "LocationMapping & branch already Exist",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 	// Carrier
 
 	@GetMapping("/carrier")

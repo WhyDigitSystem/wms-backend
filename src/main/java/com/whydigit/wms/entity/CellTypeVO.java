@@ -29,17 +29,13 @@ public class CellTypeVO {
 	private Long id;
 	
 	@Column(name="celltype")
-	private String celltype;
-	@Column(name="userid")
-	private String userid;
+	private String cellType;
 	@Column(name="active")
 	private boolean active;
-	@Column(unique = true)
-	private String dupchk;
 	@Column(name="createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name="modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name="orgid")
 	private Long orgId;
 	@Column(name="cancel")
