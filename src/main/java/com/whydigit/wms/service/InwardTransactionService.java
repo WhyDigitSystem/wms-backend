@@ -59,5 +59,7 @@ public interface InwardTransactionService {
 	void deletePutAway(Long idLong);
 
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
+	
+	Set<Object>getGRNdocid(String branch,String client,String screencode,String finyr);
 
 }

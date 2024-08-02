@@ -65,8 +65,8 @@ public class DocumentTypeMappingDetailsVO {
 	@Column(name = "concatenation")
 	private String concatenation;
 	
-	@Column(name="currentseqno")
-	private String currentSeqNo="00001";
+	@Column(name="lastno")
+	private int lastno=1;
 	
 
 	@JsonBackReference

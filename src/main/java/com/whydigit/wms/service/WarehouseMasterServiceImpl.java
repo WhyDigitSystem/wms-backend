@@ -1705,6 +1705,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return doctypeMappingDetails;
 	}
 
+	@Override
+	public String getDocIdForGRN(String branch, String client, String finYear,String screenCode) {
+		
+		String grnDocId=documentTypeMappingDetailsRepo.getGRNDocId(branch,client,finYear,screenCode);
+		
+		if(grnDocId==null)
+		{
+			grnDocId="";
+		}
+		return grnDocId;
+	}
+
 	
 
 	
