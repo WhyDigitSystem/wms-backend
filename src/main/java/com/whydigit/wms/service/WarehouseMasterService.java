@@ -10,10 +10,13 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
 import com.whydigit.wms.dto.CarrierDTO;
+import com.whydigit.wms.dto.CellTypeDTO;
 import com.whydigit.wms.dto.CustomerDTO;
 import com.whydigit.wms.dto.DocumentTypeDTO;
 import com.whydigit.wms.dto.DocumentTypeMappingDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
+import com.whydigit.wms.dto.GroupDTO;
+import com.whydigit.wms.dto.LocationMappingDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.SupplierDTO;
@@ -47,9 +50,7 @@ public interface WarehouseMasterService {
 
 	Optional<GroupVO> getGroupById(Long groupid);
 
-	GroupVO createGroup(GroupVO groupVO);
-
-	Optional<GroupVO> updateGroup(GroupVO groupVO);
+	public Map<String, Object> createUpdateGroup(GroupDTO groupDTO) throws ApplicationException;
 
 	void deleteGroup(Long groupid);
 
@@ -79,13 +80,14 @@ public interface WarehouseMasterService {
 
 	// CellType
 
-	List<CellTypeVO> getAllCellType(Long orgid);
+	List<CellTypeVO> getAllCellTypeByOrgId(Long orgId);
 
 	Optional<CellTypeVO> getCellTypeById(Long celltypeid);
 
-	CellTypeVO createCellType(CellTypeVO cellTypeVO);
+	List<CellTypeVO> getAllCellType();
 
-	Optional<CellTypeVO> updateCellType(CellTypeVO cellTypeVO);
+	Map<String, Object> createUpdateCellType(CellTypeDTO cellTypeDTO) throws ApplicationException;
+
 
 	void deleteCellType(Long celltypeid);
 
@@ -106,7 +108,7 @@ public interface WarehouseMasterService {
 
 	Optional<CustomerVO> getCustomerById(Long customerid);
 
-	CustomerVO createUpdateCustomer(CustomerDTO customerDTO) throws ApplicationException;
+	Map<String, Object> createUpdateCustomer(CustomerDTO customerDTO) throws ApplicationException;
 
 	Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
 
@@ -187,10 +189,8 @@ public interface WarehouseMasterService {
 
 	Optional<LocationMappingVO> getLocationMappingById(Long locationmappingid);
 
-	LocationMappingVO createLocationMapping(LocationMappingVO locationMappingVO);
-
-	Optional<LocationMappingVO> updateLocationMapping(LocationMappingVO locationMappingVO);
-
+	public Map<String, Object> createUpdateLocationMapping(LocationMappingDTO locationMappingDTO) throws ApplicationException;
+	
 	void deleteLocationMapping(Long locationMappingid);
 
 	// Carrier
@@ -245,6 +245,11 @@ public interface WarehouseMasterService {
 	String getDocIdForGRN(String branch,String client,String finYear,String screenCode);
 	
 	
+
+
+
+
+
 
 
 

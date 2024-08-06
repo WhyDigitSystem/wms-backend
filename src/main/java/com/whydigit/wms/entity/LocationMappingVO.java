@@ -32,22 +32,28 @@ public class LocationMappingVO {
 	private Long id;
 	private String branch;
 	private String warehouse;
-	private String locationtype;
-	private String clienttype;
-	private String rowno;
+	@Column(name ="locationtype")
+	private String locationType;
+	@Column(name ="clienttype")
+	private String clientType;
+	@Column(name ="rowno")
+	private String rowNo;
 	private String customer;
-	private String levelno;
+	@Column(name ="levelno" )
+	private String levelNo;
 	private String client;
-	@Column(unique = true)
-	private String dupchk;
-	private String createdby;
-	private String updatedby;
+	@Column(name ="createdby" )
+	private String createdBy;
+	@Column(name ="modifiedby")
+	private String updatedBy;
+    @Column(name ="orgid")
 	private Long orgId;
 	private boolean cancel;
-	private String userid;
-	private String cancelremark;
+	@Column(name ="cancelremark")
+	private String cancelRemark;
 	private boolean active;
-	private String branchcode;
+	@Column(name ="branchcode")
+	private String branchCode;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "locationMappingVO", cascade = CascadeType.ALL)

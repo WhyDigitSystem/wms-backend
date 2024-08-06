@@ -13,6 +13,8 @@ public interface CellTypeRepo extends JpaRepository<CellTypeVO, Long>{
 
 
 	@Query("select a from CellTypeVO a where a.orgId=?1")
-	List<CellTypeVO> findAll(Long orgid);
+	List<CellTypeVO> findAll(Long orgId);
+
+	boolean existsByCellTypeAndOrgId(String celltype, Long orgId);
 
 }
