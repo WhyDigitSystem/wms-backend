@@ -37,9 +37,9 @@ public class GatePassInVO {
 	private Long id;
 
 	@Column(name = "transactiontype")
-	private String transactiontype;
+	private String transactionType;
 	@Column(name = "entryno")
-	private String entryno;//
+	private String entryNo;//
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "docid")
@@ -51,56 +51,51 @@ public class GatePassInVO {
 	@Column(name = "supplier")
 	private String supplier;
 	@Column(name = "suppliershortname")
-	private String suppliershortname;
+	private String supplierShortName;
 	@Column(name = "modeofshipment")
-	private String modeofshipment;
+	private String modeOfShipment;
 	@Column(name = "carrier")
 	private String carrier;
 	@Column(name = "carriertransport")
-	private String carriertransport;
+	private String carrierTransport;
 	@Column(name = "vehicletype")
-	private String vehicletype;
+	private String vehicleType;
 	@Column(name = "vehicleno")
-	private String vehicleno;
+	private String vehicleNo;
 	@Column(name = "drivername")
-	private String drivername;
+	private String driverName;
 	@Column(name = "contact")
 	private String contact;
 	@Column(name = "goodsdescription")
-	private String goodsdescription;
+	private String goodsDescription;
 	@Column(name = "securityname")
-	private String securityname;
+	private String securityName;
 	@Column(name = "lotno")
-	private String lotno;
-	@Column(unique = true)
-	private String dupchk;
+	private String lotNo;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "company")
 	private String company;
 
 	@Column(name = "cancel")
 	private boolean cancel;
 
-	@Column(name = "userid")
-	private String userid;
-
 	@Column(name = "cancelremarks")
-	private String cancelremark;
+	private String cancelRemark;
 
 	@Column(name = "active")
 	private boolean active;
 
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 
 	@Column(name = "branch")
 	private String branch;
 
 	@Column(name = "screencode")
-	private String screencode;
+	private String screenCode;
 
 	@Column(name = "client")
 	private String client;
@@ -113,7 +108,7 @@ public class GatePassInVO {
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "gatePassInVO", cascade = CascadeType.ALL)
-	private List<GatePassInDetailsVO> gatePassDetailsList;
+	private List<GatePassInDetailsVO> gatePassDetailsVO;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

@@ -1,16 +1,21 @@
 package com.whydigit.wms.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
+import com.whydigit.wms.entity.SupplierVO;
+import com.whydigit.wms.exception.ApplicationException;
 
 @Service
 public interface InwardTransactionService {
@@ -27,7 +32,7 @@ public interface InwardTransactionService {
 
 	void deleteGrn(Long id);
 
-	Set<Object[]> getAllGatePassNumberByClientAndBranch(Long orgId, String client, String customer, String branchcode);
+//	Set<Object[]> getAllGatePassNumberByClientAndBranch(Long orgId, String client, String customer, String branchcode);
 
 	Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode);
@@ -38,13 +43,14 @@ public interface InwardTransactionService {
 
 	Optional<GatePassInVO> getGatePassInById(Long id);
 
-	GatePassInVO createGatePassIn(GatePassInVO gatePassInVO);
+	Map<String, Object> createUpdateGatePassIn(GatePassInDTO gatePassInDTO) throws ApplicationException;
 
 	Optional<GatePassInVO> updateGatePassIn(GatePassInVO gatePassInVO);
+	
+	List<CarrierVO> getAllModeOfShipment();
 
 	void deleteGatePassIn(Long id);
 
-	Set<Object[]> getAllPartnoByCustomer(Long orgId, String client, String customer, String cbranch);
 
 //	Put Away
 	
@@ -61,5 +67,10 @@ public interface InwardTransactionService {
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
 	
 	Set<Object>getGRNdocid(String branch,String client,String screencode,String finyr);
+
+	List<CarrierVO> getActiveShipment(String shipmentMode);
+
+
+	
 
 }

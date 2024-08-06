@@ -948,8 +948,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	    materialVO.setCustPartno(materialDTO.getCustPartno());
 	    materialVO.setGroupName(materialDTO.getGroupName());
 	    materialVO.setBarcode(materialDTO.getBarcode());
-	    materialVO.setStylecode(materialDTO.getStyleCode());
-	    materialVO.setBasesku(materialDTO.getBaseSku());
+	    materialVO.setStyleCode(materialDTO.getStyleCode());
+	    materialVO.setBaseSku(materialDTO.getBaseSku());
 	    materialVO.setPurchaseUnit(materialDTO.getPurchaseUnit());
 	    materialVO.setStorageUnit(materialDTO.getStorageUnit());
 	    materialVO.setFsn(materialDTO.getFsn());
@@ -980,6 +980,27 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 
+	@Override
+	public List<Map<String, Object>> getPartNo(Long orgId, String client, String branch, String branchCode,
+			String customer) {
+		Set<Object[]> getPartNumber=materialRepo.findPartNo(orgId,client,branch,branchCode,customer);
+		
+		return getPartNo(getPartNumber);
+	}
+
+	private List<Map<String, Object>> getPartNo(Set<Object[]> getPartNumber) {
+		List<Map<String, Object>> partNoDetails = new ArrayList<>();
+		for (Object[] ps : getPartNumber) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("parNo", ps[0] != null ? ps[0].toString() : "");
+			part.put("sku", ps[1] != null ? ps[1].toString() : "");
+			part.put("partdescription", ps[2] != null ? ps[2].toString() : "");
+			partNoDetails.add(part);
+		}
+		return partNoDetails;
+	}
+
+	
 	
 
 	// Buyer

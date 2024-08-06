@@ -165,6 +165,8 @@ public interface WarehouseMasterService {
 
 	MaterialVO createUpdateMaterial(MaterialDTO materialDTO) throws ApplicationException; // Return the created entity
 
+	List<Map<String, Object>> getPartNo(Long orgId, String client, String branch, String branchCode, String customer);
+	
 	// Buyer Master
 
 	List<BuyerVO> getAllBuyer(Long orgid, String client, String cbranch);

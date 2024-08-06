@@ -23,30 +23,30 @@ import lombok.NoArgsConstructor;
 public class CityVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "citygen")
-	@SequenceGenerator(name = "citygen",sequenceName = "cityseq",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="cityid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "citygen")
+	@SequenceGenerator(name = "citygen", sequenceName = "cityseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "cityid")
 	private Long id;
-	
-	@Column(name="citycode")
+
+	@Column(name = "citycode")
 	private String cityCode;
-	@Column(name="country")
+	@Column(name = "country")
 	private String country;
-	@Column(name="city")
-    private String cityName;
-	@Column(name="state")
-    private String state;
-	@Column(name="active")
-    private boolean active;
-	@Column(name="createdby")
+	@Column(name = "city")
+	private String cityName;
+	@Column(name = "state")
+	private String state;
+	@Column(name = "active")
+	private boolean active;
+	@Column(name = "createdby")
 	private String createdBy;
-	@Column(name="modifiedby")
+	@Column(name = "modifiedby")
 	private String updatedBy;
-	@Column(name="orgid")
+	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name="cancel")
+	@Column(name = "cancel")
 	private boolean cancel;
-	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";

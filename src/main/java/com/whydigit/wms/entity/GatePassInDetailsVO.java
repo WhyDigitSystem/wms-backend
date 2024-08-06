@@ -32,49 +32,47 @@ public class GatePassInDetailsVO {
 	private Long id;
 
 	@Column(name = "sno")
-	private String sno;
-	@Column(name = "orgid")
-	private String orgId;
-	@Column(name = "lrnohaw")
-	private String lrnohaw;
+	private String sNo;
+	@Column(name = "irnohaw")
+	private String irNoHaw;
 	@Column(name = "invoiceno")
-	private String invoiceno;
+	private String invoiceNo;
 	@Column(name = "invoicedate")
-	private LocalDate invoicedate;
+	private LocalDate invoiceDate;
 	@Column(name = "partno")
-	private String partno;
+	private String partNo;
 	@Column(name = "partcode")
-	private String partcode;
+	private String partCode;
 	@Column(name = "partdescription")
-	private String partdescription;
+	private String partDescription;
 	@Column(name = "batchno")
-	private String batchno;
+	private String batchNo;
 	@Column(name = "unit")
 	private String unit;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "invqty")
-	private int invqty;
+	private int invQty;
 	@Column(name = "recqty")
-	private int recqty;
+	private int recQty;
 	@Column(name = "shortqty")
-	private int shortqty;
+	private int shortQty;
 	@Column(name = "damageqty")
-	private int damageqty;
+	private int damageQty;
 	@Column(name = "grnqty")
-	private int grnqty;
+	private int grnQty;
 	@Column(name = "subunit")
-	private String subunit;
+	private String subUnit;
 	@Column(name = "substockshortqty")
-	private int substockshortqty;
+	private int subStockShortQty;
 	@Column(name = "grnpieceqty")
-	private int grnpiecesqty;
+	private int grnPiecesQty;
 	@Column(name = "weight")
 	private String weight;
 	@Column(name = "rate")
 	private String rate;
 	@Column(name = "rowno")
-	private String rowno;
+	private String rowNo;
 	@Column(name = "amount")
 	private String amount;
 	@Column(name = "remarks")
