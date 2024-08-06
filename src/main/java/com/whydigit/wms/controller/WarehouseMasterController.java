@@ -1946,4 +1946,30 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getClientForDoctypeFillgrid")
+	public ResponseEntity<ResponseDTO> getClientForDoctypeFillgrid(@RequestParam Long orgId, @RequestParam String screenCode) {
+		String methodName = "getClientForDoctypeFillgrid()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String,Object>> clientDetails = new ArrayList<>();
+		try {
+			clientDetails = warehouseMasterService.getClientAndClientCodeForDocTypeFillGrid(orgId, screenCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Client Founded");
+			responseObjectsMap.put("clientDetails", clientDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Client not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "Client not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 }

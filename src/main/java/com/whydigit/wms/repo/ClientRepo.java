@@ -27,6 +27,10 @@ public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 	boolean existsByClientAndOrgId(String client, Long orgId);
 
 	List<ClientVO> getAllClientByOrgId(Long orgId);
+	
+	@Query(nativeQuery = true,value = "select client,clientcode from client where orgid=?1 and concat(client,clientcode) not in(\r\n"
+			+ "select concat(client,clientcode) from m_documenttypedetails where orgid=?1 and screencode=?2)")
+	Set<Object[]> getClientDetailsForDocType(Long orgId, String screenCode);
 
 	
 

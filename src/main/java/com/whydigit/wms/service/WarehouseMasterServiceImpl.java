@@ -1723,6 +1723,26 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return clientRepo.getAllClientByOrgId(orgId);
 	}
 
+	@Override
+	public List<Map<String, Object>> getClientAndClientCodeForDocTypeFillGrid(Long orgId,String screenCode) {
+		
+		Set<Object[]> getClientDetails=clientRepo.getClientDetailsForDocType(orgId,screenCode);
+		
+		return clientDetails(getClientDetails);
+	}
+
+	private List<Map<String, Object>> clientDetails(Set<Object[]> getClientDetails) {
+		List<Map<String,Object>>clientList= new ArrayList<>();
+		for(Object[] clientdetails:getClientDetails)
+		{
+			Map<String,Object> list= new HashMap<>();
+			list.put("client", clientdetails[0] != null ? clientdetails[0].toString() : "");
+			list.put("clientCode", clientdetails[1] != null ? clientdetails[1].toString() : "");
+			clientList.add(list);
+		}
+		return clientList;
+	}
+
 	
 
 	
