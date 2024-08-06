@@ -117,6 +117,8 @@ public interface WarehouseMasterService {
 	// Client
 
 	List<ClientVO> getAllClientByCustomer(Long orgid, String customer);
+	
+	List<ClientVO> getAllClientByOrgId(Long orgId);
 
 	List<ClientBranchVO> getAllClientBranchByCustomer(Long orgid, String customer);
 

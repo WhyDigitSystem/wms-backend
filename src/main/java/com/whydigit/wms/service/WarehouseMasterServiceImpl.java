@@ -1717,6 +1717,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return grnDocId;
 	}
 
+	@Override
+	public List<ClientVO> getAllClientByOrgId(Long orgId) {
+		
+		return clientRepo.getAllClientByOrgId(orgId);
+	}
+
 	
 
 	

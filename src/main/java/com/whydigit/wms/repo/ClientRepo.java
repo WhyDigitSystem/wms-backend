@@ -26,6 +26,8 @@ public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 
 	boolean existsByClientAndOrgId(String client, Long orgId);
 
+	List<ClientVO> getAllClientByOrgId(Long orgId);
+
 	
 
 	
