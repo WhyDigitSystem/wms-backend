@@ -409,38 +409,37 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 				StockDetailsVO stockDetailsVO = new StockDetailsVO();
 				savedPutAwayVO.setScreencode("PC");
-				stockDetailsVO.setScreencode("PC");
 				stockDetailsVO.setCustomer(savedPutAwayVO.getCustomer());
 				stockDetailsVO.setCore(savedPutAwayVO.getCore());
-				stockDetailsVO.setGrnno(savedPutAwayVO.getGrnno());
-				stockDetailsVO.setStockdate(savedPutAwayVO.getGrndate());
-				stockDetailsVO.setGrndate(savedPutAwayVO.getGrndate());
-				stockDetailsVO.setLotno(savedPutAwayVO.getLotno());
+				stockDetailsVO.setGrnNo(savedPutAwayVO.getGrnno());
+				stockDetailsVO.setStockDate(savedPutAwayVO.getGrndate());
+				stockDetailsVO.setGrnDate(savedPutAwayVO.getGrndate());
+				stockDetailsVO.setLotNo(savedPutAwayVO.getLotno());
 				stockDetailsVO.setWarehouse(savedPutAwayVO.getWarehouse());
-				stockDetailsVO.setFinyear(savedPutAwayVO.getFinyr());
+				stockDetailsVO.setFinYear(savedPutAwayVO.getFinyr());
 				stockDetailsVO.setBranch(savedPutAwayVO.getBranch());
-				stockDetailsVO.setBranchcode(savedPutAwayVO.getBranchcode());
-				stockDetailsVO.setRefno(savedPutAwayVO.getDocid());
-				stockDetailsVO.setRefdate(savedPutAwayVO.getDocdate());
-				stockDetailsVO.setLocationtype(savedPutAwayVO.getLocationtype());
+				stockDetailsVO.setBranchCode(savedPutAwayVO.getBranchcode());
+				stockDetailsVO.setRefNo(savedPutAwayVO.getDocid());
+				stockDetailsVO.setRefDate(savedPutAwayVO.getDocdate());
+				stockDetailsVO.setBinType(savedPutAwayVO.getLocationtype());
 				stockDetailsVO.setCarrier(savedPutAwayVO.getCarrier());
-				stockDetailsVO.setGrndate(savedPutAwayVO.getGrndate());
-				stockDetailsVO.setScreencode(savedPutAwayVO.getScreencode());
-				stockDetailsVO.setInvqty(putAwayDetailsVO.getInvqty());
-				stockDetailsVO.setRecqty(putAwayDetailsVO.getRecqty());
-				stockDetailsVO.setShortqty(putAwayDetailsVO.getShortqty());
-				stockDetailsVO.setRecqty(putAwayDetailsVO.getRecqty());
-				stockDetailsVO.setSqty(putAwayDetailsVO.getSqty());
-				stockDetailsVO.setSsku(putAwayDetailsVO.getSsku());
-				stockDetailsVO.setLocationclass(putAwayDetailsVO.getLocationclass());
+				stockDetailsVO.setGrnDate(savedPutAwayVO.getGrndate());
+				stockDetailsVO.setScreenCode(savedPutAwayVO.getScreencode());
+				stockDetailsVO.setInvQty(putAwayDetailsVO.getInvqty());
+				stockDetailsVO.setRecQty(putAwayDetailsVO.getRecqty());
+				stockDetailsVO.setShortQty(putAwayDetailsVO.getShortqty());
+				stockDetailsVO.setRecQty(putAwayDetailsVO.getRecqty());
+				stockDetailsVO.setSQty(putAwayDetailsVO.getSqty());
+				stockDetailsVO.setSSku(putAwayDetailsVO.getSsku());
+				stockDetailsVO.setBinClass(putAwayDetailsVO.getLocationclass());
 				stockDetailsVO.setWeight(putAwayDetailsVO.getWeight());
-				stockDetailsVO.setBatchdate(putAwayDetailsVO.getBatchdate());
+				stockDetailsVO.setBatchDate(putAwayDetailsVO.getBatchdate());
 				stockDetailsVO.setPartno(putAwayDetailsVO.getPartno());
-				stockDetailsVO.setPartdesc(putAwayDetailsVO.getPartdescripition());
+				stockDetailsVO.setPartDesc(putAwayDetailsVO.getPartdescripition());
 				stockDetailsVO.setSku(putAwayDetailsVO.getSku());
 				stockDetailsVO.setAmount(putAwayDetailsVO.getAmount());
-				stockDetailsVO.setSsqty(putAwayDetailsVO.getSsqty());
 				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
+				stockDetailsVO.setSsQty(putAwayDetailsVO.getSsqty());
 				stockDetailsRepo.save(stockDetailsVO);
 				// putaway to handlingStockIn
 				HandlingStockInVO handlingStockInVO = new HandlingStockInVO();
@@ -520,12 +519,6 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
-
-	
-
 
 
 }
