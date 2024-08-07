@@ -82,7 +82,7 @@ public interface WarehouseMasterService {
 
 	List<CellTypeVO> getAllCellTypeByOrgId(Long orgId);
 
-	Optional<CellTypeVO> getCellTypeById(Long celltypeid);
+	Optional<CellTypeVO> getCellTypeById(Long cellTypeId);
 
 	List<CellTypeVO> getAllCellType();
 
@@ -111,6 +111,8 @@ public interface WarehouseMasterService {
 	Map<String, Object> createUpdateCustomer(CustomerDTO customerDTO) throws ApplicationException;
 
 	Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO);
+	
+	List<Map<String, Object>> getClientAndClientCodeByOrgId(Long orgId);
 
 	void deleteCustomer(Long customerid);
 
@@ -245,6 +247,8 @@ public interface WarehouseMasterService {
 	Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)throws ApplicationException;
 	
 	String getDocIdForGRN(String branch,String client,String finYear,String screenCode);
+
+	
 	
 	
 

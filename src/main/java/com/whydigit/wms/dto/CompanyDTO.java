@@ -31,5 +31,6 @@ public class CompanyDTO {
 	private String updatedBy;
 	private boolean cancel;
 	private boolean active;
+	private int role;
 
 }

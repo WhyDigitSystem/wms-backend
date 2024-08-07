@@ -73,6 +73,7 @@ public class CompanyVO {
 	private String updatedBy;
 	@Column(name = "cancel")
 	private boolean cancel;
+	private int role;
 	
 	
 	 @JsonGetter("active")

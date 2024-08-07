@@ -377,8 +377,8 @@ public class WarehouseMasterController extends BaseController {
 	}
 
 	
-	@GetMapping("/cellType/{celltypeid}")
-	public ResponseEntity<ResponseDTO> getCellTypeById(@PathVariable Long celltypeid) {
+	@GetMapping("/cellType/{cellTypeId}")
+	public ResponseEntity<ResponseDTO> getCellTypeById(@PathVariable Long cellTypeId) {
 		String methodName = "getCellTypeById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -386,7 +386,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		CellTypeVO cellTypeVO = null;
 		try {
-			cellTypeVO = warehouseMasterService.getCellTypeById(celltypeid).orElse(null);
+			cellTypeVO = warehouseMasterService.getCellTypeById(cellTypeId).orElse(null);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -397,7 +397,7 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("cellTypeVO", cellTypeVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			errorMsg = "CellType not found for CellType ID: " + celltypeid;
+			errorMsg = "CellType not found for CellType ID: " + cellTypeId;
 			responseDTO = createServiceResponseError(responseObjectsMap, "CellType not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -573,28 +573,26 @@ public class WarehouseMasterController extends BaseController {
 	    return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/customer")
-	public ResponseEntity<ResponseDTO> updateCustomer(@RequestBody CustomerVO customerVO,
-			@RequestBody ClientVO clientVO) {
-		String methodName = "updateCustomer()";
+	@GetMapping("/getClientAndClientCodeByOrgId")
+	public ResponseEntity<ResponseDTO> getClientAndClientCodeByOrgId(@RequestParam Long orgId) {
+		String methodName = "getClientAndClientCodeByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> customerVO = new ArrayList<>();
 		try {
-			CustomerVO updatedCustomerVO = warehouseMasterService.updateCustomer(customerVO, clientVO).orElse(null);
-			if (updatedCustomerVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Customer updated successfully");
-				responseObjectsMap.put("customerVO", updatedCustomerVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Customer not found for CustomerID: " + customerVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Customer update failed", errorMsg);
-			}
+			customerVO = warehouseMasterService.getClientAndClientCodeByOrgId(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Customer and Client already Exisit",
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Clint And ClientCode information get successfully By OrgId");
+			responseObjectsMap.put("CustomerVO", customerVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Clint And ClientCode information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -786,7 +784,7 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/createUpdateWarehouse")
+	@PutMapping("/createUpdateWarehouse")
 	public ResponseEntity<ResponseDTO> createUpdateWarehouse(@RequestBody WarehouseDTO warehouseDTO) {
 		String methodName = "createWarehouse()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -1904,7 +1902,7 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@PostMapping("/createDocumentTypeMapping")
+	@PutMapping("/createDocumentTypeMapping")
 	public ResponseEntity<ResponseDTO> createDocumentTypeMapping(@RequestBody DocumentTypeMappingDTO documentTypeMappingDTO) {
 	    String methodName = "createDocumentTypeMapping()";
 	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);

@@ -33,6 +33,7 @@ import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
+import com.whydigit.wms.dto.WarehouseBranchDTO;
 import com.whydigit.wms.dto.WarehouseClientDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -53,6 +54,7 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
+import com.whydigit.wms.entity.WarehouseBranchVO;
 import com.whydigit.wms.entity.WarehouseClientVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
@@ -75,6 +77,7 @@ import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
+import com.whydigit.wms.repo.WarehouseBranchRepo;
 import com.whydigit.wms.repo.WarehouseClientRepo;
 import com.whydigit.wms.repo.WarehouseLocationDetailsRepo;
 import com.whydigit.wms.repo.WarehouseLocationRepo;
@@ -151,6 +154,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	WarehouseBranchRepo warehouseBranchRepo;
 	
 	// Group
 
@@ -361,8 +367,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public Optional<CellTypeVO> getCellTypeById(Long celltypeid) {
-		return cellTypeRepo.findById(celltypeid);
+	public Optional<CellTypeVO> getCellTypeById(Long cellTypeId) {
+		return cellTypeRepo.findById(cellTypeId);
 	}
 
 	@Override
@@ -679,6 +685,24 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			return Optional.empty();
 		}
 	}
+	
+	@Override
+	public List<Map<String, Object>> getClientAndClientCodeByOrgId(Long orgId) {
+		Set<Object[]> getClientDetails = clientRepo.getClientDetailsByOrgId(orgId);
+
+		return getClient (getClientDetails);
+	}
+
+	private List<Map<String, Object>> getClient(Set<Object[]> getClientDetails) {
+		List<Map<String, Object>> status = new ArrayList<>();
+		for (Object[] ps : getClientDetails) {
+			Map<String, Object> values = new HashMap<>();
+			values.put("client", ps[0] != null ? ps[0].toString() : "");
+			values.put("clientCode", ps[1] != null ?  ps[1].toString() : "");
+			status.add(values);
+		}
+		return status;
+	}
 
 	@Override
 	public void deleteCustomer(Long customerid) {
@@ -720,94 +744,97 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	@Transactional
 	public WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException {
-		WarehouseVO warehouseVO = new WarehouseVO();
+	    WarehouseVO warehouseVO = new WarehouseVO();
 
-		if (ObjectUtils.isEmpty(warehouseDTO.getId())) {
-			if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
+	    if (ObjectUtils.isEmpty(warehouseDTO.getId())) {
+	        if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
+	            String errormessage = String.format("This Warehouse : %s Already Exists in This Organization.", warehouseDTO.getWarehouse());
+	            throw new ApplicationException(errormessage);
+	        }
+	    }
 
-				String errormessage = String.format("This Warehouse : %s Already Exists  This Organization .",
-						warehouseDTO.getWarehouse());
+	    if (warehouseDTO.getId() != null) {
+	        // Update existing warehouse
+	        warehouseVO = warehouseRepo.findById(warehouseDTO.getId()).orElseThrow(() -> new ApplicationException("Warehouse not found with id: " + warehouseDTO.getId()));
+	        warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
 
-				throw new ApplicationException(errormessage);
+	        if (!warehouseVO.getWarehouse().equalsIgnoreCase(warehouseDTO.getWarehouse())) {
+	            if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
+	                String errormessage = String.format("This Warehouse : %s Already Exists in This Organization.", warehouseDTO.getWarehouse());
+	                throw new ApplicationException(errormessage);
+	            }
+	            warehouseVO.setWarehouse(warehouseDTO.getWarehouse());
+	        } else {
+	            warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
+	            warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
+	        }
+	    }
 
-			}
-		}
-
-		if (warehouseDTO.getId() != null) {
-			// Update existing warehouse
-			warehouseVO = warehouseRepo.findById(warehouseDTO.getId()).orElseThrow(
-					() -> new ApplicationException("Warehouse not found with id: " + warehouseDTO.getId()));
-			warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
-			if (!warehouseVO.getWarehouse().equalsIgnoreCase(warehouseDTO.getWarehouse())) {
-
-				if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
-
-					String errormessage = String.format("This Warehouse : %s Already Exists  This Organization .",
-							warehouseDTO.getWarehouse());
-
-					throw new ApplicationException(errormessage);
-				}
-				warehouseVO.setWarehouse(warehouseDTO.getWarehouse());
-
-			} else {
-				
-				warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
-				warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
-
-			}
-			
-		}
-		warehouseVO = getWarehouseVOFromWarehouseDTO(warehouseVO, warehouseDTO);
-
-		
-		return warehouseRepo.save(warehouseVO);
+	    warehouseVO = getWarehouseVOFromWarehouseDTO(warehouseVO, warehouseDTO);
+	    return warehouseRepo.save(warehouseVO);
 	}
 
-	private WarehouseVO getWarehouseVOFromWarehouseDTO(WarehouseVO warehouseVO, WarehouseDTO warehouseDTO)
-			throws ApplicationException {
-		warehouseVO.setWarehouse(warehouseDTO.getWarehouse().toUpperCase());
-		warehouseVO.setBranchCode(warehouseDTO.getBranchCode().toUpperCase());
-		warehouseVO.setBranch(warehouseDTO.getBranch().toUpperCase());
-		warehouseVO.setOrgId(warehouseDTO.getOrgId());
-		warehouseVO.setActive(warehouseDTO.isActive());
-		warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
-		warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
-		warehouseVO.setCancel(warehouseDTO.isCancel());
+	private WarehouseVO getWarehouseVOFromWarehouseDTO(WarehouseVO warehouseVO, WarehouseDTO warehouseDTO) throws ApplicationException {
+	    warehouseVO.setWarehouse(warehouseDTO.getWarehouse().toUpperCase());
+	    warehouseVO.setBranchCode(warehouseDTO.getBranchCode().toUpperCase());
+	    warehouseVO.setBranch(warehouseDTO.getBranch().toUpperCase());
+	    warehouseVO.setOrgId(warehouseDTO.getOrgId());
+	    warehouseVO.setActive(warehouseDTO.isActive());
+	    warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
+	    warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
+	    warehouseVO.setCancel(warehouseDTO.isCancel());
 
-		if (warehouseDTO.getId() != null) {
-			List<WarehouseClientVO> warehouseClientVOs = warehouseClientRepo.findByWarehouseVO(warehouseVO);
-			warehouseClientRepo.deleteAll(warehouseClientVOs);
-		}
+	    if (warehouseDTO.getId() != null) {
+	        List<WarehouseClientVO> warehouseClientVOs = warehouseClientRepo.findByWarehouseVO(warehouseVO);
+	        warehouseClientRepo.deleteAll(warehouseClientVOs);
 
-		List<WarehouseClientVO> warehouseClientVOs = new ArrayList<WarehouseClientVO>();
-		for (WarehouseClientDTO warehouseClientDTO : warehouseDTO.getWarehouseClientDTO()) {
-			WarehouseClientVO warehouseClientVO = new WarehouseClientVO();
-			if (warehouseClientRepo.existsByClientAndOrgId(warehouseClientDTO.getClient(), warehouseDTO.getOrgId())) {
-				String errorMessage = String.format("This ClientName : %s Already Exists This Organization",
-						warehouseClientDTO.getClient());
-				throw new ApplicationException(errorMessage);
-			}
-			warehouseClientVO.setClient(warehouseClientDTO.getClient());
+	        List<WarehouseBranchVO> warehouseBranchVOs = warehouseBranchRepo.findByWarehouseVO(warehouseVO);
+	        warehouseBranchRepo.deleteAll(warehouseBranchVOs);
+	    }
 
-			if (warehouseClientRepo.existsByClientCodeAndOrgId(warehouseClientDTO.getClientCode(),
-					warehouseDTO.getOrgId())) {
-				String errorMessage = String.format("This ClientCode : %s Already Exists This Organization",
-						warehouseClientDTO.getClientCode());
-				throw new ApplicationException(errorMessage);
-			}
-			warehouseClientVO.setClientCode(warehouseClientDTO.getClientCode());
-			warehouseClientVO.setActive(warehouseClientDTO.isActive());
-			warehouseClientVO.setCancel(warehouseClientDTO.isCancel());
-			warehouseClientVO.setOrgId(warehouseDTO.getOrgId());
-			warehouseClientVO.setWarehouseVO(warehouseVO);
-			warehouseClientVOs.add(warehouseClientVO);
-		}
-		warehouseVO.setWarehouseClientVO(warehouseClientVOs);
-		return warehouseVO;
+	    List<WarehouseClientVO> warehouseClientVOs = new ArrayList<>();
+	    for (WarehouseClientDTO warehouseClientDTO : warehouseDTO.getWarehouseClientDTO()) {
+	        WarehouseClientVO warehouseClientVO = new WarehouseClientVO();
+	        
+	        if (warehouseClientRepo.existsByClientAndOrgId(warehouseClientDTO.getClient(), warehouseDTO.getOrgId())) {
+	            String errorMessage = String.format("This ClientName : %s Already Exists in This Organization", warehouseClientDTO.getClient());
+	            throw new ApplicationException(errorMessage);
+	        }
+	        warehouseClientVO.setClient(warehouseClientDTO.getClient());
+
+	        if (warehouseClientRepo.existsByClientCodeAndOrgId(warehouseClientDTO.getClientCode(), warehouseDTO.getOrgId())) {
+	            String errorMessage = String.format("This ClientCode : %s Already Exists in This Organization", warehouseClientDTO.getClientCode());
+	            throw new ApplicationException(errorMessage);
+	        }
+	        warehouseClientVO.setClientCode(warehouseClientDTO.getClientCode());
+	        warehouseClientVO.setActive(warehouseClientDTO.isActive());
+	        warehouseClientVO.setCancel(warehouseClientDTO.isCancel());
+	        warehouseClientVO.setOrgId(warehouseDTO.getOrgId());
+	        warehouseClientVO.setWarehouseVO(warehouseVO);
+	        warehouseClientVOs.add(warehouseClientVO);
+	    }
+	    warehouseVO.setWarehouseClientVO(warehouseClientVOs);
+
+	    List<WarehouseBranchVO> warehouseBranchVOs = new ArrayList<>();
+	    for (WarehouseBranchDTO warehouseBranchDTO : warehouseDTO.getWarehouseBranchDTO()) {
+	        WarehouseBranchVO warehouseBranchVO = new WarehouseBranchVO();
+	        
+	        if (warehouseBranchRepo.existsByCustomerBranchCodeAndOrgId(warehouseBranchDTO.getCustomerBranchCode(), warehouseDTO.getOrgId())) {
+	            String errorMessage = String.format("This Customer Branch Code : %s Already Exists in This Organization", warehouseBranchDTO.getCustomerBranchCode());
+	            throw new ApplicationException(errorMessage);
+	        }
+	        warehouseBranchVO.setCustomerBranchCode(warehouseBranchDTO.getCustomerBranchCode());
+	        warehouseBranchVO.setActive(warehouseBranchDTO.isActive());
+	        warehouseBranchVO.setCancel(warehouseBranchDTO.isCancel());
+	        warehouseBranchVO.setOrgId(warehouseDTO.getOrgId());
+	        warehouseBranchVO.setWarehouseVO(warehouseVO);
+	        warehouseBranchVOs.add(warehouseBranchVO);
+	    }
+	    warehouseVO.setWarehouseBranchVO(warehouseBranchVOs);
+
+	    return warehouseVO;
 	}
 
-	
-	
 	// Warehouse Location
 
 	@Override
@@ -1737,6 +1764,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		}
 		return grnDocId;
 	}
+
+	
 
 	
 

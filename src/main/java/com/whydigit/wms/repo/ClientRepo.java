@@ -26,7 +26,8 @@ public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 
 	boolean existsByClientAndOrgId(String client, Long orgId);
 
-	
+	@Query(nativeQuery = true,value = "select client,clientcode from client where orgid=?1")
+	Set<Object[]> getClientDetailsByOrgId(Long orgId);
 
 	
 
