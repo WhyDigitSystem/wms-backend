@@ -27,9 +27,11 @@ import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
+import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.service.InwardTransactionService;
 
 @RestController
@@ -297,31 +299,27 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
-	@GetMapping("/getAllPartnoByCustomer")
-	public ResponseEntity<ResponseDTO> getAllPartnoByCustomer(@RequestParam Long orgid, @RequestParam String client,
-			@RequestParam String customer, @RequestParam String cbranch) {
-		String methodName = "getAllPartnoByCustomer()";
+	
+	@GetMapping("/getAllModeOfShipment")
+	public ResponseEntity<ResponseDTO> getAllModeOfShipment() {
+		String methodName = "getAllModeOfShipment()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object[]> gatePassIn = new HashSet<>();
+		List<CarrierVO> carrierVO = new ArrayList<>();
 		try {
-			gatePassIn = inwardTransactionService.getAllPartnoByCustomer(orgid, client, customer, cbranch);
+			carrierVO = inwardTransactionService.getAllModeOfShipment();
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String, String>> formattedParameters = formattParameter(gatePassIn);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"getAllPartnoByCustomer information get successfully");
-			responseObjectsMap.put("getAllPartnoByCustomer", formattedParameters);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ModeOfShipment information get successfully");
+			responseObjectsMap.put("CarrierVO", carrierVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"getAllPartnoByCustomer information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "ModeOfShipment information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -361,33 +359,34 @@ public class InwardTransactionController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/gatePassIn")
-	public ResponseEntity<ResponseDTO> updateGatePassIn(@RequestBody GatePassInVO gatePassInVO) {
-		String methodName = "updateGatePassIn()";
+
+	@GetMapping("/getActiveShipment")
+	public ResponseEntity<ResponseDTO> getActiveShipment(@RequestParam(required = true) String shipmentMode) {
+		String methodName = "getActiveShipment()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
+		List<CarrierVO> carrierVO = new ArrayList<>();
 		try {
-			GatePassInVO updatedGatePassInVO = inwardTransactionService.updateGatePassIn(gatePassInVO).orElse(null);
-			if (updatedGatePassInVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn updated successfully");
-				responseObjectsMap.put("GatePassInVO", updatedGatePassInVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "GatePassIn not found for Grn ID: " + gatePassInVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn update failed", errorMsg);
-			}
+			carrierVO = inwardTransactionService.getActiveShipment(shipmentMode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn, client & customer already Exist ",
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ActiveShipment information get successfully");
+			responseObjectsMap.put("CarrierVO", carrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "ActiveShipment information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	
 	// PutAway
 	@GetMapping("/putaway")
 	public ResponseEntity<ResponseDTO> getAllPutAway() {

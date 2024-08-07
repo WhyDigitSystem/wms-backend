@@ -1160,9 +1160,9 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/material")
-	public ResponseEntity<ResponseDTO> createMaterial(@RequestBody MaterialDTO materialDTO) {
-		String methodName = "createMaterial()";
+	@PutMapping("/createUpdateMaterial")
+	public ResponseEntity<ResponseDTO> createUpdateMaterial(@RequestBody MaterialDTO materialDTO) {
+		String methodName = "createUpdateMaterial()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -1177,6 +1177,37 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Material creation Failed, Material Already Exist", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getPartNo")
+	public ResponseEntity<ResponseDTO> getPartNo(
+			@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String client,
+			@RequestParam(required = true) String branch,
+			@RequestParam(required = true) String branchCode,
+			@RequestParam(required = true) String customer) {
+		String methodName = "getPartNo()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> getPart = new ArrayList<>();
+		try {
+			getPart = warehouseMasterService.getPartNo(orgId,client,branch,branchCode,customer);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo found successfully");
+			responseObjectsMap.put("PartNo", getPart);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = " not found for ID: ";
+			responseDTO = createServiceResponseError(responseObjectsMap, "PartNo not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

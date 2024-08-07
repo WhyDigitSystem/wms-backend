@@ -12,6 +12,7 @@ import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.CurrencyDTO;
 import com.whydigit.wms.dto.DesignationDTO;
+import com.whydigit.wms.dto.FinancialYearDTO;
 import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
@@ -137,5 +138,9 @@ public interface CommonMasterService {
 	List<DesignationVO> getAllDesignationByOrgId(Long OrdId);
 	
 	Optional<DesignationVO> getAllDesignationById(Long id);
+	
+// FINANCIAL YEAR
+	
+	Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO);
 
 }

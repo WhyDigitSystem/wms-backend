@@ -19,5 +19,16 @@ public interface CarrierRepo extends JpaRepository<CarrierVO, Long>{
 	boolean existsByOrgIdAndCarrierShortName(Long orgId, String carrierShortName);
 
 	boolean existsByOrgIdAndCarrier(Long orgId, String carrier);
+
+	
+	@Query(value = "SELECT shipmentmode " +
+            "FROM carrier " +
+            "WHERE active = true " +
+            "GROUP BY shipmentmode", 
+    nativeQuery = true)
+	List<CarrierVO> findmodeOfShipment();
+
+	@Query(nativeQuery = true,value ="select shipmentmode from carrier where active=true")
+	List<CarrierVO> getActiveShipment(String shipmentMode);
 }
 

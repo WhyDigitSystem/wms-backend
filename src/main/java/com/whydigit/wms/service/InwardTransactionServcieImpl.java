@@ -16,6 +16,7 @@ import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GatePassInDetailsDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInDetailsVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnDetailsVO;
@@ -25,6 +26,7 @@ import com.whydigit.wms.entity.PutAwayDetailsVO;
 import com.whydigit.wms.entity.PutAwayVO;
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.CarrierRepo;
 import com.whydigit.wms.repo.GatePassInDetailsRepo;
 import com.whydigit.wms.repo.GatePassInRepo;
 import com.whydigit.wms.repo.GrnDetailsRepo;
@@ -33,6 +35,7 @@ import com.whydigit.wms.repo.HandlingStockInRepo;
 import com.whydigit.wms.repo.PutAwayDetailsRepo;
 import com.whydigit.wms.repo.PutAwayRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
+import com.whydigit.wms.repo.SupplierRepo;
 
 @Service
 public class InwardTransactionServcieImpl implements InwardTransactionService {
@@ -60,7 +63,13 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 	@Autowired
 	GatePassInDetailsRepo gatePassInDetailsRepo;
-
+	
+	@Autowired
+	SupplierRepo supplierRepo;
+	
+	@Autowired
+	CarrierRepo carrierRepo;
+	
 	// Grn
 
 	@Override
@@ -352,16 +361,23 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		gatePassInRepo.deleteById(id);
 	}
 
-	@Override
-	public Set<Object[]> getAllPartnoByCustomer(Long orgId, String client, String customer, String cbranch) {
-		return gatePassInRepo.findAllPartnoByCustomer(orgId, client, customer, cbranch);
-	}
-
+	
 	@Override
 	public Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode) {
 		return gatePassInRepo.findGatePassDetailsByGatePassNo(orgId, client, entryno, docid, branchcode);
 	}
+	
+	@Override
+	public List<CarrierVO> getAllModeOfShipment() {
+		return carrierRepo.findmodeOfShipment();
+	}   
+	
+	@Override
+	public List<CarrierVO> getActiveShipment(String shipmentMode) {
+		return carrierRepo.getActiveShipment(shipmentMode);
+	}
+
 
 	// PutAway
 
@@ -504,5 +520,12 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+	
+
+	
+
+
 
 }

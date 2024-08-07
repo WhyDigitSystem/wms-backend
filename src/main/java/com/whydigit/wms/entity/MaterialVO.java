@@ -39,10 +39,10 @@ public class MaterialVO {
 	private String groupName;
 	@Column(name = "barcode")
 	private String barcode;
-	@Column(name = "styleCode")
-	private String stylecode;
-	@Column(name = "baseSku")
-	private String basesku;
+	@Column(name = "stylecode")
+	private String styleCode;
+	@Column(name = "basesku")
+	private String baseSku;
 	@Column(name = "purchaseunit")
 	private String purchaseUnit;
 	@Column(name = "storageunit")

@@ -22,5 +22,7 @@ public interface SupplierRepo extends JpaRepository<SupplierVO, Long> {
 	boolean existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierType(Long orgId, String customer,
 			String client, String supplierShortName, String supplierType);
 
+	
+
 
 }

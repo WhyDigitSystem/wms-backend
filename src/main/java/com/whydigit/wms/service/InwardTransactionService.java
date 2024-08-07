@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
+import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
@@ -44,10 +45,11 @@ public interface InwardTransactionService {
 	Map<String, Object> createUpdateGatePassIn(GatePassInDTO gatePassInDTO) throws ApplicationException;
 
 	Optional<GatePassInVO> updateGatePassIn(GatePassInVO gatePassInVO);
+	
+	List<CarrierVO> getAllModeOfShipment();
 
 	void deleteGatePassIn(Long id);
 
-	Set<Object[]> getAllPartnoByCustomer(Long orgId, String client, String customer, String cbranch);
 
 //	Put Away
 	
@@ -64,5 +66,10 @@ public interface InwardTransactionService {
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
 	
 	Set<Object>getGRNdocid(String branch,String client,String screencode,String finyr);
+
+	List<CarrierVO> getActiveShipment(String shipmentMode);
+
+
+	
 
 }
