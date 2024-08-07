@@ -21,8 +21,6 @@ public class SalesReturnDTO {
 	private LocalDate prDate;
 	private String BONo;
 	private LocalDate BODate;
-	private String SRNo;
-	private LocalDate SRDate;
 	private String PRNo;
 	private String buyerName;
 	private String buyerType;
