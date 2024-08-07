@@ -21,6 +21,7 @@ import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.DesignationVO;
+import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
@@ -141,6 +142,12 @@ public interface CommonMasterService {
 	
 // FINANCIAL YEAR
 	
-	Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO);
+	Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) throws ApplicationException;
+
+	List<FinancialYearVO> getAllFInYear();
+
+	List<FinancialYearVO> getAllFInYearByOrgId(Long orgId);
+
+	Optional<FinancialYearVO> getAllFInYearById(Long id);
 
 }

@@ -964,7 +964,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) {
+	public Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) throws ApplicationException {
 		FinancialYearVO financialYearVO;
 		String message;
 		
@@ -977,12 +977,48 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 			message="Financial Year Creation Successfully";
 			
 		}else {
+			 financialYearVO = financialYearRepo.findById(financialYearDTO.getId())
+				    .orElseThrow(() -> new ApplicationException(
+				        String.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));
 			
+			financialYearVO.setUpdatedBy(financialYearDTO.getCreatedBy());
+			message="Financial Year Updation Successfully";
 			
 		}
-		return null;
+		getFinancialYearVOFromFinancialYearDTO(financialYearVO,financialYearDTO);
+		financialYearRepo.save(financialYearVO);
+		Map<String, Object> response=new HashMap<String, Object>();
+		response.put("financialYearVO", financialYearVO);
+		response.put("message", response);
+		return response;
 		
-		
+	}
+
+	private void getFinancialYearVOFromFinancialYearDTO(FinancialYearVO financialYearVO,
+			FinancialYearDTO financialYearDTO) {
+		financialYearVO.setFinYear(financialYearDTO.getFinYear());
+		financialYearVO.setFinYearIdentifier(financialYearDTO.getFinYearIdentifier());
+		financialYearVO.setStartDate(financialYearDTO.getStartDate());
+		financialYearVO.setEndDate(financialYearDTO.getEndDate());
+		financialYearVO.setCurrentFinYear(financialYearDTO.isCurrentFinYear());
+		financialYearVO.setClosed(financialYearDTO.isClosed());
+		financialYearVO.setOrgId(financialYearDTO.getOrgId());
+		financialYearVO.setActive(financialYearDTO.isActive());
+	}
+
+	@Override
+	public List<FinancialYearVO> getAllFInYear() {
+		return financialYearRepo.findAll();
+	}
+
+	@Override
+	public List<FinancialYearVO> getAllFInYearByOrgId(Long orgId) {
+		return financialYearRepo.findFinancialYearByOrgId(orgId);
+	}
+
+	@Override
+	public Optional<FinancialYearVO> getAllFInYearById(Long id) {
+		return financialYearRepo.findById(id);
 	}
 
 }

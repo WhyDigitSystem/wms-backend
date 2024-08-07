@@ -39,6 +39,7 @@ import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.DesignationVO;
+import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
@@ -1020,10 +1021,8 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> finYearVO = commonMasterService.createUpdateFinYear(financialYearDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, finYearVO.get("messages")); // Correct the key to
-																									// "message"
-			responseObjectsMap.put("finYearVO", finYearVO.get("finYearVO")); // Directly put the
-																							// designationVO map
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, finYearVO.get("messages")); 
+			responseObjectsMap.put("finYearVO", finYearVO.get("financialYearVO")); 
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -1034,5 +1033,82 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getAllFInYear")
+	public ResponseEntity<ResponseDTO> getAllFInYear() {
+		String methodName = "getAllFInYear()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<FinancialYearVO> financialYearVOs = new ArrayList<FinancialYearVO>();
+		try {
+			financialYearVOs = commonMasterService.getAllFInYear();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FInYear information get successfully");
+			responseObjectsMap.put("financialYearVOs", financialYearVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "FInYear information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllFInYearByOrgId")
+	public ResponseEntity<ResponseDTO> getAllFInYearByOrgId(Long orgId) {
+		String methodName = "getAllFInYearByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<FinancialYearVO> financialYearVOs = new ArrayList<FinancialYearVO>();
+		try {
+			financialYearVOs = commonMasterService.getAllFInYearByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FInYear information get successfully By OrgId");
+			responseObjectsMap.put("financialYearVOs", financialYearVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "FInYear information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllFInYearById")
+	public ResponseEntity<ResponseDTO> getAllFInYearById(Long id) {
+		String methodName = "getAllFInYearById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		FinancialYearVO financialYearVOs=null;
+		try {
+			financialYearVOs = commonMasterService.getAllFInYearById(id).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "FInYear information get successfully By Id");
+			responseObjectsMap.put("financialYearVOs", financialYearVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "FInYear information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 	
 }
