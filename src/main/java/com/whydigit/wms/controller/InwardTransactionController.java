@@ -299,8 +299,44 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
 	
+	@GetMapping("/getAllModeOfShipment")
+	public ResponseEntity<ResponseDTO> getAllModeOfShipment() {
+		String methodName = "getAllModeOfShipment()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CarrierVO> carrierVO = new ArrayList<>();
+		try {
+			carrierVO = inwardTransactionService.getAllModeOfShipment();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ModeOfShipment information get successfully");
+			responseObjectsMap.put("CarrierVO", carrierVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "ModeOfShipment information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formattParameter(Set<Object[]> gatepass) {
+		List<Map<String, String>> formattedParameters = new ArrayList<>();
+		for (Object[] parameters : gatepass) {
+			Map<String, String> param = new HashMap<>();
+			param.put("partno", parameters[0].toString());
+			param.put("partdesc", parameters[1].toString());
+			param.put("sku", parameters[2].toString());
+			param.put("ssku", parameters[3].toString());
+			formattedParameters.add(param);
+		}
+		return formattedParameters;
+	}
 
 	@PutMapping("/createUpdateGatePassIn")
 	public ResponseEntity<ResponseDTO> createUpdateGatePassIn(@RequestBody GatePassInDTO gatePassInDTO) {
@@ -322,32 +358,7 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	@GetMapping("/getAllModeOfShipment")
-	public ResponseEntity<ResponseDTO> getAllModeOfShipment() {
-		String methodName = "getAllModeOfShipment()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<CarrierVO> carrierVO = new ArrayList<>();
-		try {
-			carrierVO = inwardTransactionService.getAllModeOfShipment();
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ModeOfShipment information get successfully");
-			responseObjectsMap.put("CarrierVO", carrierVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "ModeOfShipment information receive failed",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+
 
 	@GetMapping("/getActiveShipment")
 	public ResponseEntity<ResponseDTO> getActiveShipment(@RequestParam(required = true) String shipmentMode) {
@@ -376,8 +387,6 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	
-	
-
 	// PutAway
 	@GetMapping("/putaway")
 	public ResponseEntity<ResponseDTO> getAllPutAway() {

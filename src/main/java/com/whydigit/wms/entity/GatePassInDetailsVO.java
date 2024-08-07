@@ -33,6 +33,8 @@ public class GatePassInDetailsVO {
 
 	@Column(name = "sno")
 	private String sNo;
+	@Column(name = "orgid")
+	private String orgId;
 	@Column(name = "irnohaw")
 	private String irNoHaw;
 	@Column(name = "invoiceno")

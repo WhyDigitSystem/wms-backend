@@ -21,6 +21,7 @@ import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.CurrencyDTO;
 import com.whydigit.wms.dto.DesignationDTO;
+import com.whydigit.wms.dto.FinancialYearDTO;
 import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.Role;
 import com.whydigit.wms.dto.ScreenNamesDTO;
@@ -30,6 +31,7 @@ import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.DesignationVO;
+import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
@@ -959,6 +961,28 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<DesignationVO> getAllDesignationById(Long id) {
 		// TODO Auto-generated method stub
 		return designationRepo.getAllDesignationById(id);
+	}
+
+	@Override
+	public Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) {
+		FinancialYearVO financialYearVO;
+		String message;
+		
+		if(ObjectUtils.isEmpty(financialYearDTO.getId()))
+		{
+			
+			financialYearVO=new FinancialYearVO();
+			financialYearVO.setCreatedBy(financialYearDTO.getCreatedBy());
+			financialYearVO.setUpdatedBy(financialYearDTO.getCreatedBy());
+			message="Financial Year Creation Successfully";
+			
+		}else {
+			
+			
+		}
+		return null;
+		
+		
 	}
 
 }

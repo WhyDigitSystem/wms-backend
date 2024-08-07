@@ -14,7 +14,6 @@ import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
-import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.exception.ApplicationException;
 
 @Service

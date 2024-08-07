@@ -25,7 +25,6 @@ import com.whydigit.wms.entity.HandlingStockInVO;
 import com.whydigit.wms.entity.PutAwayDetailsVO;
 import com.whydigit.wms.entity.PutAwayVO;
 import com.whydigit.wms.entity.StockDetailsVO;
-import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CarrierRepo;
 import com.whydigit.wms.repo.GatePassInDetailsRepo;
