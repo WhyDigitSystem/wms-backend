@@ -18,7 +18,7 @@ public class FinancialYearDTO {
 	private LocalDate endDate;
 	private boolean currentFinYear;
 	private boolean closed;
-	private String orgId;
+	private Long orgId;
 	private String createdBy;
 	private boolean active;
 

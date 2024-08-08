@@ -42,7 +42,7 @@ public class FinancialYearVO {
 	@Column(name="closed")
 	private boolean closed;
 	@Column(name="orgid")
-	private String orgId;
+	private Long orgId;
 	@Column(name="createdby")
 	private String createdBy;
 	@Column(name="modifiedby")
