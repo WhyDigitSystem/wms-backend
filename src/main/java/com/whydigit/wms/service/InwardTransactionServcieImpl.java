@@ -255,6 +255,12 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		GatePassInVO gatePassInVO;
 		String message;
 		if (ObjectUtils.isEmpty(gatePassInDTO.getId())) {
+			
+			if(gatePassInRepo.existsByEntryNoAndOrgIdAndBranchCodeAndClient(gatePassInDTO.getEntryNo(),gatePassInDTO.getOrgId(),gatePassInDTO.getBranchCode(),gatePassInDTO.getClient())) {
+				String errorMessage=String.format("This EntryNo:%s Already Exists This Organization .", gatePassInDTO.getEntryNo());
+				throw new ApplicationException(errorMessage);
+			}
+			
 			gatePassInVO = new GatePassInVO();
 			gatePassInVO.setCreatedBy(gatePassInDTO.getCreatedBy());
 			gatePassInVO.setUpdatedBy(gatePassInDTO.getCreatedBy());
@@ -265,6 +271,14 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 					"This Id Not Found Any Informations,Invalid Id" + gatePassInDTO.getId()));
 			gatePassInVO.setUpdatedBy(gatePassInDTO.getCreatedBy());
 
+			if(!gatePassInVO.getEntryNo().equalsIgnoreCase(gatePassInDTO.getEntryNo())) {
+				
+				if(gatePassInRepo.existsByEntryNoAndOrgIdAndBranchCodeAndClient(gatePassInDTO.getEntryNo(),gatePassInDTO.getOrgId(),gatePassInDTO.getBranchCode(),gatePassInDTO.getClient())) {
+					String errorMessage=String.format("This EntryNo:%s Already Exists This Organization .", gatePassInDTO.getEntryNo());
+					throw new ApplicationException(errorMessage);
+				}
+				gatePassInVO.setEntryNo(gatePassInDTO.getEntryNo());
+			}
 			message = "GatePass Updation SucessFully";
 
 		}
@@ -305,8 +319,8 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		gatePassInVO.setCustomer(gatePassInDTO.getCustomer());
 		gatePassInVO.setFinyr(gatePassInDTO.getFinyr());
 
-		if (gatePassInDTO.getId() != null) {
-
+		if (gatePassInDTO.getId() != null) { 
+ 
 			List<GatePassInDetailsVO> detailsVOs = gatePassInDetailsRepo.findByGatePassInVO(gatePassInVO);
 			gatePassInDetailsRepo.deleteAll(detailsVOs);
 
