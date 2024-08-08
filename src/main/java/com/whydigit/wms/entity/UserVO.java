@@ -1,16 +1,22 @@
 package com.whydigit.wms.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 import com.whydigit.wms.dto.Role;
 
@@ -27,27 +33,72 @@ public class UserVO {
 
 	@SuppressWarnings("unused")
 	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long userId;
-	private String firstName;
-	private String lastName;
-	private String email;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersgen")
+	@SequenceGenerator(name = "usersgen", sequenceName = "usersseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "userid")
+	private Long id;
+
+	@Column(name = "username")
 	private String userName;
+	@Column(name = "password")
 	private String password;
-//	private String phone;
-//	private String secondaryPhone;
+	@Column(name = "employeename")
+	private String employeeName;
+	@Column(name = "nickname")
+	private String nickName;
+	@Column(name = "email")
+	private String email;
+	@Column(name = "orgid")
+	private Long orgId;
+	@Column(name = "mobileno")
+	private String mobileNo;
+	@Column(name = "usertype")
+	private String userType;
+	@Column(name = "customer")
+	private String customer;
+	@Column(name = "warehouse")
+	private String warehouse;
+	@Column(name = "branch")
+	private String branch;
+	@Column(name = "branchcode")
+	private String branchcode;
+	@Column(name = "client")
+	private String client;
+	@Column(name = "loginstatus")
 	private boolean loginStatus;
-	private boolean isActive;
-//	@Enumerated(EnumType.STRING)
-//	private Gender gender;
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-dd-MM")
-//	private LocalDate dob;
-	@Enumerated(EnumType.STRING)
+	@Column(name = "isActive")
+	private boolean active;
+	@Column(name = "createdby")
+	private String createdby;
+	@Column(name = "modifiedby")
+	private String updatedby;
+	@Column(name = "role")
 	private Role role;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
+	@OneToMany(mappedBy = "userVO", cascade = CascadeType.ALL)
+	private List<UserLoginRolesVO> roleAccessVO;
+
+	@OneToMany(mappedBy = "userVO", cascade = CascadeType.ALL)
+	private List<UserLoginClientAccessVO> clientAccessVO;
+
+	@OneToMany(mappedBy = "userVO", cascade = CascadeType.ALL)
+	private List<UserLoginBranchAccessibleVO> branchAccessibleVO;
+	
 	private Date accountRemovedDate;
+	
+	@ManyToOne
+	@JoinColumn(name="companyid")
+	private CompanyVO companyVO;
+	
+//	@JsonGetter("active")
+//	public String getActive() {
+//		return active ? "Active" : "In-Active";
+//	}
+
+	
 }

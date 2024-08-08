@@ -21,10 +21,15 @@ import lombok.NoArgsConstructor;
 public class TokenVO {
 
 	@Id
+//	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tokengen")
+//	@SequenceGenerator(name = "tokengen", sequenceName = "tokenseq", initialValue = 1000000001, allocationSize = 1)
 	private String id;
 	private Date createdDate;
 	private Date expDate;
-	private long userId;
+	private Long userId;
 	@Transient
 	private String token;
+
+	//@Embedded
+	//private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

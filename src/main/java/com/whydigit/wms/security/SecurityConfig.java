@@ -33,13 +33,11 @@ public class SecurityConfig {
 						"/**/*.html", "/**/*.css", "/**/*.js")
 				.permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
-						"/swagger-ui.html", "/swagger-ui/*", "/api/user/signup", "/api/user/login", "/api/user/logout",
-						"/api/auth/getRefreshToken")
+						"/swagger-ui.html", "/swagger-ui/*", "/api/auth/signup", "/api/auth/login", "/api/auth/logout",
+						"/api/auth/getRefreshToken", "/api/auth/logout","/api/auth/**","/api/auth/getRefreshToken",
+						"/api/commonmaster/**","/api/inward/**","/api/user/**","/api/warehousemastercontroller/**")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
-
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
 		return http.build();
 	}
-
 }
