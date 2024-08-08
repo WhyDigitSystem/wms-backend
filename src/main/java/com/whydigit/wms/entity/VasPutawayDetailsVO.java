@@ -46,6 +46,8 @@ public class VasPutawayDetailsVO {
 	private String sku;
 	@Column(name = "remarks")
 	private String remarks;
+	@Column(name = "qcflags")
+	private boolean qcFlags;
 	
 	@JsonBackReference
 	@ManyToOne

@@ -17,7 +17,7 @@ public class DeliveryChallanDetailsDTO {
 	private LocalDate prDate;
 	private String partNo;
 	private String partDescription;
-	private String outBoundLocation;
+	private String outBoundBin;
 	private int shippedQty;
 	private int unitRate;
 	private int skuValue;
@@ -30,4 +30,6 @@ public class DeliveryChallanDetailsDTO {
 	private BigDecimal totalGst;
 	private BigDecimal billAmount;
 	private String remarks;
+	private boolean qcFlags;
+
 }

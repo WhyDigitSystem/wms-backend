@@ -43,7 +43,7 @@ public class DeliveryChallanDTO {
 	private String transportName;
 	private LocalDate date;
 	private String packingSlipNo;
-	private String location;
+	private String bin;
 	private String taxType;
 	private String remarks;
 	

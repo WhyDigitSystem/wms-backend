@@ -96,8 +96,8 @@ public class DeliveryChallanVO {
 	private LocalDate date;
 	@Column(name = "packingslipno")
 	private String packingSlipNo;
-	@Column(name = "location")
-	private String location;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "taxtype")
 	private String taxType;
 	@Column(name = "remarks")
@@ -111,7 +111,7 @@ public class DeliveryChallanVO {
 //	private LocalDate docDate= LocalDate.now();
 //	@Column(name = "docid")
 //	private String docId;
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;
@@ -145,8 +145,8 @@ public class DeliveryChallanVO {
 	}
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "deliveryChellanVO", cascade = CascadeType.ALL)
-	private List<DeliveryChellanDetailsVO> deliveryChellanDetailsVO;
+	@OneToMany(mappedBy = "deliveryChallanVO", cascade = CascadeType.ALL)
+	private List<DeliveryChallanDetailsVO> deliveryChallanDetailsVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

@@ -20,16 +20,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "deliverychellandetails")
+@Table(name = "deliverychallandetails")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeliveryChellanDetailsVO {
+public class DeliveryChallanDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliverychellandetailsgen")
-	@SequenceGenerator(name = "deliverychellandetailsgen", sequenceName = "deliverychellandetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "deliverychellandetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deliverychallandetailsgen")
+	@SequenceGenerator(name = "deliverychallandetailsgen", sequenceName = "deliverychallandetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "deliverychallandetailsid")
 	private Long id;
 	
 	@Column(name = "pickrequestno")
@@ -40,8 +40,8 @@ public class DeliveryChellanDetailsVO {
 	private String partNo;
 	@Column(name = "partdescription")
 	private String partDescription;
-	@Column(name = "outboundlocation")
-	private String outBoundLocation;
+	@Column(name = "outboundbin")
+	private String outBoundBin;
 	@Column(name = "shippedqty")
 	private int shippedQty;
 	@Column(name = "unitrate")
@@ -66,6 +66,8 @@ public class DeliveryChellanDetailsVO {
 	private BigDecimal billAmount;
 	@Column(name = "remarks")
 	private String remarks;
+	@Column(name = "qcflags")
+	private boolean qcFlags;
 	
 	@JsonBackReference
 	@ManyToOne

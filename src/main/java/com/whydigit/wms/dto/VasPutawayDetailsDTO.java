@@ -19,5 +19,7 @@ public class VasPutawayDetailsDTO {
 	private String location;
 	private String sku;
 	private String remarks;
+	private boolean qcFlags;
+
 	
 }
