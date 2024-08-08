@@ -21,17 +21,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "locatiommovementdetails")
+@Table(name = "locationmovementdetails")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LocatiomMovementDetailsVO {
+public class LocationMovementDetailsVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locatiommovementdetailsgen")
-	@SequenceGenerator(name = "locatiommovementdetailsgen", sequenceName = "locatiommovementdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "locatiommovementdetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmovementdetailsgen")
+	@SequenceGenerator(name = "locationmovementdetailsgen", sequenceName = "locationmovementdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "locationmovementdetailsid")
 	private Long id;
 	@Column(name = "pallet")
 	private String pallet;
@@ -57,6 +57,8 @@ public class LocatiomMovementDetailsVO {
 	private int toQty;
 	@Column(name = "remainingqty")
 	private int remainingQty;
+	@Column(name = "qcflag")
+	private boolean qcFlag;
 	
 	@ManyToOne
 	@JsonBackReference

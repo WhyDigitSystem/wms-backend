@@ -37,5 +37,6 @@ public class SalesReturnDetailsDTO {
 	private BigDecimal amount;
 	private BigDecimal insAmt;
 	private String remarks;
+	private boolean qcFlag;
 	
 }

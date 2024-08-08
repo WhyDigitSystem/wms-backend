@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -33,7 +32,7 @@ public class SalesReturnVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salesreturngen")
-	@SequenceGenerator(name = "salesreturngen", sequenceName = "salesreturngseq", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "salesreturngen", sequenceName = "salesreturnseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "salesreturnid")
 	private Long id;
 	@Column(name = "transactiontype")
@@ -71,9 +70,9 @@ public class SalesReturnVO {
 	@Column(name = "securitypersonname")
 	private String securityPersonName;
 	@Column(name = "timein")
-	private LocalTime timeIn;
-	@Column(name = "out")
-	private LocalTime out;
+	private String timeIn;
+	@Column(name = "timeout")
+	private String timeOut;
 	@Column(name = "briefdescofgoods")
 	private String briefDescOfGoods;
 	@Column(name = "totalreturnqty")
@@ -84,10 +83,10 @@ public class SalesReturnVO {
 	@Column(name = "screencode")
 	private String screenCode;
 	@Column(name = "docdate")
-	private LocalDate docDate = LocalDate.now();
+	private LocalDate docDate ;
 	@Column(name = "docid")
 	private String docId;
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;
@@ -106,13 +105,14 @@ public class SalesReturnVO {
 	@Column(name = "modifiedby")
 	private String updatedBy;
 	@Column(name = "active")
-	private boolean active = true;
+	private boolean active ;
 	@Column(name = "cancel")
-	private boolean cancel = false;
+	private boolean cancel ;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze;
+	
 
 	@Embedded
 	@Builder.Default

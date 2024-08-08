@@ -72,5 +72,5 @@ public class LocationMovementVO {
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<LocatiomMovementDetailsVO> locationMovementDetailsVO;
+	private List<LocationMovementDetailsVO> locationMovementDetailsVO;
 }

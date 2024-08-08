@@ -2,6 +2,8 @@ package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LocationMappingDetailsDTO {
+public class LocationMovementDetailsDTO {
 	private Long id;
 	private String pallet;
 	private String partNo;
@@ -25,4 +27,5 @@ public class LocationMappingDetailsDTO {
 	private int fromQty;
 	private int toQty;
 	private int remainingQty;
+	private boolean qcFlag;
 }

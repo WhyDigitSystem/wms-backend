@@ -8,8 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,4 +69,13 @@ public class SalesReturnDetailsVO {
 	private BigDecimal insAmt;
 	@Column(name = "remarks")
 	private String remarks;
-}
+	@Column(name = "qcflag")
+	private boolean qcFlag;
+	
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "salesreturnid")
+	private SalesReturnVO salesReturnVO;
+		
+	}
+

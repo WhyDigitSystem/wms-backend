@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
 import org.apache.commons.lang3.ObjectUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +22,8 @@ import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GatePassInDetailsDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
+import com.whydigit.wms.dto.SalesReturnDTO;
+import com.whydigit.wms.dto.SalesReturnDetailsDTO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInDetailsVO;
 import com.whydigit.wms.entity.GatePassInVO;
@@ -24,6 +32,8 @@ import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
 import com.whydigit.wms.entity.PutAwayDetailsVO;
 import com.whydigit.wms.entity.PutAwayVO;
+import com.whydigit.wms.entity.SalesReturnDetailsVO;
+import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CarrierRepo;
@@ -32,13 +42,19 @@ import com.whydigit.wms.repo.GatePassInRepo;
 import com.whydigit.wms.repo.GrnDetailsRepo;
 import com.whydigit.wms.repo.GrnRepo;
 import com.whydigit.wms.repo.HandlingStockInRepo;
+import com.whydigit.wms.repo.LocationMovementDetailsRepo;
+import com.whydigit.wms.repo.LocationMovementRepo;
 import com.whydigit.wms.repo.PutAwayDetailsRepo;
 import com.whydigit.wms.repo.PutAwayRepo;
+import com.whydigit.wms.repo.SalesReturnDetailsRepo;
+import com.whydigit.wms.repo.SalesReturnRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 
 @Service
 public class InwardTransactionServcieImpl implements InwardTransactionService {
+
+	public static final Logger LOGGER = LoggerFactory.getLogger(InwardTransactionServcieImpl.class);
 
 	@Autowired
 	GrnRepo grnRepo;
@@ -63,13 +79,25 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 	@Autowired
 	GatePassInDetailsRepo gatePassInDetailsRepo;
-	
+
 	@Autowired
 	SupplierRepo supplierRepo;
-	
+
 	@Autowired
 	CarrierRepo carrierRepo;
-	
+
+	@Autowired
+	SalesReturnRepo salesReturnRepo;
+
+	@Autowired
+	SalesReturnDetailsRepo salesReturnDetailsRepo;
+
+	@Autowired
+	LocationMovementRepo locationMovementRepo;
+
+	@Autowired
+	LocationMovementDetailsRepo locatiomMovementDetailsRepo;
+
 	// Grn
 
 	@Override
@@ -269,11 +297,11 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 		}
 		geGatePassInVOFromGatePassInDTO(gatePassInVO, gatePassInDTO);
-        gatePassInRepo.save(gatePassInVO);	
-        Map<String, Object> response=new HashMap<String, Object>();
-        response.put("message", message);
-        response.put("gatePassInVO", gatePassInVO);
-        return response;
+		gatePassInRepo.save(gatePassInVO);
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("message", message);
+		response.put("gatePassInVO", gatePassInVO);
+		return response;
 	}
 
 	private GatePassInVO geGatePassInVOFromGatePassInDTO(GatePassInVO gatePassInVO, GatePassInDTO gatePassInDTO) {
@@ -361,23 +389,21 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		gatePassInRepo.deleteById(id);
 	}
 
-	
 	@Override
 	public Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode) {
 		return gatePassInRepo.findGatePassDetailsByGatePassNo(orgId, client, entryno, docid, branchcode);
 	}
-	
+
 	@Override
 	public List<CarrierVO> getAllModeOfShipment() {
 		return carrierRepo.findmodeOfShipment();
-	}   
-	
+	}
+
 	@Override
 	public List<CarrierVO> getActiveShipment(String shipmentMode) {
 		return carrierRepo.getActiveShipment(shipmentMode);
 	}
-
 
 	// PutAway
 
@@ -520,5 +546,134 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		return null;
 	}
 
+//	SalesReturn
+	@Override
+	public List<SalesReturnVO> getAllSalesReturn(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse) {
+		return salesReturnRepo.findAllSalesReturn(orgId, finYear, branch, branchCode, client, warehouse);
+	}
 
+	@Override
+	public List<SalesReturnVO> getAllSalesReturnById(Long id) {
+		List<SalesReturnVO> salesReturnVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received SalesReturn BY Id : {}", id);
+			salesReturnVO = salesReturnRepo.getAllSalesReturnById(id);
+		} else {
+			LOGGER.info("Enter the id to get details :");
+		}
+		return salesReturnVO;
+	}
+
+	@Override
+	public SalesReturnVO updateCreateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException {
+		SalesReturnVO salesReturnVO = new SalesReturnVO();
+		boolean isUpdate = false;
+		if (ObjectUtils.isNotEmpty(salesReturnDTO.getId())) {
+			isUpdate = true;
+			salesReturnVO = salesReturnRepo.findById(salesReturnDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid SalesReturn details"));
+			salesReturnVO.setUpdatedBy(salesReturnDTO.getCreatedBy());
+		} else {
+			salesReturnVO.setUpdatedBy(salesReturnDTO.getCreatedBy());
+			salesReturnVO.setCreatedBy(salesReturnDTO.getCreatedBy());
+		}
+
+		List<SalesReturnDetailsVO> salesReturnDetailsVOs = new ArrayList<>();
+		if (salesReturnDTO.getSalesReturnDetailsDTO() != null) {
+			for (SalesReturnDetailsDTO salesReturnDetailsDTO : salesReturnDTO.getSalesReturnDetailsDTO()) {
+				SalesReturnDetailsVO salesReturnDetailsVO;
+				if (salesReturnDetailsDTO.getId() != null && ObjectUtils.isNotEmpty(salesReturnDetailsDTO.getId())) {
+					salesReturnDetailsVO = salesReturnDetailsRepo.findById(salesReturnDetailsDTO.getId())
+							.orElse(new SalesReturnDetailsVO());
+				} else {
+					salesReturnDetailsVO = new SalesReturnDetailsVO();
+				}
+				salesReturnDetailsVO.setLRNo(salesReturnDetailsDTO.getLRNo());
+				salesReturnDetailsVO.setInvoiceNo(salesReturnDetailsDTO.getInvoiceNo());
+				salesReturnDetailsVO.setPartNo(salesReturnDetailsDTO.getPartNo());
+				salesReturnDetailsVO.setPartDescripition(salesReturnDetailsDTO.getPartDescripition());
+				salesReturnDetailsVO.setUnit(salesReturnDetailsDTO.getUnit());
+				salesReturnDetailsVO.setPickQty(salesReturnDetailsDTO.getPickQty());
+				salesReturnDetailsVO.setRetQty(salesReturnDetailsDTO.getRetQty());
+				salesReturnDetailsVO.setDamageQty(salesReturnDetailsDTO.getDamageQty());
+				salesReturnDetailsVO.setBatchNo(salesReturnDetailsDTO.getBatchNo());
+				salesReturnDetailsVO.setBatchDate(salesReturnDetailsDTO.getBatchDate());
+				salesReturnDetailsVO.setExpDate(salesReturnDetailsDTO.getExpDate());
+				salesReturnDetailsVO.setNoOfPallet(salesReturnDetailsDTO.getNoOfPallet());
+				salesReturnDetailsVO.setPalletQty(salesReturnDetailsDTO.getPalletQty());
+				salesReturnDetailsVO.setWeight(salesReturnDetailsDTO.getWeight());
+				salesReturnDetailsVO.setRate(salesReturnDetailsDTO.getRate());
+				salesReturnDetailsVO.setAmount(salesReturnDetailsDTO.getAmount());
+				salesReturnDetailsVO.setInsAmt(salesReturnDetailsDTO.getInsAmt());
+				salesReturnDetailsVO.setRemarks(salesReturnDetailsDTO.getRemarks());
+				salesReturnDetailsVO.setQcFlag(salesReturnDetailsDTO.isQcFlag());
+				salesReturnDetailsVO.setSalesReturnVO(salesReturnVO);
+				salesReturnDetailsVOs.add(salesReturnDetailsVO);
+			}
+		}
+
+		getSalesReturnVOFromSalesReturnDTO(salesReturnDTO, salesReturnVO);
+		salesReturnVO.setSalesReturnDetailsVO(salesReturnDetailsVOs);
+		return salesReturnRepo.save(salesReturnVO);
+	}
+
+	private void getSalesReturnVOFromSalesReturnDTO(@Valid SalesReturnDTO salesReturnDTO, SalesReturnVO salesReturnVO) {
+		salesReturnVO.setOrgId(salesReturnDTO.getOrgId());
+		salesReturnVO.setTransactionType(salesReturnDTO.getTransactionType());
+		salesReturnVO.setEntryNo(salesReturnDTO.getEntryNo());
+		salesReturnVO.setEntryDate(salesReturnDTO.getEntryDate());
+		salesReturnVO.setPrDate(salesReturnDTO.getPrDate());
+		salesReturnVO.setBONo(salesReturnDTO.getBONo());
+		salesReturnVO.setBODate(salesReturnDTO.getBODate());
+		salesReturnVO.setPRNo(salesReturnDTO.getPRNo());
+		salesReturnVO.setBuyerName(salesReturnDTO.getBuyerName());
+		salesReturnVO.setBuyerType(salesReturnDTO.getBuyerType());
+		salesReturnVO.setSupplier(salesReturnDTO.getSupplier());
+		salesReturnVO.setDriverName(salesReturnDTO.getDriverName());
+		salesReturnVO.setCarrier(salesReturnDTO.getCarrier());
+		salesReturnVO.setModeOfShipment(salesReturnDTO.getModeOfShipment());
+		salesReturnVO.setVehicleType(salesReturnDTO.getVehicleType());
+		salesReturnVO.setVehicleNo(salesReturnDTO.getVehicleNo());
+		salesReturnVO.setContact(salesReturnDTO.getContact());
+		salesReturnVO.setSecurityPersonName(salesReturnDTO.getSecurityPersonName());
+		salesReturnVO.setTimeIn(salesReturnDTO.getTimeIn());
+		salesReturnVO.setTimeOut(salesReturnDTO.getTimeOut());
+		salesReturnVO.setBriefDescOfGoods(salesReturnDTO.getBriefDescOfGoods());
+		salesReturnVO.setTotalReturnQty(salesReturnDTO.getTotalReturnQty());
+		salesReturnVO.setOrgId(salesReturnDTO.getOrgId());
+		salesReturnVO.setCustomer(salesReturnDTO.getCustomer());
+		salesReturnVO.setClient(salesReturnDTO.getClient());
+		salesReturnVO.setFinYear(salesReturnDTO.getFinYear());
+		salesReturnVO.setBranch(salesReturnDTO.getBranch());
+		salesReturnVO.setBranchCode(salesReturnDTO.getBranchCode());
+		salesReturnVO.setWarehouse(salesReturnDTO.getWarehouse());
+		salesReturnVO.setScreenName("SALES RETURN");
+		salesReturnVO.setScreenCode("SR");
+		salesReturnVO.setDocDate(LocalDate.now());
+		salesReturnVO.setActive(true);
+		salesReturnVO.setCancel(false);
+	}
+
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getSalesReturnFillGridDetails(String docId, String client, Long orgId,
+			String branchCode) {
+
+		Set<Object[]> result = salesReturnRepo.findSalesReturnFillGridDetails(docId, client, orgId, branchCode);
+		return getResult(result);
+	}
+
+	private List<Map<String, Object>> getResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partCode", fs[0] != null ? fs[0].toString() : "");
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("sku", fs[2] != null ? fs[2].toString() : "");
+			part.put("pickQty", fs[3] != null ? fs[3].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
 }

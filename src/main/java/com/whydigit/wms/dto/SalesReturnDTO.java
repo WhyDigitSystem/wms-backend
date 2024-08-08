@@ -1,7 +1,6 @@
 package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -32,8 +31,8 @@ public class SalesReturnDTO {
 	private String vehicleNo;
 	private String contact;
 	private String securityPersonName;
-	private LocalTime timeIn;
-	private LocalTime out;
+	private String timeIn;
+	private String timeOut;
 	private String briefDescOfGoods;
 	private int totalReturnQty;
 
@@ -46,5 +45,5 @@ public class SalesReturnDTO {
 	private String warehouse;
 	private String createdBy;
 	
-	private List<SalesReturnDTO> salesReturnDTO;
+	private List<SalesReturnDetailsDTO> salesReturnDetailsDTO;
 }

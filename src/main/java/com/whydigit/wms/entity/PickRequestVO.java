@@ -50,8 +50,8 @@ public class PickRequestVO {
 	private String buyersreference;
 	@Column(name = "invoiceno")
 	private String invoiceno;
-	@Column(name = "clientname")
-	private String clientname;
+	@Column(name = "client")
+	private String client;
 	@Column(name = "clientshortname")
 	private String clientshortname;
 	@Column(name = "clientaddress")
@@ -88,7 +88,11 @@ public class PickRequestVO {
 	private boolean active;
 	@Column(name = "screencode")
 	private String screencode;
-
+	@Column(name ="orgid")
+	private String orgId;
+	@Column(name="branchcode")
+	private String branch;
+	
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pickRequestVO")
 	private List<PickRequestDetailsVO> pickRequestDetailsVO;

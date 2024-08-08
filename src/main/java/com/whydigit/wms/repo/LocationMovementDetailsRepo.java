@@ -2,8 +2,8 @@ package com.whydigit.wms.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.whydigit.wms.entity.LocatiomMovementDetailsVO;
+import com.whydigit.wms.entity.LocationMovementDetailsVO;
 
-public interface LocationMovementDetailsRepo extends JpaRepository<LocatiomMovementDetailsVO, Long> {
+public interface LocationMovementDetailsRepo extends JpaRepository<LocationMovementDetailsVO, Long> {
 
 }
