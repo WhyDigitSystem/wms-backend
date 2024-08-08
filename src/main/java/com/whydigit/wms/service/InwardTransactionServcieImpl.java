@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,8 @@ import com.whydigit.wms.repo.SupplierRepo;
 @Service
 public class InwardTransactionServcieImpl implements InwardTransactionService {
 
+	public static final Logger LOGGER = LoggerFactory.getLogger(InwardTransactionServcieImpl.class);
+
 	@Autowired
 	GrnRepo grnRepo;
 
@@ -63,12 +67,13 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 	@Autowired
 	GatePassInDetailsRepo gatePassInDetailsRepo;
-	
+
 	@Autowired
 	SupplierRepo supplierRepo;
-	
+
 	@Autowired
 	CarrierRepo carrierRepo;
+
 	
 	// Grn
 
@@ -283,11 +288,11 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 		}
 		geGatePassInVOFromGatePassInDTO(gatePassInVO, gatePassInDTO);
-        gatePassInRepo.save(gatePassInVO);	
-        Map<String, Object> response=new HashMap<String, Object>();
-        response.put("message", message);
-        response.put("gatePassInVO", gatePassInVO);
-        return response;
+		gatePassInRepo.save(gatePassInVO);
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("message", message);
+		response.put("gatePassInVO", gatePassInVO);
+		return response;
 	}
 
 	private GatePassInVO geGatePassInVOFromGatePassInDTO(GatePassInVO gatePassInVO, GatePassInDTO gatePassInDTO) {
@@ -375,23 +380,21 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		gatePassInRepo.deleteById(id);
 	}
 
-	
 	@Override
 	public Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode) {
 		return gatePassInRepo.findGatePassDetailsByGatePassNo(orgId, client, entryno, docid, branchcode);
 	}
-	
+
 	@Override
 	public List<CarrierVO> getAllModeOfShipment() {
 		return carrierRepo.findmodeOfShipment();
-	}   
-	
+	}
+
 	@Override
 	public List<CarrierVO> getActiveShipment(String shipmentMode) {
 		return carrierRepo.getActiveShipment(shipmentMode);
 	}
-
 
 	// PutAway
 
@@ -534,5 +537,5 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		return null;
 	}
 
-
+	
 }
