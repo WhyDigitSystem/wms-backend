@@ -625,6 +625,31 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/allClientByOrgId")
+	public ResponseEntity<ResponseDTO> getAllClientByOrgId(@RequestParam Long orgid) {
+		String methodName = "getAllClientByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<ClientVO> clientVO = new ArrayList<>();
+		try {
+			clientVO = warehouseMasterService.getAllClientByOrgId(orgid);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Client information get successfully");
+			responseObjectsMap.put("clientVO", clientVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Client information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	// Client Branch
 	@GetMapping("/client/branch")
@@ -1972,6 +1997,32 @@ public class WarehouseMasterController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type information receive failed",
 					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getClientForDoctypeFillgrid")
+	public ResponseEntity<ResponseDTO> getClientForDoctypeFillgrid(@RequestParam Long orgId, @RequestParam String screenCode) {
+		String methodName = "getClientForDoctypeFillgrid()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String,Object>> clientDetails = new ArrayList<>();
+		try {
+			clientDetails = warehouseMasterService.getClientAndClientCodeForDocTypeFillGrid(orgId, screenCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Client Founded");
+			responseObjectsMap.put("clientDetails", clientDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Client not found";
+			responseDTO = createServiceResponseError(responseObjectsMap, "Client not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
