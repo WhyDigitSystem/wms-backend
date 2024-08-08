@@ -38,10 +38,10 @@ public class VasPutawayDetailsVO {
 	private int invQty;
 	@Column(name = "putawayqty")
 	private int putAwayQty;
-	@Column(name = "frompallet")
-	private String fromPallet;
-	@Column(name = "location")
-	private String location;
+	@Column(name = "frombin")
+	private String fromBin;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "remarks")
