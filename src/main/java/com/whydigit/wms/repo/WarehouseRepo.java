@@ -20,4 +20,7 @@ public interface WarehouseRepo extends JpaRepository<WarehouseVO, Long> {
 
 	boolean existsByWarehouseAndOrgId(String warehouse, Long orgId);
 
+	@Query(nativeQuery =true,value ="select * from warehouse where orgid=?1" )
+	List<WarehouseVO> findAllWarehouse(Long orgId);
+
 }

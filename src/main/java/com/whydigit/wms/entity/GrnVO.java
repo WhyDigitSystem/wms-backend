@@ -40,37 +40,39 @@ public class GrnVO {
 	@Column(name = "direct")
 	private String direct;
 	@Column(name = "docid")
-	private String docid;
+	private String docId;
 	@Builder.Default
 	private LocalDate docdate = LocalDate.now();
 	@Column(name = "entryno")
-	private String entryno;
+	private String entryNo;
 	@Column(name = "entrydate")
-	private LocalDate entrydate;
+	private LocalDate entryDate;
 	@Column(name = "grndate")
-	private LocalDate grndate;
+	private LocalDate grndDate;
 	@Column(name = "tax")
 	private String tax;
 	@Column(name = "gatepassid")
-	private String gatepassid;
+	private String gatePassId;
 	@Column(name = "gatepassdate")
-	private LocalDate gatepassdate;
+	private LocalDate gatePassDate;
 	@Column(name = "customerpo")
-	private String customerpo;
+	private String customerPo;
 	@Column(name = "suppliershortname")
-	private String suppliershortname;
+	private String supplierShortName;
 	@Column(name = "supplier")
 	private String supplier;
 	@Column(name = "carrier")
 	private String carrier;
 	@Column(name = "lotno")
-	private String lotno;
+	private String lotNo;
 	@Column(name = "modeofshipment")
-	private String modeofshipment;
+	private String modeOfShipment;
 	@Column(name = "noofpackage")
-	private String noofpackage;
+	private String noOfPackage;
+	
+	@Builder.Default
 	@Column(name = "screencode")
-	private String screencode;
+	private String screenCode="GRN";
 	@Column(unique = true)
 	private String dupchk;
 	@Column(name = "createdby")

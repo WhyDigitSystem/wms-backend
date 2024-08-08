@@ -34,7 +34,6 @@ import com.whydigit.wms.dto.SignUpFormDTO;
 import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.ResponsibilityVO;
 import com.whydigit.wms.entity.RolesVO;
-import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.service.AuthService;
 

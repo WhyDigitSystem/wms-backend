@@ -510,8 +510,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public Optional<CompanyVO> getCompanyById(Long companyid) {
-		return companyRepo.findById(companyid);
+	public List<CompanyVO> getCompanyById(Long companyid) {
+		return companyRepo.findByCompany(companyid);
 	}
 
 	@Override
@@ -571,17 +571,13 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		userVO.setEmail(companyVO.getEmail());
 		userVO.setMobileNo(companyVO.getPhone());
 		userVO.setRole(Role.ROLE_USER);
+		userVO.setUserType(null);
 		userVO.setOrgId(companyVO.getId());
 		userVO.setCreatedby(companyVO.getCreatedBy());
 		userVO.setUpdatedby(companyVO.getCreatedBy());
 		userVO.setActive(true);
 		userVO.setLoginStatus(false);
 		userVO.setCompanyVO(companyVO);
-//	        UserLoginRolesVO userLoginRolesVO=new UserLoginRolesVO();
-//	        userLoginRolesVO.setRole(userVO.getRole());
-//	        UserLoginBranchAccessibleVO userLoginBranchAccessibleVO=new UserLoginBranchAccessibleVO();
-//	        userLoginBranchAccessibleVO.setBranch(companyVO.getCompanyName());
-//	        userLoginBranchAccessibleVO.setBranchcode(companyVO.getCompanyCode());
 
 		try {
 			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
@@ -615,6 +611,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyVO.setUpdatedBy(companyDTO.getCreatedBy());
 		companyVO.setActive(companyDTO.isActive());
 		companyVO.setCancel(companyDTO.isCancel());
+		companyVO.setGst(companyDTO.getGst());
+		companyVO.setCeo(companyDTO.getCeo());
+		
 		try {
 			companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
 		} catch (Exception e) {
@@ -651,12 +650,15 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyVO.setEmail(companyDTO.getEmail());
 		companyVO.setWebSite(companyDTO.getWebSite());
 		companyVO.setNote(companyDTO.getNote());
-		companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
-		companyVO.setEmployeeName(companyDTO.getEmployeeName());
+//		companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
+//		companyVO.setEmployeeName(companyDTO.getEmployeeName());
 		companyVO.setCreatedBy(companyDTO.getCreatedBy());
 		companyVO.setUpdatedBy(companyDTO.getUpdatedBy());
 		companyVO.setActive(companyDTO.isActive());
 		companyVO.setCancel(companyDTO.isCancel());
+		companyVO.setRole(companyDTO.getRole());
+		companyVO.setGst(companyDTO.getGst());
+		companyVO.setCeo(companyDTO.getCeo());
 	}
 
 	@Override
@@ -964,7 +966,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) {
+	public Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) throws ApplicationException {
 		FinancialYearVO financialYearVO;
 		String message;
 		
@@ -977,12 +979,48 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 			message="Financial Year Creation Successfully";
 			
 		}else {
+			 financialYearVO = financialYearRepo.findById(financialYearDTO.getId())
+				    .orElseThrow(() -> new ApplicationException(
+				        String.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));
 			
+			financialYearVO.setUpdatedBy(financialYearDTO.getCreatedBy());
+			message="Financial Year Updation Successfully";
 			
 		}
-		return null;
+		getFinancialYearVOFromFinancialYearDTO(financialYearVO,financialYearDTO);
+		financialYearRepo.save(financialYearVO);
+		Map<String, Object> response=new HashMap<String, Object>();
+		response.put("financialYearVO", financialYearVO);
+		response.put("message", response);
+		return response;
 		
-		
+	}
+
+	private void getFinancialYearVOFromFinancialYearDTO(FinancialYearVO financialYearVO,
+			FinancialYearDTO financialYearDTO) {
+		financialYearVO.setFinYear(financialYearDTO.getFinYear());
+		financialYearVO.setFinYearIdentifier(financialYearDTO.getFinYearIdentifier());
+		financialYearVO.setStartDate(financialYearDTO.getStartDate());
+		financialYearVO.setEndDate(financialYearDTO.getEndDate());
+		financialYearVO.setCurrentFinYear(financialYearDTO.isCurrentFinYear());
+		financialYearVO.setClosed(financialYearDTO.isClosed());
+		financialYearVO.setOrgId(financialYearDTO.getOrgId());
+		financialYearVO.setActive(financialYearDTO.isActive());
+	}
+
+	@Override
+	public List<FinancialYearVO> getAllFInYear() {
+		return financialYearRepo.findAll();
+	}
+
+	@Override
+	public List<FinancialYearVO> getAllFInYearByOrgId(Long orgId) {
+		return financialYearRepo.findFinancialYearByOrgId(orgId);
+	}
+
+	@Override
+	public Optional<FinancialYearVO> getAllFInYearById(Long id) {
+		return financialYearRepo.findById(id);
 	}
 
 }

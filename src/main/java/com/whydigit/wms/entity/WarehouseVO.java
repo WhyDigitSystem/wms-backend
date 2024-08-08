@@ -52,6 +52,13 @@ public class WarehouseVO {
 	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<WarehouseClientVO> warehouseClientVO;
+	
+	
+//	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
+//	@JsonManagedReference
+//	private List<WarehouseBranchVO> warehouseBranchVO;
+	
+	
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

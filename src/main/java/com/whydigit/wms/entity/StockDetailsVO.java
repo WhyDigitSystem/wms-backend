@@ -41,9 +41,9 @@ public class StockDetailsVO {
 	@Column(name = "branchcode")
 	private String branchCode;
 	@Column(name = "docid")
-	private String docid;
+	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docdate;
+	private LocalDate docDate;
 	@Column(name = "qtypicked")
 	private int pickedQty;
 	@Column(name = "rate")
