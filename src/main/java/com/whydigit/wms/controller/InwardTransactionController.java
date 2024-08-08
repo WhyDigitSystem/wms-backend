@@ -34,6 +34,7 @@ import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
+
 import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.service.InwardTransactionService;
 
@@ -640,4 +641,6 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	
 }

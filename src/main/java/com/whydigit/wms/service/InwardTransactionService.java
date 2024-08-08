@@ -9,11 +9,13 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.DeliveryChallanDTO;
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
+import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
