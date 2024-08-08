@@ -13,11 +13,13 @@ import com.whydigit.wms.dto.DeliveryChallanDTO;
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
+import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
+import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.exception.ApplicationException;
 
 @Service
@@ -73,5 +75,13 @@ public interface InwardTransactionService {
 
 	List<CarrierVO> getActiveShipment(String shipmentMode);
 
- 
+//	SalesReturn
+	List<SalesReturnVO> getAllSalesReturn(Long orgId,String finYear, String branch, String branchCode, String client, String warehouse);
+
+	List<SalesReturnVO> getAllSalesReturnById(Long id);
+	
+	SalesReturnVO updateCreateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
+	
+	List<Map<String, Object>> getSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
+
 }
