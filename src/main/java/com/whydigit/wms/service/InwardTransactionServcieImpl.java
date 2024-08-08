@@ -320,7 +320,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		gatePassInVO.setFinyr(gatePassInDTO.getFinyr());
 
 		if (gatePassInDTO.getId() != null) { 
-
+ 
 			List<GatePassInDetailsVO> detailsVOs = gatePassInDetailsRepo.findByGatePassInVO(gatePassInVO);
 			gatePassInDetailsRepo.deleteAll(detailsVOs);
 
