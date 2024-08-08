@@ -38,7 +38,7 @@ public class ClientVO {
 	private String clientCode; // caps
 	@Column(name = "clienttype")
 	private String clientType;
-	@Column(name = "fiofife")
+	@Column(name = "fifofife")
 	private String fifofife;
 	
 	private boolean active;

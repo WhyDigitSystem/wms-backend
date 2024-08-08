@@ -35,17 +35,17 @@ public class StockDetailsVO {
 	@Column(name = "orgid")
 	private String orgId;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "cancelremarks")
-	private String cancelremarks;
+	private String cancelRemarks;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "docid")
 	private String docid;
 	@Column(name = "docdate")
 	private LocalDate docdate;
 	@Column(name = "qtypicked")
-	private int pickedqty;
+	private int pickedQty;
 	@Column(name = "rate")
 	private String rate;
 	@Column(name = "amount")
@@ -53,135 +53,127 @@ public class StockDetailsVO {
 	@Column(name = "inoutitme")
 	private String inouttime;
 	@Column(name = "refno")
-	private String refno;
+	private String refNo;
 	@Column(name = "refdate")
-	private LocalDate refdate;
+	private LocalDate refDate;
 	@Column(name = "qty")
 	private int qty;
 	@Column(name = "lrhawbhblno")
-	private String lrhawbhblno;
+	private String lrhawbhblNo;
 	@Column(name = "client")
 	private String client;
 	@Column(name = "stockdate")
-	private LocalDate stockdate;
+	private LocalDate stockDate;
 	@Column(name = "grnno")
-	private String grnno;
+	private String grnNo;
 	@Column(name = "grndate")
-	private LocalDate grndate;
+	private LocalDate grnDate;
 	@Column(name = "carrier")
 	private String carrier;
 	@Column(name = "oqty")
-	private int oqty;
+	private int oQty;
 	@Column(name = "rqty")
-	private int rqty;
+	private int rQty;
 	@Column(name = "dqty")
-	private int dqty;
+	private int dQty;
 	@Column(name = "cqty")
-	private int cqty;
+	private int cQty;
 	@Column(name = "uqty")
-	private int uqty;
+	private int uQty;
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "partno")
 	private String partno;
 	@Column(name = "partdesc")
-	private String partdesc;
+	private String partDesc;
 	@Column(name = "sourcescreen")
-	private String sourcescreen;
+	private String sourceScreen;
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "customer")
 	private String customer;
-	@Column(name = "locationtype")
-	private String locationtype;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "celltype")
-	private String celltype;
+	private String cellType;
 	@Column(name = "core")
 	private String core;
-	@Column(name = "toqty")
-	private int toqty;
-	@Column(name = "pallet")
-	private String pallet;
+	@Column(name = "toty")
+	private int toQty;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "warehouse")
 	private String warehouse;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "ssku")
-	private String ssku;
+	private String sSku;
 	@Column(name = "ssqty")
-	private int ssqty;
+	private int ssQty;
 	@Column(name = "sqty")
-	private int sqty;
+	private int sQty;
 	@Column(name = "pqty")
-	private int pqty;
+	private int pQty;
 	@Column(name = "invqty")
-	private int invqty;
+	private int invQty;
 	@Column(name = "recqty")
-	private int recqty;
+	private int recQty;
 	@Column(name = "damageqty")
-	private int damageqty;
+	private int damageQty;
 	@Column(name = "shortqty")
-	private int shortqty;
+	private int shortQty;
 	@Column(name = "qcflag")
-	private String qcflag;
-	@Column(name = "subtypecode")
-	private String subtypecode;
+	private String qcFlag;
+	@Column(name = "clientcode")
+	private String clientCode;
 	@Column(name = "pamount")
-	private String pamount;
-	@Column(name = "locationclass")
-	private String locationclass;
+	private String pAmount;
+	@Column(name = "binclass")
+	private String binClass;
 	@Column(name = "pgroup")
-	private String pgroup;
+	private String pGroup;
 	@Column(name = "barcode")
-	private String barcode;
+	private String barCode;
 	@Column(name = "stylecode")
-	private String stylecode;
+	private String styleCode;
 	@Column(name = "expdate")
-	private String expdate;
+	private String expDate;
 	@Column(name = "buyerorderno")
-	private String buyerorderno;
+	private String buyerOrderNo;
 	@Column(name = "batch")
 	private String batch;
 	@Column(name = "batchdate")
-	private LocalDate batchdate;
+	private LocalDate batchDate;
 	@Column(name = "weight")
 	private String weight;
 	@Column(name = "pckey")
-	private String pckey;
+	private String pcKey;
 	@Column(name = "sdactual")
 	private String sdactual;
 	@Column(name = "tpartno")
-	private String tpartno;
-	@Column(name = "taskid")
-	private String taskid;
+	private String tPartNo;
 	@Column(name = "sdate")
-	private LocalDate sdate;
+	private LocalDate sDate;
 	@Column(name = "cdocdate")
-	private LocalDate cdocdate;
+	private LocalDate cDocDate;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "invoiceno")
-	private String invoiceno;
+	private String invoiceNo;
 	@Column(name = "isstatus")
-	private String istatus;
+	private String iStatus;
 	@Column(name = "sflag")
-	private String sflag;
+	private String sFlag;
 	@Column(name = "lotno")
-	private String lotno;
-	@Column(name = "company")
-	private String company;
-	@Column(name = "userid")
-	private String userid;
+	private String lotNo;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchname")
-	private String branchname;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "screencode")
-	private String screencode;
+	private String screenCode;
 	@Column(name = "finyear")
-	private String finyear;
+	private String finYear;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

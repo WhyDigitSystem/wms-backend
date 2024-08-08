@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,21 +27,35 @@ public class LocationMappingDetailsVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmappingdetailsgen")
 	@SequenceGenerator(name = "locationmappingdetailsgen", sequenceName = "locationmappingdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	private Long id;
+	@Column(name="branch")
 	private String branch;
+	@Column(name="branchcode")
+	private String branchCode;
+	@Column(name="warehouse")
 	private String warehouse;
-	private String locationtype;
-	private String clienttype;
-	private String rowno;
-	private String levelno;
+	@Column(name="locationtype")
+	private String locationType;
+	@Column(name="clienttype")
+	private String clientType;
+	@Column(name="rowno")
+	private String rowNo;
+	@Column(name="levelno")
+	private String levelNo;
+	@Column(name="client")
 	private String client;
+	@Column(name="orgid")
 	private Long orgId;
 	private boolean cancel;
+	@Column(name="bin")
 	private String bin;
+	@Column(name="lstatus")
 	private String lstatus;
-	private String cellcategory;
-	private String code;
+	@Column(name="cellcategory")
+	private String cellCategory;
+	@Column(name="core")
+	private String core;
 	private boolean active;
-	private String branchcode;
+	
 	
 	@JsonBackReference
 	@ManyToOne
