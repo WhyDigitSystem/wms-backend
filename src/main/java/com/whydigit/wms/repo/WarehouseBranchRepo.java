@@ -9,8 +9,8 @@ import com.whydigit.wms.entity.WarehouseVO;
 
 public interface WarehouseBranchRepo extends JpaRepository<WarehouseBranchVO, Long>{
 
-	List<WarehouseBranchVO> findByWarehouseVO(WarehouseVO warehouseVO);
-
-	boolean existsByCustomerBranchCodeAndOrgId(String customerBranchCode, Long orgId);
+//	List<WarehouseBranchVO> findByWarehouseVO(WarehouseVO warehouseVO);
+//
+//	boolean existsByCustomerBranchCodeAndOrgId(String customerBranchCode, Long orgId);
 
 }

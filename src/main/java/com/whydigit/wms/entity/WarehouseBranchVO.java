@@ -36,8 +36,8 @@ public class WarehouseBranchVO {
 	
 	
 
-	@ManyToOne
-	@JsonBackReference
-	@JoinColumn(name = "warehouseid")
-	private WarehouseVO warehouseVO;
+//	@ManyToOne
+//	@JsonBackReference
+//	@JoinColumn(name = "warehouseid")
+//	private WarehouseVO warehouseVO;
 }

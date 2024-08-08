@@ -23,6 +23,6 @@ public class WarehouseDTO {
 	private boolean cancel;
 
 	private List<WarehouseClientDTO> warehouseClientDTO;
-	private List<WarehouseBranchDTO> warehouseBranchDTO;
+	//private List<WarehouseBranchDTO> warehouseBranchDTO;
 	
 }

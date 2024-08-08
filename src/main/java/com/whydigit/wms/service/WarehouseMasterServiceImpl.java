@@ -787,9 +787,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	    if (warehouseDTO.getId() != null) {
 	        List<WarehouseClientVO> warehouseClientVOs = warehouseClientRepo.findByWarehouseVO(warehouseVO);
 	        warehouseClientRepo.deleteAll(warehouseClientVOs);
-
-	        List<WarehouseBranchVO> warehouseBranchVOs = warehouseBranchRepo.findByWarehouseVO(warehouseVO);
-	        warehouseBranchRepo.deleteAll(warehouseBranchVOs);
 	    }
 
 	    List<WarehouseClientVO> warehouseClientVOs = new ArrayList<>();
@@ -814,24 +811,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	        warehouseClientVOs.add(warehouseClientVO);
 	    }
 	    warehouseVO.setWarehouseClientVO(warehouseClientVOs);
-
-	    List<WarehouseBranchVO> warehouseBranchVOs = new ArrayList<>();
-	    for (WarehouseBranchDTO warehouseBranchDTO : warehouseDTO.getWarehouseBranchDTO()) {
-	        WarehouseBranchVO warehouseBranchVO = new WarehouseBranchVO();
-	        
-	        if (warehouseBranchRepo.existsByCustomerBranchCodeAndOrgId(warehouseBranchDTO.getCustomerBranchCode(), warehouseDTO.getOrgId())) {
-	            String errorMessage = String.format("This Customer Branch Code : %s Already Exists in This Organization", warehouseBranchDTO.getCustomerBranchCode());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        warehouseBranchVO.setCustomerBranchCode(warehouseBranchDTO.getCustomerBranchCode());
-	        warehouseBranchVO.setActive(warehouseBranchDTO.isActive());
-	        warehouseBranchVO.setCancel(warehouseBranchDTO.isCancel());
-	        warehouseBranchVO.setOrgId(warehouseDTO.getOrgId());
-	        warehouseBranchVO.setWarehouseVO(warehouseVO);
-	        warehouseBranchVOs.add(warehouseBranchVO);
-	    }
-	    warehouseVO.setWarehouseBranchVO(warehouseBranchVOs);
-
 	    return warehouseVO;
 	}
 
@@ -1763,6 +1742,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			grnDocId="";
 		}
 		return grnDocId;
+	}
+
+	@Override
+	public List<WarehouseVO> getAllWarehouse(Long orgId) {
+		return warehouseRepo.findAllWarehouse(orgId);
 	}
 
 	

@@ -510,8 +510,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public Optional<CompanyVO> getCompanyById(Long companyid) {
-		return companyRepo.findById(companyid);
+	public List<CompanyVO> getCompanyById(Long companyid) {
+		return companyRepo.findByCompany(companyid);
 	}
 
 	@Override
@@ -578,11 +578,6 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		userVO.setActive(true);
 		userVO.setLoginStatus(false);
 		userVO.setCompanyVO(companyVO);
-//	        UserLoginRolesVO userLoginRolesVO=new UserLoginRolesVO();
-//	        userLoginRolesVO.setRole(userVO.getRole());
-//	        UserLoginBranchAccessibleVO userLoginBranchAccessibleVO=new UserLoginBranchAccessibleVO();
-//	        userLoginBranchAccessibleVO.setBranch(companyVO.getCompanyName());
-//	        userLoginBranchAccessibleVO.setBranchcode(companyVO.getCompanyCode());
 
 		try {
 			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
@@ -616,6 +611,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyVO.setUpdatedBy(companyDTO.getCreatedBy());
 		companyVO.setActive(companyDTO.isActive());
 		companyVO.setCancel(companyDTO.isCancel());
+		companyVO.setGst(companyDTO.getGst());
+		companyVO.setCeo(companyDTO.getCeo());
+		
 		try {
 			companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
 		} catch (Exception e) {
@@ -652,12 +650,15 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyVO.setEmail(companyDTO.getEmail());
 		companyVO.setWebSite(companyDTO.getWebSite());
 		companyVO.setNote(companyDTO.getNote());
-		companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
-		companyVO.setEmployeeName(companyDTO.getEmployeeName());
+//		companyVO.setEmployeeCode(companyDTO.getEmployeeCode());
+//		companyVO.setEmployeeName(companyDTO.getEmployeeName());
 		companyVO.setCreatedBy(companyDTO.getCreatedBy());
 		companyVO.setUpdatedBy(companyDTO.getUpdatedBy());
 		companyVO.setActive(companyDTO.isActive());
 		companyVO.setCancel(companyDTO.isCancel());
+		companyVO.setRole(companyDTO.getRole());
+		companyVO.setGst(companyDTO.getGst());
+		companyVO.setCeo(companyDTO.getCeo());
 	}
 
 	@Override

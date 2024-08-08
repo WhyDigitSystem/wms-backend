@@ -337,8 +337,8 @@ public class CommonMasterController extends BaseController {
 
 	// Region
 
-	@GetMapping("/getAllRegios")
-	public ResponseEntity<ResponseDTO> getAllRegios() {
+	@GetMapping("/getAllRegion")
+	public ResponseEntity<ResponseDTO> getAllRegion() {
 		String methodName = "getAllRegios()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -548,9 +548,9 @@ public class CommonMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		CompanyVO companyVO = null;
+		List<CompanyVO> companyVO=new ArrayList<CompanyVO>();
 		try {
-			companyVO = commonMasterService.getCompanyById(companyid).orElse(null);
+			companyVO = commonMasterService.getCompanyById(companyid);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

@@ -54,9 +54,9 @@ public class WarehouseVO {
 	private List<WarehouseClientVO> warehouseClientVO;
 	
 	
-	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
-	@JsonManagedReference
-	private List<WarehouseBranchVO> warehouseBranchVO;
+//	@OneToMany(mappedBy = "warehouseVO", cascade = CascadeType.ALL)
+//	@JsonManagedReference
+//	private List<WarehouseBranchVO> warehouseBranchVO;
 	
 	
 

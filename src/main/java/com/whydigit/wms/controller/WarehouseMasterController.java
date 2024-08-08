@@ -692,9 +692,36 @@ public class WarehouseMasterController extends BaseController {
 	}
 
 	// Warehouse
-
+	
 	@GetMapping("/warehouse")
-	public ResponseEntity<ResponseDTO> getAllWarehouse(@RequestParam Long orgid, @RequestParam String branch) {
+	public ResponseEntity<ResponseDTO> getAllWarehouse(@RequestParam Long orgId) {
+		String methodName = "getAllWarehouse()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<WarehouseVO> warehouseVO = new ArrayList<>();
+		try {
+			warehouseVO = warehouseMasterService.getAllWarehouse(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse information get successfully");
+			responseObjectsMap.put("warehouseVO", warehouseVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+
+	@GetMapping("/getAllWarehouseByOrgId")
+	public ResponseEntity<ResponseDTO> getAllWarehouseByOrgId(@RequestParam Long orgid, @RequestParam String branch) {
 		String methodName = "getAllWarehouse()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;

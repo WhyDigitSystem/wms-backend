@@ -133,6 +133,8 @@ public interface WarehouseMasterService {
 	Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode);
 
 	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
+	
+	List<WarehouseVO> getAllWarehouse(Long orgId);
 
 
 	// Warehouse Location
@@ -249,14 +251,7 @@ public interface WarehouseMasterService {
 	String getDocIdForGRN(String branch,String client,String finYear,String screenCode);
 
 	
+
 	
-	
-
-
-
-
-
-
-
 
 }

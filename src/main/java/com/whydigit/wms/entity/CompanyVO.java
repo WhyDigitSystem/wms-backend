@@ -74,6 +74,8 @@ public class CompanyVO {
 	@Column(name = "cancel")
 	private boolean cancel;
 	private int role;
+	private String ceo;
+	private String gst;
 	
 	
 	 @JsonGetter("active")
