@@ -20,6 +20,8 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	Set<Object[]> findGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode);
 
+	boolean existsByEntryNoAndOrgIdAndBranchCodeAndClient(String entryNo, Long orgId, String branchCode, String client);
+
 	
 
 }
