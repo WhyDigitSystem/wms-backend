@@ -199,26 +199,26 @@ public class InwardTransactionController extends BaseController {
 		return formattedParameters;
 	}
 
-	@PostMapping("/grn")
-	public ResponseEntity<ResponseDTO> createGrn(@RequestBody GrnDTO grnDTO) {
-		String methodName = "createGrn()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			GrnVO createdGrnVO = inwardTransactionService.createGrn(grnDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn created successfully");
-			responseObjectsMap.put("GrnVO", createdGrnVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, " Grn & GrnCode already Exist ", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@PostMapping("/grn")
+//	public ResponseEntity<ResponseDTO> createGrn(@RequestBody GrnDTO grnDTO) {
+//		String methodName = "createGrn()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		try {
+//			GrnVO createdGrnVO = inwardTransactionService.createGrn(grnDTO);
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn created successfully");
+//			responseObjectsMap.put("GrnVO", createdGrnVO);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//			responseDTO = createServiceResponseError(responseObjectsMap, " Grn & GrnCode already Exist ", errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 
 	@PutMapping("/grn")
 	public ResponseEntity<ResponseDTO> updateGrn(@RequestBody GrnVO grnVO) {

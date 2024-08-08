@@ -478,7 +478,7 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
  
-	@PostMapping("/createUpdateBranch")
+	@PutMapping("/createUpdateBranch")
 	public ResponseEntity<ResponseDTO> createUpdateBranch(@RequestBody BranchDTO branchDTO) {
 		String methodName = "createBranch()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);

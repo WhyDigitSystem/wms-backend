@@ -35,25 +35,25 @@ public class BuyerOrderVO {
 	private Long id;
 
 	@Column(name = "orderno")
-	private String orderno;
+	private String orderNo;
 	@Column(name = "docdate")
-	private LocalDate docdate;
+	private LocalDate docDate;
 	@Column(name = "orderdate")
-	private LocalDate orderdate;
+	private LocalDate orderDate;
 	@Column(name = "invoiceno")
-	private String invoiceno;
+	private String invoiceNo;
 	@Column(name = "refno")
-	private String refno;
+	private String refNo;
 	@Column(name = "invoicedate")
-	private LocalDate invoicedate;
+	private LocalDate invoiceDate;
 	@Column(name = "refdate")
-	private LocalDate refdate;
+	private LocalDate refDate;
 	@Column(name = "buyershortname")
-	private String buyershortname;
+	private String buyerShortName;
 	@Column(name = "currency")
 	private String currency;
 	@Column(name = "exrate")
-	private String exrate;
+	private String exRate;
 	@Column(name = "location")
 	private String location;
 	@Column(name = "billto")
@@ -61,25 +61,21 @@ public class BuyerOrderVO {
 	@Column(name = "tax")
 	private String tax;
 	@Column(name = "shipto")
-	private String shipto;
+	private String shipTo;
 	@Column(name = "remarks")
-	private String remarks;
-	@Column(unique = true)
-	private String dupchk;
+	private String reMarks;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "company")
 	private String company;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
 	@Column(name = "cancelremark")
-	private String cancelremark;
+	private String cancelRemark;
 	@Column(name = "screencode")
-	private String screencode;
+	private String screenCode;
 	
 
 	@JsonManagedReference

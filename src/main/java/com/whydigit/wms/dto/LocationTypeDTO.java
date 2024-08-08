@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LocationTypeDTO {
 	private Long id;
-	private String locationtype;
+	private String binType;
 	private String createdBy;
 	private Long orgId;
 	private boolean cancel;

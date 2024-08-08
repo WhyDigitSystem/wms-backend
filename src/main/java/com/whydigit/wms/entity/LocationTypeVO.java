@@ -27,7 +27,7 @@ public class LocationTypeVO {
 	@SequenceGenerator(name = "locationtypegen", sequenceName = "locationtypeseq", initialValue = 1000000001, allocationSize = 1)
 	private Long id;
 	@Column(name="locationtype")
-	private String locationType;
+	private String binType;
 	@Column(name="createdby")
 	private String createdBy;
 	@Column(name="updatedby")

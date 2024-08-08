@@ -30,22 +30,22 @@ public class BuyerOrderDetailsVO {
 	private Long id;
 
 	@Column(name = "partno")
-	private String partno;
+	private String partNo;
 	@Column(name = "partdesc")
-	private String partdesc;
+	private String partDesc;
 	@Column(name = "qty")
 	private String qty;
 	@Column(name = "batchno")
-	private String batchno;
+	private String batchNo;
 	@Column(name = "availqty")
-	private String availqty;
+	private String availQty;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "remarks")
-	private String remarks;
+	private String reMarks;
 	
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "buyer_order_id")
+	@JoinColumn(name = "buyerorderid")
 	private BuyerOrderVO buyerOrderVO;
 }
