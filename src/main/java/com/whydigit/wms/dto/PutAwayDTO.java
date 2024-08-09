@@ -3,6 +3,8 @@ package com.whydigit.wms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,27 +15,33 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class PutAwayDTO {
-	private LocalDate docdate;
-	private String grnno;
-	private LocalDate grndate;
-	private String entryno;
+
+	
+	private Long id;
+	private String grnNo;
+	private LocalDate grnDate;
+	private String entryNo;
 	private String core;
-	private String suppliershortname;
+	private String supplierShortName;
 	private String supplier;
-	private String modeodshipment;
+	private String modeOfShipment;
 	private String carrier;
-	private String locationtype;
+	private String binType;
 	private String status;
-	private String lotno;
-	private String enteredperson;
-	private String warehouse;
-	private String branch;
-	private String branhcode;
+	private String lotNo;
+	private String enteredPerson;
+
+	private Long orgId;
 	private String customer;
 	private String client;
-	private String orgId;
-	private String createdby;
+	private String finYear;
+	private String branch;
+	private String branchCode;
+	private String warehouse;
+	private String createdBy;
 	
+
+
 	List<PutAwayDetailsDTO> putAwayDetailsDTO;
 	
 }

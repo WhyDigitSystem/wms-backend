@@ -43,12 +43,11 @@ public class VasPutawayVO {
 	@Column(name = "status")
 	private String status;
 
-	
 	@Column(name = "screenname")
-	private String screenName = "VasPutaway";
+	private String screenName = "VASPUTAWAY";
 	@Column(name = "screencode")
 	private String screenCode ="VPW";
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;

@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.validation.Valid;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +30,7 @@ import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
+import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.LocationMovementVO;
@@ -47,8 +46,6 @@ public class InwardTransactionController extends BaseController {
 
 	@Autowired
 	InwardTransactionService inwardTransactionService;
-
-	
 
 //	@GetMapping("/getAllGatePassNumberByClientAndBranch")
 //	public ResponseEntity<ResponseDTO> getAllGatePassNumberByClientAndBranch(@RequestParam Long orgid,
@@ -155,79 +152,79 @@ public class InwardTransactionController extends BaseController {
 
 	// Grn
 
-		@GetMapping("/getAllGrn")
-		public ResponseEntity<ResponseDTO> getAllGrn(@RequestParam Long orgId, @RequestParam String finYear,
-				@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
-				@RequestParam String warehouse) {
-			String methodName = "getAllGrn()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<GrnVO> grnVO = new ArrayList<>();
-			try {
-				grnVO = inwardTransactionService.getAllGrn(orgId, finYear, branch, branchCode, client, warehouse);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn information get successfully");
-				responseObjectsMap.put("grnVO", grnVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed", errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
+	@GetMapping("/getAllGrn")
+	public ResponseEntity<ResponseDTO> getAllGrn(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String warehouse) {
+		String methodName = "getAllGrn()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<GrnVO> grnVO = new ArrayList<>();
+		try {
+			grnVO = inwardTransactionService.getAllGrn(orgId, finYear, branch, branchCode, client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn information get successfully");
+			responseObjectsMap.put("grnVO", grnVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
-		@GetMapping("/getGrnById")
-		public ResponseEntity<ResponseDTO> getGrnById(@RequestParam Long id) {
-			String methodName = "getGrnById()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			GrnVO grnVO = null;
-			try {
-				grnVO = inwardTransactionService.getGrnById(id);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isEmpty(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn found by ID");
-				responseObjectsMap.put("Grn", grnVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Grn not found for ID: " + id;
-				responseDTO = createServiceResponseError(responseObjectsMap, "Grn not found", errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
+	@GetMapping("/getGrnById")
+	public ResponseEntity<ResponseDTO> getGrnById(@RequestParam Long id) {
+		String methodName = "getGrnById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		GrnVO grnVO = null;
+		try {
+			grnVO = inwardTransactionService.getGrnById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-		
-		@PutMapping("/createUpdateGRN")
-		public ResponseEntity<ResponseDTO> createUpdateGRN(@RequestBody GrnDTO grnDTO) {
-		    String methodName = "createUpdateGRN()";
-		    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		    String errorMsg = null;
-		    Map<String, Object> responseObjectsMap = new HashMap<>();
-		    ResponseDTO responseDTO = null;
-		    try {
-		        Map<String, Object> grnVO = inwardTransactionService.createUpdateGrn(grnDTO);
-		        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, grnVO.get("message"));
-		        responseObjectsMap.put("grnVO", grnVO.get("grnVO"));
-		        responseDTO = createServiceResponse(responseObjectsMap);
-		    } catch (Exception e) {
-		        errorMsg = e.getMessage();
-		        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-		    }
-		    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		    return ResponseEntity.ok().body(responseDTO);
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn found by ID");
+			responseObjectsMap.put("Grn", grnVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Grn not found for ID: " + id;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Grn not found", errorMsg);
 		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/createUpdateGRN")
+	public ResponseEntity<ResponseDTO> createUpdateGRN(@RequestBody GrnDTO grnDTO) {
+		String methodName = "createUpdateGRN()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> grnVO = inwardTransactionService.createUpdateGrn(grnDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, grnVO.get("message"));
+			responseObjectsMap.put("grnVO", grnVO.get("grnVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	// GatePassIn
 
@@ -370,8 +367,8 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	// PutAway
-	@GetMapping("/putaway")
-	public ResponseEntity<ResponseDTO> getAllPutAway() {
+	@GetMapping("/getAllPutAway")
+	public ResponseEntity<ResponseDTO> getAllPutAway(@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client,@RequestParam String warehouse) {
 		String methodName = "getAllPutAway()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -379,48 +376,82 @@ public class InwardTransactionController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<PutAwayVO> putAwayVO = new ArrayList<>();
 		try {
-			putAwayVO = inwardTransactionService.getAllPutAway();
+			putAwayVO = inwardTransactionService.getAllPutAway(orgId,finYear,branch,branchCode,client,warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway information get successfully");
-			responseObjectsMap.put("putAwayVO", putAwayVO);
+			responseObjectsMap.put("PutAwayVO", putAwayVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "PutAway information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "PutAway information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getPutAwayById")
+	public ResponseEntity<ResponseDTO> getPutAwayById(@RequestParam(required = false) Long id) {
+        String methodName = "getPutAwayById()";
+        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+        String errorMsg = null;
+        Map<String, Object> responseObjectsMap = new HashMap<>();
+        ResponseDTO responseDTO = null;
+        PutAwayVO putAwayVO = new PutAwayVO();
 
-	@GetMapping("/putaway/{id}")
-	public ResponseEntity<ResponseDTO> getPutAwayById(@PathVariable Long id) {
-		String methodName = "getPutAwayById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		PutAwayVO putAwayVO = null;
-		try {
-			putAwayVO = inwardTransactionService.getPutAwayById(id).orElse(null);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway found by ID");
-			responseObjectsMap.put("PutAway", putAwayVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "PutAway not found for ID: " + id;
-			responseDTO = createServiceResponseError(responseObjectsMap, "PutAway not found", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+        try {
+        	putAwayVO = inwardTransactionService.getPutAwayById(id);
+            if (putAwayVO != null) {
+                responseObjectsMap.put("putAwayVO", putAwayVO);
+                responseDTO = createServiceResponseMsg(responseObjectsMap, " PutAway information retrieved successfully.");
+            } else {
+                responseDTO = createServiceResponseError(responseObjectsMap, " PutAway information not found.", errorMsg);
+            }
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
+            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+            responseDTO = createServiceResponseError(responseObjectsMap, " PutAway information retrieval failed.", errorMsg);
+        }
+
+        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+	
+	
+	@GetMapping("/getPutAwayDocId")
+    public ResponseEntity<ResponseDTO> getPutAwayDocId(
+    		@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client) {
+        
+        String methodName = "getPutAwayDocId()";
+        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+        String errorMsg = null;
+        Map<String, Object> responseObjectsMap = new HashMap<>();
+        ResponseDTO responseDTO = null;
+        String mapp="";
+        
+        try {
+            mapp = inwardTransactionService.getPutAwayDocId(orgId,finYear,branch, branchCode, client);
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
+            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+        }
+        
+        if (StringUtils.isBlank(errorMsg)) {
+            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "All PutAway information retrieved successfully");
+            responseObjectsMap.put("PutAwayDocId", mapp);
+            responseDTO = createServiceResponse(responseObjectsMap);
+        } else {
+            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PutAway information", errorMsg);
+        }
+        
+        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+	
+	
+	
 
 	private List<Map<String, String>> formatParameterr(Set<Object[]> putaway) {
 		List<Map<String, String>> formattedParameters = new ArrayList<>();
@@ -447,27 +478,27 @@ public class InwardTransactionController extends BaseController {
 		return obj != null ? obj.toString() : " ";
 	}
 
-	@PostMapping("/putaway")
-	public ResponseEntity<ResponseDTO> createPutAway(@RequestBody PutAwayDTO putAwayDTO) {
-		String methodName = "createPutAway()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			PutAwayVO createdPutAwayVO = inwardTransactionService.createPutAway(putAwayDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway created successfully");
-			responseObjectsMap.put("PutAwayVO", createdPutAwayVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, " PutAway & PutAwayCode already Exist ",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@PostMapping("/putaway")
+//	public ResponseEntity<ResponseDTO> createPutAway(@RequestBody PutAwayDTO putAwayDTO) {
+//		String methodName = "createPutAway()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		try {
+//			PutAwayVO createdPutAwayVO = inwardTransactionService.createPutAway(putAwayDTO);
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway created successfully");
+//			responseObjectsMap.put("PutAwayVO", createdPutAwayVO);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//			responseDTO = createServiceResponseError(responseObjectsMap, " PutAway & PutAwayCode already Exist ",
+//					errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 
 	@PutMapping("/putaway")
 	public ResponseEntity<ResponseDTO> updatePutAway(@RequestBody PutAwayVO putAwayVO) {
@@ -496,8 +527,6 @@ public class InwardTransactionController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 
 	}
-
-
 
 //	SalesReturn
 	@GetMapping("/getAllSalesReturnByOrgId")
@@ -552,36 +581,22 @@ public class InwardTransactionController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/updateCreateSalesReturn")
-	public ResponseEntity<ResponseDTO> updateCreateSalesReturn(@Valid @RequestBody SalesReturnDTO salesReturnDTO) {
-		String methodName = "updateCreateSalesReturn()";
-
+	@PutMapping("/createUpdateSalesReturn")
+	public ResponseEntity<ResponseDTO> createUpdateSalesReturn(@RequestBody SalesReturnDTO salesReturnDTO) {
+		String methodName = "createUpdateSalesReturn()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-
 		try {
-			SalesReturnVO salesReturnVO = inwardTransactionService.updateCreateSalesReturn(salesReturnDTO);
-			boolean isUpdate = salesReturnDTO.getId() != null;
-
-			if (salesReturnVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						isUpdate ? "SalesReturn updated successfully" : "SalesReturn created successfully");
-				responseObjectsMap.put("salesReturnVO", salesReturnVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = isUpdate ? "SalesReturn not found for ID: " + salesReturnDTO.getId()
-						: "SalesReturn creation failed";
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						isUpdate ? "SalesReturn update failed" : "SalesReturn creation failed", errorMsg);
-			}
+			Map<String, Object> salesReturnVO = inwardTransactionService.createUpdateSalesReturn(salesReturnDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, salesReturnVO.get("message"));
+			responseObjectsMap.put("salesReturnVO", salesReturnVO.get("salesReturnVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			boolean isUpdate = salesReturnDTO.getId() != null;
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					isUpdate ? "SalesReturn update failed" : "SalesReturn creation failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -614,6 +629,38 @@ public class InwardTransactionController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve SalesReturnFillGridDetails information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getSalesReturnDocId")
+	public ResponseEntity<ResponseDTO> getSalesReturnDocId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
+
+		String methodName = "getSalesReturnDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = inwardTransactionService.getSalesReturnDocId(orgId, finYear, branch, branchCode, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"SalesReturn Docid information retrieved successfully");
+			responseObjectsMap.put("SalesReturnDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve SalesReturn Docid information", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -673,40 +720,165 @@ public class InwardTransactionController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/updateCreateLocationMovement")
-	public ResponseEntity<ResponseDTO> updateCreateLocationMovement(
-			@Valid @RequestBody LocationMovementDTO locationMovementDTO) {
-		String methodName = "updateCreateLocationMovement()";
-
+	@PutMapping("/createUpdateLocationMovement")
+	public ResponseEntity<ResponseDTO> createUpdateLocationMovement(
+			@RequestBody LocationMovementDTO locationMovementDTO) {
+		String methodName = "createUpdateLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-
 		try {
-			LocationMovementVO locationMovementVO = inwardTransactionService
-					.updateCreateLocationMovement(locationMovementDTO);
-			boolean isUpdate = locationMovementDTO.getId() != null;
-
-			if (locationMovementVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						isUpdate ? "LocationMovement updated successfully" : "LocationMovement created successfully");
-				responseObjectsMap.put("locationMovementVO", locationMovementVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = isUpdate ? "LocationMovement not found for ID: " + locationMovementDTO.getId()
-						: "LocationMovement creation failed";
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						isUpdate ? "LocationMovement update failed" : "LocationMovement creation failed", errorMsg);
-			}
+			Map<String, Object> locationMovementVO = inwardTransactionService
+					.createUpdateLocationMovement(locationMovementDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, locationMovementVO.get("message"));
+			responseObjectsMap.put("locationMovementVO", locationMovementVO.get("locationMovementVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			boolean isUpdate = locationMovementDTO.getId() != null;
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					isUpdate ? "LocationMovement update failed" : "LocationMovement creation failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	@GetMapping("/getBinFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getBinFromStockForLocationMovement(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+
+		String methodName = "getBinFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = inwardTransactionService.getBinFromStockForLocationMovement(orgId, finYear, branch, branchCode,
+					client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All Bin from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve Bin from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getPartNoAndPartDescFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getPartNoAndPartDescFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin) {
+
+		String methodName = "getPartNoAndPartDescFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = inwardTransactionService.getPartNoAndPartDescFromStockForLocationMovement(orgId, finYear, branch,
+					branchCode, client, bin);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All PartNo and PartDesc from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve PartNo and PartDesc from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
+			@RequestParam(required = false) String sku) {
+
+		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = inwardTransactionService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId,
+					finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All GrnNo and BatchNo from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve GrnNo and BatchNo from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getLocationMovementDocId")
+	public ResponseEntity<ResponseDTO> getLocationMovementDocId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
+
+		String methodName = "getLocationMovementDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = inwardTransactionService.getLocationMovementDocId(orgId, finYear, branch, branchCode, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"LocationMovement Docid information retrieved successfully");
+			responseObjectsMap.put("locationMovementDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve LocationMovement Docid information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

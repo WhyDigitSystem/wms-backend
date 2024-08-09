@@ -1,5 +1,7 @@
 package com.whydigit.wms.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,5 +20,5 @@ public class CodeConversionDTO {
 	private String warehouse;
 	private String createdBy;
 
-	
+	List<CodeConversionDetailsDTO> CodeConversionDetailsDTO;
 }
