@@ -76,7 +76,7 @@ public interface InwardTransactionService {
 
 	SalesReturnVO getAllSalesReturnById(Long id);
 
-	SalesReturnVO updateCreateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
+	Map<String, Object> createUpdateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
 
 	List<Map<String, Object>> getSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
 
@@ -86,6 +86,6 @@ public interface InwardTransactionService {
 
 	LocationMovementVO getAllLocationMovementById(Long id);
 
-	LocationMovementVO updateCreateLocationMovement(@Valid LocationMovementDTO locationMovementDTO) throws ApplicationException;
+	Map<String, Object> createUpdateLocationMovement(@Valid LocationMovementDTO locationMovementDTO) throws ApplicationException;
 
 }

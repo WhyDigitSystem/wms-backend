@@ -69,6 +69,12 @@ public class LocationMovementVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze = true;
+	@Column(name="sku")
+	private String sku;
+	@Column(name = "grndate")
+	private LocalDate grnDate = LocalDate.now();
+	@Column(name="core")
+	private String core;
 	
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)

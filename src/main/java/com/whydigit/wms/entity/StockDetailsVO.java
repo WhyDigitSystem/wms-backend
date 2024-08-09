@@ -33,7 +33,7 @@ public class StockDetailsVO {
 	@Column(name = "cancel")
 	private String cancel;
 	@Column(name = "orgid")
-	private String orgId;
+	private Long orgId;
 	@Column(name = "createdby")
 	private String createdBy;
 	@Column(name = "cancelremarks")
@@ -98,8 +98,6 @@ public class StockDetailsVO {
 	private String cellType;
 	@Column(name = "core")
 	private String core;
-	@Column(name = "toty")
-	private int toQty;
 	@Column(name = "bin")
 	private String bin;
 	@Column(name = "warehouse")
@@ -127,7 +125,7 @@ public class StockDetailsVO {
 	@Column(name = "shortqty")
 	private int shortQty;
 	@Column(name = "qcflag")
-	private String qcFlag;
+	private boolean qcFlag;
 	@Column(name = "clientcode")
 	private String clientCode;
 	@Column(name = "pamount")
