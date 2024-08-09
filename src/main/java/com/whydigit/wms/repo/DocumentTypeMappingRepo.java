@@ -1,5 +1,6 @@
 package com.whydigit.wms.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,5 +33,7 @@ public interface DocumentTypeMappingRepo extends JpaRepository<DocumentTypeMappi
 			+ "    ) and orgid=?1\r\n"
 			+ ") b")
 	Set<Object[]> getPendingDoctypeMapping(Long orgId, String branch, String branchCode, String finYear, String finYearIdentifier);
+
+	List<DocumentTypeMappingVO> findByOrgId(Long orgId);
 
 }

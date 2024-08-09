@@ -29,6 +29,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
@@ -252,6 +253,6 @@ public interface WarehouseMasterService {
 	
 	Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)throws ApplicationException;
 	
-	String getDocIdForGRN(String branch,String client,String finYear,String screenCode);
+	List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId);
 
 }
