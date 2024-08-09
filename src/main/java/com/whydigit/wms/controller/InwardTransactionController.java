@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
-import com.whydigit.wms.dto.DocumentTypeMappingDTO;
 import com.whydigit.wms.dto.GatePassInDTO;
+import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.ResponseDTO;
@@ -36,7 +36,6 @@ import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.PutAwayVO;
-
 import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.service.InwardTransactionService;
 
