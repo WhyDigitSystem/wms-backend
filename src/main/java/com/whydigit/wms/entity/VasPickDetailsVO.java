@@ -25,8 +25,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VasPickDetailsVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspicgen")
-	@SequenceGenerator(name = "vaspicgen", sequenceName = "vaspicseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspickdetailsgen")
+	@SequenceGenerator(name = "vaspickdetailsgen", sequenceName = "vaspickdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "vaspicdetailsid")
 	private Long id;
 	@Column(name = "picbin")
