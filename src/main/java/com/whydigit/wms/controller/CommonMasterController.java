@@ -28,6 +28,7 @@ import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.CurrencyDTO;
+import com.whydigit.wms.dto.DepartmentDTO;
 import com.whydigit.wms.dto.DesignationDTO;
 import com.whydigit.wms.dto.FinancialYearDTO;
 import com.whydigit.wms.dto.RegionDTO;
@@ -38,6 +39,7 @@ import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
+import com.whydigit.wms.entity.DepartmentVO;
 import com.whydigit.wms.entity.DesignationVO;
 import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
@@ -1104,6 +1106,81 @@ public class CommonMasterController extends BaseController {
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "FInYear information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	//DEPARTMENT
+	
+	@PutMapping("/createUpdateDepartment")
+	public ResponseEntity<ResponseDTO> createUpdateDepartment(@RequestBody DepartmentDTO departmentDTO) {
+		String methodName = "createUpdateDepartment()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> departmentVO = commonMasterService.createUpdateDepartment(departmentDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, departmentVO.get("messages")); 
+			responseObjectsMap.put("departmentVO", departmentVO.get("departmentVO")); 
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllDepartmentByOrgId")
+	public ResponseEntity<ResponseDTO> getAllDepartmentByOrgId(Long orgId) {
+		String methodName = "getAllDepartmentByOrgId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DepartmentVO> departmentVOs = new ArrayList<>();
+		try {
+			departmentVOs = commonMasterService.getAllDepartmentByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Department information get successfully By OrgId");
+			responseObjectsMap.put("departmentVOs", departmentVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Department information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllDepartmentById")
+	public ResponseEntity<ResponseDTO> getAllDepartmentById(Long id) {
+		String methodName = "getAllDepartmentById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DepartmentVO> departmentVOs = new ArrayList<>();
+		try {
+			departmentVOs = commonMasterService.getAllDepartmentById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Department information get successfully By Id");
+			responseObjectsMap.put("departmentVOs", departmentVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Department information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

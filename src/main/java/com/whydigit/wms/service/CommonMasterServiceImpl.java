@@ -20,6 +20,7 @@ import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.CurrencyDTO;
+import com.whydigit.wms.dto.DepartmentDTO;
 import com.whydigit.wms.dto.DesignationDTO;
 import com.whydigit.wms.dto.FinancialYearDTO;
 import com.whydigit.wms.dto.RegionDTO;
@@ -30,6 +31,7 @@ import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
+import com.whydigit.wms.entity.DepartmentVO;
 import com.whydigit.wms.entity.DesignationVO;
 import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
@@ -45,6 +47,7 @@ import com.whydigit.wms.repo.CompanyRepo;
 import com.whydigit.wms.repo.CountryRepository;
 import com.whydigit.wms.repo.CurrencyRepo;
 import com.whydigit.wms.repo.CustomerRepo;
+import com.whydigit.wms.repo.DepartmentRepo;
 import com.whydigit.wms.repo.DesignationRepo;
 import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.FinancialYearRepo;
@@ -115,6 +118,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	DesignationRepo designationRepo;
+	
+	@Autowired
+	DepartmentRepo departmentRepo;
 
 	// Country
 
@@ -1022,6 +1028,81 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	public Optional<FinancialYearVO> getAllFInYearById(Long id) {
 		return financialYearRepo.findById(id);
+	}
+	
+	//Department
+
+	@Override
+	public Map<String, Object> createUpdateDepartment(DepartmentDTO departmentDTO) throws ApplicationException {
+		DepartmentVO departmentVO;
+		String message=null;
+		if(ObjectUtils.isEmpty(departmentDTO.getId())) {
+			
+			if(departmentRepo.existsByCodeAndOrgId(departmentDTO.getCode(),departmentDTO.getOrgId())) {
+				String errorMessage=String.format("ThiS DeptCode:%s Already Exists This Organization .", departmentDTO.getCode());
+				throw new ApplicationException(errorMessage);
+			}
+			if(departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),departmentDTO.getOrgId())) {
+				String errorMessage=String.format("ThiS DepartmentName:%s Already Exists This Organization .", departmentDTO.getDepartmentName());
+				throw new ApplicationException(errorMessage);
+			}
+			
+			departmentVO=new DepartmentVO();
+			departmentVO.setCreatedBy(departmentDTO.getCreatedBy());
+			departmentVO.setUpdatedBy(departmentDTO.getCreatedBy());
+			message="Department Creation Successfully";
+		}else {
+			departmentVO=departmentRepo.findById(departmentDTO.getId()).orElseThrow(()->new ApplicationException("This Id Is Not Found Any Information,Invalid Id . "+ departmentDTO.getId()));
+			
+			if(! departmentVO.getCode().equalsIgnoreCase(departmentDTO.getCode())) {
+
+				if(departmentRepo.existsByCodeAndOrgId(departmentDTO.getCode(),departmentDTO.getOrgId())) {
+					String errorMessage=String.format("ThiS DeptCode:%s Already Exists This Organization .", departmentDTO.getCode());
+					throw new ApplicationException(errorMessage);
+				}
+				departmentVO.setCode(departmentDTO.getCode());
+			}
+			if(! departmentVO.getDepartmentName().equalsIgnoreCase(departmentDTO.getDepartmentName())) {
+				if(departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),departmentDTO.getOrgId())) {
+					String errorMessage=String.format("ThiS DepartmentName:%s Already Exists This Organization .", departmentDTO.getDepartmentName());
+					throw new ApplicationException(errorMessage);
+				}
+				if(departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),departmentDTO.getOrgId())) {
+					String errorMessage=String.format("ThiS DepartmentName:%s Already Exists This Organization .", departmentDTO.getDepartmentName());
+					throw new ApplicationException(errorMessage);
+				}
+				departmentVO.setDepartmentName(departmentDTO.getDepartmentName());
+			}
+			
+			departmentVO.setUpdatedBy(departmentDTO.getCreatedBy());
+			message="Department Updation Successfully";
+		}
+		
+		getDepartmentVOFromDepartmentDTO(departmentVO,departmentDTO);
+		departmentRepo.save(departmentVO);
+		Map<String, Object> response=new HashMap<String, Object>();
+		response.put("message", message);
+		response.put("departmentVO", departmentVO);
+		return response;
+		
+	}
+
+	private void getDepartmentVOFromDepartmentDTO(DepartmentVO departmentVO, DepartmentDTO departmentDTO) {
+		departmentVO.setDepartmentName(departmentDTO.getDepartmentName());
+		departmentVO.setCode(departmentDTO.getCode());
+		departmentVO.setActive(departmentDTO.isActive());
+		departmentVO.setOrgId(departmentDTO.getOrgId());
+		departmentVO.setCancel(departmentDTO.isCancel());
+	}
+
+	@Override
+	public List<DepartmentVO> getAllDepartmentByOrgId(Long orgId) {
+		return departmentRepo.findDepartmentByOrgId(orgId);
+	}
+
+	@Override
+	public List<DepartmentVO> getAllDepartmentById(Long id) {
+		return departmentRepo.findDepartmentById(id);
 	}
 
 }
