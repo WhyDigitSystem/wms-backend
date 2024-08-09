@@ -66,7 +66,7 @@ public class HandlingStockInVO {
 	@Column(name = "rate")
 	private String rate;
 	@Column(name = "amount")
-	private String amount;
+	private double amount;
 	@Column(name = "qcflag")
 	private String qcflag;
 	@Column(name = "remarks")

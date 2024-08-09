@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -33,75 +34,67 @@ public class GrnDetailsVO {
 	private Long id;
 
 	@Column(name = "qrcode")
-	private String qrcode;
+	private String qrCode;
 	@Column(name = "lrnohawbno")
-	private String lrnohawbno;
+	private String lrNoHawbNo;
 	@Column(name = "invoiceno")
-	private String invoiceno;
+	private String invoiceNo;
 	@Column(name = "invoicedate")
-	private LocalDate invoicedate;
+	private LocalDate invoiceDate;
 	@Column(name = "partno")
-	private String partno;
+	private String partNo;
 	@Column(name = "partdesc")
-	private String partdesc;
-	@Column(name = "locationtype")
-	private String locationtype;
+	private String partDesc;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "rate")
 	private String rate;
 	@Column(name = "amount")
-	private String amount;
+	private double amount;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "invqty")
-	private int invqty;
+	private int invQty;
 	@Column(name = "recqty")
-	private int recqty;
+	private int recQty;
 	@Column(name = "shortqty")
-	private int shortqty;
+	private int shortQty;
 	@Column(name = "damageqty")
-	private int damageqty;
+	private int damageQty;
 	@Column(name = "substockqty")
-	private int substockqty;
+	private int subStockQty;
 	@Column(name = "batchqty")
-	private int batchqty;
-	@Column(name = "palletqty")
-	private int palletqty;
-	@Column(name = "noofpallet")
-	private String noofpallet;
+	private int batchQty;
+	@Column(name = "binqty")
+	private int binQty;
+	@Column(name = "nofbins")
+	private int noOfBins;
 	@Column(name = "pkgs")
-	private String pkgs;
+	private int pkgs;
 	@Column(name = "weight")
 	private String weight;
 	@Column(name = "warehouse")
 	private String warehouse;
 	@Column(name = "batchno")
-	private String batchno;
+	private String batchNo;
 	@Column(name = "batchdt")
-	private LocalDate batchdt;
+	private LocalDate batchDt;
 	@Column(name = "qcflag")
-	private String qcflag;
+	private String qcFlag;
 	@Column(name = "shipmentno")
-	private String shipmentno;
+	private String shipmentNo;
 	@Column(name = "sqty")
-	private int sqty;
+	private int sQty;
 	@Column(name = "grnqty")
-	private int grnqty;
-	@Column(name = "batchpalletno")
-	private String batchpalletno;
-
+	private int grnQty;
 	@Column(name = "expdate")
-	private LocalDate expdate;
-
-
+	private LocalDate expDate;
 	@Column(name = "mrp")
-	private String mrp;
-
-	@Column(name = "cancelremarks")
-	private String cancelremark;
-
+	private double mrp;
+	
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "grn_id") // Specify the name of the foreign key column
+	@JoinColumn(name = "grnid") // Specify the name of the foreign key column
 	private GrnVO grnVO;
 
 }
