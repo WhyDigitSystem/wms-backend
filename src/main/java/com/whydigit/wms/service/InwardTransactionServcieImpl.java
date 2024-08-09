@@ -1,6 +1,5 @@
 package com.whydigit.wms.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -715,7 +713,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 			message = "SalesReturn  Created Successfully";
 		}
 
-	 salesReturnRepo.save(salesReturnVO);
+		salesReturnRepo.save(salesReturnVO);
 
 		Map<String, Object> response = new HashMap<>();
 		response.put("salesReturnVO", salesReturnVO);
@@ -888,6 +886,8 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 				stockDetailsVOFrom.setRefNo(savedLocationMovementVO.getDocId());
 				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
 				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+				stockDetailsVOFrom.setOrgId(savedLocationMovementVO.getOrgId());
+				stockDetailsVOFrom.setSku(savedLocationMovementVO.getSku());
 				stockDetailsVOFrom.setRefDate(savedLocationMovementVO.getDocDate());
 				stockDetailsVOFrom.setCreatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOFrom.setBranchCode(savedLocationMovementVO.getBranchCode());
@@ -913,6 +913,8 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 				stockDetailsVOTo.setStatus(detailsVO.getStatus());
 				stockDetailsVOTo.setSQty(detailsVO.getToQty()); // Positive quantity
 				stockDetailsVOTo.setRefNo(savedLocationMovementVO.getDocId());
+				stockDetailsVOTo.setSku(savedLocationMovementVO.getSku());
+				stockDetailsVOTo.setOrgId(savedLocationMovementVO.getOrgId());
 				stockDetailsVOTo.setRefDate(savedLocationMovementVO.getDocDate());
 				stockDetailsVOTo.setCreatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOTo.setBranchCode(savedLocationMovementVO.getBranchCode());
@@ -965,7 +967,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 			locationMovementDetailsVO.setToBin(locationMovementDetailsDTO.getToBin());
 			locationMovementDetailsVO.setFromQty(locationMovementDetailsDTO.getFromQty());
 			locationMovementDetailsVO.setToQty(locationMovementDetailsDTO.getToQty());
-			locationMovementDetailsVO.setRemainingQty(locationMovementDetailsDTO.getRemainingQty());
+			locationMovementDetailsVO.setRemainingQty(locationMovementDetailsDTO.getFromQty() - locationMovementDetailsDTO.getToQty());
 			locationMovementDetailsVO.setGrnDate(locationMovementDetailsDTO.getGrnDate());
 			locationMovementDetailsVO.setSku(locationMovementDetailsDTO.getSku());
 			locationMovementDetailsVO.setBinType(locationMovementDetailsDTO.getBinType());
@@ -979,5 +981,69 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 			locationMovementDetailsVOs.add(locationMovementDetailsVO);
 		}
 		locationMovementVO.setLocationMovementDetailsVO(locationMovementDetailsVOs);
+	}
+
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String finYear, String branch,
+			String branchCode, String client) {
+
+		Set<Object[]> result = locationMovementRepo.findBinFromStockForLocationMovement(orgId, finYear, branch,
+				branchCode, client);
+		return getMovementResult(result);
+	}
+
+	private List<Map<String, Object>> getMovementResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear,
+			String branch, String branchCode, String client, String bin) {
+
+		Set<Object[]> result = locationMovementRepo.findPartNoAndPartDescFromStockForLocationMovement(orgId, finYear,
+				branch, branchCode, client, bin);
+		return getPartResult(result);
+	}
+
+	private List<Map<String, Object>> getPartResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("sku", fs[2] != null ? fs[2].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Transactional
+	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear,
+			String branch, String branchCode, String client, String bin,String partNo,String partDesc,String sku) {
+
+		Set<Object[]> result = locationMovementRepo.findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, finYear,
+				branch, branchCode, client, bin, partNo,partDesc,sku);
+		return getGrnResult(result);
+	}
+
+	private List<Map<String, Object>> getGrnResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
+			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
+			part.put("LotNo", fs[3] != null ? fs[3].toString() : "");
+			details1.add(part);
+		}
+		return details1;
 	}
 }

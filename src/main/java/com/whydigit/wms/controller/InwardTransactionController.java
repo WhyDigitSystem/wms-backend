@@ -547,16 +547,14 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	@PutMapping("/createUpdateSalesReturn")
-	public ResponseEntity<ResponseDTO> createUpdateSalesReturn(
-			@RequestBody SalesReturnDTO salesReturnDTO) {
+	public ResponseEntity<ResponseDTO> createUpdateSalesReturn(@RequestBody SalesReturnDTO salesReturnDTO) {
 		String methodName = "createUpdateSalesReturn()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			Map<String, Object> salesReturnVO = inwardTransactionService
-					.createUpdateSalesReturn(salesReturnDTO);
+			Map<String, Object> salesReturnVO = inwardTransactionService.createUpdateSalesReturn(salesReturnDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, salesReturnVO.get("message"));
 			responseObjectsMap.put("salesReturnVO", salesReturnVO.get("salesReturnVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -674,6 +672,112 @@ public class InwardTransactionController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getBinFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getBinFromStockForLocationMovement(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+
+		String methodName = "getBinFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = inwardTransactionService.getBinFromStockForLocationMovement(orgId, finYear, branch, branchCode,
+					client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All Bin from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve Bin from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getPartNoAndPartDescFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getPartNoAndPartDescFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin) {
+
+		String methodName = "getPartNoAndPartDescFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = inwardTransactionService.getPartNoAndPartDescFromStockForLocationMovement(orgId, finYear, branch,
+					branchCode, client, bin);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All PartNo and PartDesc from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve PartNo and PartDesc from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
+			@RequestParam(required = false) String sku) {
+
+		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = inwardTransactionService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, finYear, branch,
+					branchCode, client, bin,partNo,partDesc,sku);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All GrnNo and BatchNo from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve GrnNo and BatchNo from Stock information", errorMsg);
+		}
+
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
