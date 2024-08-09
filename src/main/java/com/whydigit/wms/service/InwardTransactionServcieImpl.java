@@ -374,6 +374,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	        totalGrnQty=totalGrnQty+grnQty;
 	        totalNoOfPkgs=totalNoOfPkgs+grnDetailsDTO.getPkgs();
 	        totalAmount=totalAmount+grnDetailsDTO.getAmount();
+	        grnDetailsVO.setGrnVO(grnVO);     
 	        grnDetailsVOs.add(grnDetailsVO);
 	    }
 	    grnVO.setGrnDetailsVO(grnDetailsVOs);

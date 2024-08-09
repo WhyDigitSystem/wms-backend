@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,55 +18,30 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "putaway")
+@Table(name = "vaspick")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PutAwayVO {
-
+public class VasPickVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "putawaygen")
-	@SequenceGenerator(name = "putawaygen", sequenceName = "putawayseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "putawayid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspickgen")
+	@SequenceGenerator(name = "vaspickgen", sequenceName = "vaspickseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "vaspicid")
 	private Long id;
-	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
-	@Column(name = "grnno")
-	private String grnNo;
-	@Column(name = "docid",unique = true)
-	private String docId;
-	@Column(name = "grndate")
-	private LocalDate grnDate;
-	@Column(name = "entryno")
-	private String entryNo;
-	@Column(name = "core")
-	private String core;
-	@Column(name = "suppliershortname")
-	private String supplierShortName;
-	@Column(name = "supplier")
-	private String supplier;
-	@Column(name = "modeofshipment")
-	private String modeOfShipment;
-	@Column(name = "carrier")
-	private String carrier;
-	@Column(name = "bintype")
-	private String binType;
-	@Column(name = "status")
-	private String status;
-	@Column(name = "lotno")
-	private String lotNo;
-	@Column(name = "enteredperson")
-	private String enteredPerson;
+	@Column(name = "picbin")
+	private String picBin;
 	@Column(name = "screenname")
-	private String screenName = "PUTAWAY";
+	private String screenName;
 	@Column(name = "screencode")
-	private String screenCode ="PC";
+	private String screenCode;
+	@Column(name = "docdate")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "docid")
+	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -93,17 +67,25 @@ public class PutAwayVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze = false;
+	private boolean freeze;
 	
+	
+	@OneToMany(mappedBy ="vasPickVO",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<VasPickDetailsVO> vasPickDetailsVO;
+	
+
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";
 	}
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "putAwayVO", cascade = CascadeType.ALL)
-	private List<PutAwayDetailsVO> putAwayDetailsVO;
-	
-	@Embedded
+
+	// Optionally, if you want to control serialization for 'cancel' field similarly
+	@JsonGetter("cancel")
+	public String getCancel() {
+		return cancel ? "T" : "F";
+	}
+
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }

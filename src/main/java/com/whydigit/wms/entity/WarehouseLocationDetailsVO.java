@@ -32,23 +32,23 @@ public class WarehouseLocationDetailsVO {
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "locatintype")
-	private String locationtype;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "rowno")
-	private String rowno;
+	private String rowNo;
 	@Column(name = "level")
 	private String level;
 	@Column(name = "cellfrom")
-	private String cellfrom;
+	private String cellFrom;
 	@Column(name = "cellto")
-	private String cellto;
+	private String cellTo;
 	@Column(name = "bin")
 	private String bin;
 	@Column(name = "bincategory")
-	private String bincategory;
+	private String binCategory;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "core")
