@@ -810,6 +810,14 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		}
 		return details1;
 	}
+	
+	@Override
+	@Transactional
+	public String getSalesReturnDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+		String ScreenCode = "SR";
+		String result = salesReturnRepo.getSalesReturnDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
 
 //	LocationMovement
 	@Override
@@ -1046,4 +1054,13 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		}
 		return details1;
 	}
+	
+	@Override
+	@Transactional
+	public String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+		String ScreenCode = "LM";
+		String result = salesReturnRepo.getSalesReturnDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
+
 }

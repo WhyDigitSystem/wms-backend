@@ -80,6 +80,10 @@ public interface InwardTransactionService {
 	Map<String, Object> createUpdateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
 
 	List<Map<String, Object>> getSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
+	
+	String getSalesReturnDocId(Long orgId, String finYear, String branch, String branchCode,
+			String client);
+
 
 //	LocationMovement
 	List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode,
@@ -98,4 +102,7 @@ public interface InwardTransactionService {
 	
 	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin,String partNo,String partDesc,String sku);
+	
+	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode,
+			String client);
 }

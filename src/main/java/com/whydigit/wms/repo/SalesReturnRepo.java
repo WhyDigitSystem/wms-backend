@@ -22,5 +22,5 @@ public interface SalesReturnRepo extends JpaRepository<SalesReturnVO, Long> {
 
 	@Query(nativeQuery = true,value = "select concat(prefixfield,lpad(lastno,6,'0')) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client =?4 and screencode=?5")
 	String getSalesReturnDocId(Long orgId,String finYear, String branchCode, String client, String screenCode);
-
+	
 }
