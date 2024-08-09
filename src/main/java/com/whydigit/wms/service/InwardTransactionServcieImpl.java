@@ -19,13 +19,10 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GatePassInDetailsDTO;
-
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.GrnDetailsDTO;
-
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.LocationMovementDetailsDTO;
-
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.dto.SalesReturnDetailsDTO;
@@ -33,6 +30,7 @@ import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.GatePassInDetailsVO;
 import com.whydigit.wms.entity.GatePassInVO;
+import com.whydigit.wms.entity.GrnDetailsVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
 import com.whydigit.wms.entity.LocationMovementDetailsVO;
@@ -109,14 +107,12 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	@Autowired
 	LocationMovementDetailsRepo locationMovementDetailsRepo;
 
-	@Autowired
-	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
 	// Grn
 	
 	@Override
 	public String getGRNdocid(Long orgId, String finYear, String branchCode, String client, String screencode) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -971,4 +967,5 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
 		locationMovementVO.setWarehouse(locationMovementDTO.getWarehouse());
 	}
+
 }
