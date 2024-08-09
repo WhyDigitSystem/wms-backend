@@ -9,16 +9,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CodeConversionDTO {
-    private Long id;
-	private Long orgId;
-	private String customer;
-	private String client;
-	private String finYear;
+public class WarehouseLocationDTO {
+	
+	private Long id;
 	private String branch;
 	private String branchCode;
 	private String warehouse;
+	private String binType;
+	private String rowNo;
+	private String level;
+	private String cellFrom;
+	private String cellTo;
 	private String createdBy;
+	private Long orgId;
 
-	List<CodeConversionDetailsDTO> CodeConversionDetailsDTO;
+	private List<WarehouseLocationDetailsDTO> warehouseLocationDetailsDTO;
+
 }

@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CodeConversionDetailsVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codeConversiondetailsgen")
-	@SequenceGenerator(name = "codeConversiondetailsgen", sequenceName = "codeConversiondetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codeconversiondetailsgen")
+	@SequenceGenerator(name = "codeconversiondetailsgen", sequenceName = "codeconversiondetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "codeconversiondetailsid")
 	private Long id;
 	
@@ -79,4 +79,5 @@ public class CodeConversionDetailsVO {
 	@ManyToOne
 	@JoinColumn(name = "codeconversionid")
 	private CodeConversionVO codeConversionVO;
+
 }

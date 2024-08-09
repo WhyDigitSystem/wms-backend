@@ -30,6 +30,7 @@ import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
+import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.LocationMovementVO;
@@ -366,8 +367,8 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	// PutAway
-	@GetMapping("/putaway")
-	public ResponseEntity<ResponseDTO> getAllPutAway() {
+	@GetMapping("/getAllPutAway")
+	public ResponseEntity<ResponseDTO> getAllPutAway(@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client,@RequestParam String warehouse) {
 		String methodName = "getAllPutAway()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -375,48 +376,82 @@ public class InwardTransactionController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<PutAwayVO> putAwayVO = new ArrayList<>();
 		try {
-			putAwayVO = inwardTransactionService.getAllPutAway();
+			putAwayVO = inwardTransactionService.getAllPutAway(orgId,finYear,branch,branchCode,client,warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway information get successfully");
-			responseObjectsMap.put("putAwayVO", putAwayVO);
+			responseObjectsMap.put("PutAwayVO", putAwayVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "PutAway information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "PutAway information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getPutAwayById")
+	public ResponseEntity<ResponseDTO> getPutAwayById(@RequestParam(required = false) Long id) {
+        String methodName = "getPutAwayById()";
+        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+        String errorMsg = null;
+        Map<String, Object> responseObjectsMap = new HashMap<>();
+        ResponseDTO responseDTO = null;
+        PutAwayVO putAwayVO = new PutAwayVO();
 
-	@GetMapping("/putaway/{id}")
-	public ResponseEntity<ResponseDTO> getPutAwayById(@PathVariable Long id) {
-		String methodName = "getPutAwayById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		PutAwayVO putAwayVO = null;
-		try {
-			putAwayVO = inwardTransactionService.getPutAwayById(id).orElse(null);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway found by ID");
-			responseObjectsMap.put("PutAway", putAwayVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "PutAway not found for ID: " + id;
-			responseDTO = createServiceResponseError(responseObjectsMap, "PutAway not found", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+        try {
+        	putAwayVO = inwardTransactionService.getPutAwayById(id);
+            if (putAwayVO != null) {
+                responseObjectsMap.put("putAwayVO", putAwayVO);
+                responseDTO = createServiceResponseMsg(responseObjectsMap, " PutAway information retrieved successfully.");
+            } else {
+                responseDTO = createServiceResponseError(responseObjectsMap, " PutAway information not found.", errorMsg);
+            }
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
+            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+            responseDTO = createServiceResponseError(responseObjectsMap, " PutAway information retrieval failed.", errorMsg);
+        }
+
+        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+	
+	
+	@GetMapping("/getPutAwayDocId")
+    public ResponseEntity<ResponseDTO> getPutAwayDocId(
+    		@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client) {
+        
+        String methodName = "getPutAwayDocId()";
+        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+        String errorMsg = null;
+        Map<String, Object> responseObjectsMap = new HashMap<>();
+        ResponseDTO responseDTO = null;
+        String mapp="";
+        
+        try {
+            mapp = inwardTransactionService.getPutAwayDocId(orgId,finYear,branch, branchCode, client);
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
+            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+        }
+        
+        if (StringUtils.isBlank(errorMsg)) {
+            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "All PutAway information retrieved successfully");
+            responseObjectsMap.put("PutAwayDocId", mapp);
+            responseDTO = createServiceResponse(responseObjectsMap);
+        } else {
+            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PutAway information", errorMsg);
+        }
+        
+        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+	
+	
+	
 
 	private List<Map<String, String>> formatParameterr(Set<Object[]> putaway) {
 		List<Map<String, String>> formattedParameters = new ArrayList<>();
@@ -443,27 +478,27 @@ public class InwardTransactionController extends BaseController {
 		return obj != null ? obj.toString() : " ";
 	}
 
-	@PostMapping("/putaway")
-	public ResponseEntity<ResponseDTO> createPutAway(@RequestBody PutAwayDTO putAwayDTO) {
-		String methodName = "createPutAway()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			PutAwayVO createdPutAwayVO = inwardTransactionService.createPutAway(putAwayDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway created successfully");
-			responseObjectsMap.put("PutAwayVO", createdPutAwayVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, " PutAway & PutAwayCode already Exist ",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@PostMapping("/putaway")
+//	public ResponseEntity<ResponseDTO> createPutAway(@RequestBody PutAwayDTO putAwayDTO) {
+//		String methodName = "createPutAway()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		try {
+//			PutAwayVO createdPutAwayVO = inwardTransactionService.createPutAway(putAwayDTO);
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutAway created successfully");
+//			responseObjectsMap.put("PutAwayVO", createdPutAwayVO);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//			responseDTO = createServiceResponseError(responseObjectsMap, " PutAway & PutAwayCode already Exist ",
+//					errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 
 	@PutMapping("/putaway")
 	public ResponseEntity<ResponseDTO> updatePutAway(@RequestBody PutAwayVO putAwayVO) {

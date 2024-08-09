@@ -17,12 +17,16 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.BuyerOrderDTO;
 import com.whydigit.wms.dto.BuyerOrderDetailsDTO;
+import com.whydigit.wms.dto.CodeConversionDTO;
+import com.whydigit.wms.dto.CodeConversionDetailsDTO;
 import com.whydigit.wms.dto.DeliveryChallanDTO;
 import com.whydigit.wms.dto.DeliveryChallanDetailsDTO;
 import com.whydigit.wms.dto.VasPutawayDTO;
 import com.whydigit.wms.dto.VasPutawayDetailsDTO;
 import com.whydigit.wms.entity.BuyerOrderDetailsVO;
 import com.whydigit.wms.entity.BuyerOrderVO;
+import com.whydigit.wms.entity.CodeConversionDetailsVO;
+import com.whydigit.wms.entity.CodeConversionVO;
 import com.whydigit.wms.entity.DeliveryChallanDetailsVO;
 import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
@@ -41,7 +45,7 @@ import com.whydigit.wms.repo.VasPutawayRepo;
 @Service
 public class OutwardTransactionServcieImpl implements OutwardTransactionService {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(InwardTransactionServcieImpl.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(OutwardTransactionServcieImpl.class);
 
 	@Autowired
 	DeliveryChallanRepo deliveryChallanRepo;
@@ -100,16 +104,18 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 //	
 
 	@Override
-	public DeliveryChallanVO updateCreateDeliveryChallan(@Valid DeliveryChallanDTO deliveryChallanDTO)
+	public Map<String, Object> createUpdateDeliveryChallan(DeliveryChallanDTO deliveryChallanDTO)
 			throws ApplicationException {
-		String screenCode = "DC";
 		DeliveryChallanVO deliveryChallanVO = new DeliveryChallanVO();
-		boolean isUpdate = false;
+		String screenCode = "DC";
+		String message;
+
 		if (ObjectUtils.isNotEmpty(deliveryChallanDTO.getId())) {
-			isUpdate = true;
 			deliveryChallanVO = deliveryChallanRepo.findById(deliveryChallanDTO.getId())
 					.orElseThrow(() -> new ApplicationException("Invalid DeliveryChallan details"));
 			deliveryChallanVO.setUpdatedBy(deliveryChallanDTO.getCreatedBy());
+			message = "DeliveryChallan updated Successfully";
+
 		} else {
 			if (deliveryChallanRepo.existsByBuyerOrderNoAndOrgId(deliveryChallanDTO.getBuyerOrderNo(),
 					deliveryChallanDTO.getOrgId())) {
@@ -126,6 +132,8 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 			deliveryChallanVO.setDocId(docId);
 
+			createUpdateDeliveryChallanVOByDeliveryChallanDTO(deliveryChallanDTO, deliveryChallanVO);
+
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
 					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(deliveryChallanDTO.getOrgId(),
@@ -133,52 +141,20 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 							deliveryChallanDTO.getClient(), screenCode);
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			message = "DeliveryChallan created Successfully";
 
 		}
 
-		List<DeliveryChallanDetailsVO> deliveryChallanDetailsVOs = new ArrayList<>();
-		if (deliveryChallanDTO.getDeliveryChallanDetailsDTO() != null) {
-			for (DeliveryChallanDetailsDTO deliveryChallanDetailsDTO : deliveryChallanDTO
-					.getDeliveryChallanDetailsDTO()) {
-				DeliveryChallanDetailsVO deliveryChallanDetailsVO;
-				if (deliveryChallanDetailsDTO.getId() != null
-						&& ObjectUtils.isNotEmpty(deliveryChallanDetailsDTO.getId())) {
-					deliveryChallanDetailsVO = deliveryChallanDetailsRepo.findById(deliveryChallanDetailsDTO.getId())
-							.orElse(new DeliveryChallanDetailsVO());
-				} else {
-					deliveryChallanDetailsVO = new DeliveryChallanDetailsVO();
-				}
-				deliveryChallanDetailsVO.setPickRequestNo(deliveryChallanDetailsDTO.getPickRequestNo());
-				deliveryChallanDetailsVO.setPrDate(deliveryChallanDetailsDTO.getPrDate());
-				deliveryChallanDetailsVO.setPartNo(deliveryChallanDetailsDTO.getPartNo());
-				deliveryChallanDetailsVO.setPartDescription(deliveryChallanDetailsDTO.getPartDescription());
-				deliveryChallanDetailsVO.setOutBoundBin(deliveryChallanDetailsDTO.getOutBoundBin());
-				deliveryChallanDetailsVO.setShippedQty(deliveryChallanDetailsDTO.getShippedQty());
-				deliveryChallanDetailsVO.setUnitRate(deliveryChallanDetailsDTO.getUnitRate());
-				deliveryChallanDetailsVO.setSkuValue(deliveryChallanDetailsDTO.getSkuValue());
-				deliveryChallanDetailsVO.setDiscount(deliveryChallanDetailsDTO.getDiscount());
-				deliveryChallanDetailsVO.setTax(deliveryChallanDetailsDTO.getTax());
-				deliveryChallanDetailsVO.setGatTax(deliveryChallanDetailsDTO.getGatTax());
-				deliveryChallanDetailsVO.setAmount(deliveryChallanDetailsDTO.getAmount());
-				deliveryChallanDetailsVO.setSgst(deliveryChallanDetailsDTO.getSgst());
-				deliveryChallanDetailsVO.setCgst(deliveryChallanDetailsDTO.getCgst());
-				deliveryChallanDetailsVO.setTotalGst(deliveryChallanDetailsDTO.getTotalGst());
-				deliveryChallanDetailsVO.setBillAmount(deliveryChallanDetailsDTO.getBillAmount());
-				deliveryChallanDetailsVO.setRemarks(deliveryChallanDetailsDTO.getRemarks());
-				deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.isQcFlags());
+		DeliveryChallanVO savedDeliveryChallanVO = deliveryChallanRepo.save(deliveryChallanVO);
 
-				deliveryChallanDetailsVO.setDeliveryChallanVO(deliveryChallanVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("deliveryChallanVO", deliveryChallanVO);
+		response.put("message", message);
+		return response;
 
-				deliveryChallanDetailsVOs.add(deliveryChallanDetailsVO);
-			}
-		}
-		getDeliveryChallanVOFromDeliveryChallanDTO(deliveryChallanDTO, deliveryChallanVO);
-		deliveryChallanVO.setDeliveryChallanDetailsVO(deliveryChallanDetailsVOs);
-
-		return deliveryChallanRepo.save(deliveryChallanVO);
 	}
 
-	private void getDeliveryChallanVOFromDeliveryChallanDTO(@Valid DeliveryChallanDTO deliveryChallanDTO,
+	private void createUpdateDeliveryChallanVOByDeliveryChallanDTO(@Valid DeliveryChallanDTO deliveryChallanDTO,
 			DeliveryChallanVO deliveryChallanVO) {
 
 		deliveryChallanVO.setBuyerOrderNo(deliveryChallanDTO.getBuyerOrderNo());
@@ -221,6 +197,41 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		deliveryChallanVO.setBranch(deliveryChallanDTO.getBranch());
 		deliveryChallanVO.setBranchCode(deliveryChallanDTO.getBranchCode());
 		deliveryChallanVO.setWarehouse(deliveryChallanDTO.getWarehouse());
+
+		if (ObjectUtils.isNotEmpty(deliveryChallanVO.getId())) {
+			List<DeliveryChallanDetailsVO> deliveryChallanDetailsVO1 = deliveryChallanDetailsRepo
+					.findByDeliveryChallanVO(deliveryChallanVO);
+			deliveryChallanDetailsRepo.deleteAll(deliveryChallanDetailsVO1);
+		}
+
+		List<DeliveryChallanDetailsVO> deliveryChallanDetailsVOs = new ArrayList<>();
+		for (DeliveryChallanDetailsDTO deliveryChallanDetailsDTO : deliveryChallanDTO.getDeliveryChallanDetailsDTO()) {
+			DeliveryChallanDetailsVO deliveryChallanDetailsVO = new DeliveryChallanDetailsVO();
+			deliveryChallanDetailsVO.setPickRequestNo(deliveryChallanDetailsDTO.getPickRequestNo());
+			deliveryChallanDetailsVO.setPrDate(deliveryChallanDetailsDTO.getPrDate());
+			deliveryChallanDetailsVO.setPartNo(deliveryChallanDetailsDTO.getPartNo());
+			deliveryChallanDetailsVO.setPartDescription(deliveryChallanDetailsDTO.getPartDescription());
+			deliveryChallanDetailsVO.setOutBoundBin(deliveryChallanDetailsDTO.getOutBoundBin());
+			deliveryChallanDetailsVO.setShippedQty(deliveryChallanDetailsDTO.getShippedQty());
+			deliveryChallanDetailsVO.setUnitRate(deliveryChallanDetailsDTO.getUnitRate());
+			deliveryChallanDetailsVO.setSkuValue(deliveryChallanDetailsDTO.getSkuValue());
+			deliveryChallanDetailsVO.setDiscount(deliveryChallanDetailsDTO.getDiscount());
+			deliveryChallanDetailsVO.setTax(deliveryChallanDetailsDTO.getTax());
+			deliveryChallanDetailsVO.setGatTax(deliveryChallanDetailsDTO.getGatTax());
+			deliveryChallanDetailsVO.setAmount(deliveryChallanDetailsDTO.getAmount());
+			deliveryChallanDetailsVO.setSgst(deliveryChallanDetailsDTO.getSgst());
+			deliveryChallanDetailsVO.setCgst(deliveryChallanDetailsDTO.getCgst());
+			deliveryChallanDetailsVO.setTotalGst(deliveryChallanDetailsDTO.getTotalGst());
+			deliveryChallanDetailsVO.setBillAmount(deliveryChallanDetailsDTO.getBillAmount());
+			deliveryChallanDetailsVO.setRemarks(deliveryChallanDetailsDTO.getRemarks());
+			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.isQcFlags());
+
+			deliveryChallanDetailsVO.setDeliveryChallanVO(deliveryChallanVO);
+
+			deliveryChallanDetailsVOs.add(deliveryChallanDetailsVO);
+		}
+		deliveryChallanVO.setDeliveryChallanDetailsVO(deliveryChallanDetailsVOs);
+
 	}
 
 	// VASPutaway
@@ -243,6 +254,105 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 		}
 		return vasPutawayVO;
+	}
+
+	@Override
+	@Transactional
+	public String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+		String ScreenCode = "DC";
+		String result = vasPutawayRepo.getVasPutawayDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> createUpdateVasPutaway(@Valid VasPutawayDTO vasPutawayDTO) throws ApplicationException {
+
+		VasPutawayVO vasPutawayVO = new VasPutawayVO();
+		String screenCode = "VPW";
+		String message;
+
+		if (ObjectUtils.isNotEmpty(vasPutawayDTO.getId())) {
+			vasPutawayVO = vasPutawayRepo.findById(vasPutawayDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid DeliveryChallan details"));
+			vasPutawayVO.setUpdatedBy(vasPutawayDTO.getCreatedBy());
+			message = "DeliveryChallan updated Successfully";
+			
+
+		} else {
+			vasPutawayVO.setUpdatedBy(vasPutawayDTO.getCreatedBy());
+			vasPutawayVO.setCreatedBy(vasPutawayDTO.getCreatedBy());
+//			GETDOCID API
+			String docId = vasPutawayRepo.getVasPutawayDocId(vasPutawayDTO.getOrgId(), vasPutawayDTO.getFinYear(),
+					vasPutawayDTO.getBranchCode(), vasPutawayDTO.getClient(), screenCode);
+			vasPutawayVO.setDocId(docId);
+
+			createUpdateVasPutawayVOByVasPutawayDTO(vasPutawayDTO, vasPutawayVO);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(vasPutawayDTO.getOrgId(),
+							vasPutawayDTO.getFinYear(), vasPutawayDTO.getBranchCode(), vasPutawayDTO.getClient(),
+							screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			message = "VasPutaway updated Successfully";
+			
+			
+			
+
+		}
+		VasPutawayVO savedVasPutawayVO = vasPutawayRepo.save(vasPutawayVO);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("vasPutawayVO", vasPutawayVO);
+		response.put("message", message);
+		return response;
+
+	}
+
+	private void createUpdateVasPutawayVOByVasPutawayDTO(@Valid VasPutawayDTO vasPutawayDTO,
+			VasPutawayVO vasPutawayVO) {
+		vasPutawayVO.setTotalGrnQty(vasPutawayDTO.getTotalGrnQty());
+		vasPutawayVO.setTotalPutawayQty(vasPutawayDTO.getTotalPutawayQty());
+		vasPutawayVO.setVasPickNo(vasPutawayDTO.getVasPickNo());
+		vasPutawayVO.setStatus(vasPutawayDTO.getStatus());
+		if (vasPutawayDTO.getStatus() == "Submit") {
+			vasPutawayVO.setFreeze(true);
+		}
+		vasPutawayVO.setOrgId(vasPutawayDTO.getOrgId());
+		vasPutawayVO.setCustomer(vasPutawayDTO.getCustomer());
+		vasPutawayVO.setClient(vasPutawayDTO.getClient());
+		vasPutawayVO.setFinYear(vasPutawayDTO.getFinYear());
+		vasPutawayVO.setBranch(vasPutawayDTO.getBranch());
+		vasPutawayVO.setBranchCode(vasPutawayDTO.getBranchCode());
+		vasPutawayVO.setWarehouse(vasPutawayDTO.getWarehouse());
+
+		if (vasPutawayDTO.getId() != null) {
+			List<VasPutawayDetailsVO> vasPutawayDetailsVO1 = vasPutawayDetailsRepo.findByVasPutawayVO(vasPutawayVO);
+			vasPutawayDetailsRepo.deleteAll(vasPutawayDetailsVO1);
+		}
+		
+
+		List<VasPutawayDetailsVO> vasPutawayDetailsVOs = new ArrayList<>();
+		for (VasPutawayDetailsDTO vasPutawayDetailsDTO : vasPutawayDTO.getVasPutawayDetailsDTO()) {
+			VasPutawayDetailsVO vasPutawayDetailsVO = new VasPutawayDetailsVO();
+			vasPutawayDetailsVO = new VasPutawayDetailsVO();
+			vasPutawayDetailsVO.setPartNo(vasPutawayDetailsDTO.getPartNo());
+			vasPutawayDetailsVO.setPartDescription(vasPutawayDetailsDTO.getPartDescription());
+			vasPutawayDetailsVO.setGrnNo(vasPutawayDetailsDTO.getGrnNo());
+			vasPutawayDetailsVO.setPartDescription(vasPutawayDetailsDTO.getPartDescription());
+			vasPutawayDetailsVO.setInvQty(vasPutawayDetailsDTO.getInvQty());
+			vasPutawayDetailsVO.setPutAwayQty(vasPutawayDetailsDTO.getPutAwayQty());
+			vasPutawayDetailsVO.setFromBin(vasPutawayDetailsDTO.getFromBin());
+			vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
+			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
+			vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
+			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.isQcFlags());
+			vasPutawayDetailsVO.setVasPutawayVO(vasPutawayVO);
+			vasPutawayDetailsVOs.add(vasPutawayDetailsVO);
+		}
+		vasPutawayVO.setVasPutawayDetailsVO(vasPutawayDetailsVOs);
+
 	}
 
 	// BuyerOrder
@@ -345,92 +455,6 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setBuyerOrderDetailsVO(detailsVOList);
 		return buyerOrderVO;
 
-	}
-
-	@Override
-	@Transactional
-	public String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
-		String ScreenCode = "DC";
-		String result = vasPutawayRepo.getVasPutawayDocId(orgId, finYear, branchCode, client, ScreenCode);
-		return result;
-	}
-
-	@Override
-	public VasPutawayVO updateCreateVasPutaway(@Valid VasPutawayDTO vasPutawayDTO)
-			throws ApplicationException {
-		String screenCode = "VPW";
-		VasPutawayVO vasPutawayVO = new VasPutawayVO();
-		boolean isUpdate = false;
-		if (ObjectUtils.isNotEmpty(vasPutawayDTO.getId())) {
-			isUpdate = true;
-			vasPutawayVO = vasPutawayRepo.findById(vasPutawayDTO.getId())
-					.orElseThrow(() -> new ApplicationException("Invalid VasPutaway details"));
-			vasPutawayVO.setUpdatedBy(vasPutawayDTO.getCreatedBy());
-		} else {
-			vasPutawayVO.setUpdatedBy(vasPutawayDTO.getCreatedBy());
-			vasPutawayVO.setCreatedBy(vasPutawayDTO.getCreatedBy());
-//			GETDOCID API
-			String docId = vasPutawayRepo.getVasPutawayDocId(vasPutawayDTO.getOrgId(),vasPutawayDTO.getFinYear()
-					,vasPutawayDTO.getBranchCode(), vasPutawayDTO.getClient(), screenCode);
-			vasPutawayVO.setDocId(docId);
-			//GETDOCID LASTNO +1
-			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(vasPutawayDTO.getOrgId(),vasPutawayDTO.getFinYear()
-					,vasPutawayDTO.getBranchCode(), vasPutawayDTO.getClient(), screenCode);
-			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno()+1);
-			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
-		}
-		List<VasPutawayDetailsVO> vasPutawayDetailsVOs = new ArrayList<>();
-		if (vasPutawayDTO.getVasPutawayDetailsDTO() != null) {
-			for (VasPutawayDetailsDTO vasPutawayDetailsDTO : vasPutawayDTO.getVasPutawayDetailsDTO()) {
-				VasPutawayDetailsVO vasPutawayDetailsVO;
-				if (vasPutawayDetailsDTO.getId() != null
-						&& ObjectUtils.isNotEmpty(vasPutawayDetailsDTO.getId())) 
-				{
-					vasPutawayDetailsVO = vasPutawayDetailsRepo.findById(vasPutawayDetailsDTO.getId())
-							.orElse(new VasPutawayDetailsVO());
-				} else 
-				{
-				vasPutawayDetailsVO = new VasPutawayDetailsVO();
-				vasPutawayDetailsVO.setPartNo(vasPutawayDetailsDTO.getPartNo());
-				vasPutawayDetailsVO.setPartDescription(vasPutawayDetailsDTO.getPartDescription());
-				vasPutawayDetailsVO.setGrnNo(vasPutawayDetailsDTO.getGrnNo());
-				vasPutawayDetailsVO.setPartDescription(vasPutawayDetailsDTO.getPartDescription());
-				vasPutawayDetailsVO.setInvQty(vasPutawayDetailsDTO.getInvQty());
-				vasPutawayDetailsVO.setPutAwayQty(vasPutawayDetailsDTO.getPutAwayQty());
-				vasPutawayDetailsVO.setFromBin(vasPutawayDetailsDTO.getFromBin());
-				vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
-				vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
-				vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
-				vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.isQcFlags());
-				vasPutawayDetailsVO.setVasPutawayVO(vasPutawayVO);
-				vasPutawayDetailsVOs.add(vasPutawayDetailsVO);
-			}
-		
-		getVasPutawayVOFromVasPutawayDTO(vasPutawayDTO, vasPutawayVO);
-		vasPutawayVO.setVasPutawayDetailsVO(vasPutawayDetailsVOs);
-		
-		vasPutawayRepo.save(vasPutawayVO);
-			}
-		}
-		return vasPutawayVO;
-	}
-
-
-	private void getVasPutawayVOFromVasPutawayDTO(@Valid VasPutawayDTO vasPutawayDTO, VasPutawayVO vasPutawayVO) {
-		vasPutawayVO.setTotalGrnQty(vasPutawayDTO.getTotalGrnQty());
-		vasPutawayVO.setTotalPutawayQty(vasPutawayDTO.getTotalPutawayQty());
-		vasPutawayVO.setVasPickNo(vasPutawayDTO.getVasPickNo());
-		vasPutawayVO.setStatus(vasPutawayDTO.getStatus());
-		if (vasPutawayDTO.getStatus() == "Submit") {
-			vasPutawayVO.setFreeze(true);
-		}
-		vasPutawayVO.setOrgId(vasPutawayDTO.getOrgId());
-		vasPutawayVO.setCustomer(vasPutawayDTO.getCustomer());
-		vasPutawayVO.setClient(vasPutawayDTO.getClient());
-		vasPutawayVO.setFinYear(vasPutawayDTO.getFinYear());
-		vasPutawayVO.setBranch(vasPutawayDTO.getBranch());
-		vasPutawayVO.setBranchCode(vasPutawayDTO.getBranchCode());
-		vasPutawayVO.setWarehouse(vasPutawayDTO.getWarehouse());
 	}
 
 	@Override
