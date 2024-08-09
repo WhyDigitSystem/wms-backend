@@ -36,6 +36,8 @@ public class BuyerOrderVO {
 
 	@Column(name = "orderno")
 	private String orderNo;
+	@Column(name = "orgid")
+	private Long orgId;
 	@Column(name = "docdate")
 	private LocalDate docDate;
 	@Column(name = "orderdate")
@@ -53,7 +55,7 @@ public class BuyerOrderVO {
 	@Column(name = "currency")
 	private String currency;
 	@Column(name = "exrate")
-	private String exRate;
+	private int exRate;
 	@Column(name = "location")
 	private String location;
 	@Column(name = "billto")
@@ -76,6 +78,19 @@ public class BuyerOrderVO {
 	private String cancelRemark;
 	@Column(name = "screencode")
 	private String screenCode;
+	@Column(name ="screenname")
+	private String screenName;
+	private String customer;
+	private String client;
+	@Column(name ="finyear")
+	private String finYear;
+	@Column(name = "branch")
+	private String branch;
+	@Column(name = "branchcode")
+	private String branchCode;
+	@Column(name = "freeze")
+	private boolean freeze;
+	
 	
 
 	@JsonManagedReference

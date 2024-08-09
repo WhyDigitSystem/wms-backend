@@ -34,15 +34,17 @@ public class BuyerOrderDetailsVO {
 	@Column(name = "partdesc")
 	private String partDesc;
 	@Column(name = "qty")
-	private String qty;
+	private long qty;
 	@Column(name = "batchno")
 	private String batchNo;
 	@Column(name = "availqty")
-	private String availQty;
+	private long availQty;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "remarks")
 	private String reMarks;
+	@Column(name="qcflag")
+	private boolean qcflag;
 	
 	@JsonBackReference
 	@ManyToOne

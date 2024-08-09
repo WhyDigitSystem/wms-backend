@@ -11,9 +11,10 @@ public class BuyerOrderDetailsDTO {
 	private Long id;
 	private String partNo;
 	private String partDesc;
-	private String qty;
+	private Long qty;
 	private String batchNo;
-	private String availQty;
+	private Long availQty;
 	private String sku;
 	private String remarks;
+	private boolean qcflag;
 }
