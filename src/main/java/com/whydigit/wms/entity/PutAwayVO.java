@@ -74,7 +74,7 @@ public class PutAwayVO {
 	@Column(name = "company")
 	private String company;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel ;
 	@Column(name = "userid")
 	private String userid;
 	@Column(name = "cancelremarks")
@@ -106,20 +106,5 @@ public class PutAwayVO {
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
-	@PrePersist
-	private void setDefaultFinyr() {
-		// Execute the logic to set the default value for finyr
-		String fyFull = calculateFinyr();
-		this.finyr = fyFull;
-	}
-
-	private String calculateFinyr() {
-		// Logic to calculate finyr based on the provided SQL query
-		String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
-		String fyFull = (currentMonthDay.compareTo("0331") > 0)
-				? LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))
-				: LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
-		return fyFull;
-
-	}
+	
 }
