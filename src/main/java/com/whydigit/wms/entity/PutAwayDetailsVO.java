@@ -60,7 +60,7 @@ public class PutAwayDetailsVO {
 	@Column(name = "rate")
 	private String rate;
 	@Column(name = "amount")
-	private String amount;
+	private double amount;
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "locationtype")

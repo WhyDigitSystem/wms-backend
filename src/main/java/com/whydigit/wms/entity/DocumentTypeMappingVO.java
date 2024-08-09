@@ -46,7 +46,7 @@ public class DocumentTypeMappingVO {
 	private String finYearIdentifier;
 	
 	@Column(name = "orgid")
-	private String orgId;
+	private Long orgId;
 	
 	@Column(name="createdby")
 	private String createdBy;

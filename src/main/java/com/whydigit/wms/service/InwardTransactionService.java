@@ -5,17 +5,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Service;
 
-import com.whydigit.wms.dto.DeliveryChallanDTO;
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
-import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.LocationMovementVO;
@@ -28,13 +24,13 @@ public interface InwardTransactionService {
 
 	// Grn
 
-	List<GrnVO> getAllGrn();
+	List<GrnVO> getAllGrn(Long orgId,String finYear,String branch,String branchCode,String client,String warehouse);
 
-	Optional<GrnVO> getGrnById(Long id);
+	GrnVO getGrnById(Long id);
+	
+	String getGRNdocid(Long orgId,String finYear,String branchCode,String client,String screencode);
 
-
-
-	void deleteGrn(Long id);
+	Map<String, Object> createUpdateGrn(GrnDTO grnDTO) throws ApplicationException;
 
 //	Set<Object[]> getAllGatePassNumberByClientAndBranch(Long orgId, String client, String customer, String branchcode);
 

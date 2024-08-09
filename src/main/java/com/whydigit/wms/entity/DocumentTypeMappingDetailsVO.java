@@ -60,7 +60,7 @@ public class DocumentTypeMappingDetailsVO {
 	private String finYearIdentifier;
 	
 	@Column(name = "orgid")
-	private String orgId;
+	private Long orgId;
 	
 	@Column(name = "concatenation")
 	private String concatenation;

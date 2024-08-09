@@ -20,7 +20,7 @@ public class DocumentTypeMappingDTO {
 	
 	private String finYearIdentifier;
 	
-	private String orgId;
+	private Long orgId;
 	
 	private String createdBy;
 	
