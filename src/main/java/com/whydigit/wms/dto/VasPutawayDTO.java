@@ -1,12 +1,6 @@
 package com.whydigit.wms.dto;
 
-import java.time.LocalDate;
 import java.util.List;
-
-import javax.persistence.Column;
-
-import com.whydigit.wms.entity.VasPutawayDetailsVO;
-import com.whydigit.wms.entity.VasPutawayVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,11 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VasPutawayDTO {
 	private Long id;
-	private String docId;
-	private LocalDate docDate = LocalDate.now();
 	private String vasPickNo;
 	private String status;
-
+	private int totalGrnQty;
+	private int totalPutawayQty;
+	
 	private Long orgId;
 	private String customer;
 	private String client;

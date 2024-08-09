@@ -49,7 +49,7 @@ public class StockDetailsVO {
 	@Column(name = "rate")
 	private String rate;
 	@Column(name = "amount")
-	private String amount;
+	private double amount;
 	@Column(name = "inoutitme")
 	private String inouttime;
 	@Column(name = "refno")
@@ -131,7 +131,7 @@ public class StockDetailsVO {
 	@Column(name = "clientcode")
 	private String clientCode;
 	@Column(name = "pamount")
-	private String pAmount;
+	private double pAmount;
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "pgroup")

@@ -19,8 +19,13 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GatePassInDetailsDTO;
+
+import com.whydigit.wms.dto.GrnDTO;
+import com.whydigit.wms.dto.GrnDetailsDTO;
+
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.LocationMovementDetailsDTO;
+
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.dto.SalesReturnDetailsDTO;
@@ -79,6 +84,9 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
+	
+	@Autowired
+	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
 	@Autowired
 	GatePassInDetailsRepo gatePassInDetailsRepo;
@@ -105,15 +113,32 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
 	// Grn
-
+	
 	@Override
-	public List<GrnVO> getAllGrn() {
-		return grnRepo.findAll();
+	public String getGRNdocid(Long orgId, String finYear, String branchCode, String client, String screencode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<GrnVO> getAllGrn(Long orgId,String finYear,String branch,String branchCode,String client,String warehouse) {
+		
+		return grnRepo.findAllGrnDetails(orgId,finYear,branch,branchCode,client,warehouse);
 	}
 
 	@Override
-	public Optional<GrnVO> getGrnById(Long id) {
-		return grnRepo.findById(id);
+	public GrnVO getGrnById(Long id) {
+		GrnVO grnVO= new GrnVO();
+		
+		if(ObjectUtils.isNotEmpty(id))
+		{
+		 grnVO=grnRepo.findById(id).orElse(null);
+		}
+		else
+		{
+			LOGGER.info("Not found for this Id");
+		}
+		return grnVO;
 	}
 
 //	@Override
@@ -124,10 +149,242 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 
 
 	@Override
-	public void deleteGrn(Long id) {
-		grnRepo.deleteById(id);
-	}
+	public Map<String, Object> createUpdateGrn(GrnDTO grnDTO) throws ApplicationException {
+		
+		GrnVO grnVO = new GrnVO();
+		String screenCode="GN";
+		String message;
+		
+		if(ObjectUtils.isNotEmpty(grnDTO.getId()))
+		{
+			grnVO = grnRepo.findById(grnDTO.getId()).orElseThrow(() -> new ApplicationException("GRN not found"));
+			
+			if (!grnVO.getEntryNo().equalsIgnoreCase(grnDTO.getEntryNo())) {
+	            if (grnRepo.existsByEntryNoAndOrgIdAndClientAndBranchCodeAndWarehouse(grnDTO.getEntryNo(),
+	            		grnDTO.getOrgId(),grnDTO.getClient(),grnDTO.getBranchCode(),grnDTO.getWarehouse())) {
+	                throw new ApplicationException("Entry No already Exist for this Branch and Client");
+	            }
+	            grnVO.setEntryNo(grnDTO.getEntryNo());
+			}
+			grnVO.setUpdatedBy(grnDTO.getCreatedBy());
+			createUpdateGrnVOByGrnDTO(grnDTO,grnVO);
+			message="GRN Updated Successfully";
+		}
+		else
+		{
+			if (grnRepo.existsByEntryNoAndOrgIdAndClientAndBranchCodeAndWarehouse(grnDTO.getEntryNo(),
+            		grnDTO.getOrgId(),grnDTO.getClient(),grnDTO.getBranchCode(),grnDTO.getWarehouse())) {
+                throw new ApplicationException("Entry No already Exist for this Branch and Client");
+            }
+			grnVO.setEntryNo(grnDTO.getEntryNo());
+			grnVO.setCreatedBy(grnDTO.getCreatedBy());
+			grnVO.setUpdatedBy(grnDTO.getCreatedBy());
+			
+			String grnDocId=grnRepo.getGRNDocId(grnDTO.getOrgId(),grnDTO.getFinYear(),grnDTO.getBranchCode(),grnDTO.getClient(),screenCode);
+			grnVO.setDocId(grnDocId);
+			createUpdateGrnVOByGrnDTO(grnDTO,grnVO);
+			
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO=documentTypeMappingDetailsRepo.findByBranchAndClientAndFinYearAndScreenCode(grnDTO.getOrgId(),grnDTO.getFinYear(),grnDTO.getBranchCode(),grnDTO.getClient(),screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno()+1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			message="GRN Created Successfully";
+		}
 
+		GrnVO savedGrnVO = grnRepo.save(grnVO);		
+		List<GrnDetailsVO> grnDetailsVOLists = savedGrnVO.getGrnDetailsVO();
+		if (grnDetailsVOLists != null && !grnDetailsVOLists.isEmpty())
+
+			for (GrnDetailsVO grnDetailsVO : grnDetailsVOLists) {
+
+				HandlingStockInVO handlingStockInVO = new HandlingStockInVO();
+				handlingStockInVO.setScreencode(savedGrnVO.getScreenCode());
+				// Set common values from savedGrnVO
+				handlingStockInVO.setRefdate(savedGrnVO.getDocdate());
+				handlingStockInVO.setGrnno(savedGrnVO.getDocId());
+				handlingStockInVO.setGrndate(savedGrnVO.getDocdate());
+				handlingStockInVO.setBranch(savedGrnVO.getBranch());
+				handlingStockInVO.setOrgId(savedGrnVO.getOrgId());
+				handlingStockInVO.setBranchcode(savedGrnVO.getBranchCode());
+				handlingStockInVO.setCustomer(savedGrnVO.getCustomer());
+				handlingStockInVO.setWarehouse(savedGrnVO.getWarehouse());
+				handlingStockInVO.setClient(savedGrnVO.getClient());
+				handlingStockInVO.setSdocdate(savedGrnVO.getDocdate());
+				handlingStockInVO.setStockdate(savedGrnVO.getDocdate());
+				handlingStockInVO.setSdocid(savedGrnVO.getDocId());
+				handlingStockInVO.setFinyr(savedGrnVO.getFinYear());
+				// Set values from grnDetailsVO
+				handlingStockInVO.setPartno(grnDetailsVO.getPartNo());
+				handlingStockInVO.setPartdesc(grnDetailsVO.getPartDesc());
+				handlingStockInVO.setRpqty(grnDetailsVO.getGrnQty());
+				handlingStockInVO.setSqty(grnDetailsVO.getGrnQty());
+				handlingStockInVO.setLocationtype(grnDetailsVO.getBinType());
+				handlingStockInVO.setInvqty(grnDetailsVO.getInvQty());
+				handlingStockInVO.setRecqty(grnDetailsVO.getRecQty());
+				handlingStockInVO.setShortqty(grnDetailsVO.getShortQty());
+				handlingStockInVO.setPalletqty(grnDetailsVO.getBinQty());
+				handlingStockInVO.setRate(grnDetailsVO.getRate());
+				handlingStockInVO.setAmount(grnDetailsVO.getAmount());
+				handlingStockInVO.setSku(grnDetailsVO.getSku());
+				handlingStockInVO.setSsku(grnDetailsVO.getSku());
+				// Check if damageqty is 0
+				if (grnDetailsVO.getDamageQty() == 0) {
+					handlingStockInVO.setSqty(grnDetailsVO.getGrnQty());
+					handlingStockInVO.setQcflag("T");
+				} else {
+					// If damageqty is not 0, set sqty and damageqty in separate rows
+					handlingStockInVO.setSqty(grnDetailsVO.getDamageQty());
+					handlingStockInVO.setDamageqty(grnDetailsVO.getDamageQty());
+					handlingStockInVO.setQcflag("F");
+				}
+				handlingStockInRepo.save(handlingStockInVO);
+			}
+				for (GrnDetailsVO grnDetailsVO : grnDetailsVOLists) {
+					// create new obj to store as second row
+					HandlingStockInVO handlingStockInVO2 = new HandlingStockInVO();
+					handlingStockInVO2.setScreencode(grnVO.getScreenCode());
+					handlingStockInVO2.setRefdate(savedGrnVO.getDocdate());
+					handlingStockInVO2.setGrnno(savedGrnVO.getDocId());
+					handlingStockInVO2.setGrndate(savedGrnVO.getDocdate());
+					handlingStockInVO2.setBranch(savedGrnVO.getBranch());
+					handlingStockInVO2.setOrgId(savedGrnVO.getOrgId());
+					handlingStockInVO2.setBranchcode(savedGrnVO.getBranchCode());
+					handlingStockInVO2.setCustomer(savedGrnVO.getCustomer());
+					handlingStockInVO2.setWarehouse(savedGrnVO.getWarehouse());
+					handlingStockInVO2.setClient(savedGrnVO.getClient());
+					handlingStockInVO2.setSdocdate(savedGrnVO.getDocdate());
+					handlingStockInVO2.setStockdate(savedGrnVO.getDocdate());
+					handlingStockInVO2.setSdocid(savedGrnVO.getDocId());
+					handlingStockInVO2.setFinyr(savedGrnVO.getFinYear());
+					if (handlingStockInVO2.getDamageqty() == 0) {
+						handlingStockInVO2.setQcflag("T");
+						handlingStockInVO2.setDamageqty(0);
+					} else {
+						handlingStockInVO2.setQcflag("F");
+					}
+					handlingStockInVO2.setPartno(grnDetailsVO.getPartNo());
+					handlingStockInVO2.setPartdesc(grnDetailsVO.getPartDesc());
+					handlingStockInVO2.setLocationtype(grnDetailsVO.getBinType());
+					handlingStockInVO2.setSsku(grnDetailsVO.getSku());
+					handlingStockInVO2.setInvqty(grnDetailsVO.getInvQty());
+					handlingStockInVO2.setRecqty(grnDetailsVO.getRecQty());
+					
+					handlingStockInVO2.setShortqty(grnDetailsVO.getShortQty());
+					handlingStockInVO2.setPalletqty(grnDetailsVO.getBinQty());
+					handlingStockInVO2.setRate(grnDetailsVO.getRate());
+					handlingStockInVO2.setAmount(grnDetailsVO.getAmount());
+					handlingStockInVO2.setSqty(grnDetailsVO.getGrnQty());
+					handlingStockInVO2.setSku(grnDetailsVO.getSku());
+					handlingStockInVO2.setSsku(grnDetailsVO.getSku());
+					handlingStockInRepo.save(handlingStockInVO2);
+				}
+
+	Map<String, Object> response = new HashMap<>();
+    response.put("grnVO", grnVO);
+    response.put("message", message);
+    return response;
+}
+
+	private void createUpdateGrnVOByGrnDTO(GrnDTO grnDTO, GrnVO grnVO) {
+		
+		grnVO.setId(grnDTO.getId());
+	    grnVO.setEntryDate(grnDTO.getEntryDate());
+	    grnVO.setGrndDate(grnDTO.getGrndDate());
+	    grnVO.setGatePassId(grnDTO.getGatePassId());
+	    grnVO.setGatePassDate(grnDTO.getGatePassDate());
+	    grnVO.setCustomerPo(grnDTO.getCustomerPo());
+	    grnVO.setSupplierShortName(grnDTO.getSupplierShortName());
+	    grnVO.setSupplier(grnDTO.getSupplier());
+	    grnVO.setCarrier(grnDTO.getCarrier());
+	    grnVO.setLotNo(grnDTO.getLotNo());
+	    grnVO.setModeOfShipment(grnDTO.getModeOfShipment());
+	    grnVO.setCreatedBy(grnDTO.getCreatedBy());
+	    grnVO.setOrgId(grnDTO.getOrgId());
+	    grnVO.setBranchCode(grnDTO.getBranchCode());
+	    grnVO.setBranch(grnDTO.getBranch());
+	    grnVO.setClient(grnDTO.getClient());
+	    grnVO.setCustomer(grnDTO.getCustomer());
+	    grnVO.setBillOfEnrtyNo(grnDTO.getBillOfEnrtyNo());
+	    grnVO.setContainerNo(grnDTO.getContainerNo());
+	    grnVO.setFifoFlag(grnDTO.getFifoFlag());
+	    grnVO.setWarehouse(grnDTO.getWarehouse());
+	    grnVO.setVas(grnDTO.isVas());
+	    grnVO.setVehicleNo(grnDTO.getVehicleNo());
+	    grnVO.setVehicleDetails(grnDTO.getVehicleDetails());
+	    grnVO.setFinYear(grnDTO.getFinYear());
+	    grnVO.setSealNo(grnDTO.getSealNo());
+	    grnVO.setVesselNo(grnDTO.getVesselNo());
+	    grnVO.setHsnNo(grnDTO.getHsnNo());
+	    grnVO.setSecurityName(grnDTO.getSecurityName());
+	    grnVO.setVehicleType(grnDTO.getVehicleType());
+	    grnVO.setVesselDetails(grnDTO.getVesselDetails());
+	    grnVO.setLrNo(grnDTO.getLrNo());
+	    grnVO.setDriverName(grnDTO.getDriverName());
+	    grnVO.setContact(grnDTO.getContact());
+	    grnVO.setLrDate(grnDTO.getLrDate());
+	    grnVO.setGoodsDescripition(grnDTO.getGoodsDescripition());
+	    grnVO.setDestinationFrom(grnDTO.getDestinationFrom());
+	    grnVO.setDestinationTo(grnDTO.getDestinationTo());
+	    grnVO.setNoOfBins(grnDTO.getNoOfBins());
+	    grnVO.setInvoiceNo(grnDTO.getInvoiceNo());	
+	    
+	    if(ObjectUtils.isNotEmpty(grnVO.getId()))
+	    {
+	    	List<GrnDetailsVO> grnDetailsVO1= grnDetailsRepo.findByGrnVO(grnVO); 
+	    	grnDetailsRepo.deleteAll(grnDetailsVO1);
+	    }
+	    
+	    int totalGrnQty=0;
+    	int totalNoOfPkgs=0;
+    	double totalAmount = 0.0;
+    	
+	    List<GrnDetailsVO>grnDetailsVOs= new ArrayList<>();
+	    for(GrnDetailsDTO grnDetailsDTO:grnDTO.getGrnDetailsDTO())
+	    {
+	    	
+	    	GrnDetailsVO grnDetailsVO= new GrnDetailsVO();
+	    	grnDetailsVO.setQrCode(grnDetailsDTO.getQrCode());
+	        grnDetailsVO.setLrNoHawbNo(grnDetailsDTO.getLrNoHawbNo());
+	        grnDetailsVO.setInvoiceNo(grnDetailsDTO.getInvoiceNo());
+	        grnDetailsVO.setInvoiceDate(grnDetailsDTO.getInvoiceDate());
+	        grnDetailsVO.setPartNo(grnDetailsDTO.getPartNo());
+	        grnDetailsVO.setPartDesc(grnDetailsDTO.getPartDesc());
+	        grnDetailsVO.setBinType(grnDetailsDTO.getBinType());
+	        grnDetailsVO.setSku(grnDetailsDTO.getSku());
+	        grnDetailsVO.setInvQty(grnDetailsDTO.getInvQty());
+	        grnDetailsVO.setRecQty(grnDetailsDTO.getRecQty());
+	        
+	        int shortQty= grnDetailsDTO.getInvQty() - grnDetailsDTO.getRecQty();
+	        grnDetailsVO.setShortQty(shortQty);
+	        grnDetailsVO.setDamageQty(grnDetailsDTO.getDamageQty());
+	        
+	        int grnQty=grnDetailsDTO.getRecQty() - grnDetailsDTO.getDamageQty();
+	        grnDetailsVO.setGrnQty(grnQty);
+	        
+	        grnDetailsVO.setSubStockQty(grnDetailsDTO.getSubStockQty());
+	        grnDetailsVO.setBatchQty(grnDetailsDTO.getBatchQty());
+	        grnDetailsVO.setBinQty(grnDetailsDTO.getBinQty());
+	        grnDetailsVO.setPkgs(grnDetailsDTO.getPkgs());
+	        grnDetailsVO.setRate(grnDetailsDTO.getRate());
+	        grnDetailsVO.setWeight(grnDetailsDTO.getWeight());
+	        grnDetailsVO.setBatchNo(grnDetailsDTO.getBatchNo());
+	        grnDetailsVO.setBatchDt(grnDetailsDTO.getBatchDt());
+	        grnDetailsVO.setNoOfBins(grnDetailsDTO.getNoOfBins());
+	        grnDetailsVO.setAmount(grnDetailsDTO.getAmount());
+	        grnDetailsVO.setShipmentNo(grnDetailsDTO.getShipmentNo());
+	        grnDetailsVO.setExpDate(grnDetailsDTO.getExpdate());
+	        grnDetailsVO.setMrp(grnDetailsDTO.getMrp());
+	        
+	        totalGrnQty=totalGrnQty+grnQty;
+	        totalNoOfPkgs=totalNoOfPkgs+grnDetailsDTO.getPkgs();
+	        totalAmount=totalAmount+grnDetailsDTO.getAmount();
+	        grnDetailsVOs.add(grnDetailsVO);
+	    }
+	    grnVO.setGrnDetailsVO(grnDetailsVOs);
+	    grnVO.setTotalAmount(totalAmount);
+	    grnVO.setTotalGrnQty(totalGrnQty);
+	    grnVO.setNoOfPackage(totalNoOfPkgs);
+	    
+}
 	// GatePassIn
 
 	@Override
@@ -420,11 +677,10 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		putAwayRepo.deleteById(id);
 	}
 
-	@Override
-	public Set<Object> getGRNdocid(String branch, String client, String screencode, String finyr) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+
+	
+
 
 //	SalesReturn
 	@Override

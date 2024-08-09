@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -37,9 +38,7 @@ public class GrnVO {
 	@Column(name = "grnid")
 	private Long id;
 
-	@Column(name = "direct")
-	private String direct;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Builder.Default
 	private LocalDate docdate = LocalDate.now();
@@ -49,8 +48,6 @@ public class GrnVO {
 	private LocalDate entryDate;
 	@Column(name = "grndate")
 	private LocalDate grndDate;
-	@Column(name = "tax")
-	private String tax;
 	@Column(name = "gatepassid")
 	private String gatePassId;
 	@Column(name = "gatepassdate")
@@ -68,97 +65,90 @@ public class GrnVO {
 	@Column(name = "modeofshipment")
 	private String modeOfShipment;
 	@Column(name = "noofpackage")
-	private String noOfPackage;
+	private int noOfPackage;
 	
 	@Builder.Default
 	@Column(name = "screencode")
-	private String screenCode="GRN";
-	@Column(unique = true)
-	private String dupchk;
+	private String screenCode="GN";
+	
+	@Builder.Default
+	private String screenName="GRN";
+	
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
+	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
-	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
+	@Builder.Default
+	private boolean cancel=false;
 	@Column(name = "cancelremarks")
-	private String cancelremark;
+	private String cancelRemark;
 	@Column(name = "active")
-	private boolean active;
+	@Builder.Default
+	private boolean active=true;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "client")
 	private String client;
 	@Column(name = "customer")
 	private String customer;
-	@Column(name = "address")
-	private String address;
 	@Column(name = "billofentryno")
-	private String billofenrtyno;
+	private String billOfEnrtyNo;
 	@Column(name = "containerno")
-	private String containerno;
+	private String containerNo;
 	@Column(name = "fifoflag")
-	private String fifoflag;
+	private String fifoFlag;
 	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "flag")
-	private String flag;
-	@Column(name = "stockdate")
-	private LocalDate stockdate;
+	@Column(name = "freeze")
+	@Builder.Default
+	private boolean freeze=false;
 	@Column(name = "vas")
 	private boolean vas;
 	@Column(name = "vehicleno")
-	private String vehicleno;
+	private String vehicleNo;
 	@Column(name = "vehicledetails")
-	private String vehicledetails;
-	@Column(name = "finyr")
-	private String finyr;
-	@Column(name = "noofpackages")
-	private String noofpackages;
+	private String vehicleDetails;
+	@Column(name = "finyear")
+	private String finYear;
 	@Column(name = "totalamount")
-	private String totalamount;
+	private double totalAmount;
 	@Column(name = "totalgrnqty")
-	private int totalgrnqty;//
-	@Column(name = "billofentry")
-	private String billofentry;
-	@Column(name = "capacity")
-	private String capacity;
+	private int totalGrnQty;//
 	@Column(name = "sealno")
-	private String sealno;
+	private String sealNo;
 	@Column(name = "vesselno")
-	private String vesselno;
+	private String vesselNo;
 	@Column(name = "hsnno")
-	private String hsnno;
+	private String hsnNo;
 	@Column(name = "securityname")
-	private String securityname;
+	private String securityName;
 	@Column(name = "vehicletype")
-	private String vehicletype;
+	private String vehicleType;
 	@Column(name = "vessedetails")
-	private String vesseldetails;
+	private String vesselDetails;
 	@Column(name = "lrno")
-	private String lrno;
+	private String lrNo;
 	@Column(name = "drivername")
-	private String drivername;
+	private String driverName;
 	@Column(name = "contact")
 	private String contact;
 	@Column(name = "lrdate")
-	private LocalDate lrdate;
+	private LocalDate lrDate;
 	@Column(name = "goodsdescripition")
-	private String goodsdescripition;
+	private String goodsDescripition;
 	@Column(name = "destinatiomfrom")
-	private String destinationfrom;
+	private String destinationFrom;
 	@Column(name = "destinationto")
-	private String destinationto;
-	@Column(name = "noofpallets")
-	private String noofpallets;
+	private String destinationTo;
+	@Column(name = "noofbins")
+	private String noOfBins;
 	@Column(name = "invoiceno")
-	private String invoiceno;
+	private String invoiceNo;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
@@ -167,20 +157,4 @@ public class GrnVO {
 	@Embedded
 	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
-	@PrePersist
-    private void setDefaultFinyr() {
-        // Execute the logic to set the default value for finyr
-        String fyFull = calculateFinyr();
-        this.finyr = fyFull;
-    }
-    private String calculateFinyr() {
-        // Logic to calculate finyr based on the provided SQL query
-        String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
-        String fyFull = (currentMonthDay.compareTo("0331") > 0) ?
-                            LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy")) :
-                            LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
-        return fyFull;
-
-    }
 }

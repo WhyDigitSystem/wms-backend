@@ -36,7 +36,7 @@ public class DeliveryChallanVO {
 	@Column(name = "deliverychallanid")
 	private Long id;
 	
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
@@ -104,13 +104,9 @@ public class DeliveryChallanVO {
 	private String remarks;
 	
 	@Column(name = "screenname")
-	private String screenName ;
+	private String screenName ="DeliveryChallan" ;
 	@Column(name = "screencode")
-	private String screenCode;
-//	@Column(name = "docdate")
-//	private LocalDate docDate= LocalDate.now();
-//	@Column(name = "docid")
-//	private String docId;
+	private String screenCode ="DC";
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -136,7 +132,7 @@ public class DeliveryChallanVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze;
+	private boolean freeze = true;
 
 	
 	@JsonGetter("active")
