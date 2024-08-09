@@ -27,11 +27,12 @@ public interface InwardTransactionService {
 
 	// Grn
 
-	List<GrnVO> getAllGrn(Long orgId,String finYear,String branch,String branchCode,String client,String warehouse);
+	List<GrnVO> getAllGrn(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
 
 	GrnVO getGrnById(Long id);
-	
-	String getGRNdocid(Long orgId,String finYear,String branchCode,String client,String screencode);
+
+	String getGRNdocid(Long orgId, String finYear, String branchCode, String client, String screencode);
 
 	Map<String, Object> createUpdateGrn(GrnDTO grnDTO) throws ApplicationException;
 
@@ -80,20 +81,34 @@ public interface InwardTransactionService {
 
 	SalesReturnVO getAllSalesReturnById(Long id);
 
-	SalesReturnVO updateCreateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
+	Map<String, Object> createUpdateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
 
 	List<Map<String, Object>> getSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
+	
+	String getSalesReturnDocId(Long orgId, String finYear, String branch, String branchCode,
+			String client);
+
 
 //	LocationMovement
-	List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode, String client,
-			String warehouse);
+	List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse);
 
 	LocationMovementVO getAllLocationMovementById(Long id);
 
-	LocationMovementVO updateCreateLocationMovement(@Valid LocationMovementDTO locationMovementDTO) throws ApplicationException;
+	Map<String, Object> createUpdateLocationMovement(@Valid LocationMovementDTO locationMovementDTO)
+			throws ApplicationException;
+
+	List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String finYear, String branch,
+			String branchCode, String client);
 
 
-
+	List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear, String branch,
+			String branchCode, String client, String bin);
 	
+	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear, String branch,
+			String branchCode, String client, String bin,String partNo,String partDesc,String sku);
+	
+	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode,
+			String client);
 
 }

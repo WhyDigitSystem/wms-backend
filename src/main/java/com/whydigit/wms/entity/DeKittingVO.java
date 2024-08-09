@@ -21,28 +21,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "locationmovement")
+@Table(name = "dekitting")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LocationMovementVO {
+public class DeKittingVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmovementgen")
-	@SequenceGenerator(name = "locationmovementgen", sequenceName = "locationmovementseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "locationmovementid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dekittinggen")
+	@SequenceGenerator(name = "dekittinggen", sequenceName = "dekittingseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "dekittingid")
 	private Long id;
-	@Column(name = "type")
-	private String type;
-	@Column(name = "screenname")
-	private String screenName ="LOCATION MOVEMENT";
-	@Column(name = "screencode")
-	private String screenCode = "LM";
-	@Column(name = "docdate")
-	private LocalDate docDate = LocalDate.now();
-	@Column(name = "docid",unique = true)
+	@Column(name = "transactiontype")
+	private String transactionType;
+	@Column(name = "docid")
 	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -69,15 +65,14 @@ public class LocationMovementVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze = true;
-	@Column(name="sku")
-	private String sku;
 	@Column(name = "grndate")
 	private LocalDate grnDate = LocalDate.now();
-	@Column(name="core")
-	private String core;
 	
-	
-	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "deKittingVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<LocationMovementDetailsVO> locationMovementDetailsVO;
+	private List<DeKittingParentVO> deKittingParentVO;
+	
+	@OneToMany(mappedBy = "deKittingVO",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<DeKittingChildVO> deKittingChildVO;
 }
