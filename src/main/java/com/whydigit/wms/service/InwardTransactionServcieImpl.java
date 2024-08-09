@@ -871,11 +871,10 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 			message = "LocationMovement Created Successfully";
 		}
-
 		LocationMovementVO savedLocationMovementVO = locationMovementRepo.save(locationMovementVO);
+		
 		List<LocationMovementDetailsVO> locationMovementDetailsVOLists = savedLocationMovementVO
 				.getLocationMovementDetailsVO();
-
 		if (locationMovementDetailsVOLists != null && !locationMovementDetailsVOLists.isEmpty()) {
 			for (LocationMovementDetailsVO detailsVO : locationMovementDetailsVOLists) {
 				// Create StockDetails for fromBin with negative quantity
