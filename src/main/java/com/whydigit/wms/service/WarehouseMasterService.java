@@ -22,6 +22,7 @@ import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
+import com.whydigit.wms.dto.WarehouseLocationDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -156,9 +157,8 @@ public interface WarehouseMasterService {
 
 	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
 
-	WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO); // Return the created entity
+	Map<String, Object> createUpdateWarehouseLocation(WarehouseLocationDTO warehouseLocationDTO) throws ApplicationException;
 
-	Optional<WarehouseLocationVO> updateWarehouseLocation(WarehouseLocationVO warehouseLocationVO);
 
 	void deleteWarehouseLocation(Long warehouselocationid);
 
@@ -253,5 +253,9 @@ public interface WarehouseMasterService {
 	Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)throws ApplicationException;
 	
 	List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId);
+	
+	DocumentTypeMappingVO getDocumentTypeMappingById(Long id)throws ApplicationException;
+
+	
 
 }

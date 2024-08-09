@@ -39,6 +39,7 @@ import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
+import com.whydigit.wms.dto.WarehouseLocationDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -1081,49 +1082,20 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> createWarehouseLocation(@RequestBody WarehouseLocationVO warehouseLocationVO) {
+	@PutMapping("/warehouselocation")
+	public ResponseEntity<ResponseDTO> createWarehouseLocation(@RequestBody WarehouseLocationDTO warehouseLocationDTO) {
 		String methodName = "createWarehouseLocation()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
+		Map<String,Object>warehouseLocationVO= new HashMap<>();
 		try {
-			WarehouseLocationVO createWarehouseLocation = warehouseMasterService
-					.createWarehouseLocation(warehouseLocationVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse Location created successfully");
-			responseObjectsMap.put("WarehouseLocation", createWarehouseLocation);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse Location creation Failed",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PutMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> updateWarehouseLocation(@RequestBody WarehouseLocationVO warehouseLocationVO) {
-		String methodName = "updateWarehouseLocation()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			WarehouseLocationVO updatedwarehouseLocationVO = warehouseMasterService
-					.updateWarehouseLocation(warehouseLocationVO).orElse(null);
-			if (updatedwarehouseLocationVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse Location updated successfully");
-				responseObjectsMap.put("warehouseLocationVO", updatedwarehouseLocationVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Warehouse Location not found for Warehouse LocationID: " + warehouseLocationVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse Location update failed",
-						errorMsg);
-			}
-		} catch (Exception e) {
+	        warehouseLocationVO = warehouseMasterService.createUpdateWarehouseLocation(warehouseLocationDTO);
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, warehouseLocationVO.get("message"));
+	        responseObjectsMap.put("warehouseLocationVO", warehouseLocationVO.get("warehouseLocationVO"));
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    } catch (Exception e) {
 	        errorMsg = e.getMessage();
 	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
@@ -1870,8 +1842,8 @@ public class WarehouseMasterController extends BaseController {
 		for (Object[] plt : pallet) {
 			Map<String, String> formattedplt = new HashMap<>();
 			formattedplt.put("id", plt[0].toString());
-			formattedplt.put("Bin", plt[1].toString());
-			formattedplt.put("cellcategory", plt[2].toString());
+			formattedplt.put("bin", plt[1].toString());
+			formattedplt.put("bincategory", plt[2].toString());
 			formattedplt.put("status", plt[3].toString());
 			formattedplt.put("core", plt[4].toString());
 			palletno.add(formattedplt);
@@ -2027,6 +1999,33 @@ public class WarehouseMasterController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type Mapping information receive failed",
 					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/documentTypeMappingById")
+	public ResponseEntity<ResponseDTO> documentTypeMappingById(@RequestParam Long id) {
+		String methodName = "documentTypeMappingById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		DocumentTypeMappingVO documentTypeMappingVO = new DocumentTypeMappingVO();
+		try {
+			documentTypeMappingVO = warehouseMasterService.getDocumentTypeMappingById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"documentTypeMappingVO information get successfully");
+			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"documentTypeMappingVO information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
