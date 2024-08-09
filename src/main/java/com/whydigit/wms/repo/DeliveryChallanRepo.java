@@ -1,6 +1,7 @@
 package com.whydigit.wms.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,8 +17,15 @@ public interface DeliveryChallanRepo extends JpaRepository<DeliveryChallanVO, Lo
 			String client, String warehouse);
 
 	@Query(nativeQuery = true, value = "select * from deliverychallan where deliverychallanid=?1")
-	List<DeliveryChallanVO> findDeliveryChallanById(Long id);
+	DeliveryChallanVO findDeliveryChallanById(Long id);
 
 	boolean existsByBuyerOrderNoAndOrgId(String buyerOrderNo, Long orgId);
+
+	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
+	String getDeliveryChallanDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
+
+
+
+
 
 }
