@@ -28,8 +28,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VasPickVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspicgen")
-	@SequenceGenerator(name = "vaspicgen", sequenceName = "vaspicseq", initialValue = 1000000001, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspickgen")
+	@SequenceGenerator(name = "vaspickgen", sequenceName = "vaspickseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "vaspicid")
 	private Long id;
 	@Column(name = "picbin")
@@ -42,7 +42,7 @@ public class VasPickVO {
 	private LocalDate docDate = LocalDate.now();
 	@Column(name = "docid")
 	private String docId;
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;
