@@ -69,8 +69,6 @@ public class BranchVO {
 	private String createdBy;
 	@Column(name = "modifiedby")
 	private String updatedBy;
-//	@Column(unique = true)
-//	private String dupchk;
 	@Column(name = "active")
 	private boolean active;
 

@@ -44,7 +44,6 @@ import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.StateVO;
-import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.service.CommonMasterService;
 
 @RestController

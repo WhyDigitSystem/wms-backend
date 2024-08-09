@@ -17,19 +17,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "itemgroup")
+@Table(name = "department")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupVO {
+public class DepartmentVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "itemgroupgen")
-	@SequenceGenerator(name = "itemgroupgen",sequenceName = "itemgroupseq",initialValue = 1000000001,allocationSize = 1)
-	@Column(name="itemgroupid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "departmentgen")
+	@SequenceGenerator(name = "departmentgen",sequenceName = "departmentseq",initialValue = 1000000001,allocationSize = 1)
+	@Column(name="deptid")
 	private Long id;
-	@Column(name = "groupname")
-	private String groupName;
+	@Column(name = "departmentname")
+	private String departmentName;
+	@Column(name = "deptcode")
+	private String code;
 	private boolean active;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -37,7 +39,6 @@ public class GroupVO {
 	private String createdBy;
 	@Column(name = "modifiedby")
 	private String updatedBy;
-	private String company;
 	private boolean cancel;
 	
 	@JsonGetter("active")
@@ -54,3 +55,4 @@ public class GroupVO {
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }
+

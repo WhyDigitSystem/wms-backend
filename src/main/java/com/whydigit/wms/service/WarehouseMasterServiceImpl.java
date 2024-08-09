@@ -33,7 +33,6 @@ import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
-import com.whydigit.wms.dto.WarehouseBranchDTO;
 import com.whydigit.wms.dto.WarehouseClientDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
 import com.whydigit.wms.entity.BranchVO;
@@ -54,7 +53,6 @@ import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
-import com.whydigit.wms.entity.WarehouseBranchVO;
 import com.whydigit.wms.entity.WarehouseClientVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
@@ -307,11 +305,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		LocationTypeVO locationTypeVO;
 		if (ObjectUtils.isEmpty(locationTypeDTO.getId())) {
 
-			if (locationTypeRepo.existsByLocationTypeAndOrgId(locationTypeDTO.getLocationtype(),
+			if (locationTypeRepo.existsByBinTypeAndOrgId(locationTypeDTO.getBinType(),
 					locationTypeDTO.getOrgId())) {
 
 				String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
-						locationTypeDTO.getLocationtype());
+						locationTypeDTO.getBinType());
 				throw new ApplicationException(errorMessage);
 
 			}
@@ -323,16 +321,16 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 			locationTypeVO.setUpdatedBy(locationTypeDTO.getCreatedBy());
 
-			if (!locationTypeVO.getLocationType().equalsIgnoreCase(locationTypeDTO.getLocationtype())) {
-				if (locationTypeRepo.existsByLocationTypeAndOrgId(locationTypeDTO.getLocationtype(),
+			if (!locationTypeVO.getBinType().equalsIgnoreCase(locationTypeDTO.getBinType())) {
+				if (locationTypeRepo.existsByBinTypeAndOrgId(locationTypeDTO.getBinType(),
 						locationTypeDTO.getOrgId())) {
  
 					String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
-							locationTypeDTO.getLocationtype());
+							locationTypeDTO.getBinType());
 					throw new ApplicationException(errorMessage);
 
 				}
-				locationTypeVO.setLocationType(locationTypeDTO.getLocationtype());
+				locationTypeVO.setBinType(locationTypeDTO.getBinType());
 			}
 
 		} else {
@@ -351,7 +349,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		locationTypeVO.setOrgId(locationTypeDTO.getOrgId());
 		locationTypeVO.setActive(locationTypeDTO.isActive());
 		locationTypeVO.setCancel(locationTypeDTO.isCancel());
-		locationTypeVO.setLocationType(locationTypeDTO.getLocationtype());
+		locationTypeVO.setBinType(locationTypeDTO.getBinType());
 	}
 
 	@Override

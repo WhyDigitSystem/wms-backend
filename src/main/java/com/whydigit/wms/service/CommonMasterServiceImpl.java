@@ -999,6 +999,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	private void getFinancialYearVOFromFinancialYearDTO(FinancialYearVO financialYearVO,
 			FinancialYearDTO financialYearDTO) {
 		financialYearVO.setFinYear(financialYearDTO.getFinYear());
+		financialYearVO.setFinYearId(financialYearDTO.getFinYearId());
 		financialYearVO.setFinYearIdentifier(financialYearDTO.getFinYearIdentifier());
 		financialYearVO.setStartDate(financialYearDTO.getStartDate());
 		financialYearVO.setEndDate(financialYearDTO.getEndDate());
