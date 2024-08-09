@@ -11,7 +11,7 @@ public interface DocumentTypeMappingDetailsRepo extends JpaRepository<DocumentTy
 	String getGRNDocId(String branch, String client, String finYear, String screenCode);
 
 
-	@Query(nativeQuery = true, value = "select * from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
+	@Query(nativeQuery = true, value = "select * from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client =?4 and screencode=?5")
 	DocumentTypeMappingDetailsVO findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(Long orgId, String finYear,
 			String branchCode, String client, String screenCode);
 
