@@ -1775,10 +1775,4 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return clientList;
 	}
 
-
-	
-
-	
-
-
 }
