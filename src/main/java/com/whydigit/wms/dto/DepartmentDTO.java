@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LocationTypeDTO {
+public class DepartmentDTO {
 	private Long id;
-	private String binType;
-	private String createdBy;
-	private Long orgId;
-	private boolean cancel;
+	private String departmentName;
+	private String code;
 	private boolean active;
-
+	private Long orgId;
+	private String createdBy;
+	private String updatedBy;
+	private boolean cancel;
 }

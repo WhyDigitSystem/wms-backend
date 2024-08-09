@@ -122,6 +122,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 //		return grnRepo.findAllGatePassNumberByClientAndBranch(orgId, client, customer, branchcode);
 //	}
 
+
 	@Override
 	public void deleteGrn(Long id) {
 		grnRepo.deleteById(id);

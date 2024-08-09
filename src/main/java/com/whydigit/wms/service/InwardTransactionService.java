@@ -32,9 +32,7 @@ public interface InwardTransactionService {
 
 	Optional<GrnVO> getGrnById(Long id);
 
-//	GrnVO createGrn(GrnDTO grnDTO);
-//
-//	Optional<GrnVO> updateGrn(GrnVO grnVO);
+
 
 	void deleteGrn(Long id);
 
