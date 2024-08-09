@@ -1010,8 +1010,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	}
 
 	@Override
-	public List<FinancialYearVO> getAllFInYear() {
-		return financialYearRepo.findAll();
+	public List<FinancialYearVO> getAllActiveFInYear(Long orgId) {
+		return financialYearRepo.findAllActiveFinYear(orgId);
 	}
 
 	@Override

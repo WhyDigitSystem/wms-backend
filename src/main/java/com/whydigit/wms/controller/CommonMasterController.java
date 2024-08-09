@@ -732,7 +732,7 @@ public class CommonMasterController extends BaseController {
 		List<Map<String, String>> getClient = new ArrayList<>();
 		for (Object[] parameters : clientVO) {
 			Map<String, String> param = new HashMap<>();
-			param.put("customer", parameters[0].toString());
+			param.put("client", parameters[0].toString());
 			getClient.add(param);
 		}
 		return getClient;
@@ -1032,8 +1032,8 @@ public class CommonMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@GetMapping("/getAllFInYear")
-	public ResponseEntity<ResponseDTO> getAllFInYear() {
+	@GetMapping("/getAllAciveFInYear")
+	public ResponseEntity<ResponseDTO> getAllFInYear(@RequestParam Long orgId) {
 		String methodName = "getAllFInYear()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1041,7 +1041,7 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<FinancialYearVO> financialYearVOs = new ArrayList<FinancialYearVO>();
 		try {
-			financialYearVOs = commonMasterService.getAllFInYear();
+			financialYearVOs = commonMasterService.getAllActiveFInYear(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
