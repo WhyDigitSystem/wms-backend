@@ -56,11 +56,15 @@ public interface InwardTransactionService {
 
 //	Put Away
 
-	List<PutAwayVO> getAllPutAway();
+	List<PutAwayVO> getAllPutAway(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
+	
+	PutAwayVO getPutAwayById(Long id);
+	
+	String getPutAwayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-	Optional<PutAwayVO> getPutAwayById(Long id);
 
-	PutAwayVO createPutAway(PutAwayDTO PutAwayDTO);
+//	PutAwayVO createPutAway(PutAwayDTO PutAwayDTO);
 
 	Optional<PutAwayVO> updatePutAway(PutAwayVO PutAwayVO);
 
@@ -87,5 +91,9 @@ public interface InwardTransactionService {
 	LocationMovementVO getAllLocationMovementById(Long id);
 
 	LocationMovementVO updateCreateLocationMovement(@Valid LocationMovementDTO locationMovementDTO) throws ApplicationException;
+
+
+
+	
 
 }
