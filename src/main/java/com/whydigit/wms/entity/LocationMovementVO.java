@@ -29,21 +29,21 @@ import lombok.NoArgsConstructor;
 public class LocationMovementVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmovement")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmovementgen")
 	@SequenceGenerator(name = "locationmovementgen", sequenceName = "locationmovementseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmovementid")
 	private Long id;
 	@Column(name = "type")
 	private String type;
 	@Column(name = "screenname")
-	private String screenName;
+	private String screenName ="LOCATION MOVEMENT";
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode = "LM";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;
@@ -68,7 +68,8 @@ public class LocationMovementVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze;
+	private boolean freeze = true;
+	
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
 	@JsonManagedReference

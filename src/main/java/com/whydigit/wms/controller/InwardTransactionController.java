@@ -26,13 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.GatePassInDTO;
-import com.whydigit.wms.dto.GrnDTO;
+import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
+import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.PutAwayVO;
 
 import com.whydigit.wms.entity.SalesReturnVO;
@@ -201,53 +202,6 @@ public class InwardTransactionController extends BaseController {
 			formattedParameters.add(param);
 		}
 		return formattedParameters;
-	}
-
-	@PostMapping("/grn")
-	public ResponseEntity<ResponseDTO> createGrn(@RequestBody GrnDTO grnDTO) {
-		String methodName = "createGrn()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			GrnVO createdGrnVO = inwardTransactionService.createGrn(grnDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn created successfully");
-			responseObjectsMap.put("GrnVO", createdGrnVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, " Grn & GrnCode already Exist ", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PutMapping("/grn")
-	public ResponseEntity<ResponseDTO> updateGrn(@RequestBody GrnVO grnVO) {
-		String methodName = "updateGrn()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			GrnVO updatedGrnVO = inwardTransactionService.updateGrn(grnVO).orElse(null);
-			if (updatedGrnVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn updated successfully");
-				responseObjectsMap.put("GrnVO", updatedGrnVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Grn not found for Grn ID: " + grnVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Grn update failed", errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Grn & GrnCode already Exist", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// GatePassIn
@@ -555,7 +509,7 @@ public class InwardTransactionController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<SalesReturnVO> salesReturnVO = new ArrayList<>();
+		SalesReturnVO salesReturnVO = new SalesReturnVO();
 		try {
 			salesReturnVO = inwardTransactionService.getAllSalesReturnById(id);
 		} catch (Exception e) {
@@ -563,10 +517,6 @@ public class InwardTransactionController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "SalesReturn information get successfully By id");
-			responseObjectsMap.put("salesReturnVO", salesReturnVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "SalesReturn information receive failed By Id",
 					errorMsg);
 		}
@@ -641,6 +591,95 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
+//	LocationMovement
+	@GetMapping("/getAllLocationMovementByOrgId")
+	public ResponseEntity<ResponseDTO> getAllLocationMovement(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String warehouse) {
+		String methodName = "getAllLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<LocationMovementVO> locationMovementVO = new ArrayList<>();
+		try {
+			locationMovementVO = inwardTransactionService.getAllLocationMovement(orgId, finYear, branch, branchCode,
+					client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LocationMovement information get successfully ");
+			responseObjectsMap.put("locationMovementVO", locationMovementVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LocationMovement information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getAllLocationMovementById")
+	public ResponseEntity<ResponseDTO> getAllLocationMovementById(@RequestParam(required = false) Long id) {
+		String methodName = "getAllLocationMovementById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		LocationMovementVO locationMovementVO = new LocationMovementVO();
+		try {
+			locationMovementVO = inwardTransactionService.getAllLocationMovementById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"LocationMovement information receive failed By Id", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/updateCreateLocationMovement")
+	public ResponseEntity<ResponseDTO> updateCreateLocationMovement(
+			@Valid @RequestBody LocationMovementDTO locationMovementDTO) {
+		String methodName = "updateCreateLocationMovement()";
+
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+
+		try {
+			LocationMovementVO locationMovementVO = inwardTransactionService
+					.updateCreateLocationMovement(locationMovementDTO);
+			boolean isUpdate = locationMovementDTO.getId() != null;
+
+			if (locationMovementVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						isUpdate ? "LocationMovement updated successfully" : "LocationMovement created successfully");
+				responseObjectsMap.put("locationMovementVO", locationMovementVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = isUpdate ? "LocationMovement not found for ID: " + locationMovementDTO.getId()
+						: "LocationMovement creation failed";
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						isUpdate ? "LocationMovement update failed" : "LocationMovement creation failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			boolean isUpdate = locationMovementDTO.getId() != null;
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					isUpdate ? "LocationMovement update failed" : "LocationMovement creation failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 	
 }

@@ -33,8 +33,8 @@ public class LocationMovementDetailsVO {
 	@SequenceGenerator(name = "locationmovementdetailsgen", sequenceName = "locationmovementdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmovementdetailsid")
 	private Long id;
-	@Column(name = "pallet")
-	private String pallet;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdescripition")
@@ -47,10 +47,8 @@ public class LocationMovementDetailsVO {
 	private LocalDate batchDate;
 	@Column(name = "lotno")
 	private String lotNo;
-	@Column(name = "tolocation")
-	private String toLocation;
-	@Column(name = "fromlocation")
-	private String fromLocation;
+	@Column(name = "tobin")
+	private String toBin;
 	@Column(name = "fromqty")
 	private int fromQty;
 	@Column(name = "toqty")
@@ -59,6 +57,20 @@ public class LocationMovementDetailsVO {
 	private int remainingQty;
 	@Column(name = "qcflag")
 	private boolean qcFlag;
+	@Column(name = "sku")
+	private String sku;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
+	@Column(name = "bintype")
+	private String binType;
+	@Column(name = "core")
+	private String core;
+	@Column(name="binclass")
+	private String binClass;
+	@Column(name="expdate")
+	private LocalDate expDate;
+	@Column(name="status")
+	private String status;
 	
 	@ManyToOne
 	@JsonBackReference
