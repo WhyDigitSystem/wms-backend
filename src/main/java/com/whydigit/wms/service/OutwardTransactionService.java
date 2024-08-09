@@ -22,8 +22,10 @@ public interface OutwardTransactionService {
 
 		DeliveryChallanVO getDeliveryChallanById(Long id);
 
-		DeliveryChallanVO updateCreateDeliveryChallan(@Valid DeliveryChallanDTO deliveryChallanDTO) throws ApplicationException;
-
+		Map<String, Object> createUpdateDeliveryChallan(DeliveryChallanDTO deliveryChallanDTO)
+				throws ApplicationException;
+		
+		
 		String getDeliveryChallanDocId(Long orgId, String finYear, String branch, String branchCode,
 				String client);
 
@@ -34,10 +36,10 @@ public interface OutwardTransactionService {
 
 		VasPutawayVO getVasPutawayById(Long id);
 
-		VasPutawayVO updateCreateVasPutaway(@Valid VasPutawayDTO vasPutawayDTO) throws ApplicationException;
-
+		Map<String, Object> createUpdateVasPutaway(@Valid VasPutawayDTO vasPutawayDTO) throws ApplicationException;
+	
 		String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
-
+		
 		
 		//BuyerOrder
 		
@@ -49,6 +51,10 @@ public interface OutwardTransactionService {
 
 		public int getAvlQty(Long orgId, String client, String branchCode, String warehouse,
 				String branch, String partNo, String partDesc);
-		
+
+
+
+
+
 
 }
