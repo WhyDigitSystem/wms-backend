@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
+import com.whydigit.wms.dto.DocumentTypeMappingDTO;
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
@@ -48,58 +49,7 @@ public class InwardTransactionController extends BaseController {
 	@Autowired
 	InwardTransactionService inwardTransactionService;
 
-	// Grn
-
-	@GetMapping("/grn")
-	public ResponseEntity<ResponseDTO> getAllGrn() {
-		String methodName = "getAllGrn()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<GrnVO> grnVO = new ArrayList<>();
-		try {
-			grnVO = inwardTransactionService.getAllGrn();
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn information get successfully");
-			responseObjectsMap.put("grnVO", grnVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/grn/{id}")
-	public ResponseEntity<ResponseDTO> getGrnById(@PathVariable Long id) {
-		String methodName = "getGrnById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		GrnVO grnVO = null;
-		try {
-			grnVO = inwardTransactionService.getGrnById(id).orElse(null);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn found by ID");
-			responseObjectsMap.put("Grn", grnVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			errorMsg = "Grn not found for ID: " + id;
-			responseDTO = createServiceResponseError(responseObjectsMap, "Grn not found", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+	
 
 //	@GetMapping("/getAllGatePassNumberByClientAndBranch")
 //	public ResponseEntity<ResponseDTO> getAllGatePassNumberByClientAndBranch(@RequestParam Long orgid,
@@ -203,6 +153,82 @@ public class InwardTransactionController extends BaseController {
 		}
 		return formattedParameters;
 	}
+
+	// Grn
+
+		@GetMapping("/getAllGrn")
+		public ResponseEntity<ResponseDTO> getAllGrn(@RequestParam Long orgId, @RequestParam String finYear,
+				@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
+				@RequestParam String warehouse) {
+			String methodName = "getAllGrn()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<GrnVO> grnVO = new ArrayList<>();
+			try {
+				grnVO = inwardTransactionService.getAllGrn(orgId, finYear, branch, branchCode, client, warehouse);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn information get successfully");
+				responseObjectsMap.put("grnVO", grnVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@GetMapping("/getGrnById")
+		public ResponseEntity<ResponseDTO> getGrnById(@RequestParam Long id) {
+			String methodName = "getGrnById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			GrnVO grnVO = null;
+			try {
+				grnVO = inwardTransactionService.getGrnById(id);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isEmpty(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn found by ID");
+				responseObjectsMap.put("Grn", grnVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Grn not found for ID: " + id;
+				responseDTO = createServiceResponseError(responseObjectsMap, "Grn not found", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@PutMapping("/createUpdateGRN")
+		public ResponseEntity<ResponseDTO> createUpdateGRN(@RequestBody GrnDTO grnDTO) {
+		    String methodName = "createUpdateGRN()";
+		    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		    String errorMsg = null;
+		    Map<String, Object> responseObjectsMap = new HashMap<>();
+		    ResponseDTO responseDTO = null;
+		    try {
+		        Map<String, Object> grnVO = inwardTransactionService.createUpdateGrn(grnDTO);
+		        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, grnVO.get("message"));
+		        responseObjectsMap.put("grnVO", grnVO.get("grnVO"));
+		        responseDTO = createServiceResponse(responseObjectsMap);
+		    } catch (Exception e) {
+		        errorMsg = e.getMessage();
+		        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		    }
+		    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		    return ResponseEntity.ok().body(responseDTO);
+		}
 
 	// GatePassIn
 
@@ -469,7 +495,10 @@ public class InwardTransactionController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+
 	}
+
+
 
 //	SalesReturn
 	@GetMapping("/getAllSalesReturnByOrgId")
@@ -681,5 +710,4 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
 }

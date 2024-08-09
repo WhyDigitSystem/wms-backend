@@ -3,6 +3,12 @@ package com.whydigit.wms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,36 +19,49 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class GrnDTO {
-	private String direct;
-	private String docid;
-	private LocalDate docdate;
-	private String entryno;
-	private LocalDate entrydate;
-	private LocalDate grndate;
-	private boolean vas;
-	private String gatepassid;
-	private LocalDate gatepassdate;
-	private String customerpo;
-	private String suppliershortname;
+	
+	private Long id;
+	private String entryNo;
+	private LocalDate entryDate;
+	private LocalDate grndDate;
+	private String gatePassId;
+	private LocalDate gatePassDate;
+	private String customerPo;
+	private String supplierShortName;
 	private String supplier;
 	private String carrier;
-	private String lotno;
-	private String modeofshipment;
+	private String lotNo;
+	private String modeOfShipment;
+	private String createdBy;
 	private Long orgId;
-	private boolean cancel;
-	private String userid;
-	private String cancelremark;
-	private boolean active;
-	private String branchcode;
+	private String branchCode;
 	private String branch;
 	private String client;
 	private String customer;
+	private String billOfEnrtyNo;
+	private String containerNo;
+	private String fifoFlag;
 	private String warehouse;
-	private String finyr;
-	private String noofpackages;
-	private String totalamount;
-	private int totalgrnqty;//
-	private String createdby;//both
+	private boolean vas;
+	private String vehicleNo;
+	private String vehicleDetails;
+	private String finYear;
+	private String sealNo;
+	private String vesselNo;
+	private String hsnNo;
+	private String securityName;
+	private String vehicleType;
+	private String vesselDetails;
+	private String lrNo;
+	private String driverName;
+	private String contact;
+	private LocalDate lrDate;
+	private String goodsDescripition;
+	private String destinationFrom;
+	private String destinationTo;
+	private String noOfBins;
+	private String invoiceNo;
+	
 	List<GrnDetailsDTO> grnDetailsDTO;
 
 }

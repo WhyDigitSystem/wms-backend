@@ -1,5 +1,6 @@
 package com.whydigit.wms.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +10,16 @@ import com.whydigit.wms.entity.GrnVO;
 
 public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 
-//	@Query(value = "SELECT g.entryno,g.docid,g.docdate,g.suppliershortname,g.supplier,g.modeofshipment,g.carrier,g.vehicletype,g.contact,g.drivername,g.securityname,g.goodsdescription,g.vehicleno FROM GatePassInVO g WHERE g.orgId = ?1 AND g.client = ?2 AND g.customer = ?3 AND g.branchcode = ?4 ")
-//	Set<Object[]> findAllGatePassNumberByClientAndBranch(Long orgId, String client, String customer, String branchcode);
+	@Query(value="select a from GrnVO a where a.orgId=?1 and a.finYear=?2 and a.branch=?3 and a.branchCode=?4 and a.client=?5 and a.warehouse=?6 order by a.docId desc")
+	List<GrnVO> findAllGrnDetails(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
+
+
+	@Query(nativeQuery = true ,value = "select  concat(a.prefixfield ,LPAD(a.lastno, 6, '0')) from m_documenttypemappingdetails a where a.orgId=?1 and a.finYear=?2 and a.branchCode=?3 and a.client=?4 and a.screenCode=?5")
+	String getGRNDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
+
+	boolean existsByEntryNoAndOrgIdAndClientAndBranchCodeAndWarehouse(String entryNo, Long orgId, String client,
+			String branchCode, String warehouse);
+
 
 }
