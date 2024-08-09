@@ -5,9 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.GatePassInDTO;
+import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
@@ -64,8 +67,6 @@ public interface InwardTransactionService {
 	void deletePutAway(Long idLong);
 
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
-
-	Set<Object> getGRNdocid(String branch, String client, String screencode, String finyr);
 
 	List<CarrierVO> getActiveShipment(String shipmentMode);
 
