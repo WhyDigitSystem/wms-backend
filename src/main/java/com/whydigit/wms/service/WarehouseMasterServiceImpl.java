@@ -305,11 +305,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		LocationTypeVO locationTypeVO;
 		if (ObjectUtils.isEmpty(locationTypeDTO.getId())) {
 
-			if (locationTypeRepo.existsByLocationTypeAndOrgId(locationTypeDTO.getLocationtype(),
+			if (locationTypeRepo.existsByBinTypeAndOrgId(locationTypeDTO.getBinType(),
 					locationTypeDTO.getOrgId())) {
 
 				String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
-						locationTypeDTO.getLocationtype());
+						locationTypeDTO.getBinType());
 				throw new ApplicationException(errorMessage);
 
 			}
@@ -321,16 +321,16 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 			locationTypeVO.setUpdatedBy(locationTypeDTO.getCreatedBy());
 
-			if (!locationTypeVO.getLocationType().equalsIgnoreCase(locationTypeDTO.getLocationtype())) {
-				if (locationTypeRepo.existsByLocationTypeAndOrgId(locationTypeDTO.getLocationtype(),
+			if (!locationTypeVO.getBinType().equalsIgnoreCase(locationTypeDTO.getBinType())) {
+				if (locationTypeRepo.existsByBinTypeAndOrgId(locationTypeDTO.getBinType(),
 						locationTypeDTO.getOrgId())) {
  
 					String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
-							locationTypeDTO.getLocationtype());
+							locationTypeDTO.getBinType());
 					throw new ApplicationException(errorMessage);
 
 				}
-				locationTypeVO.setLocationType(locationTypeDTO.getLocationtype());
+				locationTypeVO.setBinType(locationTypeDTO.getBinType());
 			}
 
 		} else {
@@ -349,7 +349,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		locationTypeVO.setOrgId(locationTypeDTO.getOrgId());
 		locationTypeVO.setActive(locationTypeDTO.isActive());
 		locationTypeVO.setCancel(locationTypeDTO.isCancel());
-		locationTypeVO.setLocationType(locationTypeDTO.getLocationtype());
+		locationTypeVO.setBinType(locationTypeDTO.getBinType());
 	}
 
 	@Override

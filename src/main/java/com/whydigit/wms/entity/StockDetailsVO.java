@@ -66,8 +66,6 @@ public class StockDetailsVO {
 	private LocalDate stockDate;
 	@Column(name = "grnno")
 	private String grnNo;
-	@Column(name = "grndate")
-	private LocalDate grnDate;
 	@Column(name = "carrier")
 	private String carrier;
 	@Column(name = "oqty")
@@ -86,8 +84,10 @@ public class StockDetailsVO {
 	private String partno;
 	@Column(name = "partdesc")
 	private String partDesc;
-	@Column(name = "sourcescreen")
-	private String sourceScreen;
+	@Column(name = "sourcescreencode")
+	private String sourceScreenCode;
+	@Column(name = "sourcescreenName")
+	private String sourceScreenName;
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "customer")
@@ -110,6 +110,8 @@ public class StockDetailsVO {
 	private String sSku;
 	@Column(name = "ssqty")
 	private int ssQty;
+	@Column(name="sourceid")
+	private Long sourceId;
 	@Column(name = "sqty")
 	private int sQty;
 	@Column(name = "pqty")
@@ -120,6 +122,8 @@ public class StockDetailsVO {
 	private int recQty;
 	@Column(name = "damageqty")
 	private int damageQty;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
 	@Column(name = "shortqty")
 	private int shortQty;
 	@Column(name = "qcflag")
@@ -137,7 +141,7 @@ public class StockDetailsVO {
 	@Column(name = "stylecode")
 	private String styleCode;
 	@Column(name = "expdate")
-	private String expDate;
+	private LocalDate expDate;
 	@Column(name = "buyerorderno")
 	private String buyerOrderNo;
 	@Column(name = "batch")

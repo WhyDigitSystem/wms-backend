@@ -29,6 +29,8 @@ public class FinancialYearVO {
 	@SequenceGenerator(name = "financialyearegen", sequenceName = "financialyearseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "finyearid")
 	private Long id;
+	@Column(name ="financialyearid")
+	private Long finYearId;
 	@Column(name="finyear")
 	private int finYear;
 	@Column(name="finyearidentifier")

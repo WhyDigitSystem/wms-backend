@@ -8,12 +8,15 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.GatePassInDTO;
-import com.whydigit.wms.dto.GrnDTO;
+import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.PutAwayDTO;
+import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
+import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.PutAwayVO;
+import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.exception.ApplicationException;
 
 @Service
@@ -43,14 +46,13 @@ public interface InwardTransactionService {
 	Map<String, Object> createUpdateGatePassIn(GatePassInDTO gatePassInDTO) throws ApplicationException;
 
 	Optional<GatePassInVO> updateGatePassIn(GatePassInVO gatePassInVO);
-	
+
 	List<CarrierVO> getAllModeOfShipment();
 
 	void deleteGatePassIn(Long id);
 
-
 //	Put Away
-	
+
 	List<PutAwayVO> getAllPutAway();
 
 	Optional<PutAwayVO> getPutAwayById(Long id);
@@ -63,7 +65,26 @@ public interface InwardTransactionService {
 
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
 
+	Set<Object> getGRNdocid(String branch, String client, String screencode, String finyr);
+
 	List<CarrierVO> getActiveShipment(String shipmentMode);
 
- 
+//	SalesReturn
+	List<SalesReturnVO> getAllSalesReturn(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
+
+	SalesReturnVO getAllSalesReturnById(Long id);
+
+	SalesReturnVO updateCreateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
+
+	List<Map<String, Object>> getSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
+
+//	LocationMovement
+	List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
+
+	LocationMovementVO getAllLocationMovementById(Long id);
+
+	LocationMovementVO updateCreateLocationMovement(@Valid LocationMovementDTO locationMovementDTO) throws ApplicationException;
+
 }

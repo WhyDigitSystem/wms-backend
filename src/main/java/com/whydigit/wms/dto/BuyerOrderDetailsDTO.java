@@ -5,21 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class VasPutawayDetailsDTO {
-
+@NoArgsConstructor
+public class BuyerOrderDetailsDTO {
 	private Long id;
 	private String partNo;
-	private String partDescription;
-	private String grnNo;
-	private int invQty;
-	private int putAwayQty;
-	private String fromBin;
-	private String bin;
+	private String partDesc;
+	private Long qty;
+	private String batchNo;
+	private Long availQty;
 	private String sku;
 	private String remarks;
-	private boolean qcFlags;
-
-	
+	private boolean qcflag;
 }

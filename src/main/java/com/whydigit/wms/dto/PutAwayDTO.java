@@ -26,7 +26,7 @@ public class PutAwayDTO {
 	private String status;
 	private String lotno;
 	private String enteredperson;
-	private String warehouse;//
+	private String warehouse;
 	private String branch;
 	private String branhcode;
 	private String customer;
@@ -35,4 +35,5 @@ public class PutAwayDTO {
 	private String createdby;
 	
 	List<PutAwayDetailsDTO> putAwayDetailsDTO;
+	
 }
