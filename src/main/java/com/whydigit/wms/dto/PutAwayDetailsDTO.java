@@ -23,7 +23,7 @@ public class PutAwayDetailsDTO {
 	private String location;
 	private String weight;
 	private String rate;
-	private String amount;
+	private double amount;
 	private String remarks;
 	private String locationtype;
 	private String ssqty;

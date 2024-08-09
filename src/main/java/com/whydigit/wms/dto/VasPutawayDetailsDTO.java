@@ -15,8 +15,8 @@ public class VasPutawayDetailsDTO {
 	private String grnNo;
 	private int invQty;
 	private int putAwayQty;
-	private String fromPallet;
-	private String location;
+	private String fromBin;
+	private String bin;
 	private String sku;
 	private String remarks;
 	private boolean qcFlags;

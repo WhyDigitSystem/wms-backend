@@ -13,34 +13,30 @@ import lombok.NoArgsConstructor;
 @Builder
 public class GrnDetailsDTO {
 
-	private String qrcode; 
-	private String lrnohawbno; 
-	private String invoiceno; 
-	private LocalDate invoicedate; 
-	private String partno; 
-	private String partdesc;
-	private String locationtype;
+	private String qrCode; 
+	private String lrNoHawbNo; 
+	private String invoiceNo; 
+	private LocalDate invoiceDate; 
+	private String partNo; 
+	private String partDesc;
+	private String binType;
 	private String sku; 
-	private int invqty;
-	private int recqty;
-	private int shortqty;
-	private int damageqty;
-	private int substockqty;
-	private int batchqty;
-	private int palletqty;
-	private String pkgs; 
+	private int invQty;
+	private int recQty;
+	private int damageQty;
+	private int subStockQty;
+	private int batchQty;
+	private int binQty;
+	private int pkgs; 
+	private int noOfBins;
 	private String rate;
 	private String weight; 
-	private String batchno; 
-	private LocalDate batchdt; 
-	private String qcflag; 
-	private String amount;
-	private String shipmentno; 
-	private String warehouse;
-	private int sqty; 
-	private int grnqty;
-	private String batchpalletno;
+	private String batchNo;
+	private LocalDate batchDt; 
+	private double amount;
+	private String shipmentNo; 
+	private int grnQty;
 	private LocalDate expdate;
-	private String mrp;
+	private double mrp;
 	
 }

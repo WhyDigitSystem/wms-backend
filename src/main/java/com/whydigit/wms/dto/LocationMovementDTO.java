@@ -3,19 +3,18 @@ package com.whydigit.wms.dto;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VasPutawayDTO {
+@Builder
+public class LocationMovementDTO {
+
 	private Long id;
-	private String vasPickNo;
-	private String status;
-	private int totalGrnQty;
-	private int totalPutawayQty;
-	
+	private String type;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -24,6 +23,6 @@ public class VasPutawayDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	
-	List<VasPutawayDetailsDTO> vasPutawayDetailsDTO;
+
+	private List<LocationMovementDetailsDTO> locationMovementDetailsDTO;
 }

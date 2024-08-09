@@ -68,9 +68,10 @@ public class PickRequestDetailsVO {
 	@Column(name = "remarks")
 	private String remarks;
 	
+	
 	@JsonManagedReference
 	@ManyToOne
-	@JoinColumn(name = "pick_request_id")
+	@JoinColumn(name = "pickrequestid")
 	private PickRequestVO pickRequestVO;
 
 }

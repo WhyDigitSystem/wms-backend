@@ -23,32 +23,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "vasputaway")
+@Table(name = "codeconversion")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VasPutawayVO {
-
+public class CodeConversionVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vasputawaygen")
-	@SequenceGenerator(name = "vasputawaygen", sequenceName = "vasputawayseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "vasputawayid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codeconversiongen")
+	@SequenceGenerator(name = "codeconversiongen", sequenceName = "codeconversionseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "codeConversionid")
 	private Long id;
+	
 	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "vaspickno")
-	private String vasPickNo;
-	@Column(name = "status")
-	private String status;
-
 	
 	@Column(name = "screenname")
-	private String screenName = "VasPutaway";
+	private String screenName ;
 	@Column(name = "screencode")
-	private String screenCode ="VPW";
-	@Column(name = "orgId")
+	private String screenCode;
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;
@@ -72,12 +67,9 @@ public class VasPutawayVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
-	@Column(name = "totalgrnqty")
-	private int totalGrnQty;
-	@Column(name = "totalputawayqty")
-	private int totalPutawayQty;
 	@Column(name = "freeze")
-	private boolean freeze = false;
+	private boolean freeze = true;
+	
 	
 	@JsonGetter("active")
 	public String getActive() {
@@ -85,8 +77,8 @@ public class VasPutawayVO {
 	}
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "vasPutawayVO", cascade = CascadeType.ALL)
-	private List<VasPutawayDetailsVO> vasPutawayDetailsVO;
+	@OneToMany(mappedBy = "codeConversionVO", cascade = CascadeType.ALL)
+	private List<CodeConversionDetailsVO> codeConversionDetailsVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
