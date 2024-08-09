@@ -1731,18 +1731,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public String getDocIdForGRN(String branch, String client, String finYear,String screenCode) {
-		
-		String grnDocId=documentTypeMappingDetailsRepo.getGRNDocId(branch,client,finYear,screenCode);
-		
-		if(grnDocId==null)
-		{
-			grnDocId="";
-		}
-		return grnDocId;
-	}
-
-	@Override
 
 	public List<WarehouseVO> getAllWarehouse(Long orgId) {
 		return warehouseRepo.findAllWarehouse(orgId);
@@ -1773,6 +1761,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			clientList.add(list);
 		}
 		return clientList;
+	}
+
+	@Override
+	public List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId) {
+		
+		return documentTypeMappingRepo.findByOrgId(orgId);
 	}
 
 }

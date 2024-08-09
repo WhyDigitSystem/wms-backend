@@ -46,6 +46,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
@@ -1954,6 +1955,8 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	
+	
 	@PutMapping("/createDocumentTypeMapping")
 	public ResponseEntity<ResponseDTO> createDocumentTypeMapping(@RequestBody DocumentTypeMappingDTO documentTypeMappingDTO) {
 	    String methodName = "createDocumentTypeMapping()";
@@ -1975,27 +1978,54 @@ public class WarehouseMasterController extends BaseController {
 	    return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@GetMapping("/getGRNDocId")
-	public ResponseEntity<ResponseDTO> getGRNDocId(@RequestParam String branch,@RequestParam String client,@RequestParam String finYear) {
-		String methodName = "getGRNDocId()";
-		String screenCode="PC";
+	
+	@GetMapping("/getPendingDocumentTypeMapping")
+	public ResponseEntity<ResponseDTO> getPendingDocumentTypeMapping(@RequestParam Long orgId,@RequestParam String branch,@RequestParam String branchCode,
+			@RequestParam String finYear,@RequestParam String finYearIdentifier) {
+		String methodName = "getPendingDocumentTypeMapping()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		String grnDocId="";
+		List<Map<String, Object>> documentTypeMappingVO = new ArrayList<>();
 		try {
-			 grnDocId = warehouseMasterService.getDocIdForGRN(branch, client, finYear, screenCode);	
+			documentTypeMappingVO = warehouseMasterService.getPendingDocumentTypeMapping(orgId, branch, branchCode, finYear, finYearIdentifier);
 			} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Document Type information get successfully");
-			responseObjectsMap.put("grnDocId", grnDocId);
+			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllDocumentTypeMapping")
+	public ResponseEntity<ResponseDTO> getAllDocumentTypeMapping(@RequestParam Long orgId) {
+		String methodName = "getAllDocumentTypeMapping()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DocumentTypeMappingVO> documentTypeMappingVO = new ArrayList<>();
+		try {
+			documentTypeMappingVO = warehouseMasterService.getAllDocumentTypeMapping(orgId);
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Document Type Mapping information get successfully");
+			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type Mapping information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
