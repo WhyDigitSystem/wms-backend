@@ -38,8 +38,6 @@ public interface OutwardTransactionService {
 
 		String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-		List<VasPutawayVO> getVasPutawayById(Long id);
-
 		
 		//BuyerOrder
 		
