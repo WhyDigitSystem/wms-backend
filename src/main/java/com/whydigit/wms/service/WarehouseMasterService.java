@@ -142,8 +142,7 @@ public interface WarehouseMasterService {
 
 	// Warehouse Location
 	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String warehouse, String branch); // Method names
-																									// should be in
-																									// camelCase
+																									// should be in																					// camelCase
 
 	Set<Object[]> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse);
 

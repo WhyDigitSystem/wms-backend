@@ -973,6 +973,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	    materialVO.setCustomer(materialDTO.getCustomer());
 	    materialVO.setClient(materialDTO.getClient());
 	    materialVO.setWarehouse(materialDTO.getWarehouse());
+	    materialVO.setWeightofSkuAndUom(materialDTO.getWeightOfSkuAndUom());
 	    materialVO.setBranch(materialDTO.getBranch());
 	    materialVO.setBranchCode(materialDTO.getBranchCode());
 	    materialVO.setPalletQty(materialDTO.getPalletQty());
