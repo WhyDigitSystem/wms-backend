@@ -69,7 +69,7 @@ public class LocationMovementDetailsVO {
 	@Column(name="expdate")
 	private LocalDate expDate;
 	@Column(name="status")
-	private String status;
+	private String status="R";
 	
 	@ManyToOne
 	@JsonBackReference

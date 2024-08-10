@@ -38,5 +38,6 @@ public class SalesReturnDetailsDTO {
 	private BigDecimal insAmt;
 	private String remarks;
 	private boolean qcFlag;
+	private String status;
 	
 }
