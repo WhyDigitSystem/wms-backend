@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.CodeConversionDTO;
-import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.CodeConversionVO;
-import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.service.StockProcessService;
 
 @RestController
@@ -139,4 +137,77 @@ public class StockProcessController extends BaseController {
 	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	    return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getPartNoAndPartDescFromStockForCodeConversion")
+	public ResponseEntity<ResponseDTO> getPartNoAndPartDescFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin) {
+
+		String methodName = "getPartNoAndPartDescFromStockForCodeConversion()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = stockProcessService.getPartNoAndPartDescFromStockForCodeConversion(orgId, finYear, branch,
+					branchCode, client, bin);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All PartNo and PartDesc from Stock information retrieved successfully");
+			responseObjectsMap.put("codeConversionVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve PartNo and PartDesc from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
+			@RequestParam(required = false) String sku) {
+
+		String methodName = "getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = stockProcessService.getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId,
+					finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All GrnNo and BatchNo and Bintype and Batchdate and lotno from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieveGrnNo and BatchNo and Bintype and Batchdate and lotno from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

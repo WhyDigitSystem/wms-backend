@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
-import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;

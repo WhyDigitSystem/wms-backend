@@ -18,4 +18,11 @@ public interface StockProcessService {
 
 	Map<String, Object> createUpdateCodeConversion(CodeConversionDTO codeConversionDTO) throws ApplicationException;
 
+	List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client, String bin);
+
+	List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
+			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+			String sku);
+
 }

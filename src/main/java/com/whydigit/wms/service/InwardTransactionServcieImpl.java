@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -22,11 +21,9 @@ import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.GrnDetailsDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.LocationMovementDetailsDTO;
-import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.dto.SalesReturnDetailsDTO;
 import com.whydigit.wms.entity.CarrierVO;
-import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.GatePassInDetailsVO;
 import com.whydigit.wms.entity.GatePassInVO;
@@ -35,7 +32,6 @@ import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
 import com.whydigit.wms.entity.LocationMovementDetailsVO;
 import com.whydigit.wms.entity.LocationMovementVO;
-import com.whydigit.wms.entity.PutAwayDetailsVO;
 import com.whydigit.wms.entity.PutAwayVO;
 import com.whydigit.wms.entity.SalesReturnDetailsVO;
 import com.whydigit.wms.entity.SalesReturnVO;

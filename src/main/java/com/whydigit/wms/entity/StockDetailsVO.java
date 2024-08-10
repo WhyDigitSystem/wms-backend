@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -47,7 +48,7 @@ public class StockDetailsVO {
 	@Column(name = "qtypicked")
 	private int pickedQty;
 	@Column(name = "rate")
-	private String rate;
+	private BigDecimal rate;
 	@Column(name = "amount")
 	private double amount;
 	@Column(name = "inoutitme")

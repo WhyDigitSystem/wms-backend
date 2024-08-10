@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.BuyerOrderDTO;
-import com.whydigit.wms.dto.CodeConversionDTO;
 import com.whydigit.wms.dto.DeliveryChallanDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.VasPutawayDTO;
