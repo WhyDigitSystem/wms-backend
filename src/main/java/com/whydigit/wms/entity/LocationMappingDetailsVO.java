@@ -33,8 +33,8 @@ public class LocationMappingDetailsVO {
 	private String branchCode;
 	@Column(name="warehouse")
 	private String warehouse;
-	@Column(name="locationtype")
-	private String locationType;
+	@Column(name="bintype")
+	private String binType;
 	@Column(name="clienttype")
 	private String clientType;
 	@Column(name="rowno")
@@ -43,8 +43,6 @@ public class LocationMappingDetailsVO {
 	private String levelNo;
 	@Column(name="client")
 	private String client;
-	@Column(name="orgid")
-	private Long orgId;
 	private boolean cancel;
 	@Column(name="bin")
 	private String bin;

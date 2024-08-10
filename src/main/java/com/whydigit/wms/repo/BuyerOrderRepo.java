@@ -19,4 +19,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	@Query(value ="select * from buyerorder where buyerorderid=?1",nativeQuery =true)
 	List<BuyerOrderVO> findAllBuyerOrderById(Long id);
 
+	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
+	String getbuyerOrderDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
+
 }

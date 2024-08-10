@@ -50,6 +50,8 @@ public interface InwardTransactionService {
 	Map<String, Object> createUpdateGatePassIn(GatePassInDTO gatePassInDTO) throws ApplicationException;
 
 	Optional<GatePassInVO> updateGatePassIn(GatePassInVO gatePassInVO);
+	
+	String getGatePassInDocId (Long orgId, String finYear, String branch, String branchCode, String client);
 
 	List<CarrierVO> getAllModeOfShipment();
 

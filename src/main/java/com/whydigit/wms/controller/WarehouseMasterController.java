@@ -846,9 +846,9 @@ public class WarehouseMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			WarehouseVO createdWarehouseVO = warehouseMasterService.createUpdateWarehouse(warehouseDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse created successfully");
-			responseObjectsMap.put("warehouseVO", createdWarehouseVO);
+			Map<String, Object> createdWarehouseVO = warehouseMasterService.createUpdateWarehouse(warehouseDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdWarehouseVO.get("message"));
+			responseObjectsMap.put("warehouseVO", createdWarehouseVO.get("warehouseVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 	        errorMsg = e.getMessage();

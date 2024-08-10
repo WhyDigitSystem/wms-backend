@@ -32,8 +32,8 @@ public class LocationMappingVO {
 	private Long id;
 	private String branch;
 	private String warehouse;
-	@Column(name ="locationtype")
-	private String locationType;
+	@Column(name ="bintype")
+	private String binType;
 	@Column(name ="clienttype")
 	private String clientType;
 	@Column(name ="rowno")
