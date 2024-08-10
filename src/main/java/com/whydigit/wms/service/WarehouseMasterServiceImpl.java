@@ -1494,19 +1494,13 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		for (LocationMappingDetailsDTO locationMappingDetailsDTO : locationMappingDTO.getLocationMappingDetailsDTO()) {
 
 			LocationMappingDetailsVO detailsVO = new LocationMappingDetailsVO();
-			detailsVO.setBranch(locationMappingDetailsDTO.getBranch());
-			detailsVO.setBranchCode(locationMappingDetailsDTO.getBranchCode());
 			detailsVO.setWarehouse(locationMappingDetailsDTO.getWarehouse());
-			detailsVO.setBinType(locationMappingDetailsDTO.getBinType());
-			detailsVO.setClientType(locationMappingDetailsDTO.getClientType());
 			detailsVO.setRowNo(locationMappingDetailsDTO.getRowNo());
+			detailsVO.setPalletNo(locationMappingDetailsDTO.getPalletNo());
+			detailsVO.setBinStatus(locationMappingDetailsDTO.getBinStatus());
+			detailsVO.setBinSeq(locationMappingDetailsDTO.getBinSeq());
 			detailsVO.setLevelNo(locationMappingDetailsDTO.getLevelNo());
-			detailsVO.setClient(locationMappingDetailsDTO.getClient());
-			detailsVO.setCancel(locationMappingDetailsDTO.isCancel());
-			detailsVO.setBin(locationMappingDetailsDTO.getBin());
-			detailsVO.setLstatus(locationMappingDetailsDTO.getLstatus());
-			detailsVO.setCellCategory(locationMappingDetailsDTO.getCellCategory());
-			detailsVO.setCore(locationMappingDetailsDTO.getCore());
+			detailsVO.setMultiCore(locationMappingDetailsDTO.getMultiCore());
 			detailsVO.setActive(locationMappingDetailsDTO.isActive());
 
 			detailsVO.setLocationMappingVO(locationMappingVO);

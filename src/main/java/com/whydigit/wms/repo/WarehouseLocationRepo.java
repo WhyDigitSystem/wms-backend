@@ -11,7 +11,7 @@ import com.whydigit.wms.entity.WarehouseLocationVO;
 public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO, Long> {
 
 	
-	@Query("select a from WarehouseLocationVO a where orgId=?1 and a.warehouse=?2 and a.branch=?3")
+	@Query(value = "select * from WarehouseLocation a where orgId=?1 and a.warehouse=?2 and a.branch=?3",nativeQuery =true)
 	List<WarehouseLocationVO> findAll(Long orgid, String warehouse, String branch);
 
 	@Query("select e.binType from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2")
