@@ -33,7 +33,8 @@ public class BuyerOrderVO {
 	@SequenceGenerator(name = "buyerordergen", sequenceName = "buyerorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "buyerorderid")
 	private Long id;
-
+    @Column(name ="docid")
+	private String docId;
 	@Column(name = "orderno")
 	private String orderNo;
 	@Column(name = "orgid")

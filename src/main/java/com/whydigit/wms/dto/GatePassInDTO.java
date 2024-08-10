@@ -16,7 +16,6 @@ public class GatePassInDTO {
 	private String transactionType;
 	private String entryNo;//
 	private Long orgId;
-	private Long docid;
 	private LocalDate docdate = LocalDate.now();
 	private LocalDate dat=LocalDate.now();
 	private String supplier;
@@ -38,11 +37,12 @@ public class GatePassInDTO {
 	private boolean active;
 	private String branchCode;
 	private String branch;
-	private String screenCode;
 	private String client;
 	private String customer;
-	private String finyr;
-
+	private String finYear;
+	private String cancelRemarks;
+	private boolean freeze;
+	
 	private List<GatePassInDetailsDTO> gatePassInDetailsDTO;
 
 }

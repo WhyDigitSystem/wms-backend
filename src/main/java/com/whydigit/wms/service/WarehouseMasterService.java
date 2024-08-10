@@ -136,7 +136,7 @@ public interface WarehouseMasterService {
 
 	Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode);
 
-	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
+	Map<String, Object> createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
 	
 	List<WarehouseVO> getAllWarehouse(Long orgId);
 
