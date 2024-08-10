@@ -16,4 +16,5 @@ public interface LocationTypeRepo extends JpaRepository<LocationTypeVO, Long> {
 
 	boolean existsByBinTypeAndOrgId(String binType, Long orgId);
 
+
 }
