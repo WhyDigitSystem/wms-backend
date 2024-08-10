@@ -14,14 +14,15 @@ public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO
 	@Query("select a from WarehouseLocationVO a where orgId=?1 and a.warehouse=?2 and a.branch=?3")
 	List<WarehouseLocationVO> findAll(Long orgid, String warehouse, String branch);
 
-	@Query("select e.locationtype from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2")
+	@Query("select e.binType from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2")
 	Set<Object[]> findAllLocationTypeByOrgIdAndWarehouse(Long orgid, String warehouse);
 
-	@Query("select e.rowno from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.locationtype=?3")
-	Set<Object[]> findAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse, String locationtype);
+	@Query(value ="select e.bintype from warehouselocation e where e.orgid=?1 and e.warehouse=?2 and e.bintype=?3",nativeQuery =true)
+	Set<Object[]> findAllRownoByOrgIdAndWarehouseAndBinType(Long orgid, String warehouse, String locationtype);
 	
-	@Query("select e.level from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.locationtype=?3 and e.rowno=?4")
-	Set<Object[]> findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,String locationtype, String rowno);
+	@Query("select e.level from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.binType=?3 and e.rowNo=?4")
+	Set<Object[]> findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowNo(Long orgid, String warehouse,
+			String locationtype, String rowno);
 
 	@Query(nativeQuery = true,value = "WITH RECURSIVE NumberSequence AS (\r\n"
 			+ "  SELECT 1 AS level\r\n"
@@ -48,5 +49,5 @@ public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO
 			+ "WHERE level BETWEEN ?3 AND ?4")
 	Set<Object[]> getPalletnoByRownoAndLevelno(String rowno, String level, int startno, int endno);
 
-	boolean existByOrgIdAndWarehouseAndBinTypeAndRowNoAndLevel(String string, String string2, String level);
+	
 }
