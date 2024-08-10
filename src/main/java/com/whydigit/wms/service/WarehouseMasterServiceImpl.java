@@ -178,12 +178,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 		if (ObjectUtils.isEmpty(groupDTO.getId())) {
 			if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
-				String errorMessage = String.format("This GroupName: %s already exists in this organization.",
+				String errorMessage = String.format("This GroupName: %s already  in this organization.",
 						groupDTO.getGroupName());
 				throw new ApplicationException(errorMessage);
 			}
 			if (groupRepo.existsByCompanyAndOrgId(groupDTO.getCompany(), groupDTO.getOrgId())) {
-				String errorMessage = String.format("This Company: %s already exists in this organization.",
+				String errorMessage = String.format("This Company: %s already  in this organization.",
 						groupDTO.getCompany());
 				throw new ApplicationException(errorMessage);
 			}
@@ -197,7 +197,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			groupVO.setUpdatedBy(groupDTO.getCreatedBy());
 			if (!groupVO.getGroupName().equalsIgnoreCase(groupDTO.getGroupName())) {
 				if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
-					String errorMessage = String.format("This GroupName: %s already exists in this organization.",
+					String errorMessage = String.format("This GroupName: %s already  in this organization.",
 							groupDTO.getGroupName());
 					throw new ApplicationException(errorMessage);
 				}
@@ -205,7 +205,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			}
 			if (!groupVO.getCompany().equalsIgnoreCase(groupDTO.getCompany())) {
 				if (groupRepo.existsByCompanyAndOrgId(groupDTO.getCompany(), groupDTO.getOrgId())) {
-					String errorMessage = String.format("This Company: %s already exists in this organization.",
+					String errorMessage = String.format("This Company: %s already  in this organization.",
 							groupDTO.getCompany());
 					throw new ApplicationException(errorMessage);
 				}
@@ -864,7 +864,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse,
 			String locationtype) {
 
-		return warehouseLocationRepo.findAllRownoByOrgIdAndWarehouseAndLocationType(orgid, warehouse, locationtype);
+		return warehouseLocationRepo.findAllRownoByOrgIdAndWarehouseAndBinType(orgid, warehouse, locationtype);
 	}
 
 	// get All Level no based on company and Warehouse , Location type and Rowno
@@ -872,7 +872,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
 			String locationtype, String rowno) {
 
-		return warehouseLocationRepo.findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(orgid, warehouse,
+		return warehouseLocationRepo.findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowNo(orgid, warehouse,
 				locationtype, rowno);
 	}
 
@@ -931,7 +931,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 				if (ObjectUtils.isEmpty(warehouseLocationDetailsDTO2.getId())) {
 					WarehouseLocationDetailsVO warehouseLocationDetailsVO1 = new WarehouseLocationDetailsVO();
 					
-					if(warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehosue(warehouseLocationDetailsDTO2.getBin(),warehouseLocationDTO.getOrgId(),
+					if(warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehouse(warehouseLocationDetailsDTO2.getBin(),warehouseLocationDTO.getOrgId(),
 							warehouseLocationDTO.getBranchCode(),warehouseLocationDTO.getWarehouse()))
 					{
 						String errorMessage = String.format("Bin : %s Already Exists in This Warehouse",
@@ -957,7 +957,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 					WarehouseLocationDetailsVO warehouseLocationDetailsVO1 = warehouseLocationDetailsRepo
 							.findById(warehouseLocationDetailsDTO2.getId()).orElse(null);
 					if(!warehouseLocationDetailsVO1.getBin().equalsIgnoreCase(warehouseLocationDetailsDTO2.getBin())) {
-						if(warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehosue(warehouseLocationDetailsDTO2.getBin(),warehouseLocationDTO.getOrgId(),
+						if(warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehouse(warehouseLocationDetailsDTO2.getBin(),warehouseLocationDTO.getOrgId(),
 								warehouseLocationDTO.getBranchCode(),warehouseLocationDTO.getWarehouse()))
 						{
 							String errorMessage = String.format("Bin : %s Already Exists in This Warehouse",
@@ -992,7 +992,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 				if (ObjectUtils.isEmpty(warehouseLocationDetailsDTO2.getId())) {
 					WarehouseLocationDetailsVO warehouseLocationDetailsVO1 = new WarehouseLocationDetailsVO();
 					
-					if(warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehosue(warehouseLocationDetailsDTO2.getBin(),warehouseLocationDTO.getOrgId(),
+					if(warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehouse(warehouseLocationDetailsDTO2.getBin(),warehouseLocationDTO.getOrgId(),
 							warehouseLocationDTO.getBranchCode(),warehouseLocationDTO.getWarehouse()))
 					{
 						String errorMessage = String.format("Bin : %s Already Exists in This Warehouse",
@@ -1503,7 +1503,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		// Check if the carrierDTO ID is empty (indicating a new entry)
 		if (ObjectUtils.isEmpty(carrierDTO.getId())) {
 
-			// Validate if the carrier already exists by unique fields
+			// Validate if the carrier already  by unique fields
 			if (carrierRepo.existsByOrgIdAndCarrier(carrierDTO.getOrgId(), carrierDTO.getCarrier())) {
 				throw new ApplicationException("Carrier already exist ");
 			}

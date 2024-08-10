@@ -13,6 +13,6 @@ public interface WarehouseLocationDetailsRepo extends JpaRepository<WarehouseLoc
 	Set<Object[]> findAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,
 			String locationtype, String rowno, String level);
 
-	boolean existsByBinAndOrgIdAndBranchCodeAndWarehosue(String bin, Long orgId, String branchCode, String warehouse);
+	boolean existsByBinAndOrgIdAndBranchCodeAndWarehouse(String bin, Long orgId, String branchCode, String warehouse);
 
 }
