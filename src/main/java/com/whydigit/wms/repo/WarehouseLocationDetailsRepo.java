@@ -9,7 +9,7 @@ import com.whydigit.wms.entity.WarehouseLocationDetailsVO;
 
 public interface WarehouseLocationDetailsRepo extends JpaRepository<WarehouseLocationDetailsVO, Long> {
 
-	@Query(nativeQuery = true,value = "select ROW_NUMBER() OVER () AS id, e.rowno,e.level,e.bin,e.core,e.status from warehouselocationdetails e where e.org_id=?1 and e.warehouse=?2 and e.locationtype=?3 and e.rowno=?4 and e.level=?5 group by e.rowno,e.level,e.bin,e.core,e.status")
+	@Query(nativeQuery = true,value = "select ROW_NUMBER() OVER () AS id, e.rowno,e.level,e.bin,e.core,e.status from warehouselocationdetails e where e.org_id=?1 and e.warehouse=?2 and e.bintype=?3 and e.rowno=?4 and e.level=?5 group by e.rowno,e.level,e.bin,e.core,e.status")
 	Set<Object[]> findAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,
 			String locationtype, String rowno, String level);
 

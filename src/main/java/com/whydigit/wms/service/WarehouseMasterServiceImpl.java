@@ -50,7 +50,6 @@ import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
-import com.whydigit.wms.entity.GatePassInDetailsVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingDetailsVO;
 import com.whydigit.wms.entity.LocationMappingVO;
@@ -855,15 +854,17 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	// Warehouse Location
 
 	@Override
-	public List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String warehouse, String branch) {
+	public List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid,String branch) {
 
-		return warehouseLocationRepo.findAll(orgid, warehouse, branch);
+		return warehouseLocationRepo.findAllByOrgId(orgid, branch);
 	}
 
 	@Override
-	public Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid) {
-
-		return warehouseLocationRepo.findById(warehouselocationid);
+	public WarehouseLocationVO getWarehouseLocationById(Long warehouselocationid) {
+		
+		WarehouseLocationVO locationVO= new WarehouseLocationVO();
+		locationVO=warehouseLocationRepo.findById(warehouselocationid).orElse(null);
+		return locationVO;
 	}
 
 	@Override
@@ -1494,13 +1495,13 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		for (LocationMappingDetailsDTO locationMappingDetailsDTO : locationMappingDTO.getLocationMappingDetailsDTO()) {
 
 			LocationMappingDetailsVO detailsVO = new LocationMappingDetailsVO();
-			detailsVO.setWarehouse(locationMappingDetailsDTO.getWarehouse());
 			detailsVO.setRowNo(locationMappingDetailsDTO.getRowNo());
-			detailsVO.setPalletNo(locationMappingDetailsDTO.getPalletNo());
+			detailsVO.setBin(locationMappingDetailsDTO.getBin());
 			detailsVO.setBinStatus(locationMappingDetailsDTO.getBinStatus());
 			detailsVO.setBinSeq(locationMappingDetailsDTO.getBinSeq());
 			detailsVO.setLevelNo(locationMappingDetailsDTO.getLevelNo());
-			detailsVO.setMultiCore(locationMappingDetailsDTO.getMultiCore());
+			detailsVO.setCore(locationMappingDetailsDTO.getCore());
+			detailsVO.setBinCategory(locationMappingDetailsDTO.getBinCategory());
 			detailsVO.setActive(locationMappingDetailsDTO.isActive());
 
 			detailsVO.setLocationMappingVO(locationMappingVO);

@@ -26,6 +26,7 @@ public class LocationMappingDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmappingdetailsgen")
 	@SequenceGenerator(name = "locationmappingdetailsgen", sequenceName = "locationmappingdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "locationmappingdetailsid")
 	private Long id;
 	@Column(name = "warehouse")
 	private String warehouse;
@@ -33,14 +34,16 @@ public class LocationMappingDetailsVO {
 	private String rowNo;
 	@Column(name = "levelno")
 	private String levelNo;
-	@Column(name = "palletNo")
-	private String palletNo;
+	@Column(name = "bincategory")
+	private String binCategory;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "binstatus")
 	private String binStatus;
-	@Column(name = "binSeq")
+	@Column(name = "binseq")
 	private String binSeq;
 	@Column(name = "core")
-	private String multiCore;
+	private String core;
 	private boolean active;
 
 	@JsonBackReference

@@ -29,6 +29,7 @@ public class LocationMappingVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmappinggen")
 	@SequenceGenerator(name = "locationmappinggen", sequenceName = "locationmappingseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "locationmappingid")
 	private Long id;
 	private String branch;
 	private String warehouse;
