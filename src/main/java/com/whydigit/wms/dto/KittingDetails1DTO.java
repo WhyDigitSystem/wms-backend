@@ -9,18 +9,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VasPickDetailsDTO {
+public class KittingDetails1DTO {
+
 	private Long id;
 
-	private String partCode;
-
-	private String partDescription;
+	private String pallet;
 
 	private String partNo;
 
-	private String sku;
-
-	private String bin;
+	private String partDescription;
 
 	private String batchNo;
 
@@ -28,14 +25,17 @@ public class VasPickDetailsDTO {
 
 	private String grnNo;
 
+	private LocalDate grnDate;
+
+	private String sku;
+
 	private int avlQty;
 
-	private int picQty;
+	private int qty;
 
-	private int remaningQty;
+	private int unitRate;
 
-	private LocalDate manufactureDate;
-
+	private int amount;
+	
 	private boolean qcflag;
-
 }
