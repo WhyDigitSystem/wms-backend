@@ -355,6 +355,46 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		vasPutawayVO.setVasPutawayDetailsVO(vasPutawayDetailsVOs);
 
 	}
+	
+	
+	@Transactional
+	public List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId,String branch, String client) {
+
+		Set<Object[]> result = vasPutawayRepo.findDocIdFromVasPickForVasPutaway(orgId,branch, client);
+		return getVasPutaway(result);
+	}
+
+	private List<Map<String, Object>> getVasPutaway(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("vasPickNo", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Transactional
+	public List<Map<String, Object>> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId,String branch, String client,String docId) {
+
+		Set<Object[]> result = vasPutawayDetailsRepo.getAllDetailsFromVasPickDetailsForVasPutawayDetails(orgId,branch, client ,docId);
+		return getVasPutawayDetails(result);
+	}
+
+	private List<Map<String, Object>> getVasPutawayDetails(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("partDescription", fs[1] != null ? fs[1].toString() : "");
+			part.put("grnNo ", fs[2] != null ? fs[2].toString() : "");
+			part.put("pickOty", fs[3] != null ? fs[3].toString() : "");
+			part.put("bin", fs[4] != null ? fs[4].toString() : "");
+			part.put("sku", fs[5] != null ? fs[5].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
 
 	// BuyerOrder
 

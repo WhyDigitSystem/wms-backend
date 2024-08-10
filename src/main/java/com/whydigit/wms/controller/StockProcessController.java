@@ -173,15 +173,15 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement")
-	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
+	@GetMapping("/getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion")
+	public ResponseEntity<ResponseDTO> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(
 			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
 			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
 			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
 			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
 			@RequestParam(required = false) String sku) {
 
-		String methodName = "getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement()";
+		String methodName = "getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -189,7 +189,7 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId,
+			mov = stockProcessService.getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId,
 					finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -199,7 +199,7 @@ public class StockProcessController extends BaseController {
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
 					"All GrnNo and BatchNo and Bintype and Batchdate and lotno from Stock information retrieved successfully");
-			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseObjectsMap.put("codeConversionVO", mov);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
@@ -210,4 +210,37 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getBinFromStockForCodeConversion")
+	public ResponseEntity<ResponseDTO> getBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+
+		String methodName = "getBinFromStockForCodeConversion()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = stockProcessService.getBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+					client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All Bin from Stock information retrieved successfully");
+			responseObjectsMap.put("codeConversionVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve Bin from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

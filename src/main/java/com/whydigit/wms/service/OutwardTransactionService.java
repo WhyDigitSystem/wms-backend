@@ -39,6 +39,10 @@ public interface OutwardTransactionService {
 	
 		String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 		
+		List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client);
+
+		List<Map<String, Object>> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId, String branch,
+				String client, String docid);
 		
 		//BuyerOrder
 		
@@ -50,6 +54,10 @@ public interface OutwardTransactionService {
 
 		public int getAvlQty(Long orgId, String client, String branchCode, String warehouse,
 				String branch, String partNo, String partDesc);
+
+		
+
+
 
 
 

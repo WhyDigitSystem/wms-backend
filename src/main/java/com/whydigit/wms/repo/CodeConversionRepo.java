@@ -27,8 +27,12 @@ public interface CodeConversionRepo extends JpaRepository<CodeConversionVO, Long
 			String branchCode, String client, String bin);
 
 	@Query(nativeQuery = true,value ="select grnno,bintype,batch,batchdate,lotno from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9")
-	Set<Object[]> findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
+	Set<Object[]> findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId,
 			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
+
+	@Query(nativeQuery = true,value = " select bin from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5")
+	Set<Object[]> findBinFromStockForCodeConversion(Long orgId, String finYear, String branch, String branchCode,
+			String client);
 
 }

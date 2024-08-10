@@ -261,10 +261,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 	}
 	
 	@Transactional
-	public List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear,
+	public List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId, String finYear,
 			String branch, String branchCode, String client, String bin,String partNo,String partDesc,String sku) {
 
-		Set<Object[]> result = codeConcersionRepo.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, finYear,
+		Set<Object[]> result = codeConcersionRepo.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, finYear,
 				branch, branchCode, client, bin, partNo,partDesc,sku);
 		return getGrnResult(result);
 	}
@@ -283,4 +283,23 @@ public class StockProcessServiceImpl implements StockProcessService {
 		return details1;
 	}
 	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client) {
+
+		Set<Object[]> result = codeConcersionRepo.findBinFromStockForCodeConversion(orgId, finYear, branch,
+				branchCode, client);
+		return getMovementResult(result);
+	}
+	
+	private List<Map<String, Object>> getMovementResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
 }

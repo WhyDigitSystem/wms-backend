@@ -255,6 +255,39 @@ public class OutwardTransactionController extends BaseController{
 		    return ResponseEntity.ok().body(responseDTO);
 		}
 		
+		@GetMapping("/getDocIdFromVasPickForVasPutaway")
+		public ResponseEntity<ResponseDTO> getDocIdFromVasPickForVasPutaway(
+				@RequestParam(required = false) Long orgId,
+				@RequestParam(required = false) String branch,
+				@RequestParam(required = false) String client) {
+
+			String methodName = "getDocIdFromVasPickForVasPutaway()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> mov = new ArrayList<>();
+
+			try {
+				mov = outwardTransactionService.getDocIdFromVasPickForVasPutaway(orgId,
+						 branch, client);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All Docid from VasPick information retrieved successfully");
+				responseObjectsMap.put("vasPutawayVO", mov);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve DocId from VasPick information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
 	//	
 		
 		@PutMapping("/createUpdateBuyerOrder")
@@ -358,6 +391,41 @@ public class OutwardTransactionController extends BaseController{
 				responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ",
 						errorMsg);
 			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/getAllDetailsFromVasPickDetailsForVasPutawayDetails")
+		public ResponseEntity<ResponseDTO> getAllDetailsFromVasPickForVasPutawayDetails(
+				@RequestParam(required = false) Long orgId,
+				@RequestParam(required = false) String branch,
+				@RequestParam(required = false) String client,
+				@RequestParam(required = false) String docid) {
+
+			String methodName = "getAllDetailsFromVasPickDetailsForVasPutawayDetails()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> mov = new ArrayList<>();
+
+			try {
+				mov = outwardTransactionService.getAllDetailsFromVasPickDetailsForVasPutawayDetails(orgId,
+						 branch, client,docid);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All Details from VasPutaway information retrieved successfully");
+				responseObjectsMap.put("vasPutawayVO", mov);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve All Details from VasPutaway information", errorMsg);
+			}
+
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}

@@ -21,8 +21,11 @@ public interface StockProcessService {
 	List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin);
 
-	List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
+	List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId,
 			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
+
+	List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client);
 
 }
