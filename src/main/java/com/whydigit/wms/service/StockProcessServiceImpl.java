@@ -39,7 +39,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-	
+
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
 
@@ -108,11 +108,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 		CodeConversionVO savedCodeConversionVO = codeConcersionRepo.save(codeConversionVO);
 
-		List<CodeConversionDetailsVO> codeConversionDetailsVOLists = savedCodeConversionVO
-				.getCodeConversionDetailsVO();
+		List<CodeConversionDetailsVO> codeConversionDetailsVOLists = savedCodeConversionVO.getCodeConversionDetailsVO();
 		if (codeConversionDetailsVOLists != null && !codeConversionDetailsVOLists.isEmpty()) {
-			for (CodeConversionDetailsVO codeConversionDetailsVO : codeConversionDetailsVOLists
-					) {
+			for (CodeConversionDetailsVO codeConversionDetailsVO : codeConversionDetailsVOLists) {
 				// Create StockDetails for fromBin with negative quantity
 				StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
 
@@ -121,30 +119,35 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setOrgId(codeConversionVO.getOrgId());
 				stockDetailsVOFrom.setCustomer(codeConversionVO.getCustomer());
 				stockDetailsVOFrom.setClient(codeConversionVO.getClient());
-		     	stockDetailsVOFrom.setCreatedBy(codeConversionVO.getUpdatedBy());
+				stockDetailsVOFrom.setCreatedBy(codeConversionVO.getUpdatedBy());
 				stockDetailsVOFrom.setFinYear(codeConversionVO.getFinYear());
 				stockDetailsVOFrom.setBranch(codeConversionVO.getBranch());
 				stockDetailsVOFrom.setBranchCode(codeConversionVO.getBranchCode());
 				stockDetailsVOFrom.setWarehouse(codeConversionVO.getWarehouse());
-		        stockDetailsVOFrom.setPartno(codeConversionDetailsVO.getPartNo());
-		        stockDetailsVOFrom.setPartDesc(codeConversionDetailsVO.getPartDescription());
-	            stockDetailsVOFrom.setGrnNo(codeConversionDetailsVO.getGrnNo());
-		        stockDetailsVOFrom.setGrnDate(codeConversionDetailsVO.getGrnDate());
-		        stockDetailsVOFrom.setStatus(codeConversionDetailsVO.getStatus());
-		        stockDetailsVOFrom.setSku(codeConversionDetailsVO.getSku());
-		        stockDetailsVOFrom.setBinType(codeConversionDetailsVO.getBinType());
-		        stockDetailsVOFrom.setBatch(codeConversionDetailsVO.getBatchNo());
-		        stockDetailsVOFrom.setBatchDate(codeConversionDetailsVO.getBatchDate());
-		        stockDetailsVOFrom.setLotNo(codeConversionDetailsVO.getLotNo());
-		        stockDetailsVOFrom.setBin(codeConversionDetailsVO.getBin());
-		        stockDetailsVOFrom.setSQty(codeConversionDetailsVO.getActualQty()* -1); //NEGATIVE QUANTITY
-		        stockDetailsVOFrom.setRate(codeConversionDetailsVO.getRate());
+//				stockDetailsVOFrom.setSourceScreenCode(codeConversionVO.getScreenCode());
+//				stockDetailsVOFrom.setSourceScreenName(codeConversionVO.getScreenName());
+//				stockDetailsVOFrom.setScree(codeConversionDetailsVO.getPartNo());
+
+				stockDetailsVOFrom.setPartno(codeConversionDetailsVO.getPartNo());
+				stockDetailsVOFrom.setPartDesc(codeConversionDetailsVO.getPartDescription());
+				stockDetailsVOFrom.setGrnNo(codeConversionDetailsVO.getGrnNo());
+				stockDetailsVOFrom.setGrnDate(codeConversionDetailsVO.getGrnDate());
+				stockDetailsVOFrom.setStatus(codeConversionDetailsVO.getStatus());
+				stockDetailsVOFrom.setSku(codeConversionDetailsVO.getSku());
+				stockDetailsVOFrom.setBinType(codeConversionDetailsVO.getBinType());
+				stockDetailsVOFrom.setBatch(codeConversionDetailsVO.getBatchNo());
+				stockDetailsVOFrom.setBatchDate(codeConversionDetailsVO.getBatchDate());
+				stockDetailsVOFrom.setLotNo(codeConversionDetailsVO.getLotNo());
+
+				stockDetailsVOFrom.setBin(codeConversionDetailsVO.getBin());
+				stockDetailsVOFrom.setSQty(codeConversionDetailsVO.getActualQty() * -1); // NEGATIVE QUANTITY
+				stockDetailsVOFrom.setRate(codeConversionDetailsVO.getRate());
 				stockDetailsRepo.save(stockDetailsVOFrom);
 
 				// Create StockDetails for toBin with positive quantity
 				StockDetailsVO stockDetailsVOTo = new StockDetailsVO();
 //				
-				
+
 				stockDetailsVOTo.setRefNo(codeConversionVO.getDocId());
 				stockDetailsVOTo.setRefDate(codeConversionVO.getDocDate());
 				stockDetailsVOTo.setOrgId(codeConversionVO.getOrgId());
@@ -168,14 +171,12 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setBatchDate(codeConversionDetailsVO.getBatchDate());
 				stockDetailsVOTo.setLotNo(codeConversionDetailsVO.getCLotNo());
 				stockDetailsVOTo.setBin(codeConversionDetailsVO.getCbin());
-				stockDetailsVOTo.setSQty(codeConversionDetailsVO.getActualQty()); //positive QUANTITY
+				stockDetailsVOTo.setSQty(codeConversionDetailsVO.getActualQty()); // positive QUANTITY
 				stockDetailsVOTo.setRemarks(codeConversionDetailsVO.getRemarks());
 				stockDetailsRepo.save(stockDetailsVOTo);
 			}
 		}
 
-	
-		
 		Map<String, Object> response = new HashMap<>();
 		response.put("codeConversionVO", codeConversionVO);
 		response.put("message", message);
@@ -259,13 +260,15 @@ public class StockProcessServiceImpl implements StockProcessService {
 		}
 		return details1;
 	}
-	
-	@Transactional
-	public List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId, String finYear,
-			String branch, String branchCode, String client, String bin,String partNo,String partDesc,String sku) {
 
-		Set<Object[]> result = codeConcersionRepo.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, finYear,
-				branch, branchCode, client, bin, partNo,partDesc,sku);
+	@Transactional
+	public List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(
+			Long orgId, String finYear, String branch, String branchCode, String client, String bin, String partNo,
+			String partDesc, String sku) {
+
+		Set<Object[]> result = codeConcersionRepo
+				.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, finYear, branch,
+						branchCode, client, bin, partNo, partDesc, sku);
 		return getGrnResult(result);
 	}
 
@@ -282,17 +285,17 @@ public class StockProcessServiceImpl implements StockProcessService {
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = codeConcersionRepo.findBinFromStockForCodeConversion(orgId, finYear, branch,
-				branchCode, client);
+		Set<Object[]> result = codeConcersionRepo.findBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+				client);
 		return getMovementResult(result);
 	}
-	
+
 	private List<Map<String, Object>> getMovementResult(Set<Object[]> result) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {

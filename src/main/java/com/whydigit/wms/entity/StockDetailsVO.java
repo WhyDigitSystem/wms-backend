@@ -87,7 +87,7 @@ public class StockDetailsVO {
 	private String partDesc;
 	@Column(name = "sourcescreencode")
 	private String sourceScreenCode;
-	@Column(name = "sourcescreenName")
+	@Column(name = "sourcescreenname")
 	private String sourceScreenName;
 	@Column(name = "remarks")
 	private String remarks;
@@ -173,8 +173,8 @@ public class StockDetailsVO {
 	private boolean active;
 	@Column(name = "modifiedby")
 	private String updatedBy;
-	@Column(name = "screencode")
-	private String screenCode;
+//	@Column(name = "screencode")
+//	private String screenCode;
 	@Column(name = "finyear")
 	private String finYear;
 
