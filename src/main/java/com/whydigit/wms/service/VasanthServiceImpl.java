@@ -82,7 +82,7 @@ public class VasanthServiceImpl implements VasanthService{
 	    for (VasPickDetailsDTO vasPickDTO : vasPicDTO.getVasPickDetailsDTO()) {
 	        VasPickDetailsVO detailsVO = new VasPickDetailsVO();
 	        detailsVO.setPartCode(vasPickDTO.getPartCode());
-	        detailsVO.setPartDescrrption(vasPickDTO.getPartDescrrption());
+	        detailsVO.setPartDescription(vasPickDTO.getPartDescription());
 	        detailsVO.setPartNo(vasPickDTO.getPartNo());
 	        detailsVO.setSku(vasPickDTO.getSku());
 	        detailsVO.setBin(vasPickDTO.getBin());

@@ -136,13 +136,13 @@ public interface WarehouseMasterService {
 
 	Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode);
 
-	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
+	Map<String, Object> createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
 	
 	List<WarehouseVO> getAllWarehouse(Long orgId);
 
 
 	// Warehouse Location
-	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String warehouse, String branch); // Method names
+	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String branch); // Method names
 																									// should be in																					// camelCase
 
 	Set<Object[]> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse);
@@ -155,7 +155,7 @@ public interface WarehouseMasterService {
 	Set<Object[]> getAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,
 			String locationtype, String rowno, String level);
 
-	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
+	WarehouseLocationVO getWarehouseLocationById(Long id);
 
 	Map<String, Object> createUpdateWarehouseLocation(WarehouseLocationDTO warehouseLocationDTO) throws ApplicationException;
 

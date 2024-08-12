@@ -1,19 +1,21 @@
 package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
@@ -22,27 +24,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "vaspick")
+@Table(name = "kitting")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VasPickVO {
+public class KittingVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspickgen")
-	@SequenceGenerator(name = "vaspickgen", sequenceName = "vaspickseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "vaspickid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "kittinggen")
+	@SequenceGenerator(name = "kittinggen", sequenceName = "kittingseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "kittingid")
 	private Long id;
-	@Column(name = "picbin")
-	private String picBin;
+	
+	
 	@Column(name = "screenname")
 	private String screenName;
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode="KT";
 	@Column(name = "docdate")
-	private LocalDate docDate = LocalDate.now();
+	private LocalDate docDate;
 	@Column(name = "docid")
 	private String docId;
-	@Column(name = "orgid")
+	@Column(name = "orgId")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;
@@ -68,24 +70,39 @@ public class VasPickVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze;
+	@Column(name = "refno")
+	private String refNo;
+	@Column(name = "refdate")
+	private LocalDate refDate;
 	
 	
-	@OneToMany(mappedBy ="vasPickVO",cascade = CascadeType.ALL)
-	@JsonManagedReference
-	private List<VasPickDetailsVO> vasPickDetailsVO;
 	
-
-	@JsonGetter("active")
-	public String getActive() {
-		return active ? "Active" : "In-Active";
-	}
-
-	// Optionally, if you want to control serialization for 'cancel' field similarly
-	@JsonGetter("cancel")
-	public String getCancel() {
-		return cancel ? "T" : "F";
-	}
-
+	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	
+	@OneToMany(mappedBy ="kittingVO",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<KittingDetails1VO> kittingDetails1VO;
+	
+	@OneToMany(mappedBy ="kittingVO",cascade = CascadeType.ALL)
+	@JsonManagedReference
+	private List<KittingDetails2VO> kittingDetails2VO;
+	
 
+	@PrePersist
+	private void setDefaultFinyr() {
+		// Execute the logic to set the default value for finyr
+		String fyFull = calculateFinyr();
+		this.finYear = fyFull;
+	}
+
+	private String calculateFinyr() {
+		// Logic to calculate finyr based on the provided SQL query
+		String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
+		String fyFull = (currentMonthDay.compareTo("0331") > 0)
+				? LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))
+				: LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
+		return fyFull;
+
+	}
 }
