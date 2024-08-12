@@ -35,12 +35,12 @@ public class VasPickVO {
 	@Column(name = "picbin")
 	private String picBin;
 	@Column(name = "screenname")
-	private String screenName;
+	private String screenName="VASPICK";
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode="VP";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "docid")
+	@Column(name = "docid",unique =true)
 	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;

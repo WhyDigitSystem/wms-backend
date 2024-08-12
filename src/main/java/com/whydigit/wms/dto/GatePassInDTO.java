@@ -40,7 +40,6 @@ public class GatePassInDTO {
 	private String client;
 	private String customer;
 	private String finYear;
-	private String cancelRemarks;
 	private boolean freeze;
 	
 	private List<GatePassInDetailsDTO> gatePassInDetailsDTO;

@@ -13,7 +13,6 @@ public class KittingDTO {
 	private Long id;
 	private String screenName;
 	private LocalDate docDate;
-	private String docId;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -22,8 +21,8 @@ public class KittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private boolean active = true;
-	private boolean cancel = false;
+	private boolean active;
+	private boolean cancel;
 	private String cancelRemarks;
 	private boolean freeze;
 	private String refNo;

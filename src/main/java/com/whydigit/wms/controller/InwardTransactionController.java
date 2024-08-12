@@ -228,6 +228,27 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	// GatePassIn
+	
+	@PutMapping("/createUpdateGatePassIn")
+	public ResponseEntity<ResponseDTO> createUpdateGatePassIn(@RequestBody GatePassInDTO gatePassInDTO) {
+		String methodName = "createUpdateGatePassIn()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> createdGatePassInVO = inwardTransactionService.createUpdateGatePassIn(gatePassInDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdGatePassInVO.get("message"));
+			responseObjectsMap.put("GatePassInVO", createdGatePassInVO.get("gatePassInVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	@GetMapping("/gatePassIn")
 	public ResponseEntity<ResponseDTO> getAllGatePassIn(@RequestParam Long  orgId,@RequestParam String branchCode,@RequestParam String finYear,@RequestParam String client) {
@@ -311,6 +332,7 @@ public class InwardTransactionController extends BaseController {
         return ResponseEntity.ok().body(responseDTO);
     }
 	
+	//Get ALL ModeOfShipment
 	
 	@GetMapping("/getAllModeOfShipment")
 	public ResponseEntity<ResponseDTO> getAllModeOfShipment(@RequestParam Long orgId) {
@@ -351,26 +373,6 @@ public class InwardTransactionController extends BaseController {
 		return formattedParameters;
 	}
 
-	@PutMapping("/createUpdateGatePassIn")
-	public ResponseEntity<ResponseDTO> createUpdateGatePassIn(@RequestBody GatePassInDTO gatePassInDTO) {
-		String methodName = "createUpdateGatePassIn()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			Map<String, Object> createdGatePassInVO = inwardTransactionService.createUpdateGatePassIn(gatePassInDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdGatePassInVO.get("message"));
-			responseObjectsMap.put("GatePassInVO", createdGatePassInVO.get("gatePassInVO"));
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
 
 	
 
