@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.CodeConversionDTO;
 import com.whydigit.wms.dto.CodeConversionDetailsDTO;
-
 import com.whydigit.wms.dto.DeKittingChildDTO;
 import com.whydigit.wms.dto.DeKittingDTO;
 import com.whydigit.wms.dto.DeKittingParentDTO;
@@ -24,19 +23,16 @@ import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.LocationMovementDetailsDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.dto.SalesReturnDetailsDTO;
-
 import com.whydigit.wms.entity.CodeConversionDetailsVO;
 import com.whydigit.wms.entity.CodeConversionVO;
 import com.whydigit.wms.entity.DeKittingChildVO;
 import com.whydigit.wms.entity.DeKittingParentVO;
 import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
-
 import com.whydigit.wms.entity.LocationMovementDetailsVO;
 import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.SalesReturnDetailsVO;
 import com.whydigit.wms.entity.SalesReturnVO;
-
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CodeConversionDetailsRepo;
@@ -45,12 +41,10 @@ import com.whydigit.wms.repo.DeKittingChildRepo;
 import com.whydigit.wms.repo.DeKittingParentRepo;
 import com.whydigit.wms.repo.DeKittingRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
-
 import com.whydigit.wms.repo.LocationMovementDetailsRepo;
 import com.whydigit.wms.repo.LocationMovementRepo;
 import com.whydigit.wms.repo.SalesReturnDetailsRepo;
 import com.whydigit.wms.repo.SalesReturnRepo;
-
 import com.whydigit.wms.repo.StockDetailsRepo;
 
 @Service
@@ -70,8 +64,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
-	@Autowired
-	StockDetailsRepo stockDetailsRepo;
+	
 
   @Autowired
 	SalesReturnRepo salesReturnRepo;
@@ -745,14 +738,14 @@ public class StockProcessServiceImpl implements StockProcessService {
 		Set<Object[]> result = codeConcersionRepo
 				.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, finYear, branch,
 						branchCode, client, bin, partNo, partDesc, sku);
-  return getGrnResult(result);
+  return getGrnCodeConversionResult(result);
 	}
-	private List<Map<String, Object>> getGrnResult(Set<Object[]> result) {
+	private List<Map<String, Object>> getGrnCodeConversionResult(Set<Object[]> result) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
-      part.put("bintype", fs[1] != null ? fs[1].toString() : "");
+            part.put("bintype", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
 			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
 			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
@@ -1009,6 +1002,19 @@ return getGrnResult(result);
 				client);
 		return getPartNoResult(result);
 	}
+	
+	private List<Map<String, Object>> getPartNoResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	
+	
 
 	@Override
 	@Transactional
@@ -1017,9 +1023,9 @@ return getGrnResult(result);
 
 		Set<Object[]> result = codeConcersionRepo.findBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
 				client);
-		return getMovementResult(result);
+		return getBinCodeConversionResult(result);
 	}
-	private List<Map<String, Object>> getMovementResult(Set<Object[]> result) {
+	private List<Map<String, Object>> getBinCodeConversionResult(Set<Object[]> result) {
     List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();

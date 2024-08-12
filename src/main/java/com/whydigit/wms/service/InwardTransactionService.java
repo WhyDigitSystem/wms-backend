@@ -5,18 +5,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.validation.Valid;
-
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
-import com.whydigit.wms.dto.LocationMovementDTO;
-import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
-import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.PutAwayVO;
 import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.exception.ApplicationException;
@@ -75,5 +70,6 @@ public interface InwardTransactionService {
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
 
 	List<CarrierVO> getActiveShipment(String shipmentMode);
+
 
 }
