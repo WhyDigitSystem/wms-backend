@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
-import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.service.UserService;
 
 @RestController

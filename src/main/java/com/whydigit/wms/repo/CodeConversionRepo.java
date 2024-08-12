@@ -1,6 +1,7 @@
 package com.whydigit.wms.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,5 +21,18 @@ public interface CodeConversionRepo extends JpaRepository<CodeConversionVO, Long
 
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getCodeConversionDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
+
+	@Query(nativeQuery = true,value="select partno,partdesc,sku from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6")
+	Set<Object[]> findPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client, String bin);
+
+	@Query(nativeQuery = true,value ="select grnno,bintype,batch,batchdate,lotno from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9")
+	Set<Object[]> findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId,
+			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+			String sku);
+
+	@Query(nativeQuery = true,value = " select bin from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5")
+	Set<Object[]> findBinFromStockForCodeConversion(Long orgId, String finYear, String branch, String branchCode,
+			String client);
 
 }
