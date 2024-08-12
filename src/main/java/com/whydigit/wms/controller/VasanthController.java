@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
+import com.whydigit.wms.dto.CycleCountDTO;
 import com.whydigit.wms.dto.KittingDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.VasPickDTO;
@@ -249,5 +250,28 @@ public class VasanthController  extends BaseController{
         return ResponseEntity.ok().body(responseDTO);
     }
 
+	//CYCLECOUNT	
+	
+	@PutMapping("/createUpdateCycleCount")
+	public ResponseEntity<ResponseDTO> createUpdateCycleCount(@RequestBody CycleCountDTO cycleCountDTO) {
+	    String methodName = "createUpdateCycleCount()";
+	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	    String errorMsg = null;
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    try {
+	        Map<String, Object> cycleCount = vasanthService.createUpdateCycleCount(cycleCountDTO);
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, cycleCount.get("message"));
+	        responseObjectsMap.put("cycleCountVO", cycleCount.get("cycleCountVO"));
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    } catch (Exception e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+	    }
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
+	}
+	
 	
 }
