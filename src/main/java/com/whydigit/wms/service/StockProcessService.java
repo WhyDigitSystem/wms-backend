@@ -16,6 +16,7 @@ import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.exception.ApplicationException;
+
 @Service
 public interface StockProcessService {
 
@@ -37,10 +38,8 @@ public interface StockProcessService {
 	Map<String, Object> createUpdateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
 
 	List<Map<String, Object>> getSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
-	
-	String getSalesReturnDocId(Long orgId, String finYear, String branch, String branchCode,
-			String client);
 
+	String getSalesReturnDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 //	LocationMovement
 	List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode,
@@ -54,23 +53,35 @@ public interface StockProcessService {
 	List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String finYear, String branch,
 			String branchCode, String client);
 
+	List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear,
+			String branch, String branchCode, String client, String bin);
 
-	List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear, String branch,
-			String branchCode, String client, String bin);
-	
-	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear, String branch,
-			String branchCode, String client, String bin,String partNo,String partDesc,String sku);
-	
-	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode,
-			String client);
+	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
+			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+			String sku);
+
+	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 //	De-Kitting
-	List<DeKittingVO> getAllDeKitting(Long orgId, String finYear, String branch, String branchCode,
-			String client, String warehouse);
+	List<DeKittingVO> getAllDeKitting(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
 
 	DeKittingVO getAllDeKittingById(Long id);
 
-	Map<String, Object> createUpdateDeKitting(@Valid DeKittingDTO dekittingDTO)
-			throws ApplicationException;
+	Map<String, Object> createUpdateDeKitting(@Valid DeKittingDTO dekittingDTO) throws ApplicationException;
 
+	String getDeKittingDocId(Long orgId, String finYear, String branch, String branchCode, String client);
+
+	List<Map<String, Object>> getPartNoFromStockForDeKitting(Long orgId, String finYear, String branch,
+			String branchCode, String client);
+
+	List<Map<String, Object>> getPartDescAndSkuFromStockForDeKitting(Long orgId, String finYear, String branch,
+			String branchCode, String client, String partNo);
+	
+	List<Map<String, Object>> getBinFromStockForDeKitting(Long orgId, String finYear, String branch,
+			String branchCode, String client);
+	
+	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKitting(Long orgId,
+			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+			String sku);
 }

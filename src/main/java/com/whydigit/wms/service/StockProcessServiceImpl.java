@@ -869,4 +869,96 @@ public class StockProcessServiceImpl implements StockProcessService {
 		deKittingVO.setDeKittingChildVO(deKittingChildVOs);
 	}
 
+	@Override
+	@Transactional
+	public String getDeKittingDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+		String ScreenCode = "DK";
+		String result = deKittingRepo.getDeKittingDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getPartNoFromStockForDeKitting(Long orgId, String finYear, String branch,
+			String branchCode, String client) {
+
+		Set<Object[]> result = deKittingRepo.findPartNoFromStockForDeKitting(orgId, finYear, branch, branchCode,
+				client);
+		return getPartNoResult(result);
+	}
+
+	private List<Map<String, Object>> getPartNoResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getPartDescAndSkuFromStockForDeKitting(Long orgId, String finYear, String branch,
+			String branchCode, String client, String partNo) {
+
+		Set<Object[]> result = deKittingRepo.findPartDescAndSkuFromStockForDeKitting(orgId, finYear, branch, branchCode,
+				client, partNo);
+		return getPartDescResult(result);
+	}
+
+	private List<Map<String, Object>> getPartDescResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partDesc", fs[0] != null ? fs[0].toString() : "");
+			part.put("sku", fs[1] != null ? fs[1].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getBinFromStockForDeKitting(Long orgId, String finYear, String branch,
+			String branchCode, String client) {
+
+		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKitting(orgId, finYear, branch, branchCode,
+				client);
+		return getDBinResult(result);
+	}
+
+	private List<Map<String, Object>> getDBinResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	@Transactional
+	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKitting(Long orgId,
+			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+			String sku) {
+
+		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKitting(
+				orgId, finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+		return getGrnNoResult(result);
+	}
+
+	private List<Map<String, Object>> getGrnNoResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
+			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
+			part.put("lotNo", fs[3] != null ? fs[3].toString() : "");
+			part.put("expDate", fs[4] != null ? fs[4].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}	
 }
