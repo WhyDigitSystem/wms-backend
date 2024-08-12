@@ -38,7 +38,7 @@ public class DeKittingVO {
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")

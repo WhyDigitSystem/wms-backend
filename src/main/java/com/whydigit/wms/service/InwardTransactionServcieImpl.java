@@ -91,17 +91,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	@Autowired
 	CarrierRepo carrierRepo;
 
-	@Autowired
-	SalesReturnRepo salesReturnRepo;
-
-	@Autowired
-	SalesReturnDetailsRepo salesReturnDetailsRepo;
-
-	@Autowired
-	LocationMovementRepo locationMovementRepo;
-
-	@Autowired
-	LocationMovementDetailsRepo locationMovementDetailsRepo;
+	
 
 	// Grn
 
@@ -704,6 +694,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		putAwayRepo.deleteById(id);
 	}
 
+
 //	SalesReturn
 	@Override
 	public List<SalesReturnVO> getAllSalesReturn(Long orgId, String finYear, String branch, String branchCode,
@@ -1101,5 +1092,4 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	}
 
 	
-
 }

@@ -59,7 +59,11 @@ public class DeKittingParentVO {
 	private BigDecimal unitRate;
 	@Column(name = "amount")
 	private BigDecimal amount;
-
+	@Column(name = "status")
+	private String status="R";
+	@Column(name = "qcflag")
+	private boolean qcFlag;
+	
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "dekittingid")

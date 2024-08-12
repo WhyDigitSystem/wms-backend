@@ -25,5 +25,6 @@ public class DeKittingParentDTO {
 	private int qty;
 	private BigDecimal unitRate;
 	private BigDecimal amount;
-
+	private String status;
+	private boolean qcFlag;
 }
