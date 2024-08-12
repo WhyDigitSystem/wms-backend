@@ -34,6 +34,7 @@ import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.PutAwayVO;
 import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.service.InwardTransactionService;
+import com.whydigit.wms.service.WarehouseMasterService;
 
 @RestController
 @RequestMapping("/api/inward")
@@ -43,6 +44,9 @@ public class InwardTransactionController extends BaseController {
 
 	@Autowired
 	InwardTransactionService inwardTransactionService;
+	
+	@Autowired
+	WarehouseMasterService warehouseMasterService;
 
 //	@GetMapping("/getAllGatePassNumberByClientAndBranch")
 //	public ResponseEntity<ResponseDTO> getAllGatePassNumberByClientAndBranch(@RequestParam Long orgid,
@@ -247,7 +251,7 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	@GetMapping("/gatePassIn")
-	public ResponseEntity<ResponseDTO> getAllGatePassIn() {
+	public ResponseEntity<ResponseDTO> getAllGatePassIn(@RequestParam Long  orgId,@RequestParam String branchCode,@RequestParam String finYear,@RequestParam String client) {
 		String methodName = "getAllGatePassIn()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -255,7 +259,7 @@ public class InwardTransactionController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<GatePassInVO> gatePassInVO = new ArrayList<>();
 		try {
-			gatePassInVO = inwardTransactionService.getAllGatePassIn();
+			gatePassInVO = inwardTransactionService.getAllGatePassIn(orgId, branchCode, finYear, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -331,22 +335,22 @@ public class InwardTransactionController extends BaseController {
 	//Get ALL ModeOfShipment
 	
 	@GetMapping("/getAllModeOfShipment")
-	public ResponseEntity<ResponseDTO> getAllModeOfShipment() {
+	public ResponseEntity<ResponseDTO> getAllModeOfShipment(@RequestParam Long orgId) {
 		String methodName = "getAllModeOfShipment()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<CarrierVO> carrierVO = new ArrayList<>();
+		List<Map<String,Object>> modOfShipments = new ArrayList<>();
 		try {
-			carrierVO = inwardTransactionService.getAllModeOfShipment();
+			modOfShipments = warehouseMasterService.getAllModeOfShipment(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ModeOfShipment information get successfully");
-			responseObjectsMap.put("CarrierVO", carrierVO);
+			responseObjectsMap.put("modOfShipments", modOfShipments);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "ModeOfShipment information receive failed",
@@ -370,31 +374,7 @@ public class InwardTransactionController extends BaseController {
 	}
 
 
-	@GetMapping("/getActiveShipment")
-	public ResponseEntity<ResponseDTO> getActiveShipment(@RequestParam(required = true) String shipmentMode) {
-		String methodName = "getActiveShipment()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<CarrierVO> carrierVO = new ArrayList<>();
-		try {
-			carrierVO = inwardTransactionService.getActiveShipment(shipmentMode);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ActiveShipment information get successfully");
-			responseObjectsMap.put("CarrierVO", carrierVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "ActiveShipment information receive failed",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+	
 
 	// PutAway
 	@GetMapping("/getAllPutAway")

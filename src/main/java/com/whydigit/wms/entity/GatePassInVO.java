@@ -108,7 +108,7 @@ public class GatePassInVO {
 	@Column(name = "finyear")
 	private String finYear;
 	@Column(name = "freeze")
-	private boolean freeze;
+	private boolean freeze=false;
 
 
 	@JsonManagedReference

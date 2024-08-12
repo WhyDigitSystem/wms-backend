@@ -1501,9 +1501,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			detailsVO.setBinSeq(locationMappingDetailsDTO.getBinSeq());
 			detailsVO.setLevelNo(locationMappingDetailsDTO.getLevelNo());
 			detailsVO.setCore(locationMappingDetailsDTO.getCore());
+			detailsVO.setWarehouse(locationMappingDTO.getWarehouse());
 			detailsVO.setBinCategory(locationMappingDetailsDTO.getBinCategory());
-			detailsVO.setActive(locationMappingDetailsDTO.isActive());
-
+			detailsVO.setActive(true);
 			detailsVO.setLocationMappingVO(locationMappingVO);
 			detailsVOList.add(detailsVO);
 		}
@@ -1531,8 +1531,27 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch) {
-		return carrierRepo.findCarrierNameByCustomer(orgid, client, cbranch);
+	public List<Map<String, Object>> getAllModeOfShipment(Long orgId) {
+		Set<Object[]> modeOfShipment= carrierRepo.findmodeOfShipment(orgId);
+		
+		return modes(modeOfShipment);
+	}
+
+	private List<Map<String, Object>> modes(Set<Object[]> modeOfShipment) {
+		List<Map<String,Object>> modeOf= new ArrayList<>();
+		for(Object[] mode:modeOfShipment)
+		{
+			Map<String,Object> modes1=new HashMap<>();
+			modes1.put("shipmentMode", mode[0] != null ? mode[0].toString() : "");
+			modeOf.add(modes1);
+		}
+		return modeOf;
+	}
+	
+	@Override
+	public List<CarrierVO> getCarrierNameByCustomer(Long orgid, String client, String cbranch,String shipmentMode) {
+		List<CarrierVO> carrierVO= carrierRepo.findCarrierNameByCustomer(orgid, client, cbranch,shipmentMode);
+		return carrierVO;
 	}
 
 	@Override
@@ -1973,4 +1992,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 		return documentTypeMappingVO;
 	}
+
+	
 }

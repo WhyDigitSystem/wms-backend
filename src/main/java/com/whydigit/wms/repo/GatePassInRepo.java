@@ -1,5 +1,6 @@
 package com.whydigit.wms.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +24,20 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	boolean existsByEntryNoAndOrgIdAndBranchCodeAndClient(String entryNo, Long orgId, String branchCode, String client);
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getGatePassInDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
+
+	@Query(value = "select a from GatePassInVO a where a.orgId=?1 and a.branchCode=?2 and a.finYear=?3 and a.client=?4  order by a.docId desc")
+	List<GatePassInVO> findAllgatePassinDetails(Long orgId, String branchCode, String finYear, String client);
+
+	@Query(value = "select a from GatePassInVO a where a.orgId=?1 and a.branchCode=?2 and a.finYear=?3 and a.client=?4 and a.freeze=false order by a.docId desc")
+	List<GatePassInVO> findAllGatePassinDetailsforPedningGRN(Long orgId, String branchCode, String finYear,
+			String client);
+
+	@Query(value = "select a from GatePassInVO a where a.docId=?1")
+	GatePassInVO findByDocId(String gatePassId);
+	
+	
+
+	
 
 	
 
