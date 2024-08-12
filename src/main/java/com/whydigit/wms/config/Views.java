@@ -24,8 +24,8 @@ public class Views {
     private void executeQueries() {
     
     	jdbcTemplate.execute("create or replace view vw_clientlocationdetails as\r\n"
-    			+ "select branch,branchcode,client,clienttype,orgid,active,bin,cellcategory,core,levelno,locationtype,lstatus,rowno,warehouse from locationmappingdetails\r\n"
-    			+ "group by branch,branchcode,client,clienttype,orgid,active,bin,cellcategory,core,levelno,locationtype,lstatus,rowno,warehouse order by branch,branchcode,warehouse,client,locationtype,rowno,levelno,bin asc");
+    			+ "select a.branch,a.branchcode,a.client,a.clienttype,a.orgid,b.active,b.bin,b.bincategory,b.core,b.levelno,a.bintype,b.binstatus,b.rowno,b.warehouse from locationmapping a,locationmappingdetails b\r\n"
+    			+ "where a.locationmappingid=b.locationmappingid group by a.branch,a.branchcode,a.client,a.clienttype,a.orgid,b.active,b.bin,b.bincategory,b.core,b.levelno,a.bintype,b.binstatus,b.rowno,b.warehouse");
     }
 
 }

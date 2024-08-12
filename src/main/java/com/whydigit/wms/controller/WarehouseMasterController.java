@@ -862,7 +862,7 @@ public class WarehouseMasterController extends BaseController {
 	// Warehouse Location
 
 	@GetMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> getAllWarehouseLocation(@RequestParam Long orgid, @RequestParam String warehouse,
+	public ResponseEntity<ResponseDTO> getAllWarehouseLocation(@RequestParam Long orgid,
 			@RequestParam String branch) {
 		String methodName = "getAllWarehouseLocation()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -871,7 +871,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<WarehouseLocationVO> warehouseLocationVO = new ArrayList<>();
 		try {
-			warehouseLocationVO = warehouseMasterService.getAllWarehouseLocation(orgid, warehouse, branch);
+			warehouseLocationVO = warehouseMasterService.getAllWarehouseLocation(orgid, branch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1056,8 +1056,8 @@ public class WarehouseMasterController extends BaseController {
 		return formattedBins;
 	}
 
-	@GetMapping("/warehouselocation/{warehouselocationid}")
-	public ResponseEntity<ResponseDTO> getWarehouseLocationById(@PathVariable Long warehouselocationid) {
+	@GetMapping("/getWarehouselocationById")
+	public ResponseEntity<ResponseDTO> getWarehouseLocationById(@RequestParam Long id) {
 		String methodName = "getWarehouseLocationById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1065,7 +1065,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		WarehouseLocationVO warehouseLocationVO = null;
 		try {
-			warehouseLocationVO = warehouseMasterService.getWarehouseLocationById(warehouselocationid).orElse(null);
+			warehouseLocationVO = warehouseMasterService.getWarehouseLocationById(id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1075,7 +1075,7 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("warehouseLocationVO", warehouseLocationVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			errorMsg = "Warehouse Location not found for ID: " + warehouselocationid;
+			errorMsg = "Warehouse Location not found for ID: " + id;
 			responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse Location not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
