@@ -32,7 +32,7 @@ public class BuyerOrderDTO {
 	private String company;
 	private boolean cancel;
 	private String cancelRemark;
-	private String screenCode;
+	//private String screenCode;
 	private String screenName;
 	private String customer;
 	private String client;

@@ -26,14 +26,14 @@ public class VasPickDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspickdetailsgen")
 	@SequenceGenerator(name = "vaspickdetailsgen", sequenceName = "vaspickdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "vaspicdetailsid")
+	@Column(name = "vaspickdetailsid")
 	private Long id;
 	@Column(name = "picbin")
 	private String picBin;
 	@Column(name = "partcode")
 	private String partCode;
 	@Column(name = "partdescrrption")
-	private String partDescrrption;
+	private String partDescription;
 	@Column(name = "partno")
 	private String partNo;
 	private String sku;
@@ -57,7 +57,7 @@ public class VasPickDetailsVO {
 	
 	@ManyToOne
 	@JsonBackReference
-	@JoinColumn(name ="vaspicid")
+	@JoinColumn(name ="vaspickid")
 	private VasPickVO vasPickVO;
 
 }

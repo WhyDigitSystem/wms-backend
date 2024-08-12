@@ -29,11 +29,12 @@ public class LocationMappingVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationmappinggen")
 	@SequenceGenerator(name = "locationmappinggen", sequenceName = "locationmappingseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "locationmappingid")
 	private Long id;
 	private String branch;
 	private String warehouse;
-	@Column(name ="locationtype")
-	private String locationType;
+	@Column(name ="bintype")
+	private String binType;
 	@Column(name ="clienttype")
 	private String clientType;
 	@Column(name ="rowno")

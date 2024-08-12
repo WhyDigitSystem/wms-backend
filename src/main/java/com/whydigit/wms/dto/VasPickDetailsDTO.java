@@ -14,7 +14,7 @@ public class VasPickDetailsDTO {
 
 	private String partCode;
 
-	private String partDescrrption;
+	private String partDescription;
 
 	private String partNo;
 

@@ -400,7 +400,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 	@Override
 	public Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException {
-
+        String screenCode="BO";
 		BuyerOrderVO buyerOrderVO;
 		String message = null;
 
@@ -414,6 +414,20 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			}
 
 			buyerOrderVO = new BuyerOrderVO();
+			
+		//	GETDOCID API
+			String docId = buyerOrderRepo.getbuyerOrderDocId(buyerOrderDTO.getOrgId(), buyerOrderDTO.getFinYear(),
+					buyerOrderDTO.getBranchCode(), buyerOrderDTO.getClient(), screenCode);
+			buyerOrderVO.setDocId(docId);
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(buyerOrderDTO.getOrgId(),
+							buyerOrderDTO.getFinYear(), buyerOrderDTO.getBranchCode(), buyerOrderDTO.getClient(),
+							screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			
 			buyerOrderVO.setCreatedBy(buyerOrderDTO.getCreatedBy());
 			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
 
@@ -464,7 +478,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setCompany(buyerOrderDTO.getCompany());
 		buyerOrderVO.setCancel(buyerOrderDTO.isCancel());
 		buyerOrderVO.setCancelRemark(buyerOrderDTO.getCancelRemark());
-		buyerOrderVO.setScreenCode(buyerOrderDTO.getScreenCode());
+//		buyerOrderVO.setScreenCode(buyerOrderDTO.getScreenCode());
 		buyerOrderVO.setScreenName(buyerOrderDTO.getScreenName());
 		buyerOrderVO.setCustomer(buyerOrderDTO.getCustomer());
 		buyerOrderVO.setClient(buyerOrderDTO.getClient());
@@ -525,4 +539,13 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		}
 		return totalQty;
 	}
+
+	@Override
+	public String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode,
+			String client) {
+		String ScreenCode = "BO";
+		String result = buyerOrderRepo.getbuyerOrderDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
+
 }

@@ -55,10 +55,8 @@ public interface OutwardTransactionService {
 		public int getAvlQty(Long orgId, String client, String branchCode, String warehouse,
 				String branch, String partNo, String partDesc);
 
-		
 
-
-
+		String getBuyerOrderDocId (Long orgId, String finYear, String branch, String branchCode, String client);
 
 
 

@@ -21,6 +21,8 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			String branchcode);
 
 	boolean existsByEntryNoAndOrgIdAndBranchCodeAndClient(String entryNo, Long orgId, String branchCode, String client);
+	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
+	String getGatePassInDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
 	
 

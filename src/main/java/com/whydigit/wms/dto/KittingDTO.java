@@ -6,14 +6,14 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class DeKittingDTO {
-
+@NoArgsConstructor
+public class KittingDTO {
 	private Long id;
-	private String transactionType;
+	private String screenName;
+	private LocalDate docDate;
+	private String docId;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -22,11 +22,14 @@ public class DeKittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String updatedBy;
 	private boolean active = true;
-	private LocalDate grnDate = LocalDate.now();
+	private boolean cancel = false;
+	private String cancelRemarks;
+	private boolean freeze;
+	private String refNo;
+	private LocalDate refDate;
 	
-	private List<DeKittingParentDTO> deKittingParentDTO;
+	private List<KittingDetails1DTO> kittingDetails1DTO;
+	private List<KittingDetails2DTO> kittingDetails2DTO;
 	
-	private List<DeKittingChildDTO> deKittingChildDTO;
 }

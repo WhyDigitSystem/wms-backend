@@ -91,17 +91,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	@Autowired
 	CarrierRepo carrierRepo;
 
-	@Autowired
-	SalesReturnRepo salesReturnRepo;
-
-	@Autowired
-	SalesReturnDetailsRepo salesReturnDetailsRepo;
-
-	@Autowired
-	LocationMovementRepo locationMovementRepo;
-
-	@Autowired
-	LocationMovementDetailsRepo locationMovementDetailsRepo;
+	
 
 	// Grn
 
@@ -385,9 +375,17 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	}
 
 	@Override
+	public String getGatePassInDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+		String ScreenCode = "GP";
+		String result = gatePassInRepo.getGatePassInDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
+	
+	@Override
 	public Map<String, Object> createUpdateGatePassIn(GatePassInDTO gatePassInDTO) throws ApplicationException {
 		GatePassInVO gatePassInVO;
 		String message;
+		String screenCode="GP";
 		if (ObjectUtils.isEmpty(gatePassInDTO.getId())) {
 
 			if (gatePassInRepo.existsByEntryNoAndOrgIdAndBranchCodeAndClient(gatePassInDTO.getEntryNo(),
@@ -398,6 +396,23 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 			}
 
 			gatePassInVO = new GatePassInVO();
+			
+//			GETDOCID API
+			String docId = gatePassInRepo.getGatePassInDocId(gatePassInDTO.getOrgId(),
+					gatePassInDTO.getFinYear(), gatePassInDTO.getBranchCode(), gatePassInDTO.getClient(),
+					screenCode);
+
+			gatePassInVO.setDocId(docId);
+
+
+			// GETDOCID LASTNO +1
+			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(gatePassInDTO.getOrgId(),
+							gatePassInDTO.getFinYear(), gatePassInDTO.getBranchCode(),
+							gatePassInDTO.getClient(), screenCode);
+			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+			
 			gatePassInVO.setCreatedBy(gatePassInDTO.getCreatedBy());
 			gatePassInVO.setUpdatedBy(gatePassInDTO.getCreatedBy());
 			message = "GatePass Creation SucessFully";
@@ -433,7 +448,6 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		gatePassInVO.setTransactionType(gatePassInDTO.getTransactionType());
 		gatePassInVO.setEntryNo(gatePassInDTO.getEntryNo());
 		gatePassInVO.setOrgId(gatePassInDTO.getOrgId());
-		gatePassInVO.setDocid(gatePassInDTO.getDocid());
 		gatePassInVO.setSupplier(gatePassInDTO.getSupplier());
 		gatePassInVO.setSupplierShortName(gatePassInDTO.getSupplierShortName());
 		gatePassInVO.setModeOfShipment(gatePassInDTO.getModeOfShipment());
@@ -452,10 +466,9 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		gatePassInVO.setActive(gatePassInDTO.isActive());
 		gatePassInVO.setBranchCode(gatePassInDTO.getBranchCode());
 		gatePassInVO.setBranch(gatePassInDTO.getBranch());
-		gatePassInVO.setScreenCode(gatePassInDTO.getScreenCode());
 		gatePassInVO.setClient(gatePassInDTO.getClient());
 		gatePassInVO.setCustomer(gatePassInDTO.getCustomer());
-		gatePassInVO.setFinyr(gatePassInDTO.getFinyr());
+		gatePassInVO.setFinYear(gatePassInDTO.getFinYear());
 
 		if (gatePassInDTO.getId() != null) {
 
@@ -680,6 +693,7 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	public void deletePutAway(Long id) {
 		putAwayRepo.deleteById(id);
 	}
+
 
 //	SalesReturn
 	@Override
@@ -1077,4 +1091,5 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 		return result;
 	}
 
+	
 }

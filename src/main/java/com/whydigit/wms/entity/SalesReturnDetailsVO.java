@@ -71,6 +71,8 @@ public class SalesReturnDetailsVO {
 	private String remarks;
 	@Column(name = "qcflag")
 	private boolean qcFlag;
+	@Column(name = "status")
+	private String status="R";
 	
 	@ManyToOne
 	@JsonBackReference
