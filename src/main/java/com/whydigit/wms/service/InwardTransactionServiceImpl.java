@@ -19,10 +19,6 @@ import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GatePassInDetailsDTO;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.GrnDetailsDTO;
-import com.whydigit.wms.dto.LocationMovementDTO;
-import com.whydigit.wms.dto.LocationMovementDetailsDTO;
-import com.whydigit.wms.dto.SalesReturnDTO;
-import com.whydigit.wms.dto.SalesReturnDetailsDTO;
 import com.whydigit.wms.entity.CarrierVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.GatePassInDetailsVO;
@@ -30,12 +26,7 @@ import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnDetailsVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
-import com.whydigit.wms.entity.LocationMovementDetailsVO;
-import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.PutAwayVO;
-import com.whydigit.wms.entity.SalesReturnDetailsVO;
-import com.whydigit.wms.entity.SalesReturnVO;
-import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CarrierRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
@@ -46,14 +37,13 @@ import com.whydigit.wms.repo.GrnRepo;
 import com.whydigit.wms.repo.HandlingStockInRepo;
 import com.whydigit.wms.repo.PutAwayDetailsRepo;
 import com.whydigit.wms.repo.PutAwayRepo;
-import com.whydigit.wms.repo.SalesReturnRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 
 @Service
-public class InwardTransactionServcieImpl implements InwardTransactionService {
+public class InwardTransactionServiceImpl implements InwardTransactionService {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(InwardTransactionServcieImpl.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(InwardTransactionServiceImpl.class);
 
 	@Autowired
 	GrnRepo grnRepo;
@@ -88,8 +78,6 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	@Autowired
 	CarrierRepo carrierRepo;
 
-	@Autowired
-	SalesReturnRepo salesReturnRepo;
 	
 
 	// Grn
@@ -694,7 +682,4 @@ public class InwardTransactionServcieImpl implements InwardTransactionService {
 	}
 
 
-
-
-	
 }
