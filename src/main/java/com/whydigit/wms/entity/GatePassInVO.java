@@ -104,7 +104,7 @@ public class GatePassInVO {
 	private String customer;
 
 	@Column(name = "screenname")
-	private String screenName="GPI";
+	private String screenName="GATEPASSIN";
 	@Column(name = "finyear")
 	private String finYear;
 	@Column(name = "freeze")
