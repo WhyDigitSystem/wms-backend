@@ -1,10 +1,6 @@
 package com.whydigit.wms.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
-import com.whydigit.wms.entity.UserVO;
 
 @Service
 public interface UserService {
