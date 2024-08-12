@@ -40,6 +40,8 @@ import com.whydigit.wms.repo.PutAwayRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 
+import io.jsonwebtoken.lang.Objects;
+
 @Service
 public class InwardTransactionServiceImpl implements InwardTransactionService {
 
@@ -253,6 +255,11 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	    grnVO.setEntryDate(grnDTO.getEntryDate());
 	    grnVO.setGrndDate(grnDTO.getGrndDate());
 	    grnVO.setGatePassId(grnDTO.getGatePassId());
+	    
+	    GatePassInVO gatePassInVO= gatePassInRepo.findByDocId(grnDTO.getGatePassId());
+	    gatePassInVO.setFreeze(true);
+	    gatePassInRepo.save(gatePassInVO);
+	    
 	    grnVO.setGatePassDate(grnDTO.getGatePassDate());
 	    grnVO.setCustomerPo(grnDTO.getCustomerPo());
 	    grnVO.setSupplierShortName(grnDTO.getSupplierShortName());
@@ -352,13 +359,17 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	// GatePassIn
 
 	@Override
-	public List<GatePassInVO> getAllGatePassIn() {
-		return gatePassInRepo.findAll();
+	public List<GatePassInVO> getAllGatePassIn(Long orgId, String branchCode,String finYear,String client) {
+		return gatePassInRepo.findAllgatePassinDetails(orgId,branchCode,finYear,client);
 	}
 
 	@Override
 	public Optional<GatePassInVO> getGatePassInById(Long id) {
 		return gatePassInRepo.findById(id);
+	}
+	
+	public List<GatePassInVO>getGatepassInDetailsForPendingGRN(Long orgId, String branchCode,String finYear,String client){
+		return gatePassInRepo.findAllGatePassinDetailsforPedningGRN(orgId,branchCode,finYear,client);
 	}
 
 	@Override
@@ -519,16 +530,9 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 		return gatePassInRepo.findGatePassDetailsByGatePassNo(orgId, client, entryno, docid, branchcode);
 	}
 
-	@Override
-	public List<CarrierVO> getAllModeOfShipment() {
-		return carrierRepo.findmodeOfShipment();
-	}
+	
 
-	@Override
-	public List<CarrierVO> getActiveShipment(String shipmentMode) {
-		return carrierRepo.getActiveShipment(shipmentMode);
-	}
-
+	
 	// PutAway
 
 	@Override
@@ -680,6 +684,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	public void deletePutAway(Long id) {
 		putAwayRepo.deleteById(id);
 	}
+
 
 
 }
