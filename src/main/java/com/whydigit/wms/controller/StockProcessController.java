@@ -655,7 +655,8 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> de = new ArrayList<>();
 
 		try {
-			de = stockProcessService.getPartDescAndSkuFromStockForDeKitting(orgId, finYear, branch, branchCode, client,partNo);
+			de = stockProcessService.getPartDescAndSkuFromStockForDeKitting(orgId, finYear, branch, branchCode, client,
+					partNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -674,7 +675,7 @@ public class StockProcessController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getBinFromStockForDeKitting")
 	public ResponseEntity<ResponseDTO> getBinFromStockForDeKitting(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
@@ -707,7 +708,7 @@ public class StockProcessController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForLocationMovement")
 	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForLocationMovement(
 			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
@@ -724,8 +725,8 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKitting(orgId, finYear,
-					branch, branchCode, client, bin, partNo, partDesc, sku);
+			mov = stockProcessService.getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKitting(orgId,
+					finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
