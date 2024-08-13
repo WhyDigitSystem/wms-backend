@@ -10,7 +10,7 @@ import com.whydigit.wms.entity.DeKittingVO;
 
 public interface DeKittingRepo extends JpaRepository<DeKittingVO, Long> {
 
-	@Query(nativeQuery = true, value = "select * from dekititng where orgid=?1 and finyear=?2 and branch =?3 and branchcode=?4 and client=?5 and warehouse =?6 order by docid desc")
+	@Query(nativeQuery = true, value = "select * from dekitting where orgid=?1 and finyear=?2 and branch =?3 and branchcode=?4 and client=?5 and warehouse =?6 order by docid desc")
 	List<DeKittingVO> findAllDeKitting(Long orgId, String finYear, String branch, String branchCode, String client,
 			String warehouse);
 

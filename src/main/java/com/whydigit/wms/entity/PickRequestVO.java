@@ -32,67 +32,78 @@ public class PickRequestVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pickrequestgen")
 	@SequenceGenerator(name = "pickrequestgen", sequenceName = "pickrequestseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "pickrequestid")
-	private long id;
-
+	private Long id;
 	@Column(name = "transactiontype")
 	private String transcationtype;
-	@Column(name = "docid")
-	private String docid;
 	@Column(name = "buyerrefno")
-	private String buyerrefno;
-	@Column(name = "docdate")
-	private LocalDate docdate;
+	private String buyerRefNo;
+	@Column(name = "buyerrefdate")
+	private LocalDate buyerRefDate;
 	@Column(name = "shipmentmethod")
-	private String shipmentmethod;
+	private String shipmentMethod;
 	@Column(name = "buyerorderno")
-	private String buyerorderno;
+	private String buyerOrderNo;
 	@Column(name = "buyersreference")
-	private String buyersreference;
+	private String buyersReference;
 	@Column(name = "invoiceno")
-	private String invoiceno;
-	@Column(name = "client")
-	private String client;
+	private String invoiceNo;
 	@Column(name = "clientshortname")
-	private String clientshortname;
+	private String clientShortName;
 	@Column(name = "clientaddress")
-	private String clientaddress;
+	private String clientAddress;
 	@Column(name = "dispatch")
 	private String dispatch;
 	@Column(name = "customername")
-	private String customername;
+	private String customerName;
 	@Column(name = "customeraddress")
-	private String customeraddress;
+	private String customerAddress;
 	@Column(name = "duedays")
-	private String duedays;
+	private String dueDays;
 	@Column(name = "noofboxes")
-	private String noofboxes;
+	private String noOfBoxes;
 	@Column(name = "pickorder")
-	private String pickorder;
+	private String pickOrder;
 	@Column(name = "outtime")
-	private String outtime;
-	@Column(unique = true)
-	private String dupchk;
-	@Column(name = "createdby")
-	private String createdby;
-	@Column(name = "modifiedby")
-	private String updatedby;
-	@Column(name = "company")
-	private String company;
-	@Column(name = "cancel")
-	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
-	@Column(name = "cancelremarks")
-	private String cancelremark;
-	@Column(name = "active")
-	private boolean active;
-	@Column(name = "screencode")
-	private String screencode;
-	@Column(name ="orgid")
-	private String orgId;
-	@Column(name="branchcode")
+	private String outTime;
+	@Column(name = "docid")
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "orgid")
+	private Long orgId;
+	@Column(name = "customer")
+	private String customer;
+	@Column(name = "client")
+	private String client;
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "branch")
 	private String branch;
-	
+	@Column(name = "branchcode")
+	private String branchCode;
+	@Column(name = "warehouse")
+	private String warehouse;
+	@Column(name = "createdby")
+	private String createdBy;
+	@Column(name = "modifiedby")
+	private String updatedBy;
+	@Column(name = "active")
+	private boolean active = true;
+	@Column(name = "cancel")
+	private boolean cancel = false;
+	@Column(name = "cancelremarks")
+	private String cancelRemarks;
+	@Column(name = "freeze")
+	private boolean freeze = true;
+	@Column(name = "grndate")
+	private LocalDate grnDate = LocalDate.now();
+
+//	summary table
+	@Column(name = "totalpickqty")
+	private int totalPickQty;
+	@Column(name = "totalorderqty")
+	private int totalOrderQty;
+
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pickRequestVO")
 	private List<PickRequestDetailsVO> pickRequestDetailsVO;
