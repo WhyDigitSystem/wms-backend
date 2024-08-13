@@ -34,7 +34,7 @@ public class PickRequestVO {
 	@Column(name = "pickrequestid")
 	private Long id;
 	@Column(name = "transactiontype")
-	private String transcationtype;
+	private String transactionType;
 	@Column(name = "buyerrefno")
 	private String buyerRefNo;
 	@Column(name = "buyerrefdate")

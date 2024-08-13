@@ -109,7 +109,7 @@ public class StockDetailsVO {
 	private String sSku;
 	@Column(name = "ssqty")
 	private int ssQty;
-	@Column(name="sourceid")
+	@Column(name = "sourceid")
 	private Long sourceId;
 	@Column(name = "sqty")
 	private int sQty;
@@ -180,4 +180,5 @@ public class StockDetailsVO {
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }

@@ -233,7 +233,6 @@ public class StockProcessServiceImpl implements StockProcessService {
 			}
 		}
 
-
 		Map<String, Object> response = new HashMap<>();
 		response.put("codeConversionVO", codeConversionVO);
 		response.put("message", message);
@@ -314,7 +313,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		SalesReturnVO salesReturnVO = new SalesReturnVO();
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received  SalesReturn BY Id : {}", id);
-			salesReturnVO= salesReturnRepo.findSalesReturnById(id);
+			salesReturnVO = salesReturnRepo.findSalesReturnById(id);
 		} else {
 			LOGGER.info("failed Received SalesReturn For All Id.");
 		}
@@ -437,9 +436,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 	public List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear,
 			String branch, String branchCode, String client, String bin) {
 
-
 		Set<Object[]> result = codeConversionRepo.findPartNoAndPartDescFromStockForCodeConversion(orgId, finYear,
-    branch, branchCode, client, bin);
+				branch, branchCode, client, bin);
 		return getCodeConeversionPartResult(result);
 	}
 
@@ -497,7 +495,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		LocationMovementVO locationMovementVO = new LocationMovementVO();
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received  LocationMovement BY Id : {}", id);
-			locationMovementVO= locationMovementRepo.findLocationMovementById(id);
+			locationMovementVO = locationMovementRepo.findLocationMovementById(id);
 		} else {
 			LOGGER.info("failed Received LocationMovement For All Id.");
 		}
@@ -577,6 +575,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOFrom.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOFrom.setFinYear(savedLocationMovementVO.getFinYear());
+//				if (detailsVO.getFromQty() > detailsVO.getToQty()) {
+//					stockDetailsRepo.save(stockDetailsVOFrom);
+//				}else {
+//					throw new ApplicationException("The ToQty is greator than avlQty");
+//					}
 				stockDetailsRepo.save(stockDetailsVOFrom);
 
 				// Create StockDetails for toBin with positive quantity
@@ -611,6 +614,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
+//				if (detailsVO.getFromQty() > detailsVO.getToQty()) {
+//					stockDetailsRepo.save(stockDetailsVOFrom);
+//				}else {
+//					throw new ApplicationException("The ToQty is greator than avlQty");
+//					}
 				stockDetailsRepo.save(stockDetailsVOTo);
 			}
 		}
@@ -644,7 +652,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 		List<LocationMovementDetailsVO> locationMovementDetailsVOs = new ArrayList<>();
 		for (LocationMovementDetailsDTO locationMovementDetailsDTO : locationMovementDTO
 				.getLocationMovementDetailsDTO()) {
-
+			 if (locationMovementDetailsDTO.getToQty() > locationMovementDetailsDTO.getFromQty()) {
+		            throw new IllegalArgumentException("ToQuantity cannot be greater than FromQuantity for partNo: " 
+		                    + locationMovementDetailsDTO.getPartNo());
+		        }
 			LocationMovementDetailsVO locationMovementDetailsVO = new LocationMovementDetailsVO();
 			locationMovementDetailsVO.setBin(locationMovementDetailsDTO.getBin());
 			locationMovementDetailsVO.setPartNo(locationMovementDetailsDTO.getPartNo());
@@ -660,7 +671,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 					.setRemainingQty(locationMovementDetailsDTO.getFromQty() - locationMovementDetailsDTO.getToQty());
 			locationMovementDetailsVO.setGrnDate(locationMovementDetailsDTO.getGrnDate());
 			locationMovementDetailsVO.setSku(locationMovementDetailsDTO.getSku());
-			
+
 			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
 			locationMovementDetailsVO.setCellType(locationMovementDetailsDTO.getCellType());
 			locationMovementDetailsVO.setClientCode(locationMovementDetailsDTO.getClientCode());
@@ -669,7 +680,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			locationMovementDetailsVO.setSsku(locationMovementDetailsDTO.getSsku());
 			locationMovementDetailsVO.setStockDate(locationMovementDetailsDTO.getStockDate());
 			locationMovementDetailsVO.setStockDate(locationMovementDetailsDTO.getStockDate());
-			
+
 			locationMovementDetailsVO.setBinType(locationMovementDetailsDTO.getBinType());
 			locationMovementDetailsVO.setCore(locationMovementDetailsDTO.getCore());
 			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
@@ -780,13 +791,13 @@ public class StockProcessServiceImpl implements StockProcessService {
 		}
 		return details1;
 	}
-	
-	@Transactional
-	public List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long orgId,
-			 String branch, String branchCode, String client) {
 
-		Set<Object[]> result = locationMovementRepo.findAllForLocationMovementDetailsFillGrid(
-				orgId, branch, branchCode, client);
+	@Transactional
+	public List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long orgId, String branch,
+			String branchCode, String client) {
+
+		Set<Object[]> result = locationMovementRepo.findAllForLocationMovementDetailsFillGrid(orgId, branch, branchCode,
+				client);
 		return getFillGridResult(result);
 	}
 
@@ -823,25 +834,22 @@ public class StockProcessServiceImpl implements StockProcessService {
 		String result = locationMovementRepo.getLocationMovementDocId(orgId, finYear, branchCode, client, screenCode);
 		return result;
 	}
-	
-	@Transactional
-	public List<Map<String, Object>> getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch,
-			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
-			String lotNo) {
 
-		Set<Object[]> result = locationMovementRepo.findAvlQtyFromStockForLocationMovement(
-				orgId, finYear, branch, branchCode, client, bin, partDesc, sku,partNo,grnNo,lotNo);
+	@Transactional
+	public int getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch, String branchCode,
+			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
+
+		Set<Object[]> result = locationMovementRepo.findAvlQtyFromStockForLocationMovement(orgId, finYear, branch,
+				branchCode, client, bin, partDesc, sku, partNo, grnNo, lotNo);
 		return getAvlQtyLMResult(result);
 	}
 
-	private List<Map<String, Object>> getAvlQtyLMResult(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("avlQty", fs[0] != null ? fs[0].toString() : "");
-			details1.add(part);
+	private int getAvlQtyLMResult(Set<Object[]> result) {
+		int totalQty = 0;
+		for (Object[] qt : result) {
+			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
 		}
-		return details1;
+		return totalQty;
 	}
 
 //	DeKitting
@@ -856,7 +864,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		DeKittingVO deKittingVO = new DeKittingVO();
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received DeKittingBY Id : {}", id);
-			deKittingVO= deKittingRepo.findDeKittingById(id);
+			deKittingVO = deKittingRepo.findDeKittingById(id);
 		} else {
 			LOGGER.info("failed Received DeKitting For All Id.");
 		}
@@ -911,7 +919,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOPar.setGrnDate(parentDetailsVO.getGrnDate());
 				stockDetailsVOPar.setExpDate(parentDetailsVO.getExpDate());
 				stockDetailsVOPar.setStatus(parentDetailsVO.getStatus());
-				
+
 				stockDetailsVOPar.setBinClass(parentDetailsVO.getBinClass());
 				stockDetailsVOPar.setCellType(parentDetailsVO.getCellType());
 				stockDetailsVOPar.setClientCode(parentDetailsVO.getClientCode());
@@ -920,7 +928,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOPar.setSSku(parentDetailsVO.getSsku());
 				stockDetailsVOPar.setStockDate(parentDetailsVO.getStockDate());
 				stockDetailsVOPar.setStockDate(parentDetailsVO.getStockDate());
-				
+
 				stockDetailsVOPar.setSQty(parentDetailsVO.getQty() * -1);
 				stockDetailsVOPar.setStatus(parentDetailsVO.getStatus());
 //				dekitting->stock
@@ -960,7 +968,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOChi.setBranch(savedDeKittingVO.getBranch());
 				stockDetailsVOChi.setBin(childDetailsVO.getBin());
 				stockDetailsVOChi.setStatus(childDetailsVO.getStatus());
-				
+
 				stockDetailsVOChi.setBinClass(childDetailsVO.getBinClass());
 				stockDetailsVOChi.setCellType(childDetailsVO.getCellType());
 				stockDetailsVOChi.setClientCode(childDetailsVO.getClientCode());
@@ -969,7 +977,6 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOChi.setSSku(childDetailsVO.getSsku());
 				stockDetailsVOChi.setStockDate(childDetailsVO.getStockDate());
 				stockDetailsVOChi.setStockDate(childDetailsVO.getStockDate());
-				
 
 //				dekitting->stock
 				stockDetailsVOChi.setRefNo(savedDeKittingVO.getDocId());
@@ -1035,7 +1042,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			deKittingParentVO.setStatus(deKittingParentDTO.getStatus());
 			deKittingParentVO.setAmount(deKittingParentDTO.getAmount());
 			deKittingParentVO.setQcFlag(deKittingParentDTO.isQcFlag());
-			
+
 			deKittingParentVO.setBinClass(deKittingParentDTO.getBinClass());
 			deKittingParentVO.setCellType(deKittingParentDTO.getCellType());
 			deKittingParentVO.setClientCode(deKittingParentDTO.getClientCode());
@@ -1044,7 +1051,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			deKittingParentVO.setSsku(deKittingParentDTO.getSsku());
 			deKittingParentVO.setStockDate(deKittingParentDTO.getStockDate());
 			deKittingParentVO.setStockDate(deKittingParentDTO.getStockDate());
-			
+
 			deKittingParentVO.setDeKittingVO(deKittingVO);
 
 			deKittingParentVOs.add(deKittingParentVO);
@@ -1070,7 +1077,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			deKittingChildVO.setAmount(deKittingChildDTO.getAmount());
 			deKittingChildVO.setQcFlag(deKittingChildDTO.isQcFlag());
 			deKittingChildVO.setDeKittingVO(deKittingVO);
-			
+
 			deKittingChildVO.setBinClass(deKittingChildDTO.getBinClass());
 			deKittingChildVO.setCellType(deKittingChildDTO.getCellType());
 			deKittingChildVO.setClientCode(deKittingChildDTO.getClientCode());
@@ -1093,7 +1100,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		return result;
 	}
 
-	//PARENT
+	// PARENT
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String finYear, String branch,
@@ -1142,11 +1149,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 		return details1;
 	}
 
-	public List<Map<String, Object>> getPartDescAndSkuFromStockForDeKittingParent(Long orgId, String finYear, String branch,
-			String branchCode, String client, String partNo) {
+	public List<Map<String, Object>> getPartDescAndSkuFromStockForDeKittingParent(Long orgId, String finYear,
+			String branch, String branchCode, String client, String partNo) {
 
-		Set<Object[]> result = deKittingRepo.findPartDescAndSkuFromStockForDeKittingParent(orgId, finYear, branch, branchCode,
-				client, partNo);
+		Set<Object[]> result = deKittingRepo.findPartDescAndSkuFromStockForDeKittingParent(orgId, finYear, branch,
+				branchCode, client, partNo);
 		return getPartDescResult(result);
 	}
 
@@ -1166,7 +1173,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 	public List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String finYear, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, finYear, branch, branchCode, client);
+		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, finYear, branch, branchCode,
+				client);
 		return getDBinResult(result);
 	}
 
@@ -1189,12 +1197,12 @@ public class StockProcessServiceImpl implements StockProcessService {
 	}
 
 	@Transactional
-	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(Long orgId,
-			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
-			String sku) {
+	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
+			Long orgId, String finYear, String branch, String branchCode, String client, String bin, String partNo,
+			String partDesc, String sku) {
 
-		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(orgId,
-				finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
+				orgId, finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
 		return getGrnNoResult(result);
 	}
 
@@ -1210,8 +1218,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 			details1.add(part);
 		}
 		return details1;
-	}	
-	
+	}
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, String branch,
@@ -1221,8 +1229,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 				client);
 		return getAllFillGridCodeConversionResult(result);
 	}
+
 	private List<Map<String, Object>> getAllFillGridCodeConversionResult(Set<Object[]> result) {
-    List<Map<String, Object>> details1 = new ArrayList<>();
+		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
@@ -1241,40 +1250,36 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("batch", fs[13] != null ? fs[13].toString() : "");
 			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
 			part.put("lotNo", fs[15] != null ? fs[15].toString() : "");
-      details1.add(part);
-		}
-      return details1;
-	}	
-	
-	
-	@Override
-	@Transactional
-	public List<Map<String, Object>> getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch,
-			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
-			String lotNo) {
-
-		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(
-				orgId, finYear, branch, branchCode, client, bin, partDesc, sku,partNo,grnNo,lotNo);
-		return getAvlQtyResult(result);
-	}
-
-	private List<Map<String, Object>> getAvlQtyResult(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("avlQty", fs[0] != null ? fs[0].toString() : "");
 			details1.add(part);
 		}
 		return details1;
 	}
-	
-	//CHILD
+
+	@Override
+	@Transactional
+	public int getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
+			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
+
+		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, finYear, branch, branchCode,
+				client, bin, partDesc, sku, partNo, grnNo, lotNo);
+		return getAvlQtyResult(result);
+	}
+
+	private int getAvlQtyResult(Set<Object[]> result) {
+		int totalQty = 0;
+		for (Object[] qt : result) {
+			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
+		}
+		return totalQty;
+	}
+
+	// CHILD
 	@Transactional
 	public List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = deKittingRepo.findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(
-				orgId, branch, branchCode, client);
+		Set<Object[]> result = deKittingRepo.findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(orgId, branch,
+				branchCode, client);
 		return getChildResult(result);
 	}
 

@@ -78,7 +78,7 @@ public interface StockProcessService {
 	
 	List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long id,String branch,String branchCode,String client);
 	
-	List<Map<String, Object>> getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch,
+	int getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
 			String lotNo);
 
@@ -106,7 +106,7 @@ public interface StockProcessService {
 			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
 
-	List<Map<String, Object>> getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch,
+	int getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
 			String lotNo);
 
