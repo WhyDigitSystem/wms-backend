@@ -44,7 +44,7 @@ public class InwardTransactionController extends BaseController {
 
 	@Autowired
 	InwardTransactionService inwardTransactionService;
-	
+
 	@Autowired
 	WarehouseMasterService warehouseMasterService;
 
@@ -228,7 +228,7 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	// GatePassIn
-	
+
 	@PutMapping("/createUpdateGatePassIn")
 	public ResponseEntity<ResponseDTO> createUpdateGatePassIn(@RequestBody GatePassInDTO gatePassInDTO) {
 		String methodName = "createUpdateGatePassIn()";
@@ -251,7 +251,8 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	@GetMapping("/gatePassIn")
-	public ResponseEntity<ResponseDTO> getAllGatePassIn(@RequestParam Long  orgId,@RequestParam String branchCode,@RequestParam String finYear,@RequestParam String client) {
+	public ResponseEntity<ResponseDTO> getAllGatePassIn(@RequestParam Long orgId, @RequestParam String branchCode,
+			@RequestParam String finYear, @RequestParam String client) {
 		String methodName = "getAllGatePassIn()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -267,6 +268,61 @@ public class InwardTransactionController extends BaseController {
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn information get successfully");
 			responseObjectsMap.put("gatePassInVO", gatePassInVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getGatePassInNoForPedningGRN")
+	public ResponseEntity<ResponseDTO> getGatePassInNoForPedningGRN(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String finYear, @RequestParam String client) {
+		String methodName = "getGatePassInNoForPedningGRN()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<GatePassInVO> gatePassInVO = new ArrayList<>();
+		try {
+			gatePassInVO = inwardTransactionService.getGatepassInNoForPendingGRN(orgId, branchCode, finYear, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn information get successfully");
+			responseObjectsMap.put("gatePassInVO", gatePassInVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getGatePassInDetailsForPendingGRN")
+	public ResponseEntity<ResponseDTO> getGatePassInGridDetailsForPedningGRN(@RequestParam Long orgId,
+			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String gatePassDocId) {
+		String methodName = "getGatePassInGridDetailsForPedningGRN()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String,Object>> gatePassInDetailsVO = new ArrayList<>();
+		try {
+			gatePassInDetailsVO = inwardTransactionService.getGatepassInGridDetailsForPendingGRN(orgId,finYear,branchCode, client,gatePassDocId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GatePassIn information get successfully");
+			responseObjectsMap.put("gatePassInVO", gatePassInDetailsVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "GatePassIn information receive failed",
@@ -303,37 +359,38 @@ public class InwardTransactionController extends BaseController {
 	}
 
 	@GetMapping("/getGatePassInDocId")
-    public ResponseEntity<ResponseDTO> getGatePassInDocId(
-    		@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client) {
-        
-        String methodName = "getGatePassInDocId()";
-        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-        String errorMsg = null;
-        Map<String, Object> responseObjectsMap = new HashMap<>();
-        ResponseDTO responseDTO = null;
-        String mapp="";
-        
-        try {
-            mapp = inwardTransactionService.getGatePassInDocId(orgId,finYear,branch, branchCode, client);
-        } catch (Exception e) {
-            errorMsg = e.getMessage();
-            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-        }
-        
-        if (StringUtils.isBlank(errorMsg)) {
-            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BuyerOrderDocId information retrieved successfully");
-            responseObjectsMap.put("GatePassInDocId", mapp);
-            responseDTO = createServiceResponse(responseObjectsMap);
-        } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve BuyerOrderDocId information", errorMsg);
-        }
-        
-        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-        return ResponseEntity.ok().body(responseDTO);
-    }
-	
-	//Get ALL ModeOfShipment
-	
+	public ResponseEntity<ResponseDTO> getGatePassInDocId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
+
+		String methodName = "getGatePassInDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
+
+		try {
+			mapp = inwardTransactionService.getGatePassInDocId(orgId, finYear, branch, branchCode, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BuyerOrderDocId information retrieved successfully");
+			responseObjectsMap.put("GatePassInDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve BuyerOrderDocId information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// Get ALL ModeOfShipment
+
 	@GetMapping("/getAllModeOfShipment")
 	public ResponseEntity<ResponseDTO> getAllModeOfShipment(@RequestParam Long orgId) {
 		String methodName = "getAllModeOfShipment()";
@@ -341,7 +398,7 @@ public class InwardTransactionController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String,Object>> modOfShipments = new ArrayList<>();
+		List<Map<String, Object>> modOfShipments = new ArrayList<>();
 		try {
 			modOfShipments = warehouseMasterService.getAllModeOfShipment(orgId);
 		} catch (Exception e) {
@@ -372,9 +429,6 @@ public class InwardTransactionController extends BaseController {
 		}
 		return formattedParameters;
 	}
-
-
-	
 
 	// PutAway
 	@GetMapping("/getAllPutAway")

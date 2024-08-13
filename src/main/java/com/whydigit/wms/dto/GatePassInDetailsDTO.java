@@ -5,12 +5,12 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class GatePassInDetailsDTO {
 	private Long id;
-
 	private String sNo;
 	private String irNoHaw;
 	private String invoiceNo;
@@ -23,9 +23,7 @@ public class GatePassInDetailsDTO {
 	private String sku;
 	private int invQty;
 	private int recQty;
-	private int shortQty;
 	private int damageQty;
-	private int grnQty;
 	private String subUnit;
 	private int subStockShortQty;
 	private int grnPiecesQty;

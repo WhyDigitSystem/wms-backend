@@ -40,9 +40,12 @@ public interface InwardTransactionService {
 
 	Optional<GatePassInVO> getGatePassInById(Long id);
 	
-	List<GatePassInVO>getGatepassInDetailsForPendingGRN(Long orgId, String branchCode,String finYear,String client);
+	List<GatePassInVO>getGatepassInNoForPendingGRN(Long orgId, String branchCode,String finYear,String client);
 
 	Map<String, Object> createUpdateGatePassIn(GatePassInDTO gatePassInDTO) throws ApplicationException;
+	
+	List<Map<String, Object>> getGatepassInGridDetailsForPendingGRN(Long orgId, String finYear, String branchCode, String client,
+			String gatePassDocId);
 
 	Optional<GatePassInVO> updateGatePassIn(GatePassInVO gatePassInVO);
 	
@@ -67,6 +70,8 @@ public interface InwardTransactionService {
 	void deletePutAway(Long idLong);
 
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
+
+	
 
 
 	
