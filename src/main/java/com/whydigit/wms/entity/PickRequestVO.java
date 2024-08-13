@@ -103,6 +103,7 @@ public class PickRequestVO {
 	private int totalPickQty;
 	@Column(name = "totalorderqty")
 	private int totalOrderQty;
+	
 
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pickRequestVO")
