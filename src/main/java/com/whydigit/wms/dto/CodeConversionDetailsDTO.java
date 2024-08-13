@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CodeConversionDetailsDTO {
-    private Long id;
+	private Long id;
 	private String partNo;
 	private String partDescription;
 	private String grnNo;
@@ -38,6 +38,14 @@ public class CodeConversionDetailsDTO {
 	private String cbinType;
 	private String remarks;
 	private boolean qcFlags;
-	
-	
+
+	private String binClass;
+	private String cellType;
+	private String clientCode;
+	private String core;
+	private LocalDate expDate;
+	private String pckey;
+	private String ssku;
+	private LocalDate stockDate;
+
 }

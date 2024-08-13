@@ -44,6 +44,9 @@ public interface OutwardTransactionService {
 		List<Map<String, Object>> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId, String branch,
 				String client, String docid);
 		
+		List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode,
+				String client);
+		
 		//BuyerOrder
 		
 		Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException;
@@ -57,6 +60,8 @@ public interface OutwardTransactionService {
 
 
 		String getBuyerOrderDocId (Long orgId, String finYear, String branch, String branchCode, String client);
+
+		
 
 
 

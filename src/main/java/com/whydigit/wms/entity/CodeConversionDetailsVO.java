@@ -85,6 +85,23 @@ public class CodeConversionDetailsVO {
 	@Column(name = "qcflags")
 	private boolean qcFlags;
 	
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;	
+	@Column(name = "core")
+	private String core;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pckey")
+	private String pckey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stockdate")
+	private LocalDate stockDate;
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "codeconversionid")

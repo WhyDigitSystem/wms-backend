@@ -460,4 +460,34 @@ public class OutwardTransactionController extends BaseController{
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}
+		
+		@GetMapping("/getAllFillGridFromVasPutaway")
+		public ResponseEntity<ResponseDTO> getAllFillGridFromVasPutaway(@RequestParam(required = false) Long orgId,
+				 @RequestParam(required = false) String branch,
+				@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+			String methodName = "getAllFillGridFromVasPutaway()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+	    List<Map<String, Object>> mov = new ArrayList<>();
+	    try {
+				mov = outwardTransactionService.getAllFillGridFromVasPutaway(orgId, branch, branchCode,
+						client);
+	      } catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All FillGrid from VasPutaway information retrieved successfully");
+	      responseObjectsMap.put("codeConversionVO", mov);
+	      responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve FillGrid from VasPutaway information", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
 }
