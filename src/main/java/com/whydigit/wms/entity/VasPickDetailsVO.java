@@ -44,6 +44,8 @@ public class VasPickDetailsVO {
 	private String lotNo;
 	@Column(name = "grnno")
 	private String grnNo;
+	@Column(name = "grndate")
+	private String grnDate;
 	@Column(name = "avlqty")
 	private int avlQty;
 	@Column(name = "picqty")
@@ -54,6 +56,23 @@ public class VasPickDetailsVO {
 	private LocalDate manufactureDate;
 	@Column(name="qcflag")
 	private boolean qcflag;
+	
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;	
+	@Column(name = "core")
+	private String core;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pckey")
+	private String pckey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stockdate")
+	private LocalDate stockDate;
 	
 	@ManyToOne
 	@JsonBackReference
