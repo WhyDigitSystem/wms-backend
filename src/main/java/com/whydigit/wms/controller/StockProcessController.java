@@ -925,7 +925,11 @@ public class StockProcessController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve FillGrid from Stock information", errorMsg);
-		}
+	}
+
+	LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	return ResponseEntity.ok().body(responseDTO);
+}
 
 	@GetMapping("/getAvlQtyFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getAvlQtyFromStockForDeKittingParent(@RequestParam(required = false) Long orgId,

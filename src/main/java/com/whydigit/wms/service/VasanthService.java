@@ -38,7 +38,5 @@ public interface VasanthService {
 	//CYCLECOUNT
 	
 	Map<String, Object> createUpdateCycleCount(CycleCountDTO cycleCountDTO) throws ApplicationException;
-
-	String getKittingInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 	
 }
