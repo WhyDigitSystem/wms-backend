@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class PickRequestDetailsDTO {
 
 	private Long id;
-	private String partCode;
+	private String partNo;
 	private String partDesc;
 	private String sku;
 	private String core;

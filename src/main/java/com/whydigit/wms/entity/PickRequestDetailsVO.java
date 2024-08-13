@@ -31,8 +31,8 @@ public class PickRequestDetailsVO {
 	@Column(name = "pickrequestdetailsid")
 	private Long id;
 
-	@Column(name = "partcode")
-	private String partCode;
+	@Column(name = "partno")
+	private String partNo;
 	@Column(name = "partdesc")
 	private String partDesc;
 	@Column(name = "sku")
