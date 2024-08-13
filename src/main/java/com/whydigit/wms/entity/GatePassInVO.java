@@ -43,7 +43,7 @@ public class GatePassInVO {
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "docid")
-	private Long docid;
+	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docdate = LocalDate.now();
 	@Column(name = "date")
@@ -80,13 +80,13 @@ public class GatePassInVO {
 	private String company;
 
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel=false;
 
 	@Column(name = "cancelremarks")
 	private String cancelRemark;
 
 	@Column(name = "active")
-	private boolean active;
+	private boolean active=true;
 
 	@Column(name = "branchcode")
 	private String branchCode;
@@ -95,7 +95,7 @@ public class GatePassInVO {
 	private String branch;
 
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode="GP";
 
 	@Column(name = "client")
 	private String client;
@@ -103,8 +103,13 @@ public class GatePassInVO {
 	@Column(name = "customer")
 	private String customer;
 
-	@Column(name = "finyr")
-	private String finyr;
+	@Column(name = "screenname")
+	private String screenName="GATEPASSIN";
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "freeze")
+	private boolean freeze=false;
+
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "gatePassInVO", cascade = CascadeType.ALL)
@@ -117,7 +122,7 @@ public class GatePassInVO {
 	private void setDefaultFinyr() {
 		// Execute the logic to set the default value for finyr
 		String fyFull = calculateFinyr();
-		this.finyr = fyFull;
+		this.finYear = fyFull;
 	}
 
 	private String calculateFinyr() {

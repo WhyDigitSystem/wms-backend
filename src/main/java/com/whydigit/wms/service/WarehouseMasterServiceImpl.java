@@ -29,12 +29,15 @@ import com.whydigit.wms.dto.DocumentTypeMappingDetailsDTO;
 import com.whydigit.wms.dto.EmployeeDTO;
 import com.whydigit.wms.dto.GroupDTO;
 import com.whydigit.wms.dto.LocationMappingDTO;
+import com.whydigit.wms.dto.LocationMappingDetailsDTO;
 import com.whydigit.wms.dto.LocationTypeDTO;
 import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseClientDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
+import com.whydigit.wms.dto.WarehouseLocationDTO;
+import com.whydigit.wms.dto.WarehouseLocationDetailsDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -48,12 +51,14 @@ import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
+import com.whydigit.wms.entity.LocationMappingDetailsVO;
 import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseClientVO;
+import com.whydigit.wms.entity.WarehouseLocationDetailsVO;
 import com.whydigit.wms.entity.WarehouseLocationVO;
 import com.whydigit.wms.entity.WarehouseVO;
 import com.whydigit.wms.exception.ApplicationException;
@@ -70,6 +75,7 @@ import com.whydigit.wms.repo.DocumentTypeMappingRepo;
 import com.whydigit.wms.repo.DocumentTypeRepo;
 import com.whydigit.wms.repo.EmployeeRepo;
 import com.whydigit.wms.repo.GroupRepo;
+import com.whydigit.wms.repo.LocationMappingDetailsRepo;
 import com.whydigit.wms.repo.LocationMappingRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
@@ -140,22 +146,25 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	EmployeeRepo employeeRepo;
-	
+
 	@Autowired
 	DocumentTypeRepo documentTypeRepo;
-	
+
 	@Autowired
 	DocumentTypeDetailsRepo documentTypeDetailsRepo;
-	
+
 	@Autowired
 	DocumentTypeMappingRepo documentTypeMappingRepo;
-	
+
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-	
+
 	@Autowired
 	WarehouseBranchRepo warehouseBranchRepo;
-	
+
+	@Autowired
+	LocationMappingDetailsRepo locationMappingDetailsRepo;
+
 	// Group
 
 	@Override
@@ -170,58 +179,62 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Map<String, Object> createUpdateGroup(GroupDTO groupDTO) throws ApplicationException {
-	    GroupVO groupVO;
-	    String message;
+		GroupVO groupVO;
+		String message;
 
-	    if (ObjectUtils.isEmpty(groupDTO.getId())) {
-	        if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
-	            String errorMessage = String.format("This GroupName: %s already exists in this organization.", groupDTO.getGroupName());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        if (groupRepo.existsByCompanyAndOrgId(groupDTO.getCompany(), groupDTO.getOrgId())) {
-	            String errorMessage = String.format("This Company: %s already exists in this organization.", groupDTO.getCompany());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        groupVO = new GroupVO();
-	        groupVO.setCreatedBy(groupDTO.getCreatedBy());
-	        groupVO.setUpdatedBy(groupDTO.getCreatedBy());
-	        message = "Group creation successfully";
-	    } else {
-	        groupVO = groupRepo.findById(groupDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("This Id is not found. Invalid Id: " + groupDTO.getId()));
-	        groupVO.setUpdatedBy(groupDTO.getCreatedBy());
-	        if (!groupVO.getGroupName().equalsIgnoreCase(groupDTO.getGroupName())) {
-	            if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
-	                String errorMessage = String.format("This GroupName: %s already exists in this organization.", groupDTO.getGroupName());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            groupVO.setGroupName(groupDTO.getGroupName());
-	        }
-	        if (!groupVO.getCompany().equalsIgnoreCase(groupDTO.getCompany())) {
-	            if (groupRepo.existsByCompanyAndOrgId(groupDTO.getCompany(), groupDTO.getOrgId())) {
-	                String errorMessage = String.format("This Company: %s already exists in this organization.", groupDTO.getCompany());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            groupVO.setCompany(groupDTO.getCompany());
-	        }
-	        message = "Group update successfully";
-	    }
+		if (ObjectUtils.isEmpty(groupDTO.getId())) {
+			if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
+				String errorMessage = String.format("This GroupName: %s already  in this organization.",
+						groupDTO.getGroupName());
+				throw new ApplicationException(errorMessage);
+			}
+			if (groupRepo.existsByCompanyAndOrgId(groupDTO.getCompany(), groupDTO.getOrgId())) {
+				String errorMessage = String.format("This Company: %s already  in this organization.",
+						groupDTO.getCompany());
+				throw new ApplicationException(errorMessage);
+			}
+			groupVO = new GroupVO();
+			groupVO.setCreatedBy(groupDTO.getCreatedBy());
+			groupVO.setUpdatedBy(groupDTO.getCreatedBy());
+			message = "Group creation successfully";
+		} else {
+			groupVO = groupRepo.findById(groupDTO.getId()).orElseThrow(
+					() -> new ApplicationException("This Id is not found. Invalid Id: " + groupDTO.getId()));
+			groupVO.setUpdatedBy(groupDTO.getCreatedBy());
+			if (!groupVO.getGroupName().equalsIgnoreCase(groupDTO.getGroupName())) {
+				if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
+					String errorMessage = String.format("This GroupName: %s already  in this organization.",
+							groupDTO.getGroupName());
+					throw new ApplicationException(errorMessage);
+				}
+				groupVO.setGroupName(groupDTO.getGroupName());
+			}
+			if (!groupVO.getCompany().equalsIgnoreCase(groupDTO.getCompany())) {
+				if (groupRepo.existsByCompanyAndOrgId(groupDTO.getCompany(), groupDTO.getOrgId())) {
+					String errorMessage = String.format("This Company: %s already  in this organization.",
+							groupDTO.getCompany());
+					throw new ApplicationException(errorMessage);
+				}
+				groupVO.setCompany(groupDTO.getCompany());
+			}
+			message = "Group update successfully";
+		}
 
-	    getGroupVOFromGroupDTO(groupVO, groupDTO);
-	    groupRepo.save(groupVO);
+		getGroupVOFromGroupDTO(groupVO, groupDTO);
+		groupRepo.save(groupVO);
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("groupVO", groupVO);
-	    return response;
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("groupVO", groupVO);
+		return response;
 	}
 
 	private void getGroupVOFromGroupDTO(GroupVO groupVO, GroupDTO groupDTO) {
 		groupVO.setGroupName(groupDTO.getGroupName());
 		groupVO.setCompany(groupDTO.getCompany());
-	    groupVO.setOrgId(groupDTO.getOrgId());
-	    groupVO.setActive(groupDTO.isActive());
-	    groupVO.setCancel(groupDTO.isCancel());
+		groupVO.setOrgId(groupDTO.getOrgId());
+		groupVO.setActive(groupDTO.isActive());
+		groupVO.setCancel(groupDTO.isCancel());
 	}
 
 	@Override
@@ -233,7 +246,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<UnitVO> getAllUnitByOrgId(Long orgid) {
-		
+
 		return unitRepo.findAll(orgid);
 	}
 
@@ -244,50 +257,48 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Map<String, Object> createUpdateUnit(UnitDTO unitDTO) throws ApplicationException {
-	    UnitVO unitVO;
-	    String message;
-	    
-	    if (unitDTO.getId() != null) {
-	        unitVO = unitRepo.findById(unitDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("This Id Not Found Any Information: " + unitDTO.getId()));
-	        unitVO.setUpdatedBy(unitDTO.getCreatedBy());
-	        message = "Unit Updated Successfully";
-	    } else {
-	        unitVO = new UnitVO();
-	        unitVO.setCreatedBy(unitDTO.getCreatedBy());
-	        unitVO.setUpdatedBy(unitDTO.getCreatedBy());
-	        message = "Unit Created Successfully";
-	    }
-	    
-	    getUnitVOAndUnitDTO(unitVO, unitDTO);
-	    unitRepo.save(unitVO);
-	    
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("unitVO", unitVO);
-	    return response;
+		UnitVO unitVO;
+		String message;
+
+		if (unitDTO.getId() != null) {
+			unitVO = unitRepo.findById(unitDTO.getId()).orElseThrow(
+					() -> new ApplicationException("This Id Not Found Any Information: " + unitDTO.getId()));
+			unitVO.setUpdatedBy(unitDTO.getCreatedBy());
+			message = "Unit Updated Successfully";
+		} else {
+			unitVO = new UnitVO();
+			unitVO.setCreatedBy(unitDTO.getCreatedBy());
+			unitVO.setUpdatedBy(unitDTO.getCreatedBy());
+			message = "Unit Created Successfully";
+		}
+
+		getUnitVOAndUnitDTO(unitVO, unitDTO);
+		unitRepo.save(unitVO);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("unitVO", unitVO);
+		return response;
 	}
 
 	private void getUnitVOAndUnitDTO(UnitVO unitVO, UnitDTO unitDTO) {
-	    unitVO.setUnitName(unitDTO.getUnitName());
-	    unitVO.setUnitType(unitDTO.getUnitType());
-	    unitVO.setActive(unitDTO.isActive());
-	    unitVO.setCancel(unitDTO.isCancel());
-	    unitVO.setOrgId(unitDTO.getOrgId());
+		unitVO.setUnitName(unitDTO.getUnitName());
+		unitVO.setUnitType(unitDTO.getUnitType());
+		unitVO.setActive(unitDTO.isActive());
+		unitVO.setCancel(unitDTO.isCancel());
+		unitVO.setOrgId(unitDTO.getOrgId());
 	}
-
-
 
 	@Override
 	public List<UnitVO> getAllUnit() {
 		return unitRepo.findAll();
 	}
-	
+
 	@Override
 	public void deleteUnit(Long unitid) {
 		unitRepo.deleteById(unitid);
 	}
-	
+
 	// LocationType
 
 	@Override
@@ -305,8 +316,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		LocationTypeVO locationTypeVO;
 		if (ObjectUtils.isEmpty(locationTypeDTO.getId())) {
 
-			if (locationTypeRepo.existsByBinTypeAndOrgId(locationTypeDTO.getBinType(),
-					locationTypeDTO.getOrgId())) {
+			if (locationTypeRepo.existsByBinTypeAndOrgId(locationTypeDTO.getBinType(), locationTypeDTO.getOrgId())) {
 
 				String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
 						locationTypeDTO.getBinType());
@@ -324,7 +334,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			if (!locationTypeVO.getBinType().equalsIgnoreCase(locationTypeDTO.getBinType())) {
 				if (locationTypeRepo.existsByBinTypeAndOrgId(locationTypeDTO.getBinType(),
 						locationTypeDTO.getOrgId())) {
- 
+
 					String errorMessage = String.format("This LoactionType :%s Already Exists This Organization",
 							locationTypeDTO.getBinType());
 					throw new ApplicationException(errorMessage);
@@ -371,50 +381,51 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Map<String, Object> createUpdateCellType(CellTypeDTO cellTypeDTO) throws ApplicationException {
-	    CellTypeVO cellTypeVO;
-	    String message;
+		CellTypeVO cellTypeVO;
+		String message;
 
-	    if (ObjectUtils.isEmpty(cellTypeDTO.getId())) {
-	        if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCelltype(), cellTypeDTO.getOrgId())) {
-	            String errorMessage = String.format("This CellType: %s Already Exists By This Organization.", cellTypeDTO.getCelltype());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        message = "Cell Type Creation Successfully";
-	        cellTypeVO = new CellTypeVO();
-	        cellTypeVO.setCreatedBy(cellTypeDTO.getCreatedBy());
-	        cellTypeVO.setUpdatedBy(cellTypeDTO.getCreatedBy());
-	    } else {
-	        cellTypeVO = cellTypeRepo.findById(cellTypeDTO.getId()).orElseThrow(() -> new ApplicationException(
-	                "This Id Is Not Found Any Information, Invalid Id: " + cellTypeDTO.getId()
-	        ));
-	        cellTypeVO.setUpdatedBy(cellTypeDTO.getCreatedBy());
-	        if (!cellTypeVO.getCellType().equalsIgnoreCase(cellTypeDTO.getCelltype())) {
-	            if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCelltype(), cellTypeDTO.getOrgId())) {
-	                String errorMessage = String.format("This CellType: %s Already Exists By This Organization.", cellTypeDTO.getCelltype());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            cellTypeVO.setCellType(cellTypeDTO.getCelltype());
-	        }
-	        message = "Cell Type Updation Successfully";
-	    }
+		if (ObjectUtils.isEmpty(cellTypeDTO.getId())) {
+			if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCelltype(), cellTypeDTO.getOrgId())) {
+				String errorMessage = String.format("This CellType: %s Already Exists By This Organization.",
+						cellTypeDTO.getCelltype());
+				throw new ApplicationException(errorMessage);
+			}
+			message = "Cell Type Creation Successfully";
+			cellTypeVO = new CellTypeVO();
+			cellTypeVO.setCreatedBy(cellTypeDTO.getCreatedBy());
+			cellTypeVO.setUpdatedBy(cellTypeDTO.getCreatedBy());
+		} else {
+			cellTypeVO = cellTypeRepo.findById(cellTypeDTO.getId()).orElseThrow(() -> new ApplicationException(
+					"This Id Is Not Found Any Information, Invalid Id: " + cellTypeDTO.getId()));
+			cellTypeVO.setUpdatedBy(cellTypeDTO.getCreatedBy());
+			if (!cellTypeVO.getCellType().equalsIgnoreCase(cellTypeDTO.getCelltype())) {
+				if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCelltype(), cellTypeDTO.getOrgId())) {
+					String errorMessage = String.format("This CellType: %s Already Exists By This Organization.",
+							cellTypeDTO.getCelltype());
+					throw new ApplicationException(errorMessage);
+				}
+				cellTypeVO.setCellType(cellTypeDTO.getCelltype());
+			}
+			message = "Cell Type Updation Successfully";
+		}
 
-	    getCellTypeVOFromCellTypeDTO(cellTypeVO, cellTypeDTO);
+		getCellTypeVOFromCellTypeDTO(cellTypeVO, cellTypeDTO);
 
-	    cellTypeRepo.save(cellTypeVO);
+		cellTypeRepo.save(cellTypeVO);
 
-	    // Prepare the response
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("cellTypeVO", cellTypeVO);
+		// Prepare the response
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("cellTypeVO", cellTypeVO);
 
-	    return response;
+		return response;
 	}
 
 	private void getCellTypeVOFromCellTypeDTO(CellTypeVO cellTypeVO, CellTypeDTO cellTypeDTO) {
 		cellTypeVO.setCellType(cellTypeDTO.getCelltype());
-	    cellTypeVO.setActive(cellTypeDTO.isActive());
-	    cellTypeVO.setCancel(cellTypeDTO.isCancel());
-	    cellTypeVO.setOrgId(cellTypeDTO.getOrgId());
+		cellTypeVO.setActive(cellTypeDTO.isActive());
+		cellTypeVO.setCancel(cellTypeDTO.isCancel());
+		cellTypeVO.setOrgId(cellTypeDTO.getOrgId());
 	}
 
 	@Override
@@ -443,81 +454,84 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	@Transactional
 	public Map<String, Object> createUpdateBranch(BranchDTO branchDTO) throws Exception {
-	    BranchVO branchVO;
-	    String message = null;
+		BranchVO branchVO;
+		String message = null;
 
-	    if (ObjectUtils.isEmpty(branchDTO.getId())) {
-	        // Check if the branch already exists for creation
-	        if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
-	            String errorMessage = String.format("This Branch: %s Already Exists in This Organization", branchDTO.getBranch());
-	            throw new ApplicationException(errorMessage);
-	        }
+		if (ObjectUtils.isEmpty(branchDTO.getId())) {
+			// Check if the branch already exists for creation
+			if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
+				String errorMessage = String.format("This Branch: %s Already Exists in This Organization",
+						branchDTO.getBranch());
+				throw new ApplicationException(errorMessage);
+			}
 
-	        if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
-	            String errorMessage = String.format("This BranchCode: %s Already Exists in This Organization", branchDTO.getBranchCode());
-	            throw new ApplicationException(errorMessage);
-	        }
+			if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
+				String errorMessage = String.format("This BranchCode: %s Already Exists in This Organization",
+						branchDTO.getBranchCode());
+				throw new ApplicationException(errorMessage);
+			}
 
-	        // Create new branch
-	        branchVO = new BranchVO();
-	        branchVO.setCreatedBy(branchDTO.getCreatedBy());
-	        branchVO.setUpdatedBy(branchDTO.getCreatedBy());
-	        message = "Branch Created Successfully";
-	    } else {
-	        // Update existing branch
-	        branchVO = branchRepo.findById(branchDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("Branch not found with id: " + branchDTO.getId()));
+			// Create new branch
+			branchVO = new BranchVO();
+			branchVO.setCreatedBy(branchDTO.getCreatedBy());
+			branchVO.setUpdatedBy(branchDTO.getCreatedBy());
+			message = "Branch Created Successfully";
+		} else {
+			// Update existing branch
+			branchVO = branchRepo.findById(branchDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Branch not found with id: " + branchDTO.getId()));
 
-	        branchVO.setUpdatedBy(branchDTO.getCreatedBy());
+			branchVO.setUpdatedBy(branchDTO.getCreatedBy());
 
-	        if (!branchVO.getBranch().equalsIgnoreCase(branchDTO.getBranch())) {
-	            if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
-	                String errorMessage = String.format("This Branch: %s Already Exists in This Organization", branchDTO.getBranch());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            branchVO.setBranch(branchDTO.getBranch().toUpperCase());
-	        }
+			if (!branchVO.getBranch().equalsIgnoreCase(branchDTO.getBranch())) {
+				if (branchRepo.existsByBranchAndOrgId(branchDTO.getBranch(), branchDTO.getOrgId())) {
+					String errorMessage = String.format("This Branch: %s Already Exists in This Organization",
+							branchDTO.getBranch());
+					throw new ApplicationException(errorMessage);
+				}
+				branchVO.setBranch(branchDTO.getBranch().toUpperCase());
+			}
 
-	        if (!branchVO.getBranchCode().equalsIgnoreCase(branchDTO.getBranchCode())) {
-	            if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
-	                String errorMessage = String.format("This BranchCode: %s Already Exists in This Organization", branchDTO.getBranchCode());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
-	        }
+			if (!branchVO.getBranchCode().equalsIgnoreCase(branchDTO.getBranchCode())) {
+				if (branchRepo.existsByBranchCodeAndOrgId(branchDTO.getBranchCode(), branchDTO.getOrgId())) {
+					String errorMessage = String.format("This BranchCode: %s Already Exists in This Organization",
+							branchDTO.getBranchCode());
+					throw new ApplicationException(errorMessage);
+				}
+				branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
+			}
 
-	        message = "Branch Updated Successfully";
-	    }
+			message = "Branch Updated Successfully";
+		}
 
-	    getBranchVOFromBranchDTO(branchVO, branchDTO);
-	    branchRepo.save(branchVO);
+		getBranchVOFromBranchDTO(branchVO, branchDTO);
+		branchRepo.save(branchVO);
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("branchVO", branchVO);
-	    return response;
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("branchVO", branchVO);
+		return response;
 	}
 
 	private void getBranchVOFromBranchDTO(BranchVO branchVO, BranchDTO branchDTO) {
-	    branchVO.setBranch(branchDTO.getBranch().toUpperCase());
-	    branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
-	    branchVO.setOrgId(branchDTO.getOrgId());
-	    branchVO.setAddressLine1(branchDTO.getAddressLine1());
-	    branchVO.setAddressLine2(branchDTO.getAddressLine2());
-	    branchVO.setPan(branchDTO.getPan());
-	    branchVO.setGstIn(branchDTO.getGstIn());
-	    branchVO.setPhone(branchDTO.getPhone());
-	    branchVO.setState(branchDTO.getState().toUpperCase());
-	    branchVO.setCity(branchDTO.getCity().toUpperCase());
-	    branchVO.setPinCode(branchDTO.getPinCode());
-	    branchVO.setCountry(branchDTO.getCountry().toUpperCase());
-	    branchVO.setStateNo(branchDTO.getStateNo().toUpperCase());
-	    branchVO.setStateCode(branchDTO.getStateCode().toUpperCase());
-	    branchVO.setLccurrency(branchDTO.getLccurrency());
-	    branchVO.setCancelRemarks(branchDTO.getCancelRemarks());
-	    branchVO.setActive(branchDTO.isActive());
+		branchVO.setBranch(branchDTO.getBranch().toUpperCase());
+		branchVO.setBranchCode(branchDTO.getBranchCode().toUpperCase());
+		branchVO.setOrgId(branchDTO.getOrgId());
+		branchVO.setAddressLine1(branchDTO.getAddressLine1());
+		branchVO.setAddressLine2(branchDTO.getAddressLine2());
+		branchVO.setPan(branchDTO.getPan());
+		branchVO.setGstIn(branchDTO.getGstIn());
+		branchVO.setPhone(branchDTO.getPhone());
+		branchVO.setState(branchDTO.getState().toUpperCase());
+		branchVO.setCity(branchDTO.getCity().toUpperCase());
+		branchVO.setPinCode(branchDTO.getPinCode());
+		branchVO.setCountry(branchDTO.getCountry().toUpperCase());
+		branchVO.setStateNo(branchDTO.getStateNo().toUpperCase());
+		branchVO.setStateCode(branchDTO.getStateCode().toUpperCase());
+		branchVO.setLccurrency(branchDTO.getLccurrency());
+		branchVO.setCancelRemarks(branchDTO.getCancelRemarks());
+		branchVO.setActive(branchDTO.isActive());
 	}
-
 
 	@Override
 	public void deleteBranch(Long branchid) {
@@ -539,140 +553,152 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	@Transactional
 	public Map<String, Object> createUpdateCustomer(CustomerDTO customerDTO) throws ApplicationException {
-	    CustomerVO customerVO;
-	    String message = null;
-	    
-	    if (ObjectUtils.isEmpty(customerDTO.getId())) {
-	        if (customerRepo.existsByPanNoAndOrgId(customerDTO.getPanNo(), customerDTO.getOrgId())) {
-	            String errorMessage = String.format("This PanNumber: %s Already Exists in This Organization", customerDTO.getPanNo());
-	            throw new ApplicationException(errorMessage);
-	        }
+		CustomerVO customerVO;
+		String message = null;
 
-	        if (customerRepo.existsByCustomerNameAndOrgId(customerDTO.getCustomerName(), customerDTO.getOrgId())) {
-	            String errorMessage = String.format("This CustomerName: %s Already Exists in This Organization", customerDTO.getCustomerName());
-	            throw new ApplicationException(errorMessage);
-	        }
+		if (ObjectUtils.isEmpty(customerDTO.getId())) {
+			if (customerRepo.existsByPanNoAndOrgId(customerDTO.getPanNo(), customerDTO.getOrgId())) {
+				String errorMessage = String.format("This PanNumber: %s Already Exists in This Organization",
+						customerDTO.getPanNo());
+				throw new ApplicationException(errorMessage);
+			}
 
-	        if (customerRepo.existsByCustomerShortNameAndOrgId(customerDTO.getCustomerShortName(), customerDTO.getOrgId())) {
-	            String errorMessage = String.format("This CustomerShortName: %s Already Exists in This Organization", customerDTO.getCustomerShortName());
-	            throw new ApplicationException(errorMessage);
-	        }
+			if (customerRepo.existsByCustomerNameAndOrgId(customerDTO.getCustomerName(), customerDTO.getOrgId())) {
+				String errorMessage = String.format("This CustomerName: %s Already Exists in This Organization",
+						customerDTO.getCustomerName());
+				throw new ApplicationException(errorMessage);
+			}
 
-	        message = "Customers Creation Successfully";
-	    }
+			if (customerRepo.existsByCustomerShortNameAndOrgId(customerDTO.getCustomerShortName(),
+					customerDTO.getOrgId())) {
+				String errorMessage = String.format("This CustomerShortName: %s Already Exists in This Organization",
+						customerDTO.getCustomerShortName());
+				throw new ApplicationException(errorMessage);
+			}
 
-	    if (customerDTO.getId() != null) {
-	        // Update existing customer
-	        customerVO = customerRepo.findById(customerDTO.getId()).orElseThrow(() -> new ApplicationException("Customer not found with id: " + customerDTO.getId()));
+			message = "Customers Creation Successfully";
+		}
 
-	        customerVO.setUpdatedBy(customerDTO.getUpdatedBy());
+		if (customerDTO.getId() != null) {
+			// Update existing customer
+			customerVO = customerRepo.findById(customerDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Customer not found with id: " + customerDTO.getId()));
 
-	        if (!customerVO.getCustomerName().equalsIgnoreCase(customerDTO.getCustomerName())) {
-	            if (customerRepo.existsByCustomerNameAndOrgId(customerDTO.getCustomerName(), customerDTO.getOrgId())) {
-	                String errorMessage = String.format("This CustomerName: %s Already Exists in This Organization", customerDTO.getCustomerName());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            customerVO.setCustomerName(customerDTO.getCustomerName());
-	        }
+			customerVO.setUpdatedBy(customerDTO.getUpdatedBy());
 
-	        if (!customerVO.getCustomerShortName().equalsIgnoreCase(customerDTO.getCustomerShortName())) {
-	            if (customerRepo.existsByCustomerShortNameAndOrgId(customerDTO.getCustomerShortName(), customerDTO.getOrgId())) {
-	                String errorMessage = String.format("This CustomerShortName: %s Already Exists in This Organization", customerDTO.getCustomerShortName());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            customerVO.setCustomerShortName(customerDTO.getCustomerShortName());
-	        }
+			if (!customerVO.getCustomerName().equalsIgnoreCase(customerDTO.getCustomerName())) {
+				if (customerRepo.existsByCustomerNameAndOrgId(customerDTO.getCustomerName(), customerDTO.getOrgId())) {
+					String errorMessage = String.format("This CustomerName: %s Already Exists in This Organization",
+							customerDTO.getCustomerName());
+					throw new ApplicationException(errorMessage);
+				}
+				customerVO.setCustomerName(customerDTO.getCustomerName());
+			}
 
-	        if (!customerVO.getPanNo().equalsIgnoreCase(customerDTO.getPanNo())) {
-	            if (customerRepo.existsByPanNoAndOrgId(customerDTO.getPanNo(), customerDTO.getOrgId())) {
-	                String errorMessage = String.format("This PanNumber: %s Already Exists in This Organization", customerDTO.getPanNo());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            customerVO.setPanNo(customerDTO.getPanNo());
-	        }
+			if (!customerVO.getCustomerShortName().equalsIgnoreCase(customerDTO.getCustomerShortName())) {
+				if (customerRepo.existsByCustomerShortNameAndOrgId(customerDTO.getCustomerShortName(),
+						customerDTO.getOrgId())) {
+					String errorMessage = String.format(
+							"This CustomerShortName: %s Already Exists in This Organization",
+							customerDTO.getCustomerShortName());
+					throw new ApplicationException(errorMessage);
+				}
+				customerVO.setCustomerShortName(customerDTO.getCustomerShortName());
+			}
 
-	        message = "Customers Updation Successfully";
-	    } else {
-	        // Create new customer
-	        customerVO = new CustomerVO();
-	        customerVO.setCreatedBy(customerDTO.getCreatedBy());
-	        customerVO.setUpdatedBy(customerDTO.getCreatedBy());
-	    }
+			if (!customerVO.getPanNo().equalsIgnoreCase(customerDTO.getPanNo())) {
+				if (customerRepo.existsByPanNoAndOrgId(customerDTO.getPanNo(), customerDTO.getOrgId())) {
+					String errorMessage = String.format("This PanNumber: %s Already Exists in This Organization",
+							customerDTO.getPanNo());
+					throw new ApplicationException(errorMessage);
+				}
+				customerVO.setPanNo(customerDTO.getPanNo());
+			}
 
-	    customerVO = getCustomerVOFromCustomerDTO(customerVO, customerDTO);
-	    customerRepo.save(customerVO);
+			message = "Customers Updation Successfully";
+		} else {
+			// Create new customer
+			customerVO = new CustomerVO();
+			customerVO.setCreatedBy(customerDTO.getCreatedBy());
+			customerVO.setUpdatedBy(customerDTO.getCreatedBy());
+		}
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("customerVO", customerVO);
-	    return response;
+		customerVO = getCustomerVOFromCustomerDTO(customerVO, customerDTO);
+		customerRepo.save(customerVO);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("customerVO", customerVO);
+		return response;
 	}
 
-	private CustomerVO getCustomerVOFromCustomerDTO(CustomerVO customerVO, CustomerDTO customerDTO) throws ApplicationException {
-	    customerVO.setCustomerName(customerDTO.getCustomerName());
-	    customerVO.setOrgId(customerDTO.getOrgId());
-	    customerVO.setCustomerShortName(customerDTO.getCustomerShortName());
-	    customerVO.setPanNo(customerDTO.getPanNo());
-	    customerVO.setContactPerson(customerDTO.getContactPerson());
-	    customerVO.setMobileNumber(customerDTO.getMobileNumber());
-	    customerVO.setGstRegistration(customerDTO.getGstRegistration());
-	    customerVO.setEmailId(customerDTO.getEmailId());
-	    customerVO.setGroupOf(customerDTO.getGroupOf());
-	    customerVO.setTanNo(customerDTO.getTanNo());
-	    customerVO.setAddress1(customerDTO.getAddress1());
-	    customerVO.setAddress2(customerDTO.getAddress2());
-	    customerVO.setGstNo(customerDTO.getGstNo());
-	    customerVO.setCity(customerDTO.getCity());
-	    customerVO.setState(customerDTO.getState());
-	    customerVO.setCountry(customerDTO.getCountry());
-	    customerVO.setCancelRemarks(customerDTO.getCancelRemarks());
-	    customerVO.setActive(customerDTO.isActive());
-	    customerVO.setCancel(customerDTO.isCancel());
+	private CustomerVO getCustomerVOFromCustomerDTO(CustomerVO customerVO, CustomerDTO customerDTO)
+			throws ApplicationException {
+		customerVO.setCustomerName(customerDTO.getCustomerName());
+		customerVO.setOrgId(customerDTO.getOrgId());
+		customerVO.setCustomerShortName(customerDTO.getCustomerShortName());
+		customerVO.setPanNo(customerDTO.getPanNo());
+		customerVO.setContactPerson(customerDTO.getContactPerson());
+		customerVO.setMobileNumber(customerDTO.getMobileNumber());
+		customerVO.setGstRegistration(customerDTO.getGstRegistration());
+		customerVO.setEmailId(customerDTO.getEmailId());
+		customerVO.setGroupOf(customerDTO.getGroupOf());
+		customerVO.setTanNo(customerDTO.getTanNo());
+		customerVO.setAddress1(customerDTO.getAddress1());
+		customerVO.setAddress2(customerDTO.getAddress2());
+		customerVO.setGstNo(customerDTO.getGstNo());
+		customerVO.setCity(customerDTO.getCity());
+		customerVO.setState(customerDTO.getState());
+		customerVO.setCountry(customerDTO.getCountry());
+		customerVO.setCancelRemarks(customerDTO.getCancelRemarks());
+		customerVO.setActive(customerDTO.isActive());
+		customerVO.setCancel(customerDTO.isCancel());
 
-	    if (customerDTO.getId() != null) {
-	        List<ClientVO> clientvos = clientRepo.findByCustomerVO(customerVO);
-	        clientRepo.deleteAll(clientvos);
-	        List<ClientBranchVO> clientBranchvos = clientBranchRepo.findByCustomerVO(customerVO);
-	        clientBranchRepo.deleteAll(clientBranchvos);
-	    }
+		if (customerDTO.getId() != null) {
+			List<ClientVO> clientvos = clientRepo.findByCustomerVO(customerVO);
+			clientRepo.deleteAll(clientvos);
+			List<ClientBranchVO> clientBranchvos = clientBranchRepo.findByCustomerVO(customerVO);
+			clientBranchRepo.deleteAll(clientBranchvos);
+		}
 
-	    List<ClientVO> clientVOs = new ArrayList<>();
-	    for (ClientDTO clientDTO : customerDTO.getClientDTO()) {
-	        ClientVO clientVO = new ClientVO();
-	        if (clientRepo.existsByClientCodeAndOrgId(clientDTO.getClientCode(), customerDTO.getOrgId())) {
-	            String errorMessage = String.format("This ClientCode: %s Already Exists This Organization", clientDTO.getClientCode());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        clientVO.setClientCode(clientDTO.getClientCode());
+		List<ClientVO> clientVOs = new ArrayList<>();
+		for (ClientDTO clientDTO : customerDTO.getClientDTO()) {
+			ClientVO clientVO = new ClientVO();
+			if (clientRepo.existsByClientCodeAndOrgId(clientDTO.getClientCode(), customerDTO.getOrgId())) {
+				String errorMessage = String.format("This ClientCode: %s Already Exists This Organization",
+						clientDTO.getClientCode());
+				throw new ApplicationException(errorMessage);
+			}
+			clientVO.setClientCode(clientDTO.getClientCode());
 
-	        if (clientRepo.existsByClientAndOrgId(clientDTO.getClient(), customerDTO.getOrgId())) {
-	            String errorMessage = String.format("This ClientName: %s Already Exists This Organization", clientDTO.getClient());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        clientVO.setClient(clientDTO.getClient());
+			if (clientRepo.existsByClientAndOrgId(clientDTO.getClient(), customerDTO.getOrgId())) {
+				String errorMessage = String.format("This ClientName: %s Already Exists This Organization",
+						clientDTO.getClient());
+				throw new ApplicationException(errorMessage);
+			}
+			clientVO.setClient(clientDTO.getClient());
 
-	        clientVO.setClientType(clientDTO.getClientType());
-	        clientVO.setFifofife(clientDTO.getFifofife());
-	        clientVO.setOrgId(customerVO.getOrgId());
-	        clientVO.setCustomerVO(customerVO);
-	        clientVOs.add(clientVO);
-	    }
-	    customerVO.setClientVO(clientVOs);
+			clientVO.setClientType(clientDTO.getClientType());
+			clientVO.setFifofife(clientDTO.getFifofife());
+			clientVO.setOrgId(customerVO.getOrgId());
+			clientVO.setCustomerVO(customerVO);
+			clientVOs.add(clientVO);
+		}
+		customerVO.setClientVO(clientVOs);
 
-	    List<ClientBranchVO> clientBranchVOs = new ArrayList<>();
-	    for (ClientBranchDTO branchDTO : customerDTO.getClientBranchDTO()) {
-	        ClientBranchVO clientBranchVO = new ClientBranchVO();
-	        clientBranchVO.setBranchCode(branchDTO.getBranchCode());
-	        clientBranchVO.setBranch(branchDTO.getBranch());
-	        clientBranchVO.setOrgId(customerVO.getOrgId());
-	        clientBranchVO.setCustomerVO(customerVO);
-	        clientBranchVOs.add(clientBranchVO);
-	    }
-	    customerVO.setClientBranchVO(clientBranchVOs);
+		List<ClientBranchVO> clientBranchVOs = new ArrayList<>();
+		for (ClientBranchDTO branchDTO : customerDTO.getClientBranchDTO()) {
+			ClientBranchVO clientBranchVO = new ClientBranchVO();
+			clientBranchVO.setBranchCode(branchDTO.getBranchCode());
+			clientBranchVO.setBranch(branchDTO.getBranch());
+			clientBranchVO.setOrgId(customerVO.getOrgId());
+			clientBranchVO.setCustomerVO(customerVO);
+			clientBranchVOs.add(clientBranchVO);
+		}
+		customerVO.setClientBranchVO(clientBranchVOs);
 
-	    return customerVO;
+		return customerVO;
 	}
-
 
 	@Override
 	public Optional<CustomerVO> updateCustomer(CustomerVO customerVO, ClientVO clientVO) {
@@ -683,12 +709,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			return Optional.empty();
 		}
 	}
-	
+
 	@Override
 	public List<Map<String, Object>> getClientAndClientCodeByOrgId(Long orgId) {
 		Set<Object[]> getClientDetails = clientRepo.getClientDetailsByOrgId(orgId);
 
-		return getClient (getClientDetails);
+		return getClient(getClientDetails);
 	}
 
 	private List<Map<String, Object>> getClient(Set<Object[]> getClientDetails) {
@@ -696,7 +722,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		for (Object[] ps : getClientDetails) {
 			Map<String, Object> values = new HashMap<>();
 			values.put("client", ps[0] != null ? ps[0].toString() : "");
-			values.put("clientCode", ps[1] != null ?  ps[1].toString() : "");
+			values.put("clientCode", ps[1] != null ? ps[1].toString() : "");
 			status.add(values);
 		}
 		return status;
@@ -741,89 +767,104 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	@Transactional
-	public WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException {
+	public Map<String, Object> createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException {
 	    WarehouseVO warehouseVO = new WarehouseVO();
+	    String message=null;
 
 	    if (ObjectUtils.isEmpty(warehouseDTO.getId())) {
+	        // Save new warehouse
 	        if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
-	            String errormessage = String.format("This Warehouse : %s Already Exists in This Organization.", warehouseDTO.getWarehouse());
+	            String errormessage = String.format("This Warehouse : %s Already Exists in This Organization.",
+	                    warehouseDTO.getWarehouse());
 	            throw new ApplicationException(errormessage);
 	        }
-	    }
-
-	    if (warehouseDTO.getId() != null) {
+	        message = "Warehouse created successfully.";
+	    } else {
 	        // Update existing warehouse
-	        warehouseVO = warehouseRepo.findById(warehouseDTO.getId()).orElseThrow(() -> new ApplicationException("Warehouse not found with id: " + warehouseDTO.getId()));
+	        warehouseVO = warehouseRepo.findById(warehouseDTO.getId()).orElseThrow(
+	                () -> new ApplicationException("Warehouse not found with id: " + warehouseDTO.getId()));
 	        warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
 
 	        if (!warehouseVO.getWarehouse().equalsIgnoreCase(warehouseDTO.getWarehouse())) {
 	            if (warehouseRepo.existsByWarehouseAndOrgId(warehouseDTO.getWarehouse(), warehouseDTO.getOrgId())) {
-	                String errormessage = String.format("This Warehouse : %s Already Exists in This Organization.", warehouseDTO.getWarehouse());
+	                String errormessage = String.format("This Warehouse : %s Already Exists in This Organization.",
+	                        warehouseDTO.getWarehouse());
 	                throw new ApplicationException(errormessage);
 	            }
 	            warehouseVO.setWarehouse(warehouseDTO.getWarehouse());
-	        } else {
-	            warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
-	            warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
 	        }
+	        message = "Warehouse updated successfully.";
 	    }
 
 	    warehouseVO = getWarehouseVOFromWarehouseDTO(warehouseVO, warehouseDTO);
-	    return warehouseRepo.save(warehouseVO);
+	    warehouseRepo.save(warehouseVO);
+
+	    // Create a map to return the warehouseVO and the message
+	    Map<String, Object> responseMap = new HashMap<>();
+	    responseMap.put("warehouseVO", warehouseVO);
+	    responseMap.put("message", message);
+
+	    return responseMap;
 	}
 
-	private WarehouseVO getWarehouseVOFromWarehouseDTO(WarehouseVO warehouseVO, WarehouseDTO warehouseDTO) throws ApplicationException {
-	    warehouseVO.setWarehouse(warehouseDTO.getWarehouse().toUpperCase());
-	    warehouseVO.setBranchCode(warehouseDTO.getBranchCode().toUpperCase());
-	    warehouseVO.setBranch(warehouseDTO.getBranch().toUpperCase());
-	    warehouseVO.setOrgId(warehouseDTO.getOrgId());
-	    warehouseVO.setActive(warehouseDTO.isActive());
-	    warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
-	    warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
-	    warehouseVO.setCancel(warehouseDTO.isCancel());
+	private WarehouseVO getWarehouseVOFromWarehouseDTO(WarehouseVO warehouseVO, WarehouseDTO warehouseDTO)
+			throws ApplicationException {
+		warehouseVO.setWarehouse(warehouseDTO.getWarehouse().toUpperCase());
+		warehouseVO.setBranchCode(warehouseDTO.getBranchCode().toUpperCase());
+		warehouseVO.setBranch(warehouseDTO.getBranch().toUpperCase());
+		warehouseVO.setOrgId(warehouseDTO.getOrgId());
+		warehouseVO.setActive(warehouseDTO.isActive());
+		warehouseVO.setCreatedBy(warehouseDTO.getCreatedBy());
+		warehouseVO.setUpdatedBy(warehouseDTO.getCreatedBy());
+		warehouseVO.setCancel(warehouseDTO.isCancel());
 
-	    if (warehouseDTO.getId() != null) {
-	        List<WarehouseClientVO> warehouseClientVOs = warehouseClientRepo.findByWarehouseVO(warehouseVO);
-	        warehouseClientRepo.deleteAll(warehouseClientVOs);
-	    }
+		if (warehouseDTO.getId() != null) {
+			List<WarehouseClientVO> warehouseClientVOs = warehouseClientRepo.findByWarehouseVO(warehouseVO);
+			warehouseClientRepo.deleteAll(warehouseClientVOs);
+		}
 
-	    List<WarehouseClientVO> warehouseClientVOs = new ArrayList<>();
-	    for (WarehouseClientDTO warehouseClientDTO : warehouseDTO.getWarehouseClientDTO()) {
-	        WarehouseClientVO warehouseClientVO = new WarehouseClientVO();
-	        
-	        if (warehouseClientRepo.existsByClientAndOrgId(warehouseClientDTO.getClient(), warehouseDTO.getOrgId())) {
-	            String errorMessage = String.format("This ClientName : %s Already Exists in This Organization", warehouseClientDTO.getClient());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        warehouseClientVO.setClient(warehouseClientDTO.getClient());
+		List<WarehouseClientVO> warehouseClientVOs = new ArrayList<>();
+		for (WarehouseClientDTO warehouseClientDTO : warehouseDTO.getWarehouseClientDTO()) {
+			WarehouseClientVO warehouseClientVO = new WarehouseClientVO();
 
-	        if (warehouseClientRepo.existsByClientCodeAndOrgId(warehouseClientDTO.getClientCode(), warehouseDTO.getOrgId())) {
-	            String errorMessage = String.format("This ClientCode : %s Already Exists in This Organization", warehouseClientDTO.getClientCode());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        warehouseClientVO.setClientCode(warehouseClientDTO.getClientCode());
-	        warehouseClientVO.setActive(warehouseClientDTO.isActive());
-	        warehouseClientVO.setCancel(warehouseClientDTO.isCancel());
-	        warehouseClientVO.setOrgId(warehouseDTO.getOrgId());
-	        warehouseClientVO.setWarehouseVO(warehouseVO);
-	        warehouseClientVOs.add(warehouseClientVO);
-	    }
-	    warehouseVO.setWarehouseClientVO(warehouseClientVOs);
-	    return warehouseVO;
+			if (warehouseClientRepo.existsByClientAndOrgId(warehouseClientDTO.getClient(), warehouseDTO.getOrgId())) {
+				String errorMessage = String.format("This ClientName : %s Already Exists in This Organization",
+						warehouseClientDTO.getClient());
+				throw new ApplicationException(errorMessage);
+			}
+			warehouseClientVO.setClient(warehouseClientDTO.getClient());
+
+			if (warehouseClientRepo.existsByClientCodeAndOrgId(warehouseClientDTO.getClientCode(),
+					warehouseDTO.getOrgId())) {
+				String errorMessage = String.format("This ClientCode : %s Already Exists in This Organization",
+						warehouseClientDTO.getClientCode());
+				throw new ApplicationException(errorMessage);
+			}
+			warehouseClientVO.setClientCode(warehouseClientDTO.getClientCode());
+			warehouseClientVO.setActive(warehouseClientDTO.isActive());
+			warehouseClientVO.setCancel(warehouseClientDTO.isCancel());
+			warehouseClientVO.setOrgId(warehouseDTO.getOrgId());
+			warehouseClientVO.setWarehouseVO(warehouseVO);
+			warehouseClientVOs.add(warehouseClientVO);
+		}
+		warehouseVO.setWarehouseClientVO(warehouseClientVOs);
+		return warehouseVO;
 	}
 
 	// Warehouse Location
 
 	@Override
-	public List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String warehouse, String branch) {
+	public List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid,String branch) {
 
-		return warehouseLocationRepo.findAll(orgid, warehouse, branch);
+		return warehouseLocationRepo.findAllByOrgId(orgid, branch);
 	}
 
 	@Override
-	public Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid) {
-
-		return warehouseLocationRepo.findById(warehouselocationid);
+	public WarehouseLocationVO getWarehouseLocationById(Long warehouselocationid) {
+		
+		WarehouseLocationVO locationVO= new WarehouseLocationVO();
+		locationVO=warehouseLocationRepo.findById(warehouselocationid).orElse(null);
+		return locationVO;
 	}
 
 	@Override
@@ -837,7 +878,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getAllRownoByOrgIdAndWarehouseAndLocationType(Long orgid, String warehouse,
 			String locationtype) {
 
-		return warehouseLocationRepo.findAllRownoByOrgIdAndWarehouseAndLocationType(orgid, warehouse, locationtype);
+		return warehouseLocationRepo.findAllRownoByOrgIdAndWarehouseAndBinType(orgid, warehouse, locationtype);
 	}
 
 	// get All Level no based on company and Warehouse , Location type and Rowno
@@ -845,7 +886,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Set<Object[]> getAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(Long orgid, String warehouse,
 			String locationtype, String rowno) {
 
-		return warehouseLocationRepo.findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowno(orgid, warehouse,
+		return warehouseLocationRepo.findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowNo(orgid, warehouse,
 				locationtype, rowno);
 	}
 
@@ -859,27 +900,137 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
-		warehouseLocationVO.setActive(true);
-		warehouseLocationVO.setCancel(false);
-		warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId() + warehouseLocationVO.getWarehouse()
-				+ warehouseLocationVO.getLocationtype() + warehouseLocationVO.getRowno()
-				+ warehouseLocationVO.getLevel());
-		return warehouseLocationRepo.save(warehouseLocationVO);
+	public Map<String, Object> createUpdateWarehouseLocation(WarehouseLocationDTO warehouseLocationDTO)
+			throws ApplicationException {
+		WarehouseLocationVO warehouseLocationVO = new WarehouseLocationVO();
+		String message = "";
+
+		if (ObjectUtils.isEmpty(warehouseLocationDTO.getId())) {
+			warehouseLocationVO.setCreatedBy(warehouseLocationDTO.getCreatedBy());
+			warehouseLocationVO.setUpdatedBy(warehouseLocationDTO.getCreatedBy());
+			mapWarehouseLocationDTOToWarehouseLocationVO(warehouseLocationDTO, warehouseLocationVO);
+			message = "Warehouse Location Created SuccessFully";
+		} else {
+			warehouseLocationVO = warehouseLocationRepo.findById(warehouseLocationDTO.getId()).orElse(null);
+			warehouseLocationVO.setUpdatedBy(warehouseLocationDTO.getCreatedBy());
+			mapWarehouseLocationDTOToWarehouseLocationVO(warehouseLocationDTO, warehouseLocationVO);
+			message = "Warehouse Location Updated SuccessFully";
+		}
+		warehouseLocationRepo.save(warehouseLocationVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("warehouseLocationVO", warehouseLocationVO);
+		response.put("message", message);
+		return response;
 
 	}
 
-	@Override
-	public Optional<WarehouseLocationVO> updateWarehouseLocation(WarehouseLocationVO warehouseLocationVO) {
-		if (warehouseLocationRepo.existsById(warehouseLocationVO.getId())) {
-			warehouseLocationVO.setDupchk(warehouseLocationVO.getOrgId() + warehouseLocationVO.getWarehouse()
-					+ warehouseLocationVO.getLocationtype() + warehouseLocationVO.getRowno()
-					+ warehouseLocationVO.getLevel());
-			return Optional.of(warehouseLocationRepo.save(warehouseLocationVO));
-		} else {
-			return Optional.empty();
+	private void mapWarehouseLocationDTOToWarehouseLocationVO(WarehouseLocationDTO warehouseLocationDTO,
+			WarehouseLocationVO warehouseLocationVO) throws ApplicationException {
+		warehouseLocationVO.setBranch(warehouseLocationDTO.getBranch());
+		warehouseLocationVO.setBranchCode(warehouseLocationDTO.getBranchCode());
+		warehouseLocationVO.setWarehouse(warehouseLocationDTO.getWarehouse());
+		warehouseLocationVO.setBinType(warehouseLocationDTO.getBinType());
+		warehouseLocationVO.setRowNo(warehouseLocationDTO.getRowNo());
+		warehouseLocationVO.setLevel(warehouseLocationDTO.getLevel());
+		warehouseLocationVO.setCellFrom(warehouseLocationDTO.getCellFrom());
+		warehouseLocationVO.setCellTo(warehouseLocationDTO.getCellTo());
+		warehouseLocationVO.setCreatedBy(warehouseLocationDTO.getCreatedBy());
+		warehouseLocationVO.setOrgId(warehouseLocationDTO.getOrgId());
+		List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(warehouseLocationDTO.getId())) {
+			warehouseLocationDetailsVO = warehouseLocationVO.getWarehouseLocationDetailsVO();
+			List<WarehouseLocationDetailsDTO> warehouseLocationDetailsDTO = warehouseLocationDTO
+					.getWarehouseLocationDetailsDTO();
+			for (WarehouseLocationDetailsDTO warehouseLocationDetailsDTO2 : warehouseLocationDetailsDTO) {
+				if (ObjectUtils.isEmpty(warehouseLocationDetailsDTO2.getId())) {
+					WarehouseLocationDetailsVO warehouseLocationDetailsVO1 = new WarehouseLocationDetailsVO();
 
+					if (warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehouse(
+							warehouseLocationDetailsDTO2.getBin(), warehouseLocationDTO.getOrgId(),
+							warehouseLocationDTO.getBranchCode(), warehouseLocationDTO.getWarehouse())) {
+						String errorMessage = String.format("Bin : %s Already Exists in This Warehouse",
+								warehouseLocationDetailsDTO2.getBin());
+						throw new ApplicationException(errorMessage);
+					}
+					warehouseLocationDetailsVO1.setBin(warehouseLocationDetailsDTO2.getBin());
+					warehouseLocationDetailsVO1.setBinCategory(warehouseLocationDetailsDTO2.getBinCategory());
+					warehouseLocationDetailsVO1.setStatus(warehouseLocationDetailsDTO2.getStatus());
+					warehouseLocationDetailsVO1.setCore(warehouseLocationDetailsDTO2.getCore());
+					warehouseLocationDetailsVO1.setBranch(warehouseLocationDTO.getBranch());
+					warehouseLocationDetailsVO1.setBranchCode(warehouseLocationDTO.getBranchCode());
+					warehouseLocationDetailsVO1.setWarehouse(warehouseLocationDTO.getWarehouse());
+					warehouseLocationDetailsVO1.setBinType(warehouseLocationDTO.getBinType());
+					warehouseLocationDetailsVO1.setRowNo(warehouseLocationDTO.getRowNo());
+					warehouseLocationDetailsVO1.setLevel(warehouseLocationDTO.getLevel());
+					warehouseLocationDetailsVO1.setCellFrom(warehouseLocationDTO.getCellFrom());
+					warehouseLocationDetailsVO1.setCellTo(warehouseLocationDTO.getCellTo());
+					warehouseLocationDetailsVO1.setOrgId(warehouseLocationDTO.getOrgId());
+					warehouseLocationDetailsVO1.setWarehouseLocationVO(warehouseLocationVO);
+					warehouseLocationDetailsVO.add(warehouseLocationDetailsVO1);
+				} else {
+					WarehouseLocationDetailsVO warehouseLocationDetailsVO1 = warehouseLocationDetailsRepo
+							.findById(warehouseLocationDetailsDTO2.getId()).orElse(null);
+					if (!warehouseLocationDetailsVO1.getBin().equalsIgnoreCase(warehouseLocationDetailsDTO2.getBin())) {
+						if (warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehouse(
+								warehouseLocationDetailsDTO2.getBin(), warehouseLocationDTO.getOrgId(),
+								warehouseLocationDTO.getBranchCode(), warehouseLocationDTO.getWarehouse())) {
+							String errorMessage = String.format("Bin : %s Already Exists in This Warehouse",
+									warehouseLocationDetailsDTO2.getBin());
+							throw new ApplicationException(errorMessage);
+						}
+						warehouseLocationDetailsVO1.setBin(warehouseLocationDetailsDTO2.getBin());
+					}
+
+					warehouseLocationDetailsVO1.setBinCategory(warehouseLocationDetailsDTO2.getBinCategory());
+					warehouseLocationDetailsVO1.setStatus(warehouseLocationDetailsDTO2.getStatus());
+					warehouseLocationDetailsVO1.setCore(warehouseLocationDetailsDTO2.getCore());
+					warehouseLocationDetailsVO1.setBranch(warehouseLocationDTO.getBranch());
+					warehouseLocationDetailsVO1.setBranchCode(warehouseLocationDTO.getBranchCode());
+					warehouseLocationDetailsVO1.setWarehouse(warehouseLocationDTO.getWarehouse());
+					warehouseLocationDetailsVO1.setBinType(warehouseLocationDTO.getBinType());
+					warehouseLocationDetailsVO1.setRowNo(warehouseLocationDTO.getRowNo());
+					warehouseLocationDetailsVO1.setLevel(warehouseLocationDTO.getLevel());
+					warehouseLocationDetailsVO1.setCellFrom(warehouseLocationDTO.getCellFrom());
+					warehouseLocationDetailsVO1.setCellTo(warehouseLocationDTO.getCellTo());
+					warehouseLocationDetailsVO1.setOrgId(warehouseLocationDTO.getOrgId());
+					warehouseLocationDetailsVO1.setWarehouseLocationVO(warehouseLocationVO);
+					warehouseLocationDetailsVO.add(warehouseLocationDetailsVO1);
+				}
+			}
+		} else {
+			List<WarehouseLocationDetailsDTO> warehouseLocationDetailsDTO = warehouseLocationDTO
+					.getWarehouseLocationDetailsDTO();
+			for (WarehouseLocationDetailsDTO warehouseLocationDetailsDTO2 : warehouseLocationDetailsDTO) {
+				if (ObjectUtils.isEmpty(warehouseLocationDetailsDTO2.getId())) {
+					WarehouseLocationDetailsVO warehouseLocationDetailsVO1 = new WarehouseLocationDetailsVO();
+
+					if (warehouseLocationDetailsRepo.existsByBinAndOrgIdAndBranchCodeAndWarehouse(
+							warehouseLocationDetailsDTO2.getBin(), warehouseLocationDTO.getOrgId(),
+							warehouseLocationDTO.getBranchCode(), warehouseLocationDTO.getWarehouse())) {
+						String errorMessage = String.format("Bin : %s Already Exists in This Warehouse",
+								warehouseLocationDetailsDTO2.getBin());
+						throw new ApplicationException(errorMessage);
+					}
+					warehouseLocationDetailsVO1.setBin(warehouseLocationDetailsDTO2.getBin());
+					warehouseLocationDetailsVO1.setBinCategory(warehouseLocationDetailsDTO2.getBinCategory());
+					warehouseLocationDetailsVO1.setStatus(warehouseLocationDetailsDTO2.getStatus());
+					warehouseLocationDetailsVO1.setCore(warehouseLocationDetailsDTO2.getCore());
+					warehouseLocationDetailsVO1.setBranch(warehouseLocationDTO.getBranch());
+					warehouseLocationDetailsVO1.setBranchCode(warehouseLocationDTO.getBranchCode());
+					warehouseLocationDetailsVO1.setWarehouse(warehouseLocationDTO.getWarehouse());
+					warehouseLocationDetailsVO1.setBinType(warehouseLocationDTO.getBinType());
+					warehouseLocationDetailsVO1.setRowNo(warehouseLocationDTO.getRowNo());
+					warehouseLocationDetailsVO1.setLevel(warehouseLocationDTO.getLevel());
+					warehouseLocationDetailsVO1.setCellFrom(warehouseLocationDTO.getCellFrom());
+					warehouseLocationDetailsVO1.setCellTo(warehouseLocationDTO.getCellTo());
+					warehouseLocationDetailsVO1.setOrgId(warehouseLocationDTO.getOrgId());
+					warehouseLocationDetailsVO1.setWarehouseLocationVO(warehouseLocationVO);
+					warehouseLocationDetailsVO.add(warehouseLocationDetailsVO1);
+				}
+			}
 		}
+		warehouseLocationVO.setWarehouseLocationDetailsVO(warehouseLocationDetailsVO);
+
 	}
 
 	@Override
@@ -900,95 +1051,100 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public MaterialVO createUpdateMaterial(MaterialDTO materialDTO) throws ApplicationException {
-	    
-	    MaterialVO materialVO = new MaterialVO();
-	    
-	    // Check if the materialDTO ID is empty (indicating a new entry)
-	    if (ObjectUtils.isEmpty(materialDTO.getId())) {
-	        
-	        // Validate if material already exists by various unique fields
-	        if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartno(materialDTO.getOrgId(), materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartno())) {
-	            throw new ApplicationException("Partno Already exist for this Customer");
-	        }
-	        
-	        if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartDesc(materialDTO.getOrgId(), materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartDesc())) {
-	            throw new ApplicationException("PartDesc Already exist for this Customer");
-	        }
-	        materialVO.setCreatedBy(materialDTO.getCreatedBy());
-		    materialVO.setUpdatedBy(materialDTO.getCreatedBy());
-	        // Set the values from materialDTO to materialVO
-	        mapMaterialDtoToMaterialVo(materialDTO, materialVO);
-	    } else {
-	        // Retrieve the existing MaterialVO from the repository
-	        materialVO = materialRepo.findById(materialDTO.getId()).orElseThrow(() -> new ApplicationException("Material not found"));
-	        
-	        // Validate and update unique fields if changed
-	        if (!materialVO.getPartno().equalsIgnoreCase(materialDTO.getPartno())) {
-	            if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartno(materialDTO.getOrgId(), materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartno())) {
-	                throw new ApplicationException("Partno Already exist for this Customer");
-	            }
-	            materialVO.setPartno(materialDTO.getPartno());
-	        }
-	        
-	        if (!materialVO.getPartDesc().equalsIgnoreCase(materialDTO.getPartDesc())) {
-	            if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartDesc(materialDTO.getOrgId(), materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartDesc())) {
-	                throw new ApplicationException("PartDesc Already exist for this Customer");
-	            }
-	            materialVO.setPartDesc(materialDTO.getPartDesc());
-	        }
 
-		    materialVO.setUpdatedBy(materialDTO.getCreatedBy());
-	        // Update the remaining fields from materialDTO to materialVO
-	        mapMaterialDtoToMaterialVo(materialDTO, materialVO);
-	    }
-	    
-	    return materialRepo.save(materialVO);
+		MaterialVO materialVO = new MaterialVO();
+
+		// Check if the materialDTO ID is empty (indicating a new entry)
+		if (ObjectUtils.isEmpty(materialDTO.getId())) {
+
+			// Validate if material already exists by various unique fields
+			if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartno(materialDTO.getOrgId(),
+					materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartno())) {
+				throw new ApplicationException("Partno Already exist for this Customer");
+			}
+
+			if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartDesc(materialDTO.getOrgId(),
+					materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartDesc())) {
+				throw new ApplicationException("PartDesc Already exist for this Customer");
+			}
+			materialVO.setCreatedBy(materialDTO.getCreatedBy());
+			materialVO.setUpdatedBy(materialDTO.getCreatedBy());
+			// Set the values from materialDTO to materialVO
+			mapMaterialDtoToMaterialVo(materialDTO, materialVO);
+		} else {
+			// Retrieve the existing MaterialVO from the repository
+			materialVO = materialRepo.findById(materialDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Material not found"));
+
+			// Validate and update unique fields if changed
+			if (!materialVO.getPartno().equalsIgnoreCase(materialDTO.getPartno())) {
+				if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartno(materialDTO.getOrgId(),
+						materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartno())) {
+					throw new ApplicationException("Partno Already exist for this Customer");
+				}
+				materialVO.setPartno(materialDTO.getPartno());
+			}
+
+			if (!materialVO.getPartDesc().equalsIgnoreCase(materialDTO.getPartDesc())) {
+				if (materialRepo.existsByOrgIdAndCustomerAndClientAndPartDesc(materialDTO.getOrgId(),
+						materialDTO.getCustomer(), materialDTO.getClient(), materialDTO.getPartDesc())) {
+					throw new ApplicationException("PartDesc Already exist for this Customer");
+				}
+				materialVO.setPartDesc(materialDTO.getPartDesc());
+			}
+
+			materialVO.setUpdatedBy(materialDTO.getCreatedBy());
+			// Update the remaining fields from materialDTO to materialVO
+			mapMaterialDtoToMaterialVo(materialDTO, materialVO);
+		}
+
+		return materialRepo.save(materialVO);
 	}
 
 	private void mapMaterialDtoToMaterialVo(MaterialDTO materialDTO, MaterialVO materialVO) {
-	    materialVO.setItemType(materialDTO.getItemType());
-	    materialVO.setPartno(materialDTO.getPartno());
-	    materialVO.setPartDesc(materialDTO.getPartDesc());
-	    materialVO.setCustPartno(materialDTO.getCustPartno());
-	    materialVO.setGroupName(materialDTO.getGroupName());
-	    materialVO.setBarcode(materialDTO.getBarcode());
-	    materialVO.setStyleCode(materialDTO.getStyleCode());
-	    materialVO.setBaseSku(materialDTO.getBaseSku());
-	    materialVO.setPurchaseUnit(materialDTO.getPurchaseUnit());
-	    materialVO.setStorageUnit(materialDTO.getStorageUnit());
-	    materialVO.setFsn(materialDTO.getFsn());
-	    materialVO.setSaleUnit(materialDTO.getSaleUnit());
-	    materialVO.setType(materialDTO.getType());
-	    materialVO.setSku(materialDTO.getSku());
-	    materialVO.setSkuQty(materialDTO.getSkuQty());
-	    materialVO.setSsku(materialDTO.getSsku());
-	    materialVO.setSskuQty(materialDTO.getSskuQty());
-	    materialVO.setWeightofSkuAndUom(materialDTO.getWeightOfSkuAndUom());
-	    materialVO.setHsnCode(materialDTO.getHsnCode());
-	    materialVO.setParentChildKey(materialDTO.getParentChildKey());
-	    materialVO.setCbranch(materialDTO.getCbranch());
-	    materialVO.setCriticalStockLevel(materialDTO.getCriticalStockLevel());
-	    materialVO.setStatus(materialDTO.getStatus());
-	    materialVO.setOrgId(materialDTO.getOrgId());
-	    materialVO.setCustomer(materialDTO.getCustomer());
-	    materialVO.setClient(materialDTO.getClient());
-	    materialVO.setWarehouse(materialDTO.getWarehouse());
-	    materialVO.setBranch(materialDTO.getBranch());
-	    materialVO.setBranchCode(materialDTO.getBranchCode());
-	    materialVO.setPalletQty(materialDTO.getPalletQty());
-	    materialVO.setActive(materialDTO.isActive());
-	    materialVO.setLength(materialDTO.getLength());
-	    materialVO.setBreadth(materialDTO.getBreadth());
-	    materialVO.setHeight(materialDTO.getHeight());
-	    materialVO.setWeight(materialDTO.getWeight());
+		materialVO.setItemType(materialDTO.getItemType());
+		materialVO.setPartno(materialDTO.getPartno());
+		materialVO.setPartDesc(materialDTO.getPartDesc());
+		materialVO.setCustPartno(materialDTO.getCustPartno());
+		materialVO.setGroupName(materialDTO.getGroupName());
+		materialVO.setBarcode(materialDTO.getBarcode());
+		materialVO.setStyleCode(materialDTO.getStyleCode());
+		materialVO.setBaseSku(materialDTO.getBaseSku());
+		materialVO.setPurchaseUnit(materialDTO.getPurchaseUnit());
+		materialVO.setStorageUnit(materialDTO.getStorageUnit());
+		materialVO.setFsn(materialDTO.getFsn());
+		materialVO.setSaleUnit(materialDTO.getSaleUnit());
+		materialVO.setType(materialDTO.getType());
+		materialVO.setSku(materialDTO.getSku());
+		materialVO.setSkuQty(materialDTO.getSkuQty());
+		materialVO.setSsku(materialDTO.getSsku());
+		materialVO.setSskuQty(materialDTO.getSskuQty());
+		materialVO.setWeightofSkuAndUom(materialDTO.getWeightOfSkuAndUom());
+		materialVO.setHsnCode(materialDTO.getHsnCode());
+		materialVO.setParentChildKey(materialDTO.getParentChildKey());
+		materialVO.setCbranch(materialDTO.getCbranch());
+		materialVO.setCriticalStockLevel(materialDTO.getCriticalStockLevel());
+		materialVO.setStatus(materialDTO.getStatus());
+		materialVO.setOrgId(materialDTO.getOrgId());
+		materialVO.setCustomer(materialDTO.getCustomer());
+		materialVO.setClient(materialDTO.getClient());
+		materialVO.setWarehouse(materialDTO.getWarehouse());
+		materialVO.setWeightofSkuAndUom(materialDTO.getWeightOfSkuAndUom());
+		materialVO.setBranch(materialDTO.getBranch());
+		materialVO.setBranchCode(materialDTO.getBranchCode());
+		materialVO.setPalletQty(materialDTO.getPalletQty());
+		materialVO.setActive(materialDTO.isActive());
+		materialVO.setLength(materialDTO.getLength());
+		materialVO.setBreadth(materialDTO.getBreadth());
+		materialVO.setHeight(materialDTO.getHeight());
+		materialVO.setWeight(materialDTO.getWeight());
 	}
-
 
 	@Override
 	public List<Map<String, Object>> getPartNo(Long orgId, String client, String branch, String branchCode,
 			String customer) {
-		Set<Object[]> getPartNumber=materialRepo.findPartNo(orgId,client,branch,branchCode,customer);
-		
+		Set<Object[]> getPartNumber = materialRepo.findPartNo(orgId, client, branch, branchCode, customer);
+
 		return getPartNo(getPartNumber);
 	}
 
@@ -1004,9 +1160,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return partNoDetails;
 	}
 
-	
-	
-
 	// Buyer
 
 	@Override
@@ -1021,77 +1174,79 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public BuyerVO createUpdateBuyer(BuyerDTO buyerDTO) throws ApplicationException {
-	    BuyerVO buyerVO = new BuyerVO();
-	    
-	    // Check if the buyerDTO ID is empty (indicating a new entry)
-	    if (ObjectUtils.isEmpty(buyerDTO.getId())) {
-	        
-	        // Validate if buyer already exists by various unique fields
-	        if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyer(buyerDTO.getOrgId(), buyerDTO.getCustomer(), buyerDTO.getClient(), buyerDTO.getBuyer())) {
-	            throw new ApplicationException("Buyer already exists for this Customer");
-	        }
-	        
-	        if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerShortName(buyerDTO.getOrgId(), buyerDTO.getCustomer(), buyerDTO.getClient(), buyerDTO.getBuyerShortName())) {
-	            throw new ApplicationException("Buyer short name already exists for this Customer");
-	        }
-	        buyerVO.setUpdatedBy(buyerDTO.getCreatedBy());
-	        buyerVO.setCreatedBy(buyerDTO.getCreatedBy());
-	        mapBuyerDtoToBuyerVo(buyerDTO, buyerVO);
-	    } else {
-	        buyerVO = buyerRepo.findById(buyerDTO.getId()).orElseThrow(() -> new ApplicationException("Buyer not found"));
-	        
-	        if (!buyerVO.getBuyer().equalsIgnoreCase(buyerDTO.getBuyer())) {
-	            if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyer(buyerDTO.getOrgId(), buyerDTO.getCustomer(), buyerDTO.getClient(), buyerDTO.getBuyer())) {
-	                throw new ApplicationException("Buyer already exists for this Customer");
-	            }
-	            buyerVO.setBuyer(buyerDTO.getBuyer());
-	        }
-	        
-	        if (!buyerVO.getBuyerShortName().equalsIgnoreCase(buyerDTO.getBuyerShortName())) {
-	            if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerShortName(buyerDTO.getOrgId(), buyerDTO.getCustomer(), buyerDTO.getClient(), buyerDTO.getBuyerShortName())) {
-	                throw new ApplicationException("Buyer short name already exists for this Customer");
-	            }
-	            buyerVO.setBuyerShortName(buyerDTO.getBuyerShortName());
-	           
-	        }
-	        buyerVO.setUpdatedBy(buyerDTO.getCreatedBy());
-	        mapBuyerDtoToBuyerVo(buyerDTO, buyerVO);
-	    }
-	    
-	    return buyerRepo.save(buyerVO);
+		BuyerVO buyerVO = new BuyerVO();
+
+		// Check if the buyerDTO ID is empty (indicating a new entry)
+		if (ObjectUtils.isEmpty(buyerDTO.getId())) {
+
+			// Validate if buyer already exists by various unique fields
+			if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyer(buyerDTO.getOrgId(), buyerDTO.getCustomer(),
+					buyerDTO.getClient(), buyerDTO.getBuyer())) {
+				throw new ApplicationException("Buyer already exists for this Customer");
+			}
+
+			if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerShortName(buyerDTO.getOrgId(),
+					buyerDTO.getCustomer(), buyerDTO.getClient(), buyerDTO.getBuyerShortName())) {
+				throw new ApplicationException("Buyer short name already exists for this Customer");
+			}
+			buyerVO.setUpdatedBy(buyerDTO.getCreatedBy());
+			buyerVO.setCreatedBy(buyerDTO.getCreatedBy());
+			mapBuyerDtoToBuyerVo(buyerDTO, buyerVO);
+		} else {
+			buyerVO = buyerRepo.findById(buyerDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Buyer not found"));
+
+			if (!buyerVO.getBuyer().equalsIgnoreCase(buyerDTO.getBuyer())) {
+				if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyer(buyerDTO.getOrgId(), buyerDTO.getCustomer(),
+						buyerDTO.getClient(), buyerDTO.getBuyer())) {
+					throw new ApplicationException("Buyer already exists for this Customer");
+				}
+				buyerVO.setBuyer(buyerDTO.getBuyer());
+			}
+
+			if (!buyerVO.getBuyerShortName().equalsIgnoreCase(buyerDTO.getBuyerShortName())) {
+				if (buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerShortName(buyerDTO.getOrgId(),
+						buyerDTO.getCustomer(), buyerDTO.getClient(), buyerDTO.getBuyerShortName())) {
+					throw new ApplicationException("Buyer short name already exists for this Customer");
+				}
+				buyerVO.setBuyerShortName(buyerDTO.getBuyerShortName());
+
+			}
+			buyerVO.setUpdatedBy(buyerDTO.getCreatedBy());
+			mapBuyerDtoToBuyerVo(buyerDTO, buyerVO);
+		}
+
+		return buyerRepo.save(buyerVO);
 	}
 
 	private void mapBuyerDtoToBuyerVo(BuyerDTO buyerDTO, BuyerVO buyerVO) {
-	    buyerVO.setBuyer(buyerDTO.getBuyer());
-	    buyerVO.setBuyerShortName(buyerDTO.getBuyerShortName());
-	    buyerVO.setBuyerType(buyerDTO.getBuyerType());
-	    buyerVO.setBuyerGroupOf(buyerDTO.getBuyerGroupOf());
-	    buyerVO.setContactPerson(buyerDTO.getContactPerson());
-	    buyerVO.setPanNo(buyerDTO.getPanNo());
-	    buyerVO.setTanNo(buyerDTO.getTanNo());
-	    buyerVO.setZipCode(buyerDTO.getZipCode());
-	    buyerVO.setEmail(buyerDTO.getEmail());
-	    buyerVO.setGst(buyerDTO.getGst());
-	    buyerVO.setGstNo(buyerDTO.getGstNo());
-	    buyerVO.setMobileNo(buyerDTO.getMobileNo());
-	    buyerVO.setAddressLine1(buyerDTO.getAddressLine1());
-	    buyerVO.setAddressLine2(buyerDTO.getAddressLine2());
-	    buyerVO.setCity(buyerDTO.getCity());
-	    buyerVO.setState(buyerDTO.getState());
-	    buyerVO.setCountry(buyerDTO.getCountry());
-	    buyerVO.setEccNo(buyerDTO.getEccNo());
-	    buyerVO.setCbranch(buyerDTO.getCbranch());
-	    buyerVO.setOrgId(buyerDTO.getOrgId());
-	    buyerVO.setActive(buyerDTO.isActive());
-	    buyerVO.setBranchCode(buyerDTO.getBranchCode());
-	    buyerVO.setBranch(buyerDTO.getBranch());
-	    buyerVO.setClient(buyerDTO.getClient());
-	    buyerVO.setCustomer(buyerDTO.getCustomer());
-	    buyerVO.setWarehouse(buyerDTO.getWarehouse());	   
+		buyerVO.setBuyer(buyerDTO.getBuyer());
+		buyerVO.setBuyerShortName(buyerDTO.getBuyerShortName());
+		buyerVO.setBuyerType(buyerDTO.getBuyerType());
+		buyerVO.setBuyerGroupOf(buyerDTO.getBuyerGroupOf());
+		buyerVO.setContactPerson(buyerDTO.getContactPerson());
+		buyerVO.setPanNo(buyerDTO.getPanNo());
+		buyerVO.setTanNo(buyerDTO.getTanNo());
+		buyerVO.setZipCode(buyerDTO.getZipCode());
+		buyerVO.setEmail(buyerDTO.getEmail());
+		buyerVO.setGst(buyerDTO.getGst());
+		buyerVO.setGstNo(buyerDTO.getGstNo());
+		buyerVO.setMobileNo(buyerDTO.getMobileNo());
+		buyerVO.setAddressLine1(buyerDTO.getAddressLine1());
+		buyerVO.setAddressLine2(buyerDTO.getAddressLine2());
+		buyerVO.setCity(buyerDTO.getCity());
+		buyerVO.setState(buyerDTO.getState());
+		buyerVO.setCountry(buyerDTO.getCountry());
+		buyerVO.setEccNo(buyerDTO.getEccNo());
+		buyerVO.setCbranch(buyerDTO.getCbranch());
+		buyerVO.setOrgId(buyerDTO.getOrgId());
+		buyerVO.setActive(buyerDTO.isActive());
+		buyerVO.setBranchCode(buyerDTO.getBranchCode());
+		buyerVO.setBranch(buyerDTO.getBranch());
+		buyerVO.setClient(buyerDTO.getClient());
+		buyerVO.setCustomer(buyerDTO.getCustomer());
+		buyerVO.setWarehouse(buyerDTO.getWarehouse());
 	}
-
-
-	
 
 	// Supplier
 
@@ -1108,110 +1263,119 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	@Override
 	public Map<String, Object> createUpdateSupplier(SupplierDTO supplierDTO) throws ApplicationException {
 
-	    SupplierVO supplierVO = new SupplierVO();
-	    String message;
-	    // Check if the supplierDTO ID is empty (indicating a new entry)
-	    if (ObjectUtils.isEmpty(supplierDTO.getId())) {
+		SupplierVO supplierVO = new SupplierVO();
+		String message;
+		// Check if the supplierDTO ID is empty (indicating a new entry)
+		if (ObjectUtils.isEmpty(supplierDTO.getId())) {
 
-	        // Validate if supplier already exists by various unique fields
-	        if (supplierRepo.existsByOrgIdAndCustomerAndClientAndSupplierAndSupplierType(supplierDTO.getOrgId(), supplierDTO.getCustomer(), supplierDTO.getClient(), supplierDTO.getSupplier(),supplierDTO.getSupplierType())) {
-	            throw new ApplicationException("Supplier and Supplier Type already exists for this Customer");
-	        }
+			// Validate if supplier already exists by various unique fields
+			if (supplierRepo.existsByOrgIdAndCustomerAndClientAndSupplierAndSupplierType(supplierDTO.getOrgId(),
+					supplierDTO.getCustomer(), supplierDTO.getClient(), supplierDTO.getSupplier(),
+					supplierDTO.getSupplierType())) {
+				throw new ApplicationException("Supplier and Supplier Type already exists for this Customer");
+			}
 
-	        if (supplierRepo.existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierType(supplierDTO.getOrgId(), supplierDTO.getCustomer(), supplierDTO.getClient(), supplierDTO.getSupplierShortName(),supplierDTO.getSupplierType())) {
-	            throw new ApplicationException("Supplier ShortName and Supplier Type and already exists for this Customer");
-	        }
+			if (supplierRepo.existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierType(
+					supplierDTO.getOrgId(), supplierDTO.getCustomer(), supplierDTO.getClient(),
+					supplierDTO.getSupplierShortName(), supplierDTO.getSupplierType())) {
+				throw new ApplicationException(
+						"Supplier ShortName and Supplier Type and already exists for this Customer");
+			}
 
-	        supplierVO.setCreatedBy(supplierDTO.getCreatedBy());
-		    supplierVO.setUpdatedBy(supplierDTO.getCreatedBy());
-	        // Set the values from supplierDTO to supplierVO
-	        mapSupplierDtoToSupplierVo(supplierDTO, supplierVO);
-	        message = "Supplier created successfully";
+			supplierVO.setCreatedBy(supplierDTO.getCreatedBy());
+			supplierVO.setUpdatedBy(supplierDTO.getCreatedBy());
+			// Set the values from supplierDTO to supplierVO
+			mapSupplierDtoToSupplierVo(supplierDTO, supplierVO);
+			message = "Supplier created successfully";
 
-	    } else {
+		} else {
 
-	        // Retrieve the existing SupplierVO from the repository
-	        supplierVO = supplierRepo.findById(supplierDTO.getId()).orElseThrow(() -> new ApplicationException("Supplier not found"));
+			// Retrieve the existing SupplierVO from the repository
+			supplierVO = supplierRepo.findById(supplierDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Supplier not found"));
 
-	        // Validate and update unique fields if changed
-	        if (!supplierVO.getSupplier().equalsIgnoreCase(supplierDTO.getSupplier())) {
-	            if (supplierRepo.existsByOrgIdAndCustomerAndClientAndSupplierAndSupplierType(supplierDTO.getOrgId(), supplierDTO.getCustomer(), supplierDTO.getClient(), supplierDTO.getSupplier(),supplierDTO.getSupplierType())) {
-	                throw new ApplicationException("Supplier and Supplier Type already exists for this Customer");
-	            }
-	            supplierVO.setSupplier(supplierDTO.getSupplier());
-	        }
+			// Validate and update unique fields if changed
+			if (!supplierVO.getSupplier().equalsIgnoreCase(supplierDTO.getSupplier())) {
+				if (supplierRepo.existsByOrgIdAndCustomerAndClientAndSupplierAndSupplierType(supplierDTO.getOrgId(),
+						supplierDTO.getCustomer(), supplierDTO.getClient(), supplierDTO.getSupplier(),
+						supplierDTO.getSupplierType())) {
+					throw new ApplicationException("Supplier and Supplier Type already exists for this Customer");
+				}
+				supplierVO.setSupplier(supplierDTO.getSupplier());
+			}
 
-	        if (!supplierVO.getSupplierShortName().equalsIgnoreCase(supplierDTO.getSupplierShortName())) {
-	            if (supplierRepo.existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierType(supplierDTO.getOrgId(), supplierDTO.getCustomer(), supplierDTO.getClient(), supplierDTO.getSupplierShortName(),supplierDTO.getSupplierType())) {
-	                throw new ApplicationException("Supplier ShortName and Supplier Type already exists for this Customer");
-	            }
-	            supplierVO.setSupplierShortName(supplierDTO.getSupplierShortName());
-	        }
+			if (!supplierVO.getSupplierShortName().equalsIgnoreCase(supplierDTO.getSupplierShortName())) {
+				if (supplierRepo.existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierType(
+						supplierDTO.getOrgId(), supplierDTO.getCustomer(), supplierDTO.getClient(),
+						supplierDTO.getSupplierShortName(), supplierDTO.getSupplierType())) {
+					throw new ApplicationException(
+							"Supplier ShortName and Supplier Type already exists for this Customer");
+				}
+				supplierVO.setSupplierShortName(supplierDTO.getSupplierShortName());
+			}
 
-		    supplierVO.setUpdatedBy(supplierDTO.getCreatedBy());
-	        // Update the remaining fields from supplierDTO to supplierVO
-	        mapSupplierDtoToSupplierVo(supplierDTO, supplierVO);
-	        message = "Supplier updated successfully";
-	    }
-	    supplierRepo.save(supplierVO);
+			supplierVO.setUpdatedBy(supplierDTO.getCreatedBy());
+			// Update the remaining fields from supplierDTO to supplierVO
+			mapSupplierDtoToSupplierVo(supplierDTO, supplierVO);
+			message = "Supplier updated successfully";
+		}
+		supplierRepo.save(supplierVO);
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("supplierVO", supplierVO);
-	    response.put("message", message);
-	    return response;
+		Map<String, Object> response = new HashMap<>();
+		response.put("supplierVO", supplierVO);
+		response.put("message", message);
+		return response;
 	}
 
 	private void mapSupplierDtoToSupplierVo(SupplierDTO supplierDTO, SupplierVO supplierVO) {
-	    supplierVO.setSupplier(supplierDTO.getSupplier());
-	    supplierVO.setSupplierShortName(supplierDTO.getSupplierShortName());
-	    supplierVO.setSupplierType(supplierDTO.getSupplierType());
-	    supplierVO.setSupplierGroupOf(supplierDTO.getSupplierGroupOf());
-	    supplierVO.setCategory(supplierDTO.getCategory());
-	    supplierVO.setPanNo(supplierDTO.getPanNo());
-	    supplierVO.setTanNo(supplierDTO.getTanNo());
-	    supplierVO.setContactPerson(supplierDTO.getContactPerson());
-	    supplierVO.setLandLineNo(supplierDTO.getLandLineNo());
-	    supplierVO.setMobileNo(supplierDTO.getMobileNo());
-	    supplierVO.setAddressLine1(supplierDTO.getAddressLine1());
-	    supplierVO.setAddressLine2(supplierDTO.getAddressLine2());
-	    supplierVO.setCity(supplierDTO.getCity());
-	    supplierVO.setCbranch(supplierDTO.getCbranch());
-	    supplierVO.setState(supplierDTO.getState());
-	    supplierVO.setCountry(supplierDTO.getCountry());
-	    supplierVO.setZipCode(supplierDTO.getZipCode());
-	    supplierVO.setEmail(supplierDTO.getEmail());
-	    supplierVO.setEccNo(supplierDTO.getEccNo());
-	    supplierVO.setRangeAddress(supplierDTO.getRangeAddress());
-	    supplierVO.setOrgId(supplierDTO.getOrgId());
-	    supplierVO.setActive(supplierDTO.isActive());
-	    supplierVO.setBranchCode(supplierDTO.getBranchCode());
-	    supplierVO.setBranch(supplierDTO.getBranch());
-	    supplierVO.setClient(supplierDTO.getClient());
-	    supplierVO.setCustomer(supplierDTO.getCustomer());
-	    supplierVO.setWarehouse(supplierDTO.getWarehouse());
+		supplierVO.setSupplier(supplierDTO.getSupplier());
+		supplierVO.setSupplierShortName(supplierDTO.getSupplierShortName());
+		supplierVO.setSupplierType(supplierDTO.getSupplierType());
+		supplierVO.setSupplierGroupOf(supplierDTO.getSupplierGroupOf());
+		supplierVO.setCategory(supplierDTO.getCategory());
+		supplierVO.setPanNo(supplierDTO.getPanNo());
+		supplierVO.setTanNo(supplierDTO.getTanNo());
+		supplierVO.setContactPerson(supplierDTO.getContactPerson());
+		supplierVO.setLandLineNo(supplierDTO.getLandLineNo());
+		supplierVO.setMobileNo(supplierDTO.getMobileNo());
+		supplierVO.setAddressLine1(supplierDTO.getAddressLine1());
+		supplierVO.setAddressLine2(supplierDTO.getAddressLine2());
+		supplierVO.setCity(supplierDTO.getCity());
+		supplierVO.setCbranch(supplierDTO.getCbranch());
+		supplierVO.setState(supplierDTO.getState());
+		supplierVO.setCountry(supplierDTO.getCountry());
+		supplierVO.setZipCode(supplierDTO.getZipCode());
+		supplierVO.setEmail(supplierDTO.getEmail());
+		supplierVO.setEccNo(supplierDTO.getEccNo());
+		supplierVO.setRangeAddress(supplierDTO.getRangeAddress());
+		supplierVO.setOrgId(supplierDTO.getOrgId());
+		supplierVO.setActive(supplierDTO.isActive());
+		supplierVO.setBranchCode(supplierDTO.getBranchCode());
+		supplierVO.setBranch(supplierDTO.getBranch());
+		supplierVO.setClient(supplierDTO.getClient());
+		supplierVO.setCustomer(supplierDTO.getCustomer());
+		supplierVO.setWarehouse(supplierDTO.getWarehouse());
 	}
-
 
 	@Override
 	public List<Map<String, Object>> getActiveSupplierNameByCustomer(Long orgid, String client, String cbranch) {
-		
-		Set<Object[]> supplier=supplierRepo.findActiveSupplierNameByCustomer(orgid, client, cbranch);
-		
+
+		Set<Object[]> supplier = supplierRepo.findActiveSupplierNameByCustomer(orgid, client, cbranch);
+
 		return getSupplierName(supplier);
 	}
 
 	// LocationMapping
 
 	private List<Map<String, Object>> getSupplierName(Set<Object[]> supplier) {
-		List<Map<String, Object>> supplierList= new ArrayList<>();
-		for(Object[] sup:supplier)
-		{
+		List<Map<String, Object>> supplierList = new ArrayList<>();
+		for (Object[] sup : supplier) {
 			Map<String, Object> suppliers = new HashMap<>();
 			suppliers.put("supplierName", sup[0] != null ? sup[0].toString() : "");
 			suppliers.put("supplierShortName", sup[1] != null ? sup[1].toString() : "");
 			supplierList.add(suppliers);
 		}
-		
+
 		return supplierList;
 	}
 
@@ -1226,72 +1390,87 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public Map<String, Object> createUpdateLocationMapping(LocationMappingDTO locationMappingDTO) throws ApplicationException {
+	public Map<String, Object> createUpdateLocationMapping(LocationMappingDTO locationMappingDTO)
+			throws ApplicationException {
 		LocationMappingVO locationMappingVO;
-		String message=null;
-		if(ObjectUtils.isEmpty(locationMappingDTO.getId())) {
-			
-			if(locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),locationMappingDTO.getOrgId())) {
-				String errorMessage=String.format("This Warehouse :%s Already Exists By This Organization.",locationMappingDTO.getWarehouse());
+		String message = null;
+		if (ObjectUtils.isEmpty(locationMappingDTO.getId())) {
+
+			if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
+					locationMappingDTO.getOrgId())) {
+				String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
+						locationMappingDTO.getWarehouse());
 				throw new ApplicationException(errorMessage);
 			}
-			
-			if(locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),locationMappingDTO.getOrgId())) {
-				String errorMessage=String.format("This RowNo :%s Already Exists By This Organization.",locationMappingDTO.getWarehouse());
+
+			if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
+					locationMappingDTO.getOrgId())) {
+				String errorMessage = String.format("This RowNo :%s Already Exists By This Organization.",
+						locationMappingDTO.getWarehouse());
 				throw new ApplicationException(errorMessage);
 			}
-			if(locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),locationMappingDTO.getOrgId())) {
-				String errorMessage=String.format("This LevelNo :%s Already Exists By This Organization.",locationMappingDTO.getWarehouse());
+			if (locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),
+					locationMappingDTO.getOrgId())) {
+				String errorMessage = String.format("This LevelNo :%s Already Exists By This Organization.",
+						locationMappingDTO.getWarehouse());
 				throw new ApplicationException(errorMessage);
 			}
-			
-			locationMappingVO=new LocationMappingVO();
+
+			locationMappingVO = new LocationMappingVO();
 			locationMappingVO.setCreatedBy(locationMappingDTO.getCreatedBy());
 			locationMappingVO.setUpdatedBy(locationMappingDTO.getCreatedBy());
-			message="Location Mapping Creation Successfully";
-			
-		}else {
-			
-			locationMappingVO=locationMappingRepo.findById(locationMappingDTO.getId()).orElseThrow
-					(()->new ApplicationException("This Id Is Not Found Any Information,Invalid Id"+locationMappingDTO.getId()));
+			message = "Location Mapping Creation Successfully";
+
+		} else {
+
+			locationMappingVO = locationMappingRepo.findById(locationMappingDTO.getId())
+					.orElseThrow(() -> new ApplicationException(
+							"This Id Is Not Found Any Information,Invalid Id" + locationMappingDTO.getId()));
 			locationMappingVO.setUpdatedBy(locationMappingDTO.getCreatedBy());
-			
-			if(!locationMappingVO.getWarehouse().equalsIgnoreCase(locationMappingDTO.getWarehouse())) {
-				if(locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),locationMappingDTO.getOrgId())) {
-					String errorMessage=String.format("This Warehouse :%s Already Exists By This Organization.",locationMappingDTO.getWarehouse());
+
+			if (!locationMappingVO.getWarehouse().equalsIgnoreCase(locationMappingDTO.getWarehouse())) {
+				if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
+						locationMappingDTO.getOrgId())) {
+					String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
+							locationMappingDTO.getWarehouse());
 					throw new ApplicationException(errorMessage);
 				}
 				locationMappingVO.setWarehouse(locationMappingDTO.getWarehouse());
 			}
-			if(!locationMappingVO.getRowNo().equalsIgnoreCase(locationMappingDTO.getRowNo())){
-				if(locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),locationMappingDTO.getOrgId())) {
-					String errorMessage=String.format("This RowNo :%s Already Exists By This Organization.",locationMappingDTO.getWarehouse());
+			if (!locationMappingVO.getRowNo().equalsIgnoreCase(locationMappingDTO.getRowNo())) {
+				if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
+						locationMappingDTO.getOrgId())) {
+					String errorMessage = String.format("This RowNo :%s Already Exists By This Organization.",
+							locationMappingDTO.getWarehouse());
 					throw new ApplicationException(errorMessage);
 				}
 				locationMappingVO.setRowNo(locationMappingDTO.getRowNo());
-			}if(!locationMappingVO.getLevelNo().equalsIgnoreCase(locationMappingDTO.getLevelNo())) {
-				if(locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),locationMappingDTO.getOrgId())) {
-					String errorMessage=String.format("This LevelNo :%s Already Exists By This Organization.",locationMappingDTO.getWarehouse());
+			}
+			if (!locationMappingVO.getLevelNo().equalsIgnoreCase(locationMappingDTO.getLevelNo())) {
+				if (locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),
+						locationMappingDTO.getOrgId())) {
+					String errorMessage = String.format("This LevelNo :%s Already Exists By This Organization.",
+							locationMappingDTO.getWarehouse());
 					throw new ApplicationException(errorMessage);
 				}
 				locationMappingVO.setLevelNo(locationMappingDTO.getLevelNo());
 			}
-			message="Location Mapping Updation Successfully";
+			message = "Location Mapping Updation Successfully";
 		}
-		getLocationMappingVOFromLocationMappingDTO(locationMappingVO,locationMappingDTO);
+		getLocationMappingVOFromLocationMappingDTO(locationMappingVO, locationMappingDTO);
 		locationMappingRepo.save(locationMappingVO);
-		Map<String, Object> response=new HashMap<String, Object>();
-		response.put("message",message);
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("message", message);
 		response.put("locationMappingVO", locationMappingVO);
 		return response;
 	}
 
-	private void getLocationMappingVOFromLocationMappingDTO(LocationMappingVO locationMappingVO,
+	private LocationMappingVO getLocationMappingVOFromLocationMappingDTO(LocationMappingVO locationMappingVO,
 			LocationMappingDTO locationMappingDTO) {
-		
+
 		locationMappingVO.setBranch(locationMappingDTO.getBranch());
 		locationMappingVO.setWarehouse(locationMappingDTO.getWarehouse());
-		locationMappingVO.setLocationType(locationMappingDTO.getLocationType());
+		locationMappingVO.setBinType(locationMappingDTO.getBinType());
 		locationMappingVO.setClientType(locationMappingDTO.getClientType());
 		locationMappingVO.setClient(locationMappingDTO.getClient());
 		locationMappingVO.setRowNo(locationMappingDTO.getRowNo());
@@ -1303,6 +1482,35 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		locationMappingVO.setCancelRemark(locationMappingDTO.getCancelRemark());
 		locationMappingVO.setActive(locationMappingDTO.isActive());
 		locationMappingVO.setBranchCode(locationMappingDTO.getBranchCode());
+
+		if (locationMappingDTO.getId() != null) {
+
+			List<LocationMappingDetailsVO> detailsVOs = locationMappingDetailsRepo
+					.findByLocationMappingVO(locationMappingVO);
+			locationMappingDetailsRepo.deleteAll(detailsVOs);
+
+		}
+
+		List<LocationMappingDetailsVO> detailsVOList = new ArrayList<LocationMappingDetailsVO>();
+		for (LocationMappingDetailsDTO locationMappingDetailsDTO : locationMappingDTO.getLocationMappingDetailsDTO()) {
+
+			LocationMappingDetailsVO detailsVO = new LocationMappingDetailsVO();
+			detailsVO.setRowNo(locationMappingDetailsDTO.getRowNo());
+			detailsVO.setBin(locationMappingDetailsDTO.getBin());
+			detailsVO.setBinStatus(locationMappingDetailsDTO.getBinStatus());
+			detailsVO.setBinSeq(locationMappingDetailsDTO.getBinSeq());
+			detailsVO.setLevelNo(locationMappingDetailsDTO.getLevelNo());
+			detailsVO.setCore(locationMappingDetailsDTO.getCore());
+			detailsVO.setWarehouse(locationMappingDTO.getWarehouse());
+			detailsVO.setBinCategory(locationMappingDetailsDTO.getBinCategory());
+			detailsVO.setActive(true);
+			detailsVO.setLocationMappingVO(locationMappingVO);
+			detailsVOList.add(detailsVO);
+		}
+
+		locationMappingVO.setLocationMappingDetails(detailsVOList);
+		return locationMappingVO;
+
 	}
 
 	@Override
@@ -1323,85 +1531,101 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	@Override
-	public Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch) {
-		return carrierRepo.findCarrierNameByCustomer(orgid, client, cbranch);
+	public List<Map<String, Object>> getAllModeOfShipment(Long orgId) {
+		Set<Object[]> modeOfShipment= carrierRepo.findmodeOfShipment(orgId);
+		
+		return modes(modeOfShipment);
+	}
+
+	private List<Map<String, Object>> modes(Set<Object[]> modeOfShipment) {
+		List<Map<String,Object>> modeOf= new ArrayList<>();
+		for(Object[] mode:modeOfShipment)
+		{
+			Map<String,Object> modes1=new HashMap<>();
+			modes1.put("shipmentMode", mode[0] != null ? mode[0].toString() : "");
+			modeOf.add(modes1);
+		}
+		return modeOf;
+	}
+	
+	@Override
+	public List<CarrierVO> getCarrierNameByCustomer(Long orgid, String client, String cbranch,String shipmentMode) {
+		List<CarrierVO> carrierVO= carrierRepo.findCarrierNameByCustomer(orgid, client, cbranch,shipmentMode);
+		return carrierVO;
 	}
 
 	@Override
 	public Map<String, Object> createUpdateCarrier(CarrierDTO carrierDTO) throws ApplicationException {
 
-	    CarrierVO carrierVO = new CarrierVO();
-	    String message;
+		CarrierVO carrierVO = new CarrierVO();
+		String message;
 
-	    // Check if the carrierDTO ID is empty (indicating a new entry)
-	    if (ObjectUtils.isEmpty(carrierDTO.getId())) {
+		// Check if the carrierDTO ID is empty (indicating a new entry)
+		if (ObjectUtils.isEmpty(carrierDTO.getId())) {
 
-	        // Validate if the carrier already exists by unique fields
-	    	if (carrierRepo.existsByOrgIdAndCarrier(
-                    carrierDTO.getOrgId(),carrierDTO.getCarrier())) {
-                throw new ApplicationException("Carrier already exist ");
-            }
-	    	if (carrierRepo.existsByOrgIdAndCarrierShortName(
-                    carrierDTO.getOrgId(), carrierDTO.getCarrierShortName())) {
-                throw new ApplicationException("Carrier Short Name already exist ");
-            }
+			// Validate if the carrier already by unique fields
+			if (carrierRepo.existsByOrgIdAndCarrier(carrierDTO.getOrgId(), carrierDTO.getCarrier())) {
+				throw new ApplicationException("Carrier already exist ");
+			}
+			if (carrierRepo.existsByOrgIdAndCarrierShortName(carrierDTO.getOrgId(), carrierDTO.getCarrierShortName())) {
+				throw new ApplicationException("Carrier Short Name already exist ");
+			}
 
-	        carrierVO.setCreatedBy(carrierDTO.getCreatedBy());
-	        carrierVO.setUpdatedBy(carrierDTO.getCreatedBy());
-	        // Set the values from carrierDTO to carrierVO
-	        mapCarrierDtoToCarrierVo(carrierDTO, carrierVO);
-	        message = "Carrier Created Successfully";
+			carrierVO.setCreatedBy(carrierDTO.getCreatedBy());
+			carrierVO.setUpdatedBy(carrierDTO.getCreatedBy());
+			// Set the values from carrierDTO to carrierVO
+			mapCarrierDtoToCarrierVo(carrierDTO, carrierVO);
+			message = "Carrier Created Successfully";
 
-	    } else {
+		} else {
 
-	        // Retrieve the existing CarrierVO from the repository
-	        carrierVO = carrierRepo.findById(carrierDTO.getId()).orElseThrow(() -> new ApplicationException("Carrier not found"));
+			// Retrieve the existing CarrierVO from the repository
+			carrierVO = carrierRepo.findById(carrierDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Carrier not found"));
 
-	        // Validate and update unique fields if changed
-	        if (!carrierVO.getCarrier().equalsIgnoreCase(carrierDTO.getCarrier())) {
-	            if (carrierRepo.existsByOrgIdAndCarrier(
-	                    carrierDTO.getOrgId(),carrierDTO.getCarrier())) {
-	                throw new ApplicationException("Carrier already exist ");
-	            }
-	            carrierVO.setCarrier(carrierDTO.getCarrier());
-	        }
+			// Validate and update unique fields if changed
+			if (!carrierVO.getCarrier().equalsIgnoreCase(carrierDTO.getCarrier())) {
+				if (carrierRepo.existsByOrgIdAndCarrier(carrierDTO.getOrgId(), carrierDTO.getCarrier())) {
+					throw new ApplicationException("Carrier already exist ");
+				}
+				carrierVO.setCarrier(carrierDTO.getCarrier());
+			}
 
-	        if (!carrierVO.getCarrierShortName().equalsIgnoreCase(carrierDTO.getCarrierShortName())) {
-	            if (carrierRepo.existsByOrgIdAndCarrierShortName(
-	                    carrierDTO.getOrgId(), carrierDTO.getCarrierShortName())) {
-	                throw new ApplicationException("Carrier Short Name already exist ");
-	            }
-	            carrierVO.setCarrierShortName(carrierDTO.getCarrierShortName());
-	        }
+			if (!carrierVO.getCarrierShortName().equalsIgnoreCase(carrierDTO.getCarrierShortName())) {
+				if (carrierRepo.existsByOrgIdAndCarrierShortName(carrierDTO.getOrgId(),
+						carrierDTO.getCarrierShortName())) {
+					throw new ApplicationException("Carrier Short Name already exist ");
+				}
+				carrierVO.setCarrierShortName(carrierDTO.getCarrierShortName());
+			}
 
-	        carrierVO.setUpdatedBy(carrierDTO.getCreatedBy());
-	        // Update the remaining fields from carrierDTO to carrierVO
-	        mapCarrierDtoToCarrierVo(carrierDTO, carrierVO);
-	        message = "Carrier Updated successfully";
-	    }
+			carrierVO.setUpdatedBy(carrierDTO.getCreatedBy());
+			// Update the remaining fields from carrierDTO to carrierVO
+			mapCarrierDtoToCarrierVo(carrierDTO, carrierVO);
+			message = "Carrier Updated successfully";
+		}
 
-	    carrierRepo.save(carrierVO);
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("carrierVO", carrierVO);
-	    response.put("message", message);
-	    return response;
+		carrierRepo.save(carrierVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("carrierVO", carrierVO);
+		response.put("message", message);
+		return response;
 	}
 
 	private void mapCarrierDtoToCarrierVo(CarrierDTO carrierDTO, CarrierVO carrierVO) {
-	    carrierVO.setCarrier(carrierDTO.getCarrier());
-	    carrierVO.setCarrierShortName(carrierDTO.getCarrierShortName());
-	    carrierVO.setShipmentMode(carrierDTO.getShipmentMode());
-	    carrierVO.setCbranch(carrierDTO.getCbranch());
-	    carrierVO.setClient(carrierDTO.getClient());
-	    carrierVO.setOrgId(carrierDTO.getOrgId());
-	    carrierVO.setActive(carrierDTO.isActive());
-	    carrierVO.setCustomer(carrierDTO.getCustomer());
-	    carrierVO.setWarehouse(carrierDTO.getWarehouse());
-	    carrierVO.setBranch(carrierDTO.getBranch());
-	    carrierVO.setBranchCode(carrierDTO.getBranchCode());
-	    // Additional fields mapping if any
+		carrierVO.setCarrier(carrierDTO.getCarrier());
+		carrierVO.setCarrierShortName(carrierDTO.getCarrierShortName());
+		carrierVO.setShipmentMode(carrierDTO.getShipmentMode());
+		carrierVO.setCbranch(carrierDTO.getCbranch());
+		carrierVO.setClient(carrierDTO.getClient());
+		carrierVO.setOrgId(carrierDTO.getOrgId());
+		carrierVO.setActive(carrierDTO.isActive());
+		carrierVO.setCustomer(carrierDTO.getCustomer());
+		carrierVO.setWarehouse(carrierDTO.getWarehouse());
+		carrierVO.setBranch(carrierDTO.getBranch());
+		carrierVO.setBranchCode(carrierDTO.getBranchCode());
+		// Additional fields mapping if any
 	}
-
 
 	@Override
 	public void deleteCarrier(Long carrierid) {
@@ -1420,7 +1644,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return employeeRepo.findAll();
 	}
 
-	
 	@Override
 	public Optional<EmployeeVO> getEmployeeById(Long employeeid) {
 		return employeeRepo.findById(employeeid);
@@ -1428,67 +1651,68 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Map<String, Object> createEmployee(EmployeeDTO employeeDTO) throws ApplicationException {
-	    EmployeeVO employeeVO;
-	    String message = null;
+		EmployeeVO employeeVO;
+		String message = null;
 
-	    if (ObjectUtils.isEmpty(employeeDTO.getId())) {
-	        // Check for existing employee by employee code within the organization
-	        if (employeeRepo.existsByEmployeeCodeAndOrgId(employeeDTO.getEmployeeCode(), employeeDTO.getOrgId())) {
-	            String errorMessage = String.format("This EmployeeCode: %s Already Exists in This Organization", employeeDTO.getEmployeeCode());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        // Create new employee
-	        employeeVO = new EmployeeVO();
-	        employeeVO.setCreatedBy(employeeDTO.getCreatedBy());
-	        employeeVO.setUpdatedBy(employeeDTO.getCreatedBy());
-	        message = "Employee Creation Successfully";
-	    } else {
-	        // Update existing employee
-	        employeeVO = employeeRepo.findById(employeeDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("ID is Not Found Any Information: " + employeeDTO.getId()));
+		if (ObjectUtils.isEmpty(employeeDTO.getId())) {
+			// Check for existing employee by employee code within the organization
+			if (employeeRepo.existsByEmployeeCodeAndOrgId(employeeDTO.getEmployeeCode(), employeeDTO.getOrgId())) {
+				String errorMessage = String.format("This EmployeeCode: %s Already Exists in This Organization",
+						employeeDTO.getEmployeeCode());
+				throw new ApplicationException(errorMessage);
+			}
+			// Create new employee
+			employeeVO = new EmployeeVO();
+			employeeVO.setCreatedBy(employeeDTO.getCreatedBy());
+			employeeVO.setUpdatedBy(employeeDTO.getCreatedBy());
+			message = "Employee Creation Successfully";
+		} else {
+			// Update existing employee
+			employeeVO = employeeRepo.findById(employeeDTO.getId()).orElseThrow(
+					() -> new ApplicationException("ID is Not Found Any Information: " + employeeDTO.getId()));
 
-	        employeeVO.setUpdatedBy(employeeDTO.getCreatedBy());
+			employeeVO.setUpdatedBy(employeeDTO.getCreatedBy());
 
-	        if (!employeeVO.getEmployeeCode().equalsIgnoreCase(employeeDTO.getEmployeeCode())) {
-	            if (employeeRepo.existsByEmployeeCodeAndOrgId(employeeDTO.getEmployeeCode(), employeeDTO.getOrgId())) {
-	                String errorMessage = String.format("This EmployeeCode: %s Already Exists in This Organization", employeeDTO.getEmployeeCode());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            employeeVO.setEmployeeCode(employeeDTO.getEmployeeCode());
-	        }
-	        message = "Employee Update Successfully";
-	    }
+			if (!employeeVO.getEmployeeCode().equalsIgnoreCase(employeeDTO.getEmployeeCode())) {
+				if (employeeRepo.existsByEmployeeCodeAndOrgId(employeeDTO.getEmployeeCode(), employeeDTO.getOrgId())) {
+					String errorMessage = String.format("This EmployeeCode: %s Already Exists in This Organization",
+							employeeDTO.getEmployeeCode());
+					throw new ApplicationException(errorMessage);
+				}
+				employeeVO.setEmployeeCode(employeeDTO.getEmployeeCode());
+			}
+			message = "Employee Update Successfully";
+		}
 
-	    // Map the remaining fields
-	    getEmployeeVOFromEmployeeDTO(employeeVO, employeeDTO);
+		// Map the remaining fields
+		getEmployeeVOFromEmployeeDTO(employeeVO, employeeDTO);
 
-	    // Save the entity
-	    employeeRepo.save(employeeVO);
+		// Save the entity
+		employeeRepo.save(employeeVO);
 
-	    // Prepare the response
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("employeeVO", employeeVO);
+		// Prepare the response
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("employeeVO", employeeVO);
 
-	    return response;
+		return response;
 	}
 
 	private void getEmployeeVOFromEmployeeDTO(EmployeeVO employeeVO, EmployeeDTO employeeDTO) {
-	    employeeVO.setEmployeeCode(employeeDTO.getEmployeeCode());
-	    employeeVO.setEmployeeName(employeeDTO.getEmployeeName());
-	    employeeVO.setGender(employeeDTO.getGender());
-	    employeeVO.setBranch(employeeDTO.getBranch());
-	    employeeVO.setBranchCode(employeeDTO.getBranchCode());
-	    employeeVO.setDepartment(employeeDTO.getDepartment());
-	    employeeVO.setDesignation(employeeDTO.getDesignation());
-	    employeeVO.setDateOfBirth(employeeDTO.getDateOfBirth());
-	    employeeVO.setJoiningDate(employeeDTO.getJoiningdate());
-	    employeeVO.setOrgId(employeeDTO.getOrgId());
-	    employeeVO.setCancel(employeeDTO.isCancel());
-	    employeeVO.setActive(employeeDTO.isActive());
-	    employeeVO.setCancelRemark(employeeDTO.getCancelRemark());
+		employeeVO.setEmployeeCode(employeeDTO.getEmployeeCode());
+		employeeVO.setEmployeeName(employeeDTO.getEmployeeName());
+		employeeVO.setGender(employeeDTO.getGender());
+		employeeVO.setBranch(employeeDTO.getBranch());
+		employeeVO.setBranchCode(employeeDTO.getBranchCode());
+		employeeVO.setDepartment(employeeDTO.getDepartment());
+		employeeVO.setDesignation(employeeDTO.getDesignation());
+		employeeVO.setDateOfBirth(employeeDTO.getDateOfBirth());
+		employeeVO.setJoiningDate(employeeDTO.getJoiningdate());
+		employeeVO.setOrgId(employeeDTO.getOrgId());
+		employeeVO.setCancel(employeeDTO.isCancel());
+		employeeVO.setActive(employeeDTO.isActive());
+		employeeVO.setCancelRemark(employeeDTO.getCancelRemark());
 	}
-
 
 	@Override
 	public void deleteEmployee(Long employeeid) {
@@ -1527,26 +1751,22 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public Map<String, Object> createUpdateDocumentType(DocumentTypeDTO documentTypeDTO) throws ApplicationException {
-		DocumentTypeVO documentTypeVO=new DocumentTypeVO();
+		DocumentTypeVO documentTypeVO = new DocumentTypeVO();
 		String message;
-		if(ObjectUtils.isEmpty(documentTypeDTO.getId()))
-		{
-			if (documentTypeRepo.existsByOrgIdAndScreenCode(
-					documentTypeDTO.getOrgId(),documentTypeDTO.getScreenCode())) {
-                throw new ApplicationException("ScreenCode already exist ");
-            }
-			
-			if (documentTypeRepo.existsByOrgIdAndDocCode(
-					documentTypeDTO.getOrgId(),documentTypeDTO.getDocCode())) {
-                throw new ApplicationException("Doc Code already exist ");
-            }
-			
-			List<DocumentTypeDetailsVO>documentTypeDetailsVO= new ArrayList<>();
-			if(documentTypeDTO.getDocumentTypeDetailsDTO()!=null)
-			{
-				for(DocumentTypeDetailsDTO documentTypeDetailsDTO:documentTypeDTO.getDocumentTypeDetailsDTO())
-				{
-					DocumentTypeDetailsVO documentTypeDetailsVO1= new DocumentTypeDetailsVO();
+		if (ObjectUtils.isEmpty(documentTypeDTO.getId())) {
+			if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
+					documentTypeDTO.getScreenCode())) {
+				throw new ApplicationException("ScreenCode already exist ");
+			}
+
+			if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(), documentTypeDTO.getDocCode())) {
+				throw new ApplicationException("Doc Code already exist ");
+			}
+
+			List<DocumentTypeDetailsVO> documentTypeDetailsVO = new ArrayList<>();
+			if (documentTypeDTO.getDocumentTypeDetailsDTO() != null) {
+				for (DocumentTypeDetailsDTO documentTypeDetailsDTO : documentTypeDTO.getDocumentTypeDetailsDTO()) {
+					DocumentTypeDetailsVO documentTypeDetailsVO1 = new DocumentTypeDetailsVO();
 					documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
 					documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
 					documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
@@ -1562,50 +1782,44 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
 			documentTypeVO.setCreatedBy(documentTypeDTO.getCreatedBy());
 			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
-			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO,documentTypeVO);
-			message="Document Type Created successfully";
-		}
-		else
-		{
-			documentTypeVO=documentTypeRepo.findById(documentTypeDTO.getId()).orElse(null);
-			
+			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
+			message = "Document Type Created successfully";
+		} else {
+			documentTypeVO = documentTypeRepo.findById(documentTypeDTO.getId()).orElse(null);
+
 			if (!documentTypeVO.getScreenCode().equalsIgnoreCase(documentTypeDTO.getScreenCode())) {
-				if (documentTypeRepo.existsByOrgIdAndScreenCode(
-						documentTypeDTO.getOrgId(),documentTypeDTO.getScreenCode())) {
-	                throw new ApplicationException("ScreenCode already exist ");
-	            }
+				if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
+						documentTypeDTO.getScreenCode())) {
+					throw new ApplicationException("ScreenCode already exist ");
+				}
 				documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
-	        }
+			}
 
-	        if (!documentTypeVO.getDocCode().equalsIgnoreCase(documentTypeDTO.getDocCode())) {
-	        	if (documentTypeRepo.existsByOrgIdAndDocCode(
-						documentTypeDTO.getOrgId(),documentTypeDTO.getDocCode())) {
-	                throw new ApplicationException("Doc Code already exist ");
-	            }
-	            documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
-	        }
+			if (!documentTypeVO.getDocCode().equalsIgnoreCase(documentTypeDTO.getDocCode())) {
+				if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(),
+						documentTypeDTO.getDocCode())) {
+					throw new ApplicationException("Doc Code already exist ");
+				}
+				documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
+			}
 
-	        List<DocumentTypeDetailsVO>documentTypeDetailsVO= documentTypeVO.getDocumentTypeDetailsVO();
-			if(documentTypeDTO.getDocumentTypeDetailsDTO()!=null)
-			{
-				
-				for(DocumentTypeDetailsDTO documentTypeDetailsDTO:documentTypeDTO.getDocumentTypeDetailsDTO())
-				{
-					DocumentTypeDetailsVO documentTypeDetailsVO1= new DocumentTypeDetailsVO();
-					if(ObjectUtils.isEmpty(documentTypeDetailsDTO.getId()))
-					{
-					documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
-					documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
-					documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
-					documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
-					documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
-					documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
-					documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
-					documentTypeDetailsVO.add(documentTypeDetailsVO1);
-					}
-					else
-					{
-						documentTypeDetailsVO1=documentTypeDetailsRepo.findById(documentTypeDetailsDTO.getId()).orElse(null);
+			List<DocumentTypeDetailsVO> documentTypeDetailsVO = documentTypeVO.getDocumentTypeDetailsVO();
+			if (documentTypeDTO.getDocumentTypeDetailsDTO() != null) {
+
+				for (DocumentTypeDetailsDTO documentTypeDetailsDTO : documentTypeDTO.getDocumentTypeDetailsDTO()) {
+					DocumentTypeDetailsVO documentTypeDetailsVO1 = new DocumentTypeDetailsVO();
+					if (ObjectUtils.isEmpty(documentTypeDetailsDTO.getId())) {
+						documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
+						documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
+						documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
+						documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
+						documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
+						documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
+						documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
+						documentTypeDetailsVO.add(documentTypeDetailsVO1);
+					} else {
+						documentTypeDetailsVO1 = documentTypeDetailsRepo.findById(documentTypeDetailsDTO.getId())
+								.orElse(null);
 						documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
 						documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
 						documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
@@ -1618,24 +1832,24 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 				}
 			}
 			documentTypeVO.setDocumentTypeDetailsVO(documentTypeDetailsVO);
-	        documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
-	        // Update the remaining fields from carrierDTO to carrierVO
-	        mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
-	        message = "Document Type Updated successfully";
-			
+			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
+			// Update the remaining fields from carrierDTO to carrierVO
+			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
+			message = "Document Type Updated successfully";
+
 		}
 		documentTypeRepo.save(documentTypeVO);
 		Map<String, Object> response = new HashMap<>();
-	    response.put("documentTypeVO", documentTypeVO);
-	    response.put("message", message);
-	    return response;
+		response.put("documentTypeVO", documentTypeVO);
+		response.put("message", message);
+		return response;
 	}
 
 	private void mapDocumentTypeDTOToDocumentTypeVO(DocumentTypeDTO documentTypeDTO, DocumentTypeVO documentTypeVO) {
-		
+
 		documentTypeVO.setDescription(documentTypeDTO.getDescription());
 		documentTypeVO.setOrgId(documentTypeDTO.getOrgId());
-		documentTypeVO.setScreenName(documentTypeDTO.getScreenName());		
+		documentTypeVO.setScreenName(documentTypeDTO.getScreenName());
 	}
 
 	@Override
@@ -1651,7 +1865,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Override
 	public List<DocumentTypeVO> getAllDocumentTypeByOrgId(Long orgId) {
-		
+
 		return documentTypeRepo.findAllByOrgId(orgId);
 	}
 
@@ -1659,7 +1873,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	public Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)
 			throws ApplicationException {
 		String message;
-		DocumentTypeMappingVO documentTypeMappingVO= new DocumentTypeMappingVO();
+		DocumentTypeMappingVO documentTypeMappingVO = new DocumentTypeMappingVO();
 		documentTypeMappingVO.setBranch(documentTypeMappingDTO.getBranch());
 		documentTypeMappingVO.setBranchCode(documentTypeMappingDTO.getBranchCode());
 		documentTypeMappingVO.setFinYear(documentTypeMappingDTO.getFinYear());
@@ -1667,52 +1881,54 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		documentTypeMappingVO.setOrgId(documentTypeMappingDTO.getOrgId());
 		documentTypeMappingVO.setCreatedBy(documentTypeMappingDTO.getCreatedBy());
 		documentTypeMappingVO.setUpdatedBy(documentTypeMappingDTO.getCreatedBy());
-		
-		List<DocumentTypeMappingDetailsVO> documentTypeMappingDetailsVO= new ArrayList<>();
-		
-		if(documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO()!=null)
-		{
-			for(DocumentTypeMappingDetailsDTO documentTypeMappingDetailsDTO: documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO())
-			{
-				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO1= new DocumentTypeMappingDetailsVO();
+
+		List<DocumentTypeMappingDetailsVO> documentTypeMappingDetailsVO = new ArrayList<>();
+
+		if (documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO() != null) {
+			for (DocumentTypeMappingDetailsDTO documentTypeMappingDetailsDTO : documentTypeMappingDTO
+					.getDocumentTypeMappingDetailsDTO()) {
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO1 = new DocumentTypeMappingDetailsVO();
 				documentTypeMappingDetailsVO1.setScreenCode(documentTypeMappingDetailsDTO.getScreenCode());
-		        documentTypeMappingDetailsVO1.setScreenName(documentTypeMappingDetailsDTO.getScreenName());
-		        documentTypeMappingDetailsVO1.setClient(documentTypeMappingDetailsDTO.getClient());
-		        documentTypeMappingDetailsVO1.setClientCode(documentTypeMappingDetailsDTO.getClientCode());
-		        documentTypeMappingDetailsVO1.setDocCode(documentTypeMappingDetailsDTO.getDocCode());
-		        documentTypeMappingDetailsVO1.setBranch(documentTypeMappingDetailsDTO.getBranch());
-		        documentTypeMappingDetailsVO1.setBranchCode(documentTypeMappingDetailsDTO.getBranchCode());
-		        documentTypeMappingDetailsVO1.setPrefixField(documentTypeMappingDetailsDTO.getPrefixField());
-		        documentTypeMappingDetailsVO1.setFinYear(documentTypeMappingDetailsDTO.getFinYear());
-		        documentTypeMappingDetailsVO1.setFinYearIdentifier(documentTypeMappingDetailsDTO.getFinYearIdentifier());
-		        documentTypeMappingDetailsVO1.setConcatenation(documentTypeMappingDetailsDTO.getClient()+documentTypeMappingDetailsDTO.getClientCode()+documentTypeMappingDetailsDTO.getScreenCode()+documentTypeMappingDetailsDTO.getDocCode());
-		        documentTypeMappingDetailsVO1.setOrgId(documentTypeMappingDTO.getOrgId());
-		        documentTypeMappingDetailsVO1.setDocumentTypeMappingVO(documentTypeMappingVO);
-		        documentTypeMappingDetailsVO.add(documentTypeMappingDetailsVO1);
+				documentTypeMappingDetailsVO1.setScreenName(documentTypeMappingDetailsDTO.getScreenName());
+				documentTypeMappingDetailsVO1.setClient(documentTypeMappingDetailsDTO.getClient());
+				documentTypeMappingDetailsVO1.setClientCode(documentTypeMappingDetailsDTO.getClientCode());
+				documentTypeMappingDetailsVO1.setDocCode(documentTypeMappingDetailsDTO.getDocCode());
+				documentTypeMappingDetailsVO1.setBranch(documentTypeMappingDetailsDTO.getBranch());
+				documentTypeMappingDetailsVO1.setBranchCode(documentTypeMappingDetailsDTO.getBranchCode());
+				documentTypeMappingDetailsVO1.setPrefixField(documentTypeMappingDetailsDTO.getPrefixField());
+				documentTypeMappingDetailsVO1.setFinYear(documentTypeMappingDetailsDTO.getFinYear());
+				documentTypeMappingDetailsVO1
+						.setFinYearIdentifier(documentTypeMappingDetailsDTO.getFinYearIdentifier());
+				documentTypeMappingDetailsVO1.setConcatenation(documentTypeMappingDetailsDTO.getClient()
+						+ documentTypeMappingDetailsDTO.getClientCode() + documentTypeMappingDetailsDTO.getScreenCode()
+						+ documentTypeMappingDetailsDTO.getDocCode());
+				documentTypeMappingDetailsVO1.setOrgId(documentTypeMappingDTO.getOrgId());
+				documentTypeMappingDetailsVO1.setDocumentTypeMappingVO(documentTypeMappingVO);
+				documentTypeMappingDetailsVO.add(documentTypeMappingDetailsVO1);
 			}
 		}
 		documentTypeMappingVO.setDocumentTypeMappingDetailsVO(documentTypeMappingDetailsVO);
 		documentTypeMappingRepo.save(documentTypeMappingVO);
-		message="Document Type created Successfully";
+		message = "Document Type created Successfully";
 		Map<String, Object> response = new HashMap<>();
-	    response.put("documentTypeMappingVO", documentTypeMappingVO);
-	    response.put("message", message);
+		response.put("documentTypeMappingVO", documentTypeMappingVO);
+		response.put("message", message);
 		return response;
-		
+
 	}
 
 	@Override
-	public List<Map<String, Object>> getPendingDocumentTypeMapping(Long orgId,String branch, String branchCode, String finYear,
-			String finYearIdentifier) {
-		
-		Set<Object[]>pendingDocTypeDetails= documentTypeMappingRepo.getPendingDoctypeMapping(orgId,branch,branchCode,finYear,finYearIdentifier);
+	public List<Map<String, Object>> getPendingDocumentTypeMapping(Long orgId, String branch, String branchCode,
+			String finYear, String finYearIdentifier) {
+
+		Set<Object[]> pendingDocTypeDetails = documentTypeMappingRepo.getPendingDoctypeMapping(orgId, branch,
+				branchCode, finYear, finYearIdentifier);
 		return getPendingDocType(pendingDocTypeDetails);
 	}
 
 	private List<Map<String, Object>> getPendingDocType(Set<Object[]> pendingDocTypeDetails) {
-		List<Map<String, Object>> doctypeMappingDetails= new ArrayList<>();
-		for(Object[] sup:pendingDocTypeDetails)
-		{
+		List<Map<String, Object>> doctypeMappingDetails = new ArrayList<>();
+		for (Object[] sup : pendingDocTypeDetails) {
 			Map<String, Object> doctype = new HashMap<>();
 			doctype.put("screenName", sup[0] != null ? sup[0].toString() : "");
 			doctype.put("screenCode", sup[1] != null ? sup[1].toString() : "");
@@ -1726,20 +1942,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			doctype.put("prefixField", sup[9] != null ? sup[9].toString() : "");
 			doctypeMappingDetails.add(doctype);
 		}
-		
-		return doctypeMappingDetails;
-	}
 
-	@Override
-	public String getDocIdForGRN(String branch, String client, String finYear,String screenCode) {
-		
-		String grnDocId=documentTypeMappingDetailsRepo.getGRNDocId(branch,client,finYear,screenCode);
-		
-		if(grnDocId==null)
-		{
-			grnDocId="";
-		}
-		return grnDocId;
+		return doctypeMappingDetails;
 	}
 
 	@Override
@@ -1748,26 +1952,23 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return warehouseRepo.findAllWarehouse(orgId);
 	}
 
-	
-
 	public List<ClientVO> getAllClientByOrgId(Long orgId) {
-		
+
 		return clientRepo.getAllClientByOrgId(orgId);
 	}
 
 	@Override
-	public List<Map<String, Object>> getClientAndClientCodeForDocTypeFillGrid(Long orgId,String screenCode) {
-		
-		Set<Object[]> getClientDetails=clientRepo.getClientDetailsForDocType(orgId,screenCode);
-		
+	public List<Map<String, Object>> getClientAndClientCodeForDocTypeFillGrid(Long orgId, String screenCode) {
+
+		Set<Object[]> getClientDetails = clientRepo.getClientDetailsForDocType(orgId, screenCode);
+
 		return clientDetails(getClientDetails);
 	}
 
 	private List<Map<String, Object>> clientDetails(Set<Object[]> getClientDetails) {
-		List<Map<String,Object>>clientList= new ArrayList<>();
-		for(Object[] clientdetails:getClientDetails)
-		{
-			Map<String,Object> list= new HashMap<>();
+		List<Map<String, Object>> clientList = new ArrayList<>();
+		for (Object[] clientdetails : getClientDetails) {
+			Map<String, Object> list = new HashMap<>();
 			list.put("client", clientdetails[0] != null ? clientdetails[0].toString() : "");
 			list.put("clientCode", clientdetails[1] != null ? clientdetails[1].toString() : "");
 			clientList.add(list);
@@ -1775,4 +1976,22 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return clientList;
 	}
 
+	@Override
+	public List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId) {
+
+		return documentTypeMappingRepo.findByOrgId(orgId);
+	}
+
+	@Override
+	public DocumentTypeMappingVO getDocumentTypeMappingById(Long id) throws ApplicationException {
+		if (ObjectUtils.isEmpty(id)) {
+			throw new ApplicationException("Invalid DocumentTypeMapping Id");
+		}
+		DocumentTypeMappingVO documentTypeMappingVO = documentTypeMappingRepo.findById(id)
+				.orElseThrow(() -> new ApplicationException("Document Type Mapping not found for Id: " + id));
+
+		return documentTypeMappingVO;
+	}
+
+	
 }

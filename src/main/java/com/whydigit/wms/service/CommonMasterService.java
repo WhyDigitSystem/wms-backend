@@ -11,6 +11,7 @@ import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
 import com.whydigit.wms.dto.CountryDTO;
 import com.whydigit.wms.dto.CurrencyDTO;
+import com.whydigit.wms.dto.DepartmentDTO;
 import com.whydigit.wms.dto.DesignationDTO;
 import com.whydigit.wms.dto.FinancialYearDTO;
 import com.whydigit.wms.dto.RegionDTO;
@@ -20,6 +21,7 @@ import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
+import com.whydigit.wms.entity.DepartmentVO;
 import com.whydigit.wms.entity.DesignationVO;
 import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
@@ -144,10 +146,18 @@ public interface CommonMasterService {
 	
 	Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) throws ApplicationException;
 
-	List<FinancialYearVO> getAllFInYear();
+	List<FinancialYearVO> getAllActiveFInYear(Long orgId);
 
 	List<FinancialYearVO> getAllFInYearByOrgId(Long orgId);
 
 	Optional<FinancialYearVO> getAllFInYearById(Long id);
+	
+	//DEPARTMENT
+
+	Map<String, Object> createUpdateDepartment(DepartmentDTO departmentDTO) throws ApplicationException;
+
+	List<DepartmentVO> getAllDepartmentByOrgId(Long orgId);
+
+	List<DepartmentVO> getAllDepartmentById(Long id);
 
 }

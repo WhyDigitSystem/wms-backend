@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,10 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
@@ -38,88 +37,73 @@ public class PutAwayVO {
 	@Column(name = "putawayid")
 	private Long id;
 	@Column(name = "docdate")
-	private LocalDate docdate;
+	private LocalDate docDate= LocalDate.now();
 	@Column(name = "grnno")
-	private String grnno;
-	@Column(name = "docid")
-	private String docid;
+	private String grnNo;
+	@Column(name = "docid",unique = true)
+	private String docId;
 	@Column(name = "grndate")
-	private LocalDate grndate;
+	private LocalDate grnDate;
 	@Column(name = "entryno")
-	private String entryno;
+	private String entryNo;
 	@Column(name = "core")
 	private String core;
 	@Column(name = "suppliershortname")
-	private String suppliershortname;
+	private String supplierShortName;
 	@Column(name = "supplier")
 	private String supplier;
 	@Column(name = "modeofshipment")
-	private String modeodshipment;
+	private String modeOfShipment;
 	@Column(name = "carrier")
 	private String carrier;
-	@Column(name = "locationtype")
-	private String locationtype;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "lotno")
-	private String lotno;
+	private String lotNo;
 	@Column(name = "enteredperson")
-	private String enteredperson;
-	@Column(unique = true)
-	private String dupchk;
-	@Column(name = "createdby")
-	private String createdby;
-	@Column(name = "modifiedby")
-	private String updatedby;
-	@Column(name = "company")
-	private String company;
-	@Column(name = "cancel")
-	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
-	@Column(name = "cancelremarks")
-	private String cancelremark;
-	@Column(name = "active")
-	private boolean active;
-	@Column(name = "branchcode")
-	private String branchcode;
-	@Column(name = "branch")
-	private String branch;
+	private String enteredPerson;
+	@Column(name = "screenname")
+	private String screenName = "PUTAWAY";
 	@Column(name = "screencode")
-	private String screencode;
-	@Column(name = "client")
-	private String client;
+	private String screenCode ="PC";
+	@Column(name = "orgid")
+	private Long orgId;
 	@Column(name = "customer")
 	private String customer;
-	@Column(name = "finyr")
-	private String finyr;
-	@Column(name = "orgid")
-	private String orgId;
+	@Column(name = "client")
+	private String client;
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "branch")
+	private String branch;
+	@Column(name = "branchcode")
+	private String branchCode;
 	@Column(name = "warehouse")
 	private String warehouse;
-
+	@Column(name = "createdby")
+	private String createdBy;
+	@Column(name = "modifiedby")
+	private String updatedBy;
+	@Column(name = "active")
+	private boolean active = true;
+	@Column(name = "cancel")
+	private boolean cancel = false;
+	@Column(name = "cancelremarks")
+	private String cancelRemarks;
+	@Column(name = "freeze")
+	private boolean freeze = false;
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "putAwayVO", cascade = CascadeType.ALL)
 	private List<PutAwayDetailsVO> putAwayDetailsVO;
-
+	
 	@Embedded
-	@Builder.Default
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-
-	@PrePersist
-	private void setDefaultFinyr() {
-		// Execute the logic to set the default value for finyr
-		String fyFull = calculateFinyr();
-		this.finyr = fyFull;
-	}
-
-	private String calculateFinyr() {
-		// Logic to calculate finyr based on the provided SQL query
-		String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
-		String fyFull = (currentMonthDay.compareTo("0331") > 0)
-				? LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))
-				: LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
-		return fyFull;
-
-	}
 }

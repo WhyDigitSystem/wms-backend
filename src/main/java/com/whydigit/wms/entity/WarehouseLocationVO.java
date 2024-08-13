@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
@@ -36,39 +37,39 @@ public class WarehouseLocationVO {
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "warehouse")
 	private String warehouse;
-	@Column(name = "locationtype")
-	private String locationtype;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "rowno")
-	private String rowno;
+	private String rowNo;
 	@Column(name = "level")
 	private String level;
 	@Column(name = "cellform")
-	private String cellfrom;
+	private String cellFrom;
 	@Column(name = "cellto")
-	private String cellto;
+	private String cellTo;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel=false;
 	@Column(name = "active")
-	private boolean active;
+	private boolean active=true;
 	@Column(name = "createdby")
-	private String createdby;
+	private String createdBy;
 	@Column(name = "modifiedby")
-	private String updatedby;
-	@Column(name = "userid")
-	private String userid;
+	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(unique = true)
-	private String dupchk;
-
 	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
 
 }

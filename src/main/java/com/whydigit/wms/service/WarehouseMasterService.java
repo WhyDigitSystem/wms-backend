@@ -22,6 +22,7 @@ import com.whydigit.wms.dto.MaterialDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
+import com.whydigit.wms.dto.WarehouseLocationDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -29,6 +30,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
@@ -134,15 +136,14 @@ public interface WarehouseMasterService {
 
 	Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode);
 
-	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
+	Map<String, Object> createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
 	
 	List<WarehouseVO> getAllWarehouse(Long orgId);
 
 
 	// Warehouse Location
-	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String warehouse, String branch); // Method names
-																									// should be in
-																									// camelCase
+	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String branch); // Method names
+																									// should be in																					// camelCase
 
 	Set<Object[]> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse);
 
@@ -154,11 +155,10 @@ public interface WarehouseMasterService {
 	Set<Object[]> getAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,
 			String locationtype, String rowno, String level);
 
-	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
+	WarehouseLocationVO getWarehouseLocationById(Long id);
 
-	WarehouseLocationVO createWarehouseLocation(WarehouseLocationVO warehouseLocationVO); // Return the created entity
+	Map<String, Object> createUpdateWarehouseLocation(WarehouseLocationDTO warehouseLocationDTO) throws ApplicationException;
 
-	Optional<WarehouseLocationVO> updateWarehouseLocation(WarehouseLocationVO warehouseLocationVO);
 
 	void deleteWarehouseLocation(Long warehouselocationid);
 
@@ -204,14 +204,16 @@ public interface WarehouseMasterService {
 	// Carrier
 
 	List<CarrierVO> getAllCarrier(Long orgid, String client, String cbranch);
-
+	
 	Optional<CarrierVO> getCarrierById(Long carrierid);
 
 	Map<String, Object> createUpdateCarrier(CarrierDTO carrierDTO)throws ApplicationException;
 
 	void deleteCarrier(Long carrierid);
 	
-	Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch);
+	List<Map<String, Object>> getAllModeOfShipment(Long orgId);
+	
+	List<CarrierVO> getCarrierNameByCustomer(Long orgid, String client, String cbranch,String shipmentMode);
 
 	// employee
 	
@@ -252,6 +254,12 @@ public interface WarehouseMasterService {
 	
 	Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)throws ApplicationException;
 	
-	String getDocIdForGRN(String branch,String client,String finYear,String screenCode);
+	List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId);
+	
+	DocumentTypeMappingVO getDocumentTypeMappingById(Long id)throws ApplicationException;
+
+	
+
+	
 
 }

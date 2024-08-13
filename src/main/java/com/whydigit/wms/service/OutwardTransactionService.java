@@ -2,7 +2,6 @@ package com.whydigit.wms.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -22,8 +21,10 @@ public interface OutwardTransactionService {
 
 		DeliveryChallanVO getDeliveryChallanById(Long id);
 
-		DeliveryChallanVO updateCreateDeliveryChallan(@Valid DeliveryChallanDTO deliveryChallanDTO) throws ApplicationException;
-
+		Map<String, Object> createUpdateDeliveryChallan(DeliveryChallanDTO deliveryChallanDTO)
+				throws ApplicationException;
+		
+		
 		String getDeliveryChallanDocId(Long orgId, String finYear, String branch, String branchCode,
 				String client);
 
@@ -34,10 +35,17 @@ public interface OutwardTransactionService {
 
 		VasPutawayVO getVasPutawayById(Long id);
 
-		VasPutawayVO updateCreateVasPutaway(@Valid VasPutawayDTO vasPutawayDTO) throws ApplicationException;
-
+		Map<String, Object> createUpdateVasPutaway(@Valid VasPutawayDTO vasPutawayDTO) throws ApplicationException;
+	
 		String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
+		
+		List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client);
 
+		List<Map<String, Object>> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId, String branch,
+				String client, String docid);
+		
+		List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode,
+				String client);
 		
 		//BuyerOrder
 		
@@ -49,6 +57,14 @@ public interface OutwardTransactionService {
 
 		public int getAvlQty(Long orgId, String client, String branchCode, String warehouse,
 				String branch, String partNo, String partDesc);
+
+
+		String getBuyerOrderDocId (Long orgId, String finYear, String branch, String branchCode, String client);
+
 		
+
+
+
+
 
 }

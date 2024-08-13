@@ -2,11 +2,6 @@ package com.whydigit.wms.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
-
-import javax.persistence.Column;
-
-import com.whydigit.wms.entity.SalesReturnVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,5 +33,6 @@ public class SalesReturnDetailsDTO {
 	private BigDecimal insAmt;
 	private String remarks;
 	private boolean qcFlag;
+	private String status;
 	
 }

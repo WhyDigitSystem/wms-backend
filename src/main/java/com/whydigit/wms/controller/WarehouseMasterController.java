@@ -39,6 +39,7 @@ import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.SupplierDTO;
 import com.whydigit.wms.dto.UnitDTO;
 import com.whydigit.wms.dto.WarehouseDTO;
+import com.whydigit.wms.dto.WarehouseLocationDTO;
 import com.whydigit.wms.entity.BranchVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.CarrierVO;
@@ -46,6 +47,7 @@ import com.whydigit.wms.entity.CellTypeVO;
 import com.whydigit.wms.entity.ClientBranchVO;
 import com.whydigit.wms.entity.ClientVO;
 import com.whydigit.wms.entity.CustomerVO;
+import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.GroupVO;
@@ -552,7 +554,7 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/createUpdateCustomer")
+	@PutMapping("/createUpdateCustomer")
 	public ResponseEntity<ResponseDTO> createUpdateCustomer(@RequestBody CustomerDTO customerDTO) {
 		String methodName = "createUpdateCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -844,9 +846,9 @@ public class WarehouseMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			WarehouseVO createdWarehouseVO = warehouseMasterService.createUpdateWarehouse(warehouseDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse created successfully");
-			responseObjectsMap.put("warehouseVO", createdWarehouseVO);
+			Map<String, Object> createdWarehouseVO = warehouseMasterService.createUpdateWarehouse(warehouseDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdWarehouseVO.get("message"));
+			responseObjectsMap.put("warehouseVO", createdWarehouseVO.get("warehouseVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 	        errorMsg = e.getMessage();
@@ -860,7 +862,7 @@ public class WarehouseMasterController extends BaseController {
 	// Warehouse Location
 
 	@GetMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> getAllWarehouseLocation(@RequestParam Long orgid, @RequestParam String warehouse,
+	public ResponseEntity<ResponseDTO> getAllWarehouseLocation(@RequestParam Long orgid,
 			@RequestParam String branch) {
 		String methodName = "getAllWarehouseLocation()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -869,7 +871,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<WarehouseLocationVO> warehouseLocationVO = new ArrayList<>();
 		try {
-			warehouseLocationVO = warehouseMasterService.getAllWarehouseLocation(orgid, warehouse, branch);
+			warehouseLocationVO = warehouseMasterService.getAllWarehouseLocation(orgid, branch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1054,8 +1056,8 @@ public class WarehouseMasterController extends BaseController {
 		return formattedBins;
 	}
 
-	@GetMapping("/warehouselocation/{warehouselocationid}")
-	public ResponseEntity<ResponseDTO> getWarehouseLocationById(@PathVariable Long warehouselocationid) {
+	@GetMapping("/getWarehouselocationById")
+	public ResponseEntity<ResponseDTO> getWarehouseLocationById(@RequestParam Long id) {
 		String methodName = "getWarehouseLocationById()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1063,7 +1065,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		WarehouseLocationVO warehouseLocationVO = null;
 		try {
-			warehouseLocationVO = warehouseMasterService.getWarehouseLocationById(warehouselocationid).orElse(null);
+			warehouseLocationVO = warehouseMasterService.getWarehouseLocationById(id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1073,56 +1075,27 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("warehouseLocationVO", warehouseLocationVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			errorMsg = "Warehouse Location not found for ID: " + warehouselocationid;
+			errorMsg = "Warehouse Location not found for ID: " + id;
 			responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse Location not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> createWarehouseLocation(@RequestBody WarehouseLocationVO warehouseLocationVO) {
+	@PutMapping("/warehouselocation")
+	public ResponseEntity<ResponseDTO> createWarehouseLocation(@RequestBody WarehouseLocationDTO warehouseLocationDTO) {
 		String methodName = "createWarehouseLocation()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
+		Map<String,Object>warehouseLocationVO= new HashMap<>();
 		try {
-			WarehouseLocationVO createWarehouseLocation = warehouseMasterService
-					.createWarehouseLocation(warehouseLocationVO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse Location created successfully");
-			responseObjectsMap.put("WarehouseLocation", createWarehouseLocation);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse Location creation Failed",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PutMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> updateWarehouseLocation(@RequestBody WarehouseLocationVO warehouseLocationVO) {
-		String methodName = "updateWarehouseLocation()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			WarehouseLocationVO updatedwarehouseLocationVO = warehouseMasterService
-					.updateWarehouseLocation(warehouseLocationVO).orElse(null);
-			if (updatedwarehouseLocationVO != null) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Warehouse Location updated successfully");
-				responseObjectsMap.put("warehouseLocationVO", updatedwarehouseLocationVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				errorMsg = "Warehouse Location not found for Warehouse LocationID: " + warehouseLocationVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Warehouse Location update failed",
-						errorMsg);
-			}
-		} catch (Exception e) {
+	        warehouseLocationVO = warehouseMasterService.createUpdateWarehouseLocation(warehouseLocationDTO);
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, warehouseLocationVO.get("message"));
+	        responseObjectsMap.put("warehouseLocationVO", warehouseLocationVO.get("warehouseLocationVO"));
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    } catch (Exception e) {
 	        errorMsg = e.getMessage();
 	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
@@ -1551,23 +1524,22 @@ public class WarehouseMasterController extends BaseController {
 
 	@GetMapping("/getCarrierNameByCustomer")
 	public ResponseEntity<ResponseDTO> getCarrierNameByCustomer(@RequestParam Long orgid, @RequestParam String client,
-			@RequestParam String cbranch) {
+			@RequestParam String cbranch,@RequestParam String shipmentMode) {
 		String methodName = "getCarrierNameByCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object[]> carrier = new HashSet<>();
+		List<CarrierVO> carrier = new ArrayList<>();
 		try {
-			carrier = warehouseMasterService.getCarrierNameByCustomer(orgid, client, cbranch);
+			carrier = warehouseMasterService.getCarrierNameByCustomer(orgid, client, cbranch,shipmentMode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			List<Map<String, String>> formattedBranches = formattBranchess(carrier);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier Name Founded");
-			responseObjectsMap.put("Carrier", formattedBranches);
+			responseObjectsMap.put("CarrierVO", carrier);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			errorMsg = "Carrier Name not found";
@@ -1575,17 +1547,6 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	private List<Map<String, String>> formattBranchess(Set<Object[]> carrier) {
-		List<Map<String, String>> formattedBranches = new ArrayList<>();
-		for (Object[] carrierVO : carrier) {
-			Map<String, String> formattedBranch = new HashMap<>();
-			formattedBranch.put("carriername", carrierVO[0].toString());
-//			formattedBranch.put("carriershortname", supplierVO[1].toString());
-			formattedBranches.add(formattedBranch);
-		}
-		return formattedBranches;
 	}
 
 	@PutMapping("/createUpdateCarrier")
@@ -1869,8 +1830,8 @@ public class WarehouseMasterController extends BaseController {
 		for (Object[] plt : pallet) {
 			Map<String, String> formattedplt = new HashMap<>();
 			formattedplt.put("id", plt[0].toString());
-			formattedplt.put("Bin", plt[1].toString());
-			formattedplt.put("cellcategory", plt[2].toString());
+			formattedplt.put("bin", plt[1].toString());
+			formattedplt.put("bincategory", plt[2].toString());
 			formattedplt.put("status", plt[3].toString());
 			formattedplt.put("core", plt[4].toString());
 			palletno.add(formattedplt);
@@ -1954,6 +1915,8 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	
+	
 	@PutMapping("/createDocumentTypeMapping")
 	public ResponseEntity<ResponseDTO> createDocumentTypeMapping(@RequestBody DocumentTypeMappingDTO documentTypeMappingDTO) {
 	    String methodName = "createDocumentTypeMapping()";
@@ -1975,28 +1938,82 @@ public class WarehouseMasterController extends BaseController {
 	    return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@GetMapping("/getGRNDocId")
-	public ResponseEntity<ResponseDTO> getGRNDocId(@RequestParam String branch,@RequestParam String client,@RequestParam String finYear) {
-		String methodName = "getGRNDocId()";
-		String screenCode="PC";
+	
+	@GetMapping("/getPendingDocumentTypeMapping")
+	public ResponseEntity<ResponseDTO> getPendingDocumentTypeMapping(@RequestParam Long orgId,@RequestParam String branch,@RequestParam String branchCode,
+			@RequestParam String finYear,@RequestParam String finYearIdentifier) {
+		String methodName = "getPendingDocumentTypeMapping()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		String grnDocId="";
+		List<Map<String, Object>> documentTypeMappingVO = new ArrayList<>();
 		try {
-			 grnDocId = warehouseMasterService.getDocIdForGRN(branch, client, finYear, screenCode);	
+			documentTypeMappingVO = warehouseMasterService.getPendingDocumentTypeMapping(orgId, branch, branchCode, finYear, finYearIdentifier);
 			} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Document Type information get successfully");
-			responseObjectsMap.put("grnDocId", grnDocId);
+			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type information receive failed",
 					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllDocumentTypeMapping")
+	public ResponseEntity<ResponseDTO> getAllDocumentTypeMapping(@RequestParam Long orgId) {
+		String methodName = "getAllDocumentTypeMapping()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<DocumentTypeMappingVO> documentTypeMappingVO = new ArrayList<>();
+		try {
+			documentTypeMappingVO = warehouseMasterService.getAllDocumentTypeMapping(orgId);
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Document Type Mapping information get successfully");
+			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type Mapping information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/documentTypeMappingById")
+	public ResponseEntity<ResponseDTO> documentTypeMappingById(@RequestParam Long id) {
+		String methodName = "documentTypeMappingById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		DocumentTypeMappingVO documentTypeMappingVO = new DocumentTypeMappingVO();
+		try {
+			documentTypeMappingVO = warehouseMasterService.getDocumentTypeMappingById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"documentTypeMappingVO information get successfully");
+			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"documentTypeMappingVO information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +32,7 @@ import com.whydigit.wms.service.OutwardTransactionService;
 @RequestMapping("/api/outward")
 public class OutwardTransactionController extends BaseController{
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(InwardTransactionController.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(OutwardTransactionController.class);
 
 	@Autowired
 	OutwardTransactionService outwardTransactionService;
@@ -126,38 +124,27 @@ public class OutwardTransactionController extends BaseController{
 	        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	        return ResponseEntity.ok().body(responseDTO);
 	    }
-
 		
-		@PutMapping("/updateCreateDeliveryChallan")
-		public ResponseEntity<ResponseDTO> updateCreateDeliveryChallan(@Valid @RequestBody DeliveryChallanDTO deliveryChallanDTO) {
-			String methodName = "updateCreateDeliveryChallan()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			try {
-				DeliveryChallanVO deliveryChallanVO = outwardTransactionService.updateCreateDeliveryChallan(deliveryChallanDTO);
-				if (deliveryChallanVO != null) {
-					boolean isUpdate = deliveryChallanDTO.getId() != null;
-					responseObjectsMap.put(CommonConstant.STRING_MESSAGE,isUpdate? "DeliveryChallanVO updated successfully" : "DeliveryChallanVO created Successfully");
-					responseObjectsMap.put("deliveryChallanVO", deliveryChallanVO);
-					responseDTO = createServiceResponse(responseObjectsMap);
-				} else {
-					boolean isUpdate = deliveryChallanDTO.getId() != null;
-					errorMsg = isUpdate? "DeliveryChallanVO not found for ID: " + deliveryChallanDTO.getId(): "DeliveryChallanVO created failed";
-					responseDTO = createServiceResponseError(responseObjectsMap,isUpdate? "DeliveryChallanVO update failed" : "DeliveryChallanVO created failed", errorMsg);
-				}
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				boolean isUpdate = deliveryChallanDTO.getId() != null;
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-				responseDTO = createServiceResponseError(responseObjectsMap,isUpdate? "DeliveryChallanVO update failed" : "DeliveryChallanVO created failed", errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
+		@PutMapping("/createUpdatedDeliveryChallan")
+		public ResponseEntity<ResponseDTO> createUpdatedDeliveryChallan(@RequestBody DeliveryChallanDTO deliveryChallanDTO) {
+		    String methodName = "createUpdatedDeliveryChallan()";
+		    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		    String errorMsg = null;
+		    Map<String, Object> responseObjectsMap = new HashMap<>();
+		    ResponseDTO responseDTO = null;
+		    try {
+		        Map<String, Object> deliveryChallanVO = outwardTransactionService.createUpdateDeliveryChallan(deliveryChallanDTO);
+		        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, deliveryChallanVO.get("message"));
+		        responseObjectsMap.put("deliveryChallanVO", deliveryChallanVO.get("deliveryChallanVO"));
+		        responseDTO = createServiceResponse(responseObjectsMap);
+		    } catch (Exception e) {
+		        errorMsg = e.getMessage();
+		        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		    }
+		    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		    return ResponseEntity.ok().body(responseDTO);
 		}
-		
-		
 		
 		
 		//VASPutaway
@@ -245,35 +232,62 @@ public class OutwardTransactionController extends BaseController{
 	        return ResponseEntity.ok().body(responseDTO);
 	    }
 		
-		@PutMapping("/updateCreateVasPutaway")
-		public ResponseEntity<ResponseDTO> updateCreateVasPutaway(@Valid @RequestBody VasPutawayDTO vasPutawayDTO) {
-			String methodName = "updateCreateVasPutaway()";
+		
+
+		@PutMapping("/createUpdateVasPutaway")
+		public ResponseEntity<ResponseDTO> createUpdateVasPutaway(@RequestBody VasPutawayDTO vasPutawayDTO) {
+		    String methodName = "createUpdateVasPutaway()";
+		    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		    String errorMsg = null;
+		    Map<String, Object> responseObjectsMap = new HashMap<>();
+		    ResponseDTO responseDTO = null;
+		    try {
+		        Map<String, Object> vasPutawayVO = outwardTransactionService.createUpdateVasPutaway(vasPutawayDTO);
+		        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, vasPutawayVO.get("message"));
+		        responseObjectsMap.put("vasPutawayVO", vasPutawayVO.get("vasPutawayVO"));
+		        responseDTO = createServiceResponse(responseObjectsMap);
+		    } catch (Exception e) {
+		        errorMsg = e.getMessage();
+		        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		    }
+		    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		    return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/getDocIdFromVasPickForVasPutaway")
+		public ResponseEntity<ResponseDTO> getDocIdFromVasPickForVasPutaway(
+				@RequestParam(required = false) Long orgId,
+				@RequestParam(required = false) String branch,
+				@RequestParam(required = false) String client) {
+
+			String methodName = "getDocIdFromVasPickForVasPutaway()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
 			Map<String, Object> responseObjectsMap = new HashMap<>();
 			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> mov = new ArrayList<>();
+
 			try {
-				VasPutawayVO vasPutawayVO = outwardTransactionService.updateCreateVasPutaway(vasPutawayDTO);
-				if (vasPutawayVO != null) {
-					boolean isUpdate = vasPutawayDTO.getId() != null;
-					responseObjectsMap.put(CommonConstant.STRING_MESSAGE,isUpdate? "VasPutaway updated successfully" : "VasPutaway created Successfully");
-					responseObjectsMap.put("vasPutawayVO", vasPutawayVO);
-					responseDTO = createServiceResponse(responseObjectsMap);
-				} else {
-					boolean isUpdate = vasPutawayDTO.getId() != null;
-					errorMsg = isUpdate? "VasPutawayVO not found for ID: " + vasPutawayDTO.getId(): "VasPutaway created failed";
-					responseDTO = createServiceResponseError(responseObjectsMap,isUpdate? "VasPutaway update failed" : "VasPutaway created failed", errorMsg);
-				}
+				mov = outwardTransactionService.getDocIdFromVasPickForVasPutaway(orgId,
+						 branch, client);
 			} catch (Exception e) {
 				errorMsg = e.getMessage();
-				boolean isUpdate = vasPutawayDTO.getId() != null;
 				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-				responseDTO = createServiceResponseError(responseObjectsMap,isUpdate? "VasPutaway update failed" : "VasPutaway created failed", errorMsg);
 			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All Docid from VasPick information retrieved successfully");
+				responseObjectsMap.put("vasPutawayVO", mov);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve DocId from VasPick information", errorMsg);
+			}
+
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);
 		}
-		
 	//	
 		
 		@PutMapping("/createUpdateBuyerOrder")
@@ -349,6 +363,36 @@ public class OutwardTransactionController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 		
+		@GetMapping("/getBuyerOrderDocId")
+	    public ResponseEntity<ResponseDTO> getBuyerOrderDocId(
+	    		@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client) {
+	        
+	        String methodName = "getBuyerOrderDocId()";
+	        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	        String errorMsg = null;
+	        Map<String, Object> responseObjectsMap = new HashMap<>();
+	        ResponseDTO responseDTO = null;
+	        String mapp="";
+	        
+	        try {
+	            mapp = outwardTransactionService.getBuyerOrderDocId(orgId,finYear,branch, branchCode, client);
+	        } catch (Exception e) {
+	            errorMsg = e.getMessage();
+	            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	        }
+	        
+	        if (StringUtils.isBlank(errorMsg)) {
+	            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BuyerOrderDocId information retrieved successfully");
+	            responseObjectsMap.put("BuyerOrderDocId", mapp);
+	            responseDTO = createServiceResponse(responseObjectsMap);
+	        } else {
+	            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve BuyerOrderDocId information", errorMsg);
+	        }
+	        
+	        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	        return ResponseEntity.ok().body(responseDTO);
+	    }
+		
 		@GetMapping("/getAvlQty")
 		public ResponseEntity<ResponseDTO> getAvlQty(@RequestParam(required =true) Long orgId,
 				@RequestParam(required =true) String client,
@@ -376,6 +420,72 @@ public class OutwardTransactionController extends BaseController{
 			} else {
 				responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ",
 						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+
+		@GetMapping("/getAllDetailsFromVasPickDetailsForVasPutawayDetails")
+		public ResponseEntity<ResponseDTO> getAllDetailsFromVasPickForVasPutawayDetails(
+				@RequestParam(required = false) Long orgId,
+				@RequestParam(required = false) String branch,
+				@RequestParam(required = false) String client,
+				@RequestParam(required = false) String docid) {
+
+			String methodName = "getAllDetailsFromVasPickDetailsForVasPutawayDetails()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> mov = new ArrayList<>();
+
+			try {
+				mov = outwardTransactionService.getAllDetailsFromVasPickDetailsForVasPutawayDetails(orgId,
+						 branch, client,docid);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All Details from VasPutaway information retrieved successfully");
+				responseObjectsMap.put("vasPutawayVO", mov);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve All Details from VasPutaway information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/getAllFillGridFromVasPutaway")
+		public ResponseEntity<ResponseDTO> getAllFillGridFromVasPutaway(@RequestParam(required = false) Long orgId,
+				 @RequestParam(required = false) String branch,
+				@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+			String methodName = "getAllFillGridFromVasPutaway()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+	    List<Map<String, Object>> mov = new ArrayList<>();
+	    try {
+				mov = outwardTransactionService.getAllFillGridFromVasPutaway(orgId, branch, branchCode,
+						client);
+	      } catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All FillGrid from VasPutaway information retrieved successfully");
+	      responseObjectsMap.put("codeConversionVO", mov);
+	      responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve FillGrid from VasPutaway information", errorMsg);
 			}
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 			return ResponseEntity.ok().body(responseDTO);

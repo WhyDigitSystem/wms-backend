@@ -31,7 +31,7 @@ public class CodeConversionVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codeconversiongen")
 	@SequenceGenerator(name = "codeconversiongen", sequenceName = "codeconversionseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "codeConversionid")
+	@Column(name = "codeconversionid")
 	private Long id;
 	
 	@Column(name = "docid",unique = true)
@@ -40,9 +40,9 @@ public class CodeConversionVO {
 	private LocalDate docDate = LocalDate.now();
 	
 	@Column(name = "screenname")
-	private String screenName ;
+	private String screenName ="CODE CONVERSION" ;
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode ="CC";
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -79,7 +79,7 @@ public class CodeConversionVO {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "codeConversionVO", cascade = CascadeType.ALL)
 	private List<CodeConversionDetailsVO> codeConversionDetailsVO;
-	
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

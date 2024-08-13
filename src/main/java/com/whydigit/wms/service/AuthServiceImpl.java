@@ -35,7 +35,6 @@ import com.whydigit.wms.dto.UserResponseDTO;
 import com.whydigit.wms.entity.ResponsibilityVO;
 import com.whydigit.wms.entity.RolesResponsibilityVO;
 import com.whydigit.wms.entity.RolesVO;
-import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.ScreensVO;
 import com.whydigit.wms.entity.TokenVO;
 import com.whydigit.wms.entity.UserLoginBranchAccessibleVO;

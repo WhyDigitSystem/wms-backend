@@ -79,12 +79,12 @@ public class SalesReturnVO {
 	private int totalReturnQty;
 
 	@Column(name = "screenname")
-	private String screenName;
+	private String screenName ="SALES RETURN";
 	@Column(name = "screencode")
-	private String screenCode ="SR";
+	private String screenCode = "SR";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid", unique = true)
 	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -105,13 +105,14 @@ public class SalesReturnVO {
 	@Column(name = "modifiedby")
 	private String updatedBy;
 	@Column(name = "active")
-	private boolean active =true;
+	private boolean active = true;
 	@Column(name = "cancel")
-	private boolean cancel =false;
+	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze = true;
+
 	
 
 	@Embedded

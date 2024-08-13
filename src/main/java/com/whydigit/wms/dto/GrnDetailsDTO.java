@@ -35,7 +35,6 @@ public class GrnDetailsDTO {
 	private LocalDate batchDt; 
 	private double amount;
 	private String shipmentNo; 
-	private int grnQty;
 	private LocalDate expdate;
 	private double mrp;
 	
