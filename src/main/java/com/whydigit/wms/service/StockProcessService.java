@@ -30,7 +30,6 @@ public interface StockProcessService {
 
 	Map<String, Object> createUpdateCodeConversion(CodeConversionDTO codeConversionDTO) throws ApplicationException;
 
-
 	List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin);
 
@@ -44,12 +43,11 @@ public interface StockProcessService {
 	List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client);
 
-
 //	SalesReturn
 	List<SalesReturnVO> getAllSalesReturn(Long orgId, String finYear, String branch, String branchCode, String client,
 			String warehouse);
 
-	SalesReturnVO getAllSalesReturnById(Long id);
+	SalesReturnVO getSalesReturnById(Long id);
 
 	Map<String, Object> createUpdateSalesReturn(@Valid SalesReturnDTO salesReturnDTO) throws ApplicationException;
 
@@ -61,7 +59,7 @@ public interface StockProcessService {
 	List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse);
 
-	LocationMovementVO getAllLocationMovementById(Long id);
+	LocationMovementVO getLocationMovementById(Long id);
 
 	Map<String, Object> createUpdateLocationMovement(@Valid LocationMovementDTO locationMovementDTO)
 			throws ApplicationException;
@@ -77,30 +75,42 @@ public interface StockProcessService {
 			String sku);
 
 	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode, String client);
+	
+	List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long id,String branch,String branchCode,String client);
+	
+	List<Map<String, Object>> getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch,
+			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
+			String lotNo);
 
 //	De-Kitting
 	List<DeKittingVO> getAllDeKitting(Long orgId, String finYear, String branch, String branchCode, String client,
 			String warehouse);
 
-	DeKittingVO getAllDeKittingById(Long id);
+	DeKittingVO getDeKittingById(Long id);
 
 	Map<String, Object> createUpdateDeKitting(@Valid DeKittingDTO dekittingDTO) throws ApplicationException;
 
 	String getDeKittingDocId(Long orgId, String finYear, String branch, String branchCode, String client);
-
-	List<Map<String, Object>> getPartNoFromStockForDeKitting(Long orgId, String finYear, String branch,
+	
+	// PARENT
+	List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String finYear, String branch,
 			String branchCode, String client);
 
-	List<Map<String, Object>> getPartDescAndSkuFromStockForDeKitting(Long orgId, String finYear, String branch,
+	List<Map<String, Object>> getPartDescAndSkuFromStockForDeKittingParent(Long orgId, String finYear, String branch,
 			String branchCode, String client, String partNo);
-	
-	List<Map<String, Object>> getBinFromStockForDeKitting(Long orgId, String finYear, String branch,
-			String branchCode, String client);
-	
-	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKitting(Long orgId,
+
+	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
+			String client);
+
+	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(Long orgId,
 			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
 
-	
+	List<Map<String, Object>> getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch,
+			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
+			String lotNo);
 
+	// CHILD
+	List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,
+			String branchCode, String client);
 }
