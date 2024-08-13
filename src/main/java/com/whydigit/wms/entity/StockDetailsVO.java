@@ -126,7 +126,7 @@ public class StockDetailsVO {
 	@Column(name = "shortqty")
 	private int shortQty;
 	@Column(name = "qcflag")
-	private boolean qcFlag;
+	private String qcFlag;
 	@Column(name = "clientcode")
 	private String clientCode;
 	@Column(name = "pamount")
@@ -148,7 +148,7 @@ public class StockDetailsVO {
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
 	@Column(name = "weight")
-	private String weight;
+	private double weight;
 	@Column(name = "pckey")
 	private String pcKey;
 	@Column(name = "sdactual")

@@ -35,7 +35,6 @@ public class GatePassInDTO {
 	private String customer;
 	private String finYear;
 	
-	
 	private List<GatePassInDetailsDTO> gatePassInDetailsDTO;
 
 }

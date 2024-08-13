@@ -555,11 +555,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setSSku(detailsVO.getSsku());
 				stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
-				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDescripition());
+				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOFrom.setGrnNo(detailsVO.getGRNNo());
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
-				stockDetailsVOFrom.setQcFlag(detailsVO.isQcFlag());
+				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOFrom.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
@@ -585,8 +585,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setPartno(detailsVO.getPartNo());
 				stockDetailsVOTo.setBinClass(detailsVO.getBinClass());
 				stockDetailsVOTo.setBinType(detailsVO.getBinType());
-				stockDetailsVOTo.setQcFlag(detailsVO.isQcFlag());
-				stockDetailsVOTo.setPartDesc(detailsVO.getPartDescripition());
+				stockDetailsVOTo.setQcFlag(detailsVO.getQcFlag());
+				stockDetailsVOTo.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOTo.setGrnNo(detailsVO.getGRNNo());
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
@@ -648,7 +648,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			LocationMovementDetailsVO locationMovementDetailsVO = new LocationMovementDetailsVO();
 			locationMovementDetailsVO.setBin(locationMovementDetailsDTO.getBin());
 			locationMovementDetailsVO.setPartNo(locationMovementDetailsDTO.getPartNo());
-			locationMovementDetailsVO.setPartDescripition(locationMovementDetailsDTO.getPartDescripition());
+			locationMovementDetailsVO.setPartDesc(locationMovementDetailsDTO.getPartDesc());
 			locationMovementDetailsVO.setGRNNo(locationMovementDetailsDTO.getGRNNo());
 			locationMovementDetailsVO.setBatchNo(locationMovementDetailsDTO.getBatchNo());
 			locationMovementDetailsVO.setBatchDate(locationMovementDetailsDTO.getBatchDate());
@@ -675,7 +675,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
 			locationMovementDetailsVO.setExpDate(locationMovementDetailsDTO.getExpDate());
 			locationMovementDetailsVO.setStatus(locationMovementDetailsDTO.getStatus());
-			locationMovementDetailsVO.setQcFlag(locationMovementDetailsDTO.isQcFlag());
+			locationMovementDetailsVO.setQcFlag(locationMovementDetailsDTO.getQcFlag());
 			locationMovementDetailsVO.setLocationMovementVO(locationMovementVO);
 
 			locationMovementDetailsVOs.add(locationMovementDetailsVO);
