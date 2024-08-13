@@ -1,5 +1,7 @@
 package com.whydigit.wms.dto;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ public class VasPutawayDetailsDTO {
 	private String partNo;
 	private String partDescription;
 	private String grnNo;
+	private LocalDate grnDate;
 	private int invQty;
 	private int putAwayQty;
 	private String fromBin;
@@ -21,5 +24,13 @@ public class VasPutawayDetailsDTO {
 	private String remarks;
 	private boolean qcFlags;
 
+	private String binClass;
+	private String cellType;
+	private String clientCode;
+	private String core;
+	private LocalDate expDate;
+	private String pckey;
+	private String ssku;
+	private LocalDate stockDate;
 	
 }

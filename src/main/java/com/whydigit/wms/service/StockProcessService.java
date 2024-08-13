@@ -20,6 +20,7 @@ import com.whydigit.wms.exception.ApplicationException;
 @Service
 public interface StockProcessService {
 
+	//CodeConversion
 	List<CodeConversionVO> getAllCodeConversion(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse);
 
@@ -37,6 +38,9 @@ public interface StockProcessService {
 			String sku);
 
 	List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client);
+	
+	List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client);
 
 //	SalesReturn

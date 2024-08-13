@@ -899,6 +899,34 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+
+	@GetMapping("/getAllFillGridFromStockForCodeConversion")
+	public ResponseEntity<ResponseDTO> getAllFillGridFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
+			 @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+		String methodName = "getAllFillGridFromStockForCodeConversion()";
+    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+    List<Map<String, Object>> mov = new ArrayList<>();
+    try {
+			mov = stockProcessService.getAllFillGridFromStockForCodeConversion(orgId, branch, branchCode,
+					client);
+      } catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All FillGrid from Stock information retrieved successfully");
+      responseObjectsMap.put("codeConversionVO", mov);
+      responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve FillGrid from Stock information", errorMsg);
+		}
+
 	@GetMapping("/getAvlQtyFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getAvlQtyFromStockForDeKittingParent(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
@@ -947,7 +975,6 @@ public class StockProcessController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
-
 		try {
 			mov = stockProcessService.getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(orgId, branch, branchCode,
 					client);
@@ -965,7 +992,6 @@ public class StockProcessController extends BaseController {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve PartNo and sku from Stock information", errorMsg);
 		}
-
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}

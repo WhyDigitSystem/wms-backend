@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +50,7 @@ public class KittingDetails2VO {
 	
 	@ManyToOne
 	@JoinColumn(name ="kittingid")
+	@JsonBackReference
 	private KittingVO kittingVO;
 
 	

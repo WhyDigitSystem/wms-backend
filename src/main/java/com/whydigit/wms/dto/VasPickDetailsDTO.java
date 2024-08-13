@@ -2,6 +2,8 @@ package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,9 @@ public class VasPickDetailsDTO {
 	private String lotNo;
 
 	private String grnNo;
+	
+	private String grnDate;
+
 
 	private int avlQty;
 
@@ -37,5 +42,14 @@ public class VasPickDetailsDTO {
 	private LocalDate manufactureDate;
 
 	private boolean qcflag;
+	
+	private String binClass;
+	private String cellType;
+	private String clientCode;	
+	private String core;
+	private LocalDate expDate;
+	private String pckey;
+	private String ssku;
+	private LocalDate stockDate;
 
 }

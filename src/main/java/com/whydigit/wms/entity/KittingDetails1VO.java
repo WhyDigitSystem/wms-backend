@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,10 +55,11 @@ public class KittingDetails1VO {
 	@Column(name="amount")
 	private int amount;
 	@Column(name="qcflag")
-	private boolean qcflag;	
+	private boolean qcflag;
 	
 	@ManyToOne
 	@JoinColumn(name ="kittingid")
+	@JsonBackReference
 	private KittingVO kittingVO;
 
 }

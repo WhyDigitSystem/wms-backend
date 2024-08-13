@@ -37,14 +37,14 @@ public class KittingVO {
 	
 	
 	@Column(name = "screenname")
-	private String screenName;
+	private String screenName="KITTING";
 	@Column(name = "screencode")
 	private String screenCode="KT";
 	@Column(name = "docdate")
 	private LocalDate docDate;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
 	private String customer;

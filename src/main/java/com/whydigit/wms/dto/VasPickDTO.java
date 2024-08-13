@@ -13,10 +13,7 @@ import lombok.NoArgsConstructor;
 public class VasPickDTO {
 	private Long id;
 	private String picBin;
-	private String screenName;
-	private String screenCode;
 	private LocalDate docDate = LocalDate.now();
-	private String docId;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -29,6 +26,7 @@ public class VasPickDTO {
 	private boolean cancel;
 	private String cancelRemarks;
 	private boolean freeze;
+	
 	
 	private List<VasPickDetailsDTO> vasPickDetailsDTO;
 

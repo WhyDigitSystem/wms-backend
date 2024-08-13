@@ -41,8 +41,8 @@ public class ClientVO {
 	@Column(name = "fifofife")
 	private String fifofife;
 	
-	private boolean active;
-	private boolean cancel;
+	private boolean active=true;
+	private boolean cancel=false;
 	
 
 	@JsonGetter("active")

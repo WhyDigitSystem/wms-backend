@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class KittingDTO {
-	private Long id;
-	private String screenName;
+public class CycleCountDTO {
+private Long id;
+	
 	private LocalDate docDate;
 	private Long orgId;
 	private String customer;
@@ -21,14 +21,11 @@ public class KittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private boolean active;
 	private boolean cancel;
 	private String cancelRemarks;
 	private boolean freeze;
-	private String refNo;
-	private LocalDate refDate;
+	private String cycleCountNo;
+	private LocalDate cycleCountDate;
 	
-	private List<KittingDetails1DTO> kittingDetails1DTO;
-	private List<KittingDetails2DTO> kittingDetails2DTO;
-	
+	private List<CycleCountDetailsDTO> cycleCountDetailsDTO;
 }
