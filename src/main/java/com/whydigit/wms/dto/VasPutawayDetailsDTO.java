@@ -23,7 +23,7 @@ public class VasPutawayDetailsDTO {
 	private String sku;
 	private String remarks;
 	private boolean qcFlags;
-
+	private String status ;
 	private String binClass;
 	private String cellType;
 	private String clientCode;
