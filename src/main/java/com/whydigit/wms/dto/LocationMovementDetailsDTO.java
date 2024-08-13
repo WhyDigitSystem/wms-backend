@@ -2,6 +2,8 @@ package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,9 +30,15 @@ public class LocationMovementDetailsDTO {
 	private String sku;
 	private LocalDate grnDate;
 	private String binType;
-	private String core;
-	private String binClass;
-	private LocalDate expDate;
 	private String status;
+
+	private String binClass;
+	private String cellType;
+	private String clientCode;
+	private String core;
+	private LocalDate expDate;
+	private String pcKey;
+	private String ssku;
+	private LocalDate stockDate;
 	
 }

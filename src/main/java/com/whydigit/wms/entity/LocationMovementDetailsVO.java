@@ -62,14 +62,24 @@ public class LocationMovementDetailsVO {
 	private LocalDate grnDate;
 	@Column(name = "bintype")
 	private String binType;
-	@Column(name = "core")
-	private String core;
-	@Column(name="binclass")
-	private String binClass;
-	@Column(name="expdate")
-	private LocalDate expDate;
 	@Column(name="status")
 	private String status="R";
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;
+	@Column(name = "core")
+	private String core;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pckey")
+	private String pcKey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stokcdate")
+	private LocalDate stockDate;
 	
 	@ManyToOne
 	@JsonBackReference

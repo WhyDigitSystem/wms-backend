@@ -79,7 +79,7 @@ public class SalesReturnVO {
 	private int totalReturnQty;
 
 	@Column(name = "screenname")
-	private String screenName;
+	private String screenName ="SALES RETURN";
 	@Column(name = "screencode")
 	private String screenCode = "SR";
 	@Column(name = "docdate")
@@ -112,6 +112,7 @@ public class SalesReturnVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze = true;
+
 	
 
 	@Embedded
