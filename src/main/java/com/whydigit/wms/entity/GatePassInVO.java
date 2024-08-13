@@ -80,13 +80,13 @@ public class GatePassInVO {
 	private String company;
 
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel=false;
 
 	@Column(name = "cancelremarks")
 	private String cancelRemark;
 
 	@Column(name = "active")
-	private boolean active;
+	private boolean active=true;
 
 	@Column(name = "branchcode")
 	private String branchCode;

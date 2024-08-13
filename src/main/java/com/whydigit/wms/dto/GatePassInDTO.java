@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class GatePassInDTO {
 	
 	private Long id;
-	private String transactionType;
 	private String entryNo;//
 	private Long orgId;
 	private LocalDate docdate = LocalDate.now();
@@ -22,7 +21,6 @@ public class GatePassInDTO {
 	private String supplierShortName;
 	private String modeOfShipment;
 	private String carrier;
-	private String carrierTransport;
 	private String vehicleType;
 	private String vehicleNo;
 	private String driverName;
@@ -31,16 +29,12 @@ public class GatePassInDTO {
 	private String securityName;
 	private String lotNo;
 	private String createdBy;
-	private String company;
-	private boolean cancel;
-	private String cancelRemark;
-	private boolean active;
 	private String branchCode;
 	private String branch;
 	private String client;
 	private String customer;
 	private String finYear;
-	private boolean freeze;
+	
 	
 	private List<GatePassInDetailsDTO> gatePassInDetailsDTO;
 
