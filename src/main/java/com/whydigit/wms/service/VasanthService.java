@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.wms.dto.CycleCountDTO;
 import com.whydigit.wms.dto.KittingDTO;
 import com.whydigit.wms.dto.VasPickDTO;
 import com.whydigit.wms.entity.KittingVO;
@@ -34,6 +35,10 @@ public interface VasanthService {
 
 	String getKittingInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
+	//CYCLECOUNT
 	
+	Map<String, Object> createUpdateCycleCount(CycleCountDTO cycleCountDTO) throws ApplicationException;
+
+	String getKittingInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 	
 }
