@@ -554,7 +554,7 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/createUpdateCustomer")
+	@PutMapping("/createUpdateCustomer")
 	public ResponseEntity<ResponseDTO> createUpdateCustomer(@RequestBody CustomerDTO customerDTO) {
 		String methodName = "createUpdateCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -1524,23 +1524,22 @@ public class WarehouseMasterController extends BaseController {
 
 	@GetMapping("/getCarrierNameByCustomer")
 	public ResponseEntity<ResponseDTO> getCarrierNameByCustomer(@RequestParam Long orgid, @RequestParam String client,
-			@RequestParam String cbranch) {
+			@RequestParam String cbranch,@RequestParam String shipmentMode) {
 		String methodName = "getCarrierNameByCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object[]> carrier = new HashSet<>();
+		List<CarrierVO> carrier = new ArrayList<>();
 		try {
-			carrier = warehouseMasterService.getCarrierNameByCustomer(orgid, client, cbranch);
+			carrier = warehouseMasterService.getCarrierNameByCustomer(orgid, client, cbranch,shipmentMode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			List<Map<String, String>> formattedBranches = formattBranchess(carrier);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Carrier Name Founded");
-			responseObjectsMap.put("Carrier", formattedBranches);
+			responseObjectsMap.put("CarrierVO", carrier);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			errorMsg = "Carrier Name not found";
@@ -1548,17 +1547,6 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	private List<Map<String, String>> formattBranchess(Set<Object[]> carrier) {
-		List<Map<String, String>> formattedBranches = new ArrayList<>();
-		for (Object[] carrierVO : carrier) {
-			Map<String, String> formattedBranch = new HashMap<>();
-			formattedBranch.put("carriername", carrierVO[0].toString());
-//			formattedBranch.put("carriershortname", supplierVO[1].toString());
-			formattedBranches.add(formattedBranch);
-		}
-		return formattedBranches;
 	}
 
 	@PutMapping("/createUpdateCarrier")

@@ -204,14 +204,16 @@ public interface WarehouseMasterService {
 	// Carrier
 
 	List<CarrierVO> getAllCarrier(Long orgid, String client, String cbranch);
-
+	
 	Optional<CarrierVO> getCarrierById(Long carrierid);
 
 	Map<String, Object> createUpdateCarrier(CarrierDTO carrierDTO)throws ApplicationException;
 
 	void deleteCarrier(Long carrierid);
 	
-	Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch);
+	List<Map<String, Object>> getAllModeOfShipment(Long orgId);
+	
+	List<CarrierVO> getCarrierNameByCustomer(Long orgid, String client, String cbranch,String shipmentMode);
 
 	// employee
 	
@@ -255,6 +257,8 @@ public interface WarehouseMasterService {
 	List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId);
 	
 	DocumentTypeMappingVO getDocumentTypeMappingById(Long id)throws ApplicationException;
+
+	
 
 	
 
