@@ -42,6 +42,16 @@ public interface StockProcessService {
 	
 	List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client);
+	
+	List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String finYear,
+			String branch, String branchCode, String client, String bin);
+	
+	List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client);
+	
+	int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,
+			String partNo, String partDesc);
+
 
 //	SalesReturn
 	List<SalesReturnVO> getAllSalesReturn(Long orgId, String finYear, String branch, String branchCode, String client,
@@ -78,7 +88,7 @@ public interface StockProcessService {
 	
 	List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long id,String branch,String branchCode,String client);
 	
-	List<Map<String, Object>> getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch,
+	int getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
 			String lotNo);
 
@@ -106,11 +116,16 @@ public interface StockProcessService {
 			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
 
-	List<Map<String, Object>> getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch,
+	int getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
 			String lotNo);
 
 	// CHILD
 	List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,
 			String branchCode, String client);
+
+	
+	
+
+	
 }

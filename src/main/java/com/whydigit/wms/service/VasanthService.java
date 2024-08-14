@@ -25,18 +25,12 @@ public interface VasanthService {
 
 	String getVasPickDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-	//KITTING
-
-	Map<String, Object> createUpdateKitting(KittingDTO kittingDTO) throws ApplicationException;
-
-	List<KittingVO> getAllKitting(Long orgId, String branchCode, String client, String customer);
-
-	Optional<KittingVO> getKittingById(Long id);
-
-	String getKittingInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	//CYCLECOUNT
 	
 	Map<String, Object> createUpdateCycleCount(CycleCountDTO cycleCountDTO) throws ApplicationException;
+
+	String getCycleCountInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
+	
 	
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.dto.GrnDTO;
+import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
@@ -47,11 +48,9 @@ public interface InwardTransactionService {
 	List<Map<String, Object>> getGatepassInGridDetailsForPendingGRN(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
 
-	Optional<GatePassInVO> updateGatePassIn(GatePassInVO gatePassInVO);
 	
 	String getGatePassInDocId (Long orgId, String finYear, String branch, String branchCode, String client);
 
-	void deleteGatePassIn(Long id);
 
 //	Put Away
 
@@ -60,15 +59,14 @@ public interface InwardTransactionService {
 	
 	PutAwayVO getPutAwayById(Long id);
 	
+	
+	
 	String getPutAwayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-
-//	PutAwayVO createPutAway(PutAwayDTO PutAwayDTO);
-
-	Optional<PutAwayVO> updatePutAway(PutAwayVO PutAwayVO);
-
-	void deletePutAway(Long idLong);
-
+	Map<String, Object> createUpdatePutAway(PutAwayDTO putAwayDTO) throws ApplicationException;
+	
+	
+	
 	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
 
 	

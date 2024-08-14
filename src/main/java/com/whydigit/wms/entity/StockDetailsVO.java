@@ -109,7 +109,7 @@ public class StockDetailsVO {
 	private String sSku;
 	@Column(name = "ssqty")
 	private int ssQty;
-	@Column(name="sourceid")
+	@Column(name = "sourceid")
 	private Long sourceId;
 	@Column(name = "sqty")
 	private int sQty;
@@ -126,7 +126,7 @@ public class StockDetailsVO {
 	@Column(name = "shortqty")
 	private int shortQty;
 	@Column(name = "qcflag")
-	private boolean qcFlag;
+	private String qcFlag;
 	@Column(name = "clientcode")
 	private String clientCode;
 	@Column(name = "pamount")
@@ -148,7 +148,7 @@ public class StockDetailsVO {
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
 	@Column(name = "weight")
-	private String weight;
+	private double weight;
 	@Column(name = "pckey")
 	private String pcKey;
 	@Column(name = "sdactual")
@@ -180,4 +180,5 @@ public class StockDetailsVO {
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }

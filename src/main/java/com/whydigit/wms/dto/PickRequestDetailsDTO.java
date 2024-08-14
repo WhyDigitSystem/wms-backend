@@ -2,43 +2,43 @@ package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+@Data 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class LocationMovementDetailsDTO {
+public class PickRequestDetailsDTO {
+
 	private Long id;
-	private String bin;
 	private String partNo;
 	private String partDesc;
-	private String GRNNo;
+	private String sku;
+	private String core;
+	private String location;
 	private String batchNo;
 	private LocalDate batchDate;
 	private String lotNo;
-	private String toBin;
-	private int fromQty;
-	private int toQty;
-	private int remainingQty;
-	private String qcFlag;
-	private String sku;
-	private LocalDate grnDate;
-	private String binType;
-	private String status;
+	private int orderQty;
+	private int avlQty;
+	private int pickQty;
+	private int runningQty;
+	private String pickQtyPerLocation;
+	private String remainingQty;
+	private String weight;
+	private String rate;
+	private String tax;
+	private String amount;
+	private String remarks;
 
 	private String binClass;
+	private String binType;
 	private String cellType;
 	private String clientCode;
-	private String core;
 	private LocalDate expDate;
 	private String pcKey;
 	private String ssku;
+	private String status;
 	private LocalDate stockDate;
-	
 }

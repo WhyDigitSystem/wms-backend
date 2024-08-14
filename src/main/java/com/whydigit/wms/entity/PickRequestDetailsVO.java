@@ -1,9 +1,11 @@
 package com.whydigit.wms.entity;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -29,32 +31,34 @@ public class PickRequestDetailsVO {
 	@Column(name = "pickrequestdetailsid")
 	private Long id;
 
-	@Column(name = "serialno")
-	private String serialno;
-	@Column(name = "partcode")
-	private String partcode;
+	@Column(name = "partno")
+	private String partNo;
 	@Column(name = "partdesc")
-	private String partdesc;
+	private String partDesc;
 	@Column(name = "sku")
 	private String sku;
+	@Column(name = "core")
+	private String core;
 	@Column(name = "location")
 	private String location;
 	@Column(name = "batchno")
-	private String batchno;
+	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 	@Column(name = "lotno")
-	private String lotno;
+	private String lotNo;
 	@Column(name = "orderqty")
-	private int orderqty;
+	private int orderQty;
 	@Column(name = "avlqty")
-	private int avlqty;
+	private int avlQty;
 	@Column(name = "pickqty")
-	private int pickqty;
+	private int pickQty;
 	@Column(name = "runningqty")
-	private int runningqty;
-	@Column(name = "picktyperlocation")
-	private String pickqtyperlocation;
+	private int runningQty;
+	@Column(name = "pickqtyperlocation")
+	private String pickQtyPerLocation;
 	@Column(name = "remainingqty")
-	private String remainingqty;
+	private String remainingQty;
 	@Column(name = "weight")
 	private String weight;
 	@Column(name = "rate")
@@ -65,6 +69,25 @@ public class PickRequestDetailsVO {
 	private String amount;
 	@Column(name = "remarks")
 	private String remarks;
+	
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "bintype")
+	private String binType;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pockey")
+	private String pcKey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "status")
+	private String status="R";
+	@Column(name = "stokcdate")
+	private LocalDate stockDate;
 	
 	
 	@JsonManagedReference
