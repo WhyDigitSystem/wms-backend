@@ -31,8 +31,8 @@ public class PickRequestDetailsVO {
 	@Column(name = "pickrequestdetailsid")
 	private Long id;
 
-	@Column(name = "partcode")
-	private String partCode;
+	@Column(name = "partno")
+	private String partNo;
 	@Column(name = "partdesc")
 	private String partDesc;
 	@Column(name = "sku")
@@ -43,6 +43,8 @@ public class PickRequestDetailsVO {
 	private String location;
 	@Column(name = "batchno")
 	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 	@Column(name = "lotno")
 	private String lotNo;
 	@Column(name = "orderqty")
@@ -70,6 +72,8 @@ public class PickRequestDetailsVO {
 	
 	@Column(name = "binclass")
 	private String binClass;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "celltype")
 	private String cellType;
 	@Column(name = "clientcode")
@@ -80,6 +84,8 @@ public class PickRequestDetailsVO {
 	private String pcKey;
 	@Column(name = "ssku")
 	private String ssku;
+	@Column(name = "status")
+	private String status="R";
 	@Column(name = "stokcdate")
 	private LocalDate stockDate;
 	

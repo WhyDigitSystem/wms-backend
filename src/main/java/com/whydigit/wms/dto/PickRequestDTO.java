@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class PickRequestDTO {
 
 	private Long id;
-	private String transcationtype;
+	private String transactionType;
 	private String buyerRefNo;
 	private LocalDate buyerRefDate;
 	private String shipmentMethod;
