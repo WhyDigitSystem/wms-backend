@@ -781,6 +781,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 		putAwayVO.setBinType(putAwayDTO.getBinType());
 		putAwayVO.setStatus(putAwayDTO.getStatus());
 		putAwayVO.setLotNo(putAwayDTO.getLotNo());
+		putAwayVO.setEntryDate(putAwayDTO.getEntryDate());
 		putAwayVO.setEnteredPerson(putAwayDTO.getEnteredPerson());
 		putAwayVO.setOrgId(putAwayDTO.getOrgId());
 		putAwayVO.setCustomer(putAwayDTO.getCustomer());

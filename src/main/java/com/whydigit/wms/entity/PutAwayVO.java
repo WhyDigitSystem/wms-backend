@@ -46,6 +46,8 @@ public class PutAwayVO {
 	private LocalDate grnDate;
 	@Column(name = "entryno")
 	private String entryNo;
+	@Column(name = "entrydate")
+	private LocalDate entryDate;
 	@Column(name = "core")
 	private String core;
 	@Column(name = "suppliershortname")
