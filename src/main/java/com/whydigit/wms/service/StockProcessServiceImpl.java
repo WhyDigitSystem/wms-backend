@@ -483,6 +483,74 @@ public class StockProcessServiceImpl implements StockProcessService {
 		return result;
 	}
 
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String finYear,
+			String branch, String branchCode, String client, String bin) {
+
+
+		Set<Object[]> result = codeConversionRepo.getCpartNoAndCpartDescFromStockForCodeConversion(orgId, finYear,
+    branch, branchCode, client, bin);
+		return getCodeConeversionCPartNoAndCPartDescResult(result);
+	}
+
+	private List<Map<String, Object>> getCodeConeversionCPartNoAndCPartDescResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("cpartNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("cpartDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("csku", fs[2] != null ? fs[2].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client) {
+
+		Set<Object[]> result = codeConversionRepo.findCBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+				client);
+		return getCBinCodeConversionResult(result);
+	}
+
+	private List<Map<String, Object>> getCBinCodeConversionResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			part.put("binclass", fs[1] != null ? fs[1].toString() : "");
+			part.put("celltype", fs[2] != null ? fs[2].toString() : "");
+			part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
+			part.put("core", fs[4] != null ? fs[4].toString() : "");
+			part.put("expdate", fs[5] != null ? fs[5].toString() : "");
+			part.put("pckey", fs[6] != null ? fs[6].toString() : "");
+			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
+			part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	public int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+			String partDesc) {
+		Set<Object[]> getAvlQtyCodeConversion = codeConversionRepo.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+				partDesc);
+		return calculateTotalQtyCodeConversion(getAvlQtyCodeConversion);
+	}
+
+	private int calculateTotalQtyCodeConversion(Set<Object[]> getAvlQtyCodeConversion) {
+		int totalQty = 0;
+		for (Object[] qt : getAvlQtyCodeConversion) {
+			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
+		}
+		return totalQty;
+	}
+	
 //	LocationMovement
 	@Override
 	public List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode,
@@ -553,11 +621,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setSSku(detailsVO.getSsku());
 				stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
-				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDescripition());
+				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOFrom.setGrnNo(detailsVO.getGRNNo());
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
-				stockDetailsVOFrom.setQcFlag(detailsVO.isQcFlag());
+				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOFrom.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
@@ -588,8 +656,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setPartno(detailsVO.getPartNo());
 				stockDetailsVOTo.setBinClass(detailsVO.getBinClass());
 				stockDetailsVOTo.setBinType(detailsVO.getBinType());
-				stockDetailsVOTo.setQcFlag(detailsVO.isQcFlag());
-				stockDetailsVOTo.setPartDesc(detailsVO.getPartDescripition());
+				stockDetailsVOTo.setQcFlag(detailsVO.getQcFlag());
+				stockDetailsVOTo.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOTo.setGrnNo(detailsVO.getGRNNo());
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
@@ -659,7 +727,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			LocationMovementDetailsVO locationMovementDetailsVO = new LocationMovementDetailsVO();
 			locationMovementDetailsVO.setBin(locationMovementDetailsDTO.getBin());
 			locationMovementDetailsVO.setPartNo(locationMovementDetailsDTO.getPartNo());
-			locationMovementDetailsVO.setPartDescripition(locationMovementDetailsDTO.getPartDescripition());
+			locationMovementDetailsVO.setPartDesc(locationMovementDetailsDTO.getPartDesc());
 			locationMovementDetailsVO.setGRNNo(locationMovementDetailsDTO.getGRNNo());
 			locationMovementDetailsVO.setBatchNo(locationMovementDetailsDTO.getBatchNo());
 			locationMovementDetailsVO.setBatchDate(locationMovementDetailsDTO.getBatchDate());
@@ -686,7 +754,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
 			locationMovementDetailsVO.setExpDate(locationMovementDetailsDTO.getExpDate());
 			locationMovementDetailsVO.setStatus(locationMovementDetailsDTO.getStatus());
-			locationMovementDetailsVO.setQcFlag(locationMovementDetailsDTO.isQcFlag());
+			locationMovementDetailsVO.setQcFlag(locationMovementDetailsDTO.getQcFlag());
 			locationMovementDetailsVO.setLocationMovementVO(locationMovementVO);
 
 			locationMovementDetailsVOs.add(locationMovementDetailsVO);
@@ -1294,4 +1362,6 @@ public class StockProcessServiceImpl implements StockProcessService {
 		}
 		return details1;
 	}
+	
+	
 }

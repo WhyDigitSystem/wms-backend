@@ -23,7 +23,6 @@ import com.whydigit.wms.dto.VasPutawayDTO;
 import com.whydigit.wms.dto.VasPutawayDetailsDTO;
 import com.whydigit.wms.entity.BuyerOrderDetailsVO;
 import com.whydigit.wms.entity.BuyerOrderVO;
-import com.whydigit.wms.entity.CodeConversionDetailsVO;
 import com.whydigit.wms.entity.DeliveryChallanDetailsVO;
 import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
@@ -326,6 +325,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 				stockDetailsVOFrom.setCellType(vasPutawayDetailsVO.getCellType());
 				stockDetailsVOFrom.setClientCode(vasPutawayDetailsVO.getClientCode());
 				stockDetailsVOFrom.setCore(vasPutawayDetailsVO.getCore());
+				stockDetailsVOFrom.setStatus(vasPutawayDetailsVO.getStatus());
 				stockDetailsVOFrom.setExpDate(vasPutawayDetailsVO.getExpDate());
 				stockDetailsVOFrom.setPcKey(vasPutawayDetailsVO.getPckey());
 				stockDetailsVOFrom.setSSku(vasPutawayDetailsVO.getSsku());
@@ -367,6 +367,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 				stockDetailsVOTo.setExpDate(vasPutawayDetailsVO.getExpDate());
 				stockDetailsVOTo.setPcKey(vasPutawayDetailsVO.getPckey());
 				stockDetailsVOTo.setSSku(vasPutawayDetailsVO.getSsku());
+				stockDetailsVOTo.setStatus(vasPutawayDetailsVO.getStatus());
 				stockDetailsVOTo.setStockDate(vasPutawayDetailsVO.getStockDate());
 				stockDetailsVOTo.setPartno(vasPutawayDetailsVO.getPartNo());
 				stockDetailsVOTo.setPartDesc(vasPutawayDetailsVO.getPartDescription());
@@ -433,6 +434,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			vasPutawayDetailsVO.setBinClass(vasPutawayDetailsDTO.getBinClass());
 			vasPutawayDetailsVO.setCellType(vasPutawayDetailsDTO.getCellType());
 			vasPutawayDetailsVO.setClientCode(vasPutawayDetailsDTO.getClientCode());
+			vasPutawayDetailsVO.setStatus(vasPutawayDetailsDTO.getStatus());
 			vasPutawayDetailsVO.setCore(vasPutawayDetailsDTO.getCore());
 			vasPutawayDetailsVO.setExpDate(vasPutawayDetailsDTO.getExpDate());
 			vasPutawayDetailsVO.setPckey(vasPutawayDetailsDTO.getPckey());
@@ -520,6 +522,22 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			details1.add(part);
 		}
 		return details1;
+	}
+	
+	@Override
+	public int getAvlQtyVasPutaway(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+			String partDesc) {
+		Set<Object[]> getAvlQtyVasPutaway = vasPutawayDetailsRepo.getAvlQtyVasPutaway(orgId, client, branchCode, warehouse, branch, partNo,
+				partDesc);
+		return calculateTotalQtyVasPutaway(getAvlQtyVasPutaway);
+	}
+
+	private int calculateTotalQtyVasPutaway(Set<Object[]> getAvlQtyVasPutaway) {
+		int totalQty = 0;
+		for (Object[] qt : getAvlQtyVasPutaway) {
+			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
+		}
+		return totalQty;
 	}
 
 	// BuyerOrder
@@ -674,6 +692,53 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		String ScreenCode = "BO";
 		String result = buyerOrderRepo.getbuyerOrderDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(Long orgId,
+			String branch,	String branchCode, String client,String buyerRefNo) {
+
+		Set<Object[]> result = vasPutawayDetailsRepo.getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(orgId,branch, branchCode,
+				client,buyerRefNo);
+		return getAllDetailsDeliveryChallan(result);
+	}
+	private List<Map<String, Object>> getAllDetailsDeliveryChallan(Set<Object[]> result) {
+    List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("buyerRefDate", fs[0] != null ? fs[0].toString() : "");
+			part.put("invoiceNo", fs[1] != null ? fs[1].toString() : "");
+			part.put("customerName", fs[2] != null ? fs[2].toString() : "");
+			part.put("clientName", fs[3] != null ? fs[3].toString() : "");
+			
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,String finYear,
+			String branch,	String branchCode, String client,String warehouse,String buyerRefNo) {
+
+		Set<Object[]> result = vasPutawayDetailsRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,finYear,branch, branchCode,
+				client,warehouse,buyerRefNo);
+		return getAllDocidDocdatepartnofromDeliveryChallan(result);
+	}
+	private List<Map<String, Object>> getAllDocidDocdatepartnofromDeliveryChallan(Set<Object[]> result) {
+    List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("docId", fs[0] != null ? fs[0].toString() : "");
+			part.put("docDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("partCode", fs[2] != null ? fs[2].toString() : "");
+			part.put("partDesc", fs[3] != null ? fs[3].toString() : "");
+			part.put("shippedQty", fs[4] != null ? fs[4].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
 	}
 
 }

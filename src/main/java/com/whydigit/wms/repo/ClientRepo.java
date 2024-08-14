@@ -36,6 +36,9 @@ public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 			+ "select concat(client,clientcode) from m_documenttypedetails where orgid=?1 and screencode=?2)")
 	Set<Object[]> getClientDetailsForDocType(Long orgId, String screenCode);
 
+	@Query(value="select clientCode from ClientVO a where a.orgId=?1 and a.client=?2")
+	String getClientCode(Long orgId, String client);
+
 	
 
 

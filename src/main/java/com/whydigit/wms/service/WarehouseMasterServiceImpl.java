@@ -1152,9 +1152,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		List<Map<String, Object>> partNoDetails = new ArrayList<>();
 		for (Object[] ps : getPartNumber) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("parNo", ps[0] != null ? ps[0].toString() : "");
+			part.put("partNo", ps[0] != null ? ps[0].toString() : "");
 			part.put("sku", ps[1] != null ? ps[1].toString() : "");
-			part.put("partdescription", ps[2] != null ? ps[2].toString() : "");
+			part.put("partDesc", ps[2] != null ? ps[2].toString() : "");
 			partNoDetails.add(part);
 		}
 		return partNoDetails;

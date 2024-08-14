@@ -38,6 +38,8 @@ public class VasPutawayDetailsVO {
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
+	@Column(name = "status")
+	private String status ="R";
 	@Column(name = "invqty")
 	private int invQty;
 	@Column(name = "putawayqty")

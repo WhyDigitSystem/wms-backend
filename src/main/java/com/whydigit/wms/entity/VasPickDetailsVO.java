@@ -32,7 +32,7 @@ public class VasPickDetailsVO {
 	private String picBin;
 	@Column(name = "partcode")
 	private String partCode;
-	@Column(name = "partdescrrption")
+	@Column(name = "partdescription")
 	private String partDescription;
 	@Column(name = "partno")
 	private String partNo;

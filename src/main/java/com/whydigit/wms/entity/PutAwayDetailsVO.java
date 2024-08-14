@@ -37,8 +37,8 @@ public class PutAwayDetailsVO {
 	private String partNo;
 	@Column(name = "batch")
 	private String batch;
-	@Column(name = "partdescripition")
-	private String partDescripition;
+	@Column(name = "partdesc")
+	private String partDesc;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "invqty")
@@ -54,9 +54,9 @@ public class PutAwayDetailsVO {
 	@Column(name = "bin")
 	private String bin;
 	@Column(name = "weight")
-	private String weight;
+	private double weight;
 	@Column(name = "rate")
-	private String rate;
+	private double rate;
 	@Column(name = "amount")
 	private double amount;
 	@Column(name = "remarks")
@@ -70,7 +70,7 @@ public class PutAwayDetailsVO {
 	@Column(name = "ssku")
 	private String sSku;
 	@Column(name = "binclass")
-	private String binclass;
+	private String binClass;
 	@Column(name = "celltype")
 	private String cellType;
 	@Column(name = "batchdate")
