@@ -224,13 +224,13 @@ public class VasServiceImpl implements VasService{
 		}
 
 		@Override
-		public List<Map<String, Object>> getPartNOByParent(Long orgId, String bin, String branch, String branchCode,
+		public List<Map<String, Object>> getPartNOByParent(Long orgId,String branchCode,
 				String client) {
-		    Set<Object[]> getPartNo = kittingRepo.getPartNOByParent(orgId, bin, branch, branchCode, client);
-		    return gateChildPartNo(getPartNo);        
+		    Set<Object[]> getPartNo = kittingRepo.getPartNOByParent(orgId, branchCode, client);
+		    return gateParentPartNo(getPartNo);        
 		}
 
-		private List<Map<String, Object>> getPartNOByParent(Set<Object[]> getPartNo) {
+		private List<Map<String, Object>> gateParentPartNo(Set<Object[]> getPartNo) {
 		    List<Map<String, Object>> gridDetails = new ArrayList<>();  // Correct the type here
 		    for (Object[] child : getPartNo) {
 		        Map<String, Object> details = new HashMap<>();
@@ -247,10 +247,10 @@ public class VasServiceImpl implements VasService{
 				String client, String partNo, String partDesc, String sku) {
 			 Set<Object[]> getGrnData = kittingRepo.getGrnNOByParent(orgId, bin, branch, branchCode, client, partNo, partDesc, sku);
 			    
-			    return processGrnData(getGrnData);
+			    return processParentGrnData(getGrnData);
 			}
 
-			private List<Map<String, Object>> getGrnNOByParent(Set<Object[]> getGrnData) {
+			private List<Map<String, Object>> processParentGrnData(Set<Object[]> getGrnData) {
 			    List<Map<String, Object>> grnDetails = new ArrayList<>();
 			    for (Object[] record : getGrnData) {
 			        Map<String, Object> details = new HashMap<>();

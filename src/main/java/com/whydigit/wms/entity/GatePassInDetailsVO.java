@@ -70,13 +70,13 @@ public class GatePassInDetailsVO {
 	@Column(name = "grnpieceqty")
 	private int grnPiecesQty;
 	@Column(name = "weight")
-	private String weight;
+	private double weight;
 	@Column(name = "rate")
-	private String rate;
+	private double rate;
 	@Column(name = "rowno")
 	private String rowNo;
 	@Column(name = "amount")
-	private String amount;
+	private double amount;
 	@Column(name = "remarks")
 	private String remarks;
 

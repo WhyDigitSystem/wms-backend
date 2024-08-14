@@ -489,6 +489,33 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getGrnForPutaway")
+	public ResponseEntity<ResponseDTO> getGrnForPutaway(@RequestParam Long orgId, @RequestParam String client,
+			@RequestParam String branch, @RequestParam String branchCode,
+			@RequestParam String warehouse) {
+		String methodName = "getGrnForPutaway()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<GrnVO> grnVO = new ArrayList<>();
+		try {
+			grnVO = inwardTransactionService.getGrnNoForPutAway(orgId, client, branch, branchCode, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn information get successfully");
+			responseObjectsMap.put("grnVO", grnVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	@GetMapping("/getPutAwayDocId")
 	public ResponseEntity<ResponseDTO> getPutAwayDocId(@RequestParam Long orgId, @RequestParam String finYear,

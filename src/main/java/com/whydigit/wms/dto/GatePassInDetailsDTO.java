@@ -27,9 +27,9 @@ public class GatePassInDetailsDTO {
 	private String subUnit;
 	private int subStockShortQty;
 	private int grnPiecesQty;
-	private String weight;
-	private String rate;
+	private double weight;
+	private double rate;
 	private String rowNo;
-	private String amount;
+	private double amount;
 	private String remarks;
 }
