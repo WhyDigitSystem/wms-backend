@@ -28,7 +28,6 @@ public class PutAwayDTO {
 	private String status;
 	private String lotNo;
 	private String enteredPerson;
-
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -37,6 +36,8 @@ public class PutAwayDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
+	private String binClass;
+	private String binPick;
 	
 
 

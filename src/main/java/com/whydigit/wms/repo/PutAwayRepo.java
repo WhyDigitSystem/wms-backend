@@ -21,10 +21,10 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 	List<PutAwayVO> findAllPutAway(Long orgId, String finYear, String branch, String branchCode, String client,
 			String warehouse);
 
-	@Query(nativeQuery = true, value = "select * from putaway where putawayid=?1")
-	PutAwayVO findPutAwayById(Long id);
+	
 
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getPutAwayDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
+
 
 }

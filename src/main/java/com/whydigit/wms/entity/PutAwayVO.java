@@ -64,6 +64,10 @@ public class PutAwayVO {
 	private String lotNo;
 	@Column(name = "enteredperson")
 	private String enteredPerson;
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "binpick")
+	private String binPick;
 	@Column(name = "screenname")
 	private String screenName = "PUTAWAY";
 	@Column(name = "screencode")
@@ -93,7 +97,7 @@ public class PutAwayVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze = false;
+	private boolean freeze;
 	
 	@JsonGetter("active")
 	public String getActive() {
