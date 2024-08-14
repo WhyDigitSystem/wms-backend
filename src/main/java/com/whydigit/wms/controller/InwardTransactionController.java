@@ -180,6 +180,32 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	
+	@GetMapping("/getGRNDocid")
+	public ResponseEntity<ResponseDTO> getGRNDocid(@RequestParam Long orgId,@RequestParam  String finYear, @RequestParam String branchCode,@RequestParam String client,@RequestParam String screencode) {
+		String methodName = "getGRNDocid()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String grnDocid="";
+		try {
+			grnDocid = inwardTransactionService.getGRNdocid(orgId, finYear, branchCode, client, screencode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn Docid information get successfully");
+			responseObjectsMap.put("grnDocid", grnDocid);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Grn Docid information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	@GetMapping("/getGrnById")
 	public ResponseEntity<ResponseDTO> getGrnById(@RequestParam Long id) {

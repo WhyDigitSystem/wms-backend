@@ -3,6 +3,8 @@ package com.whydigit.wms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class PutAwayDTO {
 	private String grnNo;
 	private LocalDate grnDate;
 	private String entryNo;
+	private LocalDate entryDate;
 	private String core;
 	private String supplierShortName;
 	private String supplier;
