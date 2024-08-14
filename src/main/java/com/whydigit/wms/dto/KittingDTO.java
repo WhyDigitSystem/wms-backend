@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class KittingDTO {
 	private Long id;
 	private String screenName;
-	private LocalDate docDate;
 	private Long orgId;
 	private String customer;
 	private String client;
