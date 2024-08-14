@@ -12,12 +12,13 @@ import lombok.NoArgsConstructor;
 public class PickRequestDetailsDTO {
 
 	private Long id;
-	private String partCode;
+	private String partNo;
 	private String partDesc;
 	private String sku;
 	private String core;
 	private String location;
 	private String batchNo;
+	private LocalDate batchDate;
 	private String lotNo;
 	private int orderQty;
 	private int avlQty;
@@ -32,10 +33,12 @@ public class PickRequestDetailsDTO {
 	private String remarks;
 
 	private String binClass;
+	private String binType;
 	private String cellType;
 	private String clientCode;
 	private LocalDate expDate;
 	private String pcKey;
 	private String ssku;
+	private String status;
 	private LocalDate stockDate;
 }
