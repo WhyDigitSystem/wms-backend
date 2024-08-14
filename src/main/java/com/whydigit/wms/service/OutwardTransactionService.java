@@ -27,6 +27,13 @@ public interface OutwardTransactionService {
 		
 		String getDeliveryChallanDocId(Long orgId, String finYear, String branch, String branchCode,
 				String client);
+		
+		List<Map<String, Object>> getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(
+				Long orgId,String branch, String branchCode, String client, String buyerRefNo);
+		
+		List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
+				String finYear, String branch, String branchCode, String client, String warehouse ,String buyerRefNo);
+
 
 		//VASPutaway
 		
@@ -47,6 +54,10 @@ public interface OutwardTransactionService {
 		List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode,
 				String client);
 		
+		int getAvlQtyVasPutaway(Long orgId, String client, String branchCode, String warehouse, String branch,
+				String partNo, String partDesc);
+
+		
 		//BuyerOrder
 		
 		Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException;
@@ -60,6 +71,10 @@ public interface OutwardTransactionService {
 
 
 		String getBuyerOrderDocId (Long orgId, String finYear, String branch, String branchCode, String client);
+
+		
+	
+		
 
 		
 

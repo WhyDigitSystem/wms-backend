@@ -38,4 +38,18 @@ public interface CodeConversionRepo extends JpaRepository<CodeConversionVO, Long
 	@Query(nativeQuery = true,value="SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status=\"R\"")
 	Set<Object[]> getAllFillGridFromStockForCodeConversion(Long orgId, String branch, String branchCode, String client);
 
+	@Query(nativeQuery = true,value="select partno,partdesc,sku from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6")
+	Set<Object[]> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String finYear, String branch,
+			String branchCode, String client, String bin);
+
+	@Query(nativeQuery = true,value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5")
+	Set<Object[]> findCBinFromStockForCodeConversion(Long orgId, String finYear, String branch, String branchCode,
+			String client);
+
+	@Query(nativeQuery = true, value = "SELECT SUM(sqty) FROM stockdetails WHERE orgid = ?1 AND client = ?2 AND branchcode = ?3 AND branch = ?4 AND warehouse = ?5 AND partno = ?6 AND partdesc = ?7 AND status = 'R'")
+	Set<Object[]> getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,
+			String partNo, String partDesc);
+	
+	
+
 }
