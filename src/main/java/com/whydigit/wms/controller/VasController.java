@@ -226,7 +226,6 @@ public class VasController extends BaseController {
     
     @GetMapping("getPartNOByParent")
     public ResponseEntity<ResponseDTO> getPartNOByParent(@RequestParam(required = true) Long orgId,
-            @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client) {
         String methodName = "getPartNOByParent()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -235,7 +234,7 @@ public class VasController extends BaseController {
         ResponseDTO responseDTO = null;
         List<Map<String, Object>> kittingVO = new ArrayList<>();
         try {
-            kittingVO = vasService.getPartNOByParent(orgId, bin, branch, branchCode, client);
+            kittingVO = vasService.getPartNOByParent(orgId, branchCode, client);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

@@ -23,9 +23,9 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 
 	@Query(nativeQuery =true,value ="select a.partno,a.partdesc,a.sku from(\n"
 			+ "select  partno,partdesc,sku,batch,batchdate,grnno,grndate,status,bin,bintype,binclass,celltype,qcflag,sum(sqty) from stockdetails\n"
-			+ " where pckey='CHILD' and client=?5 and branchcode=?4 and orgid=?1 and branch=?3 and bin='BULK'  group by \n"
+			+ " where pckey='CHILD' and client=?5 and branchcode=?4 and orgid=?1 and branch=?3 and bin=?2  group by \n"
 			+ " partno,partdesc,sku,grnno,grndate,status,bin,batch,batchdate,bintype,binclass,celltype,qcflag having sum(sqty)>0) a group by a.partno,a.partdesc,a.sku")
-	Set<Object[]> getPartNOByChild(Long orgId, String bin, String branch, String branchCode, String client);
+	Set<Object[]> getPartNOByChild(Long orgId,String bin, String branch, String branchCode, String client);
 
 	@Query(nativeQuery =true,value ="select a.grnno,a.grndate,a.batch,a.batchdate from(\n"
 			+ "select  partno,partdesc,sku,batch,batchdate,grnno,grndate,status,bin,bintype,binclass,celltype,qcflag,sum(sqty) from stockdetails\n"
@@ -37,11 +37,8 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 	Set<Object[]> getGrnNOByChild(Long orgId, String bin, String branch, String branchCode, String client,
 			String partNo, String partDesc, String sku);
 
-	@Query(nativeQuery =true,value ="select a.partno,a.partdesc,a.sku from(\n"
-			+ "select  partno,partdesc,sku,batch,batchdate,grnno,grndate,status,bin,bintype,binclass,celltype,qcflag,sum(sqty) from stockdetails\n"
-			+ " where pckey='PARENT' and client=?5 and branchcode=?4 and orgid=?1 and branch=?3 and bin='BULK'  group by \n"
-			+ " partno,partdesc,sku,grnno,grndate,status,bin,batch,batchdate,bintype,binclass,celltype,qcflag having sum(sqty)>0) a group by a.partno,a.partdesc,a.sku")
-	Set<Object[]> getPartNOByParent(Long orgId, String bin, String branch, String branchCode, String client);
+	@Query(nativeQuery =true,value ="select partno,partdesc,sku from material where parentchildkey='PARENT' and client=?3 and cbranch='ALL' or cbranch=?2 and orgid=?1 and active=1group by partno,partdesc,sku")
+	Set<Object[]> getPartNOByParent(Long orgId,String branchCode, String client);
 	
 	
 	@Query(nativeQuery =true,value ="select a.grnno,a.grndate,a.batch,a.batchdate from(\n"

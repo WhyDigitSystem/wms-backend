@@ -21,4 +21,7 @@ public interface MaterialRepo extends JpaRepository<MaterialVO, Long>{
 	@Query(value ="select partno,sku,partdesc from material where orgid=?1 and client=?2 and branch=?3 and (cbranch='ALL' or cbranch=?4) and customer=?5 and active=true",nativeQuery =true )
 	Set<Object[]> findPartNo(Long orgId, String client, String branch, String branchCode, String customer);
 
+	@Query(value = "select a.parentChildKey from MaterialVO a where a.orgId=?1 and a.client=?2 and a.partno=?3")
+	String getParentChildKey(Long orgId, String client, String partNo);
+
 }
