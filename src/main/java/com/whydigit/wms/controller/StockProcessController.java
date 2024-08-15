@@ -28,6 +28,7 @@ import com.whydigit.wms.entity.CodeConversionVO;
 import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.SalesReturnVO;
+import com.whydigit.wms.entity.StockRestateVO;
 import com.whydigit.wms.service.StockProcessService;
 
 @RestController
@@ -1091,5 +1092,98 @@ public class StockProcessController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	// StockRestate
+		@GetMapping("/getAllStockRestate")
+		public ResponseEntity<ResponseDTO> getAllStockRestate(@RequestParam Long orgId, @RequestParam String finYear,
+				@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
+				@RequestParam String warehouse) {
+			String methodName = "getAllStockRestate()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<StockRestateVO> stockRestateVO = new ArrayList<>();
+			try {
+				stockRestateVO = stockProcessService.getAllStockRestate(orgId, finYear, branch, branchCode, client,
+						warehouse);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "StockRestate information get successfully");
+				responseObjectsMap.put("stockRestateVO", stockRestateVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "StockRestate information receive failed",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/getStockRestateById")
+		public ResponseEntity<ResponseDTO> getStockRestateById(@RequestParam(required = false) Long id) {
+			String methodName = "getStockRestateById()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			StockRestateVO stockRestateVO = new StockRestateVO();
+
+			try {
+				stockRestateVO = stockProcessService.getStockRestateById(id);
+				if (stockRestateVO != null) {
+					responseObjectsMap.put("stockRestateVO", stockRestateVO);
+					responseDTO = createServiceResponseMsg(responseObjectsMap,
+							" StockRestate information retrieved successfully.");
+				} else {
+					responseDTO = createServiceResponseError(responseObjectsMap, " StockRestate information not found.",
+							errorMsg);
+				}
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						" StockRestate information retrieval failed.", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		@GetMapping("/getStockRestateDocId")
+		public ResponseEntity<ResponseDTO> getStockRestateDocId(@RequestParam Long orgId, @RequestParam String finYear,
+				@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
+
+			String methodName = "getStockRestateDocId()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			String mapp = "";
+
+			try {
+				mapp = stockProcessService.getStockRestateDocId(orgId, finYear, branch, branchCode, client);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All StockRestate information retrieved successfully");
+				responseObjectsMap.put("StockRestateDocId", mapp);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve StockRestate information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
 	
 }

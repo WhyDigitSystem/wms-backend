@@ -34,6 +34,7 @@ import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.SalesReturnDetailsVO;
 import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.entity.StockDetailsVO;
+import com.whydigit.wms.entity.StockRestateVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CodeConversionDetailsRepo;
 import com.whydigit.wms.repo.CodeConversionRepo;
@@ -46,6 +47,7 @@ import com.whydigit.wms.repo.LocationMovementRepo;
 import com.whydigit.wms.repo.SalesReturnDetailsRepo;
 import com.whydigit.wms.repo.SalesReturnRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
+import com.whydigit.wms.repo.StockRestateRepo;
 
 @Service
 public class StockProcessServiceImpl implements StockProcessService {
@@ -84,6 +86,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Autowired
 	DeKittingParentRepo deKittingParentRepo;
+	
+	@Autowired
+	StockRestateRepo stockRestateRepo;
 
 	// CodeConversion
 	@Override
@@ -1363,5 +1368,32 @@ public class StockProcessServiceImpl implements StockProcessService {
 		return details1;
 	}
 	
+	//StockRestate
+	@Override
+	public List<StockRestateVO> getAllStockRestate(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse) {
+		return stockRestateRepo.findAllStockRestate(orgId, finYear, branch, branchCode, client, warehouse);
+	}
 	
+	@Override
+	public StockRestateVO getStockRestateById(Long id) {
+		StockRestateVO stockRestateVO = new StockRestateVO();
+		if (ObjectUtils.isNotEmpty(id)) {
+			LOGGER.info("Successfully Received  StockRestate BY Id : {}", id);
+			stockRestateVO = stockRestateRepo.findStockRestateById(id);
+		} else {
+			LOGGER.info("failed Received  StockRestate For All Id.");
+		}
+		return stockRestateVO;
+
+	}
+	
+	@Override
+	@Transactional
+	public String getStockRestateDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+		String ScreenCode = "SR";
+		String result = stockRestateRepo.getStockRestateDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
+
 }
