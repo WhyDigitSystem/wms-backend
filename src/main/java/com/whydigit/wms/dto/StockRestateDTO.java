@@ -1,5 +1,6 @@
 package com.whydigit.wms.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -7,15 +8,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-
 @NoArgsConstructor
 @AllArgsConstructor
-public class VasPutawayDTO {
+public class StockRestateDTO {
+
 	private Long id;
-	private String vasPickNo;
-	private String status;
-	private int totalGrnQty;
-	private int totalPutawayQty;
+	private String docId;
+	private LocalDate docDate = LocalDate.now();
+	private String transferFrom;
+	private String transferTo;
+	private String transferFromFlag;
+	private String transferToFlag;
+	private String entryNo;
 	
 	private Long orgId;
 	private String customer;
@@ -26,5 +30,5 @@ public class VasPutawayDTO {
 	private String warehouse;
 	private String createdBy;
 	
-	List<VasPutawayDetailsDTO> vasPutawayDetailsDTO;
+	List<StockRestateDetailsDTO> stockRestateDetailsDTO;
 }

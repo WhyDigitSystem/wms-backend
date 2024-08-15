@@ -42,6 +42,8 @@ public class DeliveryChallanVO {
 	private LocalDate docDate = LocalDate.now();
 	@Column(name = "buyerorderno")
 	private String buyerOrderNo;
+	@Column(name = "pickrequestdate")
+	private LocalDate pickReqDate;
 	@Column(name = "invoiceno")
 	private String invoiceNo;
 	@Column(name = "containerno")
@@ -92,8 +94,8 @@ public class DeliveryChallanVO {
 	private String gwtUom;
 	@Column(name = "transportname")
 	private String transportName;
-	@Column(name = "date")
-	private LocalDate date;
+	@Column(name = "transporterdate")
+	private LocalDate transporterDate;
 	@Column(name = "packingslipno")
 	private String packingSlipNo;
 	@Column(name = "bin")
