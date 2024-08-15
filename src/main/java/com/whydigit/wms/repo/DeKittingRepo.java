@@ -41,7 +41,7 @@ public interface DeKittingRepo extends JpaRepository<DeKittingVO, Long> {
 	Set<Object[]> findAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
 			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo);
 
-	@Query(nativeQuery = true, value = "SELECT partno,partdesc,sku from material where orgid=?1  and branch=?2 and branchcode=?3 and client=?4 and parentchildkey=\"CHILD\"")
+	@Query(nativeQuery = true, value = "SELECT partno,partdesc,sku from material where orgid=?1  and branch=?2 and branchcode=?3 and client=?4 and parentchildkey='CHILD'")
 	Set<Object[]> findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch, String branchCode,
 			String client);
 }

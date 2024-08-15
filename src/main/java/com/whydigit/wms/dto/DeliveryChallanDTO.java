@@ -16,6 +16,7 @@ public class DeliveryChallanDTO {
 
     private Long id;
 	private String buyerOrderNo;
+	private LocalDate pickReqDate;
 	private String invoiceNo;
 	private String containerNO;
 	private String vechileNo;
@@ -41,7 +42,7 @@ public class DeliveryChallanDTO {
 	private String grossWeight;
 	private String gwtUom;
 	private String transportName;
-	private LocalDate date;
+	private LocalDate transporterDate;
 	private String packingSlipNo;
 	private String bin;
 	private String taxType;

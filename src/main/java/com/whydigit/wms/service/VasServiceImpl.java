@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.KittingDetails1Repo;
 import com.whydigit.wms.repo.KittingDetails2Repo;
 import com.whydigit.wms.repo.KittingRepo;
+import com.whydigit.wms.repo.StockDetailsRepo;
 
 @Service
 public class VasServiceImpl implements VasService{
@@ -39,6 +41,9 @@ public class VasServiceImpl implements VasService{
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
+	@Autowired
+	StockDetailsRepo stockDetailsRepo;
+	
 	// Kitting
 
 		@Override
@@ -97,7 +102,6 @@ public class VasServiceImpl implements VasService{
 		private KittingVO getKittingVOFromKittingDTO(KittingVO kittingVO, KittingDTO kittingDTO) {
 			// Populate kittingVO fields from kittingDTO
 			kittingVO.setScreenName(kittingDTO.getScreenName());
-			kittingVO.setDocDate(kittingDTO.getDocDate());
 			kittingVO.setOrgId(kittingDTO.getOrgId());
 			kittingVO.setCustomer(kittingDTO.getCustomer());
 			kittingVO.setClient(kittingDTO.getClient());
@@ -110,7 +114,6 @@ public class VasServiceImpl implements VasService{
 			kittingVO.setCancelRemarks(kittingDTO.getCancelRemarks());
 			kittingVO.setFreeze(kittingDTO.isFreeze());
 			kittingVO.setRefNo(kittingDTO.getRefNo());
-			kittingVO.setRefDate(kittingDTO.getRefDate());
 
 			// Handle KittingDetails1VO
 			List<KittingDetails1VO> kittingDetails1VOs = new ArrayList<>();
@@ -175,5 +178,104 @@ public class VasServiceImpl implements VasService{
 			String result = kittingRepo.getKittingInDocId(orgId, finYear, branchCode, client, ScreenCode);
 			return result;
 		}
+
+		@Override
+		public List<Map<String, Object>> getPartNOByChild(Long orgId, String bin, String branch, String branchCode,
+		        String client) {
+		    Set<Object[]> getPartNo = kittingRepo.getPartNOByChild(orgId, bin, branch, branchCode, client);
+		    return gateChildPartNo(getPartNo);        
+		}
+
+		private List<Map<String, Object>> gateChildPartNo(Set<Object[]> getPartNo) {
+		    List<Map<String, Object>> gridDetails = new ArrayList<>();  // Correct the type here
+		    for (Object[] child : getPartNo) {
+		        Map<String, Object> details = new HashMap<>();
+		        details.put("partNo", child[0] != null ? Integer.parseInt(child[0].toString()) : 0);
+		        details.put("partDesc", child[1] != null ? child[1].toString() : "");
+		        details.put("Sku", child[2] != null ? child[2].toString() : "");
+		        gridDetails.add(details);
+		    }
+		    return gridDetails;
+		}
+
+		@Override
+		public List<Map<String, Object>> getGrnNOByChild(Long orgId, String bin, String branch, String branchCode,
+		        String client, String partNo, String partDesc, String sku) {
+		    Set<Object[]> getGrnData = kittingRepo.getGrnNOByChild(orgId, bin, branch, branchCode, client, partNo, partDesc, sku);
+		    
+		    return processGrnData(getGrnData);
+		}
+
+		private List<Map<String, Object>> processGrnData(Set<Object[]> getGrnData) {
+		    List<Map<String, Object>> grnDetails = new ArrayList<>();
+		    for (Object[] record : getGrnData) {
+		        Map<String, Object> details = new HashMap<>();
+		        details.put("grnnNo", record[0] != null ? record[0].toString() : "");
+		        details.put("GrnDate", record[1] != null ? record[1].toString() : "");
+		        details.put("batch", record[2] != null ? record[2].toString() : "");
+		        details.put("batchDate", record[3] != null ? record[3].toString() : "");
+		        grnDetails.add(details);
+		    }
+		    return grnDetails;
+		}
+
+		@Override
+		public List<Map<String, Object>> getSqtyByKitting(Long orgId,String branch, String branchCode, String client,
+				String partNo, String partDesc, String warehouse) {
+			   Set<Object[]> getQty = stockDetailsRepo.getQtyDetais(orgId,branch,branchCode,client,partNo,partDesc,warehouse);
+			    return getQtys(getQty);        
+			}
+
+			private List<Map<String, Object>> getQtys(Set<Object[]> getPartNo) {
+			    List<Map<String, Object>> gridDetails = new ArrayList<>();  // Correct the type here
+			    for (Object[] child : getPartNo) {
+			        Map<String, Object> details = new HashMap<>();
+			        details.put("sQTY", child[0] != null ? Integer.parseInt(child[0].toString()) : 0);
+			        gridDetails.add(details);
+			    }
+			    return gridDetails;
+			}
+		
+		
+
+		@Override
+		public List<Map<String, Object>> getPartNOByParent(Long orgId,String branchCode,
+				String client) {
+		    Set<Object[]> getPartNo = kittingRepo.getPartNOByParent(orgId, branchCode, client);
+		    return gateParentPartNo(getPartNo);        
+		}
+
+		private List<Map<String, Object>> gateParentPartNo(Set<Object[]> getPartNo) {
+		    List<Map<String, Object>> gridDetails = new ArrayList<>();  // Correct the type here
+		    for (Object[] child : getPartNo) {
+		        Map<String, Object> details = new HashMap<>();
+		        details.put("partNo", child[0] != null ? Integer.parseInt(child[0].toString()) : 0);
+		        details.put("partDesc", child[1] != null ? child[1].toString() : "");
+		        details.put("Sku", child[2] != null ? child[2].toString() : "");
+		        gridDetails.add(details);
+		    }
+		    return gridDetails;
+		}
+
+		@Override
+		public List<Map<String, Object>> getGrnNOByParent(Long orgId, String bin, String branch, String branchCode,
+				String client, String partNo, String partDesc, String sku) {
+			 Set<Object[]> getGrnData = kittingRepo.getGrnNOByParent(orgId, bin, branch, branchCode, client, partNo, partDesc, sku);
+			    
+			    return processParentGrnData(getGrnData);
+			}
+
+			private List<Map<String, Object>> processParentGrnData(Set<Object[]> getGrnData) {
+			    List<Map<String, Object>> grnDetails = new ArrayList<>();
+			    for (Object[] record : getGrnData) {
+			        Map<String, Object> details = new HashMap<>();
+			        details.put("grnnNo", record[0] != null ? record[0].toString() : "");
+			        details.put("GrnDate", record[1] != null ? record[1].toString() : "");
+			        details.put("batch", record[2] != null ? record[2].toString() : "");
+			        details.put("batchDate", record[3] != null ? record[3].toString() : "");
+			        grnDetails.add(details);
+			    }
+			    return grnDetails;
+			}
 
 }

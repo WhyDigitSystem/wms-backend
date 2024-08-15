@@ -14,7 +14,6 @@ public class BuyerOrderDTO {
 
 	private String orderNo;
 	private Long orgId;
-	private LocalDate docDate;
 	private LocalDate orderDate;
 	private String invoiceNo;
 	private String refNo;
@@ -23,7 +22,7 @@ public class BuyerOrderDTO {
 	private String buyerShortName;
 	private String currency;
 	private int exRate;
-	private String location;
+	private String bin;
 	private String billto;
 	private String tax;
 	private String shipTo;
@@ -32,13 +31,15 @@ public class BuyerOrderDTO {
 	private String company;
 	private boolean cancel;
 	private String cancelRemark;
-	private String screenName;
 	private String customer;
+	private String screenName;
 	private String client;
 	private String finYear;
 	private String branch;
 	private String branchCode;
 	private boolean freeze;
+	private int orderQty;
+	private int avilQty;
 	
 	private List<BuyerOrderDetailsDTO> buyerOrderDetailsDTO;
 	

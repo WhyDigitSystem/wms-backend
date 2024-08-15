@@ -35,7 +35,7 @@ public interface CodeConversionRepo extends JpaRepository<CodeConversionVO, Long
 	Set<Object[]> findBinFromStockForCodeConversion(Long orgId, String finYear, String branch, String branchCode,
 			String client);
 
-	@Query(nativeQuery = true,value="SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status=\"R\"")
+	@Query(nativeQuery = true,value="SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status='R'")
 	Set<Object[]> getAllFillGridFromStockForCodeConversion(Long orgId, String branch, String branchCode, String client);
 
 	@Query(nativeQuery = true,value="select partno,partdesc,sku from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6")

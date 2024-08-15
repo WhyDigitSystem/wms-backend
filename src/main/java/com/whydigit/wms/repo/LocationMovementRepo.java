@@ -37,7 +37,7 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 	Set<Object[]> findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear,
 			String branch, String branchCode, String client, String bin, String partNo, String partDesc, String sku);
 
-	@Query(nativeQuery = true, value = "SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status=\"R\"")
+	@Query(nativeQuery = true, value = "SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status='R'")
 	Set<Object[]> findAllForLocationMovementDetailsFillGrid(Long orgId, String branch, String branchCode,
 			String client);
 

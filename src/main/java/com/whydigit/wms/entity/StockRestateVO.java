@@ -19,65 +19,40 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "putaway")
+@Table(name = "stockrestate")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PutAwayVO {
-
+public class StockRestateVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "putawaygen")
-	@SequenceGenerator(name = "putawaygen", sequenceName = "putawayseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "putawayid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stockrestategen")
+	@SequenceGenerator(name = "stockrestategen", sequenceName = "stockrestateseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "stockrestateid")
 	private Long id;
-	@Column(name = "docdate")
-	private LocalDate docDate= LocalDate.now();
-	@Column(name = "grnno")
-	private String grnNo;
 	@Column(name = "docid",unique = true)
 	private String docId;
-	@Column(name = "grndate")
-	private LocalDate grnDate;
+	@Column(name = "docdate")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "transferfrom")
+	private String transferFrom;
+	@Column(name = "transferto")
+	private String transferTo;
+	@Column(name = "transferfromflag")
+	private String transferFromFlag;
+	@Column(name = "transfertoflag")
+	private String transferToFlag;
 	@Column(name = "entryno")
 	private String entryNo;
-	@Column(name = "entrydate")
-	private LocalDate entryDate;
-	@Column(name = "core")
-	private String core;
-	@Column(name = "suppliershortname")
-	private String supplierShortName;
-	@Column(name = "supplier")
-	private String supplier;
-	@Column(name = "modeofshipment")
-	private String modeOfShipment;
-	@Column(name = "carrier")
-	private String carrier;
-	@Column(name = "bintype")
-	private String binType;
-	@Column(name = "status")
-	private String status;
-	@Column(name = "lotno")
-	private String lotNo;
-	@Column(name = "enteredperson")
-	private String enteredPerson;
-	@Column(name = "binclass")
-	private String binClass;
-	@Column(name = "binpick")
-	private String binPick;
-	@Column(name = "totalgrnqty")
-	private int totalGrnQty;
-	@Column(name = "totalputawayqty")
-	private int totalPutawayQty;
+	
+	
 	@Column(name = "screenname")
-	private String screenName = "PUTAWAY";
+	private String screenName = "StockRestate";
 	@Column(name = "screencode")
-	private String screenCode ="PC";
+	private String screenCode ="SR";
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -102,8 +77,10 @@ public class PutAwayVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
+
 	@Column(name = "freeze")
-	private boolean freeze;
+	private boolean freeze = false;
+	
 	
 	@JsonGetter("active")
 	public String getActive() {
@@ -111,8 +88,8 @@ public class PutAwayVO {
 	}
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy = "putAwayVO", cascade = CascadeType.ALL)
-	private List<PutAwayDetailsVO> putAwayDetailsVO;
+	@OneToMany(mappedBy = "stockRestateVO", cascade = CascadeType.ALL)
+	private List<StockRestateDetailsVO> stockRestateDetailsVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

@@ -1,16 +1,26 @@
 package com.whydigit.wms.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class KittingDTO {
+@AllArgsConstructor
+public class StockRestateDTO {
+
 	private Long id;
-	private String screenName;
+	private String docId;
+	private LocalDate docDate = LocalDate.now();
+	private String transferFrom;
+	private String transferTo;
+	private String transferFromFlag;
+	private String transferToFlag;
+	private String entryNo;
+	
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -19,13 +29,6 @@ public class KittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private boolean active;
-	private boolean cancel;
-	private String cancelRemarks;
-	private boolean freeze;
-	private String refNo;
 	
-	private List<KittingDetails1DTO> kittingDetails1DTO;
-	private List<KittingDetails2DTO> kittingDetails2DTO;
-	
+	List<StockRestateDetailsDTO> stockRestateDetailsDTO;
 }

@@ -64,10 +64,8 @@ public interface InwardTransactionService {
 	String getPutAwayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	Map<String, Object> createUpdatePutAway(PutAwayDTO putAwayDTO) throws ApplicationException;
-	
-	
-	
-	Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode);
+		
+	List<GrnVO> getGrnNoForPutAway(Long orgId, String client, String branch, String branchcode,String warehouse);
 
 	
 

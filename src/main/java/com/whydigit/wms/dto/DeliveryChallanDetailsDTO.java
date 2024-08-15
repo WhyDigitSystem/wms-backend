@@ -23,10 +23,11 @@ public class DeliveryChallanDetailsDTO {
 	private int skuValue;
 	private BigDecimal discount;
 	private int tax;
-	private int gatTax;
+	private int gstTax;
 	private BigDecimal amount;
 	private BigDecimal sgst;
 	private BigDecimal cgst;
+	private BigDecimal igst;
 	private BigDecimal totalGst;
 	private BigDecimal billAmount;
 	private String remarks;
