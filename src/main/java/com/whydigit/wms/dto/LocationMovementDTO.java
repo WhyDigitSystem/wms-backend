@@ -26,6 +26,7 @@ public class LocationMovementDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
+	private String freeze;
 	
 	private String sku;
 	private LocalDate grnDate;

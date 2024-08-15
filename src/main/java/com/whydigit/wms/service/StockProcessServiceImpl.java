@@ -392,6 +392,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		salesReturnVO.setBriefDescOfGoods(salesReturnDTO.getBriefDescOfGoods());
 		salesReturnVO.setTotalReturnQty(salesReturnDTO.getTotalReturnQty());
 		salesReturnVO.setOrgId(salesReturnDTO.getOrgId());
+		salesReturnVO.setFreeze(salesReturnDTO.getFreeze());
 		salesReturnVO.setCustomer(salesReturnDTO.getCustomer());
 		salesReturnVO.setClient(salesReturnDTO.getClient());
 		salesReturnVO.setFinYear(salesReturnDTO.getFinYear());
@@ -714,6 +715,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
 		locationMovementVO.setWarehouse(locationMovementDTO.getWarehouse());
 		locationMovementVO.setSku(locationMovementDTO.getSku());
+		locationMovementVO.setFreeze(locationMovementDTO.getFreeze());
 		locationMovementVO.setCore(locationMovementDTO.getCore());
 
 		if (ObjectUtils.isNotEmpty(locationMovementVO.getId())) {
@@ -1085,6 +1087,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		deKittingVO.setBranch(deKittingDTO.getBranch());
 		deKittingVO.setBranchCode(deKittingDTO.getBranchCode());
 		deKittingVO.setWarehouse(deKittingDTO.getWarehouse());
+		deKittingVO.setFreeze(deKittingDTO.getFreeze());
 		deKittingVO.setActive(deKittingDTO.isActive());
 
 		if (ObjectUtils.isNotEmpty(deKittingVO.getId())) {
