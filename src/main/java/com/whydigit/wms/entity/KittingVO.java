@@ -73,7 +73,7 @@ public class KittingVO {
 	@Column(name = "refno")
 	private String refNo;
 	@Column(name = "refdate")
-	private LocalDate refDate;
+	private LocalDate refDate=LocalDate.now();
 	
 	
 	

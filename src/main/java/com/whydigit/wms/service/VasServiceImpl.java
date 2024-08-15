@@ -23,6 +23,7 @@ import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.KittingDetails1Repo;
 import com.whydigit.wms.repo.KittingDetails2Repo;
 import com.whydigit.wms.repo.KittingRepo;
+import com.whydigit.wms.repo.StockDetailsRepo;
 
 @Service
 public class VasServiceImpl implements VasService{
@@ -40,6 +41,9 @@ public class VasServiceImpl implements VasService{
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
+	@Autowired
+	StockDetailsRepo stockDetailsRepo;
+	
 	// Kitting
 
 		@Override
@@ -110,7 +114,6 @@ public class VasServiceImpl implements VasService{
 			kittingVO.setCancelRemarks(kittingDTO.getCancelRemarks());
 			kittingVO.setFreeze(kittingDTO.isFreeze());
 			kittingVO.setRefNo(kittingDTO.getRefNo());
-			kittingVO.setRefDate(kittingDTO.getRefDate());
 
 			// Handle KittingDetails1VO
 			List<KittingDetails1VO> kittingDetails1VOs = new ArrayList<>();
@@ -217,11 +220,23 @@ public class VasServiceImpl implements VasService{
 		}
 
 		@Override
-		public List<Map<String, Object>> getSqtyByKitting(Long orgId, String bin, String branch, String branchCode,
-				String client, String partNo, String partDesc, String sku, String grnNO) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+		public List<Map<String, Object>> getSqtyByKitting(Long orgId,String branch, String branchCode, String client,
+				String partNo, String partDesc, String warehouse) {
+			   Set<Object[]> getQty = stockDetailsRepo.getQtyDetais(orgId,branch,branchCode,client,partNo,partDesc,warehouse);
+			    return getQtys(getQty);        
+			}
+
+			private List<Map<String, Object>> getQtys(Set<Object[]> getPartNo) {
+			    List<Map<String, Object>> gridDetails = new ArrayList<>();  // Correct the type here
+			    for (Object[] child : getPartNo) {
+			        Map<String, Object> details = new HashMap<>();
+			        details.put("sQTY", child[0] != null ? Integer.parseInt(child[0].toString()) : 0);
+			        gridDetails.add(details);
+			    }
+			    return gridDetails;
+			}
+		
+		
 
 		@Override
 		public List<Map<String, Object>> getPartNOByParent(Long orgId,String branchCode,
