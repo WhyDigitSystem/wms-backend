@@ -94,7 +94,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	@Override
 	public String getGRNdocid(Long orgId, String finYear, String branchCode, String client, String screencode) {
 
-		return null;
+		return grnRepo.getGRNDocId(orgId, finYear, branchCode, client, screencode);
 	}
 
 	@Override
@@ -246,6 +246,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			handlingStockInVO2.setUpdatedby(savedGrnVO.getUpdatedBy());
 			handlingStockInVO2.setExpdate(grnDetailsVO.getExpDate());
 			handlingStockInVO2.setNoofpallet(grnDetailsVO.getNoOfBins());
+			handlingStockInVO2.setPalletqty(grnDetailsVO.getBinQty());
 			if (handlingStockInVO2.getDamageqty() == 0) {
 				handlingStockInVO2.setQcflag("T");
 				handlingStockInVO2.setDamageqty(0);

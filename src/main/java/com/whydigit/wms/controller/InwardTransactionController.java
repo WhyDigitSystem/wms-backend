@@ -183,15 +183,16 @@ public class InwardTransactionController extends BaseController {
 	
 	
 	@GetMapping("/getGRNDocid")
-	public ResponseEntity<ResponseDTO> getGRNDocid(@RequestParam Long orgId,@RequestParam  String finYear, @RequestParam String branchCode,@RequestParam String client,@RequestParam String screencode) {
+	public ResponseEntity<ResponseDTO> getGRNDocid(@RequestParam Long orgId,@RequestParam  String finYear, @RequestParam String branchCode,@RequestParam String client) {
 		String methodName = "getGRNDocid()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		String grnDocid="";
+		String screenCode="GN";
 		try {
-			grnDocid = inwardTransactionService.getGRNdocid(orgId, finYear, branchCode, client, screencode);
+			grnDocid = inwardTransactionService.getGRNdocid(orgId, finYear, branchCode, client,screenCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
