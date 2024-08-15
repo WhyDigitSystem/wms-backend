@@ -157,6 +157,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			DeliveryChallanVO deliveryChallanVO) {
 
 		deliveryChallanVO.setBuyerOrderNo(deliveryChallanDTO.getBuyerOrderNo());
+		deliveryChallanVO.setPickReqDate(deliveryChallanDTO.getPickReqDate());
 		deliveryChallanVO.setInvoiceNo(deliveryChallanDTO.getInvoiceNo());
 		deliveryChallanVO.setContainerNO(deliveryChallanDTO.getContainerNO());
 		deliveryChallanVO.setVechileNo(deliveryChallanDTO.getVechileNo());
@@ -183,7 +184,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		deliveryChallanVO.setGrossWeight(deliveryChallanDTO.getGrossWeight());
 		deliveryChallanVO.setGwtUom(deliveryChallanDTO.getGwtUom());
 		deliveryChallanVO.setTransportName(deliveryChallanDTO.getTransportName());
-		deliveryChallanVO.setDate(deliveryChallanDTO.getDate());
+		deliveryChallanVO.setTransporterDate(deliveryChallanDTO.getTransporterDate());
 		deliveryChallanVO.setPackingSlipNo(deliveryChallanDTO.getPackingSlipNo());
 		deliveryChallanVO.setBin(deliveryChallanDTO.getBin());
 		deliveryChallanVO.setTaxType(deliveryChallanDTO.getTaxType());
@@ -217,10 +218,11 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			deliveryChallanDetailsVO.setSkuValue(deliveryChallanDetailsDTO.getSkuValue());
 			deliveryChallanDetailsVO.setDiscount(deliveryChallanDetailsDTO.getDiscount());
 			deliveryChallanDetailsVO.setTax(deliveryChallanDetailsDTO.getTax());
-			deliveryChallanDetailsVO.setGatTax(deliveryChallanDetailsDTO.getGatTax());
+			deliveryChallanDetailsVO.setGstTax(deliveryChallanDetailsDTO.getGstTax());
 			deliveryChallanDetailsVO.setAmount(deliveryChallanDetailsDTO.getAmount());
 			deliveryChallanDetailsVO.setSgst(deliveryChallanDetailsDTO.getSgst());
 			deliveryChallanDetailsVO.setCgst(deliveryChallanDetailsDTO.getCgst());
+			deliveryChallanDetailsVO.setIgst(deliveryChallanDetailsDTO.getIgst());
 			deliveryChallanDetailsVO.setTotalGst(deliveryChallanDetailsDTO.getTotalGst());
 			deliveryChallanDetailsVO.setBillAmount(deliveryChallanDetailsDTO.getBillAmount());
 			deliveryChallanDetailsVO.setRemarks(deliveryChallanDetailsDTO.getRemarks());
@@ -716,8 +718,8 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,String finYear,
-			String branch,	String branchCode, String client,String warehouse,String buyerRefNo) {
+	public List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
+			String finYear,String branch,	String branchCode, String client,String warehouse,String buyerRefNo) {
 
 		Set<Object[]> result = vasPutawayDetailsRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,finYear,branch, branchCode,
 				client,warehouse,buyerRefNo);

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -148,6 +151,7 @@ public class GuhanServiceImpl implements GuhanSerivce {
 
 	private void createUpdatePickRequestVOByPickRequestDTO(PickRequestDTO pickRequestDTO, PickRequestVO pickRequestVO) {
 
+		pickRequestVO.setFreeze(pickRequestDTO.getFreeze());
 		pickRequestVO.setOrgId(pickRequestDTO.getOrgId());
 		pickRequestVO.setCustomer(pickRequestDTO.getCustomer());
 		pickRequestVO.setClient(pickRequestDTO.getClient());
@@ -217,5 +221,41 @@ public class GuhanServiceImpl implements GuhanSerivce {
 		}
 		pickRequestVO.setPickRequestDetailsVO(pickRequestDetailsVOs);
 	}
+
+	@Override
+	public String getPickRequestDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+		String ScreenCode = "PR";
+		String result = pickRequestRepo.getPickRequestDocId(orgId, finYear, branchCode, client, ScreenCode);
+		return result;
+	}
+	
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear, String branch,
+			String branchCode, String client) {
+
+		Set<Object[]> result = pickRequestRepo.findBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branch,
+				branchCode, client);
+		return getBuyerNoResult(result);
+	}
+
+	private List<Map<String, Object>> getBuyerNoResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("buyerRefNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("buyerRefDate", fs[1] != null ? fs[1].toString() : "");
+//			part.put("celltype", fs[2] != null ? fs[2].toString() : "");
+//			part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
+//			part.put("core", fs[4] != null ? fs[4].toString() : "");
+//			part.put("expdate", fs[5] != null ? fs[5].toString() : "");
+//			part.put("pckey", fs[6] != null ? fs[6].toString() : "");
+//			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
+//			part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
 
 }

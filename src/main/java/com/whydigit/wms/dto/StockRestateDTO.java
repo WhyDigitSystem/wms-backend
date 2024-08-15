@@ -10,10 +10,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeKittingDTO {
+public class StockRestateDTO {
 
 	private Long id;
-	private String transactionType;
+	private String docId;
+	private LocalDate docDate = LocalDate.now();
+	private String transferFrom;
+	private String transferTo;
+	private String transferFromFlag;
+	private String transferToFlag;
+	private String entryNo;
+	
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -22,12 +29,6 @@ public class DeKittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String updatedBy;
-	private String freeze;
-	private boolean active = true;
-	private LocalDate grnDate = LocalDate.now();
 	
-	private List<DeKittingParentDTO> deKittingParentDTO;
-	
-	private List<DeKittingChildDTO> deKittingChildDTO;
+	List<StockRestateDetailsDTO> stockRestateDetailsDTO;
 }

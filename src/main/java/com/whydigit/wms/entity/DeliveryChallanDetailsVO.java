@@ -52,14 +52,16 @@ public class DeliveryChallanDetailsVO {
 	private BigDecimal discount;
 	@Column(name = "tax")
 	private int tax;
-	@Column(name = "gattax")
-	private int gatTax;
+	@Column(name = "gsttax")
+	private int gstTax;
 	@Column(name = "amount")
 	private BigDecimal amount;
 	@Column(name = "sgst")
 	private BigDecimal sgst;
 	@Column(name = "cgst")
 	private BigDecimal cgst;
+	@Column(name = "igst")
+	private BigDecimal igst;
 	@Column(name = "totalgst")
 	private BigDecimal totalGst;
 	@Column(name = "billamount")
