@@ -56,7 +56,7 @@ public class VasController extends BaseController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @GetMapping("getAllKitting")
+    @GetMapping("/getAllKitting")
     public ResponseEntity<ResponseDTO> getAllKitting(@RequestParam(required = true) Long orgId,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
             @RequestParam(required = true) String customer) {
@@ -83,7 +83,7 @@ public class VasController extends BaseController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @GetMapping("getKittingById")
+    @GetMapping("/getKittingById")
     public ResponseEntity<ResponseDTO> getKittingById(@RequestParam(required = true) Long id) {
         String methodName = "getKittingById()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -140,7 +140,7 @@ public class VasController extends BaseController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @GetMapping("getPartNOByChild")
+    @GetMapping("/getPartNOByChild")
     public ResponseEntity<ResponseDTO> getPartNOByChild(@RequestParam(required = true) Long orgId,
             @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client) {
@@ -167,7 +167,7 @@ public class VasController extends BaseController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @GetMapping("getGrnNOByChild")
+    @GetMapping("/getGrnNOByChild")
     public ResponseEntity<ResponseDTO> getGrnNOByChild(@RequestParam(required = true) Long orgId,
             @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
@@ -195,12 +195,12 @@ public class VasController extends BaseController {
         return ResponseEntity.ok().body(responseDTO);
     
 }
-    @GetMapping("getSqtyByKitting")
-    public ResponseEntity<ResponseDTO> getGrnNOByChild(@RequestParam(required = true) Long orgId,
-            @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
+    @GetMapping("/getSqtyByKitting")
+    public ResponseEntity<ResponseDTO> getSqtyByKitting(@RequestParam(required = true) Long orgId,
+             @RequestParam(required = true) String branch,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
             @RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc,
-            @RequestParam(required = true) String sku, @RequestParam(required = true) String grnNO) {
+            @RequestParam(required = true) String warehouse) {
         String methodName = "getSqtyByKitting()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
         String errorMsg = null;
@@ -208,23 +208,23 @@ public class VasController extends BaseController {
         ResponseDTO responseDTO = null;
         List<Map<String, Object>> kittingVO = new ArrayList<>();
         try {
-            kittingVO = vasService.getSqtyByKitting(orgId, bin, branch, branchCode, client, partNo, partDesc, sku,grnNO);
+            kittingVO = vasService.getSqtyByKitting(orgId,branch, branchCode, client, partNo, partDesc,warehouse);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
         }
         if (StringUtils.isBlank(errorMsg)) {
-            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GrnNOByChild Details information retrieved successfully");
+            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Sqty information retrieved successfully");
             responseObjectsMap.put("kittingVO", kittingVO);
             responseDTO = createServiceResponse(responseObjectsMap);
         } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve GrnNOByChild Details", errorMsg);
+            responseDTO = createServiceResponseError(responseObjectsMap, " Sqty Failed to retrieve  Details", errorMsg);
         }
         return ResponseEntity.ok().body(responseDTO);
     
 }
     
-    @GetMapping("getPartNOByParent")
+    @GetMapping("/getPartNOByParent")
     public ResponseEntity<ResponseDTO> getPartNOByParent(@RequestParam(required = true) Long orgId,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client) {
         String methodName = "getPartNOByParent()";
@@ -250,7 +250,7 @@ public class VasController extends BaseController {
         return ResponseEntity.ok().body(responseDTO);
     }
     
-    @GetMapping("getGrnNOByParent")
+    @GetMapping("/getGrnNOByParent")
     public ResponseEntity<ResponseDTO> getGrnNOByParent(@RequestParam(required = true) Long orgId,
             @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,

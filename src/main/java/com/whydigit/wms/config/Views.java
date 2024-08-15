@@ -27,7 +27,7 @@ public class Views {
     			+ "select a.branch,a.branchcode,a.client,a.clienttype,a.orgid,b.active,b.bin,b.bincategory,b.core,b.levelno,a.bintype,b.binstatus,b.rowno,b.warehouse from locationmapping a,locationmappingdetails b\r\n"
     			+ "where a.locationmappingid=b.locationmappingid group by a.branch,a.branchcode,a.client,a.clienttype,a.orgid,b.active,b.bin,b.bincategory,b.core,b.levelno,a.bintype,b.binstatus,b.rowno,b.warehouse");
     	
-    	jdbcTemplate.execute("create view vw_clientbinstatus as\r\n"
+    	jdbcTemplate.execute("create or replace  view vw_clientbinstatus as\r\n"
     			+ "SELECT a.orgid,\r\n"
     			+ "       a.branch,\r\n"
     			+ "       a.branchcode,\r\n"

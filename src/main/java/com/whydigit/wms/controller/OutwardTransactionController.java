@@ -458,6 +458,35 @@ public class OutwardTransactionController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 		
+		@GetMapping("/getBoSkuDetails")
+		public ResponseEntity<ResponseDTO> getBoSkuDetails(@RequestParam(required =true) Long orgId,
+				@RequestParam(required =true) String branchCode,
+				@RequestParam(required =true)String client
+				) {
+			String methodName = "getBoSkuDetails()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+		List<Map<String, Object>> skuDetails=new ArrayList<Map<String,Object>>();
+			try {
+				skuDetails = outwardTransactionService.getBoSkuDetails(orgId,branchCode,client);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Bo Sku Details information get successfully Id");
+				responseObjectsMap.put("skuDetails", skuDetails);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "Bo Sku Details  information get Failed ",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
 
 		@GetMapping("/getAllDetailsFromVasPickDetailsForVasPutawayDetails")
 		public ResponseEntity<ResponseDTO> getAllDetailsFromVasPickForVasPutawayDetails(

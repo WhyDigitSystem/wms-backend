@@ -202,6 +202,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 					.findByDeliveryChallanVO(deliveryChallanVO);
 			deliveryChallanDetailsRepo.deleteAll(deliveryChallanDetailsVO1);
 		}
+		
 
 		List<DeliveryChallanDetailsVO> deliveryChallanDetailsVOs = new ArrayList<>();
 		for (DeliveryChallanDetailsDTO deliveryChallanDetailsDTO : deliveryChallanDTO.getDeliveryChallanDetailsDTO()) {
@@ -606,14 +607,13 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	private BuyerOrderVO getBuyerOrderVOfromBuyerOrderDTO(BuyerOrderVO buyerOrderVO, BuyerOrderDTO buyerOrderDTO) {
 		buyerOrderVO.setOrderNo(buyerOrderDTO.getOrderNo());
 		buyerOrderVO.setOrgId(buyerOrderDTO.getOrgId());
-		buyerOrderVO.setDocDate(buyerOrderDTO.getDocDate());
 		buyerOrderVO.setOrderDate(buyerOrderDTO.getOrderDate());
 		buyerOrderVO.setInvoiceNo(buyerOrderDTO.getInvoiceNo());
 		buyerOrderVO.setRefDate(buyerOrderDTO.getRefDate());
 		buyerOrderVO.setBuyerShortName(buyerOrderDTO.getBuyerShortName());
 		buyerOrderVO.setCurrency(buyerOrderDTO.getCurrency());
 		buyerOrderVO.setExRate(buyerOrderDTO.getExRate());
-		buyerOrderVO.setLocation(buyerOrderDTO.getLocation());
+		buyerOrderVO.setBin(buyerOrderDTO.getBin());
 		buyerOrderVO.setBillto(buyerOrderDTO.getBillto());
 		buyerOrderVO.setTax(buyerOrderDTO.getTax());
 		buyerOrderVO.setShipTo(buyerOrderDTO.getShipTo());
@@ -638,6 +638,12 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			List<BuyerOrderDetailsVO> detailsVOs = buyerOrderDetailsRepo.findByBuyerOrderVO(buyerOrderVO);
 			buyerOrderDetailsRepo.deleteAll(detailsVOs);
 		}
+		
+		
+         int orderQty=0;
+		 int avilQty=0;
+		
+		
 		List<BuyerOrderDetailsVO> detailsVOList = new ArrayList<BuyerOrderDetailsVO>();
 		for (BuyerOrderDetailsDTO buyerOrderDetailsDTO : buyerOrderDTO.getBuyerOrderDetailsDTO()) {
 
@@ -650,9 +656,15 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			detailsVO.setSku(buyerOrderDetailsDTO.getSku());
 			detailsVO.setReMarks(buyerOrderDetailsDTO.getRemarks());
 			detailsVO.setQcflag(buyerOrderDetailsDTO.isQcflag());
+			
+			avilQty=avilQty+buyerOrderDetailsDTO.getAvailQty();
+			orderQty=orderQty+buyerOrderDetailsDTO.getQty();
+			
 			detailsVO.setBuyerOrderVO(buyerOrderVO);
 			detailsVOList.add(detailsVO);
 		}
+		buyerOrderVO.setOrderQty(orderQty);
+		buyerOrderVO.setAvilQty(avilQty);
 		buyerOrderVO.setBuyerOrderDetailsVO(detailsVOList);
 		return buyerOrderVO;
 
@@ -670,21 +682,6 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		return buyerOrderRepo.findAllBuyerOrderById(id);
 	}
 
-	@Override
-	public int getAvlQty(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
-			String partDesc) {
-		Set<Object[]> getAvlQty = stockDetailsRepo.getQtyDetais(orgId, client, branchCode, warehouse, branch, partNo,
-				partDesc);
-		return calculateTotalQty(getAvlQty);
-	}
-
-	private int calculateTotalQty(Set<Object[]> getAvlQty) {
-		int totalQty = 0;
-		for (Object[] qt : getAvlQty) {
-			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
-		}
-		return totalQty;
-	}
 
 	@Override
 	public String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode,
@@ -741,4 +738,31 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		return details1;
 	}
 
+	@Override
+	public List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client) {
+		Set<Object[]> result = buyerOrderRepo.getBoSku(orgId,branchCode,branchCode);
+		return getAllSkuDetails(result);
+	}
+
+	private List<Map<String, Object>> getAllSkuDetails(Set<Object[]> result) {
+		 List<Map<String, Object>> details1 = new ArrayList<>();
+			for (Object[] fs : result) {
+				Map<String, Object> part = new HashMap<>();
+				part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+				part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+				part.put("batch", fs[2] != null ? fs[2].toString() : "");
+				part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()):0);
+
+				details1.add(part);
+			}
+			return details1;
+
+}
+
+	@Override
+	public int getAvlQty(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+			String partDesc) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
