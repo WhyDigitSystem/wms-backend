@@ -220,9 +220,8 @@ public class VasServiceImpl implements VasService{
 		}
 
 		@Override
-		public List<Map<String, Object>> getSqtyByKitting(Long orgId,String branch, String branchCode, String client,
-				String partNo, String partDesc, String warehouse) {
-			   Set<Object[]> getQty = stockDetailsRepo.getQtyDetais(orgId,branch,branchCode,client,partNo,partDesc,warehouse);
+		public List<Map<String, Object>> getSqtyByKitting(Long orgId, String branchCode, String client, String partNo, String warehouse,String grnno) {
+			   Set<Object[]> getQty = stockDetailsRepo.getQtyDetais(orgId, branchCode,  client,  partNo,  warehouse, grnno);
 			    return getQtys(getQty);        
 			}
 

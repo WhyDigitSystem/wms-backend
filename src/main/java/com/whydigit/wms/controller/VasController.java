@@ -197,10 +197,9 @@ public class VasController extends BaseController {
 }
     @GetMapping("/getSqtyByKitting")
     public ResponseEntity<ResponseDTO> getSqtyByKitting(@RequestParam(required = true) Long orgId,
-             @RequestParam(required = true) String branch,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-            @RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc,
-            @RequestParam(required = true) String warehouse) {
+            @RequestParam(required = true) String partNo,@RequestParam(required = true) String warehouse,
+            @RequestParam(required = true) String grnno) {
         String methodName = "getSqtyByKitting()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
         String errorMsg = null;
@@ -208,7 +207,7 @@ public class VasController extends BaseController {
         ResponseDTO responseDTO = null;
         List<Map<String, Object>> kittingVO = new ArrayList<>();
         try {
-            kittingVO = vasService.getSqtyByKitting(orgId,branch, branchCode, client, partNo, partDesc,warehouse);
+            kittingVO = vasService.getSqtyByKitting(orgId, branchCode, client, partNo,warehouse,grnno);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
