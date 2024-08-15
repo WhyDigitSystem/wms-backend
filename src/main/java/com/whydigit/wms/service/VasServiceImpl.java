@@ -114,6 +114,7 @@ public class VasServiceImpl implements VasService{
 			kittingVO.setCancelRemarks(kittingDTO.getCancelRemarks());
 			kittingVO.setFreeze(kittingDTO.isFreeze());
 			kittingVO.setRefNo(kittingDTO.getRefNo());
+			kittingVO.setSku(kittingDTO.getSku());
 
 			// Handle KittingDetails1VO
 			List<KittingDetails1VO> kittingDetails1VOs = new ArrayList<>();
