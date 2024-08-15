@@ -66,13 +66,14 @@ public interface OutwardTransactionService {
 
 		List<BuyerOrderVO> getAllBuyerOrderById(Long id);
 
-		public int getAvlQty(Long orgId, String client, String branchCode, String warehouse,
-				String branch, String partNo, String partDesc);
-
-
 		String getBuyerOrderDocId (Long orgId, String finYear, String branch, String branchCode, String client);
 
-		List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client);
+		List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client,String batch,String warehouse);
+
+		List<Map<String, Object>> getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
+				String branch, String partNo, String partDesc,String batch);
+
+
 
 		
 	

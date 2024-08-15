@@ -741,8 +741,9 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	}
 
 	@Override
-	public List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client) {
-		Set<Object[]> result = buyerOrderRepo.getBoSku(orgId,branchCode,branchCode);
+	public List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String batch,
+			String warehouse) {
+		Set<Object[]> result = buyerOrderRepo.getBoSku(orgId,branchCode,client,batch,warehouse);
 		return getAllSkuDetails(result);
 	}
 
@@ -762,9 +763,22 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 }
 
 	@Override
-	public int getAvlQty(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
-			String partDesc) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<Map<String, Object>> getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
+			String branch, String partNo, String partDesc,String batch) {
+		Set<Object[]> result = buyerOrderRepo.getAvilableQty(orgId,client,branchCode,warehouse,branch,partNo,partDesc,batch);
+		return getAvlQty(result);
 	}
+
+	private List<Map<String, Object>> getAvlQty(Set<Object[]> result) {
+		 List<Map<String, Object>> details1 = new ArrayList<>();
+			for (Object[] fs : result) {
+				Map<String, Object> part = new HashMap<>();
+				part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()):0);
+
+				details1.add(part);
+			}
+			return details1;
+
+}
+
 }
