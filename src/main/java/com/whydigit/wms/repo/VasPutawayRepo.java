@@ -25,6 +25,4 @@ public interface VasPutawayRepo extends JpaRepository<VasPutawayVO, Long> {
 	@Query(nativeQuery = true,value ="select docid from vaspick where orgid=?1 and branch=?2 and client=?3 and docid NOT IN (SELECT docid FROM vasputaway)")
 	Set<Object[]> findDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client);
 
-
-
 }

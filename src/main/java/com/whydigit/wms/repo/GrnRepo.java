@@ -20,5 +20,8 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 	boolean existsByEntryNoAndOrgIdAndClientAndBranchCodeAndWarehouse(String entryNo, Long orgId, String client,
 			String branchCode, String warehouse);
 
+	@Query(value = "select a from GrnVO a where a.docId=?1")
+	GrnVO findByDocId(String grnNo);
+
 
 }

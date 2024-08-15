@@ -37,7 +37,7 @@ public class LocationMovementDetailsVO {
 	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdescripition")
-	private String partDescripition;
+	private String partDesc;
 	@Column(name = "grnno")
 	private String GRNNo;
 	@Column(name = "batchno")
@@ -55,7 +55,7 @@ public class LocationMovementDetailsVO {
 	@Column(name = "remainingqty")
 	private int remainingQty;
 	@Column(name = "qcflag")
-	private boolean qcFlag;
+	private String qcFlag;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "grndate")

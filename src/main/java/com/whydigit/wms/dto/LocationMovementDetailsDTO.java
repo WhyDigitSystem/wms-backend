@@ -17,7 +17,7 @@ public class LocationMovementDetailsDTO {
 	private Long id;
 	private String bin;
 	private String partNo;
-	private String partDescripition;
+	private String partDesc;
 	private String GRNNo;
 	private String batchNo;
 	private LocalDate batchDate;
@@ -26,7 +26,7 @@ public class LocationMovementDetailsDTO {
 	private int fromQty;
 	private int toQty;
 	private int remainingQty;
-	private boolean qcFlag;
+	private String qcFlag;
 	private String sku;
 	private LocalDate grnDate;
 	private String binType;
