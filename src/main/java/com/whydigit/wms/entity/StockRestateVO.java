@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,32 +14,45 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "dekitting")
+@Table(name = "stockrestate")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class DeKittingVO {
-
+public class StockRestateVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dekittinggen")
-	@SequenceGenerator(name = "dekittinggen", sequenceName = "dekittingseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "dekittingid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stockrestategen")
+	@SequenceGenerator(name = "stockrestategen", sequenceName = "stockrestateseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "stockrestateid")
 	private Long id;
-	@Column(name = "transactiontype")
-	private String transactionType;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
+	@Column(name = "transferfrom")
+	private String transferFrom;
+	@Column(name = "transferto")
+	private String transferTo;
+	@Column(name = "transferfromflag")
+	private String transferFromFlag;
+	@Column(name = "transfertoflag")
+	private String transferToFlag;
+	@Column(name = "entryno")
+	private String entryNo;
+	
+	
+	@Column(name = "screenname")
+	private String screenName = "StockRestate";
+	@Column(name = "screencode")
+	private String screenCode ="SR";
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -63,16 +77,20 @@ public class DeKittingVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
+
 	@Column(name = "freeze")
-	private String freeze ;
-	@Column(name = "grndate")
-	private LocalDate grnDate = LocalDate.now();
+	private boolean freeze = false;
 	
-	@OneToMany(mappedBy = "deKittingVO",cascade = CascadeType.ALL)
-	@JsonManagedReference
-	private List<DeKittingParentVO> deKittingParentVO;
 	
-	@OneToMany(mappedBy = "deKittingVO",cascade = CascadeType.ALL)
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+	
 	@JsonManagedReference
-	private List<DeKittingChildVO> deKittingChildVO;
+	@OneToMany(mappedBy = "stockRestateVO", cascade = CascadeType.ALL)
+	private List<StockRestateDetailsVO> stockRestateDetailsVO;
+	
+	@Embedded
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

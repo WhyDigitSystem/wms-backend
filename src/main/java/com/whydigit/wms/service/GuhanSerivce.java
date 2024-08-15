@@ -21,4 +21,10 @@ public interface GuhanSerivce {
 	PickRequestVO getPickRequestById(Long id);
 
 	Map<String, Object> createUpdatePickRequest(@Valid PickRequestDTO pickRequestDTO) throws ApplicationException;
+	
+	String getPickRequestDocId (Long orgId, String finYear, String branch, String branchCode, String client);
+	
+	List<Map<String, Object>> getBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear, String branch,
+			String branchCode, String client);
+	
 }

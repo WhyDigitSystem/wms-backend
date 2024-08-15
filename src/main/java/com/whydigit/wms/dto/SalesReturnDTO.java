@@ -44,6 +44,7 @@ public class SalesReturnDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
+	private String freeze;
 	
 	private List<SalesReturnDetailsDTO> salesReturnDetailsDTO;
 }

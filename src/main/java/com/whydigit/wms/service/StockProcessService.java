@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.CodeConversionDTO;
+
 import com.whydigit.wms.dto.DeKittingDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
@@ -15,6 +16,7 @@ import com.whydigit.wms.entity.CodeConversionVO;
 import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.SalesReturnVO;
+import com.whydigit.wms.entity.StockRestateVO;
 import com.whydigit.wms.exception.ApplicationException;
 
 @Service
@@ -123,6 +125,17 @@ public interface StockProcessService {
 	// CHILD
 	List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,
 			String branchCode, String client);
+
+	//StockRestate
+	
+	List<StockRestateVO> getAllStockRestate(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
+
+	StockRestateVO getStockRestateById(Long id);
+
+	String getStockRestateDocId(Long orgId, String finYear, String branch, String branchCode, String client);
+
+	
 
 	
 	

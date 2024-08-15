@@ -70,6 +70,10 @@ public class PutAwayVO {
 	private String binClass;
 	@Column(name = "binpick")
 	private String binPick;
+	@Column(name = "totalgrnqty")
+	private int totalGrnQty;
+	@Column(name = "totalputawayqty")
+	private int totalPutawayQty;
 	@Column(name = "screenname")
 	private String screenName = "PUTAWAY";
 	@Column(name = "screencode")
