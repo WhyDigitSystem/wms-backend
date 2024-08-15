@@ -64,7 +64,7 @@ public class DeKittingVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze = true;
+	private String freeze ;
 	@Column(name = "grndate")
 	private LocalDate grnDate = LocalDate.now();
 	

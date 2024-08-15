@@ -363,7 +363,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	public Optional<GatePassInVO> getGatePassInById(Long id) {
 		return gatePassInRepo.findById(id);
 	}
-	
+
 	@Override
 	public List<GatePassInVO> getGatepassInNoForPendingGRN(Long orgId, String branchCode, String finYear,
 			String client) {
@@ -371,28 +371,29 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getGatepassInGridDetailsForPendingGRN(Long orgId, String finYear, String branchCode, String client,
-			String gatePassDocId){
-		Set<Object[]>gatePassInGridDetails=gatePassInRepo.getGridDetailsByDocId(orgId,finYear, branchCode, client,gatePassDocId);
-		return gatePassDetails(gatePassInGridDetails);		
+	public List<Map<String, Object>> getGatepassInGridDetailsForPendingGRN(Long orgId, String finYear,
+			String branchCode, String client, String gatePassDocId) {
+		Set<Object[]> gatePassInGridDetails = gatePassInRepo.getGridDetailsByDocId(orgId, finYear, branchCode, client,
+				gatePassDocId);
+		return gatePassDetails(gatePassInGridDetails);
 	}
+
 	private List<Map<String, Object>> gatePassDetails(Set<Object[]> gatePassInGridDetails) {
-		List<Map<String,Object>>gridDetails= new ArrayList<>();
-		for(Object[] grid:gatePassInGridDetails)
-		{
-			Map<String,Object> details= new HashMap<>();
+		List<Map<String, Object>> gridDetails = new ArrayList<>();
+		for (Object[] grid : gatePassInGridDetails) {
+			Map<String, Object> details = new HashMap<>();
 			details.put("lrNoHaw", grid[0] != null ? grid[0].toString() : "");
 			details.put("invoiceNo", grid[1] != null ? grid[1].toString() : "");
 			details.put("invoiceDate", grid[2] != null ? grid[2].toString() : "");
 			details.put("partNo", grid[3] != null ? grid[3].toString() : "");
 			details.put("partDesc", grid[4] != null ? grid[4].toString() : "");
 			details.put("sku", grid[5] != null ? grid[5].toString() : "");
-			details.put("invQty", grid[6] != null ? Integer.parseInt(grid[6].toString()):0);
-			details.put("recQty", grid[7] != null ? Integer.parseInt(grid[7].toString()):0);
-			details.put("shortQty", grid[8] != null ? Integer.parseInt(grid[8].toString()):0);
-			details.put("damageQty", grid[9] != null ? Integer.parseInt(grid[9].toString()):0);
-			details.put("genQty", grid[10] != null ? Integer.parseInt(grid[10].toString()):0);
-			details.put("subStockShortQty", grid[11] != null ? Integer.parseInt(grid[11].toString()):0);
+			details.put("invQty", grid[6] != null ? Integer.parseInt(grid[6].toString()) : 0);
+			details.put("recQty", grid[7] != null ? Integer.parseInt(grid[7].toString()) : 0);
+			details.put("shortQty", grid[8] != null ? Integer.parseInt(grid[8].toString()) : 0);
+			details.put("damageQty", grid[9] != null ? Integer.parseInt(grid[9].toString()) : 0);
+			details.put("genQty", grid[10] != null ? Integer.parseInt(grid[10].toString()) : 0);
+			details.put("subStockShortQty", grid[11] != null ? Integer.parseInt(grid[11].toString()) : 0);
 			details.put("batchNo", grid[12] != null ? grid[12].toString() : "");
 			details.put("weight", grid[13] != null ? grid[13].toString() : "");
 			gridDetails.add(details);
@@ -511,7 +512,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			detailsVO.setSku(gatePassInDetailsDTO.getSku());
 			detailsVO.setInvQty(gatePassInDetailsDTO.getInvQty());
 			detailsVO.setRecQty(gatePassInDetailsDTO.getRecQty());
-			
+
 			int shortQty = gatePassInDetailsDTO.getInvQty() - gatePassInDetailsDTO.getRecQty();
 			detailsVO.setShortQty(shortQty);
 			detailsVO.setDamageQty(gatePassInDetailsDTO.getDamageQty());

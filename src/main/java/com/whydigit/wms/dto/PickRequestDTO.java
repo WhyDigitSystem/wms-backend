@@ -38,6 +38,7 @@ public class PickRequestDTO {
 	private String warehouse;
 	private String createdBy;
 	private String updatedBy;
+	private String freeze;
 	
 
 	List<PickRequestDetailsDTO> pickRequestDetailsDTO;

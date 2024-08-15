@@ -111,7 +111,7 @@ public class SalesReturnVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze = true;
+	private String freeze;
 
 	
 
