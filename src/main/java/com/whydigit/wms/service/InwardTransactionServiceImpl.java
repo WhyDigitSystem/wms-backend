@@ -39,6 +39,7 @@ import com.whydigit.wms.repo.GatePassInRepo;
 import com.whydigit.wms.repo.GrnDetailsRepo;
 import com.whydigit.wms.repo.GrnRepo;
 import com.whydigit.wms.repo.HandlingStockInRepo;
+import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.PutAwayDetailsRepo;
 import com.whydigit.wms.repo.PutAwayRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
@@ -60,6 +61,9 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 
 	@Autowired
 	HandlingStockInRepo handlingStockInRepo;
+	
+	@Autowired
+	MaterialRepo materialRepo;
 
 	@Autowired
 	PutAwayRepo putAwayRepo;
@@ -90,7 +94,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	@Override
 	public String getGRNdocid(Long orgId, String finYear, String branchCode, String client, String screencode) {
 
-		return null;
+		return grnRepo.getGRNDocId(orgId, finYear, branchCode, client, screencode);
 	}
 
 	@Override
@@ -242,6 +246,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			handlingStockInVO2.setUpdatedby(savedGrnVO.getUpdatedBy());
 			handlingStockInVO2.setExpdate(grnDetailsVO.getExpDate());
 			handlingStockInVO2.setNoofpallet(grnDetailsVO.getNoOfBins());
+			handlingStockInVO2.setPalletqty(grnDetailsVO.getBinQty());
 			if (handlingStockInVO2.getDamageqty() == 0) {
 				handlingStockInVO2.setQcflag("T");
 				handlingStockInVO2.setDamageqty(0);
@@ -491,6 +496,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	private GatePassInVO geGatePassInVOFromGatePassInDTO(GatePassInVO gatePassInVO, GatePassInDTO gatePassInDTO) {
 		
 		gatePassInVO.setEntryNo(gatePassInDTO.getEntryNo());
+		gatePassInVO.setEntryDate(gatePassInDTO.getEntryDate());
 		gatePassInVO.setOrgId(gatePassInDTO.getOrgId());
 		gatePassInVO.setSupplier(gatePassInDTO.getSupplier());
 		gatePassInVO.setSupplierShortName(gatePassInDTO.getSupplierShortName());
@@ -594,8 +600,8 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	}
 
 	@Override
-	public Set<Object[]> getGrnNoForPutAway(Long orgId, String client, String branch, String finyr, String branchcode) {
-		return putAwayRepo.findGrnNoForPutAway(orgId, client, branch, finyr, branchcode);
+	public List<GrnVO> getGrnNoForPutAway(Long orgId, String client, String branch, String branchcode,String warehouse) {
+		return putAwayRepo.findGrnNoForPutAway(orgId, client, branch, branchcode,warehouse);
 	}
 
 	@Override
@@ -714,7 +720,6 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 				stockDetailsVO.setBranchCode(savedPutAwayVO.getBranchCode());
 				stockDetailsVO.setRefNo(savedPutAwayVO.getDocId());
 				stockDetailsVO.setRefDate(savedPutAwayVO.getDocDate());
-				stockDetailsVO.setBinType(savedPutAwayVO.getBinType());
 				stockDetailsVO.setBin(putAwayDetailsVO.getBin());
 				stockDetailsVO.setCarrier(savedPutAwayVO.getCarrier());
 				stockDetailsVO.setSourceScreenCode(savedPutAwayVO.getScreenCode());
@@ -731,16 +736,25 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 				stockDetailsVO.setPartno(putAwayDetailsVO.getPartNo());
 				stockDetailsVO.setPartDesc(putAwayDetailsVO.getPartDesc());
 				stockDetailsVO.setSku(putAwayDetailsVO.getSku());
+				stockDetailsVO.setCellType(putAwayDetailsVO.getCellType());
 				stockDetailsVO.setAmount(putAwayDetailsVO.getAmount());
 				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
+				stockDetailsVO.setCreatedBy(savedPutAwayVO.getCreatedBy());
+				stockDetailsVO.setUpdatedBy(savedPutAwayVO.getUpdatedBy());
+				stockDetailsVO.setPcKey(materialRepo.getParentChildKey(savedPutAwayVO.getOrgId(),savedPutAwayVO.getClient(),putAwayDetailsVO.getPartNo()));
+				stockDetailsVO.setSourceId(putAwayDetailsVO.getId());
+				
 				stockDetailsVO.setSsQty(putAwayDetailsVO.getSQty());
 				if ("Defective".equals(putAwayDetailsVO.getBin())) {
 					stockDetailsVO.setQcFlag("F");
+					stockDetailsVO.setStatus("D");
+					stockDetailsVO.setBinType("DAMAGE");
 				} else {
 					
 					stockDetailsVO.setQcFlag("T");
+					stockDetailsVO.setStatus("R");
+					stockDetailsVO.setBinType(savedPutAwayVO.getBinType());
 				}
-				stockDetailsVO.setStatus(putAwayDetailsVO.getStatus());
 				stockDetailsRepo.save(stockDetailsVO);
 			}		
 		}
@@ -768,6 +782,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 		putAwayVO.setBinType(putAwayDTO.getBinType());
 		putAwayVO.setStatus(putAwayDTO.getStatus());
 		putAwayVO.setLotNo(putAwayDTO.getLotNo());
+		putAwayVO.setEntryDate(putAwayDTO.getEntryDate());
 		putAwayVO.setEnteredPerson(putAwayDTO.getEnteredPerson());
 		putAwayVO.setOrgId(putAwayDTO.getOrgId());
 		putAwayVO.setCustomer(putAwayDTO.getCustomer());

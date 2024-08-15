@@ -40,7 +40,7 @@ public class BuyerOrderVO {
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate=LocalDate.now();
 	@Column(name = "orderdate")
 	private LocalDate orderDate;
 	@Column(name = "invoiceno")
@@ -57,8 +57,8 @@ public class BuyerOrderVO {
 	private String currency;
 	@Column(name = "exrate")
 	private int exRate;
-	@Column(name = "location")
-	private String location;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "billto")
 	private String billto;
 	@Column(name = "tax")
@@ -74,7 +74,7 @@ public class BuyerOrderVO {
 	@Column(name = "company")
 	private String company;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel=false;
 	@Column(name = "cancelremark")
 	private String cancelRemark;
 	@Column(name = "screencode")
@@ -90,7 +90,13 @@ public class BuyerOrderVO {
 	@Column(name = "branchcode")
 	private String branchCode;
 	@Column(name = "freeze")
-	private boolean freeze;
+	private boolean freeze=true;
+	@Column(name = "orderqty")
+	private int orderQty;
+	@Column(name = "avilqty")
+	private int avilQty;
+	private boolean active = true;
+	@Column(name = "cancel")
 	
 	
 

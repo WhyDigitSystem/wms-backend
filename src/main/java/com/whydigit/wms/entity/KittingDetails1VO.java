@@ -30,7 +30,7 @@ public class KittingDetails1VO {
 	@SequenceGenerator(name = "kittingdetails1gen", sequenceName = "kittingdetails1seq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "kitting1id")
 	private Long id;
-	@Column(name="pallet")
+	@Column(name="bin")
 	private String pallet;
 	@Column(name="partno")
 	private String partNo;

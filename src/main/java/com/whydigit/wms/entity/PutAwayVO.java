@@ -46,6 +46,8 @@ public class PutAwayVO {
 	private LocalDate grnDate;
 	@Column(name = "entryno")
 	private String entryNo;
+	@Column(name = "entrydate")
+	private LocalDate entryDate;
 	@Column(name = "core")
 	private String core;
 	@Column(name = "suppliershortname")
@@ -68,6 +70,10 @@ public class PutAwayVO {
 	private String binClass;
 	@Column(name = "binpick")
 	private String binPick;
+	@Column(name = "totalgrnqty")
+	private int totalGrnQty;
+	@Column(name = "totalputawayqty")
+	private int totalPutawayQty;
 	@Column(name = "screenname")
 	private String screenName = "PUTAWAY";
 	@Column(name = "screencode")

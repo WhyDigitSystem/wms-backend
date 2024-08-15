@@ -34,11 +34,11 @@ public class BuyerOrderDetailsVO {
 	@Column(name = "partdesc")
 	private String partDesc;
 	@Column(name = "qty")
-	private long qty;
+	private int qty;
 	@Column(name = "batchno")
 	private String batchNo;
 	@Column(name = "availqty")
-	private long availQty;
+	private int availQty;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "remarks")

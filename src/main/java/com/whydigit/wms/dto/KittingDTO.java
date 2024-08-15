@@ -1,6 +1,5 @@
 package com.whydigit.wms.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class KittingDTO {
 	private Long id;
 	private String screenName;
-	private LocalDate docDate;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -26,7 +24,6 @@ public class KittingDTO {
 	private String cancelRemarks;
 	private boolean freeze;
 	private String refNo;
-	private LocalDate refDate;
 	
 	private List<KittingDetails1DTO> kittingDetails1DTO;
 	private List<KittingDetails2DTO> kittingDetails2DTO;

@@ -46,8 +46,8 @@ public class GatePassInVO {
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docdate = LocalDate.now();
-	@Column(name = "date")
-	private LocalDate date;
+	@Column(name = "entrydate")
+	private LocalDate entryDate;
 	@Column(name = "supplier")
 	private String supplier;
 	@Column(name = "suppliershortname")

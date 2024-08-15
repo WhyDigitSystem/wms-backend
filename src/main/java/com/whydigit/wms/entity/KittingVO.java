@@ -41,7 +41,7 @@ public class KittingVO {
 	@Column(name = "screencode")
 	private String screenCode="KT";
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate=LocalDate.now();
 	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "orgid")
@@ -69,11 +69,11 @@ public class KittingVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze;
+	private boolean freeze=true;
 	@Column(name = "refno")
 	private String refNo;
 	@Column(name = "refdate")
-	private LocalDate refDate;
+	private LocalDate refDate=LocalDate.now();
 	
 	
 	
