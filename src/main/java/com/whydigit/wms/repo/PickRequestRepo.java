@@ -32,6 +32,6 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 
 	@Query(nativeQuery = true,value="select * from pickrequest where orgid=?1 and finyear =?2 and branch=?3 and branchcode=?4 and client=?5 and warehouse=?6 and status='Confirm' and buyerorderno not in(select buyerorderno from deliverychallan where orgid=?1 and finyear =?2 and branch=?3 and branchcode=?4 and client=?5 and warehouse=?6)")
 	List<PickRequestVO> findAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
-			String branchCode, String client, String warehouse, String buyerOrderNo);
+			String branchCode, String client, String warehouse);
 
 }

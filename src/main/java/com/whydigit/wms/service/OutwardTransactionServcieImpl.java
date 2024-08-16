@@ -243,8 +243,8 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	
 	@Override
 	public List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch, String branchCode,
-			String client, String warehouse,String buyerOrderNo) {
-		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, finYear, branch, branchCode, client, warehouse, buyerOrderNo);
+			String client, String warehouse) {
+		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, finYear, branch, branchCode, client, warehouse);
 
 	}
 	
