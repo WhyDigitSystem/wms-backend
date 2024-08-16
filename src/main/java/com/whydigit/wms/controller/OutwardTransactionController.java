@@ -296,7 +296,8 @@ public class OutwardTransactionController extends BaseController{
 				@RequestParam(required =true)String warehouse,
 				@RequestParam(required =true) String branch,
 				@RequestParam(required =true) String partNo,
-				@RequestParam(required =true) String partDesc) {
+				@RequestParam(required =true) String partDesc
+				) {
 			String methodName = "getAvlQtyVasPutaway()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
@@ -321,11 +322,11 @@ public class OutwardTransactionController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 		
-	//	
+	//	BUYERORDER
 		
 		@PutMapping("/createUpdateBuyerOrder")
 		public ResponseEntity<ResponseDTO> createUpdateBuyerOrder(@RequestBody BuyerOrderDTO buyerOrderDTO) {
-			String methodName = "createUpdateGatePassIn()";
+			String methodName = "createUpdateBuyerOrder()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
 			Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -427,31 +428,32 @@ public class OutwardTransactionController extends BaseController{
 	    }
 		
 		@GetMapping("/getAvlQty")
-		public ResponseEntity<ResponseDTO> getAvlQty(@RequestParam(required =true) Long orgId,
+		public ResponseEntity<ResponseDTO> getAvlQtyByBO(@RequestParam(required =true) Long orgId,
 				@RequestParam(required =true) String client,
 				@RequestParam(required =true) String branchCode,
 				@RequestParam(required =true)String warehouse,
 				@RequestParam(required =true) String branch,
 				@RequestParam(required =true) String partNo,
-				@RequestParam(required =true) String partDesc) {
-			String methodName = "getAvlQty()";
+				@RequestParam(required =true) String partDesc,
+				@RequestParam(required =true) String batch) {
+			String methodName = "getAvlQtyByBO()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
 			Map<String, Object> responseObjectsMap = new HashMap<>();
 			ResponseDTO responseDTO = null;
-			int avalQty = 0;
+			List<Map<String, Object>> avalQty=new ArrayList<Map<String,Object>>();
 			try {
-				avalQty = outwardTransactionService.getAvlQty(orgId,client,branchCode,warehouse,branch,partNo,partDesc);
+				 avalQty = outwardTransactionService.getAvlQtyByBO(orgId,client,branchCode,warehouse,branch,partNo,partDesc,batch);
 			} catch (Exception e) {
 				errorMsg = e.getMessage();
 				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			}
 			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "SQTY information get successfully Id");
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "getAvlQtyByBO information get successfully Id");
 				responseObjectsMap.put("avalQty", avalQty);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ",
+				responseDTO = createServiceResponseError(responseObjectsMap, "getAvlQtyByBO information get Failed ",
 						errorMsg);
 			}
 			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -461,7 +463,8 @@ public class OutwardTransactionController extends BaseController{
 		@GetMapping("/getBoSkuDetails")
 		public ResponseEntity<ResponseDTO> getBoSkuDetails(@RequestParam(required =true) Long orgId,
 				@RequestParam(required =true) String branchCode,
-				@RequestParam(required =true)String client
+				@RequestParam(required =true)String client,@RequestParam(required =true) String batch,
+				@RequestParam(required =true) String warehouse
 				) {
 			String methodName = "getBoSkuDetails()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -470,7 +473,7 @@ public class OutwardTransactionController extends BaseController{
 			ResponseDTO responseDTO = null;
 		List<Map<String, Object>> skuDetails=new ArrayList<Map<String,Object>>();
 			try {
-				skuDetails = outwardTransactionService.getBoSkuDetails(orgId,branchCode,client);
+				skuDetails = outwardTransactionService.getBoSkuDetails(orgId,branchCode,client,batch,warehouse);
 			} catch (Exception e) {
 				errorMsg = e.getMessage();
 				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

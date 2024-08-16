@@ -68,6 +68,10 @@ public class VasPickVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze;
+	@Column(name = "totalorderqty")
+	private int totalOrderQty;
+	@Column(name = "pickedqty")
+	private int pickedQty;
 	
 	
 	@OneToMany(mappedBy ="vasPickVO",cascade = CascadeType.ALL)

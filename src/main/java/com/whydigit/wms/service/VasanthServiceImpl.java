@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,26 +13,17 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.CycleCountDTO;
 import com.whydigit.wms.dto.CycleCountDetailsDTO;
-import com.whydigit.wms.dto.KittingDTO;
-import com.whydigit.wms.dto.KittingDetails1DTO;
-import com.whydigit.wms.dto.KittingDetails2DTO;
 import com.whydigit.wms.dto.VasPickDTO;
 import com.whydigit.wms.dto.VasPickDetailsDTO;
 import com.whydigit.wms.entity.CycleCountDetailsVO;
 import com.whydigit.wms.entity.CycleCountVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
-import com.whydigit.wms.entity.KittingDetails1VO;
-import com.whydigit.wms.entity.KittingDetails2VO;
-import com.whydigit.wms.entity.KittingVO;
 import com.whydigit.wms.entity.VasPickDetailsVO;
 import com.whydigit.wms.entity.VasPickVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CycleCountDetailsRepo;
 import com.whydigit.wms.repo.CycleCountRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
-import com.whydigit.wms.repo.KittingDetails1Repo;
-import com.whydigit.wms.repo.KittingDetails2Repo;
-import com.whydigit.wms.repo.KittingRepo;
 import com.whydigit.wms.repo.VasPickDetailsRepo;
 import com.whydigit.wms.repo.VasPickRepo;
 
@@ -52,7 +44,7 @@ public class VasanthServiceImpl implements VasanthService {
 
 	@Autowired
 	CycleCountDetailsRepo cycleCountDetailsRepo;
-	
+
 	@Override
 	public Map<String, Object> createUpdateVasPic(VasPickDTO vasPicDTO) throws ApplicationException {
 		VasPickVO vasPickVO;
@@ -116,6 +108,9 @@ public class VasanthServiceImpl implements VasanthService {
 		vasPickVO.setPicBin(vasPicDTO.getPicBin());
 		vasPickVO.setFreeze(vasPicDTO.isFreeze());
 
+		int totalOrderQty = 0;
+		int pickedQty = 0;
+
 		List<VasPickDetailsVO> vasPickDetailsVOs = new ArrayList<>();
 		for (VasPickDetailsDTO vasPickDTO : vasPicDTO.getVasPickDetailsDTO()) {
 			VasPickDetailsVO detailsVO = new VasPickDetailsVO();
@@ -132,10 +127,16 @@ public class VasanthServiceImpl implements VasanthService {
 			detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
 			detailsVO.setManufactureDate(vasPickDTO.getManufactureDate());
 			detailsVO.setQcflag(vasPickDTO.isQcflag());
+
+			totalOrderQty = totalOrderQty + vasPickDTO.getAvlQty();
+			pickedQty = pickedQty + vasPickDTO.getPicQty();
+
 			detailsVO.setVasPickVO(vasPickVO); // Set the parent reference
 			vasPickDetailsVOs.add(detailsVO);
 		}
 		vasPickVO.setVasPickDetailsVO(vasPickDetailsVOs);
+		vasPickVO.setTotalOrderQty(totalOrderQty);
+		vasPickVO.setPickedQty(pickedQty);
 		return vasPickVO;
 	}
 
@@ -145,18 +146,18 @@ public class VasanthServiceImpl implements VasanthService {
 	}
 
 	@Override
-	public List<VasPickVO> getAllVaspick(Long orgId, String branchCode, String client, String customer) {
-		return vasPickRepo.findAllVasPick(orgId, branchCode, client, customer);
-	}
-
-	@Override
 	public String getVasPickDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
 		String ScreenCode = "VP";
 		String result = vasPickRepo.getVasPickDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
 	}
 
-	
+	@Override
+	public List<VasPickVO> getAllVaspick(Long orgId, String branchCode, String client, String branch, String finYear,
+			String warehouse) {
+		return vasPickRepo.AllVaspick(orgId, branchCode, client, branch, finYear, warehouse);
+	}
+
 	// CYCLECOUNT
 
 	@Override
@@ -171,8 +172,8 @@ public class VasanthServiceImpl implements VasanthService {
 			cycleCountVO = new CycleCountVO();
 			cycleCountVO.setCreatedBy(cycleCountDTO.getCreatedBy());
 			cycleCountVO.setUpdatedBy(cycleCountDTO.getCreatedBy());
-			
-			 //	GETDOCID API
+
+			// GETDOCID API
 			String docId = cycleCountRepo.getCycleCountInDocId(cycleCountDTO.getOrgId(), cycleCountDTO.getFinYear(),
 					cycleCountDTO.getBranchCode(), cycleCountDTO.getClient(), screenCode);
 			cycleCountVO.setDocId(docId);
@@ -180,7 +181,8 @@ public class VasanthServiceImpl implements VasanthService {
 			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
 					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(cycleCountDTO.getOrgId(),
-							cycleCountDTO.getFinYear(), cycleCountDTO.getBranchCode(), cycleCountDTO.getClient(), screenCode);
+							cycleCountDTO.getFinYear(), cycleCountDTO.getBranchCode(), cycleCountDTO.getClient(),
+							screenCode);
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
@@ -189,14 +191,14 @@ public class VasanthServiceImpl implements VasanthService {
 			cycleCountVO = cycleCountRepo.findById(cycleCountDTO.getId()).orElseThrow(() -> new ApplicationException(
 					"This Id Is Not Fount Any Information,Invalid Id ." + cycleCountDTO.getId()));
 			cycleCountVO.setUpdatedBy(cycleCountDTO.getCreatedBy());
-			
-			List<CycleCountDetailsVO> countDetailsVOs=cycleCountDetailsRepo.findByCycleCountVO(cycleCountVO);
+
+			List<CycleCountDetailsVO> countDetailsVOs = cycleCountDetailsRepo.findByCycleCountVO(cycleCountVO);
 			cycleCountDetailsRepo.deleteAll(countDetailsVOs);
 			message = "CycleCountDTO Updation Successfully";
 		}
-		getCycleCountVOFromCycleCountDTO(cycleCountVO,cycleCountDTO);
+		getCycleCountVOFromCycleCountDTO(cycleCountVO, cycleCountDTO);
 		cycleCountRepo.save(cycleCountVO);
-		Map<String, Object> response=new HashMap<String, Object>();
+		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("message", message);
 		response.put("cycleCountVO", cycleCountVO);
 		return response;
@@ -216,7 +218,7 @@ public class VasanthServiceImpl implements VasanthService {
 		cycleCountVO.setFreeze(cycleCountDTO.isFreeze());
 		cycleCountVO.setCycleCountNo(cycleCountDTO.getCycleCountNo());
 		cycleCountVO.setCycleCountDate(cycleCountDTO.getCycleCountDate());
-		
+
 		List<CycleCountDetailsVO> cycleCountDetailsVOs = new ArrayList<>();
 		for (CycleCountDetailsDTO details2dto : cycleCountDTO.getCycleCountDetailsDTO()) {
 			CycleCountDetailsVO cycleCountDetailsVO = new CycleCountDetailsVO();
@@ -240,12 +242,50 @@ public class VasanthServiceImpl implements VasanthService {
 
 		return cycleCountVO;
 	}
-	
+
 	@Override
 	public String getCycleCountInDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
 		String ScreenCode = "CT";
 		String result = vasPickRepo.getVasPickDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> getVaspickGrid(Long orgId, String branch, String branchCode, String client,
+			String warehouse) {
+		Set<Object[]> result = vasPickRepo.getVaspickGridDetals(orgId, branch, branchCode, client, warehouse);
+		return getVaspickFullGrids(result);
+	}
+
+	private List<Map<String, Object>> getVaspickFullGrids(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+
+			part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("partNo", fs[2] != null ? fs[2].toString() : "");
+			part.put("sku", fs[3] != null ? fs[3].toString() : "");
+			part.put("bin", fs[4] != null ? fs[4].toString() : "");
+			part.put("batch", fs[5] != null ? fs[5].toString() : "");
+			part.put("grnNo", fs[6] != null ? fs[6].toString() : "");
+			part.put("lotNo", fs[8] != null ? fs[7].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
+	@Override
+	public List<CycleCountVO> getAllCycleCount(Long orgId, String client, String branch, String branchCode,
+			String finYear, String warehouse) {
+		return cycleCountRepo.findAllCycleCount(orgId, client, branch, branchCode, finYear, warehouse);
+	}
+
+	@Override
+	public Optional<CycleCountVO> getCycleCountById(Long id) {
+		return cycleCountRepo.findById(id);
 	}
 
 }
