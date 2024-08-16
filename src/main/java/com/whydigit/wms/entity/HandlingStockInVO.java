@@ -86,7 +86,7 @@ public class HandlingStockInVO {
 	@Column(name = "client")
 	private String client;
 	@Column(name = "palletcount")
-	private String palletcount;
+	private int palletcount;
 	@Column(name = "indcno")
 	private String indcno;
 	@Column(name = "lrhawbhblno")

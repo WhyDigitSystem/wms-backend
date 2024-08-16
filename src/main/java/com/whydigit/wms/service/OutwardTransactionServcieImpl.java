@@ -247,24 +247,6 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, finYear, branch, branchCode, client, warehouse, buyerOrderNo);
 
 	}
-
-	
-	@Transactional
-	public List<Map<String, Object>> getBuyerOrderNoFromPickRequestForDeliveryChallan(Long orgId,String finYear,String branch,String branchCode, String client,String warehouse) {
-
-		Set<Object[]> result = pickRequestRepo.findBuyerOrderNoFromPickRequestForDeliveryChallan(orgId,finYear,branch,branchCode, client,warehouse);
-		return getBuyerOrderNoFromDeliveryChallan(result);
-	}
-
-	private List<Map<String, Object>> getBuyerOrderNoFromDeliveryChallan(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("buyerOrderNo", fs[0] != null ? fs[0].toString() : "");
-			details1.add(part);
-		}
-		return details1;
-	}
 	
 	
 	@Transactional

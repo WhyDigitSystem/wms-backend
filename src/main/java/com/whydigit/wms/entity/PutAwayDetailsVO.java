@@ -41,6 +41,8 @@ public class PutAwayDetailsVO {
 	private String partDesc;
 	@Column(name = "sku")
 	private String sku;
+	@Column(name = "invoiceno")
+	private String invoiceNo;
 	@Column(name = "invqty")
 	private int invQty;
 	@Column(name = "recqty")
@@ -53,20 +55,14 @@ public class PutAwayDetailsVO {
 	private int putAwayPiecesQty;
 	@Column(name = "bin")
 	private String bin;
-	@Column(name = "weight")
-	private double weight;
-	@Column(name = "rate")
-	private double rate;
-	@Column(name = "amount")
-	private double amount;
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "bintype")
 	private String binType;
 	@Column(name = "shortqty")
 	private int shortQty;
-	@Column(name = "sqty")
-	private int sQty;
+	@Column(name = "grnQty")
+	private int grnQty;
 	@Column(name = "ssku")
 	private String sSku;
 	@Column(name = "binclass")

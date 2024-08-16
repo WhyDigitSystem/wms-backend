@@ -36,8 +36,6 @@ public interface OutwardTransactionService {
 		List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
 				String branchCode, String client, String warehouse, String buyerOrderNo);
 
-		List<Map<String, Object>> getBuyerOrderNoFromPickRequestForDeliveryChallan(Long orgId, String finYear, String branch,
-				String branchCode, String client, String warehouse);
 		
 		List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear,
 				String branch, String branchCode, String client,String buyerOrderNo);

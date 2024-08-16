@@ -60,6 +60,14 @@ public class PutAwayVO {
 	private String carrier;
 	@Column(name = "bintype")
 	private String binType;
+	@Column(name = "contact")
+	private String contact;
+	@Column(name = "vehicletype")
+	private String vehicleType;
+	@Column(name = "vehicleno")
+	private String vehicleNo;
+	@Column(name = "drivername")
+	private String driverName;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "lotno")
