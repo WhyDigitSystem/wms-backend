@@ -210,42 +210,7 @@ public class OutwardTransactionController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 		
-		@GetMapping("/getBuyerOrderNoFromPickRequestForDeliveryChallan")
-		public ResponseEntity<ResponseDTO> getBuyerOrderNoFromPickRequestForDeliveryChallan(
-				@RequestParam(required = false) Long orgId,
-				@RequestParam(required = false) String finYear,
-				@RequestParam(required = false) String branch,
-				@RequestParam(required = false) String branchCode,
-				@RequestParam(required = false) String client,
-				@RequestParam(required = false) String warehouse) {
-
-			String methodName = "getBuyerOrderNoFromPickRequestForDeliveryChallan()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<Map<String, Object>> mov = new ArrayList<>();
-
-			try {
-				mov = outwardTransactionService.getBuyerOrderNoFromPickRequestForDeliveryChallan(orgId,finYear,
-						 branch,branchCode, client,warehouse);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						"All BuyerOrderNo from pickrequest information retrieved successfully");
-				responseObjectsMap.put("vasPutawayVO", mov);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Failed to retrieve BuyerOrderNo from pickrequest information", errorMsg);
-			}
-
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		}
+	
 		
 		@GetMapping("/getBuyerShipToBillToFromBuyerOrderForDeliveryChallan")
 		public ResponseEntity<ResponseDTO> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(
