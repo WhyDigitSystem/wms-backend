@@ -717,6 +717,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		locationMovementVO.setSku(locationMovementDTO.getSku());
 		locationMovementVO.setFreeze(locationMovementDTO.getFreeze());
 		locationMovementVO.setCore(locationMovementDTO.getCore());
+		locationMovementVO.setMovedQty(locationMovementDTO.getMovedQty());
 
 		if (ObjectUtils.isNotEmpty(locationMovementVO.getId())) {
 			List<LocationMovementDetailsVO> locationMovementDetailsVO1 = locationMovementDetailsRepo
@@ -784,14 +785,37 @@ public class StockProcessServiceImpl implements StockProcessService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
-			part.put("binclass", fs[1] != null ? fs[1].toString() : "");
-			part.put("bintype", fs[2] != null ? fs[2].toString() : "");
+			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("binType", fs[2] != null ? fs[2].toString() : "");
 			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
 	}
 
+	@Transactional
+	public List<Map<String, Object>> getToBinFromLocationStatusForLocationMovement(Long orgId, String branch,
+			String branchCode, String client,String warehouse) {
+
+		Set<Object[]> result = locationMovementRepo.findToBinFromLocationStatusForLocationMovement(orgId, branch,
+				branchCode, client,warehouse);
+		return getToBinResult(result);
+	}
+
+	private List<Map<String, Object>> getToBinResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("binType", fs[2] != null ? fs[2].toString() : "");
+			part.put("binStatus", fs[3] != null ? fs[3].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear,
@@ -831,7 +855,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("bintype", fs[1] != null ? fs[1].toString() : "");
+			part.put("binType", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
 			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
 			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
@@ -1213,8 +1237,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
-			part.put("binclass", fs[1] != null ? fs[1].toString() : "");
-			part.put("bintype", fs[2] != null ? fs[2].toString() : "");
+			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("binType", fs[2] != null ? fs[2].toString() : "");
 			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
