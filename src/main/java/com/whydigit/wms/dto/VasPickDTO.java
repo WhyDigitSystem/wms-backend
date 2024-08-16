@@ -25,9 +25,10 @@ public class VasPickDTO {
 	private boolean active;
 	private boolean cancel;
 	private String cancelRemarks;
-	private boolean freeze;
-	
-	
+	private char stateStatus;
+	private String stockState;
+	private String status;
+
 	private List<VasPickDetailsDTO> vasPickDetailsDTO;
 
 }
