@@ -205,16 +205,16 @@ public class VasController extends BaseController {
         String errorMsg = null;
         Map<String, Object> responseObjectsMap = new HashMap<>();
         ResponseDTO responseDTO = null;
-        List<Map<String, Object>> kittingVO = new ArrayList<>();
+        List<Map<String, Object>> avlQty = new ArrayList<>();
         try {
-            kittingVO = vasService.getSqtyByKitting(orgId, branchCode, client, partNo,warehouse,grnno);
+        	avlQty = vasService.getSqtyByKitting(orgId,branch, branchCode, client, partNo, partDesc,warehouse);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
         }
         if (StringUtils.isBlank(errorMsg)) {
             responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Sqty information retrieved successfully");
-            responseObjectsMap.put("kittingVO", kittingVO);
+            responseObjectsMap.put("avlQty", avlQty);
             responseDTO = createServiceResponse(responseObjectsMap);
         } else {
             responseDTO = createServiceResponseError(responseObjectsMap, " Sqty Failed to retrieve  Details", errorMsg);

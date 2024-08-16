@@ -72,6 +72,7 @@ public class KittingVO {
 	private boolean freeze=true;
 	@Column(name = "refno")
 	private String refNo;
+	private String sku;
 	@Column(name = "refdate")
 	private LocalDate refDate=LocalDate.now();
 	

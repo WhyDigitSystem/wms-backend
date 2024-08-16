@@ -24,6 +24,7 @@ public class KittingDTO {
 	private String cancelRemarks;
 	private boolean freeze;
 	private String refNo;
+	private String sku;
 	
 	private List<KittingDetails1DTO> kittingDetails1DTO;
 	private List<KittingDetails2DTO> kittingDetails2DTO;
