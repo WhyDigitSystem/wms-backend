@@ -169,7 +169,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 		if (grnDetailsVOLists != null && !grnDetailsVOLists.isEmpty())
 
 			for (GrnDetailsVO grnDetailsVO : grnDetailsVOLists) {
-
+				if (grnDetailsVO.getDamageQty() > 0) {
 				HandlingStockInVO handlingStockInVO = new HandlingStockInVO();
 				handlingStockInVO.setScreencode(savedGrnVO.getScreenCode());
 				// Set common values from savedGrnVO
@@ -193,36 +193,30 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 				handlingStockInVO.setCreatedby(savedGrnVO.getCreatedBy());
 				handlingStockInVO.setUpdatedby(savedGrnVO.getUpdatedBy());
 				handlingStockInVO.setExpdate(grnDetailsVO.getExpDate());
-				handlingStockInVO.setNoofpallet(grnDetailsVO.getNoOfBins());
-				;
-				// Set values from grnDetailsVO
 				handlingStockInVO.setPartno(grnDetailsVO.getPartNo());
 				handlingStockInVO.setPartdesc(grnDetailsVO.getPartDesc());
-				handlingStockInVO.setRpqty(grnDetailsVO.getGrnQty());
-				handlingStockInVO.setSqty(grnDetailsVO.getGrnQty());
 				handlingStockInVO.setLocationtype(grnDetailsVO.getBinType());
-				handlingStockInVO.setInvqty(grnDetailsVO.getInvQty());
-				handlingStockInVO.setRecqty(grnDetailsVO.getRecQty());
-				handlingStockInVO.setShortqty(grnDetailsVO.getShortQty());
-				handlingStockInVO.setPalletqty(grnDetailsVO.getBinQty());
 				handlingStockInVO.setRate(grnDetailsVO.getRate());
 				handlingStockInVO.setAmount(grnDetailsVO.getAmount());
 				handlingStockInVO.setSku(grnDetailsVO.getSku());
 				handlingStockInVO.setSsku(grnDetailsVO.getSku());
-				// Check if damageqty is 0
-				if (grnDetailsVO.getDamageQty() == 0) {
-					handlingStockInVO.setSqty(grnDetailsVO.getGrnQty());
-					handlingStockInVO.setQcflag("T");
-				} else {
-					// If damageqty is not 0, set sqty and damageqty in separate rows
-					handlingStockInVO.setSqty(grnDetailsVO.getDamageQty());
-					handlingStockInVO.setDamageqty(grnDetailsVO.getDamageQty());
-					handlingStockInVO.setQcflag("F");
-				}
+				handlingStockInVO.setPalletcount(1);
+				handlingStockInVO.setNoofpallet(1);
+				handlingStockInVO.setInvqty(grnDetailsVO.getInvQty());
+				handlingStockInVO.setRecqty(grnDetailsVO.getRecQty());
+				handlingStockInVO.setShortqty(grnDetailsVO.getShortQty());
+				handlingStockInVO.setDamageqty(grnDetailsVO.getDamageQty());
+				handlingStockInVO.setSqty(grnDetailsVO.getDamageQty());
+				handlingStockInVO.setPalletqty(grnDetailsVO.getDamageQty());
+				handlingStockInVO.setRpqty(grnDetailsVO.getDamageQty());
+				handlingStockInVO.setQcflag("F");
+				
 				handlingStockInRepo.save(handlingStockInVO);
+				}
 			}
 		for (GrnDetailsVO grnDetailsVO : grnDetailsVOLists) {
 			// create new obj to store as second row
+			if (grnDetailsVO.getDamageQty() == 0) {
 			HandlingStockInVO handlingStockInVO2 = new HandlingStockInVO();
 			handlingStockInVO2.setScreencode(grnVO.getScreenCode());
 			handlingStockInVO2.setRefdate(savedGrnVO.getDocdate());
@@ -237,6 +231,10 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			handlingStockInVO2.setSdocdate(savedGrnVO.getDocdate());
 			handlingStockInVO2.setStockdate(savedGrnVO.getDocdate());
 			handlingStockInVO2.setSdocid(savedGrnVO.getDocId());
+			
+			
+			
+			
 			handlingStockInVO2.setFinyr(savedGrnVO.getFinYear());
 			handlingStockInVO2.setBatchno(grnDetailsVO.getBatchNo());
 			handlingStockInVO2.setBatchdt(grnDetailsVO.getBatchDt());
@@ -245,31 +243,27 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			handlingStockInVO2.setCreatedby(savedGrnVO.getCreatedBy());
 			handlingStockInVO2.setUpdatedby(savedGrnVO.getUpdatedBy());
 			handlingStockInVO2.setExpdate(grnDetailsVO.getExpDate());
-			handlingStockInVO2.setNoofpallet(grnDetailsVO.getNoOfBins());
-			handlingStockInVO2.setPalletqty(grnDetailsVO.getBinQty());
-			if (handlingStockInVO2.getDamageqty() == 0) {
-				handlingStockInVO2.setQcflag("T");
-				handlingStockInVO2.setDamageqty(0);
-			} else {
-				handlingStockInVO2.setQcflag("F");
-			}
 			handlingStockInVO2.setPartno(grnDetailsVO.getPartNo());
 			handlingStockInVO2.setPartdesc(grnDetailsVO.getPartDesc());
 			handlingStockInVO2.setLocationtype(grnDetailsVO.getBinType());
 			handlingStockInVO2.setSsku(grnDetailsVO.getSku());
-			handlingStockInVO2.setInvqty(grnDetailsVO.getInvQty());
-			handlingStockInVO2.setRecqty(grnDetailsVO.getRecQty());
-
-			handlingStockInVO2.setShortqty(grnDetailsVO.getShortQty());
-			handlingStockInVO2.setPalletqty(grnDetailsVO.getBinQty());
 			handlingStockInVO2.setRate(grnDetailsVO.getRate());
 			handlingStockInVO2.setAmount(grnDetailsVO.getAmount());
-			handlingStockInVO2.setSqty(grnDetailsVO.getGrnQty());
 			handlingStockInVO2.setSku(grnDetailsVO.getSku());
 			handlingStockInVO2.setSsku(grnDetailsVO.getSku());
+			handlingStockInVO2.setPalletcount(1);
+			handlingStockInVO2.setNoofpallet(grnDetailsVO.getNoOfBins());
+			handlingStockInVO2.setInvqty(grnDetailsVO.getInvQty());
+			handlingStockInVO2.setRecqty(grnDetailsVO.getRecQty());
+			handlingStockInVO2.setShortqty(grnDetailsVO.getShortQty());
+			handlingStockInVO2.setDamageqty(0);
+			handlingStockInVO2.setSqty(grnDetailsVO.getGrnQty());
+			handlingStockInVO2.setPalletqty(grnDetailsVO.getBinQty());
+			handlingStockInVO2.setRpqty(grnDetailsVO.getInvQty());
+			handlingStockInVO2.setQcflag("T");
 			handlingStockInRepo.save(handlingStockInVO2);
 		}
-
+		}
 		Map<String, Object> response = new HashMap<>();
 		response.put("grnVO", grnVO);
 		response.put("message", message);
@@ -680,15 +674,13 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 				// Set values from grnDetailsVO
 				handlingStockInVO.setPartno(putAwayDetailsVO.getPartNo());
 				handlingStockInVO.setPartdesc(putAwayDetailsVO.getPartDesc());
-				handlingStockInVO.setRpqty(putAwayDetailsVO.getSQty()*-1);
+				handlingStockInVO.setRpqty(putAwayDetailsVO.getPutAwayQty()*-1);
 				handlingStockInVO.setSqty(putAwayDetailsVO.getPutAwayQty()*-1);
 				handlingStockInVO.setLocationtype(putAwayDetailsVO.getBinType());
 				handlingStockInVO.setInvqty(putAwayDetailsVO.getInvQty());
 				handlingStockInVO.setRecqty(putAwayDetailsVO.getRecQty());
 				handlingStockInVO.setShortqty(putAwayDetailsVO.getShortQty());
 				handlingStockInVO.setPalletqty(putAwayDetailsVO.getPutAwayQty());
-				handlingStockInVO.setRate(putAwayDetailsVO.getRate());
-				handlingStockInVO.setAmount(putAwayDetailsVO.getAmount());
 				handlingStockInVO.setSku(putAwayDetailsVO.getSku());
 				handlingStockInVO.setSsku(putAwayDetailsVO.getSku());
 				// Check if damageqty is 0
@@ -732,20 +724,16 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 				stockDetailsVO.setSQty(putAwayDetailsVO.getPutAwayQty());
 				stockDetailsVO.setSSku(putAwayDetailsVO.getSSku());
 				stockDetailsVO.setBinClass(putAwayDetailsVO.getBinClass());
-				stockDetailsVO.setWeight(putAwayDetailsVO.getWeight());
 				stockDetailsVO.setBatchDate(putAwayDetailsVO.getBatchDate());
 				stockDetailsVO.setPartno(putAwayDetailsVO.getPartNo());
 				stockDetailsVO.setPartDesc(putAwayDetailsVO.getPartDesc());
 				stockDetailsVO.setSku(putAwayDetailsVO.getSku());
 				stockDetailsVO.setCellType(putAwayDetailsVO.getCellType());
-				stockDetailsVO.setAmount(putAwayDetailsVO.getAmount());
 				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
 				stockDetailsVO.setCreatedBy(savedPutAwayVO.getCreatedBy());
 				stockDetailsVO.setUpdatedBy(savedPutAwayVO.getUpdatedBy());
 				stockDetailsVO.setPcKey(materialRepo.getParentChildKey(savedPutAwayVO.getOrgId(),savedPutAwayVO.getClient(),putAwayDetailsVO.getPartNo()));
 				stockDetailsVO.setSourceId(putAwayDetailsVO.getId());
-				
-				stockDetailsVO.setSsQty(putAwayDetailsVO.getSQty());
 				if ("Defective".equals(putAwayDetailsVO.getBin())) {
 					stockDetailsVO.setQcFlag("F");
 					stockDetailsVO.setStatus("D");
@@ -807,15 +795,13 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			putAwayDetailsVOs.setBatch(putAwayDetailsDTO.getBatch());
 			putAwayDetailsVOs.setPartDesc(putAwayDetailsDTO.getPartDesc());
 			putAwayDetailsVOs.setSku(putAwayDetailsDTO.getSku());
+			putAwayDetailsVOs.setInvoiceNo(putAwayDetailsDTO.getInvoiceNo());
 			putAwayDetailsVOs.setInvQty(putAwayDetailsDTO.getInvQty());
 			putAwayDetailsVOs.setRecQty(putAwayDetailsDTO.getRecQty());
-			putAwayDetailsVOs.setSQty(putAwayDetailsDTO.getSQty());
+			putAwayDetailsVOs.setGrnQty(putAwayDetailsDTO.getGrnQty());
 			putAwayDetailsVOs.setPutAwayQty(putAwayDetailsDTO.getPutAwayQty());
 			putAwayDetailsVOs.setPutAwayPiecesQty(putAwayDetailsDTO.getPutAwayPiecesQty());
 			putAwayDetailsVOs.setBin(putAwayDetailsDTO.getBin());
-			putAwayDetailsVOs.setWeight(putAwayDetailsDTO.getWeight());
-			putAwayDetailsVOs.setRate(putAwayDetailsDTO.getRate());
-			putAwayDetailsVOs.setAmount(putAwayDetailsDTO.getAmount());
 			putAwayDetailsVOs.setRemarks(putAwayDetailsDTO.getRemarks());
 			putAwayDetailsVOs.setBinType(putAwayDetailsDTO.getBinType());
 			putAwayDetailsVOs.setSSku(putAwayDetailsDTO.getSSku());

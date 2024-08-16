@@ -25,6 +25,7 @@ import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.VasPutawayDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.DeliveryChallanVO;
+import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.entity.VasPutawayVO;
 import com.whydigit.wms.service.OutwardTransactionService;
 
@@ -144,6 +145,108 @@ public class OutwardTransactionController extends BaseController{
 		    }
 		    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		    return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan")
+		public ResponseEntity<ResponseDTO> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(
+				@RequestParam(required = false) Long orgId,
+				@RequestParam(required = false) String finYear,
+				@RequestParam(required = false) String branch,
+				@RequestParam(required = false) String branchCode,
+				@RequestParam(required = false) String client,
+				@RequestParam(required = false) String warehouse,
+				@RequestParam(required = false) String buyerOrderNo ) {
+
+			String methodName = "getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> mov = new ArrayList<>();
+
+			try {
+				mov = outwardTransactionService.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,
+						finYear,branch, branchCode, client, warehouse,buyerOrderNo);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All Details from DeliveryChallan information retrieved successfully");
+				responseObjectsMap.put("deliveryChallanVO", mov);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve All Details from DeliveryChallan information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+		@GetMapping("/getAllPickRequestFromDeliveryChallan")
+		public ResponseEntity<ResponseDTO> getAllPickRequestFromDeliveryChallan(@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client,@RequestParam String warehouse,@RequestParam String buyerOrderNo) {
+			String methodName = "getAllPickRequestFromDeliveryChallan()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<PickRequestVO> pickRequestVO = new ArrayList<>();
+			try {
+				pickRequestVO = outwardTransactionService.getAllPickRequestFromDeliveryChallan(orgId,finYear,branch,branchCode,client,warehouse,buyerOrderNo);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DeliveryChallan information get successfully");
+				responseObjectsMap.put("pickRequestVO", pickRequestVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "DeliveryChallan information receive failed", errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+		
+	
+		
+		@GetMapping("/getBuyerShipToBillToFromBuyerOrderForDeliveryChallan")
+		public ResponseEntity<ResponseDTO> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(
+				@RequestParam(required = false) Long orgId,
+				@RequestParam(required = false) String finYear,
+				@RequestParam(required = false) String branch,
+				@RequestParam(required = false) String branchCode,
+				@RequestParam(required = false) String client,
+				@RequestParam(required = false) String buyerOrderNo) {
+
+			String methodName = "getBuyerShipToBillToFromBuyerOrderForDeliveryChallan()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> mov = new ArrayList<>();
+
+			try {
+				mov = outwardTransactionService.getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(orgId,finYear,
+						 branch,branchCode, client,buyerOrderNo);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						"All BuyerDetails from BuyerOrder information retrieved successfully");
+				responseObjectsMap.put("vasPutawayVO", mov);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						"Failed to retrieve BuyerDetails from BuyerOrder information", errorMsg);
+			}
+
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
 		}
 		
 		
@@ -557,76 +660,5 @@ public class OutwardTransactionController extends BaseController{
 		}
 		
 		
-		@GetMapping("/getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan")
-		public ResponseEntity<ResponseDTO> getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(
-				@RequestParam(required = false) Long orgId,
-				@RequestParam(required = false) String branch,
-				@RequestParam(required = false) String branchCode,
-				@RequestParam(required = false) String client,
-				@RequestParam(required = false) String buyerRefNo ) {
-
-			String methodName = "getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<Map<String, Object>> mov = new ArrayList<>();
-			try {
-				mov = outwardTransactionService.getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(orgId,
-						branch, branchCode, client,buyerRefNo);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						"All Details from DeliveryChallan information retrieved successfully");
-				responseObjectsMap.put("vasPutawayVO", mov);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Failed to retrieve All Details from DeliveryChallan information", errorMsg);
-			}
-
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		}
-		
-		@GetMapping("/getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan")
-		public ResponseEntity<ResponseDTO> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(
-				@RequestParam(required = false) Long orgId,
-				@RequestParam(required = false) String finYear,
-				@RequestParam(required = false) String branch,
-				@RequestParam(required = false) String branchCode,
-				@RequestParam(required = false) String client,
-				@RequestParam(required = false) String warehouse,
-				@RequestParam(required = false) String buyerRefNo ) {
-
-			String methodName = "getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<Map<String, Object>> mov = new ArrayList<>();
-
-			try {
-				mov = outwardTransactionService.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,
-						finYear,branch, branchCode, client, warehouse,buyerRefNo);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						"All Details from DeliveryChallan information retrieved successfully");
-				responseObjectsMap.put("vasPutawayVO", mov);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Failed to retrieve All Details from DeliveryChallan information", errorMsg);
-			}
-
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		}
+	
 }

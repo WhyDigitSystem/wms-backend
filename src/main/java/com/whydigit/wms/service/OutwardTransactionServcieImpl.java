@@ -26,6 +26,7 @@ import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.DeliveryChallanDetailsVO;
 import com.whydigit.wms.entity.DeliveryChallanVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
+import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.entity.VasPutawayDetailsVO;
 import com.whydigit.wms.entity.VasPutawayVO;
@@ -35,6 +36,7 @@ import com.whydigit.wms.repo.BuyerOrderRepo;
 import com.whydigit.wms.repo.DeliveryChallanDetailsRepo;
 import com.whydigit.wms.repo.DeliveryChallanRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
+import com.whydigit.wms.repo.PickRequestRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.VasPutawayDetailsRepo;
 import com.whydigit.wms.repo.VasPutawayRepo;
@@ -67,6 +69,9 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
+	
+	@Autowired
+	PickRequestRepo pickRequestRepo;
 
 	// DeliveryChallan
 
@@ -235,7 +240,34 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		deliveryChallanVO.setDeliveryChallanDetailsVO(deliveryChallanDetailsVOs);
 
 	}
+	
+	@Override
+	public List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse,String buyerOrderNo) {
+		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, finYear, branch, branchCode, client, warehouse, buyerOrderNo);
 
+	}
+	
+	
+	@Transactional
+	public List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId,String finYear,String branch,String branchCode, String client,String buyerOrderNo) {
+
+		Set<Object[]> result = buyerOrderRepo.findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(orgId,finYear,branch,branchCode, client,buyerOrderNo);
+		return getBuyerFromDeliveryChallan(result);
+	}
+
+	private List<Map<String, Object>> getBuyerFromDeliveryChallan(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("buyer", fs[0] != null ? fs[0].toString() : "");
+			part.put("buyerShortName", fs[1] != null ? fs[1].toString() : "");
+			part.put("billTo", fs[2] != null ? fs[2].toString() : "");
+			part.put("shipTo", fs[3] != null ? fs[3].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
 	// VASPutaway
 
 	@Override
@@ -693,36 +725,15 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		return result;
 	}
 	
-	@Override
-	@Transactional
-	public List<Map<String, Object>> getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(Long orgId,
-			String branch,	String branchCode, String client,String buyerRefNo) {
-
-		Set<Object[]> result = vasPutawayDetailsRepo.getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(orgId,branch, branchCode,
-				client,buyerRefNo);
-		return getAllDetailsDeliveryChallan(result);
-	}
-	private List<Map<String, Object>> getAllDetailsDeliveryChallan(Set<Object[]> result) {
-    List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("buyerRefDate", fs[0] != null ? fs[0].toString() : "");
-			part.put("invoiceNo", fs[1] != null ? fs[1].toString() : "");
-			part.put("customerName", fs[2] != null ? fs[2].toString() : "");
-			part.put("clientName", fs[3] != null ? fs[3].toString() : "");
-			
-			details1.add(part);
-		}
-		return details1;
-	}
+	
 	
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
-			String finYear,String branch,	String branchCode, String client,String warehouse,String buyerRefNo) {
+			String finYear,String branch,	String branchCode, String client,String warehouse,String buyerOrderNo) {
 
-		Set<Object[]> result = vasPutawayDetailsRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,finYear,branch, branchCode,
-				client,warehouse,buyerRefNo);
+		Set<Object[]> result = pickRequestRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,finYear,branch, branchCode,
+				client,warehouse,buyerOrderNo);
 		return getAllDocidDocdatepartnofromDeliveryChallan(result);
 	}
 	private List<Map<String, Object>> getAllDocidDocdatepartnofromDeliveryChallan(Set<Object[]> result) {
@@ -731,7 +742,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			Map<String, Object> part = new HashMap<>();
 			part.put("docId", fs[0] != null ? fs[0].toString() : "");
 			part.put("docDate", fs[1] != null ? fs[1].toString() : "");
-			part.put("partCode", fs[2] != null ? fs[2].toString() : "");
+			part.put("partno", fs[2] != null ? fs[2].toString() : "");
 			part.put("partDesc", fs[3] != null ? fs[3].toString() : "");
 			part.put("shippedQty", fs[4] != null ? fs[4].toString() : "");
 

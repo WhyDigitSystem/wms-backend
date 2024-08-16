@@ -1,4 +1,5 @@
 package com.whydigit.wms.entity;
+
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -68,7 +70,7 @@ public class PickRequestDetailsVO {
 	private String amount;
 	@Column(name = "remarks")
 	private String remarks;
-	
+
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "bintype")
@@ -84,12 +86,11 @@ public class PickRequestDetailsVO {
 	@Column(name = "ssku")
 	private String ssku;
 	@Column(name = "status")
-	private String status="R";
+	private String status = "R";
 	@Column(name = "stokcdate")
 	private LocalDate stockDate;
 	
-	
-	@JsonManagedReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "pickrequestid")
 	private PickRequestVO pickRequestVO;

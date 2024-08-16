@@ -25,19 +25,19 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 	@Query(nativeQuery = true, value = "select * from locationmovement where locationmovementid =?1")
 	LocationMovementVO findLocationMovementById(Long id);
 
-	@Query(nativeQuery = true, value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5")
+	@Query(nativeQuery = true, value = "select bin,binclass,bintype,sum(sqty) as avlqty from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 GROUP BY bin,binclass,bintype HAVING SUM(SQTY) > 0")
 	Set<Object[]> findBinFromStockForLocationMovement(Long orgId, String finYear, String branch, String branchCode,
 			String client);
 
-	@Query(nativeQuery = true, value = "select partno,partdesc,sku from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6")
+	@Query(nativeQuery = true, value = "select partno,partdesc,sku,sum(sqty) as avlqty from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 GROUP BY partno,partdesc,sku HAVING SUM(SQTY) > 0 ")
 	Set<Object[]> findPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin);
 
-	@Query(nativeQuery = true, value = "select grnno,batch,batchdate,lotno from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9")
+	@Query(nativeQuery = true, value = "select grnno,batch,batchdate,lotno,sum(sqty) as qty from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9 GROUP BY grnno,batch,batchdate,lotno HAVING SUM(SQTY) > 0 ")
 	Set<Object[]> findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear,
 			String branch, String branchCode, String client, String bin, String partNo, String partDesc, String sku);
 
-	@Query(nativeQuery = true, value = "SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status='R'")
+	@Query(nativeQuery = true, value = "SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno,sum(sqty) as sqty from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status='R' group by bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno having SUM(SQTY) > 0 ")
 	Set<Object[]> findAllForLocationMovementDetailsFillGrid(Long orgId, String branch, String branchCode,
 			String client);
 
