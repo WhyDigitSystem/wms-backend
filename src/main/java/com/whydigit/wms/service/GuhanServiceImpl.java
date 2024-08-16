@@ -163,6 +163,8 @@ public class GuhanServiceImpl implements GuhanSerivce {
 		pickRequestVO.setBuyerRefDate(pickRequestDTO.getBuyerRefDate());
 		pickRequestVO.setShipmentMethod(pickRequestDTO.getShipmentMethod());
 		pickRequestVO.setBuyerOrderNo(pickRequestDTO.getBuyerOrderNo());
+		pickRequestVO.setShipmentMethod(pickRequestDTO.getShipmentMethod());
+		pickRequestVO.setBuyerRefNo(pickRequestDTO.getBuyerRefNo());
 		pickRequestVO.setStatus(pickRequestDTO.getStatus());
 		pickRequestVO.setInvoiceNo(pickRequestDTO.getInvoiceNo());
 		pickRequestVO.setClientShortName(pickRequestDTO.getClientShortName());

@@ -40,5 +40,8 @@ public class LocationMovementDetailsDTO {
 	private String pcKey;
 	private String ssku;
 	private LocalDate stockDate;
-	
+	private String toBinClass;
+	private String toBinType;
+	private String toCellType;
+
 }

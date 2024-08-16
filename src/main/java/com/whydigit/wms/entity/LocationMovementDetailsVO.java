@@ -34,7 +34,7 @@ public class LocationMovementDetailsVO {
 	private Long id;
 	@Column(name = "bin")
 	private String bin;
-	@Column(name = "partno") 	
+	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdescripition")
 	private String partDesc;
@@ -62,8 +62,8 @@ public class LocationMovementDetailsVO {
 	private LocalDate grnDate;
 	@Column(name = "bintype")
 	private String binType;
-	@Column(name="status")
-	private String status="R";
+	@Column(name = "status")
+	private String status = "R";
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "celltype")
@@ -80,7 +80,13 @@ public class LocationMovementDetailsVO {
 	private String ssku;
 	@Column(name = "stokcdate")
 	private LocalDate stockDate;
-	
+	@Column(name = "tobinclass")
+	private String toBinClass;
+	@Column(name = "tobintype")
+	private String toBinType;
+	@Column(name = "tocelltype")
+	private String toCellType;
+
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "locationmovementid")
