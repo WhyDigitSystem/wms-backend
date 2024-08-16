@@ -45,7 +45,7 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 	Set<Object[]> findAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch, String branchCode,
 			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo);
 
-	@Query(nativeQuery = true,value="select bin,bintype,binclass,binstatus from wv_locationstatus where orgid=?1 and branch=?2 and branchcode=?3 and client =?4 and warehouse=?5")
+	@Query(nativeQuery = true,value="select bin,bintype,binclass,celltype from wv_locationstatus where orgid=?1 and branch=?2 and branchcode=?3 and client =?4 and warehouse=?5")
 	Set<Object[]> findToBinFromLocationStatusForLocationMovement(Long orgId, String branch, String branchCode,
 			String client,String warehouse);
 

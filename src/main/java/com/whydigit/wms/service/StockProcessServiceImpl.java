@@ -809,10 +809,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("bin", fs[0] != null ? fs[0].toString() : "");
-			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
-			part.put("binType", fs[2] != null ? fs[2].toString() : "");
-			part.put("binStatus", fs[3] != null ? fs[3].toString() : "");
+			part.put("toBin", fs[0] != null ? fs[0].toString() : "");
+			part.put("toBinClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("toBinType", fs[2] != null ? fs[2].toString() : "");
+			part.put("toCellType", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
