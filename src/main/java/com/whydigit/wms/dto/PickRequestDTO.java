@@ -36,6 +36,7 @@ public class PickRequestDTO {
 	private String branch;
 	private String branchCode;
 	private String warehouse;
+	private String status;
 	private String createdBy;
 	private String updatedBy;
 	private String freeze;

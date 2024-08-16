@@ -93,6 +93,8 @@ public class PickRequestVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
+	@Column(name = "status")
+	private String status;
 	@Column(name = "freeze")
 	private String freeze ;
 	@Column(name = "grndate")
