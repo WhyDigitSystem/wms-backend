@@ -75,7 +75,8 @@ public class LocationMovementVO {
 	private LocalDate grnDate = LocalDate.now();
 	@Column(name="core")
 	private String core;
-	
+	@Column(name="movedqty")
+	private int movedQty;
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
 	@JsonManagedReference

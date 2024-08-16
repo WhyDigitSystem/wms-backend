@@ -417,6 +417,39 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getToBinFromLocationStatusForLocationMovement")
+	public ResponseEntity<ResponseDTO> getToBinFromLocationStatusForLocationMovement(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String warehouse) {
+
+		String methodName = "getToBinFromLocationStatusForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = stockProcessService.getToBinFromLocationStatusForLocationMovement(orgId, branch, branchCode, client,warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All ToBin from LocationStatus retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve ToBin from LocationStatus information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 	@GetMapping("/getAllForLocationMovementDetailsFillGrid")
 	public ResponseEntity<ResponseDTO> getAllForLocationMovementDetailsFillGrid(
 			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,

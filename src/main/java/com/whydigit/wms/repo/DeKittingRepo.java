@@ -28,7 +28,7 @@ public interface DeKittingRepo extends JpaRepository<DeKittingVO, Long> {
 	Set<Object[]> findBinFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
 			String client);
 
-	@Query(nativeQuery = true, value = "grnno,batch,batchdate,lotno,expdate,sum(sqty) as sqty from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9 GROUP BY grnno,batch,batchdate,lotno,expdate HAVING sum(sqty)>0")
+	@Query(nativeQuery = true, value = "select grnno,batch,batchdate,lotno,expdate,sum(sqty) as sqty from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9 GROUP BY grnno,batch,batchdate,lotno,expdate HAVING sum(sqty)>0")
 	Set<Object[]> findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(Long orgId, String finYear,
 			String branch, String branchCode, String client, String bin, String partNo, String partDesc, String sku);
 
