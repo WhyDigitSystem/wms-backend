@@ -11,18 +11,7 @@ import com.whydigit.wms.entity.StockDetailsVO;
 @Repository
 public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 
-@Query(nativeQuery =true,value ="SELECT SUM(sqty)\n"
-		+ "FROM stockdetails\n"
-		+ "WHERE orgid = ?1\n"
-		+ "  AND client = ?4\n"
-		+ "  AND branchcode = ?3\n"
-		+ "  AND branch = ?2\n"
-		+ "  AND warehouse = ?7\n"
-		+ "  AND partno = ?5\n"
-		+ "  AND partdesc = ?6\n"
-		+ "  AND status = 'V'\n"
-		+ "")
-	Set<Object[]> getQtyDetais(Long orgId, String branch, String branchCode, String client, String partNo,
-			String partDesc, String warehouse);
+@Query(nativeQuery =true,value ="select sum(sqty) from stockdetails  WHERE orgid = ?1 and pckey='CHILD' AND client = ?3 AND branchcode = ?2 AND warehouse = ?5 AND partno =?4 and grnno=?6 and bin='BULK' AND status = 'V';")
+	Set<Object[]> getQtyDetais(Long orgId, String branchCode, String client, String partNo, String warehouse,String grnno);
 
 }

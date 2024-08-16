@@ -197,10 +197,9 @@ public class VasController extends BaseController {
 }
     @GetMapping("/getSqtyByKitting")
     public ResponseEntity<ResponseDTO> getSqtyByKitting(@RequestParam(required = true) Long orgId,
-             @RequestParam(required = true) String branch,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-            @RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc,
-            @RequestParam(required = true) String warehouse) {
+            @RequestParam(required = true) String partNo,@RequestParam(required = true) String warehouse,
+            @RequestParam(required = true) String grnno) {
         String methodName = "getSqtyByKitting()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
         String errorMsg = null;
