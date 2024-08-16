@@ -180,19 +180,19 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
 	@GetMapping("/getGRNDocid")
-	public ResponseEntity<ResponseDTO> getGRNDocid(@RequestParam Long orgId,@RequestParam  String finYear, @RequestParam String branchCode,@RequestParam String client) {
+	public ResponseEntity<ResponseDTO> getGRNDocid(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branchCode, @RequestParam String client) {
 		String methodName = "getGRNDocid()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		String grnDocid="";
-		String screenCode="GN";
+		String grnDocid = "";
+		String screenCode = "GN";
 		try {
-			grnDocid = inwardTransactionService.getGRNdocid(orgId, finYear, branchCode, client,screenCode);
+			grnDocid = inwardTransactionService.getGRNdocid(orgId, finYear, branchCode, client, screenCode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -202,7 +202,8 @@ public class InwardTransactionController extends BaseController {
 			responseObjectsMap.put("grnDocid", grnDocid);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Grn Docid information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Grn Docid information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -341,9 +342,10 @@ public class InwardTransactionController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String,Object>> gatePassInDetailsVO = new ArrayList<>();
+		List<Map<String, Object>> gatePassInDetailsVO = new ArrayList<>();
 		try {
-			gatePassInDetailsVO = inwardTransactionService.getGatepassInGridDetailsForPendingGRN(orgId,finYear,branchCode, client,gatePassDocId);
+			gatePassInDetailsVO = inwardTransactionService.getGatepassInGridDetailsForPendingGRN(orgId, finYear,
+					branchCode, client, gatePassDocId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -516,11 +518,10 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getGrnForPutaway")
 	public ResponseEntity<ResponseDTO> getGrnForPutaway(@RequestParam Long orgId, @RequestParam String client,
-			@RequestParam String branch, @RequestParam String branchCode,
-			@RequestParam String warehouse) {
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String warehouse) {
 		String methodName = "getGrnForPutaway()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -569,8 +570,8 @@ public class InwardTransactionController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
-	}	
-	
+	}
+
 	@PutMapping("/createUpdatePutAway")
 	public ResponseEntity<ResponseDTO> createUpdatePutAway(@RequestBody PutAwayDTO putAwayDTO) {
 		String methodName = "createUpdatePutAway()";
@@ -591,8 +592,33 @@ public class InwardTransactionController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
+	@GetMapping("/getPutawayGridDetails")
+	public ResponseEntity<ResponseDTO> getPutawayGridDetails(@RequestParam Long orgId, @RequestParam String branchCode,
+			@RequestParam String warehouse, @RequestParam String client, @RequestParam String grnNo,
+			@RequestParam String binType, @RequestParam String binClass, @RequestParam String binPick) {
+		String methodName = "getPutawayGridDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> gridDetails = new ArrayList<>();
+		try {
+			gridDetails = inwardTransactionService.getFillGridDetailsForPutaway(orgId, branchCode, warehouse, client, grnNo, binType, binClass, binPick);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PutaWay Grid information get successfully");
+			responseObjectsMap.put("gridDetails", gridDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "PutaWay Grid information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }
-
-	
-

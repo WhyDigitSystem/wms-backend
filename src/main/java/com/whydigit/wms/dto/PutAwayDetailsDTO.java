@@ -29,6 +29,7 @@ public class PutAwayDetailsDTO {
 	private int grnQty;
 	private String sSku;
 	private String cellType;
+	private LocalDate expdate;
 	private LocalDate batchDate;
 
 }

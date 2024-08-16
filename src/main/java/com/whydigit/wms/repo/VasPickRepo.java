@@ -50,5 +50,48 @@ public interface VasPickRepo extends JpaRepository<VasPickVO, Long> {
 			+ "")
 	Set<Object[]> getVaspickGridDetals(Long orgId, String branch, String branchCode, String client, String warehouse);
 
+	@Query(nativeQuery =true,value ="SELECT \n"
+			+ "    partno,\n"
+			+ "    partdesc,\n"
+			+ "    sku,\n"
+			+ "    bin,\n"
+			+ "    batch,\n"
+			+ "    batchdate,\n"
+			+ "    lotno,\n"
+			+ "    grnno,\n"
+			+ "    grndate,\n"
+			+ "    binclass,\n"
+			+ "    bintype,\n"
+			+ "    status,\n"
+			+ "    qcflag,\n"
+			+ "    stockdate,\n"
+			+ "    expdate,\n"
+			+ "    core,\n"
+			+ "    celltype,\n"
+			+ "    SUM(sqty) AS total_sqty\n"
+			+ "FROM \n"
+			+ "    stockdetails\n"
+			+ "WHERE \n"
+			+ "    orgid=?1 and client=?3 and warehouse=?4 and status=?5 and branchcode=?2\n"
+			+ "GROUP BY \n"
+			+ "    partno,\n"
+			+ "    partdesc,\n"
+			+ "    sku,\n"
+			+ "    bin,\n"
+			+ "    batch,\n"
+			+ "    batchdate,\n"
+			+ "    lotno,\n"
+			+ "    grnno,\n"
+			+ "    grndate,\n"
+			+ "    binclass,\n"
+			+ "    bintype,\n"
+			+ "    status,\n"
+			+ "    qcflag,\n"
+			+ "    stockdate,\n"
+			+ "    expdate,\n"
+			+ "    core,\n"
+			+ "    celltype")
+	Set<Object[]> getVasPicGrid(Long orgId, String branchCode, String client, String warehouse, char stateStatus);
+
 	
 }

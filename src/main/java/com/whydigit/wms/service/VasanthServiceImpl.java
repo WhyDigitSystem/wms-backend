@@ -13,150 +13,28 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.CycleCountDTO;
 import com.whydigit.wms.dto.CycleCountDetailsDTO;
-import com.whydigit.wms.dto.VasPickDTO;
-import com.whydigit.wms.dto.VasPickDetailsDTO;
 import com.whydigit.wms.entity.CycleCountDetailsVO;
 import com.whydigit.wms.entity.CycleCountVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
-import com.whydigit.wms.entity.VasPickDetailsVO;
-import com.whydigit.wms.entity.VasPickVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CycleCountDetailsRepo;
 import com.whydigit.wms.repo.CycleCountRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
-import com.whydigit.wms.repo.VasPickDetailsRepo;
-import com.whydigit.wms.repo.VasPickRepo;
 
 @Service
 public class VasanthServiceImpl implements VasanthService {
 
-	@Autowired
-	VasPickRepo vasPickRepo;
-
-	@Autowired
-	VasPickDetailsRepo vasPickDetailsRepo;
-
-	@Autowired
-	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-
+	
 	@Autowired
 	CycleCountRepo cycleCountRepo;
 
 	@Autowired
 	CycleCountDetailsRepo cycleCountDetailsRepo;
+	
+	@Autowired
+	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
 
-	@Override
-	public Map<String, Object> createUpdateVasPic(VasPickDTO vasPicDTO) throws ApplicationException {
-		VasPickVO vasPickVO;
-		String message = null;
-		String screenCode = "VP";
-		if (ObjectUtils.isEmpty(vasPicDTO.getId())) {
-			vasPickVO = new VasPickVO();
-			vasPickVO.setCreatedBy(vasPicDTO.getCreatedBy());
-			vasPickVO.setUpdatedBy(vasPicDTO.getCreatedBy());
-
-			// GETDOCID API
-			String docId = vasPickRepo.getVasPickDocId(vasPicDTO.getOrgId(), vasPicDTO.getFinYear(),
-					vasPicDTO.getBranchCode(), vasPicDTO.getClient(), screenCode);
-			vasPickVO.setDocId(docId);
-
-			// GETDOCID LASTNO +1
-			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
-					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(vasPicDTO.getOrgId(),
-							vasPicDTO.getFinYear(), vasPicDTO.getBranchCode(), vasPicDTO.getClient(), screenCode);
-			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
-			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
-
-			message = "VasPicK Creation Successfully";
-		} else {
-			vasPickVO = vasPickRepo.findById(vasPicDTO.getId()).orElseThrow(() -> new ApplicationException(
-					"This Id Is Not Found Any Information, Invalid Id: " + vasPicDTO.getId()));
-
-			vasPickVO.setUpdatedBy(vasPicDTO.getCreatedBy());
-			message = "VasPicK Update Successfully";
-
-			// Remove existing details if updating
-			List<VasPickDetailsVO> detailsVOs = vasPickDetailsRepo.findByVasPickVO(vasPickVO);
-			vasPickDetailsRepo.deleteAll(detailsVOs);
-		}
-
-		vasPickVO = getVasPickVOFromVasPickDTO(vasPickVO, vasPicDTO);
-
-		// Save parent entity along with its details
-		vasPickRepo.save(vasPickVO);
-
-		Map<String, Object> response = new HashMap<>();
-		response.put("message", message);
-		response.put("vasPickVO", vasPickVO);
-		return response;
-	}
-
-	private VasPickVO getVasPickVOFromVasPickDTO(VasPickVO vasPickVO, VasPickDTO vasPicDTO) {
-		vasPickVO.setPicBin(vasPicDTO.getPicBin());
-		vasPickVO.setDocDate(vasPicDTO.getDocDate());
-		vasPickVO.setOrgId(vasPicDTO.getOrgId());
-
-		vasPickVO.setCustomer(vasPicDTO.getCustomer());
-		vasPickVO.setClient(vasPicDTO.getClient());
-		vasPickVO.setFinYear(vasPicDTO.getFinYear());
-		vasPickVO.setBranch(vasPicDTO.getBranch());
-		vasPickVO.setBranchCode(vasPicDTO.getBranchCode());
-		vasPickVO.setWarehouse(vasPicDTO.getWarehouse());
-		vasPickVO.setCancelRemarks(vasPicDTO.getCancelRemarks());
-		vasPickVO.setActive(vasPicDTO.isActive());
-		vasPickVO.setCancel(vasPicDTO.isCancel());
-		vasPickVO.setPicBin(vasPicDTO.getPicBin());
-		vasPickVO.setFreeze(vasPicDTO.isFreeze());
-
-		int totalOrderQty = 0;
-		int pickedQty = 0;
-
-		List<VasPickDetailsVO> vasPickDetailsVOs = new ArrayList<>();
-		for (VasPickDetailsDTO vasPickDTO : vasPicDTO.getVasPickDetailsDTO()) {
-			VasPickDetailsVO detailsVO = new VasPickDetailsVO();
-			detailsVO.setPartCode(vasPickDTO.getPartCode());
-			detailsVO.setPartDescription(vasPickDTO.getPartDescription());
-			detailsVO.setPartNo(vasPickDTO.getPartNo());
-			detailsVO.setSku(vasPickDTO.getSku());
-			detailsVO.setBin(vasPickDTO.getBin());
-			detailsVO.setBatchNo(vasPickDTO.getBatchNo());
-			detailsVO.setLotNo(vasPickDTO.getLotNo());
-			detailsVO.setGrnNo(vasPickDTO.getGrnNo());
-			detailsVO.setAvlQty(vasPickDTO.getAvlQty());
-			detailsVO.setPicQty(vasPickDTO.getPicQty());
-			detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
-			detailsVO.setManufactureDate(vasPickDTO.getManufactureDate());
-			detailsVO.setQcflag(vasPickDTO.isQcflag());
-
-			totalOrderQty = totalOrderQty + vasPickDTO.getAvlQty();
-			pickedQty = pickedQty + vasPickDTO.getPicQty();
-
-			detailsVO.setVasPickVO(vasPickVO); // Set the parent reference
-			vasPickDetailsVOs.add(detailsVO);
-		}
-		vasPickVO.setVasPickDetailsVO(vasPickDetailsVOs);
-		vasPickVO.setTotalOrderQty(totalOrderQty);
-		vasPickVO.setPickedQty(pickedQty);
-		return vasPickVO;
-	}
-
-	@Override
-	public Optional<VasPickVO> getVaspickById(Long id) {
-		return vasPickRepo.findVasPickById(id);
-	}
-
-	@Override
-	public String getVasPickDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
-		String ScreenCode = "VP";
-		String result = vasPickRepo.getVasPickDocId(orgId, finYear, branchCode, client, ScreenCode);
-		return result;
-	}
-
-	@Override
-	public List<VasPickVO> getAllVaspick(Long orgId, String branchCode, String client, String branch, String finYear,
-			String warehouse) {
-		return vasPickRepo.AllVaspick(orgId, branchCode, client, branch, finYear, warehouse);
-	}
+	
 
 	// CYCLECOUNT
 
@@ -237,7 +115,7 @@ public class VasanthServiceImpl implements VasanthService {
 			// Avoid recursive reference to kittingVO in KittingDetails2VO
 			cycleCountDetailsVO.setCycleCountVO(cycleCountVO);
 			cycleCountDetailsVOs.add(cycleCountDetailsVO);
-		}
+		} 
 		cycleCountVO.setCycleCountDetailsVO(cycleCountDetailsVOs);
 
 		return cycleCountVO;
@@ -246,36 +124,11 @@ public class VasanthServiceImpl implements VasanthService {
 	@Override
 	public String getCycleCountInDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
 		String ScreenCode = "CT";
-		String result = vasPickRepo.getVasPickDocId(orgId, finYear, branchCode, client, ScreenCode);
+		String result = cycleCountRepo.getCycleCountInDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
 	}
 
-	@Override
-	public List<Map<String, Object>> getVaspickGrid(Long orgId, String branch, String branchCode, String client,
-			String warehouse) {
-		Set<Object[]> result = vasPickRepo.getVaspickGridDetals(orgId, branch, branchCode, client, warehouse);
-		return getVaspickFullGrids(result);
-	}
-
-	private List<Map<String, Object>> getVaspickFullGrids(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-
-			part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
-			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
-			part.put("partNo", fs[2] != null ? fs[2].toString() : "");
-			part.put("sku", fs[3] != null ? fs[3].toString() : "");
-			part.put("bin", fs[4] != null ? fs[4].toString() : "");
-			part.put("batch", fs[5] != null ? fs[5].toString() : "");
-			part.put("grnNo", fs[6] != null ? fs[6].toString() : "");
-			part.put("lotNo", fs[8] != null ? fs[7].toString() : "");
-
-			details1.add(part);
-		}
-		return details1;
-
-	}
+	
 
 	@Override
 	public List<CycleCountVO> getAllCycleCount(Long orgId, String client, String branch, String branchCode,
@@ -288,4 +141,41 @@ public class VasanthServiceImpl implements VasanthService {
 		return cycleCountRepo.findById(id);
 	}
 
+	@Override
+	public List<Map<String, Object>> getCycleCountGridDetails(Long orgId, String branchCode, String client,
+			String warehouse) {
+		Set<Object[]> result = cycleCountRepo.getCycleCountGrid(orgId, branchCode, client, warehouse);
+		return getCycleCount(result);
+	}
+
+	private List<Map<String, Object>> getCycleCount(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+
+			part.put("partNo", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("sku", fs[2] != null ? fs[2].toString() : "");
+			part.put("bin", fs[3] != null ? fs[3].toString() : "");
+			part.put("batch", fs[4] != null ? fs[4].toString() : "");
+			part.put("batchDate", fs[5] != null ? fs[5].toString() : "");
+			part.put("lotNo", fs[6] != null ? fs[6].toString() : "");
+			part.put("grnNo", fs[7] != null ? fs[7].toString() : "");
+			part.put("grnDate", fs[8] != null ? fs[8].toString() : "");
+			part.put("binclass", fs[9] != null ? fs[9].toString() : "");
+			part.put("bintype", fs[10] != null ? fs[10].toString() : "");
+			part.put("status", fs[11] != null ? fs[11].toString() : "");
+			part.put("qcflag", fs[12] != null ? fs[12].toString() : "");
+			part.put("stockdate", fs[13] != null ? fs[13].toString() : "");
+			part.put("expdate", fs[14] != null ? fs[14].toString() : "");
+			part.put("core", fs[15] != null ? fs[15].toString() : "");
+			part.put("cellType", fs[16] != null ? fs[16].toString() : "");
+			part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
+			
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
 }

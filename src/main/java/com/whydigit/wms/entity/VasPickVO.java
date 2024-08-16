@@ -72,6 +72,11 @@ public class VasPickVO {
 	private int totalOrderQty;
 	@Column(name = "pickedqty")
 	private int pickedQty;
+	@Column(name = "statestatus")
+    private char stateStatus;
+	@Column(name = "stockState")
+	private String stockState;
+	private String status;
 	
 	
 	@OneToMany(mappedBy ="vasPickVO",cascade = CascadeType.ALL)
