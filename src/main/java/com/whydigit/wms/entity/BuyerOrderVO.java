@@ -96,7 +96,7 @@ public class BuyerOrderVO {
 	@Column(name = "avilqty")
 	private int avilQty;
 	private boolean active = true;
-	@Column(name = "cancel")
+	private String buyer;
 	
 	
 

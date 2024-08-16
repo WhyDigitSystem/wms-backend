@@ -283,7 +283,7 @@ public class VasController extends BaseController {
     
     @PutMapping("/createUpdateVasPic")
 	public ResponseEntity<ResponseDTO> createUpdateVasPic(@RequestBody VasPickDTO vasPicDTO) {
-	    String methodName = "createUpdateGRN()";
+	    String methodName = "createUpdateVasPic()";
 	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 	    String errorMsg = null;
 	    Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -405,7 +405,7 @@ public class VasController extends BaseController {
         
         if (StringUtils.isBlank(errorMsg)) {
             responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VasPickDocId information retrieved successfully");
-            responseObjectsMap.put("KittingDocId", mapp);
+            responseObjectsMap.put("VasPickDocId", mapp);
             responseDTO = createServiceResponse(responseObjectsMap);
         } else {
             responseDTO = createServiceResponseError(responseObjectsMap, "VasPickDocId  retrieve failed", errorMsg);
