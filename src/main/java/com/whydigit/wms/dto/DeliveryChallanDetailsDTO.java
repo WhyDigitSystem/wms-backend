@@ -31,6 +31,6 @@ public class DeliveryChallanDetailsDTO {
 	private BigDecimal totalGst;
 	private BigDecimal billAmount;
 	private String remarks;
-	private boolean qcFlags;
+	private String qcFlags;
 
 }

@@ -52,4 +52,5 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 			String branchCode, String client, String buyerOrderNo);
 
 
+	
 }
