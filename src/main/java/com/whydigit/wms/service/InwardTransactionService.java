@@ -33,46 +33,36 @@ public interface InwardTransactionService {
 
 	Set<Object[]> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode);
-	
 
 	// GatePassIn
 
-	List<GatePassInVO> getAllGatePassIn(Long orgId, String branchCode,String finYear,String client);
+	List<GatePassInVO> getAllGatePassIn(Long orgId, String branchCode, String finYear, String client);
 
 	Optional<GatePassInVO> getGatePassInById(Long id);
-	
-	List<GatePassInVO>getGatepassInNoForPendingGRN(Long orgId, String branchCode,String finYear,String client);
+
+	List<GatePassInVO> getGatepassInNoForPendingGRN(Long orgId, String branchCode, String finYear, String client);
 
 	Map<String, Object> createUpdateGatePassIn(GatePassInDTO gatePassInDTO) throws ApplicationException;
-	
-	List<Map<String, Object>> getGatepassInGridDetailsForPendingGRN(Long orgId, String finYear, String branchCode, String client,
-			String gatePassDocId);
 
-	
-	String getGatePassInDocId (Long orgId, String finYear, String branch, String branchCode, String client);
+	List<Map<String, Object>> getGatepassInGridDetailsForPendingGRN(Long orgId, String finYear, String branchCode,
+			String client, String gatePassDocId);
 
+	String getGatePassInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 //	Put Away
 
 	List<PutAwayVO> getAllPutAway(Long orgId, String finYear, String branch, String branchCode, String client,
 			String warehouse);
-	
+
 	PutAwayVO getPutAwayById(Long id);
-	
-	
-	
+
+	List<Map<String, Object>> getFillGridDetailsForPutaway(Long orgId, String branchCode, String warehouse,
+			String client, String grnNo, String binType, String binClass, String binPick);
+
 	String getPutAwayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	Map<String, Object> createUpdatePutAway(PutAwayDTO putAwayDTO) throws ApplicationException;
-		
-	List<GrnVO> getGrnNoForPutAway(Long orgId, String client, String branch, String branchcode,String warehouse);
 
-	
-
-
-	
-
-	
-
+	List<GrnVO> getGrnNoForPutAway(Long orgId, String client, String branch, String branchcode, String warehouse);
 
 }

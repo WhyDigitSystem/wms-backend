@@ -683,6 +683,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 				handlingStockInVO.setPalletqty(putAwayDetailsVO.getPutAwayQty());
 				handlingStockInVO.setSku(putAwayDetailsVO.getSku());
 				handlingStockInVO.setSsku(putAwayDetailsVO.getSku());
+				handlingStockInVO.setExpdate(putAwayDetailsVO.getExpdate());
 				// Check if damageqty is 0
 				if ("Defective".equals(putAwayDetailsVO.getBin())) {
 					handlingStockInVO.setQcflag("F");
@@ -728,7 +729,9 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 				stockDetailsVO.setPartno(putAwayDetailsVO.getPartNo());
 				stockDetailsVO.setPartDesc(putAwayDetailsVO.getPartDesc());
 				stockDetailsVO.setSku(putAwayDetailsVO.getSku());
+				stockDetailsVO.setExpDate(putAwayDetailsVO.getExpdate());
 				stockDetailsVO.setCellType(putAwayDetailsVO.getCellType());
+				stockDetailsVO.setCore(putAwayVO.getCore());
 				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
 				stockDetailsVO.setCreatedBy(savedPutAwayVO.getCreatedBy());
 				stockDetailsVO.setUpdatedBy(savedPutAwayVO.getUpdatedBy());
@@ -825,86 +828,45 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 		putAwayVO.setPutAwayDetailsVO(putAwayDetailsVO);		
 	}
 
-//	@Override
-//	public PutAwayVO createPutAway(PutAwayDTO putAwayDTO) {
-//		PutAwayVO putAwayVO = createPutAwayVOByPutAwayDTO(putAwayDTO);
-//		putAwayVO.setScreencode("PC");
-//		putAwayRepo.save(putAwayVO);
-//
-//		PutAwayVO savedPutAwayVO = putAwayRepo.save(putAwayVO);
-//		List<PutAwayDetailsVO> putAwayDetailsVOLists = savedPutAwayVO.getPutAwayDetailsVO();
-//		if (putAwayDetailsVOLists != null && !putAwayDetailsVOLists.isEmpty())
-//			for (PutAwayDetailsVO putAwayDetailsVO : putAwayDetailsVOLists) {
-//
-//				StockDetailsVO stockDetailsVO = new StockDetailsVO();
-//				savedPutAwayVO.setScreencode("PC");
-//				stockDetailsVO.setCustomer(savedPutAwayVO.getCustomer());
-//				stockDetailsVO.setCore(savedPutAwayVO.getCore());
-//				stockDetailsVO.setGrnNo(savedPutAwayVO.getGrnno());
-//				stockDetailsVO.setStockDate(savedPutAwayVO.getGrndate());
-//				stockDetailsVO.setGrnDate(savedPutAwayVO.getGrndate());
-//				stockDetailsVO.setLotNo(savedPutAwayVO.getLotno());
-//				stockDetailsVO.setWarehouse(savedPutAwayVO.getWarehouse());
-//				stockDetailsVO.setFinYear(savedPutAwayVO.getFinyr());
-//				stockDetailsVO.setBranch(savedPutAwayVO.getBranch());
-//				stockDetailsVO.setBranchCode(savedPutAwayVO.getBranchcode());
-//				stockDetailsVO.setRefNo(savedPutAwayVO.getDocid());
-//				stockDetailsVO.setRefDate(savedPutAwayVO.getDocdate());
-//				stockDetailsVO.setBinType(savedPutAwayVO.getLocationtype());
-//				stockDetailsVO.setCarrier(savedPutAwayVO.getCarrier());
-//				stockDetailsVO.setGrnDate(savedPutAwayVO.getGrndate());
-//				stockDetailsVO.setScreenCode(savedPutAwayVO.getScreencode());
-//				stockDetailsVO.setInvQty(putAwayDetailsVO.getInvqty());
-//				stockDetailsVO.setRecQty(putAwayDetailsVO.getRecqty());
-//				stockDetailsVO.setShortQty(putAwayDetailsVO.getShortqty());
-//				stockDetailsVO.setRecQty(putAwayDetailsVO.getRecqty());
-//				stockDetailsVO.setSQty(putAwayDetailsVO.getSqty());
-//				stockDetailsVO.setSSku(putAwayDetailsVO.getSsku());
-//				stockDetailsVO.setBinClass(putAwayDetailsVO.getLocationclass());
-//				stockDetailsVO.setWeight(putAwayDetailsVO.getWeight());
-//				stockDetailsVO.setBatchDate(putAwayDetailsVO.getBatchdate());
-//				stockDetailsVO.setPartno(putAwayDetailsVO.getPartno());
-//				stockDetailsVO.setPartDesc(putAwayDetailsVO.getPartdescripition());
-//				stockDetailsVO.setSku(putAwayDetailsVO.getSku());
-//				stockDetailsVO.setAmount(putAwayDetailsVO.getAmount());
-//				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
-//				stockDetailsVO.setSsQty(putAwayDetailsVO.getSsqty());
-//				stockDetailsRepo.save(stockDetailsVO);
-//				// putaway to handlingStockIn
-//				HandlingStockInVO handlingStockInVO = new HandlingStockInVO();
-//				handlingStockInVO.setScreencode("PC");
-//				handlingStockInVO.setRefdate(savedPutAwayVO.getDocdate());
-//				handlingStockInVO.setSdocdate(savedPutAwayVO.getDocdate());
-//				handlingStockInVO.setStockdate(savedPutAwayVO.getDocdate());
-//				handlingStockInVO.setGrnno(savedPutAwayVO.getGrnno());
-//				handlingStockInVO.setGrndate(savedPutAwayVO.getGrndate());
-//				handlingStockInVO.setBranchcode(savedPutAwayVO.getBranchcode());
-//				handlingStockInVO.setBranch(savedPutAwayVO.getBranch());
-//				handlingStockInVO.setClient(savedPutAwayVO.getClient());
-//				handlingStockInVO.setCustomer(savedPutAwayVO.getCustomer());
-//				handlingStockInVO.setFinyr(savedPutAwayVO.getFinyr());
-//				handlingStockInVO.setRefno(savedPutAwayVO.getDocid());
-//				handlingStockInVO.setSdocid(savedPutAwayVO.getFinyr());
-//				handlingStockInVO.setWarehouse(savedPutAwayVO.getWarehouse());
-//				// Putaway details to handlingStockIn
-//				handlingStockInVO.setPartno(putAwayDetailsVO.getPartno());
-//				handlingStockInVO.setPartdesc(putAwayDetailsVO.getPartdescripition());
-//				handlingStockInVO.setSku(putAwayDetailsVO.getSku());
-//				handlingStockInVO.setInvqty(-putAwayDetailsVO.getInvqty());
-//				handlingStockInVO.setLocationtype(putAwayDetailsVO.getLocationtype());
-//				handlingStockInVO.setRecqty(-putAwayDetailsVO.getRecqty());
-//				handlingStockInVO.setSsqty(-putAwayDetailsVO.getSsqty());
-//				handlingStockInVO.setRpqty(-putAwayDetailsVO.getPutawayqty());
-//				handlingStockInVO.setRate(putAwayDetailsVO.getRate());
-//				handlingStockInVO.setAmount(putAwayDetailsVO.getAmount());
-//				handlingStockInVO.setSsku(putAwayDetailsVO.getSsku());
-//				handlingStockInVO.setShortqty(-putAwayDetailsVO.getShortqty());
-//				handlingStockInVO.setSqty(-putAwayDetailsVO.getSqty());
-//				handlingStockInRepo.save(handlingStockInVO);
-//			}
-//		return putAwayVO;
-//	}
-//
-//	
+	@Override
+	public List<Map<String, Object>> getFillGridDetailsForPutaway(Long orgId, String branchCode, String warehouse,
+			String client, String grnNo, String binType, String binClass, String binPick) {
+		Set<Object[]>getGridDetails=putAwayRepo.getPutawayGridDetails(orgId, branchCode, warehouse, client, grnNo, binType, binClass, binPick);
+		return PutawayGridDetails(getGridDetails);
+	}
 
+	private List<Map<String, Object>> PutawayGridDetails(Set<Object[]> getGridDetails) {
+	    List<Map<String, Object>> getDetails = new ArrayList<>();
+	    for (Object[] gridDetails : getGridDetails) {
+	        Map<String, Object> mapDetails = new HashMap<>();
+	        mapDetails.put("partNo", gridDetails[0] != null ? gridDetails[0].toString() : "");
+	        mapDetails.put("partDesc", gridDetails[1] != null ? gridDetails[1].toString() : "");
+	        mapDetails.put("sku", gridDetails[2] != null ? gridDetails[2].toString() : "");
+	        mapDetails.put("ssku", gridDetails[2] != null ? gridDetails[2].toString() : "");
+	        mapDetails.put("binType", gridDetails[3] != null ? gridDetails[3].toString() : "");
+
+	        // Handle integers and potential floats
+	        mapDetails.put("invQty", gridDetails[4] != null ? parseStringToInt(gridDetails[4].toString()) : 0);
+	        mapDetails.put("recQty", gridDetails[5] != null ? parseStringToInt(gridDetails[5].toString()) : 0);
+	        mapDetails.put("shortQty", gridDetails[6] != null ? parseStringToInt(gridDetails[6].toString()) : 0);
+	        mapDetails.put("damageQty", gridDetails[7] != null ? parseStringToInt(gridDetails[7].toString()) : 0);
+	        mapDetails.put("grnQty", gridDetails[8] != null ? parseStringToInt(gridDetails[8].toString()) : 0);
+	        mapDetails.put("noOfBins", gridDetails[9] != null ? parseStringToInt(gridDetails[9].toString()) : 0);
+	        mapDetails.put("bin", gridDetails[10] != null ? gridDetails[10].toString() : "");
+	        mapDetails.put("pQty", gridDetails[11] != null ? parseStringToInt(gridDetails[11].toString()) : 0);
+	        mapDetails.put("batchNo", gridDetails[12] != null ? gridDetails[12].toString() : "");
+	        mapDetails.put("batchDate", gridDetails[13] != null ? gridDetails[13].toString() : "");
+	        mapDetails.put("expDate", gridDetails[14] != null ? gridDetails[14].toString() : "");
+	        getDetails.add(mapDetails);
+	    }
+	    return getDetails;
+	}
+
+	private int parseStringToInt(String value) {
+	    try {
+	        return (int) Double.parseDouble(value);
+	    } catch (NumberFormatException e) {
+	        return 0; // default value in case of parsing failure
+	    }
+	}
 }
