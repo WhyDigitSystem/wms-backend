@@ -78,6 +78,9 @@ public interface StockProcessService {
 
 	List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String finYear, String branch,
 			String branchCode, String client);
+	
+	List<Map<String, Object>> getToBinFromLocationStatusForLocationMovement(Long orgId, String branch,
+			String branchCode, String client,String warehouse);
 
 	List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear,
 			String branch, String branchCode, String client, String bin);
@@ -107,9 +110,6 @@ public interface StockProcessService {
 	// PARENT
 	List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String finYear, String branch,
 			String branchCode, String client);
-
-	List<Map<String, Object>> getPartDescAndSkuFromStockForDeKittingParent(Long orgId, String finYear, String branch,
-			String branchCode, String client, String partNo);
 
 	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
 			String client);

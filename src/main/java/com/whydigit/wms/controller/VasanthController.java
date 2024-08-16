@@ -38,139 +38,7 @@ public class VasanthController  extends BaseController{
 	@Autowired
 	VasanthService vasanthService;
 	
-	@PutMapping("/createUpdateVasPic")
-	public ResponseEntity<ResponseDTO> createUpdateVasPic(@RequestBody VasPickDTO vasPicDTO) {
-	    String methodName = "createUpdateGRN()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    try {
-	        Map<String, Object> vasPicVO = vasanthService.createUpdateVasPic(vasPicDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, vasPicVO.get("message"));
-	        responseObjectsMap.put("vasPicVO", vasPicVO.get("vasPickVO"));
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("getVaspickById")
-	public ResponseEntity<ResponseDTO> getVaspickById(@RequestParam(required = true) Long id) {
-	    String methodName = "getVaspickById()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    VasPickVO vasPickVO = null;
-	    try {
-	        vasPickVO = vasanthService.getVaspickById(id).orElse(null);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	    }
-	    if (StringUtils.isEmpty(errorMsg)) {
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VasPick Details found by ID");
-	        responseObjectsMap.put("vasPickVO", vasPickVO);
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } else {
-	        errorMsg = "vasPickVO not found for ID: " + id;
-	        responseDTO = createServiceResponseError(responseObjectsMap, "VasPick Details not found", errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("getVaspickGrid")
-	public ResponseEntity<ResponseDTO> getVaspickGrid(@RequestParam(required = true) Long orgId,
-			@RequestParam(required = true) String branch,@RequestParam(required = true) String branchCode,
-			@RequestParam(required = true) String client,@RequestParam(required = true) String warehouse
-			) {
-	    String methodName = "getVaspickGrid()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    List<Map<String, Object>> vasPickGrid=new ArrayList<Map<String,Object>>();
-	    try {
-	    	vasPickGrid = vasanthService.getVaspickGrid(orgId,branch,branchCode,client,warehouse);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	    }
-	    if (StringUtils.isEmpty(errorMsg)) {
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VaspickGrid Details found Successfull");
-	        responseObjectsMap.put("VaspickGrid", vasPickGrid);
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "VaspickGrid Details retrieve  failed", errorMsg);
-        }
-        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-        return ResponseEntity.ok().body(responseDTO);
-    }
 	
-	
-	@GetMapping("getAllVaspick")
-	public ResponseEntity<ResponseDTO> getAllVaspick(@RequestParam(required =true) Long orgId,
-			@RequestParam(required =true) String branchCode,@RequestParam(required =true) String client,
-	@RequestParam(required =true) String branch,@RequestParam(required =true) String finYear,@RequestParam(required =true) String warehouse) {
-		String methodName = "getAllVaspick()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<VasPickVO>  vasPickVO = new ArrayList<VasPickVO>();
-		try {
-			vasPickVO = vasanthService.getAllVaspick(orgId,branchCode,client,branch,finYear,warehouse);
-		} 
-		catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VasPick Details information get successfully");
-			responseObjectsMap.put("vasPickVO", vasPickVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "VasPick  Details information receive failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-	
-	@GetMapping("/getVasPickDocId")
-    public ResponseEntity<ResponseDTO> getVasPickDocId(
-    		@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client) {
-        
-        String methodName = "getVasPickDocId()";
-        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-        String errorMsg = null;
-        Map<String, Object> responseObjectsMap = new HashMap<>();
-        ResponseDTO responseDTO = null;
-        String mapp="";
-        
-        try {
-            mapp = vasanthService.getVasPickDocId(orgId,finYear,branch, branchCode, client);
-        } catch (Exception e) {
-            errorMsg = e.getMessage();
-            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-        }
-        
-        if (StringUtils.isBlank(errorMsg)) {
-            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VasPickDocId information retrieved successfully");
-            responseObjectsMap.put("KittingDocId", mapp);
-            responseDTO = createServiceResponse(responseObjectsMap);
-        } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "VasPickDocId  retrieve failed", errorMsg);
-        }
-        
-        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-        return ResponseEntity.ok().body(responseDTO);
-    }
 	
 	
 
@@ -279,5 +147,32 @@ public class VasanthController  extends BaseController{
 	    }
 	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	    return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("getCycleCountGridDetails")
+	public ResponseEntity<ResponseDTO> getCycleCountGridDetails(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse) {
+	    String methodName = "getCycleCountGridDetails()";
+	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	    String errorMsg = null;
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    List<Map<String, Object>> cycleCountGrid = new ArrayList<Map<String,Object>>();
+	    try {
+	    	cycleCountGrid = vasanthService.getCycleCountGridDetails(orgId,branchCode,client,warehouse);
+	    } catch (Exception e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	    }
+	    if (StringUtils.isEmpty(errorMsg)) {
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount GridDetails Details found Successfullly");
+	        responseObjectsMap.put("cycleCountGrid", cycleCountGrid);
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    }  else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "CycleCount GridDetails information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 }

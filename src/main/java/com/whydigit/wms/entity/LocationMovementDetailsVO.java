@@ -34,7 +34,7 @@ public class LocationMovementDetailsVO {
 	private Long id;
 	@Column(name = "bin")
 	private String bin;
-	@Column(name = "partno")
+	@Column(name = "partno") 	
 	private String partNo;
 	@Column(name = "partdescripition")
 	private String partDesc;
