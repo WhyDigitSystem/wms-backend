@@ -10,6 +10,7 @@ import com.whydigit.wms.dto.DeliveryChallanDTO;
 import com.whydigit.wms.dto.VasPutawayDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.DeliveryChallanVO;
+import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.entity.VasPutawayVO;
 import com.whydigit.wms.exception.ApplicationException;
 
@@ -28,12 +29,18 @@ public interface OutwardTransactionService {
 		String getDeliveryChallanDocId(Long orgId, String finYear, String branch, String branchCode,
 				String client);
 		
-		List<Map<String, Object>> getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(
-				Long orgId,String branch, String branchCode, String client, String buyerRefNo);
 		
 		List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
-				String finYear, String branch, String branchCode, String client, String warehouse ,String buyerRefNo);
+				String finYear, String branch, String branchCode, String client, String warehouse ,String buyerOrderNo);
 
+		List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
+				String branchCode, String client, String warehouse, String buyerOrderNo);
+
+		List<Map<String, Object>> getBuyerOrderNoFromPickRequestForDeliveryChallan(Long orgId, String finYear, String branch,
+				String branchCode, String client, String warehouse);
+		
+		List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear,
+				String branch, String branchCode, String client,String buyerOrderNo);
 
 		//VASPutaway
 		
@@ -73,7 +80,11 @@ public interface OutwardTransactionService {
 		List<Map<String, Object>> getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
 				String branch, String partNo, String partDesc,String batch);
 
+		
 
+		
+
+		
 
 		
 	
