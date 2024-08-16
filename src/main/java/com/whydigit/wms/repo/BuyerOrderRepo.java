@@ -24,8 +24,28 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	String getbuyerOrderDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
 	
-	@Query(nativeQuery =true,value = "select partno,partdesc,batch,sum(sqty) from stockdetails where orgid=1 and branchcode=?2 and client=?3 and status='R'\n"
-			+ "group by partno,partdesc,batch")
-	Set<Object[]> getBoSku(Long orgId, String branchCode, String branchCode2);
+	@Query(nativeQuery =true,value = "SELECT partno,\n"
+			+ "       partdesc,\n"
+			+ "       batch,\n"
+			+ "       SUM(sqty) AS total_sqty\n"
+			+ "FROM stockdetails\n"
+			+ "WHERE orgid =?1\n"
+			+ "  AND  branchcode =?2\n"
+			+ "  AND client = ?3\n"
+			+ "  AND status = 'R'\n"
+			+ "  AND BATCH=?4\n"
+			+ "  AND warehouse=?5\n"
+			+ "GROUP BY partno, partdesc, batch\n"
+			+ "HAVING SUM(sqty) > 0")
+	Set<Object[]> getBoSku(Long orgId, String branchCode, String client,String batch,String warehouse);
+
+	
+	@Query(nativeQuery =true,value = "select sum(sqty) from stockdetails where orgid=?1 and partno=?6 and branchcode=?3 and\n"
+			+ "partdesc=?7 and batch?8 and warehouse=?4 \n"
+			+ "and branch=?5 and client=?2  and status='R'\n"
+			+ " group by partno,partdesc,batch,warehouse")
+	Set<Object[]> getAvilableQty(Long orgId, String client, String branchCode, String warehouse, String branch,
+			String partNo, String partDesc, String batch);
+
 
 }

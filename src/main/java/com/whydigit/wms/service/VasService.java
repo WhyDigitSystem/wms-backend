@@ -25,8 +25,7 @@ public interface VasService {
 	List<Map<String, Object>> getGrnNOByChild(Long orgId, String bin, String branch, String branchCode, String client,
 			String partNo, String partDesc, String sku);
 
-	List<Map<String, Object>> getSqtyByKitting(Long orgId,String branch, String branchCode, String client,
-			String partNo, String partDesc, String warehouse);
+	List<Map<String, Object>> getSqtyByKitting(Long orgId, String branchCode, String client, String partNo, String warehouse,String grnno);
 	
 	List<Map<String, Object>> getPartNOByParent(Long orgId, String branchCode, String client);
 

@@ -23,6 +23,7 @@ import com.whydigit.wms.dto.CycleCountDTO;
 import com.whydigit.wms.dto.KittingDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.VasPickDTO;
+import com.whydigit.wms.entity.CycleCountVO;
 import com.whydigit.wms.entity.KittingVO;
 import com.whydigit.wms.entity.VasPickVO;
 import com.whydigit.wms.service.VasanthService;
@@ -60,7 +61,7 @@ public class VasanthController  extends BaseController{
 
 	@GetMapping("getVaspickById")
 	public ResponseEntity<ResponseDTO> getVaspickById(@RequestParam(required = true) Long id) {
-	    String methodName = "getGatePassInById()";
+	    String methodName = "getVaspickById()";
 	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 	    String errorMsg = null;
 	    Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -84,11 +85,39 @@ public class VasanthController  extends BaseController{
 	    return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("getVaspickGrid")
+	public ResponseEntity<ResponseDTO> getVaspickGrid(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branch,@RequestParam(required = true) String branchCode,
+			@RequestParam(required = true) String client,@RequestParam(required = true) String warehouse
+			) {
+	    String methodName = "getVaspickGrid()";
+	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	    String errorMsg = null;
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    List<Map<String, Object>> vasPickGrid=new ArrayList<Map<String,Object>>();
+	    try {
+	    	vasPickGrid = vasanthService.getVaspickGrid(orgId,branch,branchCode,client,warehouse);
+	    } catch (Exception e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	    }
+	    if (StringUtils.isEmpty(errorMsg)) {
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VaspickGrid Details found Successfull");
+	        responseObjectsMap.put("VaspickGrid", vasPickGrid);
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    } else {
+            responseDTO = createServiceResponseError(responseObjectsMap, "VaspickGrid Details retrieve  failed", errorMsg);
+        }
+        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+	
 	
 	@GetMapping("getAllVaspick")
 	public ResponseEntity<ResponseDTO> getAllVaspick(@RequestParam(required =true) Long orgId,
 			@RequestParam(required =true) String branchCode,@RequestParam(required =true) String client,
-	@RequestParam(required =true) String customer) {
+	@RequestParam(required =true) String branch,@RequestParam(required =true) String finYear,@RequestParam(required =true) String warehouse) {
 		String methodName = "getAllVaspick()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -96,7 +125,7 @@ public class VasanthController  extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<VasPickVO>  vasPickVO = new ArrayList<VasPickVO>();
 		try {
-			vasPickVO = vasanthService.getAllVaspick(orgId,branchCode,client,customer);
+			vasPickVO = vasanthService.getAllVaspick(orgId,branchCode,client,branch,finYear,warehouse);
 		} 
 		catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -198,6 +227,57 @@ public class VasanthController  extends BaseController{
         return ResponseEntity.ok().body(responseDTO);
     }
 	
+	@GetMapping("getAllCycleCount")
+	public ResponseEntity<ResponseDTO> getAllCycleCount(@RequestParam(required =true) Long orgId,
+			@RequestParam(required =true) String client,@RequestParam(required =true) String branch,
+	@RequestParam(required =true) String branchCode,@RequestParam(required =true) String finYear,@RequestParam(required =true) String warehouse) {
+		String methodName = "getAllCycleCount()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<CycleCountVO>  cycleCountVOs = new ArrayList<CycleCountVO>();
+		try {
+			cycleCountVOs = vasanthService.getAllCycleCount(orgId,client,branch,branchCode,finYear,warehouse);
+		} 
+		catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount Details information get successfully");
+			responseObjectsMap.put("cycleCountVO", cycleCountVOs);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "VasPick  Details information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 	
-	
+	@GetMapping("getCycleCountById")
+	public ResponseEntity<ResponseDTO> getCycleCountById(@RequestParam(required = true) Long id) {
+	    String methodName = "getCycleCountById()";
+	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	    String errorMsg = null;
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    CycleCountVO cycleCountVO = null;
+	    try {
+	    	cycleCountVO = vasanthService.getCycleCountById(id).orElse(null);
+	    } catch (Exception e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	    }
+	    if (StringUtils.isEmpty(errorMsg)) {
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCountById Details found by ID");
+	        responseObjectsMap.put("cycleCountVO", cycleCountVO);
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    } else {
+	        errorMsg = "vasPickVO not found for ID: " + id;
+	        responseDTO = createServiceResponseError(responseObjectsMap, "CycleCountById Details not found", errorMsg);
+	    }
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
+	}
 }
