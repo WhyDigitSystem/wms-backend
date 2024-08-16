@@ -863,15 +863,15 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForLocationMovementParent")
-	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForLocationMovementParent(
+	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent")
+	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKititngParent(
 			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
 			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
 			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
 			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
 			@RequestParam(required = false) String sku) {
 
-		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForLocationMovementParent()";
+		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();

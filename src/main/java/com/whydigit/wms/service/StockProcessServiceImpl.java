@@ -785,13 +785,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
 			part.put("binclass", fs[1] != null ? fs[1].toString() : "");
-			part.put("celltype", fs[2] != null ? fs[2].toString() : "");
-			part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
-			part.put("core", fs[4] != null ? fs[4].toString() : "");
-			part.put("expdate", fs[5] != null ? fs[5].toString() : "");
-			part.put("pckey", fs[6] != null ? fs[6].toString() : "");
-			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
-			part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
+			part.put("bintype", fs[2] != null ? fs[2].toString() : "");
+			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -814,6 +809,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
+			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -862,6 +858,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
 			part.put("LotNo", fs[3] != null ? fs[3].toString() : "");
+			part.put("avlQty", fs[4] != null ? fs[4].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -896,6 +893,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("batchNo", fs[13] != null ? fs[13].toString() : "");
 			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
 			part.put("LotNo", fs[15] != null ? fs[15].toString() : "");
+			part.put("avlQty", fs[16] != null ? fs[16].toString() : "");
 			details1.add(part);
 		}
 		return details1;
