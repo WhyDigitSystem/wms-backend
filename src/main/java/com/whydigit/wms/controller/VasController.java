@@ -207,7 +207,7 @@ public class VasController extends BaseController {
         ResponseDTO responseDTO = null;
         List<Map<String, Object>> avlQty = new ArrayList<>();
         try {
-        	avlQty = vasService.getSqtyByKitting(orgId,branch, branchCode, client, partNo, partDesc,warehouse);
+        	avlQty = vasService.getSqtyByKitting(orgId, branchCode, client, partNo,warehouse,grnno);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
