@@ -148,4 +148,31 @@ public class VasanthController  extends BaseController{
 	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	    return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("getCycleCountGridDetails")
+	public ResponseEntity<ResponseDTO> getCycleCountGridDetails(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse) {
+	    String methodName = "getCycleCountGridDetails()";
+	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+	    String errorMsg = null;
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    List<Map<String, Object>> cycleCountGrid = new ArrayList<Map<String,Object>>();
+	    try {
+	    	cycleCountGrid = vasanthService.getCycleCountGridDetails(orgId,branchCode,client,warehouse);
+	    } catch (Exception e) {
+	        errorMsg = e.getMessage();
+	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+	    }
+	    if (StringUtils.isEmpty(errorMsg)) {
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount GridDetails Details found Successfullly");
+	        responseObjectsMap.put("cycleCountGrid", cycleCountGrid);
+	        responseDTO = createServiceResponse(responseObjectsMap);
+	    }  else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "CycleCount GridDetails information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

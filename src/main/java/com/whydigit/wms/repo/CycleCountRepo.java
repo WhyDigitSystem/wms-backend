@@ -1,6 +1,7 @@
 package com.whydigit.wms.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,47 @@ public interface CycleCountRepo extends JpaRepository<CycleCountVO, Long>{
 	List<CycleCountVO> findAllCycleCount(Long orgId, String client, String branch, String branchCode, String finYear,
 			String warehouse);
 
-
+	@Query(nativeQuery =true,value ="SELECT \n"
+			+ "    partno,\n"
+			+ "    partdesc,\n"
+			+ "    sku,\n"
+			+ "    bin,\n"
+			+ "    batch,\n"
+			+ "    batchdate,\n"
+			+ "    lotno,\n"
+			+ "    grnno,\n"
+			+ "    grndate,\n"
+			+ "    binclass,\n"
+			+ "    bintype,\n"
+			+ "    status,\n"
+			+ "    qcflag,\n"
+			+ "    stockdate,\n"
+			+ "    expdate,\n"
+			+ "    core,\n"
+			+ "    celltype,\n"
+			+ "    SUM(sqty) AS total_sqty\n"
+			+ "FROM \n"
+			+ "    stockdetails\n"
+			+ "WHERE \n"
+			+ "    orgid=?1 and client=?3 and warehouse=?4  and branchcode=?2 \n"
+			+ "GROUP BY \n"
+			+ "    partno,\n"
+			+ "    partdesc,\n"
+			+ "    sku,\n"
+			+ "    bin,\n"
+			+ "    batch,\n"
+			+ "    batchdate,\n"
+			+ "    lotno,\n"
+			+ "    grnno,\n"
+			+ "    grndate,\n"
+			+ "    binclass,\n"
+			+ "    bintype,\n"
+			+ "    status,\n"
+			+ "    qcflag,\n"
+			+ "    stockdate,\n"
+			+ "    expdate,\n"
+			+ "    core,\n"
+			+ "    celltype;")
+	Set<Object[]> getCycleCountGrid(Long orgId, String branchCode, String client, String warehouse);
 
 }
