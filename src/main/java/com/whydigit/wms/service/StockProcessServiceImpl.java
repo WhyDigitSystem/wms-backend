@@ -290,7 +290,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			codeConversionDetailsVO.setCbin(codeConversionDetailsDTO.getCbin());
 			codeConversionDetailsVO.setCbinType(codeConversionDetailsDTO.getCbinType());
 			codeConversionDetailsVO.setRemarks(codeConversionDetailsDTO.getRemarks());
-			codeConversionDetailsVO.setQcFlags(codeConversionDetailsDTO.isQcFlags());
+			codeConversionDetailsVO.setQcFlags(codeConversionDetailsDTO.getQcFlags());
 			codeConversionDetailsVO.setBinClass(codeConversionDetailsDTO.getBinClass());
 			codeConversionDetailsVO.setCellType(codeConversionDetailsDTO.getCellType());
 			codeConversionDetailsVO.setClientCode(codeConversionDetailsDTO.getClientCode());

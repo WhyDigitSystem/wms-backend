@@ -69,7 +69,7 @@ public class DeliveryChallanDetailsVO {
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "qcflags")
-	private boolean qcFlags;
+	private String qcFlags;
 	
 	@JsonBackReference
 	@ManyToOne

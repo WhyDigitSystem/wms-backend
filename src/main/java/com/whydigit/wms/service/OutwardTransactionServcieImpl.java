@@ -231,7 +231,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			deliveryChallanDetailsVO.setTotalGst(deliveryChallanDetailsDTO.getTotalGst());
 			deliveryChallanDetailsVO.setBillAmount(deliveryChallanDetailsDTO.getBillAmount());
 			deliveryChallanDetailsVO.setRemarks(deliveryChallanDetailsDTO.getRemarks());
-			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.isQcFlags());
+			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.getQcFlags());
 
 			deliveryChallanDetailsVO.setDeliveryChallanVO(deliveryChallanVO);
 
@@ -465,7 +465,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
 			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
 			vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
-			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.isQcFlags());
+			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.getQcFlags());
 			vasPutawayDetailsVO.setBinClass(vasPutawayDetailsDTO.getBinClass());
 			vasPutawayDetailsVO.setCellType(vasPutawayDetailsDTO.getCellType());
 			vasPutawayDetailsVO.setClientCode(vasPutawayDetailsDTO.getClientCode());
