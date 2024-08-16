@@ -186,7 +186,7 @@ public class OutwardTransactionController extends BaseController{
 		}
 		
 		@GetMapping("/getAllPickRequestFromDeliveryChallan")
-		public ResponseEntity<ResponseDTO> getAllPickRequestFromDeliveryChallan(@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client,@RequestParam String warehouse,@RequestParam String buyerOrderNo) {
+		public ResponseEntity<ResponseDTO> getAllPickRequestFromDeliveryChallan(@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client,@RequestParam String warehouse) {
 			String methodName = "getAllPickRequestFromDeliveryChallan()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
@@ -194,7 +194,7 @@ public class OutwardTransactionController extends BaseController{
 			ResponseDTO responseDTO = null;
 			List<PickRequestVO> pickRequestVO = new ArrayList<>();
 			try {
-				pickRequestVO = outwardTransactionService.getAllPickRequestFromDeliveryChallan(orgId,finYear,branch,branchCode,client,warehouse,buyerOrderNo);
+				pickRequestVO = outwardTransactionService.getAllPickRequestFromDeliveryChallan(orgId,finYear,branch,branchCode,client,warehouse);
 			} catch (Exception e) {
 				errorMsg = e.getMessage();
 				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
