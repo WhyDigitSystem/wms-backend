@@ -40,6 +40,7 @@ public class BuyerOrderDTO {
 	private boolean freeze;
 	private int orderQty;
 	private int avilQty;
+	private String buyer;
 	
 	private List<BuyerOrderDetailsDTO> buyerOrderDetailsDTO;
 	

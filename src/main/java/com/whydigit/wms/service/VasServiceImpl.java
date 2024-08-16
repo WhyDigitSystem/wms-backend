@@ -317,7 +317,7 @@ public class VasServiceImpl implements VasService{
 					documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 					documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 					
-					if(vasPicDTO.getStatus() == "confirm") {
+					if("confirm".equals(vasPicDTO.getStatus())) {
 						vasPickVO.setFreeze(true);
 					}else {
 						vasPickVO.setFreeze(false);
@@ -348,7 +348,6 @@ public class VasServiceImpl implements VasService{
 
 			private VasPickVO getVasPickVOFromVasPickDTO(VasPickVO vasPickVO, VasPickDTO vasPicDTO) {
 				vasPickVO.setPicBin(vasPicDTO.getPicBin());
-				vasPickVO.setDocDate(vasPicDTO.getDocDate());
 				vasPickVO.setOrgId(vasPicDTO.getOrgId());
 				vasPickVO.setStockState(vasPicDTO.getStockState());
 				vasPickVO.setStatus(vasPicDTO.getStatus());
