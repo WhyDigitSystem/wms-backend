@@ -299,7 +299,7 @@ public class VasServiceImpl implements VasService{
 			public Map<String, Object> createUpdateVasPic(VasPickDTO vasPicDTO) throws ApplicationException {
 				VasPickVO vasPickVO;
 				String message = null;
-				String screenCode = "VP";
+				String screenCode = "VPR";
 				if (ObjectUtils.isEmpty(vasPicDTO.getId())) {
 					vasPickVO = new VasPickVO();
 					vasPickVO.setCreatedBy(vasPicDTO.getCreatedBy());
@@ -317,11 +317,11 @@ public class VasServiceImpl implements VasService{
 					documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 					documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 					
-					if("confirm".equals(vasPicDTO.getStatus())) {
-						vasPickVO.setFreeze(true);
-					}else {
-						vasPickVO.setFreeze(false);
-					}
+//					if("confirm".equals(vasPicDTO.getStatus())) {
+//						vasPickVO.setFreeze(true);
+//					}else {
+//						vasPickVO.setFreeze(false);
+//					}
 					message = "VasPicK Creation Successfully";
 				} else {
 					vasPickVO = vasPickRepo.findById(vasPicDTO.getId()).orElseThrow(() -> new ApplicationException(
@@ -359,8 +359,6 @@ public class VasServiceImpl implements VasService{
 				vasPickVO.setBranchCode(vasPicDTO.getBranchCode());
 				vasPickVO.setWarehouse(vasPicDTO.getWarehouse());
 				vasPickVO.setCancelRemarks(vasPicDTO.getCancelRemarks());
-				vasPickVO.setActive(vasPicDTO.isActive());
-				vasPickVO.setCancel(vasPicDTO.isCancel());
 				vasPickVO.setPicBin(vasPicDTO.getPicBin());
 
 				int totalOrderQty = 0;
