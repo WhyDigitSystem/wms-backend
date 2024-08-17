@@ -518,6 +518,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			part.put("pickOty", fs[3] != null ? fs[3].toString() : "");
 			part.put("bin", fs[4] != null ? fs[4].toString() : "");
 			part.put("sku", fs[5] != null ? fs[5].toString() : "");
+
 			details1.add(part);
 		}
 		return details1;
