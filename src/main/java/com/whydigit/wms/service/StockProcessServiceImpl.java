@@ -23,6 +23,8 @@ import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.LocationMovementDetailsDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.dto.SalesReturnDetailsDTO;
+import com.whydigit.wms.dto.StockRestateDTO;
+import com.whydigit.wms.dto.StockRestateDetailsDTO;
 import com.whydigit.wms.entity.CodeConversionDetailsVO;
 import com.whydigit.wms.entity.CodeConversionVO;
 import com.whydigit.wms.entity.DeKittingChildVO;
@@ -34,6 +36,7 @@ import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.entity.SalesReturnDetailsVO;
 import com.whydigit.wms.entity.SalesReturnVO;
 import com.whydigit.wms.entity.StockDetailsVO;
+import com.whydigit.wms.entity.StockRestateDetailsVO;
 import com.whydigit.wms.entity.StockRestateVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CodeConversionDetailsRepo;
@@ -1381,7 +1384,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		StockRestateVO stockRestateVO = new StockRestateVO();
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received  StockRestate BY Id : {}", id);
-			stockRestateVO = stockRestateRepo.findStockRestateById(id);
+			stockRestateVO = stockRestateRepo.findById(id).orElse(null);
 		} else {
 			LOGGER.info("failed Received  StockRestate For All Id.");
 		}
@@ -1392,9 +1395,75 @@ public class StockProcessServiceImpl implements StockProcessService {
 	@Override
 	@Transactional
 	public String getStockRestateDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
-		String ScreenCode = "SR";
+		String ScreenCode = "SRS";
 		String result = stockRestateRepo.getStockRestateDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
+	}
+
+	@Override
+	public Map<String, Object> createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException {
+		
+		StockRestateVO stockRestateVO = new StockRestateVO();
+		String message;
+		String screenCode = "SRS";
+		
+		String docId = stockRestateRepo.getStockRestateDocId(stockRestateDTO.getOrgId(), stockRestateDTO.getFinYear(),
+				stockRestateDTO.getBranchCode(), stockRestateDTO.getClient(), screenCode);
+
+		stockRestateVO.setDocId(docId);		
+		stockRestateVO.setTransferFrom(stockRestateDTO.getTransferFrom());
+		stockRestateVO.setTransferTo(stockRestateDTO.getTransferTo());
+		stockRestateVO.setTransferFromFlag(stockRestateDTO.getTransferFromFlag());
+		stockRestateVO.setTransferToFlag(stockRestateDTO.getTransferToFlag());
+		stockRestateVO.setEntryNo(stockRestateDTO.getEntryNo());
+		stockRestateVO.setOrgId(stockRestateDTO.getOrgId());
+		stockRestateVO.setCustomer(stockRestateDTO.getCustomer());
+		stockRestateVO.setClient(stockRestateDTO.getClient());
+		stockRestateVO.setFinYear(stockRestateDTO.getFinYear());
+		stockRestateVO.setBranch(stockRestateDTO.getBranch());
+		stockRestateVO.setBranchCode(stockRestateDTO.getBranchCode());
+		stockRestateVO.setWarehouse(stockRestateDTO.getWarehouse());
+		stockRestateVO.setCreatedBy(stockRestateDTO.getCreatedBy());
+		stockRestateVO.setUpdatedBy(stockRestateDTO.getCreatedBy());
+		
+		List<StockRestateDetailsVO> stockRestateDetailsVO= new ArrayList<>();
+		List<StockRestateDetailsDTO>stockRestateDetailsDTOList= stockRestateDTO.getStockRestateDetailsDTO();
+		if(stockRestateDetailsDTOList!=null)
+		{
+			for(StockRestateDetailsDTO stockRestateDetailsDTO:stockRestateDetailsDTOList)
+			{
+				StockRestateDetailsVO stockRestateDetailsVOs= new StockRestateDetailsVO();
+				stockRestateDetailsVOs.setFromBin(stockRestateDetailsDTO.getFromBin());
+			    stockRestateDetailsVOs.setFromBinClass(stockRestateDetailsDTO.getFromBinClass());
+			    stockRestateDetailsVOs.setFromBinType(stockRestateDetailsDTO.getFromBinType());
+			    stockRestateDetailsVOs.setFromCellType(stockRestateDetailsDTO.getFromCellType());
+			    stockRestateDetailsVOs.setPartNo(stockRestateDetailsDTO.getPartNo());
+			    stockRestateDetailsVOs.setPartDesc(stockRestateDetailsDTO.getPartDesc());
+			    stockRestateDetailsVOs.setSku(stockRestateDetailsDTO.getSku());
+			    stockRestateDetailsVOs.setGrnNo(stockRestateDetailsDTO.getGrnNo());
+			    stockRestateDetailsVOs.setGrnDate(stockRestateDetailsDTO.getGrnDate());
+			    stockRestateDetailsVOs.setToBin(stockRestateDetailsDTO.getToBin());
+			    stockRestateDetailsVOs.setToBinClass(stockRestateDetailsDTO.getToBinClass());
+			    stockRestateDetailsVOs.setToBinType(stockRestateDetailsDTO.getToBinType());
+			    stockRestateDetailsVOs.setToCellType(stockRestateDetailsDTO.getToCellType());
+			    stockRestateDetailsVOs.setFromQty(stockRestateDetailsDTO.getFromQty());
+			    stockRestateDetailsVOs.setToQty(stockRestateDetailsDTO.getToQty());
+			    stockRestateDetailsVOs.setExpDate(stockRestateDetailsDTO.getExpDate());
+			    stockRestateDetailsVOs.setQcFlag(stockRestateDetailsDTO.getQcFlag());
+			    
+			}
+		}
+		else
+		{
+			throw new ApplicationException("Grid Details is Should not Empty");
+		}
+		
+		DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+				.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(stockRestateDTO.getOrgId(), stockRestateDTO.getFinYear(),
+						stockRestateDTO.getBranchCode(), stockRestateDTO.getClient(), screenCode);
+		documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+		documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+		return null;
 	}
 
 }

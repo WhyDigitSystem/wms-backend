@@ -47,12 +47,10 @@ public class StockRestateVO {
 	private String transferToFlag;
 	@Column(name = "entryno")
 	private String entryNo;
-	
-	
 	@Column(name = "screenname")
-	private String screenName = "StockRestate";
+	private String screenName = "STOCK RESTATE";
 	@Column(name = "screencode")
-	private String screenCode ="SR";
+	private String screenCode ="SRS";
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -79,7 +77,7 @@ public class StockRestateVO {
 	private String cancelRemarks;
 
 	@Column(name = "freeze")
-	private boolean freeze = false;
+	private boolean freeze = true;
 	
 	
 	@JsonGetter("active")

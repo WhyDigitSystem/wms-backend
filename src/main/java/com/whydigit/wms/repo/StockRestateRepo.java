@@ -15,7 +15,6 @@ public interface StockRestateRepo extends JpaRepository<StockRestateVO, Long>{
 	List<StockRestateVO> findAllStockRestate(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse);
 
-	StockRestateVO findStockRestateById(Long id);
 
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getStockRestateDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);

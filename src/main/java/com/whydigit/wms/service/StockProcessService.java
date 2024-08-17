@@ -12,6 +12,7 @@ import com.whydigit.wms.dto.CodeConversionDTO;
 import com.whydigit.wms.dto.DeKittingDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
+import com.whydigit.wms.dto.StockRestateDTO;
 import com.whydigit.wms.entity.CodeConversionVO;
 import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.LocationMovementVO;
@@ -134,6 +135,8 @@ public interface StockProcessService {
 	StockRestateVO getStockRestateById(Long id);
 
 	String getStockRestateDocId(Long orgId, String finYear, String branch, String branchCode, String client);
+	
+	Map<String, Object>createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException;
 
 	
 
