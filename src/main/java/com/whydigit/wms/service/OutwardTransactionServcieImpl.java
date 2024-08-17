@@ -703,7 +703,8 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 	@Override
 	public Optional<BuyerOrderVO> getAllBuyerOrderById(Long id) {
-		return buyerOrderRepo.findById(id);
+
+		return buyerOrderRepo.findAllBuyerOrderById(id);
 	}
 
 	@Override
@@ -779,6 +780,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		return details1;
 
 	}
+
 	@Override
 	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
 		return buyerOrderRepo.findByBo(orgId);

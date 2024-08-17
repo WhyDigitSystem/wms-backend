@@ -386,8 +386,8 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getBinFromStockForLocationMovement")
 	public ResponseEntity<ResponseDTO> getBinFromStockForLocationMovement(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client) {
 
 		String methodName = "getBinFromStockForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -397,7 +397,7 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getBinFromStockForLocationMovement(orgId, finYear, branch, branchCode, client);
+			mov = stockProcessService.getBinFromStockForLocationMovement(orgId, branch, branchCode, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -418,9 +418,10 @@ public class StockProcessController extends BaseController {
 	}
 
 	@GetMapping("/getToBinFromLocationStatusForLocationMovement")
-	public ResponseEntity<ResponseDTO> getToBinFromLocationStatusForLocationMovement(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client, @RequestParam(required = false) String warehouse) {
+	public ResponseEntity<ResponseDTO> getToBinFromLocationStatusForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String warehouse) {
 
 		String methodName = "getToBinFromLocationStatusForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -430,7 +431,8 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getToBinFromLocationStatusForLocationMovement(orgId, branch, branchCode, client,warehouse);
+			mov = stockProcessService.getToBinFromLocationStatusForLocationMovement(orgId, branch, branchCode, client,
+					warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -485,11 +487,10 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement")
 	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
-			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
-			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
-			@RequestParam(required = false) String sku) {
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String bin, @RequestParam(required = false) String partNo,
+			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku) {
 
 		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -499,8 +500,8 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, finYear,
-					branch, branchCode, client, bin, partNo, partDesc, sku);
+			mov = stockProcessService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, branch,
+					branchCode, client, bin, partNo, partDesc, sku);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -521,10 +522,10 @@ public class StockProcessController extends BaseController {
 	}
 
 	@GetMapping("/getPartNoAndPartDescFromStockForLocationMovement")
-	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
-			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client, @RequestParam(required = false) String bin) {
+	public ResponseEntity<ResponseDTO> getPartNoAndPartDescFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String bin) {
 
 		String methodName = "getPartNoAndPartDescFromStockForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -534,8 +535,8 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getPartNoAndPartDescFromStockForLocationMovement(orgId, finYear, branch,
-					branchCode, client, bin);
+			mov = stockProcessService.getPartNoAndPartDescFromStockForLocationMovement(orgId, branch, branchCode,
+					client, bin);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -589,11 +590,11 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getAvlQtyFromStockForLocationMovement")
 	public ResponseEntity<ResponseDTO> getAvlQtyFromStockForLocationMovement(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String bin, @RequestParam(required = false) String partDesc,
-			@RequestParam(required = false) String sku, @RequestParam(required = false) String partNo,
-			@RequestParam(required = false) String grnNo, @RequestParam(required = false) String lotNo) {
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku,
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo,
+			@RequestParam(required = false) String lotNo) {
 
 		String methodName = "getAvlQtyFromStockForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -603,8 +604,8 @@ public class StockProcessController extends BaseController {
 		int mov = 0;
 
 		try {
-			mov = stockProcessService.getAvlQtyFromStockForLocationMovement(orgId, finYear, branch, branchCode, client,
-					bin, partDesc, sku, partNo, grnNo, lotNo);
+			mov = stockProcessService.getAvlQtyFromStockForLocationMovement(orgId, branch, branchCode, client, bin,
+					partDesc, sku, partNo, grnNo, lotNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
