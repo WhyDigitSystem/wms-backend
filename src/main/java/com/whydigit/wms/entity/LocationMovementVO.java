@@ -67,14 +67,6 @@ public class LocationMovementVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
-	@Column(name = "freeze")
-	private String freeze ;
-	@Column(name="sku")
-	private String sku;
-	@Column(name = "grndate")
-	private LocalDate grnDate = LocalDate.now();
-	@Column(name="core")
-	private String core;
 	@Column(name="movedqty")
 	private int movedQty;
 	

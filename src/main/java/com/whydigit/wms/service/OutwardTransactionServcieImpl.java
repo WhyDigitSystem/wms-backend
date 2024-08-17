@@ -242,19 +242,16 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	}
 
 	@Override
-	public List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
-			String branchCode, String client, String warehouse) {
-		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, finYear, branch, branchCode, client,
-				warehouse);
+	public List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId,String branch, String branchCode,
+			String client, String warehouse) {
+		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, branch, branchCode, client, warehouse);
 
 	}
 
 	@Transactional
-	public List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear,
-			String branch, String branchCode, String client, String buyerOrderNo) {
+	public List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId,String branch,String branchCode, String client,String buyerOrderNo) {
 
-		Set<Object[]> result = buyerOrderRepo.findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(orgId, finYear,
-				branch, branchCode, client, buyerOrderNo);
+		Set<Object[]> result = buyerOrderRepo.findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(orgId,branch,branchCode, client,buyerOrderNo);
 		return getBuyerFromDeliveryChallan(result);
 	}
 
@@ -517,6 +514,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			part.put("pickOty", fs[3] != null ? fs[3].toString() : "");
 			part.put("bin", fs[4] != null ? fs[4].toString() : "");
 			part.put("sku", fs[5] != null ? fs[5].toString() : "");
+
 			details1.add(part);
 		}
 		return details1;
@@ -703,7 +701,8 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 	@Override
 	public Optional<BuyerOrderVO> getAllBuyerOrderById(Long id) {
-		return buyerOrderRepo.findById(id);
+
+		return buyerOrderRepo.findAllBuyerOrderById(id);
 	}
 
 	@Override
@@ -716,10 +715,10 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
-			String finYear, String branch, String branchCode, String client, String warehouse, String buyerOrderNo) {
+			String branch,	String branchCode, String client,String warehouse,String buyerOrderNo) {
 
-		Set<Object[]> result = pickRequestRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,
-				finYear, branch, branchCode, client, warehouse, buyerOrderNo);
+		Set<Object[]> result = pickRequestRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,branch, branchCode,
+				client,warehouse,buyerOrderNo);
 		return getAllDocidDocdatepartnofromDeliveryChallan(result);
 	}
 
@@ -779,6 +778,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		return details1;
 
 	}
+
 	@Override
 	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
 		return buyerOrderRepo.findByBo(orgId);

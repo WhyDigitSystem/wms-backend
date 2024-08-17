@@ -39,6 +39,7 @@ import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.entity.StockRestateDetailsVO;
 import com.whydigit.wms.entity.StockRestateVO;
 import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.CodeConversionDetailsRepo;
 import com.whydigit.wms.repo.CodeConversionRepo;
 import com.whydigit.wms.repo.DeKittingChildRepo;
@@ -47,6 +48,7 @@ import com.whydigit.wms.repo.DeKittingRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.LocationMovementDetailsRepo;
 import com.whydigit.wms.repo.LocationMovementRepo;
+import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.SalesReturnDetailsRepo;
 import com.whydigit.wms.repo.SalesReturnRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
@@ -92,6 +94,12 @@ public class StockProcessServiceImpl implements StockProcessService {
 	
 	@Autowired
 	StockRestateRepo stockRestateRepo;
+	
+	@Autowired
+	ClientRepo clientRepo;
+	
+	@Autowired
+	MaterialRepo materialRepo;
 
 	// CodeConversion
 	@Override
@@ -319,6 +327,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 	@Override
 	public SalesReturnVO getSalesReturnById(Long id) {
 		SalesReturnVO salesReturnVO = new SalesReturnVO();
+		
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received  SalesReturn BY Id : {}", id);
 			salesReturnVO = salesReturnRepo.findSalesReturnById(id);
@@ -442,10 +451,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear,
+	public List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId,
 			String branch, String branchCode, String client, String bin) {
 
-		Set<Object[]> result = codeConversionRepo.findPartNoAndPartDescFromStockForCodeConversion(orgId, finYear,
+		Set<Object[]> result = codeConversionRepo.findPartNoAndPartDescFromStockForCodeConversion(orgId,
 				branch, branchCode, client, bin);
 		return getCodeConeversionPartResult(result);
 	}
@@ -494,11 +503,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String finYear,
+	public List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId,
 			String branch, String branchCode, String client, String bin) {
 
 
-		Set<Object[]> result = codeConversionRepo.getCpartNoAndCpartDescFromStockForCodeConversion(orgId, finYear,
+		Set<Object[]> result = codeConversionRepo.getCpartNoAndCpartDescFromStockForCodeConversion(orgId,
     branch, branchCode, client, bin);
 		return getCodeConeversionCPartNoAndCPartDescResult(result);
 	}
@@ -518,10 +527,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 	
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+	public List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = codeConversionRepo.findCBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+		Set<Object[]> result = codeConversionRepo.findCBinFromStockForCodeConversion(orgId, branch, branchCode,
 				client);
 		return getCBinCodeConversionResult(result);
 	}
@@ -624,7 +633,6 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setBin(detailsVO.getBin());
 				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
 				stockDetailsVOFrom.setCellType(detailsVO.getCellType());
-				stockDetailsVOFrom.setClientCode(detailsVO.getClientCode());
 				stockDetailsVOFrom.setCore(detailsVO.getCore());
 				stockDetailsVOFrom.setPcKey(detailsVO.getPcKey());
 				stockDetailsVOFrom.setSSku(detailsVO.getSsku());
@@ -634,24 +642,33 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setGrnNo(detailsVO.getGRNNo());
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
-				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOFrom.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
-				stockDetailsVOFrom.setStatus(detailsVO.getStatus());
 				stockDetailsVOFrom.setSQty(detailsVO.getToQty() * -1); // Negative quantity
 				stockDetailsVOFrom.setRefNo(savedLocationMovementVO.getDocId());
 				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
-				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
 				stockDetailsVOFrom.setOrgId(savedLocationMovementVO.getOrgId());
-				stockDetailsVOFrom.setSku(savedLocationMovementVO.getSku());
 				stockDetailsVOFrom.setRefDate(savedLocationMovementVO.getDocDate());
+				stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient(),detailsVO.getPartNo()));
 				stockDetailsVOFrom.setCreatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOFrom.setBranchCode(savedLocationMovementVO.getBranchCode());
 				stockDetailsVOFrom.setBranch(savedLocationMovementVO.getBranch());
+				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient()));
 				stockDetailsVOFrom.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOFrom.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOFrom.setFinYear(savedLocationMovementVO.getFinYear());
+				
+				if ("Defective".equals(detailsVO.getBin())) {
+					stockDetailsVOFrom.setQcFlag("F");
+					stockDetailsVOFrom.setStatus("D");
+					stockDetailsVOFrom.setBinType("DAMAGE");
+				} else {
+					
+					stockDetailsVOFrom.setQcFlag("T");
+					stockDetailsVOFrom.setStatus("R");
+					stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+				}
 //				if (detailsVO.getFromQty() > detailsVO.getToQty()) {
 //					stockDetailsRepo.save(stockDetailsVOFrom);
 //				}else {
@@ -663,16 +680,15 @@ public class StockProcessServiceImpl implements StockProcessService {
 				StockDetailsVO stockDetailsVOTo = new StockDetailsVO();
 				stockDetailsVOTo.setBin(detailsVO.getToBin());
 				stockDetailsVOTo.setPartno(detailsVO.getPartNo());
-				stockDetailsVOTo.setBinClass(detailsVO.getBinClass());
-				stockDetailsVOTo.setBinType(detailsVO.getBinType());
+				stockDetailsVOTo.setBinClass(detailsVO.getToBinClass());
+				stockDetailsVOTo.setBinType(detailsVO.getToBinType());
+				stockDetailsVOTo.setCellType(detailsVO.getToCellType());
 				stockDetailsVOTo.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOTo.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOTo.setGrnNo(detailsVO.getGRNNo());
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOTo.setCellType(detailsVO.getCellType());
-				stockDetailsVOTo.setClientCode(detailsVO.getClientCode());
-				stockDetailsVOTo.setCore(detailsVO.getCore());
 				stockDetailsVOTo.setPcKey(detailsVO.getPcKey());
 				stockDetailsVOTo.setSSku(detailsVO.getSsku());
 				stockDetailsVOTo.setStockDate(detailsVO.getStockDate());
@@ -682,15 +698,26 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setStatus(detailsVO.getStatus());
 				stockDetailsVOTo.setSQty(detailsVO.getToQty()); // Positive quantity
 				stockDetailsVOTo.setRefNo(savedLocationMovementVO.getDocId());
-				stockDetailsVOTo.setSku(savedLocationMovementVO.getSku());
 				stockDetailsVOTo.setOrgId(savedLocationMovementVO.getOrgId());
 				stockDetailsVOTo.setRefDate(savedLocationMovementVO.getDocDate());
 				stockDetailsVOTo.setCreatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOTo.setBranchCode(savedLocationMovementVO.getBranchCode());
 				stockDetailsVOTo.setBranch(savedLocationMovementVO.getBranch());
 				stockDetailsVOTo.setClient(savedLocationMovementVO.getClient());
+				stockDetailsVOTo.setPcKey(materialRepo.getParentChildKey(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient(),detailsVO.getPartNo()));
+				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient()));
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
+				if ("Defective".equals(detailsVO.getBin())) {
+					stockDetailsVOTo.setQcFlag("F");
+					stockDetailsVOTo.setStatus("D");
+					stockDetailsVOTo.setBinType("DAMAGE");
+				} else {
+					
+					stockDetailsVOTo.setQcFlag("T");
+					stockDetailsVOTo.setStatus("R");
+					stockDetailsVOTo.setBinType(detailsVO.getBinType());
+				}
 //				if (detailsVO.getFromQty() > detailsVO.getToQty()) {
 //					stockDetailsRepo.save(stockDetailsVOFrom);
 //				}else {
@@ -712,16 +739,12 @@ public class StockProcessServiceImpl implements StockProcessService {
 		locationMovementVO.setOrgId(locationMovementDTO.getOrgId());
 		locationMovementVO.setType(locationMovementDTO.getType());
 		locationMovementVO.setCustomer(locationMovementDTO.getCustomer());
-		locationMovementVO.setClient(locationMovementDTO.getClient());
 		locationMovementVO.setFinYear(locationMovementDTO.getFinYear());
 		locationMovementVO.setBranchCode(locationMovementDTO.getBranchCode());
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
 		locationMovementVO.setWarehouse(locationMovementDTO.getWarehouse());
-		locationMovementVO.setSku(locationMovementDTO.getSku());
-		locationMovementVO.setFreeze(locationMovementDTO.getFreeze());
-		locationMovementVO.setCore(locationMovementDTO.getCore());
 		locationMovementVO.setMovedQty(locationMovementDTO.getMovedQty());
-
+		
 		if (ObjectUtils.isNotEmpty(locationMovementVO.getId())) {
 			List<LocationMovementDetailsVO> locationMovementDetailsVO1 = locationMovementDetailsRepo
 					.findByLocationMovementVO(locationMovementVO);
@@ -753,20 +776,30 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
 			locationMovementDetailsVO.setCellType(locationMovementDetailsDTO.getCellType());
-			locationMovementDetailsVO.setClientCode(locationMovementDetailsDTO.getClientCode());
 			locationMovementDetailsVO.setCore(locationMovementDetailsDTO.getCore());
 			locationMovementDetailsVO.setPcKey(locationMovementDetailsDTO.getPcKey());
 			locationMovementDetailsVO.setSsku(locationMovementDetailsDTO.getSsku());
 			locationMovementDetailsVO.setStockDate(locationMovementDetailsDTO.getStockDate());
-			locationMovementDetailsVO.setStockDate(locationMovementDetailsDTO.getStockDate());
+			locationMovementDetailsVO.setToBinClass(locationMovementDetailsDTO.getToBinClass());
+			locationMovementDetailsVO.setToBinType(locationMovementDetailsDTO.getToBinType());
+			locationMovementDetailsVO.setToCellType(locationMovementDetailsDTO.getToCellType());
 
 			locationMovementDetailsVO.setBinType(locationMovementDetailsDTO.getBinType());
 			locationMovementDetailsVO.setCore(locationMovementDetailsDTO.getCore());
 			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
 			locationMovementDetailsVO.setExpDate(locationMovementDetailsDTO.getExpDate());
-			locationMovementDetailsVO.setStatus(locationMovementDetailsDTO.getStatus());
-			locationMovementDetailsVO.setQcFlag(locationMovementDetailsDTO.getQcFlag());
 			locationMovementDetailsVO.setLocationMovementVO(locationMovementVO);
+			if("Defective".equals(locationMovementDetailsDTO.getBin()))
+			{
+				locationMovementDetailsVO.setQcFlag("F");
+				locationMovementDetailsVO.setStatus("D");
+			}
+			else
+			{
+				locationMovementDetailsVO.setQcFlag("T");
+				locationMovementDetailsVO.setStatus("R");
+			}
+
 
 			locationMovementDetailsVOs.add(locationMovementDetailsVO);
 		}
@@ -775,10 +808,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String finYear, String branch,
+	public List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = locationMovementRepo.findBinFromStockForLocationMovement(orgId, finYear, branch,
+		Set<Object[]> result = locationMovementRepo.findBinFromStockForLocationMovement(orgId, branch,
 				branchCode, client);
 		return getMovementResult(result);
 	}
@@ -809,10 +842,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("bin", fs[0] != null ? fs[0].toString() : "");
-			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
-			part.put("binType", fs[2] != null ? fs[2].toString() : "");
-			part.put("binStatus", fs[3] != null ? fs[3].toString() : "");
+			part.put("toBin", fs[0] != null ? fs[0].toString() : "");
+			part.put("toBinClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("toBinType", fs[2] != null ? fs[2].toString() : "");
+			part.put("toCellType", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -821,10 +854,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 	
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear,
+	public List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId,
 			String branch, String branchCode, String client, String bin) {
 
-		Set<Object[]> result = locationMovementRepo.findPartNoAndPartDescFromStockForLocationMovement(orgId, finYear,
+		Set<Object[]> result = locationMovementRepo.findPartNoAndPartDescFromStockForLocationMovement(orgId,
 				branch, branchCode, client, bin);
 		return getPartResult(result);
 	}
@@ -837,6 +870,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
+			part.put("core", fs[1] != null ? fs[1].toString() : "");
+			part.put("expDate", fs[2] != null ? fs[2].toString() : "");
+			part.put("status", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -844,11 +880,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Transactional
 	public List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(
-			Long orgId, String finYear, String branch, String branchCode, String client, String bin, String partNo,
+			Long orgId, String branch, String branchCode, String client, String bin, String partNo,
 			String partDesc, String sku) {
 
 		Set<Object[]> result = codeConversionRepo
-				.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, finYear, branch,
+				.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, branch,
 						branchCode, client, bin, partNo, partDesc, sku);
 		return getGrnCodeConversionResult(result);
 	}
@@ -869,11 +905,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Transactional
 	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
-			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+			String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku) {
 
 		Set<Object[]> result = locationMovementRepo.findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
-				orgId, finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+				orgId, branch, branchCode, client, bin, partNo, partDesc, sku);
 		return getGrnResult(result);
 	}
 
@@ -882,10 +918,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
-			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("LotNo", fs[3] != null ? fs[3].toString() : "");
-			part.put("avlQty", fs[4] != null ? fs[4].toString() : "");
+			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
+			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
+			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
+			part.put("avlQty", fs[5] != null ? fs[5].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -936,10 +973,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 	}
 
 	@Transactional
-	public int getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch, String branchCode,
+	public int getAvlQtyFromStockForLocationMovement(Long orgId, String branch, String branchCode,
 			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
 
-		Set<Object[]> result = locationMovementRepo.findAvlQtyFromStockForLocationMovement(orgId, finYear, branch,
+		Set<Object[]> result = locationMovementRepo.findAvlQtyFromStockForLocationMovement(orgId, branch,
 				branchCode, client, bin, partDesc, sku, partNo, grnNo, lotNo);
 		return getAvlQtyLMResult(result);
 	}
@@ -1227,10 +1264,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+	public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = codeConversionRepo.findBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+		Set<Object[]> result = codeConversionRepo.findBinFromStockForCodeConversion(orgId,branch, branchCode,
 				client);
 		return getBinCodeConversionResult(result);
 	}
