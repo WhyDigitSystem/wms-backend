@@ -31,13 +31,13 @@ public interface OutwardTransactionService {
 		
 		
 		List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
-				String finYear, String branch, String branchCode, String client, String warehouse ,String buyerOrderNo);
+			 String branch, String branchCode, String client, String warehouse ,String buyerOrderNo);
 
-		List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
+		List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId,String branch,
 				String branchCode, String client, String warehouse);
 
 		
-		List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear,
+		List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, 
 				String branch, String branchCode, String client,String buyerOrderNo);
 
 		//VASPutaway

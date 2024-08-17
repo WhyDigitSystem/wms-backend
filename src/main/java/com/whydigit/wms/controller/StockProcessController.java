@@ -670,7 +670,7 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getPartNoAndPartDescFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getPartNoAndPartDescFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
 			@RequestParam(required = false) String client, @RequestParam(required = false) String bin) {
 
@@ -681,7 +681,7 @@ public class StockProcessController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
-			mov = stockProcessService.getPartNoAndPartDescFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+			mov = stockProcessService.getPartNoAndPartDescFromStockForCodeConversion(orgId, branch, branchCode,
 					client, bin);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -734,7 +734,7 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) Long orgId, 
 			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
 			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
 			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
@@ -748,7 +748,7 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
 			mov = stockProcessService.getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId,
-					finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+					 branch, branchCode, client, bin, partNo, partDesc, sku);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -805,7 +805,7 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getBinFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
+			 @RequestParam(required = false) String branch,
 			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
 		String methodName = "getBinFromStockForCodeConversion()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -814,7 +814,7 @@ public class StockProcessController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
-			mov = stockProcessService.getBinFromStockForCodeConversion(orgId, finYear, branch, branchCode, client);
+			mov = stockProcessService.getBinFromStockForCodeConversion(orgId, branch, branchCode, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1000,7 +1000,7 @@ public class StockProcessController extends BaseController {
 	
 	@GetMapping("/getCpartNoAndCpartDescFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getCpartNoAndCpartDescFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) Long orgId, 
 			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
 			@RequestParam(required = false) String client, @RequestParam(required = false) String bin) {
 
@@ -1011,7 +1011,7 @@ public class StockProcessController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
-			mov = stockProcessService.getCpartNoAndCpartDescFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+			mov = stockProcessService.getCpartNoAndCpartDescFromStockForCodeConversion(orgId, branch, branchCode,
 					client, bin);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -1034,7 +1034,7 @@ public class StockProcessController extends BaseController {
 	
 	@GetMapping("/getCBinFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getCBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
+			 @RequestParam(required = false) String branch,
 			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
 		String methodName = "getCBinFromStockForCodeConversion()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -1043,7 +1043,7 @@ public class StockProcessController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> mov = new ArrayList<>();
 		try {
-			mov = stockProcessService.getCBinFromStockForCodeConversion(orgId, finYear, branch, branchCode, client);
+			mov = stockProcessService.getCBinFromStockForCodeConversion(orgId, branch, branchCode, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
