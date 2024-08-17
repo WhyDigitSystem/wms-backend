@@ -638,7 +638,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
 				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
-				stockDetailsVOFrom.setGrnNo(detailsVO.getGRNNo());
+				stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
@@ -684,7 +684,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setCellType(detailsVO.getToCellType());
 				stockDetailsVOTo.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOTo.setPartDesc(detailsVO.getPartDesc());
-				stockDetailsVOTo.setGrnNo(detailsVO.getGRNNo());
+				stockDetailsVOTo.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOTo.setCellType(detailsVO.getCellType());
@@ -739,6 +739,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		locationMovementVO.setType(locationMovementDTO.getType());
 		locationMovementVO.setCustomer(locationMovementDTO.getCustomer());
 		locationMovementVO.setFinYear(locationMovementDTO.getFinYear());
+		locationMovementVO.setClient(locationMovementDTO.getClient());
 		locationMovementVO.setBranchCode(locationMovementDTO.getBranchCode());
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
 		locationMovementVO.setWarehouse(locationMovementDTO.getWarehouse());
@@ -761,7 +762,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			locationMovementDetailsVO.setBin(locationMovementDetailsDTO.getBin());
 			locationMovementDetailsVO.setPartNo(locationMovementDetailsDTO.getPartNo());
 			locationMovementDetailsVO.setPartDesc(locationMovementDetailsDTO.getPartDesc());
-			locationMovementDetailsVO.setGRNNo(locationMovementDetailsDTO.getGRNNo());
+			locationMovementDetailsVO.setGrnNo(locationMovementDetailsDTO.getGrnNo());
 			locationMovementDetailsVO.setBatchNo(locationMovementDetailsDTO.getBatchNo());
 			locationMovementDetailsVO.setBatchDate(locationMovementDetailsDTO.getBatchDate());
 			locationMovementDetailsVO.setLotNo(locationMovementDetailsDTO.getLotNo());
@@ -869,9 +870,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
-			part.put("core", fs[1] != null ? fs[1].toString() : "");
-			part.put("expDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("status", fs[3] != null ? fs[3].toString() : "");
+			
 			details1.add(part);
 		}
 		return details1;
@@ -896,7 +895,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("binType", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
 			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
-			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
+			
 			details1.add(part);
 		}
 		return details1;
@@ -922,6 +921,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
 			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
 			part.put("avlQty", fs[5] != null ? fs[5].toString() : "");
+			part.put("core", fs[6] != null ? fs[6].toString() : "");
+			part.put("expDate", fs[7] != null ? fs[7].toString() : "");
+			part.put("status", fs[8] != null ? fs[8].toString() : "");
 			details1.add(part);
 		}
 		return details1;
