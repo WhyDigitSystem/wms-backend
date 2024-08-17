@@ -26,27 +26,26 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 	LocationMovementVO findLocationMovementById(Long id);
 
 	@Query(nativeQuery = true, value = "select bin,binclass,bintype,sum(sqty) as avlqty from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 GROUP BY bin,binclass,bintype HAVING SUM(SQTY) > 0")
-	Set<Object[]> findBinFromStockForLocationMovement(Long orgId, String branch, String branchCode,
-			String client);
+	Set<Object[]> findBinFromStockForLocationMovement(Long orgId, String branch, String branchCode, String client);
 
 	@Query(nativeQuery = true, value = "select partno,partdesc,sku,sum(sqty) as avlqty from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 GROUP BY partno,partdesc,sku HAVING SUM(SQTY) > 0 ")
-	Set<Object[]> findPartNoAndPartDescFromStockForLocationMovement(Long orgId, String branch,
-			String branchCode, String client, String bin);
+	Set<Object[]> findPartNoAndPartDescFromStockForLocationMovement(Long orgId, String branch, String branchCode,
+			String client, String bin);
 
 	@Query(nativeQuery = true, value = "select grnno,grndate,batch,batchdate,lotno,core,expdate,status,sum(sqty) as qty from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 and partno=?6 and partdesc=?7 and sku=?8 GROUP BY grnno,grndate,batch,batchdate,lotno,core,expdate,status HAVING SUM(SQTY) > 0 ")
-	Set<Object[]> findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
-			String branch, String branchCode, String client, String bin, String partNo, String partDesc, String sku);
+	Set<Object[]> findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String branch,
+			String branchCode, String client, String bin, String partNo, String partDesc, String sku);
 
 	@Query(nativeQuery = true, value = "SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno,sum(sqty) as sqty from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status='R' group by bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno having SUM(SQTY) > 0 ")
 	Set<Object[]> findAllForLocationMovementDetailsFillGrid(Long orgId, String branch, String branchCode,
 			String client);
 
 	@Query(nativeQuery = true, value = "select sum(sqty) as avlqty from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 and bin =?5 and partdesc =?6 and sku=?7  and partno=?8 and grnno=?9 and lotno=?10")
-	Set<Object[]> findAvlQtyFromStockForLocationMovement(Long orgId, String branch, String branchCode,
-			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo);
+	Set<Object[]> findAvlQtyFromStockForLocationMovement(Long orgId, String branch, String branchCode, String client,
+			String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo);
 
-	@Query(nativeQuery = true,value="select bin,bintype,binclass,celltype from wv_locationstatus where orgid=?1 and branch=?2 and branchcode=?3 and client =?4 and warehouse=?5")
+	@Query(nativeQuery = true, value = "select bin,bintype,binclass,celltype from wv_locationstatus where orgid=?1 and branch=?2 and branchcode=?3 and client =?4 and warehouse=?5 GROUP BY bin,bintype,binclass,celltype")
 	Set<Object[]> findToBinFromLocationStatusForLocationMovement(Long orgId, String branch, String branchCode,
-			String client,String warehouse);
+			String client, String warehouse);
 
 }
