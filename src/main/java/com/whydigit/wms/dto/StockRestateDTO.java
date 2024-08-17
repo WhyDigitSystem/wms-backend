@@ -1,6 +1,5 @@
 package com.whydigit.wms.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -13,14 +12,11 @@ import lombok.NoArgsConstructor;
 public class StockRestateDTO {
 
 	private Long id;
-	private String docId;
-	private LocalDate docDate = LocalDate.now();
 	private String transferFrom;
 	private String transferTo;
 	private String transferFromFlag;
 	private String transferToFlag;
 	private String entryNo;
-	
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -29,6 +25,5 @@ public class StockRestateDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	
 	List<StockRestateDetailsDTO> stockRestateDetailsDTO;
 }
