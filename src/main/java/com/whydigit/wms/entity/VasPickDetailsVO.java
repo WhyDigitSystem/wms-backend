@@ -55,7 +55,7 @@ public class VasPickDetailsVO {
 	@Column(name = "manufacturedate")
 	private LocalDate manufactureDate;
 	@Column(name="qcflag")
-	private boolean qcflag;
+	private String qcflag;
 	
 	@Column(name = "binclass")
 	private String binClass;

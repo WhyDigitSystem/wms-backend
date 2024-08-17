@@ -231,10 +231,6 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			handlingStockInVO2.setSdocdate(savedGrnVO.getDocdate());
 			handlingStockInVO2.setStockdate(savedGrnVO.getDocdate());
 			handlingStockInVO2.setSdocid(savedGrnVO.getDocId());
-			
-			
-			
-			
 			handlingStockInVO2.setFinyr(savedGrnVO.getFinYear());
 			handlingStockInVO2.setBatchno(grnDetailsVO.getBatchNo());
 			handlingStockInVO2.setBatchdt(grnDetailsVO.getBatchDt());

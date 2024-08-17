@@ -13,24 +13,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StockRestateDetailsDTO {
 
-    private Long id;
-	private String bin;
-	private String binClass;
-	private String binType;
-	private String cellType;
+	private String fromBin;
+	private String fromBinClass;
+	private String fromBinType;
+	private String fromCellType;
 	private String partNo;
 	private String partDesc;
+	private String sku;
 	private String grnNo;
 	private LocalDate grnDate;
-	private String sku;
 	private String toBin;
 	private String toBinClass;
 	private String toBinType;
+	private String toCellType;
 	private int fromQty;
 	private int toQty;
-	private int remainQty;
-	private String noted;
-	private boolean qcFlags;
 	private LocalDate expDate;
-	private String status;
+	private String qcFlag;
 }

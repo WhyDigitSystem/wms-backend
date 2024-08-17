@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -230,7 +231,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			deliveryChallanDetailsVO.setTotalGst(deliveryChallanDetailsDTO.getTotalGst());
 			deliveryChallanDetailsVO.setBillAmount(deliveryChallanDetailsDTO.getBillAmount());
 			deliveryChallanDetailsVO.setRemarks(deliveryChallanDetailsDTO.getRemarks());
-			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.isQcFlags());
+			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.getQcFlags());
 
 			deliveryChallanDetailsVO.setDeliveryChallanVO(deliveryChallanVO);
 
@@ -462,7 +463,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
 			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
 			vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
-			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.isQcFlags());
+			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.getQcFlags());
 			vasPutawayDetailsVO.setBinClass(vasPutawayDetailsDTO.getBinClass());
 			vasPutawayDetailsVO.setCellType(vasPutawayDetailsDTO.getCellType());
 			vasPutawayDetailsVO.setClientCode(vasPutawayDetailsDTO.getClientCode());
@@ -663,6 +664,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setBranch(buyerOrderDTO.getBranch());
 		buyerOrderVO.setBranchCode(buyerOrderDTO.getBranchCode());
 		buyerOrderVO.setFreeze(buyerOrderDTO.isFreeze());
+		buyerOrderVO.setBuyer(buyerOrderDTO.getBuyer());
 
 		if (buyerOrderDTO.getId() != null) {
 
@@ -700,13 +702,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	}
 
 	@Override
-	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
-
-		return buyerOrderRepo.findAllBuyerOrderByOrgId(orgId);
-	}
-
-	@Override
-	public List<BuyerOrderVO> getAllBuyerOrderById(Long id) {
+	public Optional<BuyerOrderVO> getAllBuyerOrderById(Long id) {
 
 		return buyerOrderRepo.findAllBuyerOrderById(id);
 	}
@@ -783,6 +779,11 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		}
 		return details1;
 
+	}
+
+	@Override
+	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
+		return buyerOrderRepo.findByBo(orgId);
 	}
 
 }

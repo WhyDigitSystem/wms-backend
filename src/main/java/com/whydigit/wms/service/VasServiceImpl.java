@@ -379,7 +379,7 @@ public class VasServiceImpl implements VasService{
 					detailsVO.setPicQty(vasPickDTO.getPicQty());
 					detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
 					detailsVO.setManufactureDate(vasPickDTO.getManufactureDate());
-					detailsVO.setQcflag(vasPickDTO.isQcflag());
+					detailsVO.setQcflag(vasPickDTO.getQcflag());
 
 					totalOrderQty = totalOrderQty + vasPickDTO.getAvlQty();
 					pickedQty = pickedQty + vasPickDTO.getPicQty();
@@ -395,12 +395,12 @@ public class VasServiceImpl implements VasService{
 
 			@Override
 			public Optional<VasPickVO> getVaspickById(Long id) {
-				return vasPickRepo.findVasPickById(id);
+				return vasPickRepo.findById(id);
 			}
 
 			@Override
 			public String getVasPickDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
-				String ScreenCode = "VP";
+				String ScreenCode = "VPR";
 				String result = vasPickRepo.getVasPickDocId(orgId, finYear, branchCode, client, ScreenCode);
 				return result;
 			}
@@ -408,7 +408,7 @@ public class VasServiceImpl implements VasService{
 			@Override
 			public List<VasPickVO> getAllVaspick(Long orgId, String branchCode, String client, String branch, String finYear,
 					String warehouse) {
-				return vasPickRepo.AllVaspick(orgId, branchCode, client, branch, finYear, warehouse);
+				return vasPickRepo.findALLVasPick(orgId, branchCode, client, branch, finYear, warehouse);
 			}
 			
 			@Override

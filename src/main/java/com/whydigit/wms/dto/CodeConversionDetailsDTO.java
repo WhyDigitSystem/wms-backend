@@ -37,7 +37,7 @@ public class CodeConversionDetailsDTO {
 	private String cbin;
 	private String cbinType;
 	private String remarks;
-	private boolean qcFlags;
+	private String qcFlags;
 
 	private String binClass;
 	private String cellType;
