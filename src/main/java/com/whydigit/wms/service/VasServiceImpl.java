@@ -299,7 +299,7 @@ public class VasServiceImpl implements VasService{
 			public Map<String, Object> createUpdateVasPic(VasPickDTO vasPicDTO) throws ApplicationException {
 				VasPickVO vasPickVO;
 				String message = null;
-				String screenCode = "VP";
+				String screenCode = "VPR";
 				if (ObjectUtils.isEmpty(vasPicDTO.getId())) {
 					vasPickVO = new VasPickVO();
 					vasPickVO.setCreatedBy(vasPicDTO.getCreatedBy());
@@ -317,11 +317,11 @@ public class VasServiceImpl implements VasService{
 					documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 					documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 					
-					if(vasPicDTO.getStatus() == "confirm") {
-						vasPickVO.setFreeze(true);
-					}else {
-						vasPickVO.setFreeze(false);
-					}
+//					if("confirm".equals(vasPicDTO.getStatus())) {
+//						vasPickVO.setFreeze(true);
+//					}else {
+//						vasPickVO.setFreeze(false);
+//					}
 					message = "VasPicK Creation Successfully";
 				} else {
 					vasPickVO = vasPickRepo.findById(vasPicDTO.getId()).orElseThrow(() -> new ApplicationException(
@@ -348,7 +348,6 @@ public class VasServiceImpl implements VasService{
 
 			private VasPickVO getVasPickVOFromVasPickDTO(VasPickVO vasPickVO, VasPickDTO vasPicDTO) {
 				vasPickVO.setPicBin(vasPicDTO.getPicBin());
-				vasPickVO.setDocDate(vasPicDTO.getDocDate());
 				vasPickVO.setOrgId(vasPicDTO.getOrgId());
 				vasPickVO.setStockState(vasPicDTO.getStockState());
 				vasPickVO.setStatus(vasPicDTO.getStatus());
@@ -360,8 +359,6 @@ public class VasServiceImpl implements VasService{
 				vasPickVO.setBranchCode(vasPicDTO.getBranchCode());
 				vasPickVO.setWarehouse(vasPicDTO.getWarehouse());
 				vasPickVO.setCancelRemarks(vasPicDTO.getCancelRemarks());
-				vasPickVO.setActive(vasPicDTO.isActive());
-				vasPickVO.setCancel(vasPicDTO.isCancel());
 				vasPickVO.setPicBin(vasPicDTO.getPicBin());
 
 				int totalOrderQty = 0;
@@ -382,7 +379,7 @@ public class VasServiceImpl implements VasService{
 					detailsVO.setPicQty(vasPickDTO.getPicQty());
 					detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
 					detailsVO.setManufactureDate(vasPickDTO.getManufactureDate());
-					detailsVO.setQcflag(vasPickDTO.isQcflag());
+					detailsVO.setQcflag(vasPickDTO.getQcflag());
 
 					totalOrderQty = totalOrderQty + vasPickDTO.getAvlQty();
 					pickedQty = pickedQty + vasPickDTO.getPicQty();
@@ -398,12 +395,12 @@ public class VasServiceImpl implements VasService{
 
 			@Override
 			public Optional<VasPickVO> getVaspickById(Long id) {
-				return vasPickRepo.findVasPickById(id);
+				return vasPickRepo.findById(id);
 			}
 
 			@Override
 			public String getVasPickDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
-				String ScreenCode = "VP";
+				String ScreenCode = "VPR";
 				String result = vasPickRepo.getVasPickDocId(orgId, finYear, branchCode, client, ScreenCode);
 				return result;
 			}
@@ -411,7 +408,7 @@ public class VasServiceImpl implements VasService{
 			@Override
 			public List<VasPickVO> getAllVaspick(Long orgId, String branchCode, String client, String branch, String finYear,
 					String warehouse) {
-				return vasPickRepo.AllVaspick(orgId, branchCode, client, branch, finYear, warehouse);
+				return vasPickRepo.findALLVasPick(orgId, branchCode, client, branch, finYear, warehouse);
 			}
 			
 			@Override

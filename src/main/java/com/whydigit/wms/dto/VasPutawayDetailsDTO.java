@@ -22,7 +22,7 @@ public class VasPutawayDetailsDTO {
 	private String bin;
 	private String sku;
 	private String remarks;
-	private boolean qcFlags;
+	private String qcFlags;
 	private String status ;
 	private String binClass;
 	private String cellType;

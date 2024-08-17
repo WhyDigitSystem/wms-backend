@@ -44,7 +44,9 @@ public interface VasService {
 		List<VasPickVO> getAllVaspick(Long orgId, String branchCode, String client, String branch, String finYear,
 				String warehouse);
 
-		String getVasPickDocId(Long orgId, String finYear, String branch, String branchCode, String client);	List<Map<String, Object>> getVaspickGrid(Long orgId, String branch, String branchCode, String client,
+		String getVasPickDocId(Long orgId, String finYear, String branch, String branchCode, String client);	
+		
+		List<Map<String, Object>> getVaspickGrid(Long orgId, String branch, String branchCode, String client,
 				String warehouse);
 
 		List<Map<String, Object>> getVasPicGridDetails(Long orgId, String branchCode, String client, String warehouse,

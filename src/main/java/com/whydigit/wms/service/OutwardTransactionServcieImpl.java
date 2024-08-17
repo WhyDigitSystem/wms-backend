@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -69,7 +70,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
-	
+
 	@Autowired
 	PickRequestRepo pickRequestRepo;
 
@@ -208,7 +209,6 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 					.findByDeliveryChallanVO(deliveryChallanVO);
 			deliveryChallanDetailsRepo.deleteAll(deliveryChallanDetailsVO1);
 		}
-		
 
 		List<DeliveryChallanDetailsVO> deliveryChallanDetailsVOs = new ArrayList<>();
 		for (DeliveryChallanDetailsDTO deliveryChallanDetailsDTO : deliveryChallanDTO.getDeliveryChallanDetailsDTO()) {
@@ -231,7 +231,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			deliveryChallanDetailsVO.setTotalGst(deliveryChallanDetailsDTO.getTotalGst());
 			deliveryChallanDetailsVO.setBillAmount(deliveryChallanDetailsDTO.getBillAmount());
 			deliveryChallanDetailsVO.setRemarks(deliveryChallanDetailsDTO.getRemarks());
-			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.isQcFlags());
+			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.getQcFlags());
 
 			deliveryChallanDetailsVO.setDeliveryChallanVO(deliveryChallanVO);
 
@@ -240,19 +240,21 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		deliveryChallanVO.setDeliveryChallanDetailsVO(deliveryChallanDetailsVOs);
 
 	}
-	
+
 	@Override
-	public List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch, String branchCode,
-			String client, String warehouse) {
-		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, finYear, branch, branchCode, client, warehouse);
+	public List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
+			String branchCode, String client, String warehouse) {
+		return pickRequestRepo.findAllPickRequestFromDeliveryChallan(orgId, finYear, branch, branchCode, client,
+				warehouse);
 
 	}
-	
-	
-	@Transactional
-	public List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId,String finYear,String branch,String branchCode, String client,String buyerOrderNo) {
 
-		Set<Object[]> result = buyerOrderRepo.findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(orgId,finYear,branch,branchCode, client,buyerOrderNo);
+	@Transactional
+	public List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear,
+			String branch, String branchCode, String client, String buyerOrderNo) {
+
+		Set<Object[]> result = buyerOrderRepo.findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(orgId, finYear,
+				branch, branchCode, client, buyerOrderNo);
 		return getBuyerFromDeliveryChallan(result);
 	}
 
@@ -311,7 +313,6 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			createUpdateVasPutawayVOByVasPutawayDTO(vasPutawayDTO, vasPutawayVO);
 			vasPutawayVO.setUpdatedBy(vasPutawayDTO.getCreatedBy());
 			message = "DeliveryChallan updated Successfully";
-			
 
 		} else {
 			vasPutawayVO.setUpdatedBy(vasPutawayDTO.getCreatedBy());
@@ -331,7 +332,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 			message = "VasPutaway updated Successfully";
-			
+
 		}
 		VasPutawayVO savedVasPutawayVO = vasPutawayRepo.save(vasPutawayVO);
 
@@ -370,7 +371,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 				stockDetailsVOFrom.setGrnNo(vasPutawayDetailsVO.getGrnNo());
 				stockDetailsVOFrom.setGrnDate(vasPutawayDetailsVO.getGrnDate());
 				stockDetailsVOFrom.setInvQty(vasPutawayDetailsVO.getInvQty());
-				stockDetailsVOFrom.setSsQty(vasPutawayDetailsVO.getPutAwayQty() *-1); // NEGATIVE QUANTITY
+				stockDetailsVOFrom.setSsQty(vasPutawayDetailsVO.getPutAwayQty() * -1); // NEGATIVE QUANTITY
 				stockDetailsVOFrom.setBin(vasPutawayDetailsVO.getBin());
 				stockDetailsVOFrom.setBin(vasPutawayDetailsVO.getFromBin());
 				stockDetailsVOFrom.setSku(vasPutawayDetailsVO.getSku());
@@ -409,7 +410,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 				stockDetailsVOTo.setGrnNo(vasPutawayDetailsVO.getGrnNo());
 				stockDetailsVOTo.setGrnDate(vasPutawayDetailsVO.getGrnDate());
 				stockDetailsVOTo.setInvQty(vasPutawayDetailsVO.getInvQty());
-				stockDetailsVOTo.setSsQty(vasPutawayDetailsVO.getPutAwayQty() ); // POSITIVE QUANTITY
+				stockDetailsVOTo.setSsQty(vasPutawayDetailsVO.getPutAwayQty()); // POSITIVE QUANTITY
 				stockDetailsVOTo.setBin(vasPutawayDetailsVO.getBin());
 				stockDetailsVOTo.setBin(vasPutawayDetailsVO.getFromBin());
 				stockDetailsVOTo.setSku(vasPutawayDetailsVO.getSku());
@@ -417,7 +418,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 			}
 		}
-		
+
 		Map<String, Object> response = new HashMap<>();
 		response.put("vasPutawayVO", vasPutawayVO);
 		response.put("message", message);
@@ -442,13 +443,10 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		vasPutawayVO.setBranchCode(vasPutawayDTO.getBranchCode());
 		vasPutawayVO.setWarehouse(vasPutawayDTO.getWarehouse());
 
-		
 		if (ObjectUtils.isNotEmpty(vasPutawayVO.getId())) {
-			List<VasPutawayDetailsVO> vasPutawayDetailsVO1 = vasPutawayDetailsRepo
-					.findByVasPutawayVO(vasPutawayVO);
+			List<VasPutawayDetailsVO> vasPutawayDetailsVO1 = vasPutawayDetailsRepo.findByVasPutawayVO(vasPutawayVO);
 			vasPutawayDetailsRepo.deleteAll(vasPutawayDetailsVO1);
 		}
-
 
 		List<VasPutawayDetailsVO> vasPutawayDetailsVOs = new ArrayList<>();
 		for (VasPutawayDetailsDTO vasPutawayDetailsDTO : vasPutawayDTO.getVasPutawayDetailsDTO()) {
@@ -465,7 +463,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
 			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
 			vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
-			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.isQcFlags());
+			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.getQcFlags());
 			vasPutawayDetailsVO.setBinClass(vasPutawayDetailsDTO.getBinClass());
 			vasPutawayDetailsVO.setCellType(vasPutawayDetailsDTO.getCellType());
 			vasPutawayDetailsVO.setClientCode(vasPutawayDetailsDTO.getClientCode());
@@ -475,19 +473,18 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			vasPutawayDetailsVO.setPckey(vasPutawayDetailsDTO.getPckey());
 			vasPutawayDetailsVO.setSsku(vasPutawayDetailsDTO.getSsku());
 			vasPutawayDetailsVO.setStockDate(vasPutawayDetailsDTO.getStockDate());
-			
+
 			vasPutawayDetailsVO.setVasPutawayVO(vasPutawayVO);
 			vasPutawayDetailsVOs.add(vasPutawayDetailsVO);
 		}
 		vasPutawayVO.setVasPutawayDetailsVO(vasPutawayDetailsVOs);
 
 	}
-	
-	
-	@Transactional
-	public List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId,String branch, String client) {
 
-		Set<Object[]> result = vasPutawayRepo.findDocIdFromVasPickForVasPutaway(orgId,branch, client);
+	@Transactional
+	public List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client) {
+
+		Set<Object[]> result = vasPutawayRepo.findDocIdFromVasPickForVasPutaway(orgId, branch, client);
 		return getVasPutaway(result);
 	}
 
@@ -500,11 +497,13 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		}
 		return details1;
 	}
-	
-	@Transactional
-	public List<Map<String, Object>> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId,String branch, String client,String docId) {
 
-		Set<Object[]> result = vasPutawayDetailsRepo.getAllDetailsFromVasPickDetailsForVasPutawayDetails(orgId,branch, client ,docId);
+	@Transactional
+	public List<Map<String, Object>> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId, String branch,
+			String client, String docId) {
+
+		Set<Object[]> result = vasPutawayDetailsRepo.getAllDetailsFromVasPickDetailsForVasPutawayDetails(orgId, branch,
+				client, docId);
 		return getVasPutawayDetails(result);
 	}
 
@@ -522,18 +521,18 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		}
 		return details1;
 	}
-	
+
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch,
-			String branchCode, String client) {
+	public List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode,
+			String client) {
 
-		Set<Object[]> result = vasPutawayDetailsRepo.getAllFillGridFromVasPutaway(orgId, branch, branchCode,
-				client);
+		Set<Object[]> result = vasPutawayDetailsRepo.getAllFillGridFromVasPutaway(orgId, branch, branchCode, client);
 		return getAllFillGridVasPutawayResult(result);
 	}
+
 	private List<Map<String, Object>> getAllFillGridVasPutawayResult(Set<Object[]> result) {
-    List<Map<String, Object>> details1 = new ArrayList<>();
+		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
@@ -553,17 +552,16 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			part.put("picqty", fs[14] != null ? fs[14].toString() : "");
 			part.put("avlqty", fs[15] != null ? fs[15].toString() : "");
 
-
 			details1.add(part);
 		}
 		return details1;
 	}
-	
+
 	@Override
-	public int getAvlQtyVasPutaway(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
-			String partDesc) {
-		Set<Object[]> getAvlQtyVasPutaway = vasPutawayDetailsRepo.getAvlQtyVasPutaway(orgId, client, branchCode, warehouse, branch, partNo,
-				partDesc);
+	public int getAvlQtyVasPutaway(Long orgId, String client, String branchCode, String warehouse, String branch,
+			String partNo, String partDesc) {
+		Set<Object[]> getAvlQtyVasPutaway = vasPutawayDetailsRepo.getAvlQtyVasPutaway(orgId, client, branchCode,
+				warehouse, branch, partNo, partDesc);
 		return calculateTotalQtyVasPutaway(getAvlQtyVasPutaway);
 	}
 
@@ -579,7 +577,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 
 	@Override
 	public Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException {
-        String screenCode="BO";
+		String screenCode = "BO";
 		BuyerOrderVO buyerOrderVO;
 		String message = null;
 
@@ -593,8 +591,8 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			}
 
 			buyerOrderVO = new BuyerOrderVO();
-			
-		//	GETDOCID API
+
+			// GETDOCID API
 			String docId = buyerOrderRepo.getbuyerOrderDocId(buyerOrderDTO.getOrgId(), buyerOrderDTO.getFinYear(),
 					buyerOrderDTO.getBranchCode(), buyerOrderDTO.getClient(), screenCode);
 			buyerOrderVO.setDocId(docId);
@@ -606,7 +604,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 							screenCode);
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
-			
+
 			buyerOrderVO.setCreatedBy(buyerOrderDTO.getCreatedBy());
 			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
 
@@ -666,18 +664,17 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setBranch(buyerOrderDTO.getBranch());
 		buyerOrderVO.setBranchCode(buyerOrderDTO.getBranchCode());
 		buyerOrderVO.setFreeze(buyerOrderDTO.isFreeze());
+		buyerOrderVO.setBuyer(buyerOrderDTO.getBuyer());
 
 		if (buyerOrderDTO.getId() != null) {
 
 			List<BuyerOrderDetailsVO> detailsVOs = buyerOrderDetailsRepo.findByBuyerOrderVO(buyerOrderVO);
 			buyerOrderDetailsRepo.deleteAll(detailsVOs);
 		}
-		
-		
-         int orderQty=0;
-		 int avilQty=0;
-		
-		
+
+		int orderQty = 0;
+		int avilQty = 0;
+
 		List<BuyerOrderDetailsVO> detailsVOList = new ArrayList<BuyerOrderDetailsVO>();
 		for (BuyerOrderDetailsDTO buyerOrderDetailsDTO : buyerOrderDTO.getBuyerOrderDetailsDTO()) {
 
@@ -690,10 +687,10 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			detailsVO.setSku(buyerOrderDetailsDTO.getSku());
 			detailsVO.setReMarks(buyerOrderDetailsDTO.getRemarks());
 			detailsVO.setQcflag(buyerOrderDetailsDTO.isQcflag());
-			
-			avilQty=avilQty+buyerOrderDetailsDTO.getAvailQty();
-			orderQty=orderQty+buyerOrderDetailsDTO.getQty();
-			
+
+			avilQty = avilQty + buyerOrderDetailsDTO.getAvailQty();
+			orderQty = orderQty + buyerOrderDetailsDTO.getQty();
+
 			detailsVO.setBuyerOrderVO(buyerOrderVO);
 			detailsVOList.add(detailsVO);
 		}
@@ -705,39 +702,29 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	}
 
 	@Override
-	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
-
-		return buyerOrderRepo.findAllBuyerOrderByOrgId(orgId);
+	public Optional<BuyerOrderVO> getAllBuyerOrderById(Long id) {
+		return buyerOrderRepo.findById(id);
 	}
 
 	@Override
-	public List<BuyerOrderVO> getAllBuyerOrderById(Long id) {
-
-		return buyerOrderRepo.findAllBuyerOrderById(id);
-	}
-
-
-	@Override
-	public String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode,
-			String client) {
+	public String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
 		String ScreenCode = "BO";
 		String result = buyerOrderRepo.getbuyerOrderDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
 	}
-	
-	
-	
+
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
-			String finYear,String branch,	String branchCode, String client,String warehouse,String buyerOrderNo) {
+			String finYear, String branch, String branchCode, String client, String warehouse, String buyerOrderNo) {
 
-		Set<Object[]> result = pickRequestRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,finYear,branch, branchCode,
-				client,warehouse,buyerOrderNo);
+		Set<Object[]> result = pickRequestRepo.getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(orgId,
+				finYear, branch, branchCode, client, warehouse, buyerOrderNo);
 		return getAllDocidDocdatepartnofromDeliveryChallan(result);
 	}
+
 	private List<Map<String, Object>> getAllDocidDocdatepartnofromDeliveryChallan(Set<Object[]> result) {
-    List<Map<String, Object>> details1 = new ArrayList<>();
+		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("docId", fs[0] != null ? fs[0].toString() : "");
@@ -754,42 +741,47 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	@Override
 	public List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String batch,
 			String warehouse) {
-		Set<Object[]> result = buyerOrderRepo.getBoSku(orgId,branchCode,client,batch,warehouse);
+		Set<Object[]> result = buyerOrderRepo.getBoSku(orgId, branchCode, client, batch, warehouse);
 		return getAllSkuDetails(result);
 	}
 
 	private List<Map<String, Object>> getAllSkuDetails(Set<Object[]> result) {
-		 List<Map<String, Object>> details1 = new ArrayList<>();
-			for (Object[] fs : result) {
-				Map<String, Object> part = new HashMap<>();
-				part.put("partNo", fs[0] != null ? fs[0].toString() : "");
-				part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
-				part.put("batch", fs[2] != null ? fs[2].toString() : "");
-				part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()):0);
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("batch", fs[2] != null ? fs[2].toString() : "");
+			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);
 
-				details1.add(part);
-			}
-			return details1;
+			details1.add(part);
+		}
+		return details1;
 
-}
+	}
 
 	@Override
 	public List<Map<String, Object>> getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
-			String branch, String partNo, String partDesc,String batch) {
-		Set<Object[]> result = buyerOrderRepo.getAvilableQty(orgId,client,branchCode,warehouse,branch,partNo,partDesc,batch);
+			String branch, String partNo, String partDesc, String batch) {
+		Set<Object[]> result = buyerOrderRepo.getAvilableQty(orgId, client, branchCode, warehouse, branch, partNo,
+				partDesc, batch);
 		return getAvlQty(result);
 	}
 
 	private List<Map<String, Object>> getAvlQty(Set<Object[]> result) {
-		 List<Map<String, Object>> details1 = new ArrayList<>();
-			for (Object[] fs : result) {
-				Map<String, Object> part = new HashMap<>();
-				part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()):0);
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
 
-				details1.add(part);
-			}
-			return details1;
+			details1.add(part);
+		}
+		return details1;
 
-}
+	}
+	@Override
+	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
+		return buyerOrderRepo.findByBo(orgId);
+	}
 
 }

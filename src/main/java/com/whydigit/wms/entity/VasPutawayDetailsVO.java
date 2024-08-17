@@ -53,7 +53,7 @@ public class VasPutawayDetailsVO {
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "qcflags")
-	private boolean qcFlags;
+	private String qcFlags;
 	
 	@Column(name = "binclass")
 	private String binClass;
