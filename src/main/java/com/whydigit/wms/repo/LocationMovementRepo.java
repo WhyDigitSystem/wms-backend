@@ -33,7 +33,7 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 	Set<Object[]> findPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear, String branch,
 			String branchCode, String client, String bin);
 
-	@Query(nativeQuery = true, value = "select grnno,batch,batchdate,lotno,sum(sqty) as qty from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9 GROUP BY grnno,batch,batchdate,lotno HAVING SUM(SQTY) > 0 ")
+	@Query(nativeQuery = true, value = "select grnno,grndate,batch,batchdate,lotno,sum(sqty) as qty from stockdetails  where orgid=?1 and finyear=?2 and branch=?3 and branchcode=?4 and client=?5 and bin=?6 and partno=?7 and partdesc=?8 and sku=?9 GROUP BY grnno,grndate,batch,batchdate,lotno HAVING SUM(SQTY) > 0 ")
 	Set<Object[]> findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String finYear,
 			String branch, String branchCode, String client, String bin, String partNo, String partDesc, String sku);
 
@@ -45,7 +45,7 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 	Set<Object[]> findAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch, String branchCode,
 			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo);
 
-	@Query(nativeQuery = true,value="select bin,bintype,binclass,binstatus from wv_locationstatus where orgid=?1 and branch=?2 and branchcode=?3 and client =?4 and warehouse=?5")
+	@Query(nativeQuery = true,value="select bin,bintype,binclass,celltype from wv_locationstatus where orgid=?1 and branch=?2 and branchcode=?3 and client =?4 and warehouse=?5")
 	Set<Object[]> findToBinFromLocationStatusForLocationMovement(Long orgId, String branch, String branchCode,
 			String client,String warehouse);
 

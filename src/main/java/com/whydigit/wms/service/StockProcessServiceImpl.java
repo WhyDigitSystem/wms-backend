@@ -663,8 +663,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 				StockDetailsVO stockDetailsVOTo = new StockDetailsVO();
 				stockDetailsVOTo.setBin(detailsVO.getToBin());
 				stockDetailsVOTo.setPartno(detailsVO.getPartNo());
-				stockDetailsVOTo.setBinClass(detailsVO.getBinClass());
-				stockDetailsVOTo.setBinType(detailsVO.getBinType());
+				stockDetailsVOTo.setBinClass(detailsVO.getToBinClass());
+				stockDetailsVOTo.setBinType(detailsVO.getToBinType());
+				stockDetailsVOTo.setCellType(detailsVO.getToCellType());
 				stockDetailsVOTo.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOTo.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOTo.setGrnNo(detailsVO.getGRNNo());
@@ -758,7 +759,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 			locationMovementDetailsVO.setPcKey(locationMovementDetailsDTO.getPcKey());
 			locationMovementDetailsVO.setSsku(locationMovementDetailsDTO.getSsku());
 			locationMovementDetailsVO.setStockDate(locationMovementDetailsDTO.getStockDate());
-			locationMovementDetailsVO.setStockDate(locationMovementDetailsDTO.getStockDate());
+			locationMovementDetailsVO.setToBinClass(locationMovementDetailsDTO.getToBinClass());
+			locationMovementDetailsVO.setToBinType(locationMovementDetailsDTO.getToBinType());
+			locationMovementDetailsVO.setToCellType(locationMovementDetailsDTO.getToCellType());
 
 			locationMovementDetailsVO.setBinType(locationMovementDetailsDTO.getBinType());
 			locationMovementDetailsVO.setCore(locationMovementDetailsDTO.getCore());
@@ -809,10 +812,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("bin", fs[0] != null ? fs[0].toString() : "");
-			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
-			part.put("binType", fs[2] != null ? fs[2].toString() : "");
-			part.put("binStatus", fs[3] != null ? fs[3].toString() : "");
+			part.put("toBin", fs[0] != null ? fs[0].toString() : "");
+			part.put("toBinClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("toBinType", fs[2] != null ? fs[2].toString() : "");
+			part.put("toCellType", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -882,10 +885,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
-			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("LotNo", fs[3] != null ? fs[3].toString() : "");
-			part.put("avlQty", fs[4] != null ? fs[4].toString() : "");
+			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
+			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
+			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
+			part.put("avlQty", fs[5] != null ? fs[5].toString() : "");
 			details1.add(part);
 		}
 		return details1;
