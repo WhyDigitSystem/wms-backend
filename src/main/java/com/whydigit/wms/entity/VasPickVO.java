@@ -73,7 +73,7 @@ public class VasPickVO {
 	@Column(name = "pickedqty")
 	private int pickedQty;
 	@Column(name = "statestatus")
-    private char stateStatus;
+    private String stateStatus;
 	@Column(name = "stockstate")
 	private String stockState;
 	private String status;
