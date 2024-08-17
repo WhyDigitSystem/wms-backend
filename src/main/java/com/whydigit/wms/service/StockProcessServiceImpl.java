@@ -639,10 +639,12 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
 				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
-				stockDetailsVOFrom.setGrnNo(detailsVO.getGRNNo());
+				stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+				stockDetailsVOFrom.setSku(detailsVO.getSku());
+				stockDetailsVOFrom.setCore(detailsVO.getCore());
 				stockDetailsVOFrom.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOFrom.setSQty(detailsVO.getToQty() * -1); // Negative quantity
@@ -685,16 +687,18 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setCellType(detailsVO.getToCellType());
 				stockDetailsVOTo.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOTo.setPartDesc(detailsVO.getPartDesc());
-				stockDetailsVOTo.setGrnNo(detailsVO.getGRNNo());
+				stockDetailsVOTo.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOTo.setCellType(detailsVO.getCellType());
 				stockDetailsVOTo.setPcKey(detailsVO.getPcKey());
 				stockDetailsVOTo.setSSku(detailsVO.getSsku());
+				stockDetailsVOTo.setSku(detailsVO.getSku());
 				stockDetailsVOTo.setStockDate(detailsVO.getStockDate());
 				stockDetailsVOTo.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOTo.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOTo.setExpDate(detailsVO.getExpDate());
+				stockDetailsVOTo.setCore(detailsVO.getCore());
 				stockDetailsVOTo.setStatus(detailsVO.getStatus());
 				stockDetailsVOTo.setSQty(detailsVO.getToQty()); // Positive quantity
 				stockDetailsVOTo.setRefNo(savedLocationMovementVO.getDocId());
@@ -705,7 +709,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setBranch(savedLocationMovementVO.getBranch());
 				stockDetailsVOTo.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOTo.setPcKey(materialRepo.getParentChildKey(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient(),detailsVO.getPartNo()));
-				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient()));
+				stockDetailsVOTo.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient()));
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
 				if ("Defective".equals(detailsVO.getBin())) {
@@ -740,6 +744,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 		locationMovementVO.setType(locationMovementDTO.getType());
 		locationMovementVO.setCustomer(locationMovementDTO.getCustomer());
 		locationMovementVO.setFinYear(locationMovementDTO.getFinYear());
+		locationMovementVO.setClient(locationMovementDTO.getClient());
 		locationMovementVO.setBranchCode(locationMovementDTO.getBranchCode());
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
 		locationMovementVO.setWarehouse(locationMovementDTO.getWarehouse());
@@ -762,7 +767,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			locationMovementDetailsVO.setBin(locationMovementDetailsDTO.getBin());
 			locationMovementDetailsVO.setPartNo(locationMovementDetailsDTO.getPartNo());
 			locationMovementDetailsVO.setPartDesc(locationMovementDetailsDTO.getPartDesc());
-			locationMovementDetailsVO.setGRNNo(locationMovementDetailsDTO.getGRNNo());
+			locationMovementDetailsVO.setGrnNo(locationMovementDetailsDTO.getGrnNo());
 			locationMovementDetailsVO.setBatchNo(locationMovementDetailsDTO.getBatchNo());
 			locationMovementDetailsVO.setBatchDate(locationMovementDetailsDTO.getBatchDate());
 			locationMovementDetailsVO.setLotNo(locationMovementDetailsDTO.getLotNo());
@@ -870,9 +875,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
-			part.put("core", fs[1] != null ? fs[1].toString() : "");
-			part.put("expDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("status", fs[3] != null ? fs[3].toString() : "");
+			
 			details1.add(part);
 		}
 		return details1;
@@ -897,7 +900,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("binType", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
 			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
-			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
+			
 			details1.add(part);
 		}
 		return details1;
@@ -921,8 +924,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
 			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
-			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
-			part.put("avlQty", fs[5] != null ? fs[5].toString() : "");
+			part.put("lotNo", fs[4] != null ? fs[4].toString() : "");
+			part.put("core", fs[5] != null ? fs[5].toString() : "");
+			part.put("expDate", fs[6] != null ? fs[6].toString() : "");
+			part.put("status", fs[7] != null ? fs[7].toString() : "");
+			part.put("avlQty", fs[8] != null ? fs[8].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -947,7 +953,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("clientCode", fs[3] != null ? fs[3].toString() : "");
 			part.put("core", fs[4] != null ? fs[4].toString() : "");
 			part.put("expDate", fs[5] != null ? fs[5].toString() : "");
-			part.put("pcKet", fs[6] != null ? fs[6].toString() : "");
+			part.put("pcKey", fs[6] != null ? fs[6].toString() : "");
 			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
 			part.put("stockDate", fs[8] != null ? fs[8].toString() : "");
 			part.put("partNo", fs[9] != null ? fs[9].toString() : "");
@@ -956,8 +962,9 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("grnNo", fs[12] != null ? fs[12].toString() : "");
 			part.put("batchNo", fs[13] != null ? fs[13].toString() : "");
 			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
-			part.put("LotNo", fs[15] != null ? fs[15].toString() : "");
-			part.put("avlQty", fs[16] != null ? fs[16].toString() : "");
+			part.put("lotNo", fs[15] != null ? fs[15].toString() : "");
+			part.put("grnDate", fs[16] != null ? fs[16].toString() : "");
+			part.put("avlQty", fs[17] != null ? fs[17].toString() : "");
 			details1.add(part);
 		}
 		return details1;

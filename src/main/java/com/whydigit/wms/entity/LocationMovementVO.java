@@ -68,7 +68,7 @@ public class LocationMovementVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name="movedqty")
-	private int movedQty;
+	private Integer movedQty;
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
