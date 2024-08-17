@@ -16,7 +16,7 @@ public class LocationMovementDetailsDTO {
 	private String bin;
 	private String partNo;
 	private String partDesc;
-	private String GRNNo;
+	private String grnNo;
 	private String batchNo;
 	private LocalDate batchDate;
 	private String lotNo;

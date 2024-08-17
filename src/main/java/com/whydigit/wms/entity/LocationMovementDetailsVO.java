@@ -39,7 +39,7 @@ public class LocationMovementDetailsVO {
 	@Column(name = "partdescripition")
 	private String partDesc;
 	@Column(name = "grnno")
-	private String GRNNo;
+	private String grnNo;
 	@Column(name = "batchno")
 	private String batchNo;
 	@Column(name = "batchdate")
@@ -49,6 +49,7 @@ public class LocationMovementDetailsVO {
 	@Column(name = "tobin")
 	private String toBin;
 	@Column(name = "fromqty")
+	
 	private int fromQty;
 	@Column(name = "toqty")
 	private int toQty;
