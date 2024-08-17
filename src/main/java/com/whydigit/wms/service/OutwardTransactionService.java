@@ -2,6 +2,7 @@ package com.whydigit.wms.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -34,7 +35,7 @@ public interface OutwardTransactionService {
 				String finYear, String branch, String branchCode, String client, String warehouse ,String buyerOrderNo);
 
 		List<PickRequestVO> getAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
-				String branchCode, String client, String warehouse, String buyerOrderNo);
+				String branchCode, String client, String warehouse);
 
 		
 		List<Map<String, Object>> getBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear,
@@ -69,7 +70,7 @@ public interface OutwardTransactionService {
 
 		List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId);
 
-		List<BuyerOrderVO> getAllBuyerOrderById(Long id);
+		Optional<BuyerOrderVO> getAllBuyerOrderById(Long id);
 
 		String getBuyerOrderDocId (Long orgId, String finYear, String branch, String branchCode, String client);
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -186,7 +187,7 @@ public class OutwardTransactionController extends BaseController{
 		}
 		
 		@GetMapping("/getAllPickRequestFromDeliveryChallan")
-		public ResponseEntity<ResponseDTO> getAllPickRequestFromDeliveryChallan(@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client,@RequestParam String warehouse,@RequestParam String buyerOrderNo) {
+		public ResponseEntity<ResponseDTO> getAllPickRequestFromDeliveryChallan(@RequestParam Long orgId,@RequestParam String finYear,@RequestParam String branch,@RequestParam String branchCode,@RequestParam String client,@RequestParam String warehouse) {
 			String methodName = "getAllPickRequestFromDeliveryChallan()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
@@ -194,7 +195,7 @@ public class OutwardTransactionController extends BaseController{
 			ResponseDTO responseDTO = null;
 			List<PickRequestVO> pickRequestVO = new ArrayList<>();
 			try {
-				pickRequestVO = outwardTransactionService.getAllPickRequestFromDeliveryChallan(orgId,finYear,branch,branchCode,client,warehouse,buyerOrderNo);
+				pickRequestVO = outwardTransactionService.getAllPickRequestFromDeliveryChallan(orgId,finYear,branch,branchCode,client,warehouse);
 			} catch (Exception e) {
 				errorMsg = e.getMessage();
 				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -476,29 +477,37 @@ public class OutwardTransactionController extends BaseController{
 		
 		@GetMapping("/getAllBuyerOrderById")
 		public ResponseEntity<ResponseDTO> getAllBuyerOrderById(@RequestParam(required = true) Long id) {
-			String methodName = "getAllBuyerOrderById()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<BuyerOrderVO> buyerOrderVOs = new ArrayList<>();
-			try {
-				buyerOrderVOs = outwardTransactionService.getAllBuyerOrderById(id);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BuyerOrder information get successfully Id");
-				responseObjectsMap.put("buyerOrderVO", buyerOrderVOs);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, "BuyerOrder information get Failed ",
-						errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
+		    String methodName = "getAllBuyerOrderById()";
+		    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		    ResponseDTO responseDTO;
+		    Map<String, Object> responseObjectsMap = new HashMap<>();
+		    
+		    try {
+		        // Fetch the buyer order by ID
+		        Optional<BuyerOrderVO> optionalBuyerOrder = outwardTransactionService.getAllBuyerOrderById(id);
+		        
+		        if (optionalBuyerOrder.isPresent()) {
+		            // Data found, prepare success response
+		            BuyerOrderVO buyerOrderVO = optionalBuyerOrder.get();
+		            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BuyerOrder information fetched successfully for Id: " + id);
+		            responseObjectsMap.put("buyerOrderVO", buyerOrderVO);
+		            responseDTO = createServiceResponse(responseObjectsMap);
+		        } else {
+		            // No data found, prepare response indicating no data
+		            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "No BuyerOrder information found for Id: " + id);
+		            responseDTO = createServiceResponse(responseObjectsMap); // or createServiceResponseError() if preferred
+		        }
+		    } catch (Exception e) {
+		        // Exception occurred, prepare error response
+		        String errorMsg = e.getMessage();
+		        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg, e);
+		        responseDTO = createServiceResponseError(responseObjectsMap, "BuyerOrder information retrieval failed", errorMsg);
+		    }
+		    
+		    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		    return ResponseEntity.ok().body(responseDTO);
 		}
+
 		
 		@GetMapping("/getBuyerOrderDocId")
 	    public ResponseEntity<ResponseDTO> getBuyerOrderDocId(

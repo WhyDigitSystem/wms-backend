@@ -37,7 +37,7 @@ public class VasPickVO {
 	@Column(name = "screenname")
 	private String screenName="VASPICK";
 	@Column(name = "screencode")
-	private String screenCode="VP";
+	private String screenCode="VPR";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
 	@Column(name = "docid",unique =true)
@@ -72,6 +72,11 @@ public class VasPickVO {
 	private int totalOrderQty;
 	@Column(name = "pickedqty")
 	private int pickedQty;
+	@Column(name = "statestatus")
+    private char stateStatus;
+	@Column(name = "stockstate")
+	private String stockState;
+	private String status;
 	
 	
 	@OneToMany(mappedBy ="vasPickVO",cascade = CascadeType.ALL)

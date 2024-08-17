@@ -2,8 +2,6 @@ package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,7 +39,7 @@ public class VasPickDetailsDTO {
 
 	private LocalDate manufactureDate;
 
-	private boolean qcflag;
+	private String qcflag;
 	
 	private String binClass;
 	private String cellType;

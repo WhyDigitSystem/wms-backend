@@ -14,9 +14,6 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	boolean existsByOrderNoAndOrgIdAndClientAndBranchCodeAndCustomer(String orderNo, Long orgId, String client,
 			String branchCode, String customer);
 
-	@Query(value ="select * from buyerorder where orgid=?1",nativeQuery =true )
-	List<BuyerOrderVO> findAllBuyerOrderByOrgId(Long orgId);
-
 	@Query(value ="select * from buyerorder where buyerorderid=?1",nativeQuery =true)
 	List<BuyerOrderVO> findAllBuyerOrderById(Long id);
 
@@ -50,6 +47,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	@Query(nativeQuery = true,value="select buyer,buyershortname,shipto,billto from buyerorder where orgid=?1 and finyear =?2 and branch=?3 and branchcode=?4 and client=?5 and docid=?6")
 	Set<Object[]> findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear, String branch,
 			String branchCode, String client, String buyerOrderNo);
-
-
+	@Query(value ="select * from buyerorder where orgid=?1",nativeQuery =true )
+	List<BuyerOrderVO> findByBo(Long orgId);
+	
 }

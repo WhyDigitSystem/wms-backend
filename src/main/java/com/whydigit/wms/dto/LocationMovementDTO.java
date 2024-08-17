@@ -31,6 +31,7 @@ public class LocationMovementDTO {
 	private String sku;
 	private LocalDate grnDate;
 	private String core;
+	private int movedQty;
 
 	private List<LocationMovementDetailsDTO> locationMovementDetailsDTO;
 }
