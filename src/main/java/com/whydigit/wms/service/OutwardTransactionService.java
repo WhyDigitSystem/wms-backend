@@ -19,7 +19,7 @@ public interface OutwardTransactionService {
 
 	 //DeliveryChallan
 	
-		List<DeliveryChallanVO> getAllDeliveryChallan(Long orgId, String client, String branch, String finyr, String branchcode,String warehouse );
+		List<DeliveryChallanVO> getAllDeliveryChallan(Long orgId, String client, String branch, String finyear, String branchcode,String warehouse );
 
 		DeliveryChallanVO getDeliveryChallanById(Long id);
 
