@@ -643,6 +643,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+				stockDetailsVOFrom.setSku(detailsVO.getSku());
+				stockDetailsVOFrom.setCore(detailsVO.getCore());
 				stockDetailsVOFrom.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOFrom.setSQty(detailsVO.getToQty() * -1); // Negative quantity
@@ -691,10 +693,12 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setCellType(detailsVO.getCellType());
 				stockDetailsVOTo.setPcKey(detailsVO.getPcKey());
 				stockDetailsVOTo.setSSku(detailsVO.getSsku());
+				stockDetailsVOTo.setSku(detailsVO.getSku());
 				stockDetailsVOTo.setStockDate(detailsVO.getStockDate());
 				stockDetailsVOTo.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOTo.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOTo.setExpDate(detailsVO.getExpDate());
+				stockDetailsVOTo.setCore(detailsVO.getCore());
 				stockDetailsVOTo.setStatus(detailsVO.getStatus());
 				stockDetailsVOTo.setSQty(detailsVO.getToQty()); // Positive quantity
 				stockDetailsVOTo.setRefNo(savedLocationMovementVO.getDocId());
@@ -705,7 +709,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setBranch(savedLocationMovementVO.getBranch());
 				stockDetailsVOTo.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOTo.setPcKey(materialRepo.getParentChildKey(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient(),detailsVO.getPartNo()));
-				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient()));
+				stockDetailsVOTo.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),savedLocationMovementVO.getClient()));
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
 				if ("Defective".equals(detailsVO.getBin())) {
@@ -959,7 +963,8 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("batchNo", fs[13] != null ? fs[13].toString() : "");
 			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
 			part.put("LotNo", fs[15] != null ? fs[15].toString() : "");
-			part.put("avlQty", fs[16] != null ? fs[16].toString() : "");
+			part.put("grnDate", fs[16] != null ? fs[16].toString() : "");
+			part.put("avlQty", fs[17] != null ? fs[17].toString() : "");
 			details1.add(part);
 		}
 		return details1;
