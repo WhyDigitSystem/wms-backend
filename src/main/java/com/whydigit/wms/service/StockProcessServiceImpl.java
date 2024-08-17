@@ -924,11 +924,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
 			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
-			part.put("LotNo", fs[4] != null ? fs[4].toString() : "");
-			part.put("avlQty", fs[5] != null ? fs[5].toString() : "");
-			part.put("core", fs[6] != null ? fs[6].toString() : "");
-			part.put("expDate", fs[7] != null ? fs[7].toString() : "");
-			part.put("status", fs[8] != null ? fs[8].toString() : "");
+			part.put("lotNo", fs[4] != null ? fs[4].toString() : "");
+			part.put("core", fs[5] != null ? fs[5].toString() : "");
+			part.put("expDate", fs[6] != null ? fs[6].toString() : "");
+			part.put("status", fs[7] != null ? fs[7].toString() : "");
+			part.put("avlQty", fs[8] != null ? fs[8].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -953,7 +953,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("clientCode", fs[3] != null ? fs[3].toString() : "");
 			part.put("core", fs[4] != null ? fs[4].toString() : "");
 			part.put("expDate", fs[5] != null ? fs[5].toString() : "");
-			part.put("pcKet", fs[6] != null ? fs[6].toString() : "");
+			part.put("pcKey", fs[6] != null ? fs[6].toString() : "");
 			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
 			part.put("stockDate", fs[8] != null ? fs[8].toString() : "");
 			part.put("partNo", fs[9] != null ? fs[9].toString() : "");
@@ -962,7 +962,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 			part.put("grnNo", fs[12] != null ? fs[12].toString() : "");
 			part.put("batchNo", fs[13] != null ? fs[13].toString() : "");
 			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
-			part.put("LotNo", fs[15] != null ? fs[15].toString() : "");
+			part.put("lotNo", fs[15] != null ? fs[15].toString() : "");
 			part.put("grnDate", fs[16] != null ? fs[16].toString() : "");
 			part.put("avlQty", fs[17] != null ? fs[17].toString() : "");
 			details1.add(part);
