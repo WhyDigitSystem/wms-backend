@@ -1,6 +1,7 @@
 package com.whydigit.wms.repo;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,11 +15,8 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	boolean existsByOrderNoAndOrgIdAndClientAndBranchCodeAndCustomer(String orderNo, Long orgId, String client,
 			String branchCode, String customer);
 
-	@Query(value ="select * from buyerorder where orgid=?1",nativeQuery =true )
-	List<BuyerOrderVO> findAllBuyerOrderByOrgId(Long orgId);
-
 	@Query(value ="select * from buyerorder where buyerorderid=?1",nativeQuery =true)
-	List<BuyerOrderVO> findAllBuyerOrderById(Long id);
+	Optional<BuyerOrderVO> findAllBuyerOrderById(Long id);
 
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getbuyerOrderDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
@@ -50,7 +48,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	@Query(nativeQuery = true,value="select buyer,buyershortname,shipto,billto from buyerorder where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and docid=?5")
 	Set<Object[]> findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String branch,
 			String branchCode, String client, String buyerOrderNo);
-
-
+	@Query(value ="select * from buyerorder where orgid=?1",nativeQuery =true )
+	List<BuyerOrderVO> findByBo(Long orgId);
 	
 }

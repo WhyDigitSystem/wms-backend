@@ -1,9 +1,6 @@
 package com.whydigit.wms.dto;
 
-import java.time.LocalDate;
 import java.util.List;
-
-import javax.persistence.Column;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,11 +23,7 @@ public class LocationMovementDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String freeze;
-	
-	private String sku;
-	private LocalDate grnDate;
-	private String core;
+	private int movedQty;
 
 	private List<LocationMovementDetailsDTO> locationMovementDetailsDTO;
 }

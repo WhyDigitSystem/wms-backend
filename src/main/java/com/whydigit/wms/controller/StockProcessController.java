@@ -386,8 +386,8 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getBinFromStockForLocationMovement")
 	public ResponseEntity<ResponseDTO> getBinFromStockForLocationMovement(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client) {
 
 		String methodName = "getBinFromStockForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -397,7 +397,7 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getBinFromStockForLocationMovement(orgId, finYear, branch, branchCode, client);
+			mov = stockProcessService.getBinFromStockForLocationMovement(orgId, branch, branchCode, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -411,6 +411,41 @@ public class StockProcessController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve Bin from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getToBinFromLocationStatusForLocationMovement")
+	public ResponseEntity<ResponseDTO> getToBinFromLocationStatusForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String warehouse) {
+
+		String methodName = "getToBinFromLocationStatusForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = stockProcessService.getToBinFromLocationStatusForLocationMovement(orgId, branch, branchCode, client,
+					warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All ToBin from LocationStatus retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve ToBin from LocationStatus information", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -452,11 +487,10 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement")
 	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
-			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
-			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
-			@RequestParam(required = false) String sku) {
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String bin, @RequestParam(required = false) String partNo,
+			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku) {
 
 		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -466,8 +500,8 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = stockProcessService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, finYear,
-					branch, branchCode, client, bin, partNo, partDesc, sku);
+			mov = stockProcessService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, branch,
+					branchCode, client, bin, partNo, partDesc, sku);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -481,6 +515,41 @@ public class StockProcessController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve GrnNo and BatchNo from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getPartNoAndPartDescFromStockForLocationMovement")
+	public ResponseEntity<ResponseDTO> getPartNoAndPartDescFromStockForLocationMovement(
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String bin) {
+
+		String methodName = "getPartNoAndPartDescFromStockForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+
+		try {
+			mov = stockProcessService.getPartNoAndPartDescFromStockForLocationMovement(orgId, branch, branchCode,
+					client, bin);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All PartNo and Part Desc from Stock information retrieved successfully");
+			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve PartNo and PartDEsc from Stock information", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -521,11 +590,11 @@ public class StockProcessController extends BaseController {
 
 	@GetMapping("/getAvlQtyFromStockForLocationMovement")
 	public ResponseEntity<ResponseDTO> getAvlQtyFromStockForLocationMovement(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String bin, @RequestParam(required = false) String partDesc,
-			@RequestParam(required = false) String sku, @RequestParam(required = false) String partNo,
-			@RequestParam(required = false) String grnNo, @RequestParam(required = false) String lotNo) {
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku,
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo,
+			@RequestParam(required = false) String lotNo) {
 
 		String methodName = "getAvlQtyFromStockForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -535,8 +604,8 @@ public class StockProcessController extends BaseController {
 		int mov = 0;
 
 		try {
-			mov = stockProcessService.getAvlQtyFromStockForLocationMovement(orgId, finYear, branch, branchCode, client,
-					bin, partDesc, sku, partNo, grnNo, lotNo);
+			mov = stockProcessService.getAvlQtyFromStockForLocationMovement(orgId, branch, branchCode, client, bin,
+					partDesc, sku, partNo, grnNo, lotNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -769,40 +838,6 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getPartDescAndSkuFromStockForDeKittingParent")
-	public ResponseEntity<ResponseDTO> getPartNoFromStockForDeKitting(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String partNo) {
-		String methodName = "getPartDescAndSkuFromStockForDeKittingParent()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> de = new ArrayList<>();
-
-		try {
-			de = stockProcessService.getPartDescAndSkuFromStockForDeKittingParent(orgId, finYear, branch, branchCode,
-					client, partNo);
-
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All PartNo and PartDesc from Stock information retrieved successfully");
-			responseObjectsMap.put("deKittingDetailsVO", de);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve PartNo and PartDesc from Stock information", errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
 	@GetMapping("/getBinFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
 			 @RequestParam(required = false) String branch,
@@ -997,7 +1032,7 @@ public class StockProcessController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getCpartNoAndCpartDescFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getCpartNoAndCpartDescFromStockForCodeConversion(
 			@RequestParam(required = false) Long orgId, 
@@ -1031,7 +1066,7 @@ public class StockProcessController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getCBinFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getCBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
 			 @RequestParam(required = false) String branch,
@@ -1062,13 +1097,10 @@ public class StockProcessController extends BaseController {
 	}
 
 	@GetMapping("/getAvlQtyCodeConversion")
-	public ResponseEntity<ResponseDTO> getAvlQtyCodeConversion(@RequestParam(required =true) Long orgId,
-			@RequestParam(required =true) String client,
-			@RequestParam(required =true) String branchCode,
-			@RequestParam(required =true)String warehouse,
-			@RequestParam(required =true) String branch,
-			@RequestParam(required =true) String partNo,
-			@RequestParam(required =true) String partDesc) {
+	public ResponseEntity<ResponseDTO> getAvlQtyCodeConversion(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String client, @RequestParam(required = true) String branchCode,
+			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String branch,
+			@RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc) {
 		String methodName = "getAvlQtyCodeConversion()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1076,7 +1108,8 @@ public class StockProcessController extends BaseController {
 		ResponseDTO responseDTO = null;
 		int avalQty = 0;
 		try {
-			avalQty = stockProcessService.getAvlQtyCodeConversion(orgId,client,branchCode,warehouse,branch,partNo,partDesc);
+			avalQty = stockProcessService.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+					partDesc);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1086,104 +1119,102 @@ public class StockProcessController extends BaseController {
 			responseObjectsMap.put("avalQty", avalQty);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ",
+			responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// StockRestate
+	@GetMapping("/getAllStockRestate")
+	public ResponseEntity<ResponseDTO> getAllStockRestate(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String warehouse) {
+		String methodName = "getAllStockRestate()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<StockRestateVO> stockRestateVO = new ArrayList<>();
+		try {
+			stockRestateVO = stockProcessService.getAllStockRestate(orgId, finYear, branch, branchCode, client,
+					warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "StockRestate information get successfully");
+			responseObjectsMap.put("stockRestateVO", stockRestateVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "StockRestate information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	// StockRestate
-		@GetMapping("/getAllStockRestate")
-		public ResponseEntity<ResponseDTO> getAllStockRestate(@RequestParam Long orgId, @RequestParam String finYear,
-				@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
-				@RequestParam String warehouse) {
-			String methodName = "getAllStockRestate()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<StockRestateVO> stockRestateVO = new ArrayList<>();
-			try {
-				stockRestateVO = stockProcessService.getAllStockRestate(orgId, finYear, branch, branchCode, client,
-						warehouse);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "StockRestate information get successfully");
+
+	@GetMapping("/getStockRestateById")
+	public ResponseEntity<ResponseDTO> getStockRestateById(@RequestParam(required = false) Long id) {
+		String methodName = "getStockRestateById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		StockRestateVO stockRestateVO = new StockRestateVO();
+
+		try {
+			stockRestateVO = stockProcessService.getStockRestateById(id);
+			if (stockRestateVO != null) {
 				responseObjectsMap.put("stockRestateVO", stockRestateVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
+				responseDTO = createServiceResponseMsg(responseObjectsMap,
+						" StockRestate information retrieved successfully.");
 			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, "StockRestate information receive failed",
+				responseDTO = createServiceResponseError(responseObjectsMap, " StockRestate information not found.",
 						errorMsg);
 			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		}
-		
-		@GetMapping("/getStockRestateById")
-		public ResponseEntity<ResponseDTO> getStockRestateById(@RequestParam(required = false) Long id) {
-			String methodName = "getStockRestateById()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			StockRestateVO stockRestateVO = new StockRestateVO();
-
-			try {
-				stockRestateVO = stockProcessService.getStockRestateById(id);
-				if (stockRestateVO != null) {
-					responseObjectsMap.put("stockRestateVO", stockRestateVO);
-					responseDTO = createServiceResponseMsg(responseObjectsMap,
-							" StockRestate information retrieved successfully.");
-				} else {
-					responseDTO = createServiceResponseError(responseObjectsMap, " StockRestate information not found.",
-							errorMsg);
-				}
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						" StockRestate information retrieval failed.", errorMsg);
-			}
-
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, " StockRestate information retrieval failed.",
+					errorMsg);
 		}
 
-		@GetMapping("/getStockRestateDocId")
-		public ResponseEntity<ResponseDTO> getStockRestateDocId(@RequestParam Long orgId, @RequestParam String finYear,
-				@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
-			String methodName = "getStockRestateDocId()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			String mapp = "";
+	@GetMapping("/getStockRestateDocId")
+	public ResponseEntity<ResponseDTO> getStockRestateDocId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
 
-			try {
-				mapp = stockProcessService.getStockRestateDocId(orgId, finYear, branch, branchCode, client);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
+		String methodName = "getStockRestateDocId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		String mapp = "";
 
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-						"All StockRestate information retrieved successfully");
-				responseObjectsMap.put("StockRestateDocId", mapp);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap,
-						"Failed to retrieve StockRestate information", errorMsg);
-			}
-
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
+		try {
+			mapp = stockProcessService.getStockRestateDocId(orgId, finYear, branch, branchCode, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 
-	
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All StockRestate information retrieved successfully");
+			responseObjectsMap.put("StockRestateDocId", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve StockRestate information",
+					errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

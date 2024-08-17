@@ -73,6 +73,8 @@ public class PutAwayDetailsVO {
 	private LocalDate batchDate;
 	@Column(name = "status")
 	private String status;
+	@Column(name = "expdate")
+	private LocalDate expdate;
 	@Column(name = "qcflag")
 	private String qcFlag;
 

@@ -12,6 +12,7 @@ import com.whydigit.wms.dto.CodeConversionDTO;
 import com.whydigit.wms.dto.DeKittingDTO;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.SalesReturnDTO;
+import com.whydigit.wms.dto.StockRestateDTO;
 import com.whydigit.wms.entity.CodeConversionVO;
 import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.LocationMovementVO;
@@ -76,21 +77,24 @@ public interface StockProcessService {
 	Map<String, Object> createUpdateLocationMovement(@Valid LocationMovementDTO locationMovementDTO)
 			throws ApplicationException;
 
-	List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String finYear, String branch,
+	List<Map<String, Object>> getBinFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client);
+	
+	List<Map<String, Object>> getToBinFromLocationStatusForLocationMovement(Long orgId, String branch,
+			String branchCode, String client,String warehouse);
 
-	List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String finYear,
+	List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId,
 			String branch, String branchCode, String client, String bin);
 
 	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
-			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+			 String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
 
 	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 	
 	List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long id,String branch,String branchCode,String client);
 	
-	int getAvlQtyFromStockForLocationMovement(Long orgId, String finYear, String branch,
+	int getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client, String bin, String partDesc, String sku, String partNo, String grnNo,
 			String lotNo);
 
@@ -107,9 +111,6 @@ public interface StockProcessService {
 	// PARENT
 	List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String finYear, String branch,
 			String branchCode, String client);
-
-	List<Map<String, Object>> getPartDescAndSkuFromStockForDeKittingParent(Long orgId, String finYear, String branch,
-			String branchCode, String client, String partNo);
 
 	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
 			String client);
@@ -134,6 +135,8 @@ public interface StockProcessService {
 	StockRestateVO getStockRestateById(Long id);
 
 	String getStockRestateDocId(Long orgId, String finYear, String branch, String branchCode, String client);
+	
+	Map<String, Object>createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException;
 
 	
 
