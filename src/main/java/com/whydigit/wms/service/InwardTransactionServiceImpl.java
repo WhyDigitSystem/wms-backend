@@ -216,7 +216,6 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			}
 		for (GrnDetailsVO grnDetailsVO : grnDetailsVOLists) {
 			// create new obj to store as second row
-			if (grnDetailsVO.getDamageQty() == 0) {
 			HandlingStockInVO handlingStockInVO2 = new HandlingStockInVO();
 			handlingStockInVO2.setScreencode(grnVO.getScreenCode());
 			handlingStockInVO2.setRefdate(savedGrnVO.getDocdate());
@@ -258,7 +257,6 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 			handlingStockInVO2.setRpqty(grnDetailsVO.getInvQty());
 			handlingStockInVO2.setQcflag("T");
 			handlingStockInRepo.save(handlingStockInVO2);
-		}
 		}
 		Map<String, Object> response = new HashMap<>();
 		response.put("grnVO", grnVO);
@@ -566,7 +564,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 	@Override
 	public List<PutAwayVO> getAllPutAway(Long orgId, String finYear, String branch, String branchCode, String client,
 			String warehouse) {
-		return putAwayRepo.findAllPutAway(orgId, finYear, branch, branchCode, client, warehouse);
+		return putAwayRepo.findAllPutAwayDetails(orgId, finYear, branch, branchCode, client, warehouse);
 
 	}
 
@@ -592,7 +590,7 @@ public class InwardTransactionServiceImpl implements InwardTransactionService {
 
 	@Override
 	public List<GrnVO> getGrnNoForPutAway(Long orgId, String client, String branch, String branchcode,String warehouse) {
-		return putAwayRepo.findGrnNoForPutAway(orgId, client, branch, branchcode,warehouse);
+		return grnRepo.findGrnNoDetailsForPutAway(orgId, client, branch, branchcode,warehouse);
 	}
 
 	@Override
