@@ -68,8 +68,6 @@ public class LocationMovementDetailsVO {
 	private String binClass;
 	@Column(name = "celltype")
 	private String cellType;
-	@Column(name = "clientcode")
-	private String clientCode;
 	@Column(name = "core")
 	private String core;
 	@Column(name = "expdate")
@@ -79,7 +77,7 @@ public class LocationMovementDetailsVO {
 	@Column(name = "ssku")
 	private String ssku;
 	@Column(name = "stokcdate")
-	private LocalDate stockDate;
+	private LocalDate stockDate=LocalDate.now();
 	@Column(name = "tobinclass")
 	private String toBinClass;
 	@Column(name = "tobintype")
