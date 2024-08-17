@@ -33,23 +33,23 @@ public interface StockProcessService {
 
 	Map<String, Object> createUpdateCodeConversion(CodeConversionDTO codeConversionDTO) throws ApplicationException;
 
-	List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear, String branch,
+	List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client, String bin);
 
 	List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId,
-			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+		    String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
 
-	List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+	List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId,String branch,
 			String branchCode, String client);
 	
 	List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client);
 	
-	List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String finYear,
+	List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId,
 			String branch, String branchCode, String client, String bin);
 	
-	List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+	List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client);
 	
 	int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,

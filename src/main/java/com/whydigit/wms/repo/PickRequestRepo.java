@@ -25,13 +25,14 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	Set<Object[]> findBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear, String branch,
 			String branchCode, String client);
 
-	@Query(nativeQuery = true,value="select a.docid,a.docdate,b.partno,b.partdesc,sum(b.pickqty) as shippedqty from pickrequest a , pickrequestdetails b where a.pickrequestid= b.pickrequestid and a.orgid=?1 and a.finyear =?2 and a.branch=?3 and a.branchcode=?4 and a.client=?5 and a.warehouse=?6 and buyerorderno=?7 group by a.docid,a.docdate,b.partno,b.partdesc having sum(b.pickqty) >0 ")
-	Set<Object[]> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId, String finYear,
+	@Query(nativeQuery = true,value="select a.docid,a.docdate,b.partno,b.partdesc,sum(b.pickqty) as shippedqty from pickrequest a , pickrequestdetails b where a.pickrequestid= b.pickrequestid and a.orgid=?1 and a.branch=?2 and a.branchcode=?3 and a.client=?4 and a.warehouse=?5 and buyerorderno=?6 group by a.docid,a.docdate,b.partno,b.partdesc having sum(b.pickqty) >0 ")
+	Set<Object[]> getDocidDocdatePartnoPartDescFromPickRequestForDeliveryChallan(Long orgId,
 			String branch, String branchCode, String client, String warehouse, String buyerOrderNo);
 
 
-	@Query(nativeQuery = true,value="select * from pickrequest where orgid=?1 and finyear =?2 and branch=?3 and branchcode=?4 and client=?5 and warehouse=?6 and status='Confirm' and buyerorderno not in(select buyerorderno from deliverychallan where orgid=?1 and finyear =?2 and branch=?3 and branchcode=?4 and client=?5 and warehouse=?6)")
-	List<PickRequestVO> findAllPickRequestFromDeliveryChallan(Long orgId, String finYear, String branch,
+	@Query(nativeQuery = true,value="select * from pickrequest where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and warehouse=?5 and status='Confirm' and buyerorderno not in(select buyerorderno from deliverychallan where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and warehouse=?5)")
+	List<PickRequestVO> findAllPickRequestFromDeliveryChallan(Long orgId, String branch,
+			
 			String branchCode, String client, String warehouse);
 
 }
