@@ -30,44 +30,42 @@ public class StockRestateDetailsVO {
 	@Column(name = "stockrestatedetailsid")
 	private Long id;
 	
-	@Column(name = "bin")
-	private String bin;
-	@Column(name = "binclass")
-	private String binClass;
-	@Column(name = "bintype")
-	private String binType;
-	@Column(name = "celltype")
-	private String cellType;
+	@Column(name = "frombin")
+	private String fromBin;
+	@Column(name = "frombinclass")
+	private String fromBinClass;
+	@Column(name = "frombintype")
+	private String fromBinType;
+	@Column(name = "fromCelltype")
+	private String fromCellType;
 	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdesc")
 	private String partDesc;
+	@Column(name = "sku")
+	private String sku;
 	@Column(name = "grnno")
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "sku")
-	private String sku;
 	@Column(name = "tobin")
 	private String toBin;
 	@Column(name = "tobinclass")
 	private String toBinClass;
 	@Column(name = "tobintype")
 	private String toBinType;
+	@Column(name = "tocelltype")
+	private String toCellType;
 	@Column(name = "fromqty")
 	private int fromQty;
 	@Column(name = "toqty")
 	private int toQty;
 	@Column(name = "remainqty")
 	private int remainQty;
-	@Column(name = "noted")
-	private String noted;
-	@Column(name = "qcflags")
-	private boolean qcFlags;
+	@Column(name = "qcflag")
+	private String qcFlag;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "status")
-	private String status;
 
 	@JsonBackReference
 	@ManyToOne
