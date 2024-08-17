@@ -45,8 +45,8 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	Set<Object[]> getAvilableQty(Long orgId, String client, String branchCode, String warehouse, String branch,
 			String partNo, String partDesc, String batch);
 
-	@Query(nativeQuery = true,value="select buyer,buyershortname,shipto,billto from buyerorder where orgid=?1 and finyear =?2 and branch=?3 and branchcode=?4 and client=?5 and docid=?6")
-	Set<Object[]> findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String finYear, String branch,
+	@Query(nativeQuery = true,value="select buyer,buyershortname,shipto,billto from buyerorder where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and docid=?5")
+	Set<Object[]> findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String branch,
 			String branchCode, String client, String buyerOrderNo);
 	@Query(value ="select * from buyerorder where orgid=?1",nativeQuery =true )
 	List<BuyerOrderVO> findByBo(Long orgId);

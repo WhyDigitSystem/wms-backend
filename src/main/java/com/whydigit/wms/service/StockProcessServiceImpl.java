@@ -327,6 +327,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 	@Override
 	public SalesReturnVO getSalesReturnById(Long id) {
 		SalesReturnVO salesReturnVO = new SalesReturnVO();
+		
 		if (ObjectUtils.isNotEmpty(id)) {
 			LOGGER.info("Successfully Received  SalesReturn BY Id : {}", id);
 			salesReturnVO = salesReturnRepo.findSalesReturnById(id);
@@ -450,10 +451,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String finYear,
+	public List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId,
 			String branch, String branchCode, String client, String bin) {
 
-		Set<Object[]> result = codeConversionRepo.findPartNoAndPartDescFromStockForCodeConversion(orgId, finYear,
+		Set<Object[]> result = codeConversionRepo.findPartNoAndPartDescFromStockForCodeConversion(orgId,
 				branch, branchCode, client, bin);
 		return getCodeConeversionPartResult(result);
 	}
@@ -502,11 +503,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String finYear,
+	public List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId,
 			String branch, String branchCode, String client, String bin) {
 
 
-		Set<Object[]> result = codeConversionRepo.getCpartNoAndCpartDescFromStockForCodeConversion(orgId, finYear,
+		Set<Object[]> result = codeConversionRepo.getCpartNoAndCpartDescFromStockForCodeConversion(orgId,
     branch, branchCode, client, bin);
 		return getCodeConeversionCPartNoAndCPartDescResult(result);
 	}
@@ -526,10 +527,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 	
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+	public List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = codeConversionRepo.findCBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+		Set<Object[]> result = codeConversionRepo.findCBinFromStockForCodeConversion(orgId, branch, branchCode,
 				client);
 		return getCBinCodeConversionResult(result);
 	}
@@ -878,11 +879,11 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Transactional
 	public List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(
-			Long orgId, String finYear, String branch, String branchCode, String client, String bin, String partNo,
+			Long orgId, String branch, String branchCode, String client, String bin, String partNo,
 			String partDesc, String sku) {
 
 		Set<Object[]> result = codeConversionRepo
-				.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, finYear, branch,
+				.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, branch,
 						branchCode, client, bin, partNo, partDesc, sku);
 		return getGrnCodeConversionResult(result);
 	}
@@ -1265,10 +1266,10 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String finYear, String branch,
+	public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = codeConversionRepo.findBinFromStockForCodeConversion(orgId, finYear, branch, branchCode,
+		Set<Object[]> result = codeConversionRepo.findBinFromStockForCodeConversion(orgId,branch, branchCode,
 				client);
 		return getBinCodeConversionResult(result);
 	}
