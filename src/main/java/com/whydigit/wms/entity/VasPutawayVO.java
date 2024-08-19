@@ -46,7 +46,7 @@ public class VasPutawayVO {
 	@Column(name = "screenname")
 	private String screenName = "VASPUTAWAY";
 	@Column(name = "screencode")
-	private String screenCode ="VPW";
+	private String screenCode ="VPC";
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
