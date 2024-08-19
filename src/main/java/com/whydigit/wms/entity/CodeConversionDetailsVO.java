@@ -82,8 +82,8 @@ public class CodeConversionDetailsVO {
 	private String cbinType;
 	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "qcflags")
-	private String qcFlags;
+	@Column(name = "qcflag")
+	private String qcFlag;
 	
 	@Column(name = "binclass")
 	private String binClass;

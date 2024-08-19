@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +61,8 @@ import com.whydigit.wms.repo.SalesReturnDetailsRepo;
 import com.whydigit.wms.repo.SalesReturnRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.StockRestateRepo;
+
+import net.bytebuddy.asm.Advice.Return;
 
 @Service
 public class StockProcessServiceImpl implements StockProcessService {
@@ -199,7 +202,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setSourceId(codeConversionVO.getId());
 				stockDetailsVOFrom.setBinClass(codeConversionDetailsVO.getBinClass());
 				stockDetailsVOFrom.setCellType(codeConversionDetailsVO.getCellType());
-				stockDetailsVOFrom.setClientCode(codeConversionDetailsVO.getClientCode());
+				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				stockDetailsVOFrom.setCore(codeConversionDetailsVO.getCore());
 				stockDetailsVOFrom.setExpDate(codeConversionDetailsVO.getExpDate());
 				stockDetailsVOFrom.setPcKey(codeConversionDetailsVO.getPckey());
@@ -239,7 +242,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setSourceId(codeConversionVO.getId());
 				stockDetailsVOTo.setBinClass(codeConversionDetailsVO.getBinClass());
 				stockDetailsVOTo.setCellType(codeConversionDetailsVO.getCellType());
-				stockDetailsVOTo.setClientCode(codeConversionDetailsVO.getClientCode());
+				stockDetailsVOTo.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				stockDetailsVOTo.setCore(codeConversionDetailsVO.getCore());
 				stockDetailsVOTo.setExpDate(codeConversionDetailsVO.getExpDate());
 				stockDetailsVOTo.setPcKey(codeConversionDetailsVO.getPckey());
@@ -315,15 +318,15 @@ public class StockProcessServiceImpl implements StockProcessService {
 			codeConversionDetailsVO.setCbin(codeConversionDetailsDTO.getCbin());
 			codeConversionDetailsVO.setCbinType(codeConversionDetailsDTO.getCbinType());
 			codeConversionDetailsVO.setRemarks(codeConversionDetailsDTO.getRemarks());
-			codeConversionDetailsVO.setQcFlags(codeConversionDetailsDTO.getQcFlags());
 			codeConversionDetailsVO.setBinClass(codeConversionDetailsDTO.getBinClass());
 			codeConversionDetailsVO.setCellType(codeConversionDetailsDTO.getCellType());
-			codeConversionDetailsVO.setClientCode(codeConversionDetailsDTO.getClientCode());
+			codeConversionDetailsVO.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 			codeConversionDetailsVO.setCore(codeConversionDetailsDTO.getCore());
 			codeConversionDetailsVO.setExpDate(codeConversionDetailsDTO.getExpDate());
 			codeConversionDetailsVO.setPckey(codeConversionDetailsDTO.getPckey());
 			codeConversionDetailsVO.setSsku(codeConversionDetailsDTO.getSsku());
 			codeConversionDetailsVO.setStockDate(codeConversionDetailsDTO.getStockDate());
+			
 			codeConversionDetailsVO.setCodeConversionVO(codeConversionVO);
 			codeConversionDetailsVOs.add(codeConversionDetailsVO);
 
@@ -1466,7 +1469,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 	public Map<String, Object> createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException {
 		
 		StockRestateVO stockRestateVO = new StockRestateVO();
-		String message;
+		String message = "Stock Restate Created Successfully";
 		String screenCode = "SRS";
 		
 		String docId = stockRestateRepo.getStockRestateDocId(stockRestateDTO.getOrgId(), stockRestateDTO.getFinYear(),
@@ -1512,21 +1515,66 @@ public class StockProcessServiceImpl implements StockProcessService {
 			    stockRestateDetailsVOs.setToQty(stockRestateDetailsDTO.getToQty());
 			    stockRestateDetailsVOs.setExpDate(stockRestateDetailsDTO.getExpDate());
 			    stockRestateDetailsVOs.setQcFlag(stockRestateDetailsDTO.getQcFlag());
-			    
+			    stockRestateDetailsVOs.setStockRestateVO(stockRestateVO);
+			    stockRestateDetailsVO.add(stockRestateDetailsVOs);
 			}
 		}
 		else
 		{
 			throw new ApplicationException("Grid Details is Should not Empty");
 		}
-		
+		stockRestateVO.setStockRestateDetailsVO(stockRestateDetailsVO);
+		StockRestateVO restateVO= stockRestateRepo.save(stockRestateVO);
 		DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
 				.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(stockRestateDTO.getOrgId(), stockRestateDTO.getFinYear(),
 						stockRestateDTO.getBranchCode(), stockRestateDTO.getClient(), screenCode);
 		documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 		documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
-		return null;
+		List<StockRestateDetailsVO> restateDetailsVOs= restateVO.getStockRestateDetailsVO();
+		for(StockRestateDetailsVO restateDetailsVO:restateDetailsVOs)
+		{
+			StockDetailsVO stockDetailsVO= new StockDetailsVO();
+			stockDetailsVO.setOrgId(null);
+			stockDetailsVO.setBranch(docId);
+			stockDetailsVO.setBranchCode(docId);
+			stockDetailsVO.setWarehouse(docId);
+			stockDetailsVO.setCustomer(docId);
+			stockDetailsVO.setClient(docId);
+			stockDetailsVO.setClientCode(docId);
+			stockDetailsVO.setFinYear(docId);
+			stockDetailsVO.setRefNo(docId);
+			stockDetailsVO.setRefDate(null);
+			stockDetailsVO.setSourceScreenCode(screenCode);
+			stockDetailsVO.setSourceScreenName(screenCode);
+			stockDetailsVO.setCreatedBy(docId);
+			stockDetailsVO.setUpdatedBy(docId);
+			stockDetailsVO.setSourceId(null);
+			stockDetailsVO.setPartno(docId);
+			stockDetailsVO.setPartDesc(docId);
+			stockDetailsVO.setSku(docId);
+			stockDetailsVO.setSSku(docId);
+			stockDetailsVO.setGrnNo(docId);
+			stockDetailsVO.setGrnDate(null);
+			stockDetailsVO.setBatch(docId);
+			stockDetailsVO.setBatchDate(null);
+			stockDetailsVO.setBin(docId);
+			stockDetailsVO.setBinType(docId);
+			stockDetailsVO.setPcKey(docId);
+			stockDetailsVO.setBinClass(docId);
+			stockDetailsVO.setCellType(docId);
+			stockDetailsVO.setQcFlag(docId);
+			stockDetailsVO.setStatus(docId);
+			stockDetailsVO.setExpDate(null);
+			stockDetailsVO.setCore(docId);
+			stockDetailsVO.setStockDate(LocalDate.now());
+		}
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("message", message);
+		response.put("restateVO", restateVO);
+		return response;
 	}
+
 
 	// CYCLECOUNT
 
@@ -1671,4 +1719,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 
 		}
 	
+
 }
+
+
