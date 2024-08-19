@@ -50,7 +50,9 @@ public interface VasService {
 				String warehouse);
 
 		List<Map<String, Object>> getVasPicGridDetails(Long orgId, String branchCode, String client, String warehouse,
-				char stateStatus);
+				String stateStatus, String branch, String bintype);
+		
+
 		
 		
 	
