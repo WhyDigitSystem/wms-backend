@@ -439,9 +439,9 @@ public class VasServiceImpl implements VasService{
 			}
 
 			@Override
-			public List<Map<String, Object>> getVasPicGridDetails(Long orgId, String branchCode, String client,
-					String warehouse, char stateStatus) {
-			Set<Object[]> result = vasPickRepo.getVasPicGrid(orgId, branchCode, client, warehouse, stateStatus);
+			public List<Map<String, Object>> getVasPicGridDetails(Long orgId, String branchCode, String client, String warehouse,
+					String stateStatus, String branch, String bintype){
+			Set<Object[]> result = vasPickRepo.getVasPicGrid(orgId, branchCode, client, warehouse, stateStatus,branch,bintype);
 			return getVasPicGridDetails(result);
 		}
 
@@ -450,26 +450,22 @@ public class VasServiceImpl implements VasService{
 			for (Object[] fs : result) {
 				Map<String, Object> part = new HashMap<>();
 
-				part.put("partNo", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
-				part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+				part.put("partDesc", fs[0] != null ? fs[0].toString() : "");
+				part.put("partNo", fs[1] != null ? fs[1].toString() : "");
 				part.put("sku", fs[2] != null ? fs[2].toString() : "");
 				part.put("bin", fs[3] != null ? fs[3].toString() : "");
 				part.put("batch", fs[4] != null ? fs[4].toString() : "");
 				part.put("batchDate", fs[5] != null ? fs[5].toString() : "");
-				part.put("lotNo", fs[6] != null ? fs[6].toString() : "");
+				part.put("grnDate", fs[6] != null ? fs[6].toString() : "");
 				part.put("grnNo", fs[7] != null ? fs[7].toString() : "");
-				part.put("grnDate", fs[8] != null ? fs[8].toString() : "");
-				part.put("binclass", fs[9] != null ? fs[9].toString() : "");
-				part.put("bintype", fs[10] != null ? fs[10].toString() : "");
-				part.put("status", fs[11] != null ? fs[11].toString() : "");
-				part.put("qcflag", fs[12] != null ? fs[12].toString() : "");
-				part.put("stockdate", fs[13] != null ? fs[13].toString() : "");
-				part.put("expdate", fs[14] != null ? fs[14].toString() : "");
-				part.put("core", fs[15] != null ? fs[15].toString() : "");
-				part.put("cellType", fs[16] != null ? fs[16].toString() : "");
-				part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
+				part.put("binType", fs[8] != null ? fs[8].toString() : "");
+				part.put("core", fs[9] != null ? fs[9].toString() : "");
+				part.put("expDate", fs[10] != null ? fs[10].toString() : "");
+				part.put("qcFlag", fs[11] != null ? fs[11].toString() : "");
+				part.put("stockDate", fs[12] != null ? fs[12].toString() : "");
+				part.put("avalQty", fs[13] != null ?Integer.parseInt(fs[13].toString()) : 0);
+				part.put("pickQty", fs[13] != null ?Integer.parseInt(fs[13].toString()) : 0);
 				
-
 				details1.add(part);
 			}
 			return details1;
