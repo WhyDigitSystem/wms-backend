@@ -78,7 +78,7 @@ public class BuyerOrderVO {
 	@Column(name = "cancelremark")
 	private String cancelRemark;
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode="BO";
 	@Column(name ="screenname")
 	private String screenName;
 	private String customer;
@@ -97,7 +97,8 @@ public class BuyerOrderVO {
 	private int avilQty;
 	private boolean active = true;
 	private String buyer;
-	
+	@Column(name = "warehouse")
+	private String warehouse;
 	
 
 	@JsonManagedReference

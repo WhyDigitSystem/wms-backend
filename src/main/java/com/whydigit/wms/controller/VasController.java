@@ -328,34 +328,6 @@ public class VasController extends BaseController {
 	    return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("getVaspickGrid")
-	public ResponseEntity<ResponseDTO> getVaspickGrid(@RequestParam(required = true) Long orgId,
-			@RequestParam(required = true) String branch,@RequestParam(required = true) String branchCode,
-			@RequestParam(required = true) String client,@RequestParam(required = true) String warehouse
-			) {
-	    String methodName = "getVaspickGrid()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    List<Map<String, Object>> vasPickGrid=new ArrayList<Map<String,Object>>();
-	    try {
-	    	vasPickGrid = vasService.getVaspickGrid(orgId,branch,branchCode,client,warehouse);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	    }
-	    if (StringUtils.isEmpty(errorMsg)) {
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "VaspickGrid Details found Successfull");
-	        responseObjectsMap.put("VaspickGrid", vasPickGrid);
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "VaspickGrid Details retrieve  failed", errorMsg);
-        }
-        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-        return ResponseEntity.ok().body(responseDTO);
-    }
-	
 	
 	@GetMapping("getAllVaspick")
 	public ResponseEntity<ResponseDTO> getAllVaspick(@RequestParam(required =true) Long orgId,

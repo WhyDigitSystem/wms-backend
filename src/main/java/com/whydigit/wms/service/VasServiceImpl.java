@@ -367,20 +367,24 @@ public class VasServiceImpl implements VasService{
 				List<VasPickDetailsVO> vasPickDetailsVOs = new ArrayList<>();
 				for (VasPickDetailsDTO vasPickDTO : vasPicDTO.getVasPickDetailsDTO()) {
 					VasPickDetailsVO detailsVO = new VasPickDetailsVO();
-					detailsVO.setPartCode(vasPickDTO.getPartCode());
 					detailsVO.setPartDescription(vasPickDTO.getPartDescription());
 					detailsVO.setPartNo(vasPickDTO.getPartNo());
 					detailsVO.setSku(vasPickDTO.getSku());
 					detailsVO.setBin(vasPickDTO.getBin());
 					detailsVO.setBatchNo(vasPickDTO.getBatchNo());
-					detailsVO.setLotNo(vasPickDTO.getLotNo());
 					detailsVO.setGrnNo(vasPickDTO.getGrnNo());
+					detailsVO.setBinType(vasPickDTO.getBinType());
+					detailsVO.setBatchDate(vasPickDTO.getBatchDate());
 					detailsVO.setAvlQty(vasPickDTO.getAvlQty());
 					detailsVO.setPicQty(vasPickDTO.getPicQty());
 					detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
-					detailsVO.setManufactureDate(vasPickDTO.getManufactureDate());
 					detailsVO.setQcflag(vasPickDTO.getQcflag());
-
+					detailsVO.setGrnDate(vasPickDTO.getGrnDate());
+					detailsVO.setBinClass(vasPickDTO.getBinClass());
+					detailsVO.setCellType(vasPickDTO.getCellType());
+					detailsVO.setCore(vasPickDTO.getCore());
+					detailsVO.setExpDate(vasPickDTO.getExpDate());
+					
 					totalOrderQty = totalOrderQty + vasPickDTO.getAvlQty();
 					pickedQty = pickedQty + vasPickDTO.getPicQty();
 
@@ -411,12 +415,6 @@ public class VasServiceImpl implements VasService{
 				return vasPickRepo.findALLVasPick(orgId, branchCode, client, branch, finYear, warehouse);
 			}
 			
-			@Override
-			public List<Map<String, Object>> getVaspickGrid(Long orgId, String branch, String branchCode, String client,
-					String warehouse) {
-				Set<Object[]> result = vasPickRepo.getVaspickGridDetals(orgId, branch, branchCode, client, warehouse);
-				return getVaspickFullGrids(result);
-			}
 
 			private List<Map<String, Object>> getVaspickFullGrids(Set<Object[]> result) {
 				List<Map<String, Object>> details1 = new ArrayList<>();
@@ -462,9 +460,11 @@ public class VasServiceImpl implements VasService{
 				part.put("core", fs[9] != null ? fs[9].toString() : "");
 				part.put("expDate", fs[10] != null ? fs[10].toString() : "");
 				part.put("qcFlag", fs[11] != null ? fs[11].toString() : "");
-				part.put("stockDate", fs[12] != null ? fs[12].toString() : "");
-				part.put("avalQty", fs[13] != null ?Integer.parseInt(fs[13].toString()) : 0);
-				part.put("pickQty", fs[13] != null ?Integer.parseInt(fs[13].toString()) : 0);
+				part.put("binClass", fs[12] != null ? fs[12].toString() : "");
+				part.put("status", fs[13] != null ? fs[13].toString() : "");
+				part.put("cellType", fs[14] != null ? fs[14].toString() : "");
+				part.put("avalQty", fs[15] != null ?Integer.parseInt(fs[15].toString()) : 0);
+				part.put("pickQty", fs[15] != null ?Integer.parseInt(fs[15].toString()) : 0);
 				
 				details1.add(part);
 			}
