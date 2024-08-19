@@ -639,7 +639,8 @@ public class OutwardTransactionController extends BaseController{
 		@GetMapping("/getAllFillGridFromVasPutaway")
 		public ResponseEntity<ResponseDTO> getAllFillGridFromVasPutaway(@RequestParam(required = false) Long orgId,
 				 @RequestParam(required = false) String branch,
-				@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+				@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+				@RequestParam(required = false) String docId) {
 			String methodName = "getAllFillGridFromVasPutaway()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
@@ -648,7 +649,7 @@ public class OutwardTransactionController extends BaseController{
 	    List<Map<String, Object>> mov = new ArrayList<>();
 	    try {
 				mov = outwardTransactionService.getAllFillGridFromVasPutaway(orgId, branch, branchCode,
-						client);
+						client,docId);
 	      } catch (Exception e) {
 				errorMsg = e.getMessage();
 				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

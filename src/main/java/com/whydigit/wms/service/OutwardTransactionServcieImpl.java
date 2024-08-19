@@ -531,9 +531,9 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode,
-			String client) {
+			String client,String docId) {
 
-		Set<Object[]> result = vasPutawayDetailsRepo.getAllFillGridFromVasPutaway(orgId, branch, branchCode, client);
+		Set<Object[]> result = vasPutawayDetailsRepo.getAllFillGridFromVasPutaway(orgId, branch, branchCode, client,docId);
 		return getAllFillGridVasPutawayResult(result);
 	}
 
@@ -661,7 +661,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setCancel(buyerOrderDTO.isCancel());
 		buyerOrderVO.setInvoiceDate(buyerOrderDTO.getInvoiceDate());
 		buyerOrderVO.setRefNo(buyerOrderDTO.getRefNo());
-		buyerOrderVO.setCancelRemark(buyerOrderDTO.getCancelRemark());
+		buyerOrderVO.setCancelRemark(buyerOrderDTO.getCancelRemark()); 
 //		buyerOrderVO.setScreenCode(buyerOrderDTO.getScreenCode());
 		buyerOrderVO.setScreenName(buyerOrderDTO.getScreenName());
 		buyerOrderVO.setCustomer(buyerOrderDTO.getCustomer());
@@ -671,7 +671,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setBranchCode(buyerOrderDTO.getBranchCode());
 		buyerOrderVO.setFreeze(buyerOrderDTO.isFreeze());
 		buyerOrderVO.setBuyer(buyerOrderDTO.getBuyer());
-
+		buyerOrderVO.setWarehouse(buyerOrderDTO.getWarehouse());
 		if (buyerOrderDTO.getId() != null) {
 
 			List<BuyerOrderDetailsVO> detailsVOs = buyerOrderDetailsRepo.findByBuyerOrderVO(buyerOrderVO);

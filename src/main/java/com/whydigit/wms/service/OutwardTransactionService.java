@@ -58,7 +58,7 @@ public interface OutwardTransactionService {
 				String client, String docid);
 		
 		List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode,
-				String client);
+				String client,String docId);
 		
 		int getAvlQtyVasPutaway(Long orgId, String client, String branchCode, String warehouse, String branch,
 				String partNo, String partDesc);
