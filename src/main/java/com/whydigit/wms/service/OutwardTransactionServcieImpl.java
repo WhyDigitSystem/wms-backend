@@ -231,8 +231,6 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			deliveryChallanDetailsVO.setTotalGst(deliveryChallanDetailsDTO.getTotalGst());
 			deliveryChallanDetailsVO.setBillAmount(deliveryChallanDetailsDTO.getBillAmount());
 			deliveryChallanDetailsVO.setRemarks(deliveryChallanDetailsDTO.getRemarks());
-			deliveryChallanDetailsVO.setQcFlags(deliveryChallanDetailsDTO.getQcFlags());
-
 			deliveryChallanDetailsVO.setDeliveryChallanVO(deliveryChallanVO);
 
 			deliveryChallanDetailsVOs.add(deliveryChallanDetailsVO);
@@ -460,17 +458,27 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 			vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
 			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
 			vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
-			vasPutawayDetailsVO.setQcFlags(vasPutawayDetailsDTO.getQcFlags());
+//			vasPutawayDetailsVO.setQcFlag(vasPutawayDetailsDTO.getQcFlag());
 			vasPutawayDetailsVO.setBinClass(vasPutawayDetailsDTO.getBinClass());
 			vasPutawayDetailsVO.setCellType(vasPutawayDetailsDTO.getCellType());
 			vasPutawayDetailsVO.setClientCode(vasPutawayDetailsDTO.getClientCode());
-			vasPutawayDetailsVO.setStatus(vasPutawayDetailsDTO.getStatus());
+//			vasPutawayDetailsVO.setStatus(vasPutawayDetailsDTO.getStatus());
 			vasPutawayDetailsVO.setCore(vasPutawayDetailsDTO.getCore());
 			vasPutawayDetailsVO.setExpDate(vasPutawayDetailsDTO.getExpDate());
 			vasPutawayDetailsVO.setPckey(vasPutawayDetailsDTO.getPckey());
 			vasPutawayDetailsVO.setSsku(vasPutawayDetailsDTO.getSsku());
 			vasPutawayDetailsVO.setStockDate(vasPutawayDetailsDTO.getStockDate());
 
+			if("Defective".equals(vasPutawayDetailsVO.getBin()))
+			{
+				vasPutawayDetailsVO.setQcFlag("F");
+				vasPutawayDetailsVO.setStatus("D");
+			}
+			else
+			{
+				vasPutawayDetailsVO.setQcFlag("T");
+				vasPutawayDetailsVO.setStatus("R");
+			}
 			vasPutawayDetailsVO.setVasPutawayVO(vasPutawayVO);
 			vasPutawayDetailsVOs.add(vasPutawayDetailsVO);
 		}

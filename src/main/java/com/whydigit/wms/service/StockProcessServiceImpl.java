@@ -1,9 +1,11 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.CodeConversionDTO;
 import com.whydigit.wms.dto.CodeConversionDetailsDTO;
+import com.whydigit.wms.dto.CycleCountDTO;
+import com.whydigit.wms.dto.CycleCountDetailsDTO;
 import com.whydigit.wms.dto.DeKittingChildDTO;
 import com.whydigit.wms.dto.DeKittingDTO;
 import com.whydigit.wms.dto.DeKittingParentDTO;
@@ -27,6 +31,8 @@ import com.whydigit.wms.dto.StockRestateDTO;
 import com.whydigit.wms.dto.StockRestateDetailsDTO;
 import com.whydigit.wms.entity.CodeConversionDetailsVO;
 import com.whydigit.wms.entity.CodeConversionVO;
+import com.whydigit.wms.entity.CycleCountDetailsVO;
+import com.whydigit.wms.entity.CycleCountVO;
 import com.whydigit.wms.entity.DeKittingChildVO;
 import com.whydigit.wms.entity.DeKittingParentVO;
 import com.whydigit.wms.entity.DeKittingVO;
@@ -42,6 +48,8 @@ import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.CodeConversionDetailsRepo;
 import com.whydigit.wms.repo.CodeConversionRepo;
+import com.whydigit.wms.repo.CycleCountDetailsRepo;
+import com.whydigit.wms.repo.CycleCountRepo;
 import com.whydigit.wms.repo.DeKittingChildRepo;
 import com.whydigit.wms.repo.DeKittingParentRepo;
 import com.whydigit.wms.repo.DeKittingRepo;
@@ -53,6 +61,8 @@ import com.whydigit.wms.repo.SalesReturnDetailsRepo;
 import com.whydigit.wms.repo.SalesReturnRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.StockRestateRepo;
+
+import net.bytebuddy.asm.Advice.Return;
 
 @Service
 public class StockProcessServiceImpl implements StockProcessService {
@@ -101,6 +111,13 @@ public class StockProcessServiceImpl implements StockProcessService {
 	@Autowired
 	MaterialRepo materialRepo;
 
+	@Autowired
+	CycleCountRepo cycleCountRepo;
+
+	@Autowired
+	CycleCountDetailsRepo cycleCountDetailsRepo;
+	
+	
 	// CodeConversion
 	@Override
 	public List<CodeConversionVO> getAllCodeConversion(Long orgId, String finYear, String branch, String branchCode,
@@ -185,7 +202,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setSourceId(codeConversionVO.getId());
 				stockDetailsVOFrom.setBinClass(codeConversionDetailsVO.getBinClass());
 				stockDetailsVOFrom.setCellType(codeConversionDetailsVO.getCellType());
-				stockDetailsVOFrom.setClientCode(codeConversionDetailsVO.getClientCode());
+				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				stockDetailsVOFrom.setCore(codeConversionDetailsVO.getCore());
 				stockDetailsVOFrom.setExpDate(codeConversionDetailsVO.getExpDate());
 				stockDetailsVOFrom.setPcKey(codeConversionDetailsVO.getPckey());
@@ -225,7 +242,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setSourceId(codeConversionVO.getId());
 				stockDetailsVOTo.setBinClass(codeConversionDetailsVO.getBinClass());
 				stockDetailsVOTo.setCellType(codeConversionDetailsVO.getCellType());
-				stockDetailsVOTo.setClientCode(codeConversionDetailsVO.getClientCode());
+				stockDetailsVOTo.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				stockDetailsVOTo.setCore(codeConversionDetailsVO.getCore());
 				stockDetailsVOTo.setExpDate(codeConversionDetailsVO.getExpDate());
 				stockDetailsVOTo.setPcKey(codeConversionDetailsVO.getPckey());
@@ -301,15 +318,15 @@ public class StockProcessServiceImpl implements StockProcessService {
 			codeConversionDetailsVO.setCbin(codeConversionDetailsDTO.getCbin());
 			codeConversionDetailsVO.setCbinType(codeConversionDetailsDTO.getCbinType());
 			codeConversionDetailsVO.setRemarks(codeConversionDetailsDTO.getRemarks());
-			codeConversionDetailsVO.setQcFlags(codeConversionDetailsDTO.getQcFlags());
 			codeConversionDetailsVO.setBinClass(codeConversionDetailsDTO.getBinClass());
 			codeConversionDetailsVO.setCellType(codeConversionDetailsDTO.getCellType());
-			codeConversionDetailsVO.setClientCode(codeConversionDetailsDTO.getClientCode());
+			codeConversionDetailsVO.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 			codeConversionDetailsVO.setCore(codeConversionDetailsDTO.getCore());
 			codeConversionDetailsVO.setExpDate(codeConversionDetailsDTO.getExpDate());
 			codeConversionDetailsVO.setPckey(codeConversionDetailsDTO.getPckey());
 			codeConversionDetailsVO.setSsku(codeConversionDetailsDTO.getSsku());
 			codeConversionDetailsVO.setStockDate(codeConversionDetailsDTO.getStockDate());
+			
 			codeConversionDetailsVO.setCodeConversionVO(codeConversionVO);
 			codeConversionDetailsVOs.add(codeConversionDetailsVO);
 
@@ -1452,7 +1469,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 	public Map<String, Object> createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException {
 		
 		StockRestateVO stockRestateVO = new StockRestateVO();
-		String message;
+		String message = "Stock Restate Created Successfully";
 		String screenCode = "SRS";
 		
 		String docId = stockRestateRepo.getStockRestateDocId(stockRestateDTO.getOrgId(), stockRestateDTO.getFinYear(),
@@ -1498,20 +1515,211 @@ public class StockProcessServiceImpl implements StockProcessService {
 			    stockRestateDetailsVOs.setToQty(stockRestateDetailsDTO.getToQty());
 			    stockRestateDetailsVOs.setExpDate(stockRestateDetailsDTO.getExpDate());
 			    stockRestateDetailsVOs.setQcFlag(stockRestateDetailsDTO.getQcFlag());
-			    
+			    stockRestateDetailsVOs.setStockRestateVO(stockRestateVO);
+			    stockRestateDetailsVO.add(stockRestateDetailsVOs);
 			}
 		}
 		else
 		{
 			throw new ApplicationException("Grid Details is Should not Empty");
 		}
-		
+		stockRestateVO.setStockRestateDetailsVO(stockRestateDetailsVO);
+		StockRestateVO restateVO= stockRestateRepo.save(stockRestateVO);
 		DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
 				.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(stockRestateDTO.getOrgId(), stockRestateDTO.getFinYear(),
 						stockRestateDTO.getBranchCode(), stockRestateDTO.getClient(), screenCode);
 		documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 		documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
-		return null;
+		List<StockRestateDetailsVO> restateDetailsVOs= restateVO.getStockRestateDetailsVO();
+		for(StockRestateDetailsVO restateDetailsVO:restateDetailsVOs)
+		{
+			StockDetailsVO stockDetailsVO= new StockDetailsVO();
+			stockDetailsVO.setOrgId(null);
+			stockDetailsVO.setBranch(docId);
+			stockDetailsVO.setBranchCode(docId);
+			stockDetailsVO.setWarehouse(docId);
+			stockDetailsVO.setCustomer(docId);
+			stockDetailsVO.setClient(docId);
+			stockDetailsVO.setClientCode(docId);
+			stockDetailsVO.setFinYear(docId);
+			stockDetailsVO.setRefNo(docId);
+			stockDetailsVO.setRefDate(null);
+			stockDetailsVO.setSourceScreenCode(screenCode);
+			stockDetailsVO.setSourceScreenName(screenCode);
+			stockDetailsVO.setCreatedBy(docId);
+			stockDetailsVO.setUpdatedBy(docId);
+			stockDetailsVO.setSourceId(null);
+			stockDetailsVO.setPartno(docId);
+			stockDetailsVO.setPartDesc(docId);
+			stockDetailsVO.setSku(docId);
+			stockDetailsVO.setSSku(docId);
+			stockDetailsVO.setGrnNo(docId);
+			stockDetailsVO.setGrnDate(null);
+			stockDetailsVO.setBatch(docId);
+			stockDetailsVO.setBatchDate(null);
+			stockDetailsVO.setBin(docId);
+			stockDetailsVO.setBinType(docId);
+			stockDetailsVO.setPcKey(docId);
+			stockDetailsVO.setBinClass(docId);
+			stockDetailsVO.setCellType(docId);
+			stockDetailsVO.setQcFlag(docId);
+			stockDetailsVO.setStatus(docId);
+			stockDetailsVO.setExpDate(null);
+			stockDetailsVO.setCore(docId);
+			stockDetailsVO.setStockDate(LocalDate.now());
+		}
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("message", message);
+		response.put("restateVO", restateVO);
+		return response;
 	}
 
+
+	// CYCLECOUNT
+
+		@Override
+
+		public Map<String, Object> createUpdateCycleCount(CycleCountDTO cycleCountDTO) throws ApplicationException {
+			CycleCountVO cycleCountVO;
+			String screenCode = "CT";
+			String message;
+
+			if (ObjectUtils.isEmpty(cycleCountDTO.getId())) {
+
+				cycleCountVO = new CycleCountVO();
+				cycleCountVO.setCreatedBy(cycleCountDTO.getCreatedBy());
+				cycleCountVO.setUpdatedBy(cycleCountDTO.getCreatedBy());
+
+				// GETDOCID API
+				String docId = cycleCountRepo.getCycleCountInDocId(cycleCountDTO.getOrgId(), cycleCountDTO.getFinYear(),
+						cycleCountDTO.getBranchCode(), cycleCountDTO.getClient(), screenCode);
+				cycleCountVO.setDocId(docId);
+
+				// GETDOCID LASTNO +1
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+						.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(cycleCountDTO.getOrgId(),
+								cycleCountDTO.getFinYear(), cycleCountDTO.getBranchCode(), cycleCountDTO.getClient(),
+								screenCode);
+				documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+				documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+
+				message = "CycleCountDTO Creation Successfully";
+			} else {
+				cycleCountVO = cycleCountRepo.findById(cycleCountDTO.getId()).orElseThrow(() -> new ApplicationException(
+						"This Id Is Not Fount Any Information,Invalid Id ." + cycleCountDTO.getId()));
+				cycleCountVO.setUpdatedBy(cycleCountDTO.getCreatedBy());
+
+				List<CycleCountDetailsVO> countDetailsVOs = cycleCountDetailsRepo.findByCycleCountVO(cycleCountVO);
+				cycleCountDetailsRepo.deleteAll(countDetailsVOs);
+				message = "CycleCountDTO Updation Successfully";
+			}
+			getCycleCountVOFromCycleCountDTO(cycleCountVO, cycleCountDTO);
+			cycleCountRepo.save(cycleCountVO);
+			Map<String, Object> response = new HashMap<String, Object>();
+			response.put("message", message);
+			response.put("cycleCountVO", cycleCountVO);
+			return response;
+		}
+
+		private CycleCountVO getCycleCountVOFromCycleCountDTO(CycleCountVO cycleCountVO, CycleCountDTO cycleCountDTO) {
+			cycleCountVO.setDocDate(cycleCountDTO.getDocDate());
+			cycleCountVO.setOrgId(cycleCountDTO.getOrgId());
+			cycleCountVO.setCustomer(cycleCountDTO.getCustomer());
+			cycleCountVO.setClient(cycleCountDTO.getClient());
+			cycleCountVO.setFinYear(cycleCountDTO.getFinYear());
+			cycleCountVO.setBranch(cycleCountDTO.getBranch());
+			cycleCountVO.setBranchCode(cycleCountDTO.getBranchCode());
+			cycleCountVO.setWarehouse(cycleCountDTO.getWarehouse());
+			cycleCountVO.setCreatedBy(cycleCountDTO.getCreatedBy());
+			cycleCountVO.setCancelRemarks(cycleCountDTO.getCancelRemarks());
+			cycleCountVO.setFreeze(cycleCountDTO.isFreeze());
+			cycleCountVO.setCycleCountNo(cycleCountDTO.getCycleCountNo());
+			cycleCountVO.setCycleCountDate(cycleCountDTO.getCycleCountDate());
+
+			List<CycleCountDetailsVO> cycleCountDetailsVOs = new ArrayList<>();
+			for (CycleCountDetailsDTO details2dto : cycleCountDTO.getCycleCountDetailsDTO()) {
+				CycleCountDetailsVO cycleCountDetailsVO = new CycleCountDetailsVO();
+				cycleCountDetailsVO.setPartNo(details2dto.getPartNo());
+				cycleCountDetailsVO.setParetDescription(details2dto.getParetDescription());
+				cycleCountDetailsVO.setGrnNo(details2dto.getGrnNo());
+				cycleCountDetailsVO.setSku(details2dto.getSku());
+				cycleCountDetailsVO.setBinType(details2dto.getBinType());
+				cycleCountDetailsVO.setBatchNo(details2dto.getBatchNo());
+				cycleCountDetailsVO.setBatchDate(details2dto.getBatchDate());
+				cycleCountDetailsVO.setBin(details2dto.getBin());
+				cycleCountDetailsVO.setQty(details2dto.getQty());
+				cycleCountDetailsVO.setActualQty(details2dto.getActualQty());
+				cycleCountDetailsVO.setQQcflag(details2dto.isQQcflag());
+
+				// Avoid recursive reference to kittingVO in KittingDetails2VO
+				cycleCountDetailsVO.setCycleCountVO(cycleCountVO);
+				cycleCountDetailsVOs.add(cycleCountDetailsVO);
+			} 
+			cycleCountVO.setCycleCountDetailsVO(cycleCountDetailsVOs);
+
+			return cycleCountVO;
+		}
+
+		@Override
+		public String getCycleCountInDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
+			String ScreenCode = "CT";
+			String result = cycleCountRepo.getCycleCountInDocId(orgId, finYear, branchCode, client, ScreenCode);
+			return result;
+		}
+
+		
+
+		@Override
+		public List<CycleCountVO> getAllCycleCount(Long orgId, String client, String branch, String branchCode,
+				String finYear, String warehouse) {
+			return cycleCountRepo.findAllCycleCount(orgId, client, branch, branchCode, finYear, warehouse);
+		}
+
+		@Override
+		public Optional<CycleCountVO> getCycleCountById(Long id) {
+			return cycleCountRepo.findById(id);
+		}
+
+		@Override
+		public List<Map<String, Object>> getCycleCountGridDetails(Long orgId, String branchCode, String client,
+				String warehouse) {
+			Set<Object[]> result = cycleCountRepo.getCycleCountGrid(orgId, branchCode, client, warehouse);
+			return getCycleCount(result);
+		}
+
+		private List<Map<String, Object>> getCycleCount(Set<Object[]> result) {
+			List<Map<String, Object>> details1 = new ArrayList<>();
+			for (Object[] fs : result) {
+				Map<String, Object> part = new HashMap<>();
+
+				part.put("partNo", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
+				part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+				part.put("sku", fs[2] != null ? fs[2].toString() : "");
+				part.put("bin", fs[3] != null ? fs[3].toString() : "");
+				part.put("batch", fs[4] != null ? fs[4].toString() : "");
+				part.put("batchDate", fs[5] != null ? fs[5].toString() : "");
+				part.put("lotNo", fs[6] != null ? fs[6].toString() : "");
+				part.put("grnNo", fs[7] != null ? fs[7].toString() : "");
+				part.put("grnDate", fs[8] != null ? fs[8].toString() : "");
+				part.put("binclass", fs[9] != null ? fs[9].toString() : "");
+				part.put("bintype", fs[10] != null ? fs[10].toString() : "");
+				part.put("status", fs[11] != null ? fs[11].toString() : "");
+				part.put("qcflag", fs[12] != null ? fs[12].toString() : "");
+				part.put("stockdate", fs[13] != null ? fs[13].toString() : "");
+				part.put("expdate", fs[14] != null ? fs[14].toString() : "");
+				part.put("core", fs[15] != null ? fs[15].toString() : "");
+				part.put("cellType", fs[16] != null ? fs[16].toString() : "");
+				part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
+				
+
+				details1.add(part);
+			}
+			return details1;
+
+		}
+	
+
 }
+
+

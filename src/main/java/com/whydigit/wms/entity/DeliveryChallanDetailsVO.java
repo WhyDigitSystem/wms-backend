@@ -68,8 +68,8 @@ public class DeliveryChallanDetailsVO {
 	private BigDecimal billAmount;
 	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "qcflags")
-	private String qcFlags;
+//	@Column(name = "qcflag")
+//	private String qcFlag;
 	
 	@JsonBackReference
 	@ManyToOne

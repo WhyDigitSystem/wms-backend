@@ -1,8 +1,6 @@
 package com.whydigit.wms.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -105,7 +102,6 @@ public class GrnVO {
 	@Column(name = "warehouse")
 	private String warehouse;
 	@Column(name = "freeze")
-	@Builder.Default
 	private boolean freeze=false;
 	@Column(name = "vas")
 	private boolean vas;
