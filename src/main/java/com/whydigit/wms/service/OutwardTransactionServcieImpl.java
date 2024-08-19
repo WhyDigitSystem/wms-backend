@@ -661,7 +661,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setCancel(buyerOrderDTO.isCancel());
 		buyerOrderVO.setInvoiceDate(buyerOrderDTO.getInvoiceDate());
 		buyerOrderVO.setRefNo(buyerOrderDTO.getRefNo());
-		buyerOrderVO.setCancelRemark(buyerOrderDTO.getCancelRemark());
+		buyerOrderVO.setCancelRemark(buyerOrderDTO.getCancelRemark()); 
 //		buyerOrderVO.setScreenCode(buyerOrderDTO.getScreenCode());
 		buyerOrderVO.setScreenName(buyerOrderDTO.getScreenName());
 		buyerOrderVO.setCustomer(buyerOrderDTO.getCustomer());
