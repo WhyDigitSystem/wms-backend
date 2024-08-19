@@ -671,7 +671,7 @@ public class OutwardTransactionServcieImpl implements OutwardTransactionService 
 		buyerOrderVO.setBranchCode(buyerOrderDTO.getBranchCode());
 		buyerOrderVO.setFreeze(buyerOrderDTO.isFreeze());
 		buyerOrderVO.setBuyer(buyerOrderDTO.getBuyer());
-		buyerOrderVO.setWarehouse(buyerOrderDTO.getWarehouse());
+		//buyerOrderVO.setWarehouse(buyerOrderDTO.getWarehouse());
 		if (buyerOrderDTO.getId() != null) {
 
 			List<BuyerOrderDetailsVO> detailsVOs = buyerOrderDetailsRepo.findByBuyerOrderVO(buyerOrderVO);
