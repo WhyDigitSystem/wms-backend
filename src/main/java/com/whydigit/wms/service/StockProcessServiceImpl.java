@@ -188,7 +188,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOFrom.setSourceId(codeConversionVO.getId());
 				stockDetailsVOFrom.setBinClass(codeConversionDetailsVO.getBinClass());
 				stockDetailsVOFrom.setCellType(codeConversionDetailsVO.getCellType());
-				stockDetailsVOFrom.setClientCode(codeConversionDetailsVO.getClientCode());
+				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				stockDetailsVOFrom.setCore(codeConversionDetailsVO.getCore());
 				stockDetailsVOFrom.setExpDate(codeConversionDetailsVO.getExpDate());
 				stockDetailsVOFrom.setPcKey(codeConversionDetailsVO.getPckey());
@@ -228,7 +228,7 @@ public class StockProcessServiceImpl implements StockProcessService {
 				stockDetailsVOTo.setSourceId(codeConversionVO.getId());
 				stockDetailsVOTo.setBinClass(codeConversionDetailsVO.getBinClass());
 				stockDetailsVOTo.setCellType(codeConversionDetailsVO.getCellType());
-				stockDetailsVOTo.setClientCode(codeConversionDetailsVO.getClientCode());
+				stockDetailsVOTo.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				stockDetailsVOTo.setCore(codeConversionDetailsVO.getCore());
 				stockDetailsVOTo.setExpDate(codeConversionDetailsVO.getExpDate());
 				stockDetailsVOTo.setPcKey(codeConversionDetailsVO.getPckey());
@@ -304,15 +304,15 @@ public class StockProcessServiceImpl implements StockProcessService {
 			codeConversionDetailsVO.setCbin(codeConversionDetailsDTO.getCbin());
 			codeConversionDetailsVO.setCbinType(codeConversionDetailsDTO.getCbinType());
 			codeConversionDetailsVO.setRemarks(codeConversionDetailsDTO.getRemarks());
-			codeConversionDetailsVO.setQcFlags(codeConversionDetailsDTO.getQcFlags());
 			codeConversionDetailsVO.setBinClass(codeConversionDetailsDTO.getBinClass());
 			codeConversionDetailsVO.setCellType(codeConversionDetailsDTO.getCellType());
-			codeConversionDetailsVO.setClientCode(codeConversionDetailsDTO.getClientCode());
+			codeConversionDetailsVO.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 			codeConversionDetailsVO.setCore(codeConversionDetailsDTO.getCore());
 			codeConversionDetailsVO.setExpDate(codeConversionDetailsDTO.getExpDate());
 			codeConversionDetailsVO.setPckey(codeConversionDetailsDTO.getPckey());
 			codeConversionDetailsVO.setSsku(codeConversionDetailsDTO.getSsku());
 			codeConversionDetailsVO.setStockDate(codeConversionDetailsDTO.getStockDate());
+			
 			codeConversionDetailsVO.setCodeConversionVO(codeConversionVO);
 			codeConversionDetailsVOs.add(codeConversionDetailsVO);
 
