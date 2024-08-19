@@ -465,7 +465,7 @@ public class VasServiceImpl implements VasService{
 				part.put("cellType", fs[14] != null ? fs[14].toString() : "");
 				part.put("avalQty", fs[15] != null ?Integer.parseInt(fs[15].toString()) : 0);
 				part.put("pickQty", fs[15] != null ?Integer.parseInt(fs[15].toString()) : 0);
-				
+				part.put("id", fs[16] != null ?Integer.parseInt(fs[16].toString()) : 0);				
 				details1.add(part);
 			}
 			return details1;
