@@ -42,8 +42,6 @@ public class VasPickDetailsVO {
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
-	@Column(name = "lotno")
-	private String lotNo;
 	@Column(name = "grnno")
 	private String grnNo;
 	@Column(name = "grndate")
@@ -54,27 +52,18 @@ public class VasPickDetailsVO {
 	private int picQty;
 	@Column(name = "remaningqty")
 	private int remaningQty;
-	@Column(name = "manufacturedate")
-	private LocalDate manufactureDate;
 	@Column(name="qcflag")
 	private String qcflag;
-	
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "celltype")
 	private String cellType;
-	@Column(name = "clientcode")
-	private String clientCode;	
 	@Column(name = "core")
 	private String core;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "pckey")
-	private String pckey;
-	@Column(name = "ssku")
-	private String ssku;
 	@Column(name = "stockdate")
-	private LocalDate stockDate;
+	private LocalDate stockDate=LocalDate.now();
 	
 	
 	

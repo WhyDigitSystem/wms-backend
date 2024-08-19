@@ -367,23 +367,24 @@ public class VasServiceImpl implements VasService{
 				List<VasPickDetailsVO> vasPickDetailsVOs = new ArrayList<>();
 				for (VasPickDetailsDTO vasPickDTO : vasPicDTO.getVasPickDetailsDTO()) {
 					VasPickDetailsVO detailsVO = new VasPickDetailsVO();
-					detailsVO.setPartCode(vasPickDTO.getPartCode());
 					detailsVO.setPartDescription(vasPickDTO.getPartDescription());
 					detailsVO.setPartNo(vasPickDTO.getPartNo());
 					detailsVO.setSku(vasPickDTO.getSku());
 					detailsVO.setBin(vasPickDTO.getBin());
 					detailsVO.setBatchNo(vasPickDTO.getBatchNo());
-					detailsVO.setLotNo(vasPickDTO.getLotNo());
 					detailsVO.setGrnNo(vasPickDTO.getGrnNo());
-					detailsVO.setBinType(vasPickDTO.getBintype());
-					detailsVO.setBinType(vasPickDTO.getBintype());
+					detailsVO.setBinType(vasPickDTO.getBinType());
 					detailsVO.setBatchDate(vasPickDTO.getBatchDate());
 					detailsVO.setAvlQty(vasPickDTO.getAvlQty());
 					detailsVO.setPicQty(vasPickDTO.getPicQty());
 					detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
-					detailsVO.setManufactureDate(vasPickDTO.getManufactureDate());
 					detailsVO.setQcflag(vasPickDTO.getQcflag());
-
+					detailsVO.setGrnDate(vasPickDTO.getGrnDate());
+					detailsVO.setBinClass(vasPickDTO.getBinClass());
+					detailsVO.setCellType(vasPickDTO.getCellType());
+					detailsVO.setCore(vasPickDTO.getCore());
+					detailsVO.setExpDate(vasPickDTO.getExpDate());
+					
 					totalOrderQty = totalOrderQty + vasPickDTO.getAvlQty();
 					pickedQty = pickedQty + vasPickDTO.getPicQty();
 
