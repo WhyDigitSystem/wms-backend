@@ -460,9 +460,9 @@ public class VasServiceImpl implements VasService{
 				part.put("core", fs[9] != null ? fs[9].toString() : "");
 				part.put("expDate", fs[10] != null ? fs[10].toString() : "");
 				part.put("qcFlag", fs[11] != null ? fs[11].toString() : "");
-				part.put("stockDate", fs[12] != null ? fs[12].toString() : "");
-				part.put("lotNo", fs[13] != null ? fs[13].toString() : "");
-				part.put("binClass", fs[14] != null ? fs[14].toString() : "");
+				part.put("binClass", fs[12] != null ? fs[12].toString() : "");
+				part.put("status", fs[13] != null ? fs[13].toString() : "");
+				part.put("cellType", fs[14] != null ? fs[14].toString() : "");
 				part.put("avalQty", fs[15] != null ?Integer.parseInt(fs[15].toString()) : 0);
 				part.put("pickQty", fs[15] != null ?Integer.parseInt(fs[15].toString()) : 0);
 				

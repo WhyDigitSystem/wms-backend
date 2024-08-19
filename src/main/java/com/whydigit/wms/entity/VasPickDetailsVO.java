@@ -28,10 +28,8 @@ public class VasPickDetailsVO {
 	@SequenceGenerator(name = "vaspickdetailsgen", sequenceName = "vaspickdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "vaspickdetailsid")
 	private Long id;
-	@Column(name = "binType")
+	@Column(name = "bintype")
 	private String binType;
-	@Column(name = "partcode")
-	private String partCode;
 	@Column(name = "partdescription")
 	private String partDescription;
 	@Column(name = "partno")
