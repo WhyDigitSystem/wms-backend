@@ -41,6 +41,7 @@ public class BuyerOrderDTO {
 	private int orderQty;
 	private int avilQty;
 	private String buyer;
+	private String warehouse;
 	
 	private List<BuyerOrderDetailsDTO> buyerOrderDetailsDTO;
 	

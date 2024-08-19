@@ -13,9 +13,9 @@ public class VasPickDetailsDTO {
 	private Long id;
 
 	private String partCode;
-
+	private LocalDate batchDate;
 	private String partDescription;
-
+	private String bintype;
 	private String partNo;
 
 	private String sku;
@@ -27,9 +27,8 @@ public class VasPickDetailsDTO {
 	private String lotNo;
 
 	private String grnNo;
-	
-	private String grnDate;
 
+	private String grnDate;
 
 	private int avlQty;
 
@@ -40,10 +39,10 @@ public class VasPickDetailsDTO {
 	private LocalDate manufactureDate;
 
 	private String qcflag;
-	
+
 	private String binClass;
 	private String cellType;
-	private String clientCode;	
+	private String clientCode;
 	private String core;
 	private LocalDate expDate;
 	private String pckey;

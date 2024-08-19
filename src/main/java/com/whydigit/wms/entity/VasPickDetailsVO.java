@@ -28,8 +28,8 @@ public class VasPickDetailsVO {
 	@SequenceGenerator(name = "vaspickdetailsgen", sequenceName = "vaspickdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "vaspickdetailsid")
 	private Long id;
-	@Column(name = "picbin")
-	private String picBin;
+	@Column(name = "binType")
+	private String binType;
 	@Column(name = "partcode")
 	private String partCode;
 	@Column(name = "partdescription")
@@ -40,6 +40,8 @@ public class VasPickDetailsVO {
 	private String bin;
 	@Column(name = "batchno")
 	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 	@Column(name = "lotno")
 	private String lotNo;
 	@Column(name = "grnno")
@@ -73,6 +75,8 @@ public class VasPickDetailsVO {
 	private String ssku;
 	@Column(name = "stockdate")
 	private LocalDate stockDate;
+	
+	
 	
 	@ManyToOne
 	@JsonBackReference
