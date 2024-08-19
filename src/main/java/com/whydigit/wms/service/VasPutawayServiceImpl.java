@@ -69,7 +69,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 	@Override
 	@Transactional
 	public String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
-		String ScreenCode = "VPW";
+		String ScreenCode = "VPC";
 		String result = vasPutawayRepo.getVasPutawayDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
 	}
@@ -78,7 +78,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 	public Map<String, Object> createUpdateVasPutaway(@Valid VasPutawayDTO vasPutawayDTO) throws ApplicationException {
 
 		VasPutawayVO vasPutawayVO = new VasPutawayVO();
-		String screenCode = "VPW";
+		String screenCode = "VPC";
 		String message;
 
 		if (ObjectUtils.isNotEmpty(vasPutawayDTO.getId())) {
