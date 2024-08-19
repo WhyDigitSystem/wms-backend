@@ -38,6 +38,8 @@ public class StockRestateDetailsVO {
 	private String fromBinType;
 	@Column(name = "fromCelltype")
 	private String fromCellType;
+	@Column(name = "fromcore")
+	private String fromCore;
 	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdesc")
@@ -48,6 +50,10 @@ public class StockRestateDetailsVO {
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
+	@Column(name = "batchno")
+	private String batch;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;	
 	@Column(name = "tobin")
 	private String toBin;
 	@Column(name = "tobinclass")
@@ -56,6 +62,8 @@ public class StockRestateDetailsVO {
 	private String toBinType;
 	@Column(name = "tocelltype")
 	private String toCellType;
+	@Column(name = "tocore")
+	private String toCore;
 	@Column(name = "fromqty")
 	private int fromQty;
 	@Column(name = "toqty")
