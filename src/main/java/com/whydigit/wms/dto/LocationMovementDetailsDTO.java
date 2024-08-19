@@ -19,7 +19,7 @@ public class LocationMovementDetailsDTO {
 	private String grnNo;
 	private String batchNo;
 	private LocalDate batchDate;
-	private String LotNo;
+	private String lotNo;
 	private String toBin;
 	private int fromQty;
 	private int toQty;

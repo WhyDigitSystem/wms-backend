@@ -45,10 +45,11 @@ public class LocationMovementDetailsVO {
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
 	@Column(name = "lotno")
-	private String LotNo;
+	private String lotNo;
 	@Column(name = "tobin")
 	private String toBin;
 	@Column(name = "fromqty")
+	
 	private int fromQty;
 	@Column(name = "toqty")
 	private int toQty;
