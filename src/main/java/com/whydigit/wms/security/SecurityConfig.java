@@ -40,7 +40,10 @@ public class SecurityConfig {
 						"/api/stockprocess/**", "/api/warehousemastercontroller/**", "/api/commonmaster/**",
 						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**","/api/buyerOrder/**",
 						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**","/api/kitting/**",
-						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/cycleCount/**")
+						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/cycleCount/**",
+						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**",
+						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**",
+						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/salesreturn/**","/api/locationmovement/**","/api/dekitting/**","/api/pickrequest/**")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
