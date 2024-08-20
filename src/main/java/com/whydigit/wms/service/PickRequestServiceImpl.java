@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.dto.PickRequestDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
-import com.whydigit.wms.entity.LocationMovementDetailsVO;
 import com.whydigit.wms.entity.PickRequestDetailsVO;
 import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.entity.StockDetailsVO;
@@ -28,9 +27,9 @@ import com.whydigit.wms.repo.PickRequestRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 
 @Service
-public class GuhanServiceImpl implements GuhanSerivce {
+public class PickRequestServiceImpl implements PickRequestService {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(GuhanServiceImpl.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(PickRequestServiceImpl.class);
 
 	@Autowired
 	PickRequestRepo pickRequestRepo;
@@ -129,7 +128,7 @@ public class GuhanServiceImpl implements GuhanSerivce {
 				stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
 				stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
 				stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
-				
+
 				stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
 				stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
 				stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
@@ -176,7 +175,6 @@ public class GuhanServiceImpl implements GuhanSerivce {
 		pickRequestVO.setPickOrder(pickRequestDTO.getPickOrder());
 		pickRequestVO.setOutTime(pickRequestDTO.getOutTime());
 		pickRequestVO.setDueDays(pickRequestDTO.getDueDays());
-		
 
 		if (ObjectUtils.isNotEmpty(pickRequestVO.getId())) {
 			List<PickRequestDetailsVO> pickRequestDetailsVO1 = pickRequestDetailsRepo
@@ -202,7 +200,7 @@ public class GuhanServiceImpl implements GuhanSerivce {
 			pickRequestDetailsVO.setRunningQty(pickRequestDetailsDTO.getRunningQty());
 			pickRequestDetailsVO.setPickQtyPerLocation(pickRequestDetailsDTO.getPickQtyPerLocation());
 			pickRequestDetailsVO.setRemainingQty(pickRequestDetailsDTO.getRemainingQty());
-			
+
 			pickRequestDetailsVO.setWeight(pickRequestDetailsDTO.getWeight());
 			pickRequestDetailsVO.setRate(pickRequestDetailsDTO.getRate());
 			pickRequestDetailsVO.setTax(pickRequestDetailsDTO.getTax());
@@ -230,11 +228,11 @@ public class GuhanServiceImpl implements GuhanSerivce {
 		String result = pickRequestRepo.getPickRequestDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
 	}
-	
+
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear, String branch,
-			String branchCode, String client) {
+	public List<Map<String, Object>> getBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear,
+			String branch, String branchCode, String client) {
 
 		Set<Object[]> result = pickRequestRepo.findBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branch,
 				branchCode, client);
@@ -258,6 +256,5 @@ public class GuhanServiceImpl implements GuhanSerivce {
 		}
 		return details1;
 	}
-
 
 }

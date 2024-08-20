@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BuyerOrderDetailsDTO {
+
 	private Long id;
 	private String partNo;
 	private String partDesc;
@@ -16,5 +17,4 @@ public class BuyerOrderDetailsDTO {
 	private int availQty;
 	private String sku;
 	private String remarks;
-	private boolean qcflag;
 }

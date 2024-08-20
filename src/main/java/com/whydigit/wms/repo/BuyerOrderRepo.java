@@ -12,8 +12,8 @@ import com.whydigit.wms.entity.BuyerOrderVO;
 @Repository
 public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 
-	boolean existsByOrderNoAndOrgIdAndClientAndBranchCodeAndCustomer(String orderNo, Long orgId, String client,
-			String branchCode, String customer);
+	boolean existsByOrderNoAndOrgIdAndClientAndCustomer(String orderNo, Long orgId, String client,
+			String customer);
 
 	@Query(value ="select * from buyerorder where buyerorderid=?1",nativeQuery =true)
 	Optional<BuyerOrderVO> findAllBuyerOrderById(Long id);

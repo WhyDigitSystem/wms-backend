@@ -24,17 +24,6 @@ import com.whydigit.wms.exception.ApplicationException;
 
 @Service
 public interface StockProcessService {
-
-	// CodeConversion
-	List<CodeConversionVO> getAllCodeConversion(Long orgId, String finYear, String branch, String branchCode,
-			String client, String warehouse);
-
-	CodeConversionVO getCodeConversionById(Long id);
-
-	String getCodeConversionDocId(Long orgId, String finYear, String branch, String branchCode, String client);
-
-	Map<String, Object> createUpdateCodeConversion(CodeConversionDTO codeConversionDTO) throws ApplicationException;
-
 	
 //	SalesReturn
 	List<SalesReturnVO> getAllSalesReturn(Long orgId, String finYear, String branch, String branchCode, String client,
@@ -137,17 +126,7 @@ public interface StockProcessService {
 
 	Map<String, Object> createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException;
 
-	// CYCLECOUNT
 
-	Map<String, Object> createUpdateCycleCount(CycleCountDTO cycleCountDTO) throws ApplicationException;
-
-	String getCycleCountInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
-
-	List<CycleCountVO> getAllCycleCount(Long orgId, String client, String branch, String branchCode, String finYear,
-			String warehouse);
-
-	Optional<CycleCountVO> getCycleCountById(Long id);
-
-	List<Map<String, Object>> getCycleCountGridDetails(Long orgId, String branchCode, String client, String warehouse);
+	
 
 }
