@@ -21,7 +21,6 @@ import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.BuyerOrderDetailsRepo;
 import com.whydigit.wms.repo.BuyerOrderRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
-import com.whydigit.wms.repo.HandlingStockOutRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 
 @Service
@@ -38,9 +37,6 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-	
-	@Autowired
-	HandlingStockOutRepo handlingStockOutRepo;
 
 	// BuyerOrder
 
@@ -98,40 +94,6 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 		getBuyerOrderVOfromBuyerOrderDTO(buyerOrderVO, buyerOrderDTO);
 		buyerOrderRepo.save(buyerOrderVO);
-		
-		HandlingStockOutVO handlingStockOutVO=new HandlingStockOutVO();
-		
-		handlingStockOutVO.setOrgId(buyerOrderVO.getOrgId());
-		handlingStockOutVO.setRefNo(buyerOrderVO.getRefNo());
-		handlingStockOutVO.setRefDate(buyerOrderVO.getRefDate());
-		
-		BuyerOrderDetailsVO buyerOrderDetailsVO=new BuyerOrderDetailsVO();
-		
-		handlingStockOutVO.setPartNo(buyerOrderDetailsVO.getPartNo());
-		handlingStockOutVO.setPartDesc(buyerOrderDetailsVO.getPartDesc());
-		handlingStockOutVO.setCustomer(buyerOrderVO.getCustomer());
-		handlingStockOutVO.setWarehouse(buyerOrderVO.getWarehouse());
-		handlingStockOutVO.setBuyerOrderNo(buyerOrderVO.getOrderNo());
-		handlingStockOutVO.setBuyerOrderDate(buyerOrderVO.getOrderDate());
-		handlingStockOutVO.setSku(buyerOrderDetailsVO.getSku());
-		
-		String docId = buyerOrderRepo.getbuyerOrderDocId(buyerOrderDTO.getOrgId(), buyerOrderDTO.getFinYear(),
-				buyerOrderDTO.getBranchCode(), buyerOrderDTO.getClient(), screenCode);
-		buyerOrderVO.setDocId(docId);
-		
-		handlingStockOutVO.setSDocid(docId);
-		handlingStockOutVO.setSQty(buyerOrderDetailsVO.getAvailQty());
-		handlingStockOutVO.setRpQty(buyerOrderDetailsVO.getAvailQty());
-		handlingStockOutVO.setPickQty(0);
-		handlingStockOutVO.setScreenCode("BO");
-		handlingStockOutVO.setPickRequestNo(docId);
-		handlingStockOutVO.setClient(buyerOrderVO.getClient());
-		handlingStockOutVO.setPickRequestDate(buyerOrderVO.getOrderDate());
-		handlingStockOutVO.setBranch(buyerOrderVO.getBranch());
-		handlingStockOutVO.setBranchCode(buyerOrderVO.getBranchCode());
-		
-		handlingStockOutRepo.save(handlingStockOutVO);
-		
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("message", message);
