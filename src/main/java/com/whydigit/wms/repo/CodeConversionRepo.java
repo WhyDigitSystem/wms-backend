@@ -22,33 +22,50 @@ public interface CodeConversionRepo extends JpaRepository<CodeConversionVO, Long
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getCodeConversionDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
-	@Query(nativeQuery = true,value="select partno,partdesc,sku from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5")
+	@Query(nativeQuery = true,value="select a.partno,a.partdesc,a.sku from(SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty    FROM stockdetails   WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4   GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag  HAVING SUM(sqty) > 0)a group by a.partno,a.partdesc,a.sku")
 	Set<Object[]> findPartNoAndPartDescFromStockForCodeConversion(Long orgId, String branch,
-			String branchCode, String client, String bin);
+			String branchCode, String client);
 
-	@Query(nativeQuery = true,value ="select grnno,bintype,batch,batchdate,lotno from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 and partno=?6 and partdesc=?7 and sku=?8")
-	Set<Object[]> findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId,
-			 String branch, String branchCode, String client, String bin, String partNo, String partDesc,
-			String sku);
+	@Query(nativeQuery = true,value ="select a.grnno,a.grndate from(  SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty  FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 AND partno=?5  GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag  HAVING SUM(sqty) > 0)a group by a.grnno,a.grndate ")
+	Set<Object[]> findGrnNoAndGrnDateFromStockForCodeConversion(Long orgId,
+			 String branchCode, String client, String warehouse, String partNo);
 
-	@Query(nativeQuery = true,value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4")
-	Set<Object[]> findBinFromStockForCodeConversion(Long orgId,String branch, String branchCode,
-			String client);
+	@Query(nativeQuery = true,value ="select a.bintype from( SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails  WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 AND partno=?5  AND grnno=?6 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag  HAVING SUM(sqty) > 0)a group by a.bintype ")
+	Set<Object[]> findBinTypeFromStockForCodeConversion(Long orgId, String branchCode, String client, String warehouse,
+			String partNo, String grnNo);
+	
+	@Query(nativeQuery = true,value ="select a.batch,a.batchdate,a.expdate from( SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 AND partno=?5 and grnno=?6 and bintype=?7 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0)a group by a.batch,a.batchdate,a.expdate; ")
+	Set<Object[]> findBatchNoFromStockForCodeConversion(Long orgId, String branchCode, String client, String warehouse,
+			String partNo, String grnNo,String binType);
 
-	@Query(nativeQuery = true,value="SELECT bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate,partno,partdesc,sku,grnno,batch,batchdate,lotno from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 AND status='R'")
-	Set<Object[]> getAllFillGridFromStockForCodeConversion(Long orgId, String branch, String branchCode, String client);
 
-	@Query(nativeQuery = true,value="select partno,partdesc,sku from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5")
-	Set<Object[]> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String branch,
-			String branchCode, String client, String bin);
+	@Query(nativeQuery = true,value=" SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0;")
+	Set<Object[]> getAllFillGridFromStockForCodeConversion(Long orgId, String branchCode, String client,String warehouse);
 
-	@Query(nativeQuery = true,value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4")
-	Set<Object[]> findCBinFromStockForCodeConversion(Long orgId, String branch, String branchCode,
-			String client);
-
+	
 	@Query(nativeQuery = true, value = "SELECT SUM(sqty) FROM stockdetails WHERE orgid = ?1 AND client = ?2 AND branchcode = ?3 AND branch = ?4 AND warehouse = ?5 AND partno = ?6 AND partdesc = ?7 AND status = 'R'")
 	Set<Object[]> getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,
 			String partNo, String partDesc);
+
+	@Query(nativeQuery = true,value ="select a.bin from( SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 AND partno=?5 and grnno=?6 and bintype=?7 and batch=?8 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0)a group by a.bin")
+	Set<Object[]> findBinFromStockForCodeConversion(Long orgId, String branchCode, String client, String warehouse,
+			String partNo, String grnNo, String binType, String batchNo);
+
+
+
+	
+//	@Query(nativeQuery = true,value="select partno,partdesc,sku from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5")
+//	Set<Object[]> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String branch,
+//			String branchCode, String client, String bin);
+//
+//	@Query(nativeQuery = true,value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4")
+//	Set<Object[]> findCBinFromStockForCodeConversion(Long orgId, String branch, String branchCode,
+//			String client);
+
+//	@Query(nativeQuery = true,value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4")
+//	Set<Object[]> findBinFromStockForCodeConversion(Long orgId,String branch, String branchCode,
+//			String client);
+//	
 	
 	
 

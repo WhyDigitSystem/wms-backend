@@ -139,7 +139,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 					stockDetailsVOFrom.setSSku(codeConversionDetailsVO.getSsku());
 					stockDetailsVOFrom.setStockDate(codeConversionDetailsVO.getStockDate());
 					stockDetailsVOFrom.setPartno(codeConversionDetailsVO.getPartNo());
-					stockDetailsVOFrom.setPartDesc(codeConversionDetailsVO.getPartDescription());
+					stockDetailsVOFrom.setPartDesc(codeConversionDetailsVO.getPartDesc());
 					stockDetailsVOFrom.setGrnNo(codeConversionDetailsVO.getGrnNo());
 					stockDetailsVOFrom.setGrnDate(codeConversionDetailsVO.getGrnDate());
 					stockDetailsVOFrom.setStatus(codeConversionDetailsVO.getStatus());
@@ -224,7 +224,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 
 				CodeConversionDetailsVO codeConversionDetailsVO = new CodeConversionDetailsVO();
 				codeConversionDetailsVO.setPartNo(codeConversionDetailsDTO.getPartNo());
-				codeConversionDetailsVO.setPartDescription(codeConversionDetailsDTO.getPartDescription());
+				codeConversionDetailsVO.setPartDesc(codeConversionDetailsDTO.getPartDesc());
 				codeConversionDetailsVO.setGrnNo(codeConversionDetailsDTO.getGrnNo());
 				codeConversionDetailsVO.setGrnDate(codeConversionDetailsDTO.getGrnDate());
 				codeConversionDetailsVO.setStatus(codeConversionDetailsDTO.getStatus());
@@ -265,57 +265,6 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 		}
 		
 
-		@Override
-		@Transactional
-		public List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId,
-				String branch, String branchCode, String client, String bin) {
-
-
-			Set<Object[]> result = codeConversionRepo.getCpartNoAndCpartDescFromStockForCodeConversion(orgId,
-	    branch, branchCode, client, bin);
-			return getCodeConeversionCPartNoAndCPartDescResult(result);
-		}
-
-		private List<Map<String, Object>> getCodeConeversionCPartNoAndCPartDescResult(Set<Object[]> result) {
-			List<Map<String, Object>> details1 = new ArrayList<>();
-			for (Object[] fs : result) {
-				Map<String, Object> part = new HashMap<>();
-				part.put("cpartNo", fs[0] != null ? fs[0].toString() : "");
-				part.put("cpartDesc", fs[1] != null ? fs[1].toString() : "");
-				part.put("csku", fs[2] != null ? fs[2].toString() : "");
-				details1.add(part);
-			}
-			return details1;
-		}
-		
-		
-		@Override
-		@Transactional
-		public List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String branch,
-				String branchCode, String client) {
-
-			Set<Object[]> result = codeConversionRepo.findCBinFromStockForCodeConversion(orgId, branch, branchCode,
-					client);
-			return getCBinCodeConversionResult(result);
-		}
-
-		private List<Map<String, Object>> getCBinCodeConversionResult(Set<Object[]> result) {
-			List<Map<String, Object>> details1 = new ArrayList<>();
-			for (Object[] fs : result) {
-				Map<String, Object> part = new HashMap<>();
-				part.put("bin", fs[0] != null ? fs[0].toString() : "");
-				part.put("binclass", fs[1] != null ? fs[1].toString() : "");
-				part.put("celltype", fs[2] != null ? fs[2].toString() : "");
-				part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
-				part.put("core", fs[4] != null ? fs[4].toString() : "");
-				part.put("expdate", fs[5] != null ? fs[5].toString() : "");
-				part.put("pckey", fs[6] != null ? fs[6].toString() : "");
-				part.put("ssku", fs[7] != null ? fs[7].toString() : "");
-				part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
-				details1.add(part);
-			}
-			return details1;
-		}
 		
 		@Override
 		public int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
@@ -333,36 +282,14 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 			return totalQty;
 		}
 		
+//		
 		@Override
 		@Transactional
-		public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String branch,
-				String branchCode, String client) {
+		public List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId,
+				String branchCode, String client,String warehouse) {
 
-			Set<Object[]> result = codeConversionRepo.findBinFromStockForCodeConversion(orgId,branch, branchCode,
-					client);
-			return getBinCodeConversionResult(result);
-		}
-
-		private List<Map<String, Object>> getBinCodeConversionResult(Set<Object[]> result) {
-			List<Map<String, Object>> details1 = new ArrayList<>();
-			for (Object[] fs : result) {
-				Map<String, Object> part = new HashMap<>();
-				part.put("bin", fs[0] != null ? fs[0].toString() : "");
-				part.put("binClass", fs[1] != null ? fs[1].toString() : "");
-				part.put("binType", fs[2] != null ? fs[2].toString() : "");
-				part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
-				details1.add(part);
-			}
-			return details1;
-		}
-
-		@Override
-		@Transactional
-		public List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, String branch,
-				String branchCode, String client) {
-
-			Set<Object[]> result = codeConversionRepo.getAllFillGridFromStockForCodeConversion(orgId, branch, branchCode,
-					client);
+			Set<Object[]> result = codeConversionRepo.getAllFillGridFromStockForCodeConversion(orgId, branchCode,
+					client,warehouse);
 			return getAllFillGridCodeConversionResult(result);
 		}
 
@@ -370,22 +297,22 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 			List<Map<String, Object>> details1 = new ArrayList<>();
 			for (Object[] fs : result) {
 				Map<String, Object> part = new HashMap<>();
-				part.put("bin", fs[0] != null ? fs[0].toString() : "");
-				part.put("binClass", fs[1] != null ? fs[1].toString() : "");
-				part.put("cellType", fs[2] != null ? fs[2].toString() : "");
-				part.put("clientCode", fs[3] != null ? fs[3].toString() : "");
-				part.put("core", fs[4] != null ? fs[4].toString() : "");
-				part.put("expDate", fs[5] != null ? fs[5].toString() : "");
-				part.put("pcKey", fs[6] != null ? fs[6].toString() : "");
-				part.put("ssku", fs[7] != null ? fs[7].toString() : "");
-				part.put("stockDate", fs[8] != null ? fs[8].toString() : "");
-				part.put("partNo", fs[9] != null ? fs[9].toString() : "");
-				part.put("partDesc", fs[10] != null ? fs[10].toString() : "");
-				part.put("sku", fs[11] != null ? fs[11].toString() : "");
-				part.put("grnNo", fs[12] != null ? fs[12].toString() : "");
-				part.put("batch", fs[13] != null ? fs[13].toString() : "");
-				part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
-				part.put("lotNo", fs[15] != null ? fs[15].toString() : "");
+				part.put("partno", fs[0] != null ? fs[0].toString() : "");
+				part.put("partdesc", fs[1] != null ? fs[1].toString() : "");
+				part.put("sku", fs[2] != null ? fs[2].toString() : "");
+				part.put("grnno", fs[3] != null ? fs[3].toString() : "");
+				part.put("grndate", fs[4] != null ? fs[4].toString() : "");
+				part.put("batch", fs[5] != null ? fs[5].toString() : "");
+				part.put("batchdate", fs[6] != null ? fs[6].toString() : "");
+				part.put("expdate", fs[7] != null ? fs[7].toString() : "");
+				part.put("bintype", fs[8] != null ? fs[8].toString() : "");
+				part.put("binclass", fs[9] != null ? fs[9].toString() : "");
+				part.put("celltype", fs[10] != null ? fs[10].toString() : "");
+				part.put("core", fs[11] != null ? fs[11].toString() : "");
+				part.put("bin", fs[12] != null ? fs[12].toString() : "");
+				part.put("status", fs[13] != null ? fs[13].toString() : "");
+				part.put("qcflag", fs[14] != null ? fs[14].toString() : "");
+				part.put("totalQty", fs[15] != null ? fs[15].toString() : "");
 				details1.add(part);
 			}
 			return details1;
@@ -394,10 +321,10 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 		@Override
 		@Transactional
 		public List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId,
-				String branch, String branchCode, String client, String bin) {
+				 String branchCode, String client,String warehouse) {
 
 			Set<Object[]> result = codeConversionRepo.findPartNoAndPartDescFromStockForCodeConversion(orgId,
-					branch, branchCode, client, bin);
+					 branchCode, client,warehouse);
 			return getCodeConeversionPartResult(result);
 		}
 
@@ -414,13 +341,12 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 		}
 	
 		@Transactional
-		public List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(
-				Long orgId, String branch, String branchCode, String client, String bin, String partNo,
-				String partDesc, String sku) {
+		public List<Map<String, Object>> getGrnNoAndGrnDateFromStockForCodeConversion(
+				Long orgId,String branchCode, String client, String warehouse, String partNo) {
 
 			Set<Object[]> result = codeConversionRepo
-					.findGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId, branch,
-							branchCode, client, bin, partNo, partDesc, sku);
+					.findGrnNoAndGrnDateFromStockForCodeConversion(orgId,
+							branchCode, client, warehouse, partNo);
 			return getGrnCodeConversionResult(result);
 		}
 
@@ -429,13 +355,149 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 			for (Object[] fs : result) {
 				Map<String, Object> part = new HashMap<>();
 				part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
-				part.put("binType", fs[1] != null ? fs[1].toString() : "");
-				part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
-				part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
-				
+				part.put("grndate", fs[1] != null ? fs[1].toString() : "");
 				details1.add(part);
 			}
 			return details1;
 		}
 
+		@Transactional
+		public List<Map<String, Object>> getBinTypeFromStockForCodeConversion(
+				Long orgId,String branchCode, String client, String warehouse, String partNo, String grnNo) {
+
+			Set<Object[]> result = codeConversionRepo
+					.findBinTypeFromStockForCodeConversion(orgId,
+							branchCode, client, warehouse, partNo,grnNo);
+			return BinTypeCodeConversion(result);
+		}
+
+		private List<Map<String, Object>> BinTypeCodeConversion(Set<Object[]> result) {
+			List<Map<String, Object>> details1 = new ArrayList<>();
+			for (Object[] fs : result) {
+				Map<String, Object> part = new HashMap<>();
+				part.put("binType", fs[0] != null ? fs[0].toString() : "");
+				details1.add(part);
+			}
+			return details1;
+		}
+		
+		@Transactional
+		public List<Map<String, Object>> getBatchNoFromStockForCodeConversion(
+				Long orgId,String branchCode, String client, String warehouse, String partNo, String grnNo,String binType) {
+
+			Set<Object[]> result = codeConversionRepo
+					.findBatchNoFromStockForCodeConversion(orgId,
+							branchCode, client, warehouse, partNo,grnNo,binType);
+			return getbatchnoCodeConversionResult(result);
+		}
+
+		private List<Map<String, Object>> getbatchnoCodeConversionResult(Set<Object[]> result) {
+			List<Map<String, Object>> details1 = new ArrayList<>();
+			for (Object[] fs : result) {
+				Map<String, Object> part = new HashMap<>();
+				part.put("batchNo", fs[0] != null ? fs[0].toString() : "");
+				part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
+				part.put("expDate", fs[2] != null ? fs[2].toString() : "");
+				details1.add(part);
+			}
+			return details1;
+		}
+		
+		@Transactional
+		public List<Map<String, Object>> getBinFromStockForCodeConversion(
+				Long orgId,String branchCode, String client, String warehouse, String partNo, String grnNo,String binType,String batchNo) {
+
+			Set<Object[]> result = codeConversionRepo
+					.findBinFromStockForCodeConversion(orgId,
+							branchCode, client, warehouse, partNo,grnNo,binType,batchNo);
+			return BinFromStockForCodeConversion(result);
+		}
+
+		private List<Map<String, Object>> BinFromStockForCodeConversion(Set<Object[]> result) {
+			List<Map<String, Object>> details1 = new ArrayList<>();
+			for (Object[] fs : result) {
+				Map<String, Object> part = new HashMap<>();
+				part.put("bin", fs[0] != null ? fs[0].toString() : "");
+				details1.add(part);
+			}
+			return details1;
+		}
+		
+//		@Override
+//		@Transactional
+//		public List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String branch,
+//				String branchCode, String client) {
+//
+//			Set<Object[]> result = codeConversionRepo.findBinFromStockForCodeConversion(orgId,branch, branchCode,
+//					client);
+//			return getBinCodeConversionResult(result);
+//		}
+//
+//		private List<Map<String, Object>> getBinCodeConversionResult(Set<Object[]> result) {
+//			List<Map<String, Object>> details1 = new ArrayList<>();
+//			for (Object[] fs : result) {
+//				Map<String, Object> part = new HashMap<>();
+//				part.put("bin", fs[0] != null ? fs[0].toString() : "");
+//				part.put("binClass", fs[1] != null ? fs[1].toString() : "");
+//				part.put("binType", fs[2] != null ? fs[2].toString() : "");
+//				part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
+//				details1.add(part);
+//			}
+//			return details1;
+//		}
+		
+//		@Override
+//		@Transactional
+//		public List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId,
+//				String branch, String branchCode, String client, String bin) {
+//
+//
+//			Set<Object[]> result = codeConversionRepo.getCpartNoAndCpartDescFromStockForCodeConversion(orgId,
+//	    branch, branchCode, client, bin);
+//			return getCodeConeversionCPartNoAndCPartDescResult(result);
+//		}
+//
+//		private List<Map<String, Object>> getCodeConeversionCPartNoAndCPartDescResult(Set<Object[]> result) {
+//			List<Map<String, Object>> details1 = new ArrayList<>();
+//			for (Object[] fs : result) {
+//				Map<String, Object> part = new HashMap<>();
+//				part.put("cpartNo", fs[0] != null ? fs[0].toString() : "");
+//				part.put("cpartDesc", fs[1] != null ? fs[1].toString() : "");
+//				part.put("csku", fs[2] != null ? fs[2].toString() : "");
+//				details1.add(part);
+//			}
+//			return details1;
+//		}
+//		
+//		
+//		@Override
+//		@Transactional
+//		public List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String branch,
+//				String branchCode, String client) {
+//
+//			Set<Object[]> result = codeConversionRepo.findCBinFromStockForCodeConversion(orgId, branch, branchCode,
+//					client);
+//			return getCBinCodeConversionResult(result);
+//		}
+//
+//		private List<Map<String, Object>> getCBinCodeConversionResult(Set<Object[]> result) {
+//			List<Map<String, Object>> details1 = new ArrayList<>();
+//			for (Object[] fs : result) {
+//				Map<String, Object> part = new HashMap<>();
+//				part.put("bin", fs[0] != null ? fs[0].toString() : "");
+//				part.put("binclass", fs[1] != null ? fs[1].toString() : "");
+//				part.put("celltype", fs[2] != null ? fs[2].toString() : "");
+//				part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
+//				part.put("core", fs[4] != null ? fs[4].toString() : "");
+//				part.put("expdate", fs[5] != null ? fs[5].toString() : "");
+//				part.put("pckey", fs[6] != null ? fs[6].toString() : "");
+//				part.put("ssku", fs[7] != null ? fs[7].toString() : "");
+//				part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
+//				details1.add(part);
+//			}
+//			return details1;
+//		}
+//		
+
+		
 }
