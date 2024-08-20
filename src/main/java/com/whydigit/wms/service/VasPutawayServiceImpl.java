@@ -134,6 +134,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 				stockDetailsVOFrom.setBinClass(vasPutawayDetailsVO.getBinClass());
 				stockDetailsVOFrom.setCellType(vasPutawayDetailsVO.getCellType());
 				stockDetailsVOFrom.setClientCode(vasPutawayDetailsVO.getClientCode());
+				stockDetailsVOFrom.setBinType(vasPutawayDetailsVO.getBinType());
 				stockDetailsVOFrom.setCore(vasPutawayDetailsVO.getCore());
 				stockDetailsVOFrom.setStatus(vasPutawayDetailsVO.getStatus());
 				stockDetailsVOFrom.setExpDate(vasPutawayDetailsVO.getExpDate());
@@ -171,6 +172,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 				stockDetailsVOTo.setSourceScreenName(vasPutawayVO.getScreenName());
 				stockDetailsVOTo.setSourceId(vasPutawayVO.getId());
 				stockDetailsVOTo.setBinClass(vasPutawayDetailsVO.getBinClass());
+				stockDetailsVOTo.setBinType(vasPutawayDetailsVO.getBinType());
 				stockDetailsVOTo.setCellType(vasPutawayDetailsVO.getCellType());
 				stockDetailsVOTo.setClientCode(vasPutawayDetailsVO.getClientCode());
 				stockDetailsVOTo.setCore(vasPutawayDetailsVO.getCore());
@@ -236,6 +238,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 			vasPutawayDetailsVO.setFromBin(vasPutawayDetailsDTO.getFromBin());
 			vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
 			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
+			vasPutawayDetailsVO.setBinType(vasPutawayDetailsDTO.getBinType());
 			vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
 //				vasPutawayDetailsVO.setQcFlag(vasPutawayDetailsDTO.getQcFlag());
 			vasPutawayDetailsVO.setBinClass(vasPutawayDetailsDTO.getBinClass());
@@ -336,5 +339,28 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 		return details1;
 	}
 
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getToBinDetailsVasPutaway(Long orgId, String branchCode,
+			String client,String warehouse) {
+
+		Set<Object[]> result = vasPutawayDetailsRepo.getToBinDetailsVasPutaway(orgId, branchCode, client,warehouse);
+		return ToBinDetailsVasPutaway(result);
+	}
+
+	private List<Map<String, Object>> ToBinDetailsVasPutaway(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("cellType", fs[2] != null ? fs[2].toString() : "");
+			part.put("core", fs[3] != null ? fs[3].toString() : "");
+			part.put("binType", fs[4] != null ? fs[4].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
 
 }
