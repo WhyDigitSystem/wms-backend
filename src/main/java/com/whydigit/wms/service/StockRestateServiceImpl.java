@@ -399,6 +399,7 @@ public class StockRestateServiceImpl implements StockRestateService {
 			fillDetails.put("qcFlag",details[18]!=null ? details[18].toString():"");
 			fillDetails.put("fromQty",details[19]!=null ? Integer.parseInt(details[19].toString()):0);
 			fillDetails.put("toQty",details[19]!=null ? Integer.parseInt(details[19].toString()):0);
+			fillDetails.put("id",details[20]!=null ? Integer.parseInt(details[20].toString()):0);
 			
 			gridDetails.add(fillDetails);
 		}

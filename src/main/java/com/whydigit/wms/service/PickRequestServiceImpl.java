@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -16,11 +15,14 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.dto.PickRequestDetailsDTO;
+import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.PickRequestDetailsVO;
 import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.BuyerOrderRepo;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.PickRequestDetailsRepo;
 import com.whydigit.wms.repo.PickRequestRepo;
@@ -39,6 +41,12 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
+	
+	@Autowired
+	BuyerOrderRepo buyerOrderRepo;
+	
+	@Autowired
+	ClientRepo clientRepo;
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
@@ -100,8 +108,20 @@ public class PickRequestServiceImpl implements PickRequestService {
 		List<PickRequestDetailsVO> pickRequestDetailsVOLists = savedPickRequestVO.getPickRequestDetailsVO();
 		if (pickRequestDetailsVOLists != null && !pickRequestDetailsVOLists.isEmpty()) {
 			for (PickRequestDetailsVO detailsVO : pickRequestDetailsVOLists) {
-				// Create StockDetails for fromBin with negative quantity
+				
 				StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
+				stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
+				stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+				stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
+				stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
+				stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
+				stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
+				stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
+				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient()));
+				stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
+				stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
+				stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
+				stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
 				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
 				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOFrom.setSQty(detailsVO.getPickQty());
@@ -115,29 +135,10 @@ public class PickRequestServiceImpl implements PickRequestService {
 				stockDetailsVOFrom.setSku(detailsVO.getSku());
 				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
 				stockDetailsVOFrom.setCellType(detailsVO.getCellType());
-				stockDetailsVOFrom.setClientCode(detailsVO.getClientCode());
 				stockDetailsVOFrom.setCore(detailsVO.getCore());
-				stockDetailsVOFrom.setPcKey(detailsVO.getPcKey());
 				stockDetailsVOFrom.setSSku(detailsVO.getSsku());
 				stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
-				stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
-				stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
-				stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
-				stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
-				stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
-				stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
-				stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
-				stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
-
-				stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
-				stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
-				stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
-				stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
-				stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
-				stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
-				stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
-				stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
-				stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+				
 				stockDetailsRepo.save(stockDetailsVOFrom);
 			}
 		}
@@ -150,7 +151,14 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	private void createUpdatePickRequestVOByPickRequestDTO(PickRequestDTO pickRequestDTO, PickRequestVO pickRequestVO) {
 
-		pickRequestVO.setFreeze(pickRequestDTO.getFreeze());
+		if("Confirm".equals(pickRequestDTO.getStatus()))
+		{
+		pickRequestVO.setFreeze(true);
+		}
+		else
+		{
+			pickRequestVO.setFreeze(false);
+		}
 		pickRequestVO.setOrgId(pickRequestDTO.getOrgId());
 		pickRequestVO.setCustomer(pickRequestDTO.getCustomer());
 		pickRequestVO.setClient(pickRequestDTO.getClient());
@@ -167,15 +175,11 @@ public class PickRequestServiceImpl implements PickRequestService {
 		pickRequestVO.setInvoiceNo(pickRequestDTO.getInvoiceNo());
 		pickRequestVO.setClientShortName(pickRequestDTO.getClientShortName());
 		pickRequestVO.setClientAddress(pickRequestDTO.getClientAddress());
-		pickRequestVO.setDispatch(pickRequestDTO.getDispatch());
 		pickRequestVO.setCustomerName(pickRequestDTO.getCustomerName());
 		pickRequestVO.setCustomerAddress(pickRequestDTO.getCustomerAddress());
-		pickRequestVO.setDueDays(pickRequestDTO.getDueDays());
-		pickRequestVO.setNoOfBoxes(pickRequestDTO.getNoOfBoxes());
 		pickRequestVO.setPickOrder(pickRequestDTO.getPickOrder());
 		pickRequestVO.setOutTime(pickRequestDTO.getOutTime());
-		pickRequestVO.setDueDays(pickRequestDTO.getDueDays());
-
+		
 		if (ObjectUtils.isNotEmpty(pickRequestVO.getId())) {
 			List<PickRequestDetailsVO> pickRequestDetailsVO1 = pickRequestDetailsRepo
 					.findByPickRequestVO(pickRequestVO);
@@ -190,7 +194,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 			pickRequestDetailsVO.setPartDesc(pickRequestDetailsDTO.getPartDesc());
 			pickRequestDetailsVO.setSku(pickRequestDetailsDTO.getSku());
 			pickRequestDetailsVO.setCore(pickRequestDetailsDTO.getCore());
-			pickRequestDetailsVO.setLocation(pickRequestDetailsDTO.getLocation());
+			pickRequestDetailsVO.setBin(pickRequestDetailsDTO.getBin());
 			pickRequestDetailsVO.setBatchNo(pickRequestDetailsDTO.getBatchNo());
 			pickRequestDetailsVO.setBatchDate(pickRequestDetailsDTO.getBatchDate());
 			pickRequestDetailsVO.setLotNo(pickRequestDetailsDTO.getLotNo());
@@ -198,25 +202,17 @@ public class PickRequestServiceImpl implements PickRequestService {
 			pickRequestDetailsVO.setPickQty(pickRequestDetailsDTO.getPickQty());
 			pickRequestDetailsVO.setAvlQty(pickRequestDetailsDTO.getAvlQty());
 			pickRequestDetailsVO.setRunningQty(pickRequestDetailsDTO.getRunningQty());
-			pickRequestDetailsVO.setPickQtyPerLocation(pickRequestDetailsDTO.getPickQtyPerLocation());
+			pickRequestDetailsVO.setPickQtyPerBin(pickRequestDetailsDTO.getPickQtyPerBin());
 			pickRequestDetailsVO.setRemainingQty(pickRequestDetailsDTO.getRemainingQty());
-
-			pickRequestDetailsVO.setWeight(pickRequestDetailsDTO.getWeight());
-			pickRequestDetailsVO.setRate(pickRequestDetailsDTO.getRate());
-			pickRequestDetailsVO.setTax(pickRequestDetailsDTO.getTax());
-			pickRequestDetailsVO.setAmount(pickRequestDetailsDTO.getAmount());
 			pickRequestDetailsVO.setRemarks(pickRequestDetailsDTO.getRemarks());
 			pickRequestDetailsVO.setBinClass(pickRequestDetailsDTO.getBinClass());
 			pickRequestDetailsVO.setCellType(pickRequestDetailsDTO.getCellType());
-			pickRequestDetailsVO.setClientCode(pickRequestDetailsDTO.getClientCode());
-			pickRequestDetailsVO.setPcKey(pickRequestDetailsDTO.getPcKey());
-			pickRequestDetailsVO.setSsku(pickRequestDetailsDTO.getSsku());
+			pickRequestDetailsVO.setSsku(pickRequestDetailsDTO.getSku());
 			pickRequestDetailsVO.setStockDate(pickRequestDetailsDTO.getStockDate());
 			pickRequestDetailsVO.setBinType(pickRequestDetailsDTO.getBinType());
 			pickRequestDetailsVO.setExpDate(pickRequestDetailsDTO.getExpDate());
 			pickRequestDetailsVO.setStatus(pickRequestDetailsDTO.getStatus());
 			pickRequestDetailsVO.setPickRequestVO(pickRequestVO);
-
 			pickRequestDetailsVOs.add(pickRequestDetailsVO);
 		}
 		pickRequestVO.setPickRequestDetailsVO(pickRequestDetailsVOs);
@@ -231,30 +227,12 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear,
-			String branch, String branchCode, String client) {
+	public List<BuyerOrderVO> getBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear, String branchCode,
+			String warehouse, String client) {
 
-		Set<Object[]> result = pickRequestRepo.findBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branch,
-				branchCode, client);
-		return getBuyerNoResult(result);
+		return buyerOrderRepo.findBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branchCode, warehouse, client);
+		
 	}
 
-	private List<Map<String, Object>> getBuyerNoResult(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("buyerRefNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("buyerRefDate", fs[1] != null ? fs[1].toString() : "");
-//			part.put("celltype", fs[2] != null ? fs[2].toString() : "");
-//			part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
-//			part.put("core", fs[4] != null ? fs[4].toString() : "");
-//			part.put("expdate", fs[5] != null ? fs[5].toString() : "");
-//			part.put("pckey", fs[6] != null ? fs[6].toString() : "");
-//			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
-//			part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
-			details1.add(part);
-		}
-		return details1;
-	}
 
 }

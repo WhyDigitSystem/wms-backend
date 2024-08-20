@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
@@ -100,6 +101,11 @@ public class BuyerOrderVO {
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "buyerOrderVO")
 	private List<BuyerOrderDetailsVO> buyerOrderDetailsVO;
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
