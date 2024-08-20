@@ -157,17 +157,6 @@ public interface StockProcessService {
 
 	Map<String, Object> createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException;
 
-	// CYCLECOUNT
-
-	Map<String, Object> createUpdateCycleCount(CycleCountDTO cycleCountDTO) throws ApplicationException;
-
-	String getCycleCountInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
-
-	List<CycleCountVO> getAllCycleCount(Long orgId, String client, String branch, String branchCode, String finYear,
-			String warehouse);
-
-	Optional<CycleCountVO> getCycleCountById(Long id);
-
-	List<Map<String, Object>> getCycleCountGridDetails(Long orgId, String branchCode, String client, String warehouse);
+	
 
 }
