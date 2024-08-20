@@ -158,7 +158,6 @@ public class PickRequestServiceImpl implements PickRequestService {
 		pickRequestVO.setBranchCode(pickRequestDTO.getBranchCode());
 		pickRequestVO.setBranch(pickRequestDTO.getBranch());
 		pickRequestVO.setWarehouse(pickRequestDTO.getWarehouse());
-		pickRequestVO.setTransactionType(pickRequestDTO.getTransactionType());
 		pickRequestVO.setBuyerRefDate(pickRequestDTO.getBuyerRefDate());
 		pickRequestVO.setShipmentMethod(pickRequestDTO.getShipmentMethod());
 		pickRequestVO.setBuyerOrderNo(pickRequestDTO.getBuyerOrderNo());

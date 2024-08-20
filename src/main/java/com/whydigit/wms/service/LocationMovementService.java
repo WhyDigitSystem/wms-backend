@@ -13,6 +13,7 @@ import com.whydigit.wms.exception.ApplicationException;
 
 @Service
 public interface LocationMovementService {
+	
 	List<LocationMovementVO> getAllLocationMovement(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse);
 

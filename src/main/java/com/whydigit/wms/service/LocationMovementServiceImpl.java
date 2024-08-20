@@ -29,7 +29,7 @@ import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 
 @Service
-public class LocationMovementServiceImpl {
+public class LocationMovementServiceImpl implements LocationMovementService {
 	public static final Logger LOGGER = LoggerFactory.getLogger(LocationMovementServiceImpl.class);
 
 	@Autowired
