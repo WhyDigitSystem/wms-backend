@@ -43,8 +43,6 @@ public class BuyerOrderDetailsVO {
 	private String sku;
 	@Column(name = "remarks")
 	private String reMarks;
-	@Column(name="qcflag")
-	private boolean qcflag;
 	
 	@JsonBackReference
 	@ManyToOne

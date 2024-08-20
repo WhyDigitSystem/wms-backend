@@ -36,8 +36,11 @@ public class SecurityConfig {
 						"/swagger-ui.html", "/swagger-ui/*", "/api/auth/signup", "/api/auth/login", "/api/auth/logout",
 						"/api/auth/getRefreshToken", "/api/auth/logout", "/api/auth/**", "/api/auth/getRefreshToken",
 						"/api/commonmaster/**", "/api/inward/**", "/api/user/**", "/api/outward/**",
-						"/api/deliverychallan/**", "/api/codeconversion/**", "/api/vasputaway/**",
+						"/api/deliverychallan/**", "/api/codeconversion/**", "/api/vasputaway/**","/api/vasPick/**",
 						"/api/stockprocess/**", "/api/warehousemastercontroller/**", "/api/commonmaster/**",
+						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**","/api/buyerOrder/**",
+						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**","/api/kitting/**",
+						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/cycleCount/**",
 						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**",
 						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**",
 						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/salesreturn/**","/api/locationmovement/**","/api/dekitting/**","/api/pickrequest/**")

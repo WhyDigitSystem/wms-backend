@@ -33,8 +33,6 @@ public class PickRequestVO {
 	@SequenceGenerator(name = "pickrequestgen", sequenceName = "pickrequestseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "pickrequestid")
 	private Long id;
-	@Column(name = "transactiontype")
-	private String transactionType;
 	@Column(name = "buyerrefno")
 	private String buyerRefNo;
 	@Column(name = "buyerrefdate")

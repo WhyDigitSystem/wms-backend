@@ -53,26 +53,23 @@ public class BuyerOrderVO {
 	private LocalDate refDate;
 	@Column(name = "buyershortname")
 	private String buyerShortName;
+	private String buyer;
 	@Column(name = "currency")
 	private String currency;
-	@Column(name = "exrate")
-	private int exRate;
-	@Column(name = "bin")
-	private String bin;
+	@Column(name = "billtoshortname")
+	private String billToShortName;
 	@Column(name = "billto")
-	private String billto;
-	@Column(name = "tax")
-	private String tax;
+	private String billToName;
+	@Column(name = "shiptoshortname")
+	private String shipToShortName;
 	@Column(name = "shipto")
-	private String shipTo;
+	private String shipToName;
 	@Column(name = "remarks")
-	private String reMarks;
+	private String remarks;
 	@Column(name = "createdby")
 	private String createdBy;
 	@Column(name = "modifiedby")
 	private String updatedBy;
-	@Column(name = "company")
-	private String company;
 	@Column(name = "cancel")
 	private boolean cancel=false;
 	@Column(name = "cancelremark")
@@ -80,7 +77,7 @@ public class BuyerOrderVO {
 	@Column(name = "screencode")
 	private String screenCode="BO";
 	@Column(name ="screenname")
-	private String screenName;
+	private String screenName="BUYER ORDER";
 	private String customer;
 	private String client;
 	@Column(name ="finyear")
@@ -91,12 +88,11 @@ public class BuyerOrderVO {
 	private String branchCode;
 	@Column(name = "freeze")
 	private boolean freeze=true;
-	@Column(name = "orderqty")
-	private int orderQty;
-	@Column(name = "avilqty")
-	private int avilQty;
+	@Column(name = "totalorderqty")
+	private int totalOrderQty;
+	@Column(name = "totalavlqty")
+	private int totalAvailQty;
 	private boolean active = true;
-	private String buyer;
 	@Column(name = "warehouse")
 	private String warehouse;
 	
