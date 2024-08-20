@@ -12,6 +12,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.SalesReturnDTO;
 import com.whydigit.wms.dto.SalesReturnDetailsDTO;
@@ -24,6 +25,7 @@ import com.whydigit.wms.repo.SalesReturnDetailsRepo;
 import com.whydigit.wms.repo.SalesReturnRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 
+@Service
 public class SalesReturnServiceImpl implements SalesReturnService{
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger(SalesReturnServiceImpl.class);
