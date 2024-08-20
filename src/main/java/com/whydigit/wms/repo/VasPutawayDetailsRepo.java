@@ -31,4 +31,7 @@ public interface VasPutawayDetailsRepo extends JpaRepository<VasPutawayDetailsVO
 	Set<Object[]> getAvlQtyVasPutaway(Long orgId, String client, String branchCode, String warehouse, String branch,
 			String partNo, String partDesc);
 
+	@Query(nativeQuery = true, value = "select bin,binclass,celltype,core,bintype from wv_locationstatus where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 ")
+	Set<Object[]> getToBinDetailsVasPutaway(Long orgId, String branchCode, String client, String warehouse);
+
 }
