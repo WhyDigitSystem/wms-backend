@@ -64,21 +64,6 @@ public interface OutwardTransactionService {
 				String partNo, String partDesc);
 
 		
-		//BuyerOrder
-		
-		Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException;
-
-		List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId);
-
-		Optional<BuyerOrderVO> getAllBuyerOrderById(Long id);
-
-		String getBuyerOrderDocId (Long orgId, String finYear, String branch, String branchCode, String client);
-
-		List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client,String batch,String warehouse);
-
-		List<Map<String, Object>> getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
-				String branch, String partNo, String partDesc,String batch);
-
 		
 
 		

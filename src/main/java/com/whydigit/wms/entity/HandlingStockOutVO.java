@@ -26,7 +26,7 @@ public class HandlingStockOutVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "handlingstockoutgen")
-	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockoutseq", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "handlingstockoutgen", sequenceName = "handlingstockoutseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "handlingstockoutid")
 	private Long id;
 	@Column(name = "orgid")
@@ -61,18 +61,6 @@ public class HandlingStockOutVO {
 	private int pickQty;
 	@Column(name = "sdocid")
 	private String sDocid;
-	@Column(name = "createdby")
-	private String createdBy;
-	@Column(name = "modifiedby")
-	private String updatedBy;
-	@Column(name = "company")
-	private String company;
-	@Column(name = "cancel")
-	private boolean cancel;
-	@Column(name = "cancelremark")
-	private String cancelRemark;
-	@Column(name = "active")
-	private boolean active;
 	@Column(name = "branchcode")
 	private String branchCode;
 	@Column(name = "branch")
@@ -83,6 +71,8 @@ public class HandlingStockOutVO {
 	private String client;
 	@Column(name = "buyerordno")
 	private String buyerOrdNo;
+	@Column(name = "buyerorddate")
+	private LocalDate buyerOrdDate;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
