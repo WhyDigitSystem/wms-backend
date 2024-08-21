@@ -40,8 +40,8 @@ public class PickRequestDetailsVO {
 	private String sku;
 	@Column(name = "core")
 	private String core;
-	@Column(name = "location")
-	private String location;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "batchno")
 	private String batchNo;
 	@Column(name = "batchdate")
@@ -56,39 +56,26 @@ public class PickRequestDetailsVO {
 	private int pickQty;
 	@Column(name = "runningqty")
 	private int runningQty;
-	@Column(name = "pickqtyperlocation")
-	private String pickQtyPerLocation;
+	@Column(name = "pickqtyperbin")
+	private int pickQtyPerBin;
 	@Column(name = "remainingqty")
-	private String remainingQty;
-	@Column(name = "weight")
-	private String weight;
-	@Column(name = "rate")
-	private String rate;
-	@Column(name = "tax")
-	private String tax;
-	@Column(name = "amount")
-	private String amount;
+	private int remainingQty;
 	@Column(name = "remarks")
 	private String remarks;
-
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "bintype")
 	private String binType;
 	@Column(name = "celltype")
 	private String cellType;
-	@Column(name = "clientcode")
-	private String clientCode;
-	@Column(name = "expdate")
-	private LocalDate expDate;
-	@Column(name = "pockey")
-	private String pcKey;
 	@Column(name = "ssku")
 	private String ssku;
 	@Column(name = "status")
-	private String status = "R";
-	@Column(name = "stokcdate")
+	private String status;
+	@Column(name = "stockdate")
 	private LocalDate stockDate;
+	@Column(name = "expdate")
+	private LocalDate expDate;
 	
 	@JsonBackReference
 	@ManyToOne

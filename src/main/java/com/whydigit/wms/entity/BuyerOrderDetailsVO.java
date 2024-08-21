@@ -1,5 +1,7 @@
 package com.whydigit.wms.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,6 +45,8 @@ public class BuyerOrderDetailsVO {
 	private String sku;
 	@Column(name = "remarks")
 	private String reMarks;
+	@Column(name="expdate")
+	private LocalDate expDate;
 	
 	@JsonBackReference
 	@ManyToOne

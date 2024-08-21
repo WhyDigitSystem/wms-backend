@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -34,11 +32,11 @@ public class CycleCountVO {
 	private Long id;
 
 	@Column(name = "screenname")
-	private String screenName = "CYCLECOUNT";
+	private String screenName = "CYCLE COUNT";
 	@Column(name = "screencode")
-	private String screenCode = "CT";
+	private String screenCode = "CY";
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate=LocalDate.now();
 	@Column(name = "docid", unique = true)
 	private String docId;
 	@Column(name = "orgid")
@@ -66,7 +64,7 @@ public class CycleCountVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze;
+	private String freeze;
 	@Column(name = "cyclecountno")
 	private String cycleCountNo;
 	@Column(name = "cyclecountdate")

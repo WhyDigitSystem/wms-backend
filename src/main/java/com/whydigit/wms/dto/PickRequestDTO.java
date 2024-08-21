@@ -3,6 +3,12 @@ package com.whydigit.wms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PickRequestDTO {
 
+
 	private Long id;
-	private String transactionType;
 	private String buyerRefNo;
 	private LocalDate buyerRefDate;
 	private String shipmentMethod;
@@ -22,11 +28,8 @@ public class PickRequestDTO {
 	private String invoiceNo;
 	private String clientShortName;
 	private String clientAddress;
-	private String dispatch;
 	private String customerName;
 	private String customerAddress;
-	private String dueDays;
-	private String noOfBoxes;
 	private String pickOrder;
 	private String outTime;
 	private Long orgId;
@@ -36,11 +39,8 @@ public class PickRequestDTO {
 	private String branch;
 	private String branchCode;
 	private String warehouse;
-	private String status;
 	private String createdBy;
-	private String updatedBy;
-	private String freeze;
+	private String status;
 	
-
 	List<PickRequestDetailsDTO> pickRequestDetailsDTO;
 }

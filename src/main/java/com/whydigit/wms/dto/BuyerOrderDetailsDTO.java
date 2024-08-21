@@ -1,5 +1,7 @@
 package com.whydigit.wms.dto;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +19,5 @@ public class BuyerOrderDetailsDTO {
 	private int availQty;
 	private String sku;
 	private String remarks;
+	private LocalDate expDate;
 }
