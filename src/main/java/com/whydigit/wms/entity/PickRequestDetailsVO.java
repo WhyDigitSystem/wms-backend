@@ -42,6 +42,10 @@ public class PickRequestDetailsVO {
 	private String core;
 	@Column(name = "bin")
 	private String bin;
+	@Column(name = "grnno")
+	private String grnNo;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
 	@Column(name = "batchno")
 	private String batchNo;
 	@Column(name = "batchdate")
@@ -76,6 +80,8 @@ public class PickRequestDetailsVO {
 	private LocalDate stockDate;
 	@Column(name = "expdate")
 	private LocalDate expDate;
+	@Column(name = "qcflag")
+	private String qcFlag;
 	
 	@JsonBackReference
 	@ManyToOne

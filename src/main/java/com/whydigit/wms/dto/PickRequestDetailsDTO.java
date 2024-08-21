@@ -19,6 +19,8 @@ public class PickRequestDetailsDTO {
 	private String sku;
 	private String core;
 	private String bin;
+	private String grnNo;
+	private LocalDate grnDate;
 	private String batchNo;
 	private LocalDate batchDate;
 	private String lotNo;
@@ -35,4 +37,5 @@ public class PickRequestDetailsDTO {
 	private String status;
 	private LocalDate stockDate;
 	private LocalDate expDate;
+	private String qcFlag;
 }

@@ -132,7 +132,7 @@ public class StockRestateServiceImpl implements StockRestateService {
 			    		stockRestateDetailsDTO.getBatch());
 			    if(getFromQty>=stockRestateDetailsDTO.getToQty())
 			    {
-			    stockRestateDetailsVOs.setFromQty(stockRestateDetailsDTO.getFromQty());
+			    stockRestateDetailsVOs.setFromQty(getFromQty);
 			    stockRestateDetailsVOs.setToQty(stockRestateDetailsDTO.getToQty());
 			    }
 			    else
@@ -230,7 +230,10 @@ public class StockRestateServiceImpl implements StockRestateService {
 			if("D".equals(restateVO.getTransferToFlag())){
 			stockDetailsVO.setQcFlag("F");
 			}
+			else
+			{
 			stockDetailsVO.setQcFlag(restateDetailsVO.getQcFlag());
+			}
 			stockDetailsVO.setStatus(restateVO.getTransferToFlag());
 			stockDetailsVO.setExpDate(restateDetailsVO.getExpDate());
 			stockDetailsVO.setCore(restateDetailsVO.getToCore());
