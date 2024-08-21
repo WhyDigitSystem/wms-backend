@@ -174,4 +174,112 @@ public class CycleCountServiceImpl implements CycleCountService {
 
 	}
 
+	@Override
+	public List<Map<String, Object>> getPartNoByCycleCount(Long orgId, String branchCode, String client,
+			String warehouse) {
+		Set<Object[]> result = cycleCountRepo.getPartNoByCycleCount(orgId, branchCode, client, warehouse);
+		return getPart(result);
+	}
+
+	private List<Map<String, Object>> getPart(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+
+			part.put("partNo", fs[0] != null ? fs[0].toString():"");
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("sku", fs[2] != null ? fs[2].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getGrnNoByCycleCount(Long orgId, String branchCode, String client,
+			String warehouse, String partNo) {
+		Set<Object[]> result = cycleCountRepo.getGrnNo(orgId, branchCode, client, warehouse,partNo);
+		return getGrn(result);
+	}
+
+	private List<Map<String, Object>> getGrn(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+
+			part.put("grnNo", fs[0] != null ? fs[0].toString():"");
+			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getBatchByCycleCount(Long orgId, String branchCode, String client,
+			String warehouse, String partNo, String grnNO) {
+		Set<Object[]> result = cycleCountRepo.getBatch(orgId, branchCode, client, warehouse,partNo,grnNO);
+		return getBatchDetails(result);
+	}
+
+	private List<Map<String, Object>> getBatchDetails(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+
+			part.put("batch", fs[0] != null ? fs[0].toString():"");
+			part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getBinDetailsByCycleCount(Long orgId, String branchCode, String client,
+			String warehouse, String partNo, String grnNO, String batch) {
+		Set<Object[]> result = cycleCountRepo.getBinDetails(orgId, branchCode, client, warehouse,partNo,grnNO,batch);
+		return getBin(result);
+	}
+
+	private List<Map<String, Object>> getBin(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+
+			part.put("bin", fs[0] != null ? fs[0].toString():"");
+			part.put("binType", fs[1] != null ? fs[1].toString() : "");
+			part.put("lotNo", fs[2] != null ? fs[2].toString():"");
+			part.put("cellType", fs[3] != null ? fs[3].toString() : "");
+			
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getAvlQtyByCycleCount(Long orgId, String branchCode, String client,
+			String warehouse, String partNo, String grnNO, String batch, String bin, String binType, String lotNo) {
+		Set<Object[]> result = cycleCountRepo.getAvlQty(orgId, branchCode, client, warehouse,partNo,grnNO,batch,bin,binType,lotNo);
+		return getAvlQty1(result);
+	}
+
+	private List<Map<String, Object>> getAvlQty1(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+
+			part.put("avlQty", fs[0] != null ?  Integer.parseInt(fs[0].toString()) : 0);
+			part.put("status", fs[1] != null ? fs[1].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
 }
