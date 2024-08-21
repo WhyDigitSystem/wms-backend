@@ -174,7 +174,9 @@ public class PickRequestServiceImpl implements PickRequestService {
 		pickRequestVO.setStatus(pickRequestDTO.getStatus());
 		pickRequestVO.setInvoiceNo(pickRequestDTO.getInvoiceNo());
 		pickRequestVO.setClientShortName(pickRequestDTO.getClientShortName());
+		pickRequestVO.setClientName(pickRequestDTO.getClientName());
 		pickRequestVO.setClientAddress(pickRequestDTO.getClientAddress());
+		pickRequestVO.setCustomerShortName(pickRequestDTO.getCustomerShortName());
 		pickRequestVO.setCustomerName(pickRequestDTO.getCustomerName());
 		pickRequestVO.setCustomerAddress(pickRequestDTO.getCustomerAddress());
 		pickRequestVO.setPickOrder(pickRequestDTO.getPickOrder());
@@ -188,7 +190,6 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 		List<PickRequestDetailsVO> pickRequestDetailsVOs = new ArrayList<>();
 		for (PickRequestDetailsDTO pickRequestDetailsDTO : pickRequestDTO.getPickRequestDetailsDTO()) {
-
 			PickRequestDetailsVO pickRequestDetailsVO = new PickRequestDetailsVO();
 			pickRequestDetailsVO.setPartNo(pickRequestDetailsDTO.getPartNo());
 			pickRequestDetailsVO.setPartDesc(pickRequestDetailsDTO.getPartDesc());
@@ -212,6 +213,9 @@ public class PickRequestServiceImpl implements PickRequestService {
 			pickRequestDetailsVO.setBinType(pickRequestDetailsDTO.getBinType());
 			pickRequestDetailsVO.setExpDate(pickRequestDetailsDTO.getExpDate());
 			pickRequestDetailsVO.setStatus(pickRequestDetailsDTO.getStatus());
+			pickRequestDetailsVO.setQcFlag(pickRequestDetailsDTO.getQcFlag());
+			pickRequestDetailsVO.setGrnNo(pickRequestDetailsDTO.getGrnNo());
+			pickRequestDetailsVO.setGrnDate(pickRequestDetailsDTO.getGrnDate());
 			pickRequestDetailsVO.setPickRequestVO(pickRequestVO);
 			pickRequestDetailsVOs.add(pickRequestDetailsVO);
 		}

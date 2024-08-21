@@ -175,6 +175,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			detailsVO.setBatchNo(buyerOrderDetailsDTO.getBatchNo());
 			detailsVO.setAvailQty(buyerOrderDetailsDTO.getAvailQty());
 			detailsVO.setSku(buyerOrderDetailsDTO.getSku());
+			detailsVO.setExpDate(buyerOrderDetailsDTO.getExpDate());
 			
 			avilQty = avilQty + buyerOrderDetailsDTO.getAvailQty();
 			orderQty = orderQty + buyerOrderDetailsDTO.getQty();

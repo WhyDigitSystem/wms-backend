@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class CodeConversionDetailsDTO {
 	private Long id;
 	private String partNo;
-	private String partDescription;
+	private String partDesc;
 	private String grnNo;
 	private String status;
 	private LocalDate grnDate;

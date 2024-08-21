@@ -43,119 +43,8 @@ public class StockProcessController extends BaseController {
 	@Autowired
 	StockProcessService stockProcessService;
 
-	// CodeConversion
-	@GetMapping("/getAllCodeConversion")
-	public ResponseEntity<ResponseDTO> getAllCodeConversion(@RequestParam Long orgId, @RequestParam String finYear,
-			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
-			@RequestParam String warehouse) {
-		String methodName = "getAllCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<CodeConversionVO> codeConversionVO = new ArrayList<>();
-		try {
-			codeConversionVO = stockProcessService.getAllCodeConversion(orgId, finYear, branch, branchCode, client,
-					warehouse);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CodeConversion information get successfully");
-			responseObjectsMap.put("codeConversionVO", codeConversionVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "CodeConversion information receive failed",
-					errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getCodeConversionById")
-	public ResponseEntity<ResponseDTO> getCodeConversionById(@RequestParam(required = false) Long id) {
-		String methodName = "getCodeConversionById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		CodeConversionVO codeConversionVO = new CodeConversionVO();
-
-		try {
-			codeConversionVO = stockProcessService.getCodeConversionById(id);
-			if (codeConversionVO != null) {
-				responseObjectsMap.put("codeConversionVO", codeConversionVO);
-				responseDTO = createServiceResponseMsg(responseObjectsMap,
-						" CodeConversion information retrieved successfully.");
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, " CodeConversion information not found.",
-						errorMsg);
-			}
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					" CodeConversion information retrieval failed.", errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getCodeConversionDocId")
-	public ResponseEntity<ResponseDTO> getCodeConversionDocId(@RequestParam Long orgId, @RequestParam String finYear,
-			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
-
-		String methodName = "getCodeConversionDocId()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		String mapp = "";
-
-		try {
-			mapp = stockProcessService.getCodeConversionDocId(orgId, finYear, branch, branchCode, client);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All CodeConversion information retrieved successfully");
-			responseObjectsMap.put("CodeConversionDocId", mapp);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve CodeConversion information", errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@PutMapping("/createUpdateCodeConversion")
-	public ResponseEntity<ResponseDTO> createUpdateCodeConversion(@RequestBody CodeConversionDTO codeConversionDTO) {
-		String methodName = "createUpdateCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			Map<String, Object> codeConversionVO = stockProcessService.createUpdateCodeConversion(codeConversionDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, codeConversionVO.get("message"));
-			responseObjectsMap.put("codeConversionVO", codeConversionVO.get("codeConversionVO"));
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
+	
+	
 //	SalesReturn
 	@GetMapping("/getAllSalesReturnByOrgId")
 	public ResponseEntity<ResponseDTO> getAllSalesReturn(@RequestParam(required = false) Long orgId,
@@ -739,40 +628,6 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getPartNoAndPartDescFromStockForCodeConversion")
-	public ResponseEntity<ResponseDTO> getPartNoAndPartDescFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String bin) {
-
-		String methodName = "getPartNoAndPartDescFromStockForCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
-		try {
-			mov = stockProcessService.getPartNoAndPartDescFromStockForCodeConversion(orgId, branch, branchCode, client,
-					bin);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All PartNo and PartDesc from Stock information retrieved successfully");
-			responseObjectsMap.put("codeConversionVO", mov);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve PartNo and PartDesc from Stock information", errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
 	@GetMapping("/getPartNoFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getPartNoFromStockForDeKittingParent(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
@@ -799,71 +654,6 @@ public class StockProcessController extends BaseController {
 					"Failed to retrieve PartNo and PartDesc from Stock information", errorMsg);
 		}
 
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion")
-	public ResponseEntity<ResponseDTO> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String bin, @RequestParam(required = false) String partNo,
-			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku) {
-
-		String methodName = "getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
-		try {
-			mov = stockProcessService.getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(orgId,
-					branch, branchCode, client, bin, partNo, partDesc, sku);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All GrnNo and BatchNo and Bintype and Batchdate and lotno from Stock information retrieved successfully");
-			responseObjectsMap.put("codeConversionVO", mov);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieveGrnNo and BatchNo and Bintype and Batchdate and lotno from Stock information",
-					errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getBinFromStockForCodeConversion")
-	public ResponseEntity<ResponseDTO> getBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client) {
-		String methodName = "getBinFromStockForCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
-		try {
-			mov = stockProcessService.getBinFromStockForCodeConversion(orgId, branch, branchCode, client);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All Bin from Stock information retrieved successfully");
-			responseObjectsMap.put("codeConversionVO", mov);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve Bin from Stock information", errorMsg);
-		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
@@ -936,36 +726,6 @@ public class StockProcessController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getAllFillGridFromStockForCodeConversion")
-	public ResponseEntity<ResponseDTO> getAllFillGridFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
-		String methodName = "getAllFillGridFromStockForCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
-		try {
-			mov = stockProcessService.getAllFillGridFromStockForCodeConversion(orgId, branch, branchCode, client);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All FillGrid from Stock information retrieved successfully");
-			responseObjectsMap.put("codeConversionVO", mov);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve FillGrid from Stock information", errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
 	@GetMapping("/getAvlQtyFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getAvlQtyFromStockForDeKittingParent(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
@@ -1029,98 +789,6 @@ public class StockProcessController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve PartNo and sku from Stock information", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getCpartNoAndCpartDescFromStockForCodeConversion")
-	public ResponseEntity<ResponseDTO> getCpartNoAndCpartDescFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String bin) {
-
-		String methodName = "getCpartNoAndCpartDescFromStockForCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
-		try {
-			mov = stockProcessService.getCpartNoAndCpartDescFromStockForCodeConversion(orgId, branch, branchCode,
-					client, bin);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All CPartNo and CPartDesc from Stock information retrieved successfully");
-			responseObjectsMap.put("codeConversionVO", mov);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve CPartNo and CPartDesc from Stock information", errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getCBinFromStockForCodeConversion")
-	public ResponseEntity<ResponseDTO> getCBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client) {
-		String methodName = "getCBinFromStockForCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
-		try {
-			mov = stockProcessService.getCBinFromStockForCodeConversion(orgId, branch, branchCode, client);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All CBin from Stock information retrieved successfully");
-			responseObjectsMap.put("codeConversionVO", mov);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve CBin from Stock information", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
-
-	@GetMapping("/getAvlQtyCodeConversion")
-	public ResponseEntity<ResponseDTO> getAvlQtyCodeConversion(@RequestParam(required = true) Long orgId,
-			@RequestParam(required = true) String client, @RequestParam(required = true) String branchCode,
-			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String branch,
-			@RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc) {
-		String methodName = "getAvlQtyCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		int avalQty = 0;
-		try {
-			avalQty = stockProcessService.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
-					partDesc);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "SQTY information get successfully Id");
-			responseObjectsMap.put("avalQty", avalQty);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -1396,9 +1064,8 @@ public class StockProcessController extends BaseController {
 	}
 
 	@GetMapping("/getToBinDetails")
-	public ResponseEntity<ResponseDTO> getToBinDetails(@RequestParam Long orgId,
-			@RequestParam String branchCode, @RequestParam String warehouse, @RequestParam String client,
-			@RequestParam String tranferFromFlag) {
+	public ResponseEntity<ResponseDTO> getToBinDetails(@RequestParam Long orgId, @RequestParam String branchCode,
+			@RequestParam String warehouse, @RequestParam String client, @RequestParam String tranferFromFlag) {
 		String methodName = "getToBinDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1437,7 +1104,8 @@ public class StockProcessController extends BaseController {
 		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
 
 		try {
-			fillGridDetails = stockProcessService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse, client, tranferFromFlag, tranferToFlag);
+			fillGridDetails = stockProcessService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse,
+					client, tranferFromFlag, tranferToFlag);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

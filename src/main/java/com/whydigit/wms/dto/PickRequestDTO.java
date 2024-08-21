@@ -27,7 +27,9 @@ public class PickRequestDTO {
 	private String buyersReference;
 	private String invoiceNo;
 	private String clientShortName;
+	private String clientName;
 	private String clientAddress;
+	private String customerShortName;
 	private String customerName;
 	private String customerAddress;
 	private String pickOrder;
