@@ -188,7 +188,6 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 		List<PickRequestDetailsVO> pickRequestDetailsVOs = new ArrayList<>();
 		for (PickRequestDetailsDTO pickRequestDetailsDTO : pickRequestDTO.getPickRequestDetailsDTO()) {
-
 			PickRequestDetailsVO pickRequestDetailsVO = new PickRequestDetailsVO();
 			pickRequestDetailsVO.setPartNo(pickRequestDetailsDTO.getPartNo());
 			pickRequestDetailsVO.setPartDesc(pickRequestDetailsDTO.getPartDesc());

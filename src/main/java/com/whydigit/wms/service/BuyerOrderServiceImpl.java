@@ -21,6 +21,7 @@ import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.BuyerOrderDetailsRepo;
 import com.whydigit.wms.repo.BuyerOrderRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
+import com.whydigit.wms.repo.HandlingStockOutRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 
 @Service
@@ -37,6 +38,9 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	HandlingStockOutRepo handlingStockOutRepo;
 
 	// BuyerOrder
 
@@ -171,6 +175,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			detailsVO.setBatchNo(buyerOrderDetailsDTO.getBatchNo());
 			detailsVO.setAvailQty(buyerOrderDetailsDTO.getAvailQty());
 			detailsVO.setSku(buyerOrderDetailsDTO.getSku());
+			detailsVO.setExpDate(buyerOrderDetailsDTO.getExpDate());
 			
 			avilQty = avilQty + buyerOrderDetailsDTO.getAvailQty();
 			orderQty = orderQty + buyerOrderDetailsDTO.getQty();

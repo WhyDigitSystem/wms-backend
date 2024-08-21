@@ -356,6 +356,7 @@ public class PutawayServiceImpl implements PutawayService {
 			mapDetails.put("batchNo", gridDetails[12] != null ? gridDetails[12].toString() : "");
 			mapDetails.put("batchDate", gridDetails[13] != null ? gridDetails[13].toString() : "");
 			mapDetails.put("expDate", gridDetails[14] != null ? gridDetails[14].toString() : "");
+			mapDetails.put("id", gridDetails[15] != null ?parseStringToInt(gridDetails[15].toString()) : 0);
 			getDetails.add(mapDetails);
 		}
 		return getDetails;

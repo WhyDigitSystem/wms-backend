@@ -22,7 +22,7 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getPutAwayDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 	
-	@Query(nativeQuery = true,value = " select j.partno,j.partdesc,j.sku,j.bintype,j.invqty,j.recqty,j.shortqty,j.damageqty,j.grnqty,j.noofbin,j.bin,j.pq,j.batchno,j.batchdt,j.expdate from (\r\n"
+	@Query(nativeQuery = true,value = " select j.partno,j.partdesc,j.sku,j.bintype,j.invqty,j.recqty,j.shortqty,j.damageqty,j.grnqty,j.noofbin,j.bin,j.pq,j.batchno,j.batchdt,j.expdate,ROW_NUMBER() OVER (ORDER BY j.partno, j.grnno, j.partdesc) id from (\r\n"
 			+ "WITH a AS (\r\n"
 			+ "    SELECT \r\n"
 			+ "        ROW_NUMBER() OVER (ORDER BY branchcode, grnno, qcflag DESC) AS rowseq, \r\n"
