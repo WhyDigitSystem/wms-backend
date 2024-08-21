@@ -259,43 +259,7 @@ public class CodeConversionController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	@GetMapping("/getBinTypeFromStockForCodeConversion")
-//	public ResponseEntity<ResponseDTO> getBinTypeFromStockForCodeConversion(
-//			@RequestParam(required = false) Long orgId, 
-//			@RequestParam(required = false) String branchCode,
-//			@RequestParam(required = false) String client,
-//			@RequestParam(required = false) String warehouse,
-//			@RequestParam(required = false) String partNo,
-//			@RequestParam(required = false) String grnNo) {
-//
-//		String methodName = "getBinTypeFromStockForCodeConversion()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		List<Map<String, Object>> mov = new ArrayList<>();
-//		try {
-//			mov = codeConversionService.getBinTypeFromStockForCodeConversion(orgId,
-//					  branchCode, client,warehouse, partNo,grnNo);
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//		}
-//
-//		if (StringUtils.isBlank(errorMsg)) {
-//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-//					"All binType from Stock information retrieved successfully");
-//			responseObjectsMap.put("codeConversionVO", mov);
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//		} else {
-//			responseDTO = createServiceResponseError(responseObjectsMap,
-//					"Failed to retrieve binType from Stock information",
-//					errorMsg);
-//		}
-//
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
+
 	
 	@GetMapping("/getBinFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getBinFromStockForCodeConversion(
@@ -405,34 +369,70 @@ public class CodeConversionController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+//	@GetMapping("/getAvlQtyCodeConversion")
+//	public ResponseEntity<ResponseDTO> getAvlQtyCodeConversion(@RequestParam(required = true) Long orgId,
+//			@RequestParam(required = true) String client, @RequestParam(required = true) String branchCode,
+//			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String branch,
+//			@RequestParam(required = true) String partNo,@RequestParam(required = false) String grnNo,
+//			@RequestParam(required = false) String batchNo,@RequestParam(required = false) String binType,
+//			@RequestParam(required = false) String bin) {
+//		String methodName = "getAvlQtyCodeConversion()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		int avalQty = 0;
+//		try {
+//			avalQty = codeConversionService.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+//					grnNo,batchNo,binType,bin);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//		}
+//		if (StringUtils.isBlank(errorMsg)) {
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "SQTY information get successfully Id");
+//			responseObjectsMap.put("avalQty", avalQty);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} else {
+//			responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ", errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
+	
 	@GetMapping("/getAvlQtyCodeConversion")
 	public ResponseEntity<ResponseDTO> getAvlQtyCodeConversion(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String client, @RequestParam(required = true) String branchCode,
 			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String branch,
-			@RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc) {
+			@RequestParam(required = true) String partNo,@RequestParam(required = false) String grnNo,
+			@RequestParam(required = false) String batchNo,@RequestParam(required = false) String binType,
+			@RequestParam(required = false) String bin) {
 		String methodName = "getAvlQtyCodeConversion()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		int avalQty = 0;
+		int AvgQty = 0;
 		try {
-			avalQty = codeConversionService.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
-					partDesc);
+			AvgQty = codeConversionService.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+					grnNo,batchNo,binType,bin);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "SQTY information get successfully Id");
-			responseObjectsMap.put("avalQty", avalQty);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"AvgQty Details from Stock information retrieved successfully");
+			responseObjectsMap.put("AvgQty", AvgQty);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "SQTY information get Failed ", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve AvgQty from Stock information", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	
 //	@GetMapping("/getBinFromStockForCodeConversion")
 //	public ResponseEntity<ResponseDTO> getBinFromStockForCodeConversion(@RequestParam(required = false) Long orgId,

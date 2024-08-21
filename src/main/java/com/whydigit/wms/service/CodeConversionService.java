@@ -39,8 +39,8 @@ public interface CodeConversionService {
 	List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, 
 			String branchCode, String client,String warehouse);
 	
-	int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,
-			String partNo, String partDesc);
+	Integer getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,
+			String partNo, String grnNo,String batchNo,String binType,String bin);
 
 
 

@@ -265,24 +265,60 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 		}
 		
 
+//		
+//		@Override
+//		public int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+//				String grnNo,String batchNo,String binType,String bin) {
+//			Set<Object[]> getAvlQtyCodeConversion = codeConversionRepo.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+//					grnNo,batchNo,binType,bin);
+//			return calculateTotalQtyCodeConversion(getAvlQtyCodeConversion);
+//		}
+//
+//		private int calculateTotalQtyCodeConversion(Set<Object[]> getAvlQtyCodeConversion) {
+//			int totalQty = 0;
+//			for (Object[] qt : getAvlQtyCodeConversion) {
+//				totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
+//			}
+//			return totalQty;
+//		}
+		
+//		@Override
+//		public int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+//		                                   String grnNo, String batchNo, String binType, String bin) {
+//		    Set<Object[]> getAvlQtyCodeConversion = codeConversionRepo.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+//		            grnNo, batchNo, binType, bin);
+//
+//		    return calculateTotalQtyCodeConversion(getAvlQtyCodeConversion);
+//		}
+//
+//		private int calculateTotalQtyCodeConversion(Set<Object[]> getAvlQtyCodeConversion) {
+//		    int totalQty = 0;
+//		    for (Object[] qt : getAvlQtyCodeConversion) {
+//					totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
+//		        }
+//		    		    return totalQty;
+//		}
+
+//		@Override
+//		public int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+//                String grnNo, String batchNo, String binType, String bin) {
+//			int getFromQty= codeConversionRepo.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+//		            grnNo, batchNo, binType, bin);
+//			return getFromQty;
+//		}
 		
 		@Override
-		public int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
-				String partDesc) {
-			Set<Object[]> getAvlQtyCodeConversion = codeConversionRepo.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
-					partDesc);
-			return calculateTotalQtyCodeConversion(getAvlQtyCodeConversion);
+		public Integer getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse,
+		                                    String branch, String partNo, String grnNo, String batchNo, String binType, String bin) {
+		    Integer getAvgQty = codeConversionRepo.getAvlQtyCodeConversion(orgId, client, branchCode, warehouse, branch, partNo,
+		            grnNo, batchNo, binType, bin);
+
+		    // Return 0 if getAvgQty is null
+		    return getAvgQty != null ? getAvgQty : 0;
 		}
 
-		private int calculateTotalQtyCodeConversion(Set<Object[]> getAvlQtyCodeConversion) {
-			int totalQty = 0;
-			for (Object[] qt : getAvlQtyCodeConversion) {
-				totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
-			}
-			return totalQty;
-		}
 		
-//		
+		
 		@Override
 		@Transactional
 		public List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId,
@@ -313,6 +349,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("status", fs[13] != null ? fs[13].toString() : "");
 				part.put("qcflag", fs[14] != null ? fs[14].toString() : "");
 				part.put("totalQty", fs[15] != null ? fs[15].toString() : "");
+				part.put("id",fs[16]!=null ? Integer.parseInt(fs[16].toString()):0);
 				details1.add(part);
 			}
 			return details1;
@@ -398,6 +435,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("batchNo", fs[0] != null ? fs[0].toString() : "");
 				part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
 				part.put("expDate", fs[2] != null ? fs[2].toString() : "");
+				part.put("lotNo", fs[3] != null ? fs[3].toString() : "");
 				details1.add(part);
 			}
 			return details1;
@@ -422,6 +460,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 			}
 			return details1;
 		}
+
 		
 //		@Override
 //		@Transactional
