@@ -27,6 +27,7 @@ public interface VasPutawayDetailsRepo extends JpaRepository<VasPutawayDetailsVO
 	Set<Object[]> getBuyerRefDateInvoiceBillToShipToFromPickRequestForDeliveryChallan(Long orgId,
 			String branch,	String branchCode, String client, String pickRequestDocId);
 
+	
 	@Query(nativeQuery = true, value = "SELECT SUM(sqty) FROM stockdetails WHERE orgid = ?1 AND client = ?2 AND branchcode = ?3 AND branch = ?4 AND warehouse = ?5 AND partno = ?6 AND partdesc = ?7 AND status = 'R'")
 	Set<Object[]> getAvlQtyVasPutaway(Long orgId, String client, String branchCode, String warehouse, String branch,
 			String partNo, String partDesc);

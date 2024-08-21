@@ -21,27 +21,36 @@ public interface CodeConversionService {
 
 	Map<String, Object> createUpdateCodeConversion(CodeConversionDTO codeConversionDTO) throws ApplicationException;
 
-	List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId, String branch,
-			String branchCode, String client, String bin);
+	List<Map<String, Object>> getPartNoAndPartDescFromStockForCodeConversion(Long orgId,
+			String branchCode, String client,String warehouse);
 
-	List<Map<String, Object>> getGrnNoAndBinTypeAndBatchAndBatchDateAndLotNoFromStockForCodeConversion(Long orgId,
-		    String branch, String branchCode, String client, String bin, String partNo, String partDesc,
-			String sku);
-
-	List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId,String branch,
-			String branchCode, String client);
+	List<Map<String, Object>> getGrnNoAndGrnDateFromStockForCodeConversion(Long orgId,
+		     String branchCode, String client, String warehouse, String partNo);
 	
-	List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, String branch,
-			String branchCode, String client);
+	List<Map<String, Object>> getBinTypeFromStockForCodeConversion(Long orgId, String branchCode, String client,
+			String warehouse, String partNo, String grnNo);
 	
-	List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId,
-			String branch, String branchCode, String client, String bin);
+	List<Map<String, Object>> getBatchNoFromStockForCodeConversion(Long orgId, String branchCode, String client,
+			String warehouse, String partNo, String grnNo,String binType);
 	
-	List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String branch,
-			String branchCode, String client);
+	List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId, String branchCode, String client,
+			String warehouse, String partNo, String grnNo,String binType,String batchNo);
+	
+	List<Map<String, Object>> getAllFillGridFromStockForCodeConversion(Long orgId, 
+			String branchCode, String client,String warehouse);
 	
 	int getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,
 			String partNo, String partDesc);
 
+
+
+//	List<Map<String, Object>> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId,
+//	String branch, String branchCode, String client, String bin);
+//
+//List<Map<String, Object>> getCBinFromStockForCodeConversion(Long orgId, String branch,
+//	String branchCode, String client);
+	
+//	List<Map<String, Object>> getBinFromStockForCodeConversion(Long orgId,String branch,
+//	String branchCode, String client);
 
 }
