@@ -58,7 +58,7 @@ public interface CycleCountRepo extends JpaRepository<CycleCountVO, Long>{
 			+ "    stockdate,\n"
 			+ "    expdate,\n"
 			+ "    core,\n"
-			+ "    celltype;")
+			+ "    celltype")
 	Set<Object[]> getCycleCountGrid(Long orgId, String branchCode, String client, String warehouse);
 
 }
