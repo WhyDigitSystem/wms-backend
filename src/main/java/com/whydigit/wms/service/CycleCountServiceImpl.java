@@ -83,7 +83,6 @@ public class CycleCountServiceImpl implements CycleCountService {
 	}
 
 	private CycleCountVO getCycleCountVOFromCycleCountDTO(CycleCountVO cycleCountVO, CycleCountDTO cycleCountDTO) {
-		cycleCountVO.setDocDate(cycleCountDTO.getDocDate());
 		cycleCountVO.setOrgId(cycleCountDTO.getOrgId());
 		cycleCountVO.setCustomer(cycleCountDTO.getCustomer());
 		cycleCountVO.setClient(cycleCountDTO.getClient());
@@ -163,12 +162,11 @@ public class CycleCountServiceImpl implements CycleCountService {
 			part.put("bintype", fs[10] != null ? fs[10].toString() : "");
 			part.put("status", fs[11] != null ? fs[11].toString() : "");
 			part.put("qcflag", fs[12] != null ? fs[12].toString() : "");
-			part.put("stockdate", fs[13] != null ? fs[13].toString() : "");
-			part.put("expdate", fs[14] != null ? fs[14].toString() : "");
-			part.put("core", fs[15] != null ? fs[15].toString() : "");
-			part.put("cellType", fs[16] != null ? fs[16].toString() : "");
-			part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
-			part.put("id", fs[18] != null ? Integer.parseInt(fs[18].toString()) : 0);
+			part.put("expdate", fs[13] != null ? fs[13].toString() : "");
+			part.put("core", fs[14] != null ? fs[14].toString() : "");
+			part.put("cellType", fs[15] != null ? fs[15].toString() : "");
+			part.put("avlQty", fs[16] != null ? Integer.parseInt(fs[16].toString()) : 0);
+			part.put("id", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
 
 			details1.add(part);
 		}
