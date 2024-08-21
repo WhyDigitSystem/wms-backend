@@ -34,12 +34,12 @@ public interface CodeConversionRepo extends JpaRepository<CodeConversionVO, Long
 	Set<Object[]> findBinTypeFromStockForCodeConversion(Long orgId, String branchCode, String client, String warehouse,
 			String partNo, String grnNo);
 	
-	@Query(nativeQuery = true,value ="select a.batch,a.batchdate,a.expdate from( SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 AND partno=?5 and grnno=?6 and bintype=?7 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0)a group by a.batch,a.batchdate,a.expdate; ")
+	@Query(nativeQuery = true,value ="select a.batch,a.batchdate,a.expdate from( SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 AND partno=?5 and grnno=?6 and bintype=?7 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0)a group by a.batch,a.batchdate,a.expdate ")
 	Set<Object[]> findBatchNoFromStockForCodeConversion(Long orgId, String branchCode, String client, String warehouse,
 			String partNo, String grnNo,String binType);
 
 
-	@Query(nativeQuery = true,value=" SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0;")
+	@Query(nativeQuery = true,value=" SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0")
 	Set<Object[]> getAllFillGridFromStockForCodeConversion(Long orgId, String branchCode, String client,String warehouse);
 
 	

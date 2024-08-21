@@ -368,10 +368,10 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 			Set<Object[]> result = codeConversionRepo
 					.findBinTypeFromStockForCodeConversion(orgId,
 							branchCode, client, warehouse, partNo,grnNo);
-			return BinTypeCodeConversion(result);
+			return BinTypeFromStockForCodeConversion(result);
 		}
 
-		private List<Map<String, Object>> BinTypeCodeConversion(Set<Object[]> result) {
+		private List<Map<String, Object>> BinTypeFromStockForCodeConversion(Set<Object[]> result) {
 			List<Map<String, Object>> details1 = new ArrayList<>();
 			for (Object[] fs : result) {
 				Map<String, Object> part = new HashMap<>();

@@ -26,7 +26,7 @@ public interface CodeConversionService {
 
 	List<Map<String, Object>> getGrnNoAndGrnDateFromStockForCodeConversion(Long orgId,
 		     String branchCode, String client, String warehouse, String partNo);
-
+	
 	List<Map<String, Object>> getBinTypeFromStockForCodeConversion(Long orgId, String branchCode, String client,
 			String warehouse, String partNo, String grnNo);
 	

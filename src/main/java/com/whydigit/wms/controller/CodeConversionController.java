@@ -259,43 +259,43 @@ public class CodeConversionController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getBinTypeFromStockForCodeConversion")
-	public ResponseEntity<ResponseDTO> getBinTypeFromStockForCodeConversion(
-			@RequestParam(required = false) Long orgId, 
-			@RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client,
-			@RequestParam(required = false) String warehouse,
-			@RequestParam(required = false) String partNo,
-			@RequestParam(required = false) String grnNo) {
-
-		String methodName = "getBinTypeFromStockForCodeConversion()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
-		try {
-			mov = codeConversionService.getBinTypeFromStockForCodeConversion(orgId,
-					  branchCode, client,warehouse, partNo,grnNo);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-		}
-
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"All binType from Stock information retrieved successfully");
-			responseObjectsMap.put("codeConversionVO", mov);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve binType from Stock information",
-					errorMsg);
-		}
-
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@GetMapping("/getBinTypeFromStockForCodeConversion")
+//	public ResponseEntity<ResponseDTO> getBinTypeFromStockForCodeConversion(
+//			@RequestParam(required = false) Long orgId, 
+//			@RequestParam(required = false) String branchCode,
+//			@RequestParam(required = false) String client,
+//			@RequestParam(required = false) String warehouse,
+//			@RequestParam(required = false) String partNo,
+//			@RequestParam(required = false) String grnNo) {
+//
+//		String methodName = "getBinTypeFromStockForCodeConversion()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		List<Map<String, Object>> mov = new ArrayList<>();
+//		try {
+//			mov = codeConversionService.getBinTypeFromStockForCodeConversion(orgId,
+//					  branchCode, client,warehouse, partNo,grnNo);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//		}
+//
+//		if (StringUtils.isBlank(errorMsg)) {
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+//					"All binType from Stock information retrieved successfully");
+//			responseObjectsMap.put("codeConversionVO", mov);
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} else {
+//			responseDTO = createServiceResponseError(responseObjectsMap,
+//					"Failed to retrieve binType from Stock information",
+//					errorMsg);
+//		}
+//
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 	
 	@GetMapping("/getBinFromStockForCodeConversion")
 	public ResponseEntity<ResponseDTO> getBinFromStockForCodeConversion(
@@ -330,6 +330,43 @@ public class CodeConversionController extends BaseController{
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve Bin from Stock information",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+		}
+	
+	@GetMapping("/getBinTypeFromStockForCodeConversion")
+	public ResponseEntity<ResponseDTO> getBinTypeFromStockForCodeConversion(
+			@RequestParam(required = false) Long orgId, 
+			@RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client,
+			@RequestParam(required = false) String warehouse,
+			@RequestParam(required = false) String partNo,
+			@RequestParam(required = false) String grnNo) {
+
+		String methodName = "getBinTypeFromStockForCodeConversion()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mov = new ArrayList<>();
+		try {
+			mov = codeConversionService.getBinTypeFromStockForCodeConversion(orgId,
+					  branchCode, client,warehouse, partNo,grnNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All BinType from Stock information retrieved successfully");
+			responseObjectsMap.put("codeConversionVO", mov);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve BinType from Stock information",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
