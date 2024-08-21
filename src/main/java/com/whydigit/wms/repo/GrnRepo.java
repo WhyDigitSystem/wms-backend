@@ -24,7 +24,7 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 	GrnVO findByDocId(String grnNo);
 
 
-	@Query(nativeQuery = true, value = "select a.* from grn a where a.docid in(\r\n"
+	@Query(nativeQuery = true, value = "select a.* from grn a where a.cancel=0 and a.docid in(\r\n"
 			+ "select grnno from (\r\n"
 			+ "select branch,branchcode,customer,client,orgid,warehouse,grnno,partno,partdesc,sku,sum(sqty) from handlingstockin\r\n"
 			+ "group by branch,branchcode,customer,client,orgid,warehouse,grnno,partno,partdesc,sku having sum(sqty)>0)a where a.orgid=?1 and a.client=?2 \r\n"

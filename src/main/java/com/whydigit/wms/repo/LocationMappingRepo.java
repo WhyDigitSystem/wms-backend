@@ -1,6 +1,7 @@
 package com.whydigit.wms.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,9 @@ public interface LocationMappingRepo extends JpaRepository<LocationMappingVO, Lo
 	boolean existsByRowNoAndOrgId(String rowNo, Long orgId);
 
 	boolean existsByLevelNoAndOrgId(String levelNo, Long orgId);
+
+	@Query(nativeQuery = true, value = "select bin,binclass,celltype,core,bintype from wv_locationstatus where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 ")
+	Set<Object[]> getToBinDetailsVasPutaway(Long orgId, String branchCode, String client, String warehouse);
+	
 
 }

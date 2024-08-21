@@ -20,6 +20,7 @@ public class VasPutawayDetailsDTO {
 	private int putAwayQty;
 	private String fromBin;
 	private String bin;
+	private String binType;
 	private String sku;
 	private String remarks;
 	private String binClass;

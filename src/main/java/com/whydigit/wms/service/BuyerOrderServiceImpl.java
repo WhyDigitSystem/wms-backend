@@ -48,11 +48,12 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 		if (ObjectUtils.isEmpty(buyerOrderDTO.getId())) {
 
-			if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndBranchCodeAndCustomer(buyerOrderDTO.getOrderNo(),
-					buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(), buyerOrderDTO.getBranchCode(),
+			if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(buyerOrderDTO.getOrderNo(),
+					buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(),
 					buyerOrderDTO.getCustomer())) {
-				String errorMessage = String.format("This orderNo:%s Already Exists This Organization.",
+				String errorMessage = String.format("This orderNo:%s Already Exists This Client.",
 						buyerOrderDTO.getOrderNo());
+				throw new ApplicationException(errorMessage);
 			}
 
 			buyerOrderVO = new BuyerOrderVO();
@@ -81,11 +82,12 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 			if (!buyerOrderVO.getOrderNo().equalsIgnoreCase(buyerOrderDTO.getOrderNo())) {
 
-				if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndBranchCodeAndCustomer(buyerOrderDTO.getOrderNo(),
-						buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(), buyerOrderDTO.getBranchCode(),
+				if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(buyerOrderDTO.getOrderNo(),
+						buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(),
 						buyerOrderDTO.getCustomer())) {
-					String errorMessage = String.format("This orderNo:%s Already Exists This Organization.",
+					String errorMessage = String.format("This orderNo:%s Already Exists This Client.",
 							buyerOrderDTO.getOrderNo());
+					throw new ApplicationException(errorMessage);
 				}
 				buyerOrderVO.setOrderNo(buyerOrderDTO.getOrderNo());
 			}
@@ -93,7 +95,35 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		}
 
 		getBuyerOrderVOfromBuyerOrderDTO(buyerOrderVO, buyerOrderDTO);
-		buyerOrderRepo.save(buyerOrderVO);
+		BuyerOrderVO buyerOrderVO2= buyerOrderRepo.save(buyerOrderVO);
+		List<BuyerOrderDetailsVO>buyerOrderDetailsVO2=buyerOrderVO2.getBuyerOrderDetailsVO();
+		
+		for(BuyerOrderDetailsVO buyerOrderDetailsVOs2:buyerOrderDetailsVO2)
+		{
+			HandlingStockOutVO handlingStockOutVO=new HandlingStockOutVO();
+			
+			handlingStockOutVO.setOrgId(buyerOrderVO2.getOrgId());
+			handlingStockOutVO.setBranch(buyerOrderVO2.getBranch());
+			handlingStockOutVO.setBranchCode(buyerOrderVO2.getBranchCode());
+			handlingStockOutVO.setWarehouse(buyerOrderVO2.getWarehouse());
+			handlingStockOutVO.setCustomer(buyerOrderVO2.getCustomer());
+			handlingStockOutVO.setClient(buyerOrderVO2.getClient());
+			handlingStockOutVO.setRefNo(buyerOrderVO2.getOrderNo());
+			handlingStockOutVO.setRefDate(buyerOrderVO2.getOrderDate());	
+			handlingStockOutVO.setPartNo(buyerOrderDetailsVOs2.getPartNo());
+			handlingStockOutVO.setPartDesc(buyerOrderDetailsVOs2.getPartDesc());
+			handlingStockOutVO.setSku(buyerOrderDetailsVOs2.getSku());
+			handlingStockOutVO.setBuyerOrderNo(buyerOrderVO2.getOrderNo());
+			handlingStockOutVO.setBuyerOrderDate(buyerOrderVO2.getOrderDate());
+			handlingStockOutVO.setBuyerOrdNo(buyerOrderVO.getDocId());
+			handlingStockOutVO.setSDocid(buyerOrderVO2.getDocId());
+			handlingStockOutVO.setRpQty(buyerOrderDetailsVOs2.getQty());
+			handlingStockOutVO.setSQty(buyerOrderDetailsVOs2.getQty());
+			handlingStockOutVO.setPickQty(0);
+			handlingStockOutVO.setScreenCode(buyerOrderVO.getScreenCode());
+			handlingStockOutVO.setBuyerOrdDate(buyerOrderVO.getDocDate());
+			handlingStockOutRepo.save(handlingStockOutVO);
+		}		
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("message", message);
@@ -108,32 +138,22 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		buyerOrderVO.setOrderDate(buyerOrderDTO.getOrderDate());
 		buyerOrderVO.setInvoiceNo(buyerOrderDTO.getInvoiceNo());
 		buyerOrderVO.setRefDate(buyerOrderDTO.getRefDate());
+		buyerOrderVO.setBuyer(buyerOrderDTO.getBuyer());
 		buyerOrderVO.setBuyerShortName(buyerOrderDTO.getBuyerShortName());
-		buyerOrderVO.setCurrency(buyerOrderDTO.getCurrency());
-		buyerOrderVO.setExRate(buyerOrderDTO.getExRate());
-		buyerOrderVO.setBin(buyerOrderDTO.getBin());
-		buyerOrderVO.setBillto(buyerOrderDTO.getBillto());
-		buyerOrderVO.setTax(buyerOrderDTO.getTax());
-		buyerOrderVO.setShipTo(buyerOrderDTO.getShipTo());
-		buyerOrderVO.setReMarks(buyerOrderDTO.getReMarks());
-		buyerOrderVO.setCreatedBy(buyerOrderDTO.getCreatedBy());
-		buyerOrderVO.setCompany(buyerOrderDTO.getCompany());
-		buyerOrderVO.setCancel(buyerOrderDTO.isCancel());
+		buyerOrderVO.setBillToShortName(buyerOrderDTO.getBillToShortName());
+		buyerOrderVO.setBillToName(buyerOrderDTO.getBillToName());
+		buyerOrderVO.setShipToShortName(buyerOrderDTO.getShipToShortName());
+		buyerOrderVO.setShipToName(buyerOrderDTO.getShipToName());
 		buyerOrderVO.setInvoiceDate(buyerOrderDTO.getInvoiceDate());
 		buyerOrderVO.setRefNo(buyerOrderDTO.getRefNo());
-		buyerOrderVO.setCancelRemark(buyerOrderDTO.getCancelRemark());
-//			buyerOrderVO.setScreenCode(buyerOrderDTO.getScreenCode());
-		buyerOrderVO.setScreenName(buyerOrderDTO.getScreenName());
 		buyerOrderVO.setCustomer(buyerOrderDTO.getCustomer());
 		buyerOrderVO.setClient(buyerOrderDTO.getClient());
 		buyerOrderVO.setFinYear(buyerOrderDTO.getFinYear());
 		buyerOrderVO.setBranch(buyerOrderDTO.getBranch());
 		buyerOrderVO.setBranchCode(buyerOrderDTO.getBranchCode());
-		buyerOrderVO.setFreeze(buyerOrderDTO.isFreeze());
-		buyerOrderVO.setBuyer(buyerOrderDTO.getBuyer());
 		buyerOrderVO.setWarehouse(buyerOrderDTO.getWarehouse());
+		
 		if (buyerOrderDTO.getId() != null) {
-
 			List<BuyerOrderDetailsVO> detailsVOs = buyerOrderDetailsRepo.findByBuyerOrderVO(buyerOrderVO);
 			buyerOrderDetailsRepo.deleteAll(detailsVOs);
 		}
@@ -151,20 +171,17 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			detailsVO.setBatchNo(buyerOrderDetailsDTO.getBatchNo());
 			detailsVO.setAvailQty(buyerOrderDetailsDTO.getAvailQty());
 			detailsVO.setSku(buyerOrderDetailsDTO.getSku());
-			detailsVO.setReMarks(buyerOrderDetailsDTO.getRemarks());
-			detailsVO.setQcflag(buyerOrderDetailsDTO.isQcflag());
-
+			
 			avilQty = avilQty + buyerOrderDetailsDTO.getAvailQty();
 			orderQty = orderQty + buyerOrderDetailsDTO.getQty();
 
 			detailsVO.setBuyerOrderVO(buyerOrderVO);
 			detailsVOList.add(detailsVO);
 		}
-		buyerOrderVO.setOrderQty(orderQty);
-		buyerOrderVO.setAvilQty(avilQty);
+		buyerOrderVO.setTotalOrderQty(orderQty);
+		buyerOrderVO.setTotalAvailQty(avilQty);
 		buyerOrderVO.setBuyerOrderDetailsVO(detailsVOList);
 		return buyerOrderVO;
-
 	}
 
 	@Override

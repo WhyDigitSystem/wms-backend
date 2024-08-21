@@ -23,17 +23,18 @@ import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.PickRequestVO;
-import com.whydigit.wms.service.GuhanSerivce;
+import com.whydigit.wms.service.PickRequestService;
 
 @RestController
-@RequestMapping("/api/guhan")
-public class GuhanController extends BaseController {
+@RequestMapping("/api/pickrequest")
+public class PickRequestController extends BaseController {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(CommonMasterController.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(PickRequestController.class);
 
 	@Autowired
-	GuhanSerivce guhanService;
+	PickRequestService pickRequestService;
 
 //	PickRequest
 	@GetMapping("/getAllPickRequestByOrgId")
@@ -48,7 +49,7 @@ public class GuhanController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<PickRequestVO> pickRequestVO = new ArrayList<>();
 		try {
-			pickRequestVO = guhanService.getAllPickRequest(orgId, finYear, branch, branchCode, client, warehouse);
+			pickRequestVO = pickRequestService.getAllPickRequest(orgId, finYear, branch, branchCode, client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -75,7 +76,7 @@ public class GuhanController extends BaseController {
 		PickRequestVO pickRequestVO = new PickRequestVO();
 
 		try {
-			pickRequestVO = guhanService.getPickRequestById(id);
+			pickRequestVO = pickRequestService.getPickRequestById(id);
 			if (pickRequestVO != null) {
 				responseObjectsMap.put("pickRequestVO", pickRequestVO);
 				responseDTO = createServiceResponseMsg(responseObjectsMap,
@@ -95,26 +96,26 @@ public class GuhanController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	@PutMapping("/createUpdatePickRequest")
-//	public ResponseEntity<ResponseDTO> createUpdatePickRequest(@RequestBody @Valid PickRequestDTO pickRequestDTO) {
-//		String methodName = "createUpdatePickRequest()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		try {
-//			Map<String, Object> pickRequestVO = guhanService.createUpdatePickRequest(pickRequestDTO);
-//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, pickRequestVO.get("message"));
-//			responseObjectsMap.put("pickRequestVO", pickRequestVO.get("pickRequestVO"));
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-//			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
+	@PutMapping("/createUpdatePickRequest")
+	public ResponseEntity<ResponseDTO> createUpdatePickRequest(@RequestBody @Valid PickRequestDTO pickRequestDTO) {
+		String methodName = "createUpdatePickRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> pickRequestVO = pickRequestService.createUpdatePickRequest(pickRequestDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, pickRequestVO.get("message"));
+			responseObjectsMap.put("pickRequestVO", pickRequestVO.get("pickRequestVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	@GetMapping("/getPickRequestDocId")
 	public ResponseEntity<ResponseDTO> getPickRequestDocId(@RequestParam Long orgId, @RequestParam String finYear,
@@ -128,7 +129,7 @@ public class GuhanController extends BaseController {
 		String mapp = "";
 
 		try {
-			mapp = guhanService.getPickRequestDocId(orgId, finYear, branch, branchCode, client);
+			mapp = pickRequestService.getPickRequestDocId(orgId, finYear, branch, branchCode, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -143,6 +144,33 @@ public class GuhanController extends BaseController {
 					errorMsg);
 		}
 
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getBuyerRefNoForPickRequest")
+	public ResponseEntity<ResponseDTO> getBuyerRefNoForPickRequest(@RequestParam Long orgId,@RequestParam String finYear,
+			@RequestParam	String branchCode,@RequestParam String warehouse,@RequestParam String client) {
+		String methodName = "getBuyerRefNoForPickRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<BuyerOrderVO> buyerOrderVO = new ArrayList<>();
+		try {
+			buyerOrderVO = pickRequestService.getBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branchCode, warehouse, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyer Order refno information get successfully ");
+			responseObjectsMap.put("buyerOrderVO", buyerOrderVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Buyer Order refno  information receive failed",
+					errorMsg);
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}

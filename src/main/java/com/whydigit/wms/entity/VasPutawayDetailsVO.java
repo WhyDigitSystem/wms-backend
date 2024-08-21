@@ -57,6 +57,8 @@ public class VasPutawayDetailsVO {
 	
 	@Column(name = "binclass")
 	private String binClass;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "celltype")
 	private String cellType;
 	@Column(name = "clientcode")

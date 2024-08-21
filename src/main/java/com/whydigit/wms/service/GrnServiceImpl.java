@@ -329,7 +329,7 @@ public class GrnServiceImpl implements GrnService {
 			grnDetailsVO.setShipmentNo(grnDetailsDTO.getShipmentNo());
 			grnDetailsVO.setExpDate(grnDetailsDTO.getExpdate());
 
-			totalGrnQty = totalGrnQty + grnQty;
+			totalGrnQty = totalGrnQty + grnDetailsDTO.getRecQty();
 			totalNoOfPkgs = totalNoOfPkgs + grnDetailsDTO.getPkgs();
 			totalAmount = totalAmount + grnDetailsDTO.getAmount();
 			grnDetailsVO.setGrnVO(grnVO);
