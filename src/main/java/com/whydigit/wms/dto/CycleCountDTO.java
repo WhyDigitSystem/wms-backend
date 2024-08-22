@@ -1,6 +1,5 @@
 package com.whydigit.wms.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -22,9 +21,7 @@ private Long id;
 	private String warehouse;
 	private String createdBy;
 	private String cancelRemarks;
-	private String freeze;
-	private String cycleCountNo;
-	private LocalDate cycleCountDate;
+
 	
 	private List<CycleCountDetailsDTO> cycleCountDetailsDTO;
 }

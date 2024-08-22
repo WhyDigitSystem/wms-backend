@@ -32,24 +32,25 @@ public interface CycleCountRepo extends JpaRepository<CycleCountVO, Long> {
 			+ "and branchcode=?2 and warehouse=?4 group by partno,partdesc,sku")
 	Set<Object[]> getPartNoByCycleCount(Long orgId, String branchCode, String client, String warehouse);
 
-	
-	@Query(nativeQuery =true,value ="select grnno,grndate from stockdetails where orgid=?1 and client=?3 \n"
+	@Query(nativeQuery = true, value = "select grnno,grndate from stockdetails where orgid=?1 and client=?3 \n"
 			+ "and branchcode=?2 and warehouse=?4 and partno=?5 group by grnno,grndate")
 	Set<Object[]> getGrnNo(Long orgId, String branchCode, String client, String warehouse, String partNo);
 
-	@Query(nativeQuery=true,value ="select batch,batchdate,expdate from stockdetails where orgid=?1 and client=?3 \n"
+	@Query(nativeQuery = true, value = "select batch,batchdate,expdate from stockdetails where orgid=?1 and client=?3 \n"
 			+ "and branchcode=?2 and warehouse=?4 and partno=?5 and grnno=?6 group by batch,batchdate,expdate")
 	Set<Object[]> getBatch(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNO);
 
-	@Query(nativeQuery =true,value ="select bin,bintype,lotno,celltype from stockdetails  where orgid=?1 and client=?3 \n"
-			+ "and branchcode=?2 and warehouse=?4 and partno=?5 and grnno=?6 and batch=?7 group by bin,bintype,lotno,celltype")
+	@Query(nativeQuery = true, value = "select bin,bintype,lotno,celltype,binclass,core,qcflag from stockdetails  where orgid=?1 and client=?3 \n"
+			+ "and branchcode=?2 and warehouse=?4 and partno=?5 and grnno=?6 and batch=?7 group by bin,bintype,lotno,celltype,binclass,core,qcflag")
 	Set<Object[]> getBinDetails(Long orgId, String branchCode, String client, String warehouse, String partNo,
 			String grnNO, String batch);
 
-	@Query(nativeQuery =true,value ="select sum(sqty) as avlqty,status from stockdetails  where orgid=1000000001 and client='CASIO' \n"
-			+ "and branchcode='MAAW' and warehouse='RAMAMOORTHYNAGER' and partno='P12345' and grnno='G12345' and batch='B12345' and bin=?8 \n"
-			+ "and bintype=?8 and lotno=?10 group by status")
+	@Query(value = "SELECT \n" + "    SUM(sqty) AS avlqty, \n" + "    status \n" + "FROM \n" + "    stockdetails \n"
+			+ "WHERE \n" + "    orgid =?1 \n" + "    AND client =?3 \n" + "    AND branchcode =?2\n"
+			+ "    AND warehouse =?4\n" + "    AND partno =?5 \n" + "    AND grnno =?6\n" 
+			+ "    AND batch =?7 \n" + "    AND bin =?8 \n" + "GROUP BY \n" + "    status\n"
+			+ "", nativeQuery = true)
 	Set<Object[]> getAvlQty(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNO,
-			String batch, String bin, String binType, String lotNo);
+			String batch, String bin);
 
 }
