@@ -302,10 +302,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 	// PARENT
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String finYear, String branch,
+	public List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = deKittingRepo.findPartNoFromStockForDeKittingParent(orgId, finYear, branch, branchCode,
+		Set<Object[]> result = deKittingRepo.findPartNoFromStockForDeKittingParent(orgId, branch, branchCode,
 				client);
 		return getPartNoResult(result);
 	}
@@ -326,10 +326,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String finYear, String branch,
+	public List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch,
 			String branchCode, String client) {
 
-		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, finYear, branch, branchCode,
+		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, branch, branchCode,
 				client);
 		return getDBinResult(result);
 	}
@@ -354,11 +354,11 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 	@Transactional
 	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
-			Long orgId, String finYear, String branch, String branchCode, String client, String bin, String partNo,
+			Long orgId, String branch, String branchCode, String client, String bin, String partNo,
 			String partDesc, String sku) {
 
 		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
-				orgId, finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+				orgId, branch, branchCode, client, bin, partNo, partDesc, sku);
 		return getGrnNoResult(result);
 	}
 
@@ -376,13 +376,12 @@ public class DeKittingServiceImpl implements DeKittingService{
 		return details1;
 	}
 
-
 	@Override
 	@Transactional
-	public int getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
+	public int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
 			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
 
-		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, finYear, branch, branchCode,
+		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode,
 				client, bin, partDesc, sku, partNo, grnNo, lotNo);
 		return getAvlQtyResult(result);
 	}
@@ -412,6 +411,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
+			part.put("sku", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;

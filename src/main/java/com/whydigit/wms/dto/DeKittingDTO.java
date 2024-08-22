@@ -22,7 +22,6 @@ public class DeKittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String updatedBy;
 	private String freeze;
 	private boolean active = true;
 	private LocalDate grnDate = LocalDate.now();
