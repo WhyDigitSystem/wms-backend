@@ -338,7 +338,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("sku", fs[2] != null ? fs[2].toString() : "");
 				part.put("grnno", fs[3] != null ? fs[3].toString() : "");
 				part.put("grndate", fs[4] != null ? fs[4].toString() : "");
-				part.put("batch", fs[5] != null ? fs[5].toString() : "");
+				part.put("batchNo", fs[5] != null ? fs[5].toString() : "");
 				part.put("batchdate", fs[6] != null ? fs[6].toString() : "");
 				part.put("expdate", fs[7] != null ? fs[7].toString() : "");
 				part.put("bintype", fs[8] != null ? fs[8].toString() : "");
