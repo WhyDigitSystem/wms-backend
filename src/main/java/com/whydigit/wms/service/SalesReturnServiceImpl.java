@@ -111,9 +111,10 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 		salesReturnVO.setEntryNo(salesReturnDTO.getEntryNo());
 		salesReturnVO.setEntryDate(salesReturnDTO.getEntryDate());
 		salesReturnVO.setPrDate(salesReturnDTO.getPrDate());
-		salesReturnVO.setBONo(salesReturnDTO.getBONo());
-		salesReturnVO.setBODate(salesReturnDTO.getBODate());
-		salesReturnVO.setPRNo(salesReturnDTO.getPRNo());
+		salesReturnVO.setBoNo(salesReturnDTO.getBoNo());
+		salesReturnVO.setBoDate(salesReturnDTO.getBoDate());
+		salesReturnVO.setPrNo(salesReturnDTO.getPrNo());
+		salesReturnVO.setQcFlag(salesReturnDTO.getQcFlag());
 		salesReturnVO.setBuyerName(salesReturnDTO.getBuyerName());
 		salesReturnVO.setBuyerType(salesReturnDTO.getBuyerType());
 		salesReturnVO.setSupplier(salesReturnDTO.getSupplier());
