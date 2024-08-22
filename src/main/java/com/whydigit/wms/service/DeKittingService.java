@@ -23,17 +23,16 @@ public interface DeKittingService {
 	String getDeKittingDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	// PARENT
-	List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String finYear, String branch,
+	List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String branch,
 			String branchCode, String client);
 
-	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String finYear, String branch,
+	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch,
 			String branchCode, String client);
 
-	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(Long orgId,
-			String finYear, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
+	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
 			String sku);
 
-	int getAvlQtyFromStockForDeKittingParent(Long orgId, String finYear, String branch, String branchCode,
+	int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
 			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo);
 
 	// CHILD

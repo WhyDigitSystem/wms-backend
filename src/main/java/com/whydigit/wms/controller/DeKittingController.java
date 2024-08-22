@@ -25,14 +25,14 @@ import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.service.DeKittingService;
 
 @RestController
-@RequestMapping("/api/dekitting")
+@RequestMapping("/api/deKitting")
 public class DeKittingController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(DeKittingController.class);
 
 	@Autowired
 	DeKittingService deKittingService;
-	
+
 	@GetMapping("/getAllDeKittingByOrgId")
 	public ResponseEntity<ResponseDTO> getAllDeKitting(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
@@ -144,11 +144,10 @@ public class DeKittingController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-
 	@GetMapping("/getPartNoFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getPartNoFromStockForDeKittingParent(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client) {
 		String methodName = "getPartNoFromStockForDeKittingParent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -156,7 +155,7 @@ public class DeKittingController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> de = new ArrayList<>();
 		try {
-			de = deKittingService.getPartNoFromStockForDeKittingParent(orgId, finYear, branch, branchCode, client);
+			de = deKittingService.getPartNoFromStockForDeKittingParent(orgId, branch, branchCode, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -175,11 +174,10 @@ public class DeKittingController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-
 	@GetMapping("/getBinFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getBinFromStockForDeKittingParent(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client) {
 
 		String methodName = "getBinFromStockForDeKittingParent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -189,7 +187,7 @@ public class DeKittingController extends BaseController {
 		List<Map<String, Object>> de = new ArrayList<>();
 
 		try {
-			de = deKittingService.getBinFromStockForDeKittingParent(orgId, finYear, branch, branchCode, client);
+			de = deKittingService.getBinFromStockForDeKittingParent(orgId, branch, branchCode, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -209,11 +207,10 @@ public class DeKittingController extends BaseController {
 
 	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKititngParent(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String finYear,
-			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
-			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
-			@RequestParam(required = false) String partNo, @RequestParam(required = false) String partDesc,
-			@RequestParam(required = false) String sku) {
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String bin, @RequestParam(required = false) String partNo,
+			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku) {
 
 		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -224,7 +221,7 @@ public class DeKittingController extends BaseController {
 
 		try {
 			mov = deKittingService.getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(orgId,
-					finYear, branch, branchCode, client, bin, partNo, partDesc, sku);
+					branch, branchCode, client, bin, partNo, partDesc, sku);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -244,24 +241,23 @@ public class DeKittingController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-
 	@GetMapping("/getAvlQtyFromStockForDeKittingParent")
 	public ResponseEntity<ResponseDTO> getAvlQtyFromStockForDeKittingParent(@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String bin, @RequestParam(required = false) String partDesc,
-			@RequestParam(required = false) String sku, @RequestParam(required = false) String partNo,
-			@RequestParam(required = false) String grnNo, @RequestParam(required = false) String lotNo) {
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku,
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo,
+			@RequestParam(required = false) String lotNo) {
 
 		String methodName = "getAvlQtyFromStockForDeKittingParent()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		int mov = 0;
+		int mov = 0 ;
 		try {
-			mov = deKittingService.getAvlQtyFromStockForDeKittingParent(orgId, finYear, branch, branchCode, client,
-					bin, partDesc, sku, partNo, grnNo, lotNo);
+			mov = deKittingService.getAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode, client, bin,
+					partDesc, sku, partNo, grnNo, lotNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
