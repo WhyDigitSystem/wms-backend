@@ -18,9 +18,9 @@ public class SalesReturnDTO {
 	private String entryNo;
 	private LocalDate entryDate;
 	private LocalDate prDate;
-	private String BONo;
-	private LocalDate BODate;
-	private String PRNo;
+	private String boNo;
+	private LocalDate boDate;
+	private String prNo;
 	private String buyerName;
 	private String buyerType;
 	private String supplier;
@@ -45,6 +45,7 @@ public class SalesReturnDTO {
 	private String warehouse;
 	private String createdBy;
 	private String freeze;
+	public String qcFlag;
 	
 	private List<SalesReturnDetailsDTO> salesReturnDetailsDTO;
 }
