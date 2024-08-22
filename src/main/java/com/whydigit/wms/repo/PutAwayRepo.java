@@ -212,4 +212,12 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 	Set<Object[]>getPutawayGridDetails(Long orgId,String branchCode,String warehouse,String client,String grnNo,String binType,String binClass,String binPick);
 
 
+
+	@Query(nativeQuery = true, value = "select celltype from wv_locationstatus where orgid=?1 and bin=?2")
+	String getCelltype(Long orgId, String bin);
+
+
+	
+
+
 }

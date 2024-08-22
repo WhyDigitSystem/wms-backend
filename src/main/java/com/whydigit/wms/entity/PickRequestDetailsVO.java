@@ -53,7 +53,7 @@ public class PickRequestDetailsVO {
 	@Column(name = "orderqty")
 	private int orderQty;
 	@Column(name = "avlqty")
-	private int avlQty;
+	private int availQty;
 	@Column(name = "pickqty")
 	private int pickQty;
 	@Column(name = "pickqtyperbin")

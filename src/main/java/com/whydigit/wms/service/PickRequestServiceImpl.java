@@ -137,6 +137,8 @@ public class PickRequestServiceImpl implements PickRequestService {
 			handlingStockOutVO.setSku(PickRequestDetailsVO.getSku());
 			handlingStockOutVO.setBuyerOrderNo(savedPickRequestVO.getBuyerRefNo());
 			handlingStockOutVO.setBuyerOrderDate(savedPickRequestVO.getBuyerRefDate());
+			handlingStockOutVO.setPickRequestNo(savedPickRequestVO.getDocId());
+			handlingStockOutVO.setPickRequestDate(savedPickRequestVO.getDocDate());
 			handlingStockOutVO.setBuyerOrdNo(savedPickRequestVO.getBuyerOrderNo());
 			handlingStockOutVO.setSDocid(savedPickRequestVO.getDocId());
 			handlingStockOutVO.setRpQty(0);
@@ -260,7 +262,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 					pickRequestDetailsDTO.getBatchNo());
 			if (avlqty >= pickRequestDetailsDTO.getPickQty()) {
 				pickRequestDetailsVO.setPickQty(pickRequestDetailsDTO.getPickQty());
-				pickRequestDetailsVO.setAvlQty(pickRequestDetailsDTO.getAvailQty());
+				pickRequestDetailsVO.setAvailQty(pickRequestDetailsDTO.getAvailQty());
 				pickRequestDetailsVO.setPickQtyPerBin(pickRequestDetailsDTO.getPickQty());
 				int remainqty = pickRequestDetailsDTO.getAvailQty() - pickRequestDetailsDTO.getPickQty();
 				pickRequestDetailsVO.setRemainingQty(remainqty);
@@ -323,7 +325,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 			mapDetails.put("grnDate", gridDetails[4] != null ? gridDetails[4].toString() : "");
 			mapDetails.put("batchNo", gridDetails[5] != null ? gridDetails[5].toString() : "");
 			mapDetails.put("batchDate", gridDetails[6] != null ? gridDetails[6].toString() : "");
-			mapDetails.put("sQty", gridDetails[7] != null ? Integer.parseInt(gridDetails[7].toString()) : 0);
+			mapDetails.put("pickQty", gridDetails[7] != null ? Integer.parseInt(gridDetails[7].toString()) : 0);
 			mapDetails.put("binClass", gridDetails[8] != null ? gridDetails[8].toString() : "");
 			mapDetails.put("binType", gridDetails[9] != null ? gridDetails[9].toString() : "");
 			mapDetails.put("bin", gridDetails[10] != null ? gridDetails[10].toString() : "");
