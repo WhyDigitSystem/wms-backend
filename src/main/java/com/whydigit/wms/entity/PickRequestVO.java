@@ -49,16 +49,10 @@ public class PickRequestVO {
 	private String clientShortName;
 	@Column(name = "clientaddress")
 	private String clientAddress;
-	@Column(name = "dispatch")
-	private String dispatch;
 	@Column(name = "customername")
 	private String customerName;
 	@Column(name = "customeraddress")
 	private String customerAddress;
-	@Column(name = "duedays")
-	private String dueDays;
-	@Column(name = "noofboxes")
-	private String noOfBoxes;
 	@Column(name = "pickorder")
 	private String pickOrder;
 	@Column(name = "outtime")
@@ -94,9 +88,7 @@ public class PickRequestVO {
 	@Column(name = "status")
 	private String status;
 	@Column(name = "freeze")
-	private String freeze ;
-	@Column(name = "grndate")
-	private LocalDate grnDate = LocalDate.now();
+	private boolean freeze ;
 
 //	summary table
 	@Column(name = "totalpickqty")

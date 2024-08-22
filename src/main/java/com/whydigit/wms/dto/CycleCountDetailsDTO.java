@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class CycleCountDetailsDTO {
 
 	private Long id;
-	private Long partNo;
+	private String partNo;
 	private String paretDescription;
-	private Long grnNo;
+	private String grnNo;
 	private String sku;
 	private String binType;
-	private int batchNo;
+	private String batchNo;
 	private LocalDate batchDate;
 	private String bin;
 	private int qty;

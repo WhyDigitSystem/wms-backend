@@ -81,6 +81,7 @@ import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
+import com.whydigit.wms.repo.VasPutawayRepo;
 import com.whydigit.wms.repo.WarehouseBranchRepo;
 import com.whydigit.wms.repo.WarehouseClientRepo;
 import com.whydigit.wms.repo.WarehouseLocationDetailsRepo;
@@ -110,6 +111,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	BranchRepo branchRepo;
+	
 
 	@Autowired
 	CustomerRepo customerRepo;
@@ -1993,5 +1995,28 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return documentTypeMappingVO;
 	}
 
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getToBinDetails(Long orgId, String branchCode,
+			String client,String warehouse) {
+
+		Set<Object[]> result = locationMappingRepo.getToBinDetailsVasPutaway(orgId, branchCode, client,warehouse);
+		return ToBinDetails(result);
+	}
+
+	private List<Map<String, Object>> ToBinDetails(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("cellType", fs[2] != null ? fs[2].toString() : "");
+			part.put("core", fs[3] != null ? fs[3].toString() : "");
+			part.put("binType", fs[4] != null ? fs[4].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
 	
 }

@@ -258,6 +258,8 @@ public interface WarehouseMasterService {
 	
 	DocumentTypeMappingVO getDocumentTypeMappingById(Long id)throws ApplicationException;
 
+	List<Map<String, Object>> getToBinDetails(Long orgId, String branchCode, String client, String warehouse);
+
 	
 
 	

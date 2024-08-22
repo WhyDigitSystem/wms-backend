@@ -75,12 +75,12 @@ public class CycleCountController extends BaseController {
 		}
 
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Kitting information retrieved successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CyCleCount DocId information retrieved successfully");
 			responseObjectsMap.put("CycleCountInDocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Kitting to retrieve BuyerOrderDocId information", errorMsg);
+					"CycleCount DocId information  retrieve Failed", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

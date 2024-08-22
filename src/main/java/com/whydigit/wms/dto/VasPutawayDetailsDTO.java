@@ -13,13 +13,14 @@ public class VasPutawayDetailsDTO {
 
 	private Long id;
 	private String partNo;
-	private String partDescription;
+	private String partDesc;
 	private String grnNo;
 	private LocalDate grnDate;
 	private int invQty;
 	private int putAwayQty;
 	private String fromBin;
 	private String bin;
+	private String binType;
 	private String sku;
 	private String remarks;
 	private String binClass;

@@ -32,8 +32,8 @@ public class VasPutawayDetailsVO {
 	private Long id;
 	@Column(name = "partno")
 	private String partNo;
-	@Column(name = "partdescription")
-	private String partDescription;
+	@Column(name = "partdesc")
+	private String partDesc;
 	@Column(name = "grnno")
 	private String grnNo;
 	@Column(name = "grndate")
@@ -57,6 +57,8 @@ public class VasPutawayDetailsVO {
 	
 	@Column(name = "binclass")
 	private String binClass;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "celltype")
 	private String cellType;
 	@Column(name = "clientcode")

@@ -95,26 +95,26 @@ public class GuhanController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/createUpdatePickRequest")
-	public ResponseEntity<ResponseDTO> createUpdatePickRequest(@RequestBody @Valid PickRequestDTO pickRequestDTO) {
-		String methodName = "createUpdatePickRequest()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		try {
-			Map<String, Object> pickRequestVO = guhanService.createUpdatePickRequest(pickRequestDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, pickRequestVO.get("message"));
-			responseObjectsMap.put("pickRequestVO", pickRequestVO.get("pickRequestVO"));
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+//	@PutMapping("/createUpdatePickRequest")
+//	public ResponseEntity<ResponseDTO> createUpdatePickRequest(@RequestBody @Valid PickRequestDTO pickRequestDTO) {
+//		String methodName = "createUpdatePickRequest()";
+//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+//		String errorMsg = null;
+//		Map<String, Object> responseObjectsMap = new HashMap<>();
+//		ResponseDTO responseDTO = null;
+//		try {
+//			Map<String, Object> pickRequestVO = guhanService.createUpdatePickRequest(pickRequestDTO);
+//			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, pickRequestVO.get("message"));
+//			responseObjectsMap.put("pickRequestVO", pickRequestVO.get("pickRequestVO"));
+//			responseDTO = createServiceResponse(responseObjectsMap);
+//		} catch (Exception e) {
+//			errorMsg = e.getMessage();
+//			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+//			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+//		}
+//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+//		return ResponseEntity.ok().body(responseDTO);
+//	}
 
 	@GetMapping("/getPickRequestDocId")
 	public ResponseEntity<ResponseDTO> getPickRequestDocId(@RequestParam Long orgId, @RequestParam String finYear,
