@@ -22,7 +22,6 @@ public class PickRequestDTO {
 	private Long id;
 	private String buyerRefNo;
 	private LocalDate buyerRefDate;
-	private String shipmentMethod;
 	private String buyerOrderNo;
 	private String buyersReference;
 	private String invoiceNo;

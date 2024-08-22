@@ -57,5 +57,8 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 			+ "group by orgid,branch,branchcode,customer,client,warehouse,buyerorderno,buyerorderdate,buyerordno,buyerorddate,partno,partdesc,sku having sum(sqty)>0)a) order by c.docid asc")
 	List<BuyerOrderVO> findBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear,
 			String branchCode,String warehouse, String client);
+
+	@Query("select a.totalOrderQty from BuyerOrderVO a where a.docId=?1")
+	int getTotalOrderQty(String buyerOrderNo);
 	
 }

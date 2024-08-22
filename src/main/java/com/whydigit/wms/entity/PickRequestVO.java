@@ -37,8 +37,6 @@ public class PickRequestVO {
 	private String buyerRefNo;
 	@Column(name = "buyerrefdate")
 	private LocalDate buyerRefDate;
-	@Column(name = "shipmentmethod")
-	private String shipmentMethod;
 	@Column(name = "buyerorderno")
 	private String buyerOrderNo;
 	@Column(name = "buyersreference")
@@ -93,6 +91,12 @@ public class PickRequestVO {
 	private String status;
 	@Column(name = "freeze")
 	private boolean freeze ;
+	
+	@Column(name = "screenname")
+	private String screenName="PICK REQUEST";
+	@Column(name = "screencode")
+	private String screenCode="PR";
+	
 
 //	summary table
 	@Column(name = "totalpickqty")

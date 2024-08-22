@@ -27,5 +27,8 @@ public interface PickRequestService {
 	List<BuyerOrderVO> getBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear, String branchCode,
 			String warehouse, String client);
 	
+	List<Map<String,Object>>getFillGridDetailsForPickRequest(Long orgId, String branchCode, String client,
+			String buyerOrderDocId, String pickRequestDocId,String pickStatus);
+	
 	
 }
