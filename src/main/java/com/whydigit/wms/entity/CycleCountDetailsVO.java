@@ -31,8 +31,8 @@ public class CycleCountDetailsVO {
 	private Long id;
 	@Column(name="partno")
 	private String partNo;
-	@Column(name="paretdescription")
-	private String paretDescription;
+	@Column(name="partdesc")
+	private String partDescription;
 	@Column(name="grnno")
 	private String grnNo;
 	@Column(name="sku")
@@ -45,10 +45,28 @@ public class CycleCountDetailsVO {
 	private LocalDate batchDate;
 	@Column(name="bin")
 	private String bin;
-	@Column(name="qty")
-	private int qty;
+	@Column(name="avlqty")
+	private int avlQty;
 	@Column(name="actualqty")
 	private int actualQty;
+	@Column(name="grndate")
+	private LocalDate grnDate;
+	@Column(name="expdate")
+	private LocalDate expDate;
+	@Column(name="binclass")
+	private String binClass;
+	@Column(name="celltype")
+	private String cellType;
+	@Column(name="core")
+	private String core;
+	@Column(name="lotno")
+	private String lotNo;
+	@Column(name="qcflag")
+	private String qcFlag;
+	@Column(name="status")
+	private String status;
+	
+	
 	
 	@ManyToOne
 	@JsonBackReference
