@@ -47,5 +47,5 @@ public class SecurityConfig {
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
-	}
+	} 
 }
