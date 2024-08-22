@@ -64,11 +64,8 @@ public class CycleCountVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private String freeze;
-	@Column(name = "cyclecountno")
-	private String cycleCountNo;
-	@Column(name = "cyclecountdate")
-	private LocalDate cycleCountDate;
+	private Boolean freeze=true;
+
 	@Column(name = "stockdate")
 	private LocalDate stockDate=LocalDate.now();
 

@@ -13,14 +13,21 @@ public class CycleCountDetailsDTO {
 
 	private Long id;
 	private String partNo;
-	private String paretDescription;
+	private String partDescription;
 	private String grnNo;
 	private String sku;
 	private String binType;
 	private String batchNo;
 	private LocalDate batchDate;
 	private String bin;
-	private int qty;
+	private int avlQty;
 	private int actualQty;
-	private boolean qQcflag;
+	private LocalDate grnDate;
+	private LocalDate expDate;
+	private String binClass;
+	private String cellType;
+	private String core;
+	private String lotNo;
+	private String qcFlag;
+	private String status;
 }
