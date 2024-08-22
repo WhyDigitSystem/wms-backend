@@ -23,6 +23,7 @@ import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.dto.ResponseDTO;
+import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.service.PickRequestService;
 
@@ -143,6 +144,33 @@ public class PickRequestController extends BaseController {
 					errorMsg);
 		}
 
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getBuyerRefNoForPickRequest")
+	public ResponseEntity<ResponseDTO> getBuyerRefNoForPickRequest(@RequestParam Long orgId,@RequestParam String finYear,
+			@RequestParam	String branchCode,@RequestParam String warehouse,@RequestParam String client) {
+		String methodName = "getBuyerRefNoForPickRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<BuyerOrderVO> buyerOrderVO = new ArrayList<>();
+		try {
+			buyerOrderVO = pickRequestService.getBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branchCode, warehouse, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyer Order refno information get successfully ");
+			responseObjectsMap.put("buyerOrderVO", buyerOrderVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Buyer Order refno  information receive failed",
+					errorMsg);
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}

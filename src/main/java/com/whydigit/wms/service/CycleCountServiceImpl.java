@@ -42,7 +42,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 
 	public Map<String, Object> createUpdateCycleCount(CycleCountDTO cycleCountDTO) throws ApplicationException {
 		CycleCountVO cycleCountVO;
-		String screenCode = "CT";
+		String screenCode = "CY";
 		String message;
 
 		if (ObjectUtils.isEmpty(cycleCountDTO.getId())) {
@@ -64,7 +64,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 			documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
-			message = "CycleCountDTO Creation Successfully";
+			message = "CycleCount Creation Successfully";
 		} else {
 			cycleCountVO = cycleCountRepo.findById(cycleCountDTO.getId()).orElseThrow(() -> new ApplicationException(
 					"This Id Is Not Fount Any Information,Invalid Id ." + cycleCountDTO.getId()));
@@ -72,7 +72,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 
 			List<CycleCountDetailsVO> countDetailsVOs = cycleCountDetailsRepo.findByCycleCountVO(cycleCountVO);
 			cycleCountDetailsRepo.deleteAll(countDetailsVOs);
-			message = "CycleCountDTO Updation Successfully";
+			message = "CycleCount Updation Successfully";
 		}
 		getCycleCountVOFromCycleCountDTO(cycleCountVO, cycleCountDTO);
 		cycleCountRepo.save(cycleCountVO);
@@ -93,7 +93,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 		cycleCountVO.setWarehouse(cycleCountDTO.getWarehouse());
 		cycleCountVO.setCreatedBy(cycleCountDTO.getCreatedBy());
 		cycleCountVO.setCancelRemarks(cycleCountDTO.getCancelRemarks());
-		cycleCountVO.setFreeze(cycleCountDTO.isFreeze());
+		cycleCountVO.setFreeze(cycleCountDTO.getFreeze());
 		cycleCountVO.setCycleCountNo(cycleCountDTO.getCycleCountNo());
 		cycleCountVO.setCycleCountDate(cycleCountDTO.getCycleCountDate());
 
@@ -110,7 +110,6 @@ public class CycleCountServiceImpl implements CycleCountService {
 			cycleCountDetailsVO.setBin(details2dto.getBin());
 			cycleCountDetailsVO.setQty(details2dto.getQty());
 			cycleCountDetailsVO.setActualQty(details2dto.getActualQty());
-			cycleCountDetailsVO.setQQcflag(details2dto.isQQcflag());
 
 			// Avoid recursive reference to kittingVO in KittingDetails2VO
 			cycleCountDetailsVO.setCycleCountVO(cycleCountVO);
@@ -123,7 +122,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 
 	@Override
 	public String getCycleCountInDocId(Long orgId, String finYear, String branch, String branchCode, String client) {
-		String ScreenCode = "CT";
+		String ScreenCode = "CY";
 		String result = cycleCountRepo.getCycleCountInDocId(orgId, finYear, branchCode, client, ScreenCode);
 		return result;
 	}
@@ -151,7 +150,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 
-			part.put("partNo", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
+			part.put("partNo", fs[0] != null ? fs[0].toString():"");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			part.put("bin", fs[3] != null ? fs[3].toString() : "");
@@ -169,6 +168,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 			part.put("core", fs[15] != null ? fs[15].toString() : "");
 			part.put("cellType", fs[16] != null ? fs[16].toString() : "");
 			part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
+			part.put("id", fs[18] != null ? Integer.parseInt(fs[18].toString()) : 0);
 
 			details1.add(part);
 		}

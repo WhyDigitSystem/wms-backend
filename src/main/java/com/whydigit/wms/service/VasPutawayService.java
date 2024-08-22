@@ -30,6 +30,8 @@ public interface VasPutawayService {
 	
 	List<Map<String, Object>> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode,
 			String client,String docId);
+
+	List<Map<String, Object>> getToBinDetailsVasPutaway(Long orgId, String branchCode, String client, String warehouse);
 	
 	
 }

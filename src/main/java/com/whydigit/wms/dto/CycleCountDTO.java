@@ -21,9 +21,8 @@ private Long id;
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private boolean cancel;
 	private String cancelRemarks;
-	private boolean freeze;
+	private String freeze;
 	private String cycleCountNo;
 	private LocalDate cycleCountDate;
 	

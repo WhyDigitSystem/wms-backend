@@ -33,8 +33,8 @@ public class CodeConversionDetailsVO {
 	
 	@Column(name = "partno")
 	private String partNo;
-	@Column(name = "partdescription")
-	private String partDescription;
+	@Column(name = "partdesc")
+	private String partDesc;
 	@Column(name = "grnno")
 	private String grnNo;
 	@Column(name = "grndate")

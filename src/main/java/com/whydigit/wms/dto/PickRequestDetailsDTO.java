@@ -2,6 +2,8 @@ package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PickRequestDetailsDTO {
 
-	private Long id;
+
 	private String partNo;
 	private String partDesc;
 	private String sku;
 	private String core;
-	private String location;
+	private String bin;
 	private String batchNo;
 	private LocalDate batchDate;
 	private String lotNo;
@@ -24,21 +26,13 @@ public class PickRequestDetailsDTO {
 	private int avlQty;
 	private int pickQty;
 	private int runningQty;
-	private String pickQtyPerLocation;
-	private String remainingQty;
-	private String weight;
-	private String rate;
-	private String tax;
-	private String amount;
+	private int pickQtyPerBin;
+	private int remainingQty;
 	private String remarks;
-
 	private String binClass;
 	private String binType;
 	private String cellType;
-	private String clientCode;
-	private LocalDate expDate;
-	private String pcKey;
-	private String ssku;
 	private String status;
 	private LocalDate stockDate;
+	private LocalDate expDate;
 }

@@ -50,5 +50,12 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 			String branchCode, String client, String buyerOrderNo);
 	@Query(value ="select * from buyerorder where orgid=?1",nativeQuery =true )
 	List<BuyerOrderVO> findByBo(Long orgId);
+
+	@Query(nativeQuery = true,value="select c.* from buyerorder c where c.cancel=0 and c.orderno in(\r\n"
+			+ "select a.buyerorderno from\r\n"
+			+ "(select orgid,branch,branchcode,customer,client,warehouse,buyerorderno,buyerorderdate,buyerordno,buyerorddate,partno,partdesc,sku,sum(sqty)sqty from handlingstockout where orgid=?1 and finyear=?2 and branchcode=?3 and warehouse=?4 and client=?5 \r\n"
+			+ "group by orgid,branch,branchcode,customer,client,warehouse,buyerorderno,buyerorderdate,buyerordno,buyerorddate,partno,partdesc,sku having sum(sqty)>0)a) order by c.docid asc")
+	List<BuyerOrderVO> findBuyerRefNoFromBuyerOrderForPickRequest(Long orgId, String finYear,
+			String branchCode,String warehouse, String client);
 	
 }
