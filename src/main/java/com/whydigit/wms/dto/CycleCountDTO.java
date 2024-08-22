@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class CycleCountDTO {
 private Long id;
 	
-	private LocalDate docDate;
+	//private LocalDate docDate;
 	private Long orgId;
 	private String customer;
 	private String client;

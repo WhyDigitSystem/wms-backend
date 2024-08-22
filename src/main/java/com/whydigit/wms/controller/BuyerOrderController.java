@@ -160,9 +160,10 @@ public class BuyerOrderController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> avalQty = new ArrayList<Map<String, Object>>();
+	//	List<Map<String, Object>> avalQty = new ArrayList<Map<String, Object>>();
+		int avalQty=0;
 		try {
-			avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc,
+			 avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc,
 					batch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();

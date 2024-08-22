@@ -47,8 +47,12 @@ public class PickRequestVO {
 	private String invoiceNo;
 	@Column(name = "clientshortname")
 	private String clientShortName;
+	@Column(name = "clientname")
+	private String clientName;
 	@Column(name = "clientaddress")
 	private String clientAddress;
+	@Column(name = "customershortname")
+	private String customerShortName;
 	@Column(name = "customername")
 	private String customerName;
 	@Column(name = "customeraddress")
