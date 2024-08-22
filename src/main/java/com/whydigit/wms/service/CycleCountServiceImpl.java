@@ -254,7 +254,9 @@ public class CycleCountServiceImpl implements CycleCountService {
 			part.put("binType", fs[1] != null ? fs[1].toString() : "");
 			part.put("lotNo", fs[2] != null ? fs[2].toString():"");
 			part.put("cellType", fs[3] != null ? fs[3].toString() : "");
-			
+			part.put("binClass", fs[4] != null ? fs[4].toString() : "");
+			part.put("core", fs[5] != null ? fs[5].toString():"");
+			part.put("qcFlag", fs[6] != null ? fs[6].toString() : "");
 
 			details1.add(part);
 		}
@@ -264,8 +266,8 @@ public class CycleCountServiceImpl implements CycleCountService {
 
 	@Override
 	public List<Map<String, Object>> getAvlQtyByCycleCount(Long orgId, String branchCode, String client,
-			String warehouse, String partNo, String grnNO, String batch, String bin, String binType, String lotNo) {
-		Set<Object[]> result = cycleCountRepo.getAvlQty(orgId, branchCode, client, warehouse,partNo,grnNO,batch,bin,binType,lotNo);
+			String warehouse, String partNo, String grnNO, String batch, String bin) {
+		Set<Object[]> result = cycleCountRepo.getAvlQty(orgId, branchCode, client, warehouse,partNo,grnNO,batch,bin);
 		return getAvlQty1(result);
 	}
 

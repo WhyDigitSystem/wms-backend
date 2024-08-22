@@ -38,6 +38,6 @@ public interface CycleCountService {
 				String warehouse, String partNo, String grnNO, String batch);
 
 		List<Map<String, Object>> getAvlQtyByCycleCount(Long orgId, String branchCode, String client, String warehouse,
-				String partNo, String grnNO, String batch, String bin, String binType, String lotNo);
+				String partNo, String grnNO, String batch, String bin);
 	
 }
