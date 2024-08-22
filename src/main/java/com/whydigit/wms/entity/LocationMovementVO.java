@@ -67,15 +67,8 @@ public class LocationMovementVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
-	@Column(name = "freeze")
-	private boolean freeze = true;
-	@Column(name="sku")
-	private String sku;
-	@Column(name = "grndate")
-	private LocalDate grnDate = LocalDate.now();
-	@Column(name="core")
-	private String core;
-	
+	@Column(name="movedqty")
+	private Integer movedQty;
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
 	@JsonManagedReference

@@ -20,10 +20,19 @@ public class DeKittingParentDTO {
 	private String sku;
 	private String grnNo;
 	private LocalDate grnDate;
-	private LocalDate expDate;
 	private int avlQty;
 	private int qty;
 	private BigDecimal unitRate;
 	private BigDecimal amount;
-
+	private String status;
+	private boolean qcFlag;
+	
+	private String binClass;
+	private String cellType;
+	private String clientCode;
+	private String core;
+	private LocalDate expDate;
+	private String pcKey;
+	private String ssku;
+	private LocalDate stockDate;
 }

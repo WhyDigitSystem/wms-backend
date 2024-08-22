@@ -1,6 +1,7 @@
 package com.whydigit.wms.repo;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +22,7 @@ public interface VasPutawayRepo extends JpaRepository<VasPutawayVO, Long> {
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getVasPutawayDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
+	@Query(nativeQuery = true,value ="select docid from vaspick where orgid=?1 and branch=?2 and client=?3 and docid NOT IN (SELECT docid FROM vasputaway)")
+	Set<Object[]> findDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client);
 
 }

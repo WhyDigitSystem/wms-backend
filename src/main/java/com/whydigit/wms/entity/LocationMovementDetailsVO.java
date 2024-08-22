@@ -37,9 +37,9 @@ public class LocationMovementDetailsVO {
 	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdescripition")
-	private String partDescripition;
+	private String partDesc;
 	@Column(name = "grnno")
-	private String GRNNo;
+	private String grnNo;
 	@Column(name = "batchno")
 	private String batchNo;
 	@Column(name = "batchdate")
@@ -49,28 +49,43 @@ public class LocationMovementDetailsVO {
 	@Column(name = "tobin")
 	private String toBin;
 	@Column(name = "fromqty")
+	
 	private int fromQty;
 	@Column(name = "toqty")
 	private int toQty;
 	@Column(name = "remainingqty")
 	private int remainingQty;
 	@Column(name = "qcflag")
-	private boolean qcFlag;
+	private String qcFlag;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
 	@Column(name = "bintype")
 	private String binType;
+	@Column(name = "status")
+	private String status = "R";
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
 	@Column(name = "core")
 	private String core;
-	@Column(name="binclass")
-	private String binClass;
-	@Column(name="expdate")
+	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name="status")
-	private String status;
-	
+	@Column(name = "pckey")
+	private String pcKey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stokcdate")
+	private LocalDate stockDate=LocalDate.now();
+	@Column(name = "tobinclass")
+	private String toBinClass;
+	@Column(name = "tobintype")
+	private String toBinType;
+	@Column(name = "tocelltype")
+	private String toCellType;
+
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "locationmovementid")

@@ -33,20 +33,26 @@ public class CodeConversionDetailsVO {
 	
 	@Column(name = "partno")
 	private String partNo;
-	@Column(name = "partdescription")
-	private String partDescription;
+	@Column(name = "partdesc")
+	private String partDesc;
 	@Column(name = "grnno")
 	private String grnNo;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
+	@Column(name = "status")
+	private String status ="R";
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "bintype")
 	private String binType;
 	@Column(name = "batchno")
 	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 	@Column(name = "lotno")
 	private String lotNo;
-	@Column(name = "pallet")
-	private String pallet;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "qty")
 	private int qty;
 	@Column(name = "actualqty")
@@ -54,7 +60,7 @@ public class CodeConversionDetailsVO {
 	@Column(name = "rate")
 	private BigDecimal rate;
 	@Column(name = "convertqty")
-	private BigDecimal convertQty;
+	private int convertQty;
 	@Column(name = "crate")
 	private BigDecimal cRate;
 	@Column(name = "cpartno")
@@ -66,14 +72,35 @@ public class CodeConversionDetailsVO {
 	private String cSku;
 	@Column(name = "cbatchno")
 	private String cBatchNo;
+	@Column(name = "cbatchdate")
+	private LocalDate cBatchDate;
 	@Column(name = "clotno")
 	private String cLotNo;
 	@Column(name = "cbin")
 	private String cbin;
+	@Column(name = "cbintype")
+	private String cbinType;
 	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "qcflags")
-	private boolean qcFlags;
+	@Column(name = "qcflag")
+	private String qcFlag;
+	
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;	
+	@Column(name = "core")
+	private String core;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pckey")
+	private String pckey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stockdate")
+	private LocalDate stockDate;
 	
 	@JsonBackReference
 	@ManyToOne

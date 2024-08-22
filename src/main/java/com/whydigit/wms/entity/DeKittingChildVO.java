@@ -49,14 +49,32 @@ public class DeKittingChildVO {
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "expdate")
-	private LocalDate expDate;
 	@Column(name = "qty")
 	private int qty;
 	@Column(name = "unitrate")
 	private BigDecimal unitRate;
 	@Column(name = "amount")
 	private BigDecimal amount;
+	@Column(name="status")
+	private String status="R";
+	@Column(name = "qcflag")
+	private boolean qcFlag;
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;
+	@Column(name = "core")
+	private String core;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pockey")
+	private String pcKey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stokcdate")
+	private LocalDate stockDate;
 	
 	@ManyToOne
 	@JsonBackReference

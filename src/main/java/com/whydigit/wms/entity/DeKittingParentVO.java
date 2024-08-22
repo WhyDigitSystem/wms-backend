@@ -49,8 +49,6 @@ public class DeKittingParentVO {
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "expdate")
-	private LocalDate expDate;
 	@Column(name = "avlqty")
 	private int avlQty;
 	@Column(name = "qty")
@@ -59,7 +57,27 @@ public class DeKittingParentVO {
 	private BigDecimal unitRate;
 	@Column(name = "amount")
 	private BigDecimal amount;
-
+	@Column(name = "status")
+	private String status="R";
+	@Column(name = "qcflag")
+	private boolean qcFlag;
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;
+	@Column(name = "core")
+	private String core;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pckey")
+	private String pcKey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stokcdate")
+	private LocalDate stockDate;
+	
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "dekittingid")

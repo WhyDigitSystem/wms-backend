@@ -46,6 +46,8 @@ public class PutAwayVO {
 	private LocalDate grnDate;
 	@Column(name = "entryno")
 	private String entryNo;
+	@Column(name = "entrydate")
+	private LocalDate entryDate;
 	@Column(name = "core")
 	private String core;
 	@Column(name = "suppliershortname")
@@ -58,12 +60,28 @@ public class PutAwayVO {
 	private String carrier;
 	@Column(name = "bintype")
 	private String binType;
+	@Column(name = "contact")
+	private String contact;
+	@Column(name = "vehicletype")
+	private String vehicleType;
+	@Column(name = "vehicleno")
+	private String vehicleNo;
+	@Column(name = "drivername")
+	private String driverName;
 	@Column(name = "status")
 	private String status;
 	@Column(name = "lotno")
 	private String lotNo;
 	@Column(name = "enteredperson")
 	private String enteredPerson;
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "binpick")
+	private String binPick;
+	@Column(name = "totalgrnqty")
+	private int totalGrnQty;
+	@Column(name = "totalputawayqty")
+	private int totalPutawayQty;
 	@Column(name = "screenname")
 	private String screenName = "PUTAWAY";
 	@Column(name = "screencode")
@@ -93,7 +111,7 @@ public class PutAwayVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze = false;
+	private boolean freeze;
 	
 	@JsonGetter("active")
 	public String getActive() {

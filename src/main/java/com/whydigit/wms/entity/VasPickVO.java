@@ -30,17 +30,17 @@ public class VasPickVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vaspickgen")
 	@SequenceGenerator(name = "vaspickgen", sequenceName = "vaspickseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "vaspicid")
+	@Column(name = "vaspickid")
 	private Long id;
 	@Column(name = "picbin")
 	private String picBin;
 	@Column(name = "screenname")
-	private String screenName;
+	private String screenName="VASPICK";
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode="VPR";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "docid")
+	@Column(name = "docid",unique =true)
 	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -68,6 +68,15 @@ public class VasPickVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze;
+	@Column(name = "totalorderqty")
+	private int totalOrderQty;
+	@Column(name = "pickedqty")
+	private int pickedQty;
+	@Column(name = "statestatus")
+    private String stateStatus;
+	@Column(name = "stockstate")
+	private String stockState;
+	private String status;
 	
 	
 	@OneToMany(mappedBy ="vasPickVO",cascade = CascadeType.ALL)

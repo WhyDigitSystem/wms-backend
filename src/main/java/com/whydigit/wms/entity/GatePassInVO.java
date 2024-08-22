@@ -43,11 +43,11 @@ public class GatePassInVO {
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "docid")
-	private Long docid;
+	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docdate = LocalDate.now();
-	@Column(name = "date")
-	private LocalDate date;
+	@Column(name = "entrydate")
+	private LocalDate entryDate;
 	@Column(name = "supplier")
 	private String supplier;
 	@Column(name = "suppliershortname")
@@ -80,13 +80,13 @@ public class GatePassInVO {
 	private String company;
 
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel=false;
 
 	@Column(name = "cancelremarks")
 	private String cancelRemark;
 
 	@Column(name = "active")
-	private boolean active;
+	private boolean active=true;
 
 	@Column(name = "branchcode")
 	private String branchCode;
@@ -95,7 +95,7 @@ public class GatePassInVO {
 	private String branch;
 
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode="GP";
 
 	@Column(name = "client")
 	private String client;
@@ -103,8 +103,13 @@ public class GatePassInVO {
 	@Column(name = "customer")
 	private String customer;
 
-	@Column(name = "finyr")
-	private String finyr;
+	@Column(name = "screenname")
+	private String screenName="GATEPASSIN";
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "freeze")
+	private boolean freeze=false;
+
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "gatePassInVO", cascade = CascadeType.ALL)
@@ -113,20 +118,5 @@ public class GatePassInVO {
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
-	@PrePersist
-	private void setDefaultFinyr() {
-		// Execute the logic to set the default value for finyr
-		String fyFull = calculateFinyr();
-		this.finyr = fyFull;
-	}
-
-	private String calculateFinyr() {
-		// Logic to calculate finyr based on the provided SQL query
-		String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
-		String fyFull = (currentMonthDay.compareTo("0331") > 0)
-				? LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))
-				: LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
-		return fyFull;
-
-	}
+	
 }

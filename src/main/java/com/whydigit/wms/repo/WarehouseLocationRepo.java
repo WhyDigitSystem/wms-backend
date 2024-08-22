@@ -11,16 +11,16 @@ import com.whydigit.wms.entity.WarehouseLocationVO;
 public interface WarehouseLocationRepo extends JpaRepository<WarehouseLocationVO, Long> {
 
 	
-	@Query("select a from WarehouseLocationVO a where orgId=?1 and a.warehouse=?2 and a.branch=?3")
-	List<WarehouseLocationVO> findAll(Long orgid, String warehouse, String branch);
+	@Query(value = "select * from WarehouseLocation a where orgId=?1 and a.branch=?2",nativeQuery =true)
+	List<WarehouseLocationVO> findAllByOrgId(Long orgid, String branch);
 
-	@Query("select e.binType from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2")
+	@Query("select e.binType from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 group by e.binType")
 	Set<Object[]> findAllLocationTypeByOrgIdAndWarehouse(Long orgid, String warehouse);
 
-	@Query(value ="select e.bintype from warehouselocation e where e.orgid=?1 and e.warehouse=?2 and e.bintype=?3",nativeQuery =true)
+	@Query(value ="select e.rowno from warehouselocation e where e.orgid=?1 and e.warehouse=?2 and e.bintype=?3 group by  e.rowno",nativeQuery =true)
 	Set<Object[]> findAllRownoByOrgIdAndWarehouseAndBinType(Long orgid, String warehouse, String locationtype);
 	
-	@Query("select e.level from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.binType=?3 and e.rowNo=?4")
+	@Query("select e.level from WarehouseLocationVO e where e.orgId=?1 and e.warehouse=?2 and e.binType=?3 and e.rowNo=?4 group by e.level")
 	Set<Object[]> findAllLevelByOrgIdAndWarehouseAndLocationTypeAndRowNo(Long orgid, String warehouse,
 			String locationtype, String rowno);
 

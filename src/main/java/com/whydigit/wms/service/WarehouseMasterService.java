@@ -136,13 +136,13 @@ public interface WarehouseMasterService {
 
 	Set<Object[]> getAllWarehouseByOrgidAndBranch(Long orgid, String branchcode);
 
-	WarehouseVO createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
+	Map<String, Object> createUpdateWarehouse(WarehouseDTO warehouseDTO) throws ApplicationException;
 	
 	List<WarehouseVO> getAllWarehouse(Long orgId);
 
 
 	// Warehouse Location
-	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String warehouse, String branch); // Method names
+	List<WarehouseLocationVO> getAllWarehouseLocation(Long orgid, String branch); // Method names
 																									// should be in																					// camelCase
 
 	Set<Object[]> getAllLocationTypebyOrgIdAndWarehouse(Long orgid, String warehouse);
@@ -155,7 +155,7 @@ public interface WarehouseMasterService {
 	Set<Object[]> getAllBinsByOrgIdAndWarehouseAndLocationTypeAndRownoAndLevel(Long orgid, String warehouse,
 			String locationtype, String rowno, String level);
 
-	Optional<WarehouseLocationVO> getWarehouseLocationById(Long warehouselocationid);
+	WarehouseLocationVO getWarehouseLocationById(Long id);
 
 	Map<String, Object> createUpdateWarehouseLocation(WarehouseLocationDTO warehouseLocationDTO) throws ApplicationException;
 
@@ -204,14 +204,16 @@ public interface WarehouseMasterService {
 	// Carrier
 
 	List<CarrierVO> getAllCarrier(Long orgid, String client, String cbranch);
-
+	
 	Optional<CarrierVO> getCarrierById(Long carrierid);
 
 	Map<String, Object> createUpdateCarrier(CarrierDTO carrierDTO)throws ApplicationException;
 
 	void deleteCarrier(Long carrierid);
 	
-	Set<Object[]> getCarrierNameByCustomer(Long orgid, String client, String cbranch);
+	List<Map<String, Object>> getAllModeOfShipment(Long orgId);
+	
+	List<CarrierVO> getCarrierNameByCustomer(Long orgid, String client, String cbranch,String shipmentMode);
 
 	// employee
 	
@@ -255,6 +257,10 @@ public interface WarehouseMasterService {
 	List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId);
 	
 	DocumentTypeMappingVO getDocumentTypeMappingById(Long id)throws ApplicationException;
+
+	List<Map<String, Object>> getToBinDetails(Long orgId, String branchCode, String client, String warehouse);
+
+	
 
 	
 

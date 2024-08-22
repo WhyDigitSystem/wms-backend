@@ -1,6 +1,5 @@
 package com.whydigit.wms.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -48,7 +47,7 @@ public class GrnDetailsVO {
 	@Column(name = "bintype")
 	private String binType;
 	@Column(name = "rate")
-	private String rate;
+	private double rate;
 	@Column(name = "amount")
 	private double amount;
 	@Column(name = "sku")
@@ -89,8 +88,6 @@ public class GrnDetailsVO {
 	private int grnQty;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "mrp")
-	private double mrp;
 	
 	@JsonBackReference
 	@ManyToOne

@@ -38,7 +38,7 @@ public class DeKittingVO {
 	@Column(name = "docid")
 	private String docId;
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -64,7 +64,7 @@ public class DeKittingVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze = true;
+	private String freeze ;
 	@Column(name = "grndate")
 	private LocalDate grnDate = LocalDate.now();
 	

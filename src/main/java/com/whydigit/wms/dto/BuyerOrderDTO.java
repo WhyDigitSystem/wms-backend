@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,36 +16,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class BuyerOrderDTO {
-	private Long id;
 
-	private String orderNo;
+	private Long id;
 	private Long orgId;
-	private LocalDate docDate;
+	private String orderNo;
 	private LocalDate orderDate;
-	private String invoiceNo;
 	private String refNo;
-	private LocalDate invoiceDate;
 	private LocalDate refDate;
+	private String invoiceNo;
+	private LocalDate invoiceDate;
 	private String buyerShortName;
-	private String currency;
-	private int exRate;
-	private String location;
-	private String billto;
-	private String tax;
-	private String shipTo;
-	private String reMarks;
+	private String buyer;
+	private String billToShortName;
+	private String billToName;
+	private String shipToShortName;
+	private String shipToName;
 	private String createdBy;
-	private String company;
-	private boolean cancel;
-	private String cancelRemark;
-	private String screenCode;
-	private String screenName;
 	private String customer;
 	private String client;
 	private String finYear;
 	private String branch;
 	private String branchCode;
-	private boolean freeze;
+	
+	private String warehouse;
 	
 	private List<BuyerOrderDetailsDTO> buyerOrderDetailsDTO;
 	

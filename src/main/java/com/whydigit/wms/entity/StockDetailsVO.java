@@ -1,5 +1,6 @@
 package com.whydigit.wms.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -47,7 +48,7 @@ public class StockDetailsVO {
 	@Column(name = "qtypicked")
 	private int pickedQty;
 	@Column(name = "rate")
-	private String rate;
+	private BigDecimal rate;
 	@Column(name = "amount")
 	private double amount;
 	@Column(name = "inoutitme")
@@ -86,7 +87,7 @@ public class StockDetailsVO {
 	private String partDesc;
 	@Column(name = "sourcescreencode")
 	private String sourceScreenCode;
-	@Column(name = "sourcescreenName")
+	@Column(name = "sourcescreenname")
 	private String sourceScreenName;
 	@Column(name = "remarks")
 	private String remarks;
@@ -108,7 +109,7 @@ public class StockDetailsVO {
 	private String sSku;
 	@Column(name = "ssqty")
 	private int ssQty;
-	@Column(name="sourceid")
+	@Column(name = "sourceid")
 	private Long sourceId;
 	@Column(name = "sqty")
 	private int sQty;
@@ -125,7 +126,7 @@ public class StockDetailsVO {
 	@Column(name = "shortqty")
 	private int shortQty;
 	@Column(name = "qcflag")
-	private boolean qcFlag;
+	private String qcFlag;
 	@Column(name = "clientcode")
 	private String clientCode;
 	@Column(name = "pamount")
@@ -147,7 +148,7 @@ public class StockDetailsVO {
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
 	@Column(name = "weight")
-	private String weight;
+	private double weight;
 	@Column(name = "pckey")
 	private String pcKey;
 	@Column(name = "sdactual")
@@ -172,11 +173,12 @@ public class StockDetailsVO {
 	private boolean active;
 	@Column(name = "modifiedby")
 	private String updatedBy;
-	@Column(name = "screencode")
-	private String screenCode;
+//	@Column(name = "screencode")
+//	private String screenCode;
 	@Column(name = "finyear")
 	private String finYear;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }

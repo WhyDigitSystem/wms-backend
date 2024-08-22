@@ -14,8 +14,6 @@ public class DeKittingDTO {
 
 	private Long id;
 	private String transactionType;
-	private String docId;
-	private LocalDate docDate;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -24,11 +22,8 @@ public class DeKittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String updatedBy;
+	private String freeze;
 	private boolean active = true;
-	private boolean cancel = false;
-	private String cancelRemarks;
-	private boolean freeze = true;
 	private LocalDate grnDate = LocalDate.now();
 	
 	private List<DeKittingParentDTO> deKittingParentDTO;

@@ -16,26 +16,20 @@ import lombok.NoArgsConstructor;
 public class PutAwayDetailsDTO {
 	private String partNo;
 	private String batch;
-	private String partDescripition;
+	private String partDesc;
 	private String sku;
+	private String invoiceNo;
 	private int invQty;
 	private int recQty;
-	private int sSqty;
 	private int putAwayQty;
 	private int putAwayPiecesQty;
 	private String bin;
-	private String weight;
-	private String rate;
-	private double amount;
 	private String remarks;
 	private String binType;
-	private int shortQty;
-	private int sQty;
+	private int grnQty;
 	private String sSku;
-	private String binclass;
 	private String cellType;
+	private LocalDate expdate;
 	private LocalDate batchDate;
-	private String status;
-	private String qcFlag;
 
 }

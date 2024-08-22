@@ -1,7 +1,8 @@
 package com.whydigit.wms.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,8 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,45 +32,58 @@ public class PickRequestDetailsVO {
 	@Column(name = "pickrequestdetailsid")
 	private Long id;
 
-	@Column(name = "serialno")
-	private String serialno;
-	@Column(name = "partcode")
-	private String partcode;
+	@Column(name = "partno")
+	private String partNo;
 	@Column(name = "partdesc")
-	private String partdesc;
+	private String partDesc;
 	@Column(name = "sku")
 	private String sku;
-	@Column(name = "location")
-	private String location;
+	@Column(name = "core")
+	private String core;
+	@Column(name = "bin")
+	private String bin;
+	@Column(name = "grnno")
+	private String grnNo;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
 	@Column(name = "batchno")
-	private String batchno;
+	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 	@Column(name = "lotno")
-	private String lotno;
+	private String lotNo;
 	@Column(name = "orderqty")
-	private int orderqty;
+	private int orderQty;
 	@Column(name = "avlqty")
-	private int avlqty;
+	private int avlQty;
 	@Column(name = "pickqty")
-	private int pickqty;
+	private int pickQty;
 	@Column(name = "runningqty")
-	private int runningqty;
-	@Column(name = "picktyperlocation")
-	private String pickqtyperlocation;
+	private int runningQty;
+	@Column(name = "pickqtyperbin")
+	private int pickQtyPerBin;
 	@Column(name = "remainingqty")
-	private String remainingqty;
-	@Column(name = "weight")
-	private String weight;
-	@Column(name = "rate")
-	private String rate;
-	@Column(name = "tax")
-	private String tax;
-	@Column(name = "amount")
-	private String amount;
+	private int remainingQty;
 	@Column(name = "remarks")
 	private String remarks;
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "bintype")
+	private String binType;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "status")
+	private String status;
+	@Column(name = "stockdate")
+	private LocalDate stockDate;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "qcflag")
+	private String qcFlag;
 	
-	
-	@JsonManagedReference
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "pickrequestid")
 	private PickRequestVO pickRequestVO;

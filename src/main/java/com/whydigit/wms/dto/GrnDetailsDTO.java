@@ -29,13 +29,12 @@ public class GrnDetailsDTO {
 	private int binQty;
 	private int pkgs; 
 	private int noOfBins;
-	private String rate;
+	private double rate;
 	private String weight; 
 	private String batchNo;
 	private LocalDate batchDt; 
 	private double amount;
 	private String shipmentNo; 
-	private int grnQty;
 	private LocalDate expdate;
 	private double mrp;
 	

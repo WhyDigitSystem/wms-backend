@@ -1,5 +1,7 @@
 package com.whydigit.wms.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,10 +32,14 @@ public class VasPutawayDetailsVO {
 	private Long id;
 	@Column(name = "partno")
 	private String partNo;
-	@Column(name = "partdescription")
-	private String partDescription;
+	@Column(name = "partdesc")
+	private String partDesc;
 	@Column(name = "grnno")
 	private String grnNo;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
+	@Column(name = "status")
+	private String status ="R";
 	@Column(name = "invqty")
 	private int invQty;
 	@Column(name = "putawayqty")
@@ -46,8 +52,27 @@ public class VasPutawayDetailsVO {
 	private String sku;
 	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "qcflags")
-	private boolean qcFlags;
+	@Column(name = "qcflag")
+	private String qcFlag;
+	
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "bintype")
+	private String binType;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "clientcode")
+	private String clientCode;	
+	@Column(name = "core")
+	private String core;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "pckey")
+	private String pckey;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "stockdate")
+	private LocalDate stockDate;
 	
 	@JsonBackReference
 	@ManyToOne

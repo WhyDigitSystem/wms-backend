@@ -42,6 +42,8 @@ public class GlobalParameterVO {
 	private String customer;
 	@Column(name = "client")
 	private String client;
+	@Column(name = "finyear")
+	private String finYear;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

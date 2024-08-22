@@ -11,31 +11,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VasPickDetailsDTO {
 	private Long id;
-
-	private String partCode;
-
-	private String partDescrrption;
-
+	private String binType;
+	private String partDescription;
 	private String partNo;
-
 	private String sku;
-
 	private String bin;
-
 	private String batchNo;
-
-	private String lotNo;
-
+	private LocalDate batchDate;
 	private String grnNo;
-
+	private String grnDate;
 	private int avlQty;
-
 	private int picQty;
-
 	private int remaningQty;
+	private String qcflag;
+	private String binClass;
+	private String cellType;
+	private String core;
+	private LocalDate expDate;
 
-	private LocalDate manufactureDate;
-
-	private boolean qcflag;
-
+	
+	
 }
