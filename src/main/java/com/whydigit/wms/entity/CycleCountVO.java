@@ -69,6 +69,8 @@ public class CycleCountVO {
 	private String cycleCountNo;
 	@Column(name = "cyclecountdate")
 	private LocalDate cycleCountDate;
+	@Column(name = "stockdate")
+	private LocalDate stockDate=LocalDate.now();
 
 	@OneToMany(mappedBy ="cycleCountVO",cascade =CascadeType.ALL)
 	@JsonManagedReference

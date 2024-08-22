@@ -76,7 +76,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 			buyerOrderVO.setCreatedBy(buyerOrderDTO.getCreatedBy());
-			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
+			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());  
 
 			message = "BuyerOrder Creation Successfully";
 		} else {
@@ -84,7 +84,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 					"This Id Not Found Any Informations,Invalid Id" + buyerOrderDTO.getId()));
 			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
 
-			if (!buyerOrderVO.getOrderNo().equalsIgnoreCase(buyerOrderDTO.getOrderNo())) {
+			if (!buyerOrderVO.getOrderNo().equalsIgnoreCase(    buyerOrderDTO.getOrderNo())) {
 
 				if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(buyerOrderDTO.getOrderNo(),
 						buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(),
@@ -216,7 +216,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("batch", fs[2] != null ? fs[2].toString() : "");
-			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);
+			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);  
+			part.put("id", fs[4] != null ? Integer.parseInt(fs[4].toString()) : 0);
 
 			details1.add(part);
 		}
@@ -224,26 +225,13 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	}
 
-	@Override
-	public List<Map<String, Object>> getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
-			String branch, String partNo, String partDesc, String batch) {
-		Set<Object[]> result = buyerOrderRepo.getAvilableQty(orgId, client, branchCode, warehouse, branch, partNo,
-				partDesc, batch);
-		return getAvlQty(result);
-	}
+	 @Override
+	    public int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, 
+	                             String branch, String partNo, String partDesc, String batch) {
+	        return buyerOrderRepo.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc, batch);
+	    }
 
-	private List<Map<String, Object>> getAvlQty(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
-
-			details1.add(part);
-		}
-		return details1;
-
-	}
-
+	
 	@Override
 	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
 		return buyerOrderRepo.findByBo(orgId);
