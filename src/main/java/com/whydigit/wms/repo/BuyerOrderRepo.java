@@ -38,11 +38,11 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long>{
 	Set<Object[]> getBoSku(Long orgId, String branchCode, String client,String batch,String warehouse);
 
 	
-	@Query(nativeQuery =true,value = "select sum(sqty) from stockdetails where orgid=?1 and partno=?6 and branchcode=?3 and\n"
-			+ "partdesc=?7 and batch?8 and warehouse=?4 \n"
+	@Query(nativeQuery =true,value = "select cast(sum(sqty) as unsigned)sqty from stockdetails where orgid=?1 and partno=?6 and branchcode=?3 and\n"
+			+ "partdesc=?7 and batch=?8 and warehouse=?4 \n"
 			+ "and branch=?5 and client=?2  and status='R'\n"
 			+ " group by partno,partdesc,batch,warehouse")
-	Set<Object[]> getAvilableQty(Long orgId, String client, String branchCode, String warehouse, String branch,
+	int getAvilableQty(Long orgId, String client, String branchCode, String warehouse, String branch,
 			String partNo, String partDesc, String batch);
 
 	@Query(nativeQuery = true,value="select buyer,buyershortname,shipto,billto from buyerorder where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and docid=?5")

@@ -213,7 +213,7 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 
 
 
-	@Query(nativeQuery = true, value = "select celltype from wv_locationstatus where orgid=?1 and bin=?2")
+	@Query(nativeQuery = true, value = "select celltype from wv_locationstatus where orgid=?1 and bin=?2 group by celltype")
 	String getCelltype(Long orgId, String bin);
 
 

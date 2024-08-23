@@ -225,24 +225,14 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
+	public int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
 			String branch, String partNo, String partDesc, String batch) {
-		Set<Object[]> result = buyerOrderRepo.getAvilableQty(orgId, client, branchCode, warehouse, branch, partNo,
+		int result = buyerOrderRepo.getAvilableQty(orgId, client, branchCode, warehouse, branch, partNo,
 				partDesc, batch);
-		return getAvlQty(result);
+		return result;
 	}
 
-	private List<Map<String, Object>> getAvlQty(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
-
-			details1.add(part);
-		}
-		return details1;
-
-	}
+	
 
 	@Override
 	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {

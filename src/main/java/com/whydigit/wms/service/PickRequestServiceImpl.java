@@ -145,7 +145,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 			handlingStockOutVO.setSQty(PickRequestDetailsVO.getPickQty() * -1);
 			handlingStockOutVO.setPickQty(PickRequestDetailsVO.getPickQty() * -1);
 			handlingStockOutVO.setScreenCode(savedPickRequestVO.getScreenCode());
-			handlingStockOutVO.setBuyerOrdDate(savedPickRequestVO.getBuyerRefDate());
+			handlingStockOutVO.setBuyerOrdDate(savedPickRequestVO.getBuyerOrderDate());
 			handlingStockOutRepo.save(handlingStockOutVO);
 		}
 
@@ -216,6 +216,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 		pickRequestVO.setBuyerRefNo(pickRequestDTO.getBuyerRefNo());
 		pickRequestVO.setBuyerRefDate(pickRequestDTO.getBuyerRefDate());
 		pickRequestVO.setBuyerOrderNo(pickRequestDTO.getBuyerOrderNo());
+		pickRequestVO.setBuyerOrderDate(pickRequestDTO.getBuyerOrderDate());
 		pickRequestVO.setBuyersReference(pickRequestDTO.getBuyersReference());
 		pickRequestVO.setInvoiceNo(pickRequestDTO.getInvoiceNo());
 		pickRequestVO.setClientShortName(pickRequestDTO.getClientShortName());

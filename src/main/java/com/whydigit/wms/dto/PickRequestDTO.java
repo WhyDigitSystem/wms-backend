@@ -23,6 +23,7 @@ public class PickRequestDTO {
 	private String buyerRefNo;
 	private LocalDate buyerRefDate;
 	private String buyerOrderNo;
+	private LocalDate buyerOrderDate;
 	private String buyersReference;
 	private String invoiceNo;
 	private String clientShortName;

@@ -11,40 +11,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReversePickDetailsDTO {
 
-	private Long id;
-
-	private String partCode;
-
+	private String partNo;
 	private String partDesc;
-
-	private String batchNo;
-
-	private String lotNo;
-
 	private String sku;
-
-	private String location;
-
-	private String toLocation;
-
+	private String core;
+	private String bin;
+	private String grnNo;
+	private LocalDate grnDate;
+	private String batchNo;
+	private LocalDate batchDate;
 	private int orderQty;
-
-	private int pickedQtyPerLocation;
-
-	private int revisedQtyPerLocation;
-
-	private int weight;
-
-	private int pGroup;
-
-	private LocalDate expDate;
-
-	private int rate;
-
-	private int tax;
-
-	private int amount;
-
+	private int pickQty;
+	private int revisedQty;
 	private String remarks;
+	private String binClass;
+	private String binType;
+	private String cellType;
+	private LocalDate expDate;
+	private String qcFlag;
 
 }

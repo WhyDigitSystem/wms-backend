@@ -181,11 +181,18 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	Set<Object[]> getPickRequestFillDetails(Long orgId, String branchCode, String client, String buyerOrderDocId,
 			String pickRequestDocId, String pickStatus);
 
-	@Query(nativeQuery = true,value = "select sum(a.sqty)sqty from(\r\n"
+	@Query(nativeQuery = true,value = "select cast(sum(a.sqty)as unsigned)sqty from(\r\n"
 			+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
 			+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status='R' and bin=?5 and partno=?6 and grnno=?7\r\n"
 			+ "and batch=?8\r\n"
 			+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
 	int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 			String fromBin, String partNo, String grnNo, String batchNo);
+
+	@Query(nativeQuery = true,value = "select a.* from pickrequest a where a.cancel=0 and a.status='Confirm' and a.orgid=?1 and a.finyear=?2 and a.branch=?3 and a.branchcode=?4 and a.client=?5 order by a.docid desc")
+	List<PickRequestVO> getPickDetails(Long orgId, String finYear, String branch, String branchCode, String client);
+
+	@Query(nativeQuery = true,value = "select b.partno,b.partdesc,b.sku,b.grnno,b.grndate,b.batchno,b.batchdate,b.bintype,b.binclass,b.celltype,b.core,b.bin,b.orderqty,b.pickqty,b.expdate,b.qcflag from pickrequest a, pickrequestdetails b\r\n"
+			+ "where a.pickrequestid=b.pickrequestid and a.orgid=?1 and a.branchcode=?2 and a.client=?3 and a.docid=?4")
+	Set<Object[]> fillgridDetails(Long orgId, String branchCode, String client, String pickDocId);
 }
