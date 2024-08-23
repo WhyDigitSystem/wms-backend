@@ -162,7 +162,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		int avalQty=0;
 		try {
-			avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc,
+			 avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc,
 					batch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();

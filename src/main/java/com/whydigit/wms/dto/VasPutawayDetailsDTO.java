@@ -13,7 +13,7 @@ public class VasPutawayDetailsDTO {
 
 	private Long id;
 	private String partNo;
-	private String partDescription;
+	private String partDesc;
 	private String grnNo;
 	private LocalDate grnDate;
 	private int invQty;

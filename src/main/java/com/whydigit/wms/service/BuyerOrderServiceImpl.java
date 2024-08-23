@@ -76,7 +76,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 			buyerOrderVO.setCreatedBy(buyerOrderDTO.getCreatedBy());
-			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
+			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());  
 
 			message = "BuyerOrder Creation Successfully";
 		} else {
@@ -84,7 +84,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 					"This Id Not Found Any Informations,Invalid Id" + buyerOrderDTO.getId()));
 			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
 
-			if (!buyerOrderVO.getOrderNo().equalsIgnoreCase(buyerOrderDTO.getOrderNo())) {
+			if (!buyerOrderVO.getOrderNo().equalsIgnoreCase(    buyerOrderDTO.getOrderNo())) {
 
 				if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(buyerOrderDTO.getOrderNo(),
 						buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(),
@@ -216,13 +216,15 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("batch", fs[2] != null ? fs[2].toString() : "");
-			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);
+			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);  
+			part.put("id", fs[4] != null ? Integer.parseInt(fs[4].toString()) : 0);
 
 			details1.add(part);
 		}
 		return details1;
 
 	}
+
 
 	@Override
 	public int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
@@ -232,8 +234,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		return result;
 	}
 
-	
 
+	
 	@Override
 	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
 		return buyerOrderRepo.findByBo(orgId);

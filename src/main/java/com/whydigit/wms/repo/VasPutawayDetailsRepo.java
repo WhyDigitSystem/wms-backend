@@ -19,7 +19,7 @@ public interface VasPutawayDetailsRepo extends JpaRepository<VasPutawayDetailsVO
 	Set<Object[]> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId, String branch, String client,
 			String docId);
 
-	@Query(nativeQuery = true,value="SELECT bin,binclass,celltype,core,expdate,stockdate,partno,partdescription,sku,grnno,grndate,picqty,avlqty from vaspickdetails a , vaspick b where  a.vaspickid=b.vaspickid  and b.orgid=?1 and b.branch=?2 AND b.branchcode=?3 and b.client=?4 and b.docid=?5")
+	@Query(nativeQuery = true,value="SELECT bin,binclass,celltype,core,expdate,stockdate,partno,partdescription,sku,grnno,grndate,picqty,avlqty,ROW_NUMBER() OVER (ORDER BY partdescription, partno) AS id from vaspickdetails a , vaspick b where  a.vaspickid=b.vaspickid  and b.orgid=?1 and b.branch=?2 AND b.branchcode=?3 and b.client=?4 and b.docid=?5")
 	Set<Object[]> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode, String client,String docId);
 
 

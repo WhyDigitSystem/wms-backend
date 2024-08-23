@@ -142,7 +142,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 				stockDetailsVOFrom.setSSku(vasPutawayDetailsVO.getSsku());
 				stockDetailsVOFrom.setStockDate(vasPutawayDetailsVO.getStockDate());
 				stockDetailsVOFrom.setPartno(vasPutawayDetailsVO.getPartNo());
-				stockDetailsVOFrom.setPartDesc(vasPutawayDetailsVO.getPartDescription());
+				stockDetailsVOFrom.setPartDesc(vasPutawayDetailsVO.getPartDesc());
 				stockDetailsVOFrom.setGrnNo(vasPutawayDetailsVO.getGrnNo());
 				stockDetailsVOFrom.setGrnDate(vasPutawayDetailsVO.getGrnDate());
 				stockDetailsVOFrom.setInvQty(vasPutawayDetailsVO.getInvQty());
@@ -182,7 +182,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 				stockDetailsVOTo.setStatus(vasPutawayDetailsVO.getStatus());
 				stockDetailsVOTo.setStockDate(vasPutawayDetailsVO.getStockDate());
 				stockDetailsVOTo.setPartno(vasPutawayDetailsVO.getPartNo());
-				stockDetailsVOTo.setPartDesc(vasPutawayDetailsVO.getPartDescription());
+				stockDetailsVOTo.setPartDesc(vasPutawayDetailsVO.getPartDesc());
 				stockDetailsVOTo.setGrnNo(vasPutawayDetailsVO.getGrnNo());
 				stockDetailsVOTo.setGrnDate(vasPutawayDetailsVO.getGrnDate());
 				stockDetailsVOTo.setInvQty(vasPutawayDetailsVO.getInvQty());
@@ -229,10 +229,10 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 			VasPutawayDetailsVO vasPutawayDetailsVO = new VasPutawayDetailsVO();
 			vasPutawayDetailsVO = new VasPutawayDetailsVO();
 			vasPutawayDetailsVO.setPartNo(vasPutawayDetailsDTO.getPartNo());
-			vasPutawayDetailsVO.setPartDescription(vasPutawayDetailsDTO.getPartDescription());
+			vasPutawayDetailsVO.setPartDesc(vasPutawayDetailsDTO.getPartDesc());
 			vasPutawayDetailsVO.setGrnNo(vasPutawayDetailsDTO.getGrnNo());
 			vasPutawayDetailsVO.setGrnDate(vasPutawayDetailsDTO.getGrnDate());
-			vasPutawayDetailsVO.setPartDescription(vasPutawayDetailsDTO.getPartDescription());
+			vasPutawayDetailsVO.setPartDesc(vasPutawayDetailsDTO.getPartDesc());
 			vasPutawayDetailsVO.setInvQty(vasPutawayDetailsDTO.getInvQty());
 			vasPutawayDetailsVO.setPutAwayQty(vasPutawayDetailsDTO.getPutAwayQty());
 			vasPutawayDetailsVO.setFromBin(vasPutawayDetailsDTO.getFromBin());
@@ -333,6 +333,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 			part.put("grnDate", fs[10] != null ? fs[10].toString() : "");
 			part.put("picqty", fs[11] != null ? fs[11].toString() : "");
 			part.put("avlqty", fs[12] != null ? fs[12].toString() : "");
+			part.put("id",fs[13]!=null ? Integer.parseInt(fs[13].toString()):0);
 
 			details1.add(part);
 		}

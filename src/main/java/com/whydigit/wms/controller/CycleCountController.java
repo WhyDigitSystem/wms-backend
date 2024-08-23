@@ -169,5 +169,150 @@ public class CycleCountController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("getPartNoByCycleCount")
+	public ResponseEntity<ResponseDTO> getPartNoByCycleCount(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse) {
+		String methodName = "getPartNoByCycleCount()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> cycleCountPartNo = new ArrayList<Map<String, Object>>();
+		try {
+			cycleCountPartNo = cycleCountService.getPartNoByCycleCount(orgId, branchCode, client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount PartNo Details found Successfullly");
+			responseObjectsMap.put("cycleCountPartNo", cycleCountPartNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CycleCount PartNo information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("getGrnNoByCycleCount")
+	public ResponseEntity<ResponseDTO> getGrnNoByCycleCount(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo ) {
+		String methodName = "getGrnNoByCycleCount()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> cycleCountGrnNo = new ArrayList<Map<String, Object>>();
+		try {
+			cycleCountGrnNo = cycleCountService.getGrnNoByCycleCount(orgId, branchCode, client, warehouse,partNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount GrnNo Details found Successfullly");
+			responseObjectsMap.put("cycleCountGrnNo", cycleCountGrnNo);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CycleCount GrnNo information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("getBatchByCycleCount")
+	public ResponseEntity<ResponseDTO> getBatchByCycleCount(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,
+			@RequestParam(required = true) String grnNO) {
+		String methodName = "getBatchByCycleCount()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> cycleCountBatch = new ArrayList<Map<String, Object>>();
+		try {
+			cycleCountBatch = cycleCountService.getBatchByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount Batch Details found Successfullly");
+			responseObjectsMap.put("cycleCountBatch", cycleCountBatch);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CycleCount Batch information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("getBinDetailsByCycleCount")
+	public ResponseEntity<ResponseDTO> getBinDetailsByCycleCount(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,
+			@RequestParam(required = true) String grnNO,@RequestParam(required = true) String batch) {
+		String methodName = "getBinDetailsByCycleCount()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> cycleBinDetails = new ArrayList<Map<String, Object>>();
+		try {
+			cycleBinDetails = cycleCountService.getBinDetailsByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO,batch);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount Bin Details found Successfullly");
+			responseObjectsMap.put("cycleBinDetails", cycleBinDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CycleCount Bin information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
+	@GetMapping("getAvlQtyByCycleCount")
+	public ResponseEntity<ResponseDTO> getAvlQtyByCycleCount(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,
+			@RequestParam(required = true) String grnNO,@RequestParam(required = true) String batch,
+			@RequestParam(required = true) String bin
+			) {
+		String methodName = "getAvlQtyByCycleCount()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> avlQty = new ArrayList<Map<String, Object>>();
+		try {
+			avlQty = cycleCountService.getAvlQtyByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO,batch,bin);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CycleCount Avl Qty Details found Successfullly");
+			responseObjectsMap.put("avlQty", avlQty);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"CycleCount Avl Qty in information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 }
