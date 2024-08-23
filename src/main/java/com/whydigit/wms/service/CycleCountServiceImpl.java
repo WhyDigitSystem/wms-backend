@@ -25,10 +25,10 @@ import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 
 @Service
 public class CycleCountServiceImpl implements CycleCountService {
-
+ 
 	public static final Logger LOGGER = LoggerFactory.getLogger(StockProcessServiceImpl.class);
 
-	@Autowired
+	@Autowired 
 	CycleCountRepo cycleCountRepo;
 
 	@Autowired

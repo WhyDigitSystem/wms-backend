@@ -29,11 +29,11 @@ import com.whydigit.wms.service.CycleCountService;
 public class CycleCountController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(CycleCountController.class);
+ 
+	@Autowired 
+	CycleCountService cycleCountService; 
 
-	@Autowired
-	CycleCountService cycleCountService;
-
-	// CYCLECOUNT
+	// CYCLECOUNT 
 
 	@PutMapping("/createUpdateCycleCount")
 	public ResponseEntity<ResponseDTO> createUpdateCycleCount(@RequestBody CycleCountDTO cycleCountDTO) {

@@ -29,7 +29,7 @@ import com.whydigit.wms.service.WarehouseMasterService;
 @RestController
 @RequestMapping("/api/gatePassIn")
 public class GatePassInController extends BaseController {
-	
+	 
 	public static final Logger LOGGER = LoggerFactory.getLogger(GatePassInController.class);
 	
 	@Autowired
