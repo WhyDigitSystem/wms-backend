@@ -177,6 +177,8 @@ public class PutawayServiceImpl implements PutawayService {
 				handlingStockInVO.setSku(putAwayDetailsVO.getSku());
 				handlingStockInVO.setSsku(putAwayDetailsVO.getSku());
 				handlingStockInVO.setExpdate(putAwayDetailsVO.getExpdate());
+				handlingStockInVO.setBatchno(putAwayDetailsVO.getBatch());
+				handlingStockInVO.setBatchdt(putAwayDetailsVO.getBatchDate());
 				// Check if damageqty is 0
 				if ("Defective".equals(putAwayDetailsVO.getBin())) {
 					handlingStockInVO.setQcflag("F");
@@ -226,6 +228,7 @@ public class PutawayServiceImpl implements PutawayService {
 				stockDetailsVO.setExpDate(putAwayDetailsVO.getExpdate());
 				stockDetailsVO.setCellType(putAwayDetailsVO.getCellType());
 				stockDetailsVO.setCore(putAwayVO.getCore());
+				stockDetailsVO.setBinClass(putAwayVO.getBinClass());
 				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
 				stockDetailsVO.setCreatedBy(savedPutAwayVO.getCreatedBy());
 				stockDetailsVO.setUpdatedBy(savedPutAwayVO.getUpdatedBy());
@@ -307,6 +310,8 @@ public class PutawayServiceImpl implements PutawayService {
 			putAwayDetailsVOs.setBinType(putAwayDetailsDTO.getBinType());
 			putAwayDetailsVOs.setSSku(putAwayDetailsDTO.getSSku());
 			putAwayDetailsVOs.setCellType(putAwayDetailsDTO.getCellType());
+			String celltype=putAwayRepo.getCelltype(putAwayDTO.getOrgId(),putAwayDetailsDTO.getBin());
+			putAwayDetailsVOs.setCellType(celltype);
 			putAwayDetailsVOs.setBinClass(putAwayDTO.getBinClass());
 			putAwayDetailsVOs.setBatchDate(putAwayDetailsDTO.getBatchDate());
 			putAwayDetailsVOs.setPutAwayVO(putAwayVO);

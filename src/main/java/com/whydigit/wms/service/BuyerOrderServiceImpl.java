@@ -225,11 +225,15 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	}
 
-	 @Override
-	    public int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, 
-	                             String branch, String partNo, String partDesc, String batch) {
-	        return buyerOrderRepo.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc, batch);
-	    }
+
+	@Override
+	public int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
+			String branch, String partNo, String partDesc, String batch) {
+		int result = buyerOrderRepo.getAvilableQty(orgId, client, branchCode, warehouse, branch, partNo,
+				partDesc, batch);
+		return result;
+	}
+
 
 	
 	@Override

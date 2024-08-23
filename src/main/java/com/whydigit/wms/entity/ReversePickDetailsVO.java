@@ -31,40 +31,48 @@ public class ReversePickDetailsVO {
 	@SequenceGenerator(name = "reversepickdetailsgen", sequenceName = "reversepickdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "reversepickdetailsid")
 	private Long id;
-	@Column(name = "partcode")
-	private String partCode;
+	@Column(name = "partno")
+	private String partNo;
 	@Column(name = "partdesc")
 	private String partDesc;
-	@Column(name = "batchno")
-	private String batchNo;
-	@Column(name = "lotno")
-	private String lotNo;
 	@Column(name = "sku")
 	private String sku;
-	@Column(name = "location")
-	private String location;
-	@Column(name = "tolocation")
-	private String toLocation;
+	@Column(name = "core")
+	private String core;
+	@Column(name = "bin")
+	private String bin;
+	@Column(name = "grnno")
+	private String grnNo;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
+	@Column(name = "batchno")
+	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 	@Column(name = "orderqty")
 	private int orderQty;
-	@Column(name = "pickedqtyperlocation")
-	private int pickedQtyPerLocation;
-	@Column(name = "revisedqtyperlocation")
-	private int revisedQtyPerLocation;
-	@Column(name = "weight")
-	private int weight;
-	@Column(name = "pgroup")
-	private int pGroup;
+	@Column(name = "pickqty")
+	private int pickQty;
+	@Column(name = "revisedqty")
+	private int revisedQty;
+	@Column(name = "remarks")
+	private String remarks;
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "bintype")
+	private String binType;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "ssku")
+	private String ssku;
+	@Column(name = "status")
+	private String status;
+	@Column(name = "stockdate")
+	private LocalDate stockDate;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "rate")
-	private int rate;
-	@Column(name = "tax")
-	private int tax;
-	@Column(name = "amount")
-	private int amount;
-	@Column(name = "remarks")
-	private String reMarks;
+	@Column(name = "qcflag")
+	private String qcFlag;
 
 	@ManyToOne
 	@JoinColumn(name = "reversepickid")
