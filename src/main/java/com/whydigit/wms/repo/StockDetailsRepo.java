@@ -24,4 +24,8 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 		String fromBin, String partNo, String grnNo, String batchNo);
 
+
+@Query(value ="select batch from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 group by batch",nativeQuery =true)
+Set<Object[]> getDetails(Long orgId, String branchCode, String client, String warehouse, String partNo);
+
 }
