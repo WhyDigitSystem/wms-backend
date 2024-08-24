@@ -25,10 +25,10 @@ import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 
 @Service
 public class CycleCountServiceImpl implements CycleCountService {
-
+ 
 	public static final Logger LOGGER = LoggerFactory.getLogger(StockProcessServiceImpl.class);
 
-	@Autowired
+	@Autowired 
 	CycleCountRepo cycleCountRepo;
 
 	@Autowired
@@ -92,23 +92,28 @@ public class CycleCountServiceImpl implements CycleCountService {
 		cycleCountVO.setWarehouse(cycleCountDTO.getWarehouse());
 		cycleCountVO.setCreatedBy(cycleCountDTO.getCreatedBy());
 		cycleCountVO.setCancelRemarks(cycleCountDTO.getCancelRemarks());
-		cycleCountVO.setFreeze(cycleCountDTO.getFreeze());
-		cycleCountVO.setCycleCountNo(cycleCountDTO.getCycleCountNo());
-		cycleCountVO.setCycleCountDate(cycleCountDTO.getCycleCountDate());
 
 		List<CycleCountDetailsVO> cycleCountDetailsVOs = new ArrayList<>();
 		for (CycleCountDetailsDTO details2dto : cycleCountDTO.getCycleCountDetailsDTO()) {
 			CycleCountDetailsVO cycleCountDetailsVO = new CycleCountDetailsVO();
 			cycleCountDetailsVO.setPartNo(details2dto.getPartNo());
-			cycleCountDetailsVO.setParetDescription(details2dto.getParetDescription());
+			cycleCountDetailsVO.setPartDescription(details2dto.getPartDescription());
 			cycleCountDetailsVO.setGrnNo(details2dto.getGrnNo());
 			cycleCountDetailsVO.setSku(details2dto.getSku());
 			cycleCountDetailsVO.setBinType(details2dto.getBinType());
 			cycleCountDetailsVO.setBatchNo(details2dto.getBatchNo());
 			cycleCountDetailsVO.setBatchDate(details2dto.getBatchDate());
 			cycleCountDetailsVO.setBin(details2dto.getBin());
-			cycleCountDetailsVO.setQty(details2dto.getQty());
+			cycleCountDetailsVO.setAvlQty(details2dto.getAvlQty());
 			cycleCountDetailsVO.setActualQty(details2dto.getActualQty());
+			cycleCountDetailsVO.setGrnDate(details2dto.getGrnDate());
+			cycleCountDetailsVO.setExpDate(details2dto.getExpDate());
+			cycleCountDetailsVO.setBinClass(details2dto.getBinClass());
+			cycleCountDetailsVO.setCellType(details2dto.getCellType());
+			cycleCountDetailsVO.setCore(details2dto.getCore());
+			cycleCountDetailsVO.setLotNo(details2dto.getLotNo());
+			cycleCountDetailsVO.setStatus(details2dto.getStatus());
+			cycleCountDetailsVO.setQcFlag(details2dto.getQcFlag());
 
 			// Avoid recursive reference to kittingVO in KittingDetails2VO
 			cycleCountDetailsVO.setCycleCountVO(cycleCountVO);
@@ -149,7 +154,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 
-			part.put("partNo", fs[0] != null ? fs[0].toString():"");
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			part.put("bin", fs[3] != null ? fs[3].toString() : "");
@@ -186,7 +191,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 
-			part.put("partNo", fs[0] != null ? fs[0].toString():"");
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 
@@ -199,7 +204,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 	@Override
 	public List<Map<String, Object>> getGrnNoByCycleCount(Long orgId, String branchCode, String client,
 			String warehouse, String partNo) {
-		Set<Object[]> result = cycleCountRepo.getGrnNo(orgId, branchCode, client, warehouse,partNo);
+		Set<Object[]> result = cycleCountRepo.getGrnNo(orgId, branchCode, client, warehouse, partNo);
 		return getGrn(result);
 	}
 
@@ -208,7 +213,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 
-			part.put("grnNo", fs[0] != null ? fs[0].toString():"");
+			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
 
 			details1.add(part);
@@ -220,7 +225,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 	@Override
 	public List<Map<String, Object>> getBatchByCycleCount(Long orgId, String branchCode, String client,
 			String warehouse, String partNo, String grnNO) {
-		Set<Object[]> result = cycleCountRepo.getBatch(orgId, branchCode, client, warehouse,partNo,grnNO);
+		Set<Object[]> result = cycleCountRepo.getBatch(orgId, branchCode, client, warehouse, partNo, grnNO);
 		return getBatchDetails(result);
 	}
 
@@ -229,7 +234,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 
-			part.put("batch", fs[0] != null ? fs[0].toString():"");
+			part.put("batch", fs[0] != null ? fs[0].toString() : "");
 			part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
 
 			details1.add(part);
@@ -241,7 +246,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 	@Override
 	public List<Map<String, Object>> getBinDetailsByCycleCount(Long orgId, String branchCode, String client,
 			String warehouse, String partNo, String grnNO, String batch) {
-		Set<Object[]> result = cycleCountRepo.getBinDetails(orgId, branchCode, client, warehouse,partNo,grnNO,batch);
+		Set<Object[]> result = cycleCountRepo.getBinDetails(orgId, branchCode, client, warehouse, partNo, grnNO, batch);
 		return getBin(result);
 	}
 
@@ -250,12 +255,12 @@ public class CycleCountServiceImpl implements CycleCountService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 
-			part.put("bin", fs[0] != null ? fs[0].toString():"");
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
 			part.put("binType", fs[1] != null ? fs[1].toString() : "");
-			part.put("lotNo", fs[2] != null ? fs[2].toString():"");
+			part.put("lotNo", fs[2] != null ? fs[2].toString() : "");
 			part.put("cellType", fs[3] != null ? fs[3].toString() : "");
 			part.put("binClass", fs[4] != null ? fs[4].toString() : "");
-			part.put("core", fs[5] != null ? fs[5].toString():"");
+			part.put("core", fs[5] != null ? fs[5].toString() : "");
 			part.put("qcFlag", fs[6] != null ? fs[6].toString() : "");
 
 			details1.add(part);
@@ -267,7 +272,8 @@ public class CycleCountServiceImpl implements CycleCountService {
 	@Override
 	public List<Map<String, Object>> getAvlQtyByCycleCount(Long orgId, String branchCode, String client,
 			String warehouse, String partNo, String grnNO, String batch, String bin) {
-		Set<Object[]> result = cycleCountRepo.getAvlQty(orgId, branchCode, client, warehouse,partNo,grnNO,batch,bin);
+		Set<Object[]> result = cycleCountRepo.getAvlQty(orgId, branchCode, client, warehouse, partNo, grnNO, batch,
+				bin);
 		return getAvlQty1(result);
 	}
 
@@ -276,7 +282,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 
-			part.put("avlQty", fs[0] != null ?  Integer.parseInt(fs[0].toString()) : 0);
+			part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
 			part.put("status", fs[1] != null ? fs[1].toString() : "");
 
 			details1.add(part);

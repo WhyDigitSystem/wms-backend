@@ -353,11 +353,11 @@ public class DeKittingServiceImpl implements DeKittingService{
 	}
 
 	@Transactional
-	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
+	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndExpDateFromStockForDeKittingParent(
 			Long orgId, String branch, String branchCode, String client, String bin, String partNo,
 			String partDesc, String sku) {
 
-		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
+		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndExpDateFromStockForDeKittingParent(
 				orgId, branch, branchCode, client, bin, partNo, partDesc, sku);
 		return getGrnNoResult(result);
 	}
@@ -369,8 +369,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
 			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("lotNo", fs[3] != null ? fs[3].toString() : "");
-			part.put("expDate", fs[4] != null ? fs[4].toString() : "");
+			part.put("expDate", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -379,10 +378,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 	@Override
 	@Transactional
 	public int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
-			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
+			String client, String bin, String partDesc, String sku, String partNo, String grnNo) {
 
 		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode,
-				client, bin, partDesc, sku, partNo, grnNo, lotNo);
+				client, bin, partDesc, sku, partNo, grnNo);
 		return getAvlQtyResult(result);
 	}
 
