@@ -19,4 +19,5 @@ public interface ReversePickRepo extends JpaRepository<ReversePickVO, Long>{
 	List<ReversePickVO> getReversePickDetails(Long orgId, String client, String branch, String branchCode,
 			String finYear, String warehouse);
 
+
 }

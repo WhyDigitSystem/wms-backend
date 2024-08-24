@@ -34,47 +34,44 @@ public class ReversePickVO {
 	@SequenceGenerator(name = "reversepickgen", sequenceName = "reversepickseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "reversepickid")
 	private Long id;
-	
-	@Column(name = "pickrequesid")
-	private String pickRequestId;
-	@Column(name = "dispatch")
-	private String dispatch;
+	@Column(name = "buyerrefno")
+	private String buyerRefNo;
+	@Column(name = "buyerrefdate")
+	private LocalDate buyerRefDate;
+	@Column(name = "pickrequestdocid")
+	private String pickRequestDocId;
+	@Column(name = "pickrequestdocdate")
+	private LocalDate pickRequestDocDate;
+	@Column(name = "boamendment")
+	private String boAmendment;
 	@Column(name = "buyerorderno")
 	private String buyerOrderNo;
-	@Column(name = "buyerorderrefno")
-	private String buyerOrderRefNo;
-	@Column(name = "shipmentmethod")
-	private String shipmentMethod;
-	@Column(name = "refno")
-	private String refNo;
-	@Column(name = "buyerorderrefdate")
-	private LocalDate buyerOrderRefDate;
-	@Column(name = "noofboxes")
-	private int noOfBoxes;
-	@Column(name = "duedays")
-	private int dueDays;
+	@Column(name = "buyerorderdate")
+	private String buyerOrderDate;
+	@Column(name = "buyersreference")
+	private String buyersReference;
+	@Column(name = "invoiceno")
+	private String invoiceNo;
+	@Column(name = "clientshortname")
+	private String clientShortName;
 	@Column(name = "clientname")
 	private String clientName;
-	@Column(name = "customername")
-	private String customerName;
-	@Column(name = "outtime")
-	private String outTime;
 	@Column(name = "clientaddress")
 	private String clientAddress;
+	@Column(name = "customershortname")
+	private String customerShortName;
+	@Column(name = "customername")
+	private String customerName;
 	@Column(name = "customeraddress")
 	private String customerAddress;
-	private String status;
-	@Column(name = "boammount")
-	private String boAmmount;
-
-	@Column(name = "screenname")
-	private String screenName = "REVERSEPICK";
-	@Column(name = "screencode")
-	private String screenCode = "RP";
-	@Column(name = "docdate")
-	private LocalDate docDate=LocalDate.now();
-	@Column(name = "docid", unique = true)
+	@Column(name = "pickorder")
+	private String pickOrder;
+	@Column(name = "outtime")
+	private String outTime;
+	@Column(name = "docid")
 	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -94,13 +91,20 @@ public class ReversePickVO {
 	@Column(name = "modifiedby")
 	private String updatedBy;
 	@Column(name = "active")
-	private boolean active;
+	private boolean active = true;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
+	@Column(name = "status")
+	private String status;
 	@Column(name = "freeze")
-	private String freeze;
+	private boolean freeze ;
+	
+	@Column(name = "screenname")
+	private String screenName="REVERSE PICK";
+	@Column(name = "screencode")
+	private String screenCode="RP";
 	
 	
 	@OneToMany(mappedBy ="reversePickVO",cascade =CascadeType.ALL)
