@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeKittingParentDTO {
+	
 	private Long id;
 	private String partNo;
 	private String partDesc;
@@ -25,8 +26,7 @@ public class DeKittingParentDTO {
 	private BigDecimal unitRate;
 	private BigDecimal amount;
 	private String status;
-	private boolean qcFlag;
-	
+	private String qcFlag;
 	private String binClass;
 	private String cellType;
 	private String clientCode;

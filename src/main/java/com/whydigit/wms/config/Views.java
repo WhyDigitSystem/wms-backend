@@ -214,7 +214,6 @@ public class Views {
     			+ "            d.batchno,\r\n"
     			+ "            d.orderqty,\r\n"
     			+ "            SUM(d.pickqty) sqty,\r\n"
-    			+ "            lotno,\r\n"
     			+ "            SUM(pickqty) pickedqty,\r\n"
     			+ "            (d.orderqty - SUM(d.pickqty)) Pendingqty,\r\n"
     			+ "            c.status\r\n"
@@ -237,7 +236,6 @@ public class Views {
     			+ "            d.partdesc,\r\n"
     			+ "            d.batchno,\r\n"
     			+ "            d.orderqty,\r\n"
-    			+ "            lotno,\r\n"
     			+ "            d.orderqty,\r\n"
     			+ "            c.status\r\n"
     			+ "   ORDER BY docdate DESC");
