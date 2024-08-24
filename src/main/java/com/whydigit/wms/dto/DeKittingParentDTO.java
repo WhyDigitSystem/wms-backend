@@ -25,7 +25,7 @@ public class DeKittingParentDTO {
 	private BigDecimal unitRate;
 	private BigDecimal amount;
 	private String status;
-	private boolean qcFlag;
+	private String qcFlag;
 	
 	private String binClass;
 	private String cellType;

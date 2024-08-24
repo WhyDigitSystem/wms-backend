@@ -240,7 +240,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 			deKittingParentVO.setUnitRate(deKittingParentDTO.getUnitRate());
 			deKittingParentVO.setStatus(deKittingParentDTO.getStatus());
 			deKittingParentVO.setAmount(deKittingParentDTO.getAmount());
-			deKittingParentVO.setQcFlag(deKittingParentDTO.isQcFlag());
+			deKittingParentVO.setQcFlag(deKittingParentDTO.getQcFlag());
 
 			deKittingParentVO.setBinClass(deKittingParentDTO.getBinClass());
 			deKittingParentVO.setCellType(deKittingParentDTO.getCellType());
@@ -274,9 +274,8 @@ public class DeKittingServiceImpl implements DeKittingService{
 			deKittingChildVO.setUnitRate(deKittingChildDTO.getUnitRate());
 			deKittingChildVO.setStatus(deKittingChildDTO.getStatus());
 			deKittingChildVO.setAmount(deKittingChildDTO.getAmount());
-			deKittingChildVO.setQcFlag(deKittingChildDTO.isQcFlag());
+			deKittingChildVO.setQcFlag(deKittingChildDTO.getQcFlag());
 			deKittingChildVO.setDeKittingVO(deKittingVO);
-
 			deKittingChildVO.setBinClass(deKittingChildDTO.getBinClass());
 			deKittingChildVO.setCellType(deKittingChildDTO.getCellType());
 			deKittingChildVO.setClientCode(deKittingChildDTO.getClientCode());
@@ -385,14 +384,14 @@ public class DeKittingServiceImpl implements DeKittingService{
 		return getAvlQtyResult(result);
 	}
 
-	private int getAvlQtyResult(Set<Object[]> result) {
-		int totalQty = 0;
-		for (Object[] qt : result) {
-			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
-		}
-		return totalQty;
+		private int getAvlQtyResult(Set<Object[]> result) {
+			int totalQty = 0;
+			for (Object[] qt : result) {
+				totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
+			}
+			return totalQty;
 	}
-
+	
 	// CHILD
 	@Transactional
 	public List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,

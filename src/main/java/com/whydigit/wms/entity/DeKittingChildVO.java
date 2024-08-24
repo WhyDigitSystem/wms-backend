@@ -58,7 +58,7 @@ public class DeKittingChildVO {
 	@Column(name="status")
 	private String status="R";
 	@Column(name = "qcflag")
-	private boolean qcFlag;
+	private String qcFlag;
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "celltype")
