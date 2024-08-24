@@ -25,7 +25,11 @@ public interface BuyerOrderService {
 	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String batch,
 			String warehouse);
 
-	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
-			String branch, String partNo, String partDesc, String batch);
+	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+			String partDesc, String batch);
+
+	List<Map<String, Object>> getBatchByBuyerOrder(Long orgId, String branchCode, String client, String warehouse,
+			String partNo);
+
 
 }

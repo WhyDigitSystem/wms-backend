@@ -241,4 +241,24 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		return buyerOrderRepo.findByBo(orgId);
 	}
 
+	@Override
+	public List<Map<String, Object>> getBatchByBuyerOrder(Long orgId, String branchCode, String client,
+			String warehouse, String partNo) {
+		Set<Object[]> result = stockDetailsRepo.getDetails(orgId, branchCode, client, warehouse, partNo);
+		return getBatch1(result);
+	}
+
+	private List<Map<String, Object>> getBatch1(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("batch", fs[0] != null ? fs[0].toString() : "");
+			
+
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
 }
