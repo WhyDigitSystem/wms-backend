@@ -296,7 +296,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("sku", fs[2] != null ? fs[2].toString() : "");
 				part.put("grnNo", fs[3] != null ? fs[3].toString() : "");
 				part.put("grnDate", fs[4] != null ? fs[4].toString() : "");
-				part.put("batch", fs[5] != null ? fs[5].toString() : "");
+				part.put("batchNo", fs[5] != null ? fs[5].toString() : "");
 				part.put("batchDate", fs[6] != null ? fs[6].toString() : "");
 				part.put("expDate", fs[7] != null ? fs[7].toString() : "");
 				part.put("binType", fs[8] != null ? fs[8].toString() : "");
@@ -306,7 +306,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("bin", fs[12] != null ? fs[12].toString() : "");
 				part.put("status", fs[13] != null ? fs[13].toString() : "");
 				part.put("qcFlag", fs[14] != null ? fs[14].toString() : "");
-				part.put("totalQty", fs[15] != null ? fs[15].toString() : "");
+				part.put("totalQty", fs[15] != null ? Integer.parseInt(fs[15].toString()):0);
 				part.put("id",fs[16]!=null ? Integer.parseInt(fs[16].toString()):0);
 				details1.add(part);
 			}

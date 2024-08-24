@@ -192,7 +192,7 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	@Query(nativeQuery = true,value = "select a.* from pickrequest a where a.cancel=0 and a.status='Confirm' and a.orgid=?1 and a.finyear=?2 and a.branch=?3 and a.branchcode=?4 and a.client=?5 order by a.docid desc")
 	List<PickRequestVO> getPickDetails(Long orgId, String finYear, String branch, String branchCode, String client);
 
-	@Query(nativeQuery = true,value = "select b.partno,b.partdesc,b.sku,b.grnno,b.grndate,b.batchno,b.batchdate,b.bintype,b.binclass,b.celltype,b.core,b.bin,b.orderqty,b.pickqty,b.expdate,b.qcflag from pickrequest a, pickrequestdetails b\r\n"
+	@Query(nativeQuery = true,value = "select b.partno,b.partdesc,b.sku,b.grnno,b.grndate,b.batchno,b.batchdate,b.bintype,b.binclass,b.celltype,b.core,b.bin,b.orderqty,b.pickqty,b.expdate,b.qcflag,ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id from pickrequest a, pickrequestdetails b\r\n"
 			+ "where a.pickrequestid=b.pickrequestid and a.orgid=?1 and a.branchcode=?2 and a.client=?3 and a.docid=?4")
 	Set<Object[]> fillgridDetails(Long orgId, String branchCode, String client, String pickDocId);
 }
