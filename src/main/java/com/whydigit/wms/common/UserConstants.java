@@ -44,5 +44,10 @@ public class UserConstants {
 	public static final String USER_ACTION_ADD_EMPLOYEE_VERIFICATION = "ADD_EMPLOYEE_VERIFICATION";
 	public static final String USER_ACTION_ADD_ACCOUNT = "ADD_ACCOUNT";
 	public static final String USER_ACTION_REMOVE_ACCOUNT = "REMOVE_ACCOUNT";
+	public static final String KEY_USER = "user";
+	public static final String ERROR_MSG_METHOD_NAME = "MethodName : {} Error : {}";
+	public static final String REFRESH_TOKEN_SUCCESS_MESSAGE = "The refresh token has been successfully generated.";
+	public static final String REFRESH_TOKEN_FAILED_MESSAGE = "Failed to generate the refresh token.Please login again.";
+	public static final String REFRESH_TOKEN_EXPIRED_MESSAGE = "Your token id expired.Please login again.";
 
 }

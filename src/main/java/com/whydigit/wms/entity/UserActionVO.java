@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -14,16 +15,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user_action")
+@Table(name = "useraction")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserActionVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long actionId;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "useractiongen")
+	@SequenceGenerator(name = "useractiongen", sequenceName = "useractionseq", initialValue = 1000000001, allocationSize = 1)
+	private Long actionId;
 	private String userName;
-	private long userId;
+	private Long usersId;
 	private String actionType;
 	private Date actionDate;
 	
