@@ -102,7 +102,6 @@ public class VasPickServiceImpl implements VasPickService {
 		vasPickVO.setBranch(vasPicDTO.getBranch());
 		vasPickVO.setBranchCode(vasPicDTO.getBranchCode());
 		vasPickVO.setWarehouse(vasPicDTO.getWarehouse());
-		vasPickVO.setCancelRemarks(vasPicDTO.getCancelRemarks());
 		vasPickVO.setPicBin(vasPicDTO.getPicBin());
 
 		int totalOrderQty = 0;

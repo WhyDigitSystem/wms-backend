@@ -107,14 +107,12 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 	private void createUpdateSalesReturnVOBySalesReturnDTO(SalesReturnDTO salesReturnDTO, SalesReturnVO salesReturnVO) {
 
 		salesReturnVO.setOrgId(salesReturnDTO.getOrgId());
-		salesReturnVO.setTransactionType(salesReturnDTO.getTransactionType());
 		salesReturnVO.setEntryNo(salesReturnDTO.getEntryNo());
 		salesReturnVO.setEntryDate(salesReturnDTO.getEntryDate());
 		salesReturnVO.setPrDate(salesReturnDTO.getPrDate());
 		salesReturnVO.setBoNo(salesReturnDTO.getBoNo());
 		salesReturnVO.setBoDate(salesReturnDTO.getBoDate());
 		salesReturnVO.setPrNo(salesReturnDTO.getPrNo());
-		salesReturnVO.setQcFlag(salesReturnDTO.getQcFlag());
 		salesReturnVO.setBuyerName(salesReturnDTO.getBuyerName());
 		salesReturnVO.setBuyerType(salesReturnDTO.getBuyerType());
 		salesReturnVO.setSupplier(salesReturnDTO.getSupplier());
@@ -128,9 +126,7 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 		salesReturnVO.setTimeIn(salesReturnDTO.getTimeIn());
 		salesReturnVO.setTimeOut(salesReturnDTO.getTimeOut());
 		salesReturnVO.setBriefDescOfGoods(salesReturnDTO.getBriefDescOfGoods());
-		salesReturnVO.setTotalReturnQty(salesReturnDTO.getTotalReturnQty());
 		salesReturnVO.setOrgId(salesReturnDTO.getOrgId());
-		salesReturnVO.setFreeze(salesReturnDTO.getFreeze());
 		salesReturnVO.setCustomer(salesReturnDTO.getCustomer());
 		salesReturnVO.setClient(salesReturnDTO.getClient());
 		salesReturnVO.setFinYear(salesReturnDTO.getFinYear());
@@ -151,25 +147,19 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 			salesReturnDetailsVO.setLRNo(salesReturnDetailsDTO.getLRNo());
 			salesReturnDetailsVO.setInvoiceNo(salesReturnDetailsDTO.getInvoiceNo());
 			salesReturnDetailsVO.setPartNo(salesReturnDetailsDTO.getPartNo());
-			salesReturnDetailsVO.setPartDescripition(salesReturnDetailsDTO.getPartDescripition());
-			salesReturnDetailsVO.setUnit(salesReturnDetailsDTO.getUnit());
+			salesReturnDetailsVO.setPartDesc(salesReturnDetailsDTO.getPartDesc());
+			salesReturnDetailsVO.setSku(salesReturnDetailsDTO.getSku());
 			salesReturnDetailsVO.setPickQty(salesReturnDetailsDTO.getPickQty());
 			salesReturnDetailsVO.setRetQty(salesReturnDetailsDTO.getRetQty());
 			salesReturnDetailsVO.setDamageQty(salesReturnDetailsDTO.getDamageQty());
 			salesReturnDetailsVO.setBatchNo(salesReturnDetailsDTO.getBatchNo());
 			salesReturnDetailsVO.setBatchDate(salesReturnDetailsDTO.getBatchDate());
 			salesReturnDetailsVO.setExpDate(salesReturnDetailsDTO.getExpDate());
-			salesReturnDetailsVO.setNoOfPallet(salesReturnDetailsDTO.getNoOfPallet());
-			salesReturnDetailsVO.setPalletQty(salesReturnDetailsDTO.getPalletQty());
-			salesReturnDetailsVO.setWeight(salesReturnDetailsDTO.getWeight());
-			salesReturnDetailsVO.setRate(salesReturnDetailsDTO.getRate());
-			salesReturnDetailsVO.setStatus(salesReturnDetailsDTO.getStatus());
-			salesReturnDetailsVO.setAmount(salesReturnDetailsDTO.getAmount());
-			salesReturnDetailsVO.setInsAmt(salesReturnDetailsDTO.getInsAmt());
+			salesReturnDetailsVO.setNoOfBin(salesReturnDetailsDTO.getNoOfBin());
+			salesReturnDetailsVO.setBinQty(salesReturnDetailsDTO.getBinQty());
 			salesReturnDetailsVO.setRemarks(salesReturnDetailsDTO.getRemarks());
 			salesReturnDetailsVO.setQcFlag(salesReturnDetailsDTO.isQcFlag());
 			salesReturnDetailsVO.setSalesReturnVO(salesReturnVO);
-
 			salesReturnDetailsVOs.add(salesReturnDetailsVO);
 		}
 		salesReturnVO.setSalesReturnDetailsVO(salesReturnDetailsVOs);

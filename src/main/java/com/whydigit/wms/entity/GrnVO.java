@@ -37,14 +37,15 @@ public class GrnVO {
 
 	@Column(name = "docid",unique = true)
 	private String docId;
+	@Column(name = "docdate")
 	@Builder.Default
-	private LocalDate docdate = LocalDate.now();
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "entryno")
 	private String entryNo;
 	@Column(name = "entrydate")
 	private LocalDate entryDate;
 	@Column(name = "grndate")
-	private LocalDate grndDate;
+	private LocalDate grnDate;
 	@Column(name = "gatepassid")
 	private String gatePassId;
 	@Column(name = "gatepassdate")
