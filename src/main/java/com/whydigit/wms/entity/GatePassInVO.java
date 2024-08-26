@@ -42,7 +42,7 @@ public class GatePassInVO {
 	private String entryNo;//
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docdate = LocalDate.now();

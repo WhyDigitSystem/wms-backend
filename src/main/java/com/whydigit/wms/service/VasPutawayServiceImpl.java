@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +20,13 @@ import com.whydigit.wms.dto.VasPutawayDTO;
 import com.whydigit.wms.dto.VasPutawayDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.StockDetailsVO;
+import com.whydigit.wms.entity.VasPickDetailsVO;
 import com.whydigit.wms.entity.VasPutawayDetailsVO;
 import com.whydigit.wms.entity.VasPutawayVO;
 import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
+import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.VasPutawayDetailsRepo;
 import com.whydigit.wms.repo.VasPutawayRepo;
@@ -43,6 +47,12 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
+	
+	@Autowired
+	ClientRepo clientRepo;
+	
+	@Autowired
+	MaterialRepo materialRepo;
 
 	// VASPutaway
 
@@ -108,90 +118,96 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 			message = "VasPutaway updated Successfully";
 
 		}
-		VasPutawayVO savedVasPutawayVO = vasPutawayRepo.save(vasPutawayVO);
-
-		List<VasPutawayDetailsVO> vasPutawayVOLists = savedVasPutawayVO.getVasPutawayDetailsVO();
-		if (vasPutawayVOLists != null && !vasPutawayVOLists.isEmpty()) {
-			for (VasPutawayDetailsVO vasPutawayDetailsVO : vasPutawayVOLists) {
-				// Create StockDetails for fromBin with negative quantity
-				StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
-
-				stockDetailsVOFrom.setRefNo(vasPutawayVO.getDocId());
-				stockDetailsVOFrom.setRefDate(vasPutawayVO.getDocDate());
-				stockDetailsVOFrom.setDocId(vasPutawayVO.getVasPickNo());
-				stockDetailsVOFrom.setStatus(vasPutawayVO.getStatus());
-				stockDetailsVOFrom.setOrgId(vasPutawayVO.getOrgId());
-				stockDetailsVOFrom.setCustomer(vasPutawayVO.getCustomer());
-				stockDetailsVOFrom.setClient(vasPutawayVO.getClient());
-				stockDetailsVOFrom.setCreatedBy(vasPutawayVO.getUpdatedBy());
-				stockDetailsVOFrom.setFinYear(vasPutawayVO.getFinYear());
-				stockDetailsVOFrom.setBranch(vasPutawayVO.getBranch());
-				stockDetailsVOFrom.setBranchCode(vasPutawayVO.getBranchCode());
-				stockDetailsVOFrom.setWarehouse(vasPutawayVO.getWarehouse());
-				stockDetailsVOFrom.setSourceScreenCode(vasPutawayVO.getScreenCode());
-				stockDetailsVOFrom.setSourceScreenName(vasPutawayVO.getScreenName());
-				stockDetailsVOFrom.setSourceId(vasPutawayVO.getId());
-				stockDetailsVOFrom.setBinClass(vasPutawayDetailsVO.getBinClass());
-				stockDetailsVOFrom.setCellType(vasPutawayDetailsVO.getCellType());
-				stockDetailsVOFrom.setClientCode(vasPutawayDetailsVO.getClientCode());
-				stockDetailsVOFrom.setBinType(vasPutawayDetailsVO.getBinType());
-				stockDetailsVOFrom.setCore(vasPutawayDetailsVO.getCore());
-				stockDetailsVOFrom.setStatus(vasPutawayDetailsVO.getStatus());
-				stockDetailsVOFrom.setExpDate(vasPutawayDetailsVO.getExpDate());
-				stockDetailsVOFrom.setPcKey(vasPutawayDetailsVO.getPckey());
-				stockDetailsVOFrom.setSSku(vasPutawayDetailsVO.getSsku());
-				stockDetailsVOFrom.setStockDate(vasPutawayDetailsVO.getStockDate());
-				stockDetailsVOFrom.setPartno(vasPutawayDetailsVO.getPartNo());
-				stockDetailsVOFrom.setPartDesc(vasPutawayDetailsVO.getPartDesc());
-				stockDetailsVOFrom.setGrnNo(vasPutawayDetailsVO.getGrnNo());
-				stockDetailsVOFrom.setGrnDate(vasPutawayDetailsVO.getGrnDate());
-				stockDetailsVOFrom.setInvQty(vasPutawayDetailsVO.getInvQty());
-				stockDetailsVOFrom.setSsQty(vasPutawayDetailsVO.getPutAwayQty() * -1); // NEGATIVE QUANTITY
-				stockDetailsVOFrom.setBin(vasPutawayDetailsVO.getBin());
-				stockDetailsVOFrom.setBin(vasPutawayDetailsVO.getFromBin());
-				stockDetailsVOFrom.setSku(vasPutawayDetailsVO.getSku());
-				stockDetailsRepo.save(stockDetailsVOFrom);
-
-				// Create StockDetails for toBin with positive quantity
-				StockDetailsVO stockDetailsVOTo = new StockDetailsVO();
-//					
-
-				stockDetailsVOTo.setRefNo(vasPutawayVO.getDocId());
-				stockDetailsVOTo.setRefDate(vasPutawayVO.getDocDate());
-				stockDetailsVOTo.setDocId(vasPutawayVO.getVasPickNo());
-				stockDetailsVOTo.setStatus(vasPutawayVO.getStatus());
-				stockDetailsVOTo.setOrgId(vasPutawayVO.getOrgId());
-				stockDetailsVOTo.setCustomer(vasPutawayVO.getCustomer());
-				stockDetailsVOTo.setClient(vasPutawayVO.getClient());
-				stockDetailsVOTo.setCreatedBy(vasPutawayVO.getUpdatedBy());
-				stockDetailsVOTo.setFinYear(vasPutawayVO.getFinYear());
-				stockDetailsVOTo.setBranch(vasPutawayVO.getBranch());
-				stockDetailsVOTo.setBranchCode(vasPutawayVO.getBranchCode());
-				stockDetailsVOTo.setWarehouse(vasPutawayVO.getWarehouse());
-				stockDetailsVOTo.setSourceScreenCode(vasPutawayVO.getScreenCode());
-				stockDetailsVOTo.setSourceScreenName(vasPutawayVO.getScreenName());
-				stockDetailsVOTo.setSourceId(vasPutawayVO.getId());
-				stockDetailsVOTo.setBinClass(vasPutawayDetailsVO.getBinClass());
-				stockDetailsVOTo.setBinType(vasPutawayDetailsVO.getBinType());
-				stockDetailsVOTo.setCellType(vasPutawayDetailsVO.getCellType());
-				stockDetailsVOTo.setClientCode(vasPutawayDetailsVO.getClientCode());
-				stockDetailsVOTo.setCore(vasPutawayDetailsVO.getCore());
-				stockDetailsVOTo.setExpDate(vasPutawayDetailsVO.getExpDate());
-				stockDetailsVOTo.setPcKey(vasPutawayDetailsVO.getPckey());
-				stockDetailsVOTo.setSSku(vasPutawayDetailsVO.getSsku());
-				stockDetailsVOTo.setStatus(vasPutawayDetailsVO.getStatus());
-				stockDetailsVOTo.setStockDate(vasPutawayDetailsVO.getStockDate());
-				stockDetailsVOTo.setPartno(vasPutawayDetailsVO.getPartNo());
-				stockDetailsVOTo.setPartDesc(vasPutawayDetailsVO.getPartDesc());
-				stockDetailsVOTo.setGrnNo(vasPutawayDetailsVO.getGrnNo());
-				stockDetailsVOTo.setGrnDate(vasPutawayDetailsVO.getGrnDate());
-				stockDetailsVOTo.setInvQty(vasPutawayDetailsVO.getInvQty());
-				stockDetailsVOTo.setSsQty(vasPutawayDetailsVO.getPutAwayQty()); // POSITIVE QUANTITY
-				stockDetailsVOTo.setBin(vasPutawayDetailsVO.getBin());
-				stockDetailsVOTo.setBin(vasPutawayDetailsVO.getFromBin());
-				stockDetailsVOTo.setSku(vasPutawayDetailsVO.getSku());
-				stockDetailsRepo.save(stockDetailsVOTo);
-
+		VasPutawayVO savedPickRequestVO = vasPutawayRepo.save(vasPutawayVO);
+		List<VasPutawayDetailsVO> pickRequestDetailsVOLists = savedPickRequestVO.getVasPutawayDetailsVO();
+		if (pickRequestDetailsVOLists != null && !pickRequestDetailsVOLists.isEmpty()) {
+			if ("Submit".equals(savedPickRequestVO.getStatus())) {
+				for (VasPutawayDetailsVO detailsVO : pickRequestDetailsVOLists) {
+					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
+					stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
+					stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+					stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
+					stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
+					stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
+					stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
+					stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
+					stockDetailsVOFrom.setClientCode(
+							clientRepo.getClientCode(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient()));
+					stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
+					stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
+					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
+					stockDetailsVOFrom.setSQty(detailsVO.getPutAwayQty() * -1);
+					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
+					stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+					stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+					stockDetailsVOFrom.setStatus("V");
+					stockDetailsVOFrom.setBinClass(detailsVO.getFromBinClass());
+					stockDetailsVOFrom.setBin(detailsVO.getFromBin());
+					stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
+					stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
+					stockDetailsVOFrom.setPQty(detailsVO.getPutAwayQty());
+					stockDetailsVOFrom.setPickedQty(detailsVO.getPutAwayQty());
+					stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
+					stockDetailsVOFrom.setBinType(detailsVO.getFromBinType());
+					stockDetailsVOFrom.setSku(detailsVO.getSku());
+					stockDetailsVOFrom.setCellType(detailsVO.getFromCellType());
+					stockDetailsVOFrom.setCore(detailsVO.getFromCore());
+					stockDetailsVOFrom.setSSku(detailsVO.getSku());
+					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
+					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
+					stockDetailsVOFrom.setSourceId(detailsVO.getId());
+					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
+					stockDetailsRepo.save(stockDetailsVOFrom);
+				}
+				
+				for (VasPutawayDetailsVO detailsVO : pickRequestDetailsVOLists) {
+					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
+					stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
+					stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+					stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
+					stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
+					stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
+					stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
+					stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
+					stockDetailsVOFrom.setClientCode(
+							clientRepo.getClientCode(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient()));
+					stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
+					stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
+					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
+					stockDetailsVOFrom.setSQty(detailsVO.getPutAwayQty());
+					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
+					stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+					stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+					stockDetailsVOFrom.setBinClass(detailsVO.getToBinClass());
+					stockDetailsVOFrom.setBin(detailsVO.getToBin());
+					stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
+					stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
+					if ("Defective".equals(detailsVO.getToBin())) {
+						stockDetailsVOFrom.setQcFlag("F");
+						stockDetailsVOFrom.setStatus("D");
+					} else {
+						stockDetailsVOFrom.setQcFlag("T");
+						stockDetailsVOFrom.setStatus("R");
+					}
+					stockDetailsVOFrom.setBinType(detailsVO.getToBinType());
+					stockDetailsVOFrom.setSku(detailsVO.getSku());
+					stockDetailsVOFrom.setCellType(detailsVO.getToCellType());
+					stockDetailsVOFrom.setCore(detailsVO.getToCore());
+					stockDetailsVOFrom.setSSku(detailsVO.getSku());
+					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
+					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
+					stockDetailsVOFrom.setSourceId(detailsVO.getId());
+					stockDetailsVOFrom.setStockDate(LocalDate.now());
+					stockDetailsRepo.save(stockDetailsVOFrom);
+				}
 			}
 		}
 
@@ -203,13 +219,17 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 	}
 
 	private void createUpdateVasPutawayVOByVasPutawayDTO(@Valid VasPutawayDTO vasPutawayDTO,
-			VasPutawayVO vasPutawayVO) {
+			VasPutawayVO vasPutawayVO) throws ApplicationException {
 		vasPutawayVO.setTotalGrnQty(vasPutawayDTO.getTotalGrnQty());
 		vasPutawayVO.setTotalPutawayQty(vasPutawayDTO.getTotalPutawayQty());
 		vasPutawayVO.setVasPickNo(vasPutawayDTO.getVasPickNo());
 		vasPutawayVO.setStatus(vasPutawayDTO.getStatus());
-		if (vasPutawayDTO.getStatus() == "Submit") {
+		if ("Submit".equals(vasPutawayDTO.getStatus())) {
 			vasPutawayVO.setFreeze(true);
+		}
+		else
+		{
+			vasPutawayVO.setFreeze(false);
 		}
 		vasPutawayVO.setOrgId(vasPutawayDTO.getOrgId());
 		vasPutawayVO.setCustomer(vasPutawayDTO.getCustomer());
@@ -218,7 +238,6 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 		vasPutawayVO.setBranch(vasPutawayDTO.getBranch());
 		vasPutawayVO.setBranchCode(vasPutawayDTO.getBranchCode());
 		vasPutawayVO.setWarehouse(vasPutawayDTO.getWarehouse());
-
 		if (ObjectUtils.isNotEmpty(vasPutawayVO.getId())) {
 			List<VasPutawayDetailsVO> vasPutawayDetailsVO1 = vasPutawayDetailsRepo.findByVasPutawayVO(vasPutawayVO);
 			vasPutawayDetailsRepo.deleteAll(vasPutawayDetailsVO1);
@@ -230,34 +249,42 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 			vasPutawayDetailsVO = new VasPutawayDetailsVO();
 			vasPutawayDetailsVO.setPartNo(vasPutawayDetailsDTO.getPartNo());
 			vasPutawayDetailsVO.setPartDesc(vasPutawayDetailsDTO.getPartDesc());
+			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
 			vasPutawayDetailsVO.setGrnNo(vasPutawayDetailsDTO.getGrnNo());
 			vasPutawayDetailsVO.setGrnDate(vasPutawayDetailsDTO.getGrnDate());
+			vasPutawayDetailsVO.setBatchNo(vasPutawayDetailsDTO.getBatchNo());
+			vasPutawayDetailsVO.setBatchDate(vasPutawayDetailsDTO.getBatchDate());
 			vasPutawayDetailsVO.setPartDesc(vasPutawayDetailsDTO.getPartDesc());
+			
+			
+			int getFromQty= stockDetailsRepo.getAvlQtyforVasPutaway(vasPutawayDTO.getOrgId(), vasPutawayDTO.getBranchCode(),vasPutawayDTO.getWarehouse(),
+					vasPutawayDTO.getClient(),vasPutawayDetailsDTO.getFromBin(),vasPutawayDetailsDTO.getPartNo(),vasPutawayDetailsDTO.getGrnNo(),
+					vasPutawayDetailsDTO.getBatchNo());
+		    if(getFromQty>=vasPutawayDetailsDTO.getPutAwayQty())
+		    {
+		    	vasPutawayDetailsVO.setInvQty(vasPutawayDetailsDTO.getInvQty());
+		    	vasPutawayDetailsVO.setPutAwayQty(vasPutawayDetailsDTO.getPutAwayQty());
+		    }
+		    else
+		    {
+		    	throw new ApplicationException("Putaway Qty is Must Below or Equal to InvQty Qty");
+		    }
 			vasPutawayDetailsVO.setInvQty(vasPutawayDetailsDTO.getInvQty());
 			vasPutawayDetailsVO.setPutAwayQty(vasPutawayDetailsDTO.getPutAwayQty());
 			vasPutawayDetailsVO.setFromBin(vasPutawayDetailsDTO.getFromBin());
-			vasPutawayDetailsVO.setBin(vasPutawayDetailsDTO.getBin());
-			vasPutawayDetailsVO.setSku(vasPutawayDetailsDTO.getSku());
-			vasPutawayDetailsVO.setBinType(vasPutawayDetailsDTO.getBinType());
+			vasPutawayDetailsVO.setFromBinType(vasPutawayDetailsDTO.getFromBinType());
 			vasPutawayDetailsVO.setRemarks(vasPutawayDetailsDTO.getRemarks());
-//				vasPutawayDetailsVO.setQcFlag(vasPutawayDetailsDTO.getQcFlag());
-			vasPutawayDetailsVO.setBinClass(vasPutawayDetailsDTO.getBinClass());
-			vasPutawayDetailsVO.setCellType(vasPutawayDetailsDTO.getCellType());
-			vasPutawayDetailsVO.setClientCode(vasPutawayDetailsDTO.getClientCode());
-//				vasPutawayDetailsVO.setStatus(vasPutawayDetailsDTO.getStatus());
-			vasPutawayDetailsVO.setCore(vasPutawayDetailsDTO.getCore());
+			vasPutawayDetailsVO.setFromBinClass(vasPutawayDetailsDTO.getFromBinClass());
+			vasPutawayDetailsVO.setFromCellType(vasPutawayDetailsDTO.getFromCellType());
+			vasPutawayDetailsVO.setFromCore(vasPutawayDetailsDTO.getFromCore());
 			vasPutawayDetailsVO.setExpDate(vasPutawayDetailsDTO.getExpDate());
-			vasPutawayDetailsVO.setPckey(vasPutawayDetailsDTO.getPckey());
-			vasPutawayDetailsVO.setSsku(vasPutawayDetailsDTO.getSsku());
 			vasPutawayDetailsVO.setStockDate(vasPutawayDetailsDTO.getStockDate());
-
-			if ("Defective".equals(vasPutawayDetailsVO.getBin())) {
-				vasPutawayDetailsVO.setQcFlag("F");
-				vasPutawayDetailsVO.setStatus("D");
-			} else {
-				vasPutawayDetailsVO.setQcFlag("T");
-				vasPutawayDetailsVO.setStatus("R");
-			}
+			vasPutawayDetailsVO.setToBin(vasPutawayDetailsDTO.getToBin());
+			vasPutawayDetailsVO.setToBinType(vasPutawayDetailsDTO.getToBinType());
+			vasPutawayDetailsVO.setToBinClass(vasPutawayDetailsDTO.getToBinClass());
+			vasPutawayDetailsVO.setToCellType(vasPutawayDetailsDTO.getToCellType());
+			vasPutawayDetailsVO.setToCore(vasPutawayDetailsDTO.getToCore());
+			vasPutawayDetailsVO.setQcFlag(vasPutawayDetailsDTO.getQcFlag());
 			vasPutawayDetailsVO.setVasPutawayVO(vasPutawayVO);
 			vasPutawayDetailsVOs.add(vasPutawayDetailsVO);
 		}
@@ -266,9 +293,9 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 	}
 
 	@Transactional
-	public List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client) {
+	public List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client,String finYear) {
 
-		Set<Object[]> result = vasPutawayRepo.findDocIdFromVasPickForVasPutaway(orgId, branch, client);
+		Set<Object[]> result = vasPutawayRepo.findDocIdFromVasPickForVasPutaway(orgId, branch, client, finYear);
 		return getVasPutaway(result);
 	}
 
@@ -320,21 +347,24 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("bin", fs[0] != null ? fs[0].toString() : "");
-			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
-			part.put("cellType", fs[2] != null ? fs[2].toString() : "");
-			part.put("core", fs[3] != null ? fs[3].toString() : "");
-			part.put("expDate", fs[4] != null ? fs[4].toString() : "");
-			part.put("stockDate", fs[5] != null ? fs[5].toString() : "");
-			part.put("partNo", fs[6] != null ? fs[6].toString() : "");
-			part.put("partDesc", fs[7] != null ? fs[7].toString() : "");
-			part.put("sku", fs[8] != null ? fs[8].toString() : "");
-			part.put("grnNo", fs[9] != null ? fs[9].toString() : "");
-			part.put("grnDate", fs[10] != null ? fs[10].toString() : "");
-			part.put("picqty", fs[11] != null ? fs[11].toString() : "");
-			part.put("avlqty", fs[12] != null ? fs[12].toString() : "");
-			part.put("id",fs[13]!=null ? Integer.parseInt(fs[13].toString()):0);
-
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("sku", fs[2] != null ? fs[2].toString() : "");
+			part.put("grnNo", fs[3] != null ? fs[3].toString() : "");
+			part.put("grnDate", fs[4] != null ? fs[4].toString() : "");
+			part.put("batchNo", fs[5] != null ? fs[5].toString() : "");
+			part.put("batchDate", fs[6] != null ? fs[6].toString() : "");
+			part.put("expDate", fs[7] != null ? fs[7].toString() : "");
+			part.put("stockDate", fs[8] != null ? fs[8].toString() : "");
+			part.put("bin", fs[9] != null ? fs[9].toString() : "");
+			part.put("binType", fs[10] != null ? fs[10].toString() : "");
+			part.put("binClass", fs[11] != null ? fs[11].toString() : "");
+			part.put("core", fs[12] != null ? fs[12].toString() : "");
+			part.put("cellType", fs[13] != null ? fs[13].toString() : "");
+			part.put("qcFlag", fs[14] != null ? fs[14].toString() : "");
+			part.put("pickQty", fs[15] != null ? Integer.parseInt(fs[15].toString()) : 0);
+			part.put("putawayQty", fs[15] != null ? Integer.parseInt(fs[15].toString()) : 0);
+			part.put("id",fs[16]!=null ? Integer.parseInt(fs[16].toString()):0);
 			details1.add(part);
 		}
 		return details1;

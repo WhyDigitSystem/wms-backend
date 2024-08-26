@@ -38,7 +38,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-	
+
 	@Autowired
 	HandlingStockOutRepo handlingStockOutRepo;
 
@@ -53,8 +53,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		if (ObjectUtils.isEmpty(buyerOrderDTO.getId())) {
 
 			if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(buyerOrderDTO.getOrderNo(),
-					buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(),
-					buyerOrderDTO.getCustomer())) {
+					buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(), buyerOrderDTO.getCustomer())) {
 				String errorMessage = String.format("This orderNo:%s Already Exists This Client.",
 						buyerOrderDTO.getOrderNo());
 				throw new ApplicationException(errorMessage);
@@ -76,7 +75,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 
 			buyerOrderVO.setCreatedBy(buyerOrderDTO.getCreatedBy());
-			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());  
+			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
 
 			message = "BuyerOrder Creation Successfully";
 		} else {
@@ -84,11 +83,10 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 					"This Id Not Found Any Informations,Invalid Id" + buyerOrderDTO.getId()));
 			buyerOrderVO.setUpdatedBy(buyerOrderDTO.getCreatedBy());
 
-			if (!buyerOrderVO.getOrderNo().equalsIgnoreCase(    buyerOrderDTO.getOrderNo())) {
+			if (!buyerOrderVO.getOrderNo().equalsIgnoreCase(buyerOrderDTO.getOrderNo())) {
 
 				if (buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(buyerOrderDTO.getOrderNo(),
-						buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(),
-						buyerOrderDTO.getCustomer())) {
+						buyerOrderDTO.getOrgId(), buyerOrderDTO.getClient(), buyerOrderDTO.getCustomer())) {
 					String errorMessage = String.format("This orderNo:%s Already Exists This Client.",
 							buyerOrderDTO.getOrderNo());
 					throw new ApplicationException(errorMessage);
@@ -99,13 +97,19 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		}
 
 		getBuyerOrderVOfromBuyerOrderDTO(buyerOrderVO, buyerOrderDTO);
-		BuyerOrderVO buyerOrderVO2= buyerOrderRepo.save(buyerOrderVO);
-		List<BuyerOrderDetailsVO>buyerOrderDetailsVO2=buyerOrderVO2.getBuyerOrderDetailsVO();
-		
-		for(BuyerOrderDetailsVO buyerOrderDetailsVOs2:buyerOrderDetailsVO2)
-		{
-			HandlingStockOutVO handlingStockOutVO=new HandlingStockOutVO();
-			
+		BuyerOrderVO buyerOrderVO2 = buyerOrderRepo.save(buyerOrderVO);
+		List<BuyerOrderDetailsVO> buyerOrderDetailsVO2 = buyerOrderVO2.getBuyerOrderDetailsVO();
+
+		List<HandlingStockOutVO> handling = handlingStockOutRepo.findBySDocid(buyerOrderVO2.getDocId());
+
+		if (!handling.isEmpty()) {
+			List<HandlingStockOutVO> handlingStockOutVOs = handlingStockOutRepo.findBySDocid(buyerOrderVO2.getDocId());
+			handlingStockOutRepo.deleteAll(handlingStockOutVOs);
+		}
+
+		for (BuyerOrderDetailsVO buyerOrderDetailsVOs2 : buyerOrderDetailsVO2) {
+			HandlingStockOutVO handlingStockOutVO = new HandlingStockOutVO();
+
 			handlingStockOutVO.setOrgId(buyerOrderVO2.getOrgId());
 			handlingStockOutVO.setBranch(buyerOrderVO2.getBranch());
 			handlingStockOutVO.setBranchCode(buyerOrderVO2.getBranchCode());
@@ -113,7 +117,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			handlingStockOutVO.setCustomer(buyerOrderVO2.getCustomer());
 			handlingStockOutVO.setClient(buyerOrderVO2.getClient());
 			handlingStockOutVO.setRefNo(buyerOrderVO2.getOrderNo());
-			handlingStockOutVO.setRefDate(buyerOrderVO2.getOrderDate());	
+			handlingStockOutVO.setRefDate(buyerOrderVO2.getOrderDate());
 			handlingStockOutVO.setPartNo(buyerOrderDetailsVOs2.getPartNo());
 			handlingStockOutVO.setPartDesc(buyerOrderDetailsVOs2.getPartDesc());
 			handlingStockOutVO.setSku(buyerOrderDetailsVOs2.getSku());
@@ -127,8 +131,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			handlingStockOutVO.setScreenCode(buyerOrderVO.getScreenCode());
 			handlingStockOutVO.setBuyerOrdDate(buyerOrderVO.getDocDate());
 			handlingStockOutRepo.save(handlingStockOutVO);
-		}		
-		
+		}
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("message", message);
 		response.put("buyerOrderVO", buyerOrderVO);
@@ -156,7 +160,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		buyerOrderVO.setBranch(buyerOrderDTO.getBranch());
 		buyerOrderVO.setBranchCode(buyerOrderDTO.getBranchCode());
 		buyerOrderVO.setWarehouse(buyerOrderDTO.getWarehouse());
-		
+
 		if (buyerOrderDTO.getId() != null) {
 			List<BuyerOrderDetailsVO> detailsVOs = buyerOrderDetailsRepo.findByBuyerOrderVO(buyerOrderVO);
 			buyerOrderDetailsRepo.deleteAll(detailsVOs);
@@ -176,7 +180,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			detailsVO.setAvailQty(buyerOrderDetailsDTO.getAvailQty());
 			detailsVO.setSku(buyerOrderDetailsDTO.getSku());
 			detailsVO.setExpDate(buyerOrderDetailsDTO.getExpDate());
-			
+
 			avilQty = avilQty + buyerOrderDetailsDTO.getAvailQty();
 			orderQty = orderQty + buyerOrderDetailsDTO.getQty();
 
@@ -216,7 +220,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("batch", fs[2] != null ? fs[2].toString() : "");
-			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);  
+			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);
 			part.put("id", fs[4] != null ? Integer.parseInt(fs[4].toString()) : 0);
 
 			details1.add(part);
@@ -225,16 +229,36 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	}
 
-	 @Override
-	    public int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, 
-	                             String branch, String partNo, String partDesc, String batch) {
-	        return buyerOrderRepo.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc, batch);
-	    }
-
-	
 	@Override
-	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId) {
-		return buyerOrderRepo.findByBo(orgId);
+	public int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch,
+			String partNo, String batch) {
+		int result = buyerOrderRepo.getAvilableQty(orgId, client, branchCode, warehouse, branch, partNo, batch);
+		return result;
+	}
+
+	@Override
+	public List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse) {
+		return buyerOrderRepo.findByBo(orgId, finYear, branch, branchCode,
+				client, warehouse);
+	}
+
+	@Override
+	public List<Map<String, Object>> getBatchByBuyerOrder(Long orgId, String branchCode, String client,
+			String warehouse, String partNo) {
+		Set<Object[]> result = stockDetailsRepo.getDetails(orgId, branchCode, client, warehouse, partNo);
+		return getBatch1(result);
+	}
+
+	private List<Map<String, Object>> getBatch1(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("batch", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+
 	}
 
 }

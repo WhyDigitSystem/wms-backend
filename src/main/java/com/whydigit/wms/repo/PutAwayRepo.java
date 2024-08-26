@@ -208,8 +208,16 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 			+ "    d.batchno, \r\n"
 			+ "    d.batchdt, \r\n"
 			+ "    d.expdate\r\n"
-			+ "FROM d  where qcflag = 'F')j")
+			+ "FROM d  where qcflag = 'F')j where j.pq>0")
 	Set<Object[]>getPutawayGridDetails(Long orgId,String branchCode,String warehouse,String client,String grnNo,String binType,String binClass,String binPick);
+
+
+
+	@Query(nativeQuery = true, value = "select celltype from wv_locationstatus where orgid=?1 and bin=?2 group by celltype")
+	String getCelltype(Long orgId, String bin);
+
+
+	
 
 
 }

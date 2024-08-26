@@ -50,16 +50,12 @@ public class PickRequestDetailsVO {
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
-	@Column(name = "lotno")
-	private String lotNo;
 	@Column(name = "orderqty")
 	private int orderQty;
 	@Column(name = "avlqty")
-	private int avlQty;
+	private int availQty;
 	@Column(name = "pickqty")
 	private int pickQty;
-	@Column(name = "runningqty")
-	private int runningQty;
 	@Column(name = "pickqtyperbin")
 	private int pickQtyPerBin;
 	@Column(name = "remainingqty")

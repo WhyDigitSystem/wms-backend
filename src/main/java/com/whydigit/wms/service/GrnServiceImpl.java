@@ -148,17 +148,17 @@ public class GrnServiceImpl implements GrnService {
 				HandlingStockInVO handlingStockInVO = new HandlingStockInVO();
 				handlingStockInVO.setScreencode(savedGrnVO.getScreenCode());
 				// Set common values from savedGrnVO
-				handlingStockInVO.setRefdate(savedGrnVO.getDocdate());
+				handlingStockInVO.setRefdate(savedGrnVO.getDocDate());
 				handlingStockInVO.setGrnno(savedGrnVO.getDocId());
-				handlingStockInVO.setGrndate(savedGrnVO.getDocdate());
+				handlingStockInVO.setGrndate(savedGrnVO.getDocDate());
 				handlingStockInVO.setBranch(savedGrnVO.getBranch());
 				handlingStockInVO.setOrgId(savedGrnVO.getOrgId());
 				handlingStockInVO.setBranchcode(savedGrnVO.getBranchCode());
 				handlingStockInVO.setCustomer(savedGrnVO.getCustomer());
 				handlingStockInVO.setWarehouse(savedGrnVO.getWarehouse());
 				handlingStockInVO.setClient(savedGrnVO.getClient());
-				handlingStockInVO.setSdocdate(savedGrnVO.getDocdate());
-				handlingStockInVO.setStockdate(savedGrnVO.getDocdate());
+				handlingStockInVO.setSdocdate(savedGrnVO.getDocDate());
+				handlingStockInVO.setStockdate(savedGrnVO.getDocDate());
 				handlingStockInVO.setSdocid(savedGrnVO.getDocId());
 				handlingStockInVO.setFinyr(savedGrnVO.getFinYear());
 				handlingStockInVO.setBatchno(grnDetailsVO.getBatchNo());
@@ -193,17 +193,17 @@ public class GrnServiceImpl implements GrnService {
 			// create new obj to store as second row
 			HandlingStockInVO handlingStockInVO2 = new HandlingStockInVO();
 			handlingStockInVO2.setScreencode(grnVO.getScreenCode());
-			handlingStockInVO2.setRefdate(savedGrnVO.getDocdate());
+			handlingStockInVO2.setRefdate(savedGrnVO.getDocDate());
 			handlingStockInVO2.setGrnno(savedGrnVO.getDocId());
-			handlingStockInVO2.setGrndate(savedGrnVO.getDocdate());
+			handlingStockInVO2.setGrndate(savedGrnVO.getDocDate());
 			handlingStockInVO2.setBranch(savedGrnVO.getBranch());
 			handlingStockInVO2.setOrgId(savedGrnVO.getOrgId());
 			handlingStockInVO2.setBranchcode(savedGrnVO.getBranchCode());
 			handlingStockInVO2.setCustomer(savedGrnVO.getCustomer());
 			handlingStockInVO2.setWarehouse(savedGrnVO.getWarehouse());
 			handlingStockInVO2.setClient(savedGrnVO.getClient());
-			handlingStockInVO2.setSdocdate(savedGrnVO.getDocdate());
-			handlingStockInVO2.setStockdate(savedGrnVO.getDocdate());
+			handlingStockInVO2.setSdocdate(savedGrnVO.getDocDate());
+			handlingStockInVO2.setStockdate(savedGrnVO.getDocDate());
 			handlingStockInVO2.setSdocid(savedGrnVO.getDocId());
 			handlingStockInVO2.setFinyr(savedGrnVO.getFinYear());
 			handlingStockInVO2.setBatchno(grnDetailsVO.getBatchNo());
@@ -241,7 +241,7 @@ public class GrnServiceImpl implements GrnService {
 
 	private void createUpdateGrnVOByGrnDTO(GrnDTO grnDTO, GrnVO grnVO) {
 		grnVO.setEntryDate(grnDTO.getEntryDate());
-		grnVO.setGrndDate(grnDTO.getGrndDate());
+		grnVO.setGrnDate(grnDTO.getGrnDate());
 		grnVO.setGatePassId(grnDTO.getGatePassId());
 
 		GatePassInVO gatePassInVO = gatePassInRepo.findByDocId(grnDTO.getGatePassId());

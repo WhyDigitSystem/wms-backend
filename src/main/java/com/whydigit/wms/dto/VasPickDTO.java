@@ -20,7 +20,6 @@ public class VasPickDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String cancelRemarks;
 	private String stateStatus;
 	private String stockState;
 	private String status;

@@ -170,13 +170,15 @@ public class PutawayServiceImpl implements PutawayService {
 				handlingStockInVO.setRpqty(putAwayDetailsVO.getPutAwayQty() * -1);
 				handlingStockInVO.setSqty(putAwayDetailsVO.getPutAwayQty() * -1);
 				handlingStockInVO.setLocationtype(putAwayDetailsVO.getBinType());
-				handlingStockInVO.setInvqty(putAwayDetailsVO.getInvQty());
-				handlingStockInVO.setRecqty(putAwayDetailsVO.getRecQty());
-				handlingStockInVO.setShortqty(putAwayDetailsVO.getShortQty());
-				handlingStockInVO.setPalletqty(putAwayDetailsVO.getPutAwayQty());
+				handlingStockInVO.setInvqty(0);
+				handlingStockInVO.setRecqty(0);
+				handlingStockInVO.setShortqty(0);
+				handlingStockInVO.setPalletqty(0);
 				handlingStockInVO.setSku(putAwayDetailsVO.getSku());
 				handlingStockInVO.setSsku(putAwayDetailsVO.getSku());
 				handlingStockInVO.setExpdate(putAwayDetailsVO.getExpdate());
+				handlingStockInVO.setBatchno(putAwayDetailsVO.getBatch());
+				handlingStockInVO.setBatchdt(putAwayDetailsVO.getBatchDate());
 				// Check if damageqty is 0
 				if ("Defective".equals(putAwayDetailsVO.getBin())) {
 					handlingStockInVO.setQcflag("F");
@@ -226,6 +228,7 @@ public class PutawayServiceImpl implements PutawayService {
 				stockDetailsVO.setExpDate(putAwayDetailsVO.getExpdate());
 				stockDetailsVO.setCellType(putAwayDetailsVO.getCellType());
 				stockDetailsVO.setCore(putAwayVO.getCore());
+				stockDetailsVO.setBinClass(putAwayVO.getBinClass());
 				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
 				stockDetailsVO.setCreatedBy(savedPutAwayVO.getCreatedBy());
 				stockDetailsVO.setUpdatedBy(savedPutAwayVO.getUpdatedBy());
@@ -281,6 +284,10 @@ public class PutawayServiceImpl implements PutawayService {
 		putAwayVO.setCreatedBy(putAwayDTO.getCreatedBy());
 		putAwayVO.setBinClass(putAwayDTO.getBinClass());
 		putAwayVO.setBinPick(putAwayDTO.getBinPick());
+		putAwayVO.setContact(putAwayDTO.getContact());
+		putAwayVO.setVehicleNo(putAwayDTO.getVehicleNo());
+		putAwayVO.setVehicleType(putAwayDTO.getVehicleType());
+		putAwayVO.setDriverName(putAwayDTO.getDriverName());
 		if (putAwayDTO.getId() != null) {
 
 			List<PutAwayDetailsVO> detailsVOs = putAwayDetailsRepo.findByPutAwayVO(putAwayVO);
@@ -307,8 +314,11 @@ public class PutawayServiceImpl implements PutawayService {
 			putAwayDetailsVOs.setBinType(putAwayDetailsDTO.getBinType());
 			putAwayDetailsVOs.setSSku(putAwayDetailsDTO.getSSku());
 			putAwayDetailsVOs.setCellType(putAwayDetailsDTO.getCellType());
+			String celltype=putAwayRepo.getCelltype(putAwayDTO.getOrgId(),putAwayDetailsDTO.getBin());
+			putAwayDetailsVOs.setCellType(celltype);
 			putAwayDetailsVOs.setBinClass(putAwayDTO.getBinClass());
 			putAwayDetailsVOs.setBatchDate(putAwayDetailsDTO.getBatchDate());
+			putAwayDetailsVOs.setExpdate(putAwayDetailsDTO.getExpdate());
 			putAwayDetailsVOs.setPutAwayVO(putAwayVO);
 			totalPutawayQty=totalPutawayQty+putAwayDetailsDTO.getPutAwayQty();
 

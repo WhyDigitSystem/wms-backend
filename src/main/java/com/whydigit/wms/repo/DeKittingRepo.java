@@ -20,21 +20,51 @@ public interface DeKittingRepo extends JpaRepository<DeKittingVO, Long> {
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,6,'0')) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client =?4 and screencode=?5")
 	String getDeKittingDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
-	@Query(nativeQuery = true, value = "select partno,partdesc,sku,sum(sqty) as sqty from stockdetails where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4  and parentchildkey='PARENT' GROUP BY partno,partdesc,sku HAVING sum(sqty)>0")
+
+	@Query(nativeQuery = true, value = "select partno,partdesc,sku from(\r\n"
+			+ "			(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty) from stockdetails\r\n"
+			+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT'\r\n"
+			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0))\r\n"
+			+ "            a group by a.partno,a.partdesc,a.sku")
 	Set<Object[]> findPartNoFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client);
 
-	@Query(nativeQuery = true, value = "select bin,binclass,bintype,sum(sqty) as avlqty from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and parentchildkey='PARENT' GROUP BY bin,binclass,bintype HAVING SUM(SQTY) > 0")
-	Set<Object[]> findBinFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client);
+	@Query(nativeQuery = true, value = "select a.bin,a.binclass,a.celltype,a.core,a.bintype,a.qcflag from(\r\n"
+			+ "			(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty) from stockdetails\r\n"
+			+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT' and partno=?5 and grnno=?6 and batch=?7\r\n"
+			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0))\r\n"
+			+ "            a group by a.bintype,a.binclass,a.celltype,a.core,a.bin,a.qcflag")
+	Set<Object[]> findBinFromStockForDeKittingParent(Long orgId, String branch,
+			String branchCode, String client,String partNo,String grnNo,String batchNo);
 
-	@Query(nativeQuery = true, value = "select grnno,batch,batchdate,expdate,sum(sqty) as sqty from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 and partno=?6 and partdesc=?7 and sku=?8 and parentchildkey='PARENT' GROUP BY grnno,batch,batchdate,expdate HAVING sum(sqty)>0")
-	Set<Object[]> findGrnNoAndBatchAndBatchDateAndExpDateFromStockForDeKittingParent(Long orgId, String branch,
-			String branchCode, String client, String bin, String partNo, String partDesc, String sku);
+	@Query(nativeQuery = true, value = "select a.grnno,a.grndate from(\r\n"
+			+ "			(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty) from stockdetails\r\n"
+			+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT' and partno=?5\r\n"
+			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0))\r\n"
+			+ "            a group by a.grnno,a.grndate")
+	Set<Object[]> findGrnNoFromStockForDeKittingParent(Long orgId, String branch,
+			String branchCode, String client,String partNo);
 
-	@Query(nativeQuery = true, value = "SELECT partno,partdesc,sku,sum(sqty) as avlqty from material where orgid=?1  and branch=?2 and branchcode=?3 and client=?4 and parentchildkey='CHILD' GROUP BY partno,partdesc,sku HAVING sum(sqty)>0")
-	Set<Object[]> findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch, String branchCode,
+
+	@Query(nativeQuery = true, value = "select partno,partdesc,sku from material where active=1 and orgid=?1 and client=?3 and cbranch='ALL' or cbranch=?2 and parentchildkey='CHILD'\r\n"
+			+ "            group by partno,partdesc,sku")
+	Set<Object[]> findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branchCode,
 			String client);
 
-	@Query(nativeQuery = true,value="select sum(a.avlqty)fromqty from(select partno,partdesc,grnno,branch,branchcode,client,bin,sku,sum(sqty)as avlqty from stockdetails where  orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 and bin =?5 and partdesc =?6 and sku=?7  and partno=?8 and grnno=?9 and parentchildkey='PARENT' group by partno,partdesc,grnno,branch,branchcode,client,bin,sku having sum(sqty)>0) a")
-	Set<Object[]> findAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client,
-			String bin, String partDesc, String sku, String partNo, String grnNo);
+
+	@Query(nativeQuery = true,value="select a.sqty from(\r\n"
+			+ "			(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails\r\n"
+			+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT' and partno=?5 and grnno=?6 and batch=?7 and bin=?8\r\n"
+			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0))\r\n"
+			+ "            a group by a.sqty")
+	int findAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client, String partNo,
+			String grnNo,String batchNo,String bin);
+	
+@Query(nativeQuery = true,value = "select a.batch,a.batchDate,a.expdate from(\r\n"
+		+ "			(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty) from stockdetails\r\n"
+		+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT' and partno=?5 and grnno=?6\r\n"
+		+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0))\r\n"
+		+ "            a group by a.batch,a.batchDate,a.expdate")
+	Set<Object[]> findBatchDetails(Long orgId, String branch, String branchCode, String client, String partNo,
+			String grnNo);
+
 }

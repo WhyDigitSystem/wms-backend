@@ -306,7 +306,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("bin", fs[12] != null ? fs[12].toString() : "");
 				part.put("status", fs[13] != null ? fs[13].toString() : "");
 				part.put("qcFlag", fs[14] != null ? fs[14].toString() : "");
-				part.put("totalQty", fs[15] != null ? fs[15].toString() : "");
+				part.put("totalQty", fs[15] != null ? Integer.parseInt(fs[15].toString()):0);
 				part.put("id",fs[16]!=null ? Integer.parseInt(fs[16].toString()):0);
 				details1.add(part);
 			}

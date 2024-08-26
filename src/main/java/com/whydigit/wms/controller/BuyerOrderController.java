@@ -58,7 +58,9 @@ public class BuyerOrderController extends BaseController {
 	}
 
 	@GetMapping("/getAllBuyerOrderByOrgId")
-	public ResponseEntity<ResponseDTO> getAllBuyerOrderByOrgId(@RequestParam(required = true) Long orgId) {
+	public ResponseEntity<ResponseDTO> getAllBuyerOrderByOrgId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String warehouse) {
 		String methodName = "getAllBuyerOrderByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -66,7 +68,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<BuyerOrderVO> buyerOrderVOs = new ArrayList<>();
 		try {
-			buyerOrderVOs = buyerOrderService.getAllBuyerOrderByOrgId(orgId);
+			buyerOrderVOs = buyerOrderService.getAllBuyerOrderByOrgId(orgId, finYear, branch, branchCode, client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -153,16 +155,16 @@ public class BuyerOrderController extends BaseController {
 	public ResponseEntity<ResponseDTO> getAvlQtyByBO(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String client, @RequestParam(required = true) String branchCode,
 			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String branch,
-			@RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc,
+			@RequestParam(required = true) String partNo,
 			@RequestParam(required = true) String batch) {
 		String methodName = "getAvlQtyByBO()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		int avalQty=0;
+		int avalQty = 0;
 		try {
-			 avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc,
+			avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo,
 					batch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -202,6 +204,34 @@ public class BuyerOrderController extends BaseController {
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Bo Sku Details  information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getBatchByBuyerOrder")
+	public ResponseEntity<ResponseDTO> getBatchByBuyerOrder(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String partNo) {
+		String methodName = "getBatchByBuyerOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> skuDetails = new ArrayList<Map<String, Object>>();
+		try {
+			skuDetails = buyerOrderService.getBatchByBuyerOrder(orgId, branchCode, client, warehouse, partNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Bo Batch Details information get successfully Id");
+			responseObjectsMap.put("skuDetails", skuDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Bo Batch Details  information get Failed ",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
