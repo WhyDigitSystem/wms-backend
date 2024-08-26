@@ -189,7 +189,7 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("partCode", fs[0] != null ? fs[0].toString() : "");
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			part.put("pickQty", fs[3] != null ? fs[3].toString() : "");
