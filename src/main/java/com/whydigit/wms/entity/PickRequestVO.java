@@ -37,10 +37,10 @@ public class PickRequestVO {
 	private String buyerRefNo;
 	@Column(name = "buyerrefdate")
 	private LocalDate buyerRefDate;
-	@Column(name = "shipmentmethod")
-	private String shipmentMethod;
 	@Column(name = "buyerorderno")
 	private String buyerOrderNo;
+	@Column(name = "buyerorderdate")
+	private LocalDate buyerOrderDate;
 	@Column(name = "buyersreference")
 	private String buyersReference;
 	@Column(name = "invoiceno")
@@ -61,7 +61,7 @@ public class PickRequestVO {
 	private String pickOrder;
 	@Column(name = "outtime")
 	private String outTime;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
@@ -93,6 +93,12 @@ public class PickRequestVO {
 	private String status;
 	@Column(name = "freeze")
 	private boolean freeze ;
+	
+	@Column(name = "screenname")
+	private String screenName="PICK REQUEST";
+	@Column(name = "screencode")
+	private String screenCode="PR";
+	
 
 //	summary table
 	@Column(name = "totalpickqty")
