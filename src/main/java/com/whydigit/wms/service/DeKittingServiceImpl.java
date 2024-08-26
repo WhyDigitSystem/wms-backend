@@ -397,7 +397,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 		return deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode, client, partno, grnno, batchNo, bin);
 		 
 	}
-
+	
 	// CHILD
 	@Transactional
 	public List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId,
