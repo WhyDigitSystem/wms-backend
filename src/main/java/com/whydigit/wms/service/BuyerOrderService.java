@@ -16,8 +16,9 @@ public interface BuyerOrderService {
 
 	Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException;
 
-	List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId);
-
+	List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse);
+	
 	Optional<BuyerOrderVO> getAllBuyerOrderById(Long id);
 
 	String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode, String client);
@@ -25,7 +26,13 @@ public interface BuyerOrderService {
 	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String batch,
 			String warehouse);
 
-	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse,
-			String branch, String partNo, String partDesc, String batch);
+	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+			String batch);
+
+	List<Map<String, Object>> getBatchByBuyerOrder(Long orgId, String branchCode, String client, String warehouse,
+			String partNo);
+
+	
+
 
 }

@@ -30,7 +30,7 @@ public class ReversePickDTO {
 	private String customerName;
 	private String customerAddress;
 	private String pickOrder;
-	private String outTime;
+	private String inTime;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -41,7 +41,7 @@ public class ReversePickDTO {
 	private String createdBy;
 	private String status;
 	private String boAmendment;
-
+	
 	private List<ReversePickDetailsDTO> reversePickDetailsDTO;
 
 }

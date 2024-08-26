@@ -202,7 +202,6 @@ public class DeKittingServiceImpl implements DeKittingService{
 	private void createUpdateDeKittingVOByDeKittingDTO(DeKittingDTO deKittingDTO, DeKittingVO deKittingVO) {
 
 		deKittingVO.setOrgId(deKittingDTO.getOrgId());
-		deKittingVO.setTransactionType(deKittingDTO.getTransactionType());
 		deKittingVO.setClient(deKittingDTO.getClient());
 		deKittingVO.setOrgId(deKittingDTO.getOrgId());
 		deKittingVO.setCustomer(deKittingDTO.getCustomer());
@@ -210,9 +209,6 @@ public class DeKittingServiceImpl implements DeKittingService{
 		deKittingVO.setBranch(deKittingDTO.getBranch());
 		deKittingVO.setBranchCode(deKittingDTO.getBranchCode());
 		deKittingVO.setWarehouse(deKittingDTO.getWarehouse());
-		deKittingVO.setFreeze(deKittingDTO.getFreeze());
-		deKittingVO.setActive(deKittingDTO.isActive());
-
 		if (ObjectUtils.isNotEmpty(deKittingVO.getId())) {
 			List<DeKittingParentVO> deKittingParentVO1 = deKittingParentRepo.findByDeKittingVO(deKittingVO);
 			deKittingParentRepo.deleteAll(deKittingParentVO1);
@@ -240,7 +236,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 			deKittingParentVO.setUnitRate(deKittingParentDTO.getUnitRate());
 			deKittingParentVO.setStatus(deKittingParentDTO.getStatus());
 			deKittingParentVO.setAmount(deKittingParentDTO.getAmount());
-			deKittingParentVO.setQcFlag(deKittingParentDTO.isQcFlag());
+			deKittingParentVO.setQcFlag("R");
 
 			deKittingParentVO.setBinClass(deKittingParentDTO.getBinClass());
 			deKittingParentVO.setCellType(deKittingParentDTO.getCellType());
@@ -317,20 +313,57 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
-			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
 	}
 
 
+	
+
+	@Transactional
+	public List<Map<String, Object>> getGrnNoFromStockForDeKittingParent(Long orgId, String branch,
+			String branchCode, String client,String partNo) {
+		Set<Object[]> result = deKittingRepo.findGrnNoFromStockForDeKittingParent(orgId, branch, branchCode, client, partNo);
+		return getGrnNoResult(result);
+	}
+
+	private List<Map<String, Object>> getGrnNoResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Transactional
+	public List<Map<String, Object>> getBatchAndBatchFromStockForDeKittingParent(Long orgId, String branch,
+			String branchCode, String client,String partNo,String grnNo) {
+		Set<Object[]> resultBatch = deKittingRepo.findBatchDetails(orgId, branch, branchCode, client, partNo,grnNo);
+		return batchNoResult(resultBatch);
+	}
+
+	private List<Map<String, Object>> batchNoResult(Set<Object[]> resultBatch) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : resultBatch) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("batchNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("expDate", fs[2] != null ? fs[2].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
 	@Override
 	@Transactional
 	public List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch,
-			String branchCode, String client) {
+			String branchCode, String client,String partno,String grnno,String batchNo) {
 
-		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, branch, branchCode,
-				client);
+		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, branch, branchCode, client, partno, grnno, batchNo);
 		return getDBinResult(result);
 	}
 
@@ -341,36 +374,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
 			part.put("binclass", fs[1] != null ? fs[1].toString() : "");
 			part.put("celltype", fs[2] != null ? fs[2].toString() : "");
-			part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
-			part.put("core", fs[4] != null ? fs[4].toString() : "");
-			part.put("expdate", fs[5] != null ? fs[5].toString() : "");
-			part.put("pckey", fs[6] != null ? fs[6].toString() : "");
-			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
-			part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
-			details1.add(part);
-		}
-		return details1;
-	}
-
-	@Transactional
-	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
-			Long orgId, String branch, String branchCode, String client, String bin, String partNo,
-			String partDesc, String sku) {
-
-		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
-				orgId, branch, branchCode, client, bin, partNo, partDesc, sku);
-		return getGrnNoResult(result);
-	}
-
-	private List<Map<String, Object>> getGrnNoResult(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
-			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("lotNo", fs[3] != null ? fs[3].toString() : "");
-			part.put("expDate", fs[4] != null ? fs[4].toString() : "");
+			part.put("core", fs[3] != null ? fs[3].toString() : "");
+			part.put("binType", fs[4] != null ? fs[4].toString() : "");
+			part.put("qcFlag", fs[5] != null ? fs[5].toString() : "");
+			part.put("status", "R");
 			details1.add(part);
 		}
 		return details1;
@@ -378,11 +385,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 	@Override
 	@Transactional
-	public int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
-			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
+	public int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch,
+			String branchCode, String client,String partno,String grnno,String batchNo,String bin) {
 
-		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode,
-				client, bin, partDesc, sku, partNo, grnNo, lotNo);
+		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode, client, partno, grnno, batchNo, bin);
 		return getAvlQtyResult(result);
 	}
 
@@ -396,11 +402,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 	// CHILD
 	@Transactional
-	public List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,
+	public List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId,
 			String branchCode, String client) {
 
-		Set<Object[]> result = deKittingRepo.findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(orgId, branch,
-				branchCode, client);
+		Set<Object[]> result = deKittingRepo.findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(orgId, branchCode, client);
 		return getChildResult(result);
 	}
 
@@ -411,9 +416,9 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
-			part.put("sku", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
 	}
+	
 }
