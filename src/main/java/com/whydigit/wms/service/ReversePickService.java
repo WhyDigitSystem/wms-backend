@@ -24,7 +24,7 @@ public interface ReversePickService {
 	List<PickRequestVO>getPickRequestDetailsForReversePick(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	List<Map<String, Object>> getPickRequestFillDetailsForReversePick(Long orgId, String branchCode, String client,
-			String pickDocId);
+			String pickRequestDocId);
 
 
 }

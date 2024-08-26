@@ -41,6 +41,10 @@ public class PutAwayDTO {
 	private String createdBy;
 	private String binClass;
 	private String binPick;
+	private String contact;
+	private String vehicleType;
+	private String vehicleNo;
+	private String driverName;
 	
 
 

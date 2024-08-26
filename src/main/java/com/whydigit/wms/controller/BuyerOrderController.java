@@ -58,7 +58,9 @@ public class BuyerOrderController extends BaseController {
 	}
 
 	@GetMapping("/getAllBuyerOrderByOrgId")
-	public ResponseEntity<ResponseDTO> getAllBuyerOrderByOrgId(@RequestParam(required = true) Long orgId) {
+	public ResponseEntity<ResponseDTO> getAllBuyerOrderByOrgId(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String warehouse) {
 		String methodName = "getAllBuyerOrderByOrgId()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -66,7 +68,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<BuyerOrderVO> buyerOrderVOs = new ArrayList<>();
 		try {
-			buyerOrderVOs = buyerOrderService.getAllBuyerOrderByOrgId(orgId);
+			buyerOrderVOs = buyerOrderService.getAllBuyerOrderByOrgId(orgId, finYear, branch, branchCode, client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -153,7 +155,7 @@ public class BuyerOrderController extends BaseController {
 	public ResponseEntity<ResponseDTO> getAvlQtyByBO(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String client, @RequestParam(required = true) String branchCode,
 			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String branch,
-			@RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc,
+			@RequestParam(required = true) String partNo,
 			@RequestParam(required = true) String batch) {
 		String methodName = "getAvlQtyByBO()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -162,7 +164,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		int avalQty = 0;
 		try {
-			avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, partDesc,
+			avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo,
 					batch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();

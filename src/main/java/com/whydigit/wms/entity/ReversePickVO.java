@@ -66,9 +66,9 @@ public class ReversePickVO {
 	private String customerAddress;
 	@Column(name = "pickorder")
 	private String pickOrder;
-	@Column(name = "outtime")
-	private String outTime;
-	@Column(name = "docid")
+	@Column(name = "intime")
+	private String inTime;
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();

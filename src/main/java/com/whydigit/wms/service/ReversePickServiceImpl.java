@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,7 +133,7 @@ public class ReversePickServiceImpl implements ReversePickService {
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
+					stockDetailsVOFrom.setStockDate(LocalDate.now());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
 			}
@@ -167,7 +168,7 @@ public class ReversePickServiceImpl implements ReversePickService {
 		reversePickVO.setCustomerName(reversePickDTO.getCustomerName());
 		reversePickVO.setCustomerAddress(reversePickDTO.getCustomerAddress());
 		reversePickVO.setPickOrder(reversePickDTO.getPickOrder());
-		reversePickVO.setOutTime(reversePickDTO.getOutTime());
+		reversePickVO.setInTime(reversePickDTO.getInTime());
 		reversePickVO.setOrgId(reversePickDTO.getOrgId());
 		reversePickVO.setCustomer(reversePickDTO.getCustomer());
 		reversePickVO.setClient(reversePickDTO.getClient());
@@ -274,25 +275,19 @@ public class ReversePickServiceImpl implements ReversePickService {
 			mapDetails.put("grnDate", gridDetails[4] != null ? gridDetails[4].toString() : "");
 			mapDetails.put("batchNo", gridDetails[5] != null ? gridDetails[5].toString() : "");
 			mapDetails.put("batchDate", gridDetails[6] != null ? gridDetails[6].toString() : "");
-			mapDetails.put("binType", gridDetails[9] != null ? gridDetails[9].toString() : "");
+			mapDetails.put("binType", gridDetails[7] != null ? gridDetails[7].toString() : "");
 			mapDetails.put("binClass", gridDetails[8] != null ? gridDetails[8].toString() : "");
-			mapDetails.put("bin", gridDetails[10] != null ? gridDetails[10].toString() : "");
-			mapDetails.put("cellType", gridDetails[11] != null ? gridDetails[11].toString() : "");
-			mapDetails.put("core", gridDetails[12] != null ? gridDetails[12].toString() : "");
-			mapDetails.put("expDate", gridDetails[13] != null ? gridDetails[13].toString() : "");
-			mapDetails.put("tn", gridDetails[14] != null ? gridDetails[14].toString() : "");
-			mapDetails.put("orderQty", gridDetails[15] != null ? Integer.parseInt(gridDetails[15].toString()) : 0);
-			mapDetails.put("remainOrderQty",
-					gridDetails[16] != null ? Integer.parseInt(gridDetails[16].toString()) : 0);
-			mapDetails.put("availQty", gridDetails[17] != null ? Integer.parseInt(gridDetails[17].toString()) : 0);
-			mapDetails.put("prpQty", gridDetails[18] != null ? Integer.parseInt(gridDetails[18].toString()) : 0);
-			mapDetails.put("trpQty", gridDetails[19] != null ? Integer.parseInt(gridDetails[19].toString()) : 0);
-			mapDetails.put("qcFlag", gridDetails[20] != null ? gridDetails[20].toString() : "");
-			mapDetails.put("stockDate", gridDetails[21] != null ? gridDetails[21].toString() : "");
-			mapDetails.put("id", gridDetails[22] != null ? gridDetails[22].toString() : "");
-			
+			mapDetails.put("cellType", gridDetails[9] != null ? gridDetails[9].toString() : "");
+			mapDetails.put("core", gridDetails[10] != null ? gridDetails[10].toString() : "");
+			mapDetails.put("bin", gridDetails[11] != null ? gridDetails[11].toString() : "");
+			mapDetails.put("orderQty", gridDetails[12] != null ? Integer.parseInt(gridDetails[12].toString()) : 0);
+			mapDetails.put("pickQty", gridDetails[13] != null ? Integer.parseInt(gridDetails[13].toString()) : 0);
+			mapDetails.put("expDate", gridDetails[14] != null ? gridDetails[14].toString() : "");
+			mapDetails.put("qcFlag", gridDetails[15] != null ? gridDetails[15].toString() : "");
+			mapDetails.put("id", gridDetails[16] != null ? gridDetails[16].toString() : "");
+			getDetails.add(mapDetails);
 		}
-		return null;
+		return getDetails;
 	}
 	
 

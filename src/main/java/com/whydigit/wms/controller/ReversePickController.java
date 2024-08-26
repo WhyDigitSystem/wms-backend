@@ -175,5 +175,34 @@ public class ReversePickController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getFillGridDetailsForReversePick")
+	public ResponseEntity<ResponseDTO> getFillGridDetailsForReversePick(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String pickRequestDocId) {
+		String methodName = "getFillGridDetailsForReversePick()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
+		try {
+			fillGridDetails = reversePickService.getPickRequestFillDetailsForReversePick(orgId, branchCode, client, pickRequestDocId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"fill Grid Details  from Stock information retrieved successfully");
+			responseObjectsMap.put("fillGridDetails", fillGridDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve fill Grid Details  from Stock information", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 }

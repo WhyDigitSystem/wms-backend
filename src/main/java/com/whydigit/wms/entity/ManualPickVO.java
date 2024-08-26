@@ -35,7 +35,7 @@ public class ManualPickVO {
 
 	@Column(name = "transactiontype")
 	private String transactiontype;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docid;
 	@Column(name = "docdate")
 	private LocalDate docdate;
