@@ -53,7 +53,7 @@ public interface DeKittingRepo extends JpaRepository<DeKittingVO, Long> {
 			+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT' and partno=?5 and grnno=?6 and batch=?7 and bin=?8\r\n"
 			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0))\r\n"
 			+ "            a group by a.sqty")
-	Set<Object[]> findAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client, String partNo,
+	int findAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client, String partNo,
 			String grnNo,String batchNo,String bin);
 	
 @Query(nativeQuery = true,value = "select a.batch,a.batchDate,a.expdate from(\r\n"
