@@ -17,7 +17,8 @@ public interface SalesReturnRepo extends JpaRepository<SalesReturnVO, Long> {
 	@Query(nativeQuery = true,value = "select * from salesreturn where salesreturnid=?1")
 	SalesReturnVO findSalesReturnById(Long id);
 
-	@Query(nativeQuery = true,value = "select d.partno,d.partdesc,d.sku,d.pickqty from pickrequestdetails d , pickrequest p where p.pickrequestid=d.pickrequestid and p.docid=?1 and p.client =?2 and p.orgid =?3 and p.branchcode=?4")
+	@Query(nativeQuery = true,value = "select d.partno,d.partdesc,d.sku,d.pickqty,ROW_NUMBER() OVER (ORDER BY partdesc"
+			+ ", partno) AS id from pickrequestdetails d , pickrequest p where p.pickrequestid=d.pickrequestid and p.docid=?1 and p.client =?2 and p.orgid =?3 and p.branchcode=?4")
 	Set<Object[]> findSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
 	
 

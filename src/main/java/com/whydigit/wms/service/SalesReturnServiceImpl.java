@@ -183,6 +183,7 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			part.put("pickQty", fs[3] != null ? fs[3].toString() : "");
+			part.put("id",fs[4]!=null ? Integer.parseInt(fs[4].toString()):0);
 			details1.add(part);
 		}
 		return details1;
