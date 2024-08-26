@@ -146,7 +146,7 @@ public class VasPutawayController extends BaseController{
 			public ResponseEntity<ResponseDTO> getDocIdFromVasPickForVasPutaway(
 					@RequestParam(required = false) Long orgId,
 					@RequestParam(required = false) String branch,
-					@RequestParam(required = false) String client) {
+					@RequestParam(required = false) String client,@RequestParam String finYear) {
 
 				String methodName = "getDocIdFromVasPickForVasPutaway()";
 				LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -157,7 +157,7 @@ public class VasPutawayController extends BaseController{
 
 				try {
 					mov = vasPutawayService.getDocIdFromVasPickForVasPutaway(orgId,
-							 branch, client);
+							 branch, client,finYear);
 				} catch (Exception e) {
 					errorMsg = e.getMessage();
 					LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

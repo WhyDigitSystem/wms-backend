@@ -23,7 +23,7 @@ public interface VasPutawayService {
 
 	String getVasPutawayDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 	
-	List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client);
+	List<Map<String, Object>> getDocIdFromVasPickForVasPutaway(Long orgId, String branch, String client,String finYear);
 
 //	List<Map<String, Object>> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId, String branch,
 //			String client, String docid);

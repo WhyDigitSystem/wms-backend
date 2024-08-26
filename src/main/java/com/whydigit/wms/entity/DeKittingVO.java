@@ -64,6 +64,12 @@ public class DeKittingVO {
 	@Column(name = "freeze")
 	private boolean freeze ;
 	
+	@Column(name = "screenname")
+	private String screenName="DE KITTING";
+	@Column(name = "screencode")
+	private String screenCode="DK";
+	
+	
 	@OneToMany(mappedBy = "deKittingVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<DeKittingParentVO> deKittingParentVO;

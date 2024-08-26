@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +15,14 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.VasPickDTO;
 import com.whydigit.wms.dto.VasPickDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
+import com.whydigit.wms.entity.PickRequestDetailsVO;
+import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.entity.VasPickDetailsVO;
 import com.whydigit.wms.entity.VasPickVO;
 import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
+import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.VasPickDetailsRepo;
 import com.whydigit.wms.repo.VasPickRepo;
@@ -36,6 +41,12 @@ public class VasPickServiceImpl implements VasPickService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	ClientRepo clientRepo;
+	
+	@Autowired
+	MaterialRepo materialRepo;
 
 	// VASPICK
 
@@ -82,7 +93,97 @@ public class VasPickServiceImpl implements VasPickService {
 		vasPickVO = getVasPickVOFromVasPickDTO(vasPickVO, vasPicDTO);
 
 		// Save parent entity along with its details
-		vasPickRepo.save(vasPickVO);
+		VasPickVO savedPickRequestVO = vasPickRepo.save(vasPickVO);
+		List<VasPickDetailsVO> pickRequestDetailsVOLists = savedPickRequestVO.getVasPickDetailsVO();
+		if (pickRequestDetailsVOLists != null && !pickRequestDetailsVOLists.isEmpty()) {
+			if ("Confirm".equals(savedPickRequestVO.getStatus())) {
+				for (VasPickDetailsVO detailsVO : pickRequestDetailsVOLists) {
+					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
+					stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
+					stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+					stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
+					stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
+					stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
+					stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
+					stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
+					stockDetailsVOFrom.setClientCode(
+							clientRepo.getClientCode(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient()));
+					stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
+					stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
+					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDescription());
+					stockDetailsVOFrom.setSQty(detailsVO.getPicQty() * -1);
+					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
+					stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+					stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+					stockDetailsVOFrom.setStatus(detailsVO.getStatus());
+					stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+					stockDetailsVOFrom.setBin(detailsVO.getBin());
+					stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
+					stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
+					stockDetailsVOFrom.setPQty(detailsVO.getPicQty());
+					stockDetailsVOFrom.setPickedQty(detailsVO.getPicQty());
+					stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
+					stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+					stockDetailsVOFrom.setSku(detailsVO.getSku());
+					stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+					stockDetailsVOFrom.setCellType(detailsVO.getCellType());
+					stockDetailsVOFrom.setCore(detailsVO.getCore());
+					stockDetailsVOFrom.setSSku(detailsVO.getSku());
+					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
+					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
+					stockDetailsVOFrom.setSourceId(detailsVO.getId());
+					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
+					stockDetailsRepo.save(stockDetailsVOFrom);
+				}
+				
+				for (VasPickDetailsVO detailsVO : pickRequestDetailsVOLists) {
+					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
+					stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
+					stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+					stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
+					stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
+					stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
+					stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
+					stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
+					stockDetailsVOFrom.setClientCode(
+							clientRepo.getClientCode(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient()));
+					stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
+					stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
+					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
+					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDescription());
+					stockDetailsVOFrom.setSQty(detailsVO.getPicQty());
+					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
+					stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+					stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+					stockDetailsVOFrom.setStatus("V");
+					stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+					stockDetailsVOFrom.setBin(detailsVO.getBin());
+					stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
+					stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
+					stockDetailsVOFrom.setPQty(detailsVO.getPicQty());
+					stockDetailsVOFrom.setPickedQty(detailsVO.getPicQty());
+					stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
+					stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+					stockDetailsVOFrom.setSku(detailsVO.getSku());
+					stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+					stockDetailsVOFrom.setCellType(detailsVO.getCellType());
+					stockDetailsVOFrom.setCore(detailsVO.getCore());
+					stockDetailsVOFrom.setSSku(detailsVO.getSku());
+					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
+					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
+					stockDetailsVOFrom.setSourceId(detailsVO.getId());
+					stockDetailsVOFrom.setStockDate(LocalDate.now());
+					stockDetailsRepo.save(stockDetailsVOFrom);
+				}
+			}
+		}
 
 		Map<String, Object> response = new HashMap<>();
 		response.put("message", message);
@@ -90,7 +191,7 @@ public class VasPickServiceImpl implements VasPickService {
 		return response;
 	}
 
-	private VasPickVO getVasPickVOFromVasPickDTO(VasPickVO vasPickVO, VasPickDTO vasPicDTO) {
+	private VasPickVO getVasPickVOFromVasPickDTO(VasPickVO vasPickVO, VasPickDTO vasPicDTO) throws ApplicationException {
 		vasPickVO.setPicBin(vasPicDTO.getPicBin());
 		vasPickVO.setOrgId(vasPicDTO.getOrgId());
 		vasPickVO.setStockState(vasPicDTO.getStockState());
@@ -102,7 +203,14 @@ public class VasPickServiceImpl implements VasPickService {
 		vasPickVO.setBranch(vasPicDTO.getBranch());
 		vasPickVO.setBranchCode(vasPicDTO.getBranchCode());
 		vasPickVO.setWarehouse(vasPicDTO.getWarehouse());
-		vasPickVO.setPicBin(vasPicDTO.getPicBin());
+		if("Confirm".equals(vasPicDTO.getStatus()))
+		{
+			vasPickVO.setFreeze(true);
+		}
+		else
+		{
+			vasPickVO.setFreeze(false);
+		}
 
 		int totalOrderQty = 0;
 		int pickedQty = 0;
@@ -118,15 +226,27 @@ public class VasPickServiceImpl implements VasPickService {
 			detailsVO.setGrnNo(vasPickDTO.getGrnNo());
 			detailsVO.setBinType(vasPickDTO.getBinType());
 			detailsVO.setBatchDate(vasPickDTO.getBatchDate());
-			detailsVO.setAvlQty(vasPickDTO.getAvlQty());
-			detailsVO.setPicQty(vasPickDTO.getPicQty());
-			detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
-			detailsVO.setQcflag(vasPickDTO.getQcflag());
+			
+			int getFromQty= stockDetailsRepo.getAvlQtyforVasPick(vasPicDTO.getOrgId(), vasPicDTO.getBranchCode(),vasPicDTO.getWarehouse(),
+					vasPicDTO.getClient(),vasPickDTO.getBin(),vasPickDTO.getPartNo(),vasPickDTO.getGrnNo(),
+					vasPickDTO.getBatchNo(), vasPicDTO.getStateStatus());
+		    if(getFromQty>=vasPickDTO.getPicQty())
+		    {
+		    	detailsVO.setAvlQty(vasPickDTO.getAvlQty());
+		    	detailsVO.setPicQty(vasPickDTO.getPicQty());
+		    	detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
+		    }
+		    else
+		    {
+		    	throw new ApplicationException("Pick Qty is Must Below or Equal to Avl Qty");
+		    }
+			detailsVO.setQcFlag(vasPickDTO.getQcflag());
 			detailsVO.setGrnDate(vasPickDTO.getGrnDate());
 			detailsVO.setBinClass(vasPickDTO.getBinClass());
 			detailsVO.setCellType(vasPickDTO.getCellType());
 			detailsVO.setCore(vasPickDTO.getCore());
 			detailsVO.setExpDate(vasPickDTO.getExpDate());
+			detailsVO.setStatus(vasPicDTO.getStateStatus());
 
 			totalOrderQty = totalOrderQty + vasPickDTO.getAvlQty();
 			pickedQty = pickedQty + vasPickDTO.getPicQty();
@@ -208,7 +328,8 @@ public class VasPickServiceImpl implements VasPickService {
 			part.put("cellType", fs[14] != null ? fs[14].toString() : "");
 			part.put("avalQty", fs[15] != null ? Integer.parseInt(fs[15].toString()) : 0);
 			part.put("pickQty", fs[15] != null ? Integer.parseInt(fs[15].toString()) : 0);
-			part.put("id", fs[16] != null ? Integer.parseInt(fs[16].toString()) : 0);
+			part.put("stockDate", fs[16] != null ? fs[16].toString() : "");
+			part.put("id", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
 			details1.add(part);
 		}
 		return details1;

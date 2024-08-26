@@ -19,7 +19,7 @@ public class VasPickDetailsDTO {
 	private String batchNo;
 	private LocalDate batchDate;
 	private String grnNo;
-	private String grnDate;
+	private LocalDate grnDate;
 	private int avlQty;
 	private int picQty;
 	private int remaningQty;
