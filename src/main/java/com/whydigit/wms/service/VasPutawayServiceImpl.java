@@ -121,7 +121,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 		VasPutawayVO savedPickRequestVO = vasPutawayRepo.save(vasPutawayVO);
 		List<VasPutawayDetailsVO> pickRequestDetailsVOLists = savedPickRequestVO.getVasPutawayDetailsVO();
 		if (pickRequestDetailsVOLists != null && !pickRequestDetailsVOLists.isEmpty()) {
-			if ("Submit".equals(savedPickRequestVO.getStatus())) {
+			if ("Confirm".equals(savedPickRequestVO.getStatus())) {
 				for (VasPutawayDetailsVO detailsVO : pickRequestDetailsVOLists) {
 					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
 					stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
@@ -224,7 +224,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 		vasPutawayVO.setTotalPutawayQty(vasPutawayDTO.getTotalPutawayQty());
 		vasPutawayVO.setVasPickNo(vasPutawayDTO.getVasPickNo());
 		vasPutawayVO.setStatus(vasPutawayDTO.getStatus());
-		if ("Submit".equals(vasPutawayDTO.getStatus())) {
+		if ("Confirm".equals(vasPutawayDTO.getStatus())) {
 			vasPutawayVO.setFreeze(true);
 		}
 		else

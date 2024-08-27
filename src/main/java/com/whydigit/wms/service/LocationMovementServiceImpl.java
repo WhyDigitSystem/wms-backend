@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,10 +114,8 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setBin(detailsVO.getBin());
 				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
 				stockDetailsVOFrom.setCellType(detailsVO.getCellType());
+				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
 				stockDetailsVOFrom.setCore(detailsVO.getCore());
-				stockDetailsVOFrom.setPcKey(detailsVO.getPcKey());
-				stockDetailsVOFrom.setSSku(detailsVO.getSsku());
-				stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
 				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
@@ -124,12 +123,9 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOFrom.setSku(detailsVO.getSku());
-				stockDetailsVOFrom.setCore(detailsVO.getCore());
-				stockDetailsVOFrom.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOFrom.setSQty(detailsVO.getToQty() * -1); // Negative quantity
 				stockDetailsVOFrom.setRefNo(savedLocationMovementVO.getDocId());
-				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
 				stockDetailsVOFrom.setOrgId(savedLocationMovementVO.getOrgId());
 				stockDetailsVOFrom.setRefDate(savedLocationMovementVO.getDocDate());
 				stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedLocationMovementVO.getOrgId(),
@@ -142,24 +138,12 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOFrom.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOFrom.setFinYear(savedLocationMovementVO.getFinYear());
-
-				if ("Defective".equals(detailsVO.getBin())) {
-					stockDetailsVOFrom.setQcFlag("F");
-					stockDetailsVOFrom.setStatus("D");
-					stockDetailsVOFrom.setBinType("DAMAGE");
-				} else {
-
-					stockDetailsVOFrom.setQcFlag("T");
-					stockDetailsVOFrom.setStatus("R");
-					stockDetailsVOFrom.setBinType(detailsVO.getBinType());
-				}
-//				if (detailsVO.getFromQty() > detailsVO.getToQty()) {
-//					stockDetailsRepo.save(stockDetailsVOFrom);
-//				}else {
-//					throw new ApplicationException("The ToQty is greator than avlQty");
-//					}
+				stockDetailsVOFrom.setStockDate(LocalDate.now());
+				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
+				stockDetailsVOFrom.setStatus(detailsVO.getStatus());
 				stockDetailsRepo.save(stockDetailsVOFrom);
-
+			}
+			for (LocationMovementDetailsVO detailsVO : locationMovementDetailsVOLists) {
 				// Create StockDetails for toBin with positive quantity
 				StockDetailsVO stockDetailsVOTo = new StockDetailsVO();
 				stockDetailsVOTo.setBin(detailsVO.getToBin());
@@ -167,21 +151,23 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOTo.setBinClass(detailsVO.getToBinClass());
 				stockDetailsVOTo.setBinType(detailsVO.getToBinType());
 				stockDetailsVOTo.setCellType(detailsVO.getToCellType());
-				stockDetailsVOTo.setQcFlag(detailsVO.getQcFlag());
+				if ("Defective".equals(detailsVO.getToBin())) {
+					stockDetailsVOTo.setQcFlag("F");
+					stockDetailsVOTo.setStatus("D");
+				} else {
+					stockDetailsVOTo.setQcFlag("T");
+					stockDetailsVOTo.setStatus("R");
+				}
 				stockDetailsVOTo.setPartDesc(detailsVO.getPartDesc());
 				stockDetailsVOTo.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOTo.setCellType(detailsVO.getCellType());
-				stockDetailsVOTo.setPcKey(detailsVO.getPcKey());
-				stockDetailsVOTo.setSSku(detailsVO.getSsku());
 				stockDetailsVOTo.setSku(detailsVO.getSku());
-				stockDetailsVOTo.setStockDate(detailsVO.getStockDate());
+				stockDetailsVOTo.setStockDate(LocalDate.now());
 				stockDetailsVOTo.setBatchDate(detailsVO.getBatchDate());
-				stockDetailsVOTo.setLotNo(detailsVO.getLotNo());
 				stockDetailsVOTo.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOTo.setCore(detailsVO.getCore());
-				stockDetailsVOTo.setStatus(detailsVO.getStatus());
 				stockDetailsVOTo.setSQty(detailsVO.getToQty()); // Positive quantity
 				stockDetailsVOTo.setRefNo(savedLocationMovementVO.getDocId());
 				stockDetailsVOTo.setOrgId(savedLocationMovementVO.getOrgId());
@@ -196,10 +182,10 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 						savedLocationMovementVO.getClient()));
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
+				
 				if ("Defective".equals(detailsVO.getBin())) {
 					stockDetailsVOTo.setQcFlag("F");
 					stockDetailsVOTo.setStatus("D");
-					stockDetailsVOTo.setBinType("DAMAGE");
 				} else {
 
 					stockDetailsVOTo.setQcFlag("T");
@@ -225,7 +211,6 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 			LocationMovementVO locationMovementVO) {
 
 		locationMovementVO.setOrgId(locationMovementDTO.getOrgId());
-		locationMovementVO.setType(locationMovementDTO.getType());
 		locationMovementVO.setCustomer(locationMovementDTO.getCustomer());
 		locationMovementVO.setFinYear(locationMovementDTO.getFinYear());
 		locationMovementVO.setClient(locationMovementDTO.getClient());
@@ -248,44 +233,32 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 						+ locationMovementDetailsDTO.getPartNo());
 			}
 			LocationMovementDetailsVO locationMovementDetailsVO = new LocationMovementDetailsVO();
-			locationMovementDetailsVO.setBin(locationMovementDetailsDTO.getBin());
+			
 			locationMovementDetailsVO.setPartNo(locationMovementDetailsDTO.getPartNo());
 			locationMovementDetailsVO.setPartDesc(locationMovementDetailsDTO.getPartDesc());
+			locationMovementDetailsVO.setSku(locationMovementDetailsDTO.getSku());
 			locationMovementDetailsVO.setGrnNo(locationMovementDetailsDTO.getGrnNo());
+			locationMovementDetailsVO.setGrnDate(locationMovementDetailsDTO.getGrnDate());
 			locationMovementDetailsVO.setBatchNo(locationMovementDetailsDTO.getBatchNo());
 			locationMovementDetailsVO.setBatchDate(locationMovementDetailsDTO.getBatchDate());
-			locationMovementDetailsVO.setLotNo(locationMovementDetailsDTO.getLotNo());
+			locationMovementDetailsVO.setBin(locationMovementDetailsDTO.getFromBin());
+			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getFromBinClass());
+			locationMovementDetailsVO.setCellType(locationMovementDetailsDTO.getFromCellType());
+			locationMovementDetailsVO.setBinType(locationMovementDetailsDTO.getFromBinType());
+			locationMovementDetailsVO.setCore(locationMovementDetailsDTO.getFromCore());
 			locationMovementDetailsVO.setToBin(locationMovementDetailsDTO.getToBin());
+			locationMovementDetailsVO.setToBinClass(locationMovementDetailsDTO.getToBinClass());
+			locationMovementDetailsVO.setToBinType(locationMovementDetailsDTO.getToBinType());
+			locationMovementDetailsVO.setToCellType(locationMovementDetailsDTO.getToCellType());
+			locationMovementDetailsVO.setToCore(locationMovementDetailsDTO.getToCore());
 			locationMovementDetailsVO.setFromQty(locationMovementDetailsDTO.getFromQty());
 			locationMovementDetailsVO.setToQty(locationMovementDetailsDTO.getToQty());
 			locationMovementDetailsVO
 					.setRemainingQty(locationMovementDetailsDTO.getFromQty() - locationMovementDetailsDTO.getToQty());
-			locationMovementDetailsVO.setGrnDate(locationMovementDetailsDTO.getGrnDate());
-			locationMovementDetailsVO.setSku(locationMovementDetailsDTO.getSku());
-
-			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
-			locationMovementDetailsVO.setCellType(locationMovementDetailsDTO.getCellType());
-			locationMovementDetailsVO.setCore(locationMovementDetailsDTO.getCore());
-			locationMovementDetailsVO.setPcKey(locationMovementDetailsDTO.getPcKey());
-			locationMovementDetailsVO.setSsku(locationMovementDetailsDTO.getSsku());
-			locationMovementDetailsVO.setStockDate(locationMovementDetailsDTO.getStockDate());
-			locationMovementDetailsVO.setToBinClass(locationMovementDetailsDTO.getToBinClass());
-			locationMovementDetailsVO.setToBinType(locationMovementDetailsDTO.getToBinType());
-			locationMovementDetailsVO.setToCellType(locationMovementDetailsDTO.getToCellType());
-
-			locationMovementDetailsVO.setBinType(locationMovementDetailsDTO.getBinType());
-			locationMovementDetailsVO.setCore(locationMovementDetailsDTO.getCore());
-			locationMovementDetailsVO.setBinClass(locationMovementDetailsDTO.getBinClass());
 			locationMovementDetailsVO.setExpDate(locationMovementDetailsDTO.getExpDate());
 			locationMovementDetailsVO.setLocationMovementVO(locationMovementVO);
-			if ("Defective".equals(locationMovementDetailsDTO.getBin())) {
-				locationMovementDetailsVO.setQcFlag("F");
-				locationMovementDetailsVO.setStatus("D");
-			} else {
-				locationMovementDetailsVO.setQcFlag("T");
-				locationMovementDetailsVO.setStatus("R");
-			}
-
+			locationMovementDetailsVO.setQcFlag(locationMovementDetailsDTO.getQcFlag());
+			locationMovementDetailsVO.setStatus(locationMovementDetailsDTO.getStatus());
 			locationMovementDetailsVOs.add(locationMovementDetailsVO);
 		}
 		locationMovementVO.setLocationMovementDetailsVO(locationMovementDetailsVOs);
@@ -304,10 +277,11 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("bin", fs[0] != null ? fs[0].toString() : "");
-			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
-			part.put("binType", fs[2] != null ? fs[2].toString() : "");
-			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
+			part.put("fromBinType", fs[0] != null ? fs[0].toString() : "");
+			part.put("fromBinClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("fromCellType", fs[2] != null ? fs[2].toString() : "");
+			part.put("fromBin", fs[3] != null ? fs[3].toString() : "");
+			part.put("fromCore", fs[4] != null ? fs[4].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -351,7 +325,6 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
-			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
 
 			details1.add(part);
 		}
@@ -359,11 +332,11 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 	}
 
 	@Transactional
-	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
-			String branch, String branchCode, String client, String bin, String partNo, String partDesc, String sku) {
+	@Override
+	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String branch,
+			String branchCode, String client, String bin, String partNo) {
 
-		Set<Object[]> result = locationMovementRepo.findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
-				orgId, branch, branchCode, client, bin, partNo, partDesc, sku);
+		Set<Object[]> result = locationMovementRepo.findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, branch, branchCode, client, bin, partNo);
 		return getGrnResult(result);
 	}
 
@@ -373,13 +346,27 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
-			part.put("batchNo", fs[2] != null ? fs[2].toString() : "");
-			part.put("batchDate", fs[3] != null ? fs[3].toString() : "");
-			part.put("lotNo", fs[4] != null ? fs[4].toString() : "");
-			part.put("core", fs[5] != null ? fs[5].toString() : "");
-			part.put("expDate", fs[6] != null ? fs[6].toString() : "");
-			part.put("status", fs[7] != null ? fs[7].toString() : "");
-			part.put("avlQty", fs[8] != null ? fs[8].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+	
+	@Transactional
+	@Override
+	public List<Map<String, Object>> getBatchNoAndBatchDateFromStockForLocationMovement(Long orgId, String branch,
+			String branchCode, String client, String bin, String partNo,String grnNo) {
+
+		Set<Object[]> result11 = locationMovementRepo.findBatchNoAndBatchDateFromStockForLocationMovement(orgId, branch, branchCode, client, bin, partNo,grnNo);
+		return getBatchResult(result11);
+	}
+
+	private List<Map<String, Object>> getBatchResult(Set<Object[]> result11) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result11) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("batchNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("expDate", fs[2] != null ? fs[2].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -421,7 +408,8 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		return details1;
 	}
 
-	@Transactional
+	
+	@Override
 	public String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode,
 			String client) {
 		String screenCode = "LM";
@@ -429,20 +417,15 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		return result;
 	}
 
-	@Transactional
-	public int getAvlQtyFromStockForLocationMovement(Long orgId, String branch, String branchCode, String client,
-			String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
+	
+	@Override
+	public int getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
+			String branchCode, String client, String bin, String partNo,String grnNo,String batchNo) {
 
-		Set<Object[]> result = locationMovementRepo.findAvlQtyFromStockForLocationMovement(orgId, branch, branchCode,
-				client, bin, partDesc, sku, partNo, grnNo, lotNo);
-		return getAvlQtyLMResult(result);
+		int qty = stockDetailsRepo.findAvlQtyForLocationMovement(orgId, branch, branchCode, client, bin, partNo, grnNo, batchNo);
+	    
+	    return qty;
+		   
 	}
 
-	private int getAvlQtyLMResult(Set<Object[]> result) {
-		int totalQty = 0;
-		for (Object[] qt : result) {
-			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
-		}
-		return totalQty;
-	}
 }
