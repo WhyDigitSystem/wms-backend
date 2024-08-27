@@ -31,15 +31,18 @@ public interface LocationMovementService {
 	List<Map<String, Object>> getPartNoAndPartDescFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client, String bin);
 
-	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
-			String branch, String branchCode, String client, String bin, String partNo, String partDesc, String sku);
-
 	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long id, String branch, String branchCode,
 			String client);
 
-	int getAvlQtyFromStockForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
-			String partDesc, String sku, String partNo, String grnNo, String lotNo);
+	int getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
+			String branchCode, String client, String bin, String partNo, String grnno,String batchNo);
+
+	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
+			String branch, String branchCode, String client, String bin, String partNo);
+
+	List<Map<String, Object>> getBatchNoAndBatchDateFromStockForLocationMovement(Long orgId, String branch,
+			String branchCode, String client, String bin, String partNo, String grnno);
 
 }

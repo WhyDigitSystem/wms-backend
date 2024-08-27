@@ -24,12 +24,12 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 		String fromBin, String partNo, String grnNo, String batchNo);
 
-@Query(nativeQuery = true,value = "select sum(a.sqty)sqty from(\r\n"
+@Query(nativeQuery = true,value = "select cast(a.sqty as unsigned)sqty from(\r\n"
 		+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
-		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status=?6 and bin=?5 and partno=?6 and grnno=?7\r\n"
+		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status=?9 and bin=?5 and partno=?6 and grnno=?7\r\n"
 		+ "and batch=?8\r\n"
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
-int getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, String client,
+public int getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, String client,
 		String fromBin, String partNo, String grnNo, String batchNo,String status);
 
 
@@ -42,7 +42,16 @@ Set<Object[]> getDetails(Long orgId, String branchCode, String client, String wa
 		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status='V' and bin=?5 and partno=?6 and grnno=?7\r\n"
 		+ "and batch=?8\r\n"
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
-int getAvlQtyforVasPutaway(Long orgId, String branchCode, String warehouse, String client, String fromBin,
+public Integer getAvlQtyforVasPutaway(Long orgId, String branchCode, String warehouse, String client, String fromBin,
+		String partNo, String grnNo, String batchNo);
+
+
+@Query(nativeQuery = true, value = "select cast(a.sqty as unsigned)sqty from(\r\n"
+		+ "            select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
+		+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and batch=?8\r\n"
+		+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0\r\n"
+		+ "            ) a")
+int findAvlQtyForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
 		String partNo, String grnNo, String batchNo);
 
 }

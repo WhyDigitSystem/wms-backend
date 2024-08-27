@@ -33,8 +33,6 @@ public class LocationMovementVO {
 	@SequenceGenerator(name = "locationmovementgen", sequenceName = "locationmovementseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmovementid")
 	private Long id;
-	@Column(name = "type")
-	private String type;
 	@Column(name = "screenname")
 	private String screenName ="LOCATION MOVEMENT";
 	@Column(name = "screencode")

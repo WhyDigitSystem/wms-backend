@@ -148,7 +148,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
+					stockDetailsVOFrom.setStockDate(LocalDate.now());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
 			List<DeKittingChildVO> pickRequestDetailsVOLists1 = savedPickRequestVO.getDeKittingChildVO();
@@ -175,6 +175,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 					stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
 					stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
 					stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+					stockDetailsVOFrom.setBinType(detailsVO.getBinType());
 					stockDetailsVOFrom.setBin(detailsVO.getBin());
 					stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
 					stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
@@ -265,6 +266,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 			DeKittingChildVO deKittingChildVO = new DeKittingChildVO();
 			deKittingChildVO.setBin(deKittingChildDTO.getBin());
+			deKittingChildVO.setBinType(deKittingChildDTO.getBinType());
 			deKittingChildVO.setPartNo(deKittingChildDTO.getPartNo());
 			deKittingChildVO.setPartDesc(deKittingChildDTO.getPartDesc());
 			deKittingChildVO.setSku(deKittingChildDTO.getSku());
