@@ -230,6 +230,18 @@ public class VasPickServiceImpl implements VasPickService {
 			int getFromQty= stockDetailsRepo.getAvlQtyforVasPick(vasPicDTO.getOrgId(), vasPicDTO.getBranchCode(),vasPicDTO.getWarehouse(),
 					vasPicDTO.getClient(),vasPickDTO.getBin(),vasPickDTO.getPartNo(),vasPickDTO.getGrnNo(),
 					vasPickDTO.getBatchNo(), vasPicDTO.getStateStatus());
+			System.out.println("from qty"+getFromQty);
+			System.out.println("orgid"+vasPicDTO.getOrgId());
+			System.out.println("branchcode"+vasPicDTO.getBranchCode());
+			System.out.println("warehouse"+vasPicDTO.getWarehouse());
+			System.out.println("client"+vasPicDTO.getClient());
+			System.out.println("bin"+vasPickDTO.getBin());
+			System.out.println("partno"+vasPickDTO.getPartNo());
+			System.out.println("grnno"+vasPickDTO.getGrnNo());
+			System.out.println("batchno"+vasPickDTO.getBatchNo());
+			System.out.println("status"+ vasPicDTO.getStateStatus());
+			
+			
 		    if(getFromQty>=vasPickDTO.getPicQty())
 		    {
 		    	detailsVO.setAvlQty(vasPickDTO.getAvlQty());

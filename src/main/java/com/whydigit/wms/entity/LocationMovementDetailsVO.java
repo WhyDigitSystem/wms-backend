@@ -32,24 +32,41 @@ public class LocationMovementDetailsVO {
 	@SequenceGenerator(name = "locationmovementdetailsgen", sequenceName = "locationmovementdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmovementdetailsid")
 	private Long id;
-	@Column(name = "bin")
-	private String bin;
 	@Column(name = "partno")
 	private String partNo;
-	@Column(name = "partdescripition")
+	@Column(name = "partdesc")
 	private String partDesc;
+	@Column(name = "sku")
+	private String sku;
 	@Column(name = "grnno")
 	private String grnNo;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
 	@Column(name = "batchno")
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
-	@Column(name = "lotno")
-	private String lotNo;
+	@Column(name = "bin")
+	private String bin;
+	@Column(name = "bintype")
+	private String binType;
+	@Column(name = "binclass")
+	private String binClass;
+	@Column(name = "celltype")
+	private String cellType;
+	@Column(name = "core")
+	private String core;
 	@Column(name = "tobin")
 	private String toBin;
+	@Column(name = "tobinclass")
+	private String toBinClass;
+	@Column(name = "tobintype")
+	private String toBinType;
+	@Column(name = "tocelltype")
+	private String toCellType;
+	@Column(name = "tocore")
+	private String toCore;
 	@Column(name = "fromqty")
-	
 	private int fromQty;
 	@Column(name = "toqty")
 	private int toQty;
@@ -57,34 +74,11 @@ public class LocationMovementDetailsVO {
 	private int remainingQty;
 	@Column(name = "qcflag")
 	private String qcFlag;
-	@Column(name = "sku")
-	private String sku;
-	@Column(name = "grndate")
-	private LocalDate grnDate;
-	@Column(name = "bintype")
-	private String binType;
 	@Column(name = "status")
-	private String status = "R";
-	@Column(name = "binclass")
-	private String binClass;
-	@Column(name = "celltype")
-	private String cellType;
-	@Column(name = "core")
-	private String core;
+	private String status;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "pckey")
-	private String pcKey;
-	@Column(name = "ssku")
-	private String ssku;
-	@Column(name = "stokcdate")
-	private LocalDate stockDate=LocalDate.now();
-	@Column(name = "tobinclass")
-	private String toBinClass;
-	@Column(name = "tobintype")
-	private String toBinType;
-	@Column(name = "tocelltype")
-	private String toCellType;
+	
 
 	@ManyToOne
 	@JsonBackReference
