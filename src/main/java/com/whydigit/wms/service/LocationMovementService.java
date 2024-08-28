@@ -36,7 +36,7 @@ public interface LocationMovementService {
 	List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long id, String branch, String branchCode,
 			String client);
 
-	int getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
+	Integer getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client, String bin, String partNo, String grnno,String batchNo);
 
 	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,

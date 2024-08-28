@@ -402,7 +402,10 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
 			part.put("lotNo", fs[15] != null ? fs[15].toString() : "");
 			part.put("grnDate", fs[16] != null ? fs[16].toString() : "");
-			part.put("avlQty", fs[17] != null ? fs[17].toString() : "");
+			part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()): 0);
+			part.put("binType", fs[18] != null ? fs[18].toString() : "");
+			part.put("id", fs[19] != null ? Integer.parseInt(fs[19].toString()): 0);
+			
 			details1.add(part);
 		}
 		return details1;
@@ -419,13 +422,14 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 
 	
 	@Override
-	public int getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
-			String branchCode, String client, String bin, String partNo,String grnNo,String batchNo) {
+	public Integer getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
+	        String branchCode, String client, String bin, String partNo, String grnNo, String batchNo) {
 
-		int qty = stockDetailsRepo.findAvlQtyForLocationMovement(orgId, branch, branchCode, client, bin, partNo, grnNo, batchNo);
+	    Integer qty = stockDetailsRepo.findAvlQtyForLocationMovement(orgId, branch, branchCode, client, bin, partNo, grnNo, batchNo);
 	    
-	    return qty;
-		   
+	    // Return 0 if qty is null
+	    return (qty != null) ? qty : 0;
 	}
+
 
 }
