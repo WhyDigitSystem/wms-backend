@@ -79,6 +79,7 @@ public class PickRequestDetailsVO {
 	@Column(name = "qcflag")
 	private String qcFlag;
 	
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "pickrequestid")
