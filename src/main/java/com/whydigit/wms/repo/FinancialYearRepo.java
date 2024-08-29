@@ -18,4 +18,13 @@ public interface FinancialYearRepo extends JpaRepository<FinancialYearVO, Long> 
 	@Query(value ="select a from FinancialYearVO a where a.orgId=?1 and a.active=true and a.closed=false")
 	List<FinancialYearVO> findAllActiveFinYear(Long orgId);
 
+
+	boolean existsByFinYearAndOrgId(int finYear, Long orgId);
+
+
+
+
+
+
+
 }
