@@ -100,7 +100,7 @@ public class KittingServiceImpl implements KittingService {
 
 	private KittingVO getKittingVOFromKittingDTO(KittingVO kittingVO, KittingDTO kittingDTO) {
 		// Populate kittingVO fields from kittingDTO
-		kittingVO.setScreenName(kittingDTO.getScreenName());
+		//kittingVO.setScreenName(kittingDTO.getScreenName());
 		kittingVO.setOrgId(kittingDTO.getOrgId());
 		kittingVO.setCustomer(kittingDTO.getCustomer());
 		kittingVO.setClient(kittingDTO.getClient());

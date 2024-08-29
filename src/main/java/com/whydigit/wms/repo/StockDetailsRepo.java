@@ -51,7 +51,7 @@ public Integer getAvlQtyforVasPutaway(Long orgId, String branchCode, String ware
 		+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and batch=?8\r\n"
 		+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0\r\n"
 		+ "            ) a")
-int findAvlQtyForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
+Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
 		String partNo, String grnNo, String batchNo);
 
 
