@@ -22,16 +22,6 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 	String getKittingInDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
 
-//	@Query(nativeQuery =true,value ="select a.grnno,a.grndate,a.batch,a.batchdate from(\n"
-//			+ "select  partno,partdesc,sku,batch,batchdate,grnno,grndate,status,bin,bintype,binclass,celltype,qcflag,sum(sqty) from stockdetails\n"
-//			+ " where pckey='CHILD' and client=?5 and branchcode=?4 and orgid=?1 and branch=?3 and bin=?2 and partno=?6\n"
-//			+ " and partdesc=?7 \n"
-//			+ " and sku=?8   group by \n"
-//			+ " partno,partdesc,sku,grnno,grndate,status,bin,batch,batchdate,bintype,binclass,celltype,qcflag having sum(sqty)>0) a \n"
-//			+ " group by a.grnno,a.grndate,a.batch,a.batchdate")
-//	Set<Object[]> getGrnNOByChild(Long orgId, String bin, String branch, String branchCode, String client,
-//			String partNo, String partDesc, String sku);
-
 	@Query(nativeQuery =true,value ="select partno,partdesc,sku from material where parentchildkey='PARENT' and client=?3 and cbranch='ALL' or cbranch=?2 and orgid=?1 and active=1 group by partno,partdesc,sku")
 	Set<Object[]> getPartNOByParent(Long orgId,String branchCode, String client);
 	
