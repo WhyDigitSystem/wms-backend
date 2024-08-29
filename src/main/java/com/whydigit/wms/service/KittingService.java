@@ -23,16 +23,23 @@ public interface KittingService {
 
 		String getKittingInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-		List<Map<String, Object>> getPartNOByChild(Long orgId, String bin, String branch, String branchCode, String client);
+		List<Map<String, Object>> getPartNOByChild(Long orgId, String branchCode, String client, String warehouse);
 
-		List<Map<String, Object>> getGrnNOByChild(Long orgId, String bin, String branch, String branchCode, String client,
-				String partNo, String partDesc, String sku);
 
-		List<Map<String, Object>> getSqtyByKitting(Long orgId, String branchCode, String client, String partNo, String warehouse,String grnno);
+		List<Map<String, Object>> getSqtyByKitting(Long orgId, String branchCode, String client, String warehouse, String partNo,String grnNo,String batch,String bin);
 		
 		List<Map<String, Object>> getPartNOByParent(Long orgId, String branchCode, String client);
 
 		List<Map<String, Object>> getGrnNOByParent(Long orgId, String bin, String branch, String branchCode, String client,
 				String partNo, String partDesc, String sku);
+
+		List<Map<String, Object>> getGrnNOByChild(Long orgId, String branchCode, String client, String warehouse,
+				String partNo);
+
+		List<Map<String, Object>> getBatchByChild(Long orgId, String branchCode, String client, String warehouse,
+				String partNo, String grnNo);
+
+		List<Map<String, Object>> getBinByChild(Long orgId, String branchCode, String client, String warehouse,
+				String partNo, String grnNo, String batch);
 
 }

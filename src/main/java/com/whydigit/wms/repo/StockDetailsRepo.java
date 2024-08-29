@@ -54,4 +54,22 @@ public Integer getAvlQtyforVasPutaway(Long orgId, String branchCode, String ware
 int findAvlQtyForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
 		String partNo, String grnNo, String batchNo);
 
+
+@Query(nativeQuery =true,value ="SELECT sum(sqty)\r\n"
+		+ "FROM stockdetails\r\n"
+		+ "WHERE orgid =?1\r\n"
+		+ "  AND client = ?3\r\n"
+		+ "  AND branchcode =?2\r\n"
+		+ "  AND warehouse = ?4\r\n"
+		+ "  AND partno = ?5\r\n"
+		+ "  AND grnno = ?6\r\n"
+		+ "  AND batch =?7\r\n"
+		+ "  AND status='R'\r\n"
+		+ "  AND pckey='CHILD'\r\n"
+		+ "  AND bin=?8\r\n"
+		+ "  having sum(sqty)>0\r\n"
+		+ "")
+Set<Object[]> getQtyDetais(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo,
+		String batch, String bin);
+
 }
