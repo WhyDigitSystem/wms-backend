@@ -988,6 +988,9 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 			message="Financial Year Creation Successfully";
 			
 		}else {
+			financialYearVO = financialYearRepo.findById(financialYearDTO.getId())
+				    .orElseThrow(() -> new ApplicationException(
+				        String.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));
 			
 			
 			if (financialYearVO.getFinYear() != financialYearDTO.getFinYear()) {
