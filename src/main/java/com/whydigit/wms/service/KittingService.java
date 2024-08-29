@@ -26,7 +26,7 @@ public interface KittingService {
 		List<Map<String, Object>> getPartNOByChild(Long orgId, String branchCode, String client, String warehouse);
 
 
-		List<Map<String, Object>> getSqtyByKitting(Long orgId, String branchCode, String client, String warehouse, String partNo,String grnNo,String batch,String bin);
+		Integer getSqtyByKitting(Long orgId, String branchCode, String client, String warehouse, String partNo,String grnNo,String batch,String bin);
 		
 		List<Map<String, Object>> getPartNOByParent(Long orgId, String branchCode, String client);
 

@@ -233,6 +233,7 @@ public class KittingServiceImpl implements KittingService {
 			details.put("batch", record[0] != null ? record[0].toString() : "");
 			details.put("batchDate", record[1] != null ? record[1].toString() : "");
 			details.put("expDate", record[2] != null ? record[2].toString() : "");
+			details.put("id", record[3] != null ?Integer.parseInt(record[3].toString()) : 0);
 			grnDetails.add(details);
 		}
 		return grnDetails;
@@ -263,20 +264,17 @@ public class KittingServiceImpl implements KittingService {
 	}
 	
 	@Override
-	public List<Map<String, Object>> getSqtyByKitting(Long orgId, String branchCode, String client, String warehouse, String partNo,String grnNo,String batch,String bin) {
-		Set<Object[]> getQty = stockDetailsRepo.getQtyDetais(orgId, branchCode, client, warehouse, partNo, grnNo,batch,bin);
-		return getQtys(getQty);
+	public Integer getSqtyByKitting(Long orgId, String branchCode, String client, 
+	                                String warehouse, String partNo, String grnNo, 
+	                                String batch, String bin) {
+	    List<Integer> qtyList = stockDetailsRepo.getQtyDetails(orgId, branchCode, client, 
+	                                                            warehouse, partNo, grnNo, batch, bin);
+	    // Return the first result if list is not empty, or 0 otherwise
+	    return (!qtyList.isEmpty()) ? qtyList.get(0) : 0;
 	}
 
-	private List<Map<String, Object>> getQtys(Set<Object[]> getPartNo) {
-		List<Map<String, Object>> gridDetails = new ArrayList<>(); // Correct the type here
-		for (Object[] child : getPartNo) {
-			Map<String, Object> details = new HashMap<>();
-			details.put("sQTY", child[0] != null ? Integer.parseInt(child[0].toString()) : 0);
-			gridDetails.add(details);
-		}
-		return gridDetails;
-	}
+
+
 
 	@Override
 	public List<Map<String, Object>> getPartNOByParent(Long orgId, String branchCode, String client) {

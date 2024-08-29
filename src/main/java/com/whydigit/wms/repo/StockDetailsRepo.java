@@ -1,5 +1,6 @@
 package com.whydigit.wms.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -54,22 +55,28 @@ public Integer getAvlQtyforVasPutaway(Long orgId, String branchCode, String ware
 Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
 		String partNo, String grnNo, String batchNo);
 
-
-@Query(nativeQuery =true,value ="SELECT sum(sqty)\r\n"
-		+ "FROM stockdetails\r\n"
-		+ "WHERE orgid =?1\r\n"
-		+ "  AND client = ?3\r\n"
-		+ "  AND branchcode =?2\r\n"
-		+ "  AND warehouse = ?4\r\n"
-		+ "  AND partno = ?5\r\n"
-		+ "  AND grnno = ?6\r\n"
-		+ "  AND batch =?7\r\n"
-		+ "  AND status='R'\r\n"
-		+ "  AND pckey='CHILD'\r\n"
-		+ "  AND bin=?8\r\n"
-		+ "  having sum(sqty)>0\r\n"
-		+ "")
-Set<Object[]> getQtyDetais(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo,
-		String batch, String bin);
+@Query(nativeQuery = true, value = "SELECT CAST(a.sqty AS UNSIGNED) AS sqty " +
+	    "FROM (" +
+	    "    SELECT " +
+	    "        SUM(sqty) AS sqty " +
+	    "    FROM stockdetails " +
+	    "    WHERE " +
+	    "        orgid = ?1 " +
+	    "        AND branchcode = ?2 " +
+	    "        AND client = ?3 " +
+	    "        AND warehouse = ?4 " +
+	    "        AND bin = ?8 " +
+	    "        AND partno = ?5 " +
+	    "        AND grnno = ?6 " +
+	    "        AND batch = ?7 " +
+	    "        AND status = 'R' " +
+	    "        AND pckey = 'CHILD' " +
+	    "    GROUP BY " +
+	    "        partno, partdesc, sku, grnno, grndate, batch, batchdate, expdate, " +
+	    "        bintype, binclass, celltype, core, bin, qcflag " +
+	    "    HAVING SUM(sqty) > 0 " +
+	    ") a")
+	List<Integer> getQtyDetails(Long orgId, String branchCode, String client, String warehouse, 
+	                      String partNo, String grnNo, String batch, String bin);
 
 }

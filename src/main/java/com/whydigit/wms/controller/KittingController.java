@@ -254,18 +254,18 @@ public class KittingController extends BaseController{
     
     @GetMapping("/getSqtyByKitting")
     public ResponseEntity<ResponseDTO> getSqtyByKitting(@RequestParam(required = true) Long orgId,
-			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo
-			,@RequestParam(required = true) String grnNo,@RequestParam(required = true) String batch,
-			@RequestParam(required = true) String bin) {
+            @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+            @RequestParam(required = true) String warehouse, @RequestParam(required = true) String partNo,
+            @RequestParam(required = true) String grnNo, @RequestParam(required = true) String batch,
+            @RequestParam(required = true) String bin) {
         String methodName = "getSqtyByKitting()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
         String errorMsg = null;
         Map<String, Object> responseObjectsMap = new HashMap<>();
         ResponseDTO responseDTO = null;
-        List<Map<String, Object>> avlQty = new ArrayList<>();
+        int avlQty = 0;
         try {
-        	avlQty = kittingService.getSqtyByKitting(orgId, branchCode, client, partNo,warehouse,grnNo,batch,bin);
+            avlQty = kittingService.getSqtyByKitting(orgId, branchCode, client, warehouse, partNo, grnNo, batch, bin);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -275,11 +275,11 @@ public class KittingController extends BaseController{
             responseObjectsMap.put("avlQty", avlQty);
             responseDTO = createServiceResponse(responseObjectsMap);
         } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, " Sqty Failed to retrieve  Details", errorMsg);
+            responseDTO = createServiceResponseError(responseObjectsMap, "Sqty Failed to retrieve Details", errorMsg);
         }
         return ResponseEntity.ok().body(responseDTO);
-    
-}
+    }
+
     
     @GetMapping("/getPartNOByParent")
     public ResponseEntity<ResponseDTO> getPartNOByParent(@RequestParam(required = true) Long orgId,

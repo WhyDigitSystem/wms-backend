@@ -61,7 +61,7 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 	@Query(nativeQuery =true,value = "SELECT grnno,grndate\r\n"
 			+ "FROM stockdetails\r\n"
 			+ "WHERE orgid =?1\r\n"
-			+ "  AND client ='CASIO'\r\n"
+			+ "  AND client =?3\r\n"
 			+ "  AND branchcode =?2\r\n"
 			+ "  AND warehouse =?4\r\n"
 			+ "  AND status = 'R'\r\n"
@@ -72,18 +72,25 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 	Set<Object[]> getGrnNOByChild(Long orgId, String branchCode, String client, String warehouse, String partNo);
 	
 	
-	@Query(value = "SELECT batch, batchdate, expdate " +
-            "FROM stockdetails " +
-            "WHERE orgid = ?1 " +
-            "  AND client = ?3 " +
-            "  AND branchcode = ?2 " +
-            "  AND warehouse = ?4 " +
-            "  AND status = 'R' " +
-            "  AND pckey = 'CHILD' " +
-            "  AND partno = ?5 " +
-            "  AND grnno = ?6 " +
-            "GROUP BY batch, batchdate, expdate",
-    nativeQuery = true)
+	@Query(value = "SELECT batch, batchdate, expdate, id " +
+            "FROM (" +
+            "    SELECT " +
+            "        batch, " +
+            "        batchdate, " +
+            "        expdate, " +
+            "        ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id " +
+            "    FROM stockdetails " +
+            "    WHERE orgid = ?1 " +
+            "      AND client = ?3 " +
+            "      AND branchcode = ?2 " +
+            "      AND warehouse = ?4 " +
+            "      AND status = 'R' " +
+            "      AND pckey = 'CHILD' " +
+            "      AND partno = ?5 " +
+            "      AND grnno = ?6 " +
+            "    GROUP BY batch, batchdate, expdate, partdesc, partno" +
+            ") AS subquery",
+ nativeQuery = true)
 	Set<Object[]> getBatch(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo);
 
 	
