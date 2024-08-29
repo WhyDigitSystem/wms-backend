@@ -203,7 +203,6 @@ public class KittingServiceImpl implements KittingService {
 		kittingVO.setBranchCode(kittingDTO.getBranchCode());
 		kittingVO.setWarehouse(kittingDTO.getWarehouse());
 		kittingVO.setRefNo(kittingDTO.getRefNo());
-		kittingVO.setSku(kittingDTO.getSku());
 
 		if (ObjectUtils.isNotEmpty(kittingVO.getId())) {
 			List<KittingDetails2VO> kittingParentVO1 = kittingDetails2Repo.findByKittingVO(kittingVO);
