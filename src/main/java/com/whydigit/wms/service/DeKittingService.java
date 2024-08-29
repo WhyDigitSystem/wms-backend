@@ -35,7 +35,7 @@ public interface DeKittingService {
 	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
 			String client, String partno, String grnno, String batchNo);
 
-	int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+	Integer getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
 			String client, String partno, String grnno, String batchNo,String bin);
 
 	// CHILD
