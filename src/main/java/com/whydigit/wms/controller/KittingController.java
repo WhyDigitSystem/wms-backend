@@ -140,39 +140,39 @@ public class KittingController extends BaseController{
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @GetMapping("/getPartNOByChild")
-    public ResponseEntity<ResponseDTO> getPartNOByChild(@RequestParam(required = true) Long orgId,
-            @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
-            @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client) {
-        String methodName = "getPartNOByChild()";
-        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-        String errorMsg = null;
-        Map<String, Object> responseObjectsMap = new HashMap<>();
-        ResponseDTO responseDTO = null;
-        List<Map<String, Object>> kittingVO = new ArrayList<>();
-        try {
-            kittingVO = kittingService.getPartNOByChild(orgId, bin, branch, branchCode, client);
-        } catch (Exception e) {
-            errorMsg = e.getMessage();
-            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-        }
-        if (StringUtils.isBlank(errorMsg)) {
-            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNOByChild Details information retrieved successfully");
-            responseObjectsMap.put("kittingVO", kittingVO);
-            responseDTO = createServiceResponse(responseObjectsMap);
-        } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PartNOByChild Details", errorMsg);
-        }
-        LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-        return ResponseEntity.ok().body(responseDTO);
-    }
+	@GetMapping("/getPartNOByChild")
+	public ResponseEntity<ResponseDTO> getPartNOByChild(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse) {
+		String methodName = "getPartNOByChild()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> kittingVO = new ArrayList<>();
+		try {
+			kittingVO = kittingService.getPartNOByChild(orgId, branchCode, client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"PartNOByChild Details information retrieved successfully");
+			responseObjectsMap.put("kittingVO", kittingVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PartNOByChild Details",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
     @GetMapping("/getGrnNOByChild")
     public ResponseEntity<ResponseDTO> getGrnNOByChild(@RequestParam(required = true) Long orgId,
-            @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
-            @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-            @RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc,
-            @RequestParam(required = true) String sku) {
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo) {
         String methodName = "getGrnNOByChild()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
         String errorMsg = null;
@@ -180,7 +180,7 @@ public class KittingController extends BaseController{
         ResponseDTO responseDTO = null;
         List<Map<String, Object>> kittingVO = new ArrayList<>();
         try {
-            kittingVO = kittingService.getGrnNOByChild(orgId, bin, branch, branchCode, client, partNo, partDesc, sku);
+            kittingVO = kittingService.getGrnNOByChild(orgId, branchCode, client, warehouse,partNo);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -195,19 +195,77 @@ public class KittingController extends BaseController{
         return ResponseEntity.ok().body(responseDTO);
     
 }
+    
+    @GetMapping("/getBatchByChild")
+    public ResponseEntity<ResponseDTO> getBatchByChild(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo
+			,@RequestParam(required = true) String grnNo) {
+        String methodName = "getBatchByChild()";
+        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+        String errorMsg = null;
+        Map<String, Object> responseObjectsMap = new HashMap<>();
+        ResponseDTO responseDTO = null;
+        List<Map<String, Object>> kittingVO = new ArrayList<>();
+        try {
+            kittingVO = kittingService.getBatchByChild(orgId, branchCode, client, warehouse,partNo,grnNo);
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
+            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+        }
+        if (StringUtils.isBlank(errorMsg)) {
+            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Batch Details information retrieved successfully");
+            responseObjectsMap.put("kittingVO", kittingVO);
+            responseDTO = createServiceResponse(responseObjectsMap);
+        } else {
+            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve batch Details", errorMsg);
+        }
+        return ResponseEntity.ok().body(responseDTO);
+    
+}
+    
+    @GetMapping("/getBinByChild")
+    public ResponseEntity<ResponseDTO> getBinByChild(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo
+			,@RequestParam(required = true) String grnNo,@RequestParam(required = true) String batch) {
+        String methodName = "getBinByChild()";
+        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+        String errorMsg = null;
+        Map<String, Object> responseObjectsMap = new HashMap<>();
+        ResponseDTO responseDTO = null;
+        List<Map<String, Object>> kittingVO = new ArrayList<>();
+        try {
+            kittingVO = kittingService.getBinByChild(orgId, branchCode, client, warehouse,partNo,grnNo,batch);
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
+            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+        }
+        if (StringUtils.isBlank(errorMsg)) {
+            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "bin Details information retrieved successfully");
+            responseObjectsMap.put("kittingVO", kittingVO);
+            responseDTO = createServiceResponse(responseObjectsMap);
+        } else {
+            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve bin Details", errorMsg);
+        }
+        return ResponseEntity.ok().body(responseDTO);
+    
+}
+    
     @GetMapping("/getSqtyByKitting")
     public ResponseEntity<ResponseDTO> getSqtyByKitting(@RequestParam(required = true) Long orgId,
             @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-            @RequestParam(required = true) String partNo,@RequestParam(required = true) String warehouse,
-            @RequestParam(required = true) String grnno) {
+            @RequestParam(required = true) String warehouse, @RequestParam(required = true) String partNo,
+            @RequestParam(required = true) String grnNo, @RequestParam(required = true) String batch,
+            @RequestParam(required = true) String bin) {
         String methodName = "getSqtyByKitting()";
         LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
         String errorMsg = null;
         Map<String, Object> responseObjectsMap = new HashMap<>();
         ResponseDTO responseDTO = null;
-        List<Map<String, Object>> avlQty = new ArrayList<>();
+        int avlQty = 0;
         try {
-        	avlQty = kittingService.getSqtyByKitting(orgId, branchCode, client, partNo,warehouse,grnno);
+            avlQty = kittingService.getSqtyByKitting(orgId, branchCode, client, warehouse, partNo, grnNo, batch, bin);
         } catch (Exception e) {
             errorMsg = e.getMessage();
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -217,11 +275,11 @@ public class KittingController extends BaseController{
             responseObjectsMap.put("avlQty", avlQty);
             responseDTO = createServiceResponse(responseObjectsMap);
         } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, " Sqty Failed to retrieve  Details", errorMsg);
+            responseDTO = createServiceResponseError(responseObjectsMap, "Sqty Failed to retrieve Details", errorMsg);
         }
         return ResponseEntity.ok().body(responseDTO);
-    
-}
+    }
+
     
     @GetMapping("/getPartNOByParent")
     public ResponseEntity<ResponseDTO> getPartNOByParent(@RequestParam(required = true) Long orgId,

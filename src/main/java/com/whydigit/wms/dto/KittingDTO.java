@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class KittingDTO {
 	private Long id;
-	private String screenName;
+	//private String screenName;
 	private Long orgId;
 	private String customer;
 	private String client;
