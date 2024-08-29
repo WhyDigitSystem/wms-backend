@@ -19,7 +19,7 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 	Optional<KittingVO> findKittingById(Long id);
 
 	@Query(nativeQuery = true,value ="select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
-	String getKittingInDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
+	String getKittingDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
 
 	@Query(nativeQuery =true,value ="select partno,partdesc,sku from material where parentchildkey='PARENT' and client=?3 and cbranch='ALL' or cbranch=?2 and orgid=?1 and active=1 group by partno,partdesc,sku")
