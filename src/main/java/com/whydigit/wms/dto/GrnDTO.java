@@ -17,7 +17,7 @@ public class GrnDTO {
 	private Long id;
 	private String entryNo;
 	private LocalDate entryDate;
-	private LocalDate grndDate;
+	private LocalDate grnDate;
 	private String gatePassId;
 	private LocalDate gatePassDate;
 	private String customerPo;

@@ -45,8 +45,8 @@ public class LocationMovementController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<LocationMovementVO> locationMovementVO = new ArrayList<>();
 		try {
-			locationMovementVO = locationMovementService.getAllLocationMovement(orgId, finYear, branch, branchCode, client,
-					warehouse);
+			locationMovementVO = locationMovementService.getAllLocationMovement(orgId, finYear, branch, branchCode,
+					client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -162,8 +162,8 @@ public class LocationMovementController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = locationMovementService.getToBinFromLocationStatusForLocationMovement(orgId, branch, branchCode, client,
-					warehouse);
+			mov = locationMovementService.getToBinFromLocationStatusForLocationMovement(orgId, branch, branchCode,
+					client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -216,23 +216,22 @@ public class LocationMovementController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement")
-	public ResponseEntity<ResponseDTO> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
-			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
-			@RequestParam(required = false) String bin, @RequestParam(required = false) String partNo,
-			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku) {
+	@GetMapping("/getGrnNoDetailsForLocationMovement")
+	public ResponseEntity<ResponseDTO> getGrnNoDetailsForLocationMovement(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partNo) {
 
-		String methodName = "getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement()";
+		String methodName = "getGrnNoDetailsForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> mov = new ArrayList<>();
+		List<Map<String, Object>> grnDetails = new ArrayList<>();
 
 		try {
-			mov = locationMovementService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, branch,
-					branchCode, client, bin, partNo, partDesc, sku);
+			grnDetails = locationMovementService.getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId,
+					branch, branchCode, client, bin, partNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -241,11 +240,45 @@ public class LocationMovementController extends BaseController {
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
 					"All GrnNo and BatchNo from Stock information retrieved successfully");
-			responseObjectsMap.put("locationMovementDetailsVO", mov);
+			responseObjectsMap.put("grnDetails", grnDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve GrnNo and BatchNo from Stock information", errorMsg);
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getBatchNoDetailsForLocationMovement")
+	public ResponseEntity<ResponseDTO> getBatchNoDetailsForLocationMovement(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo) {
+		String methodName = "getBatchNoDetailsForLocationMovement()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> batchDetails = new ArrayList<>();
+
+		try {
+			batchDetails = locationMovementService.getBatchNoAndBatchDateFromStockForLocationMovement(orgId, branch,
+					branchCode, client, bin, partNo, grnNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All batchNo and batchDate from Stock information retrieved successfully");
+			responseObjectsMap.put("batchDetails", batchDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve batchNo and batchDate from Stock information", errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -319,39 +352,32 @@ public class LocationMovementController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getAvlQtyFromStockForLocationMovement")
-	public ResponseEntity<ResponseDTO> getAvlQtyFromStockForLocationMovement(@RequestParam(required = false) Long orgId,
+	@GetMapping("/getFromQtyForLocationMovement")
+	public ResponseEntity<ResponseDTO> getFromQtyForLocationMovement(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
 			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
-			@RequestParam(required = false) String partDesc, @RequestParam(required = false) String sku,
-			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo,
-			@RequestParam(required = false) String lotNo) {
-
-		String methodName = "getAvlQtyFromStockForLocationMovement()";
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo,@RequestParam(required = false) String batchNo) {
+		String methodName = "getFromQtyForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		int mov = 0;
-
+		int fromQty = 0;
 		try {
-			mov = locationMovementService.getAvlQtyFromStockForLocationMovement(orgId, branch, branchCode, client, bin,
-					partDesc, sku, partNo, grnNo, lotNo);
+			fromQty = locationMovementService.getAvlQtyFromStockForLocationMovement(orgId, branch, branchCode, client, bin, partNo, grnNo, batchNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
-
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"AvlQty from Stock information retrieved successfully");
-			responseObjectsMap.put("locationMovementVO", mov);
+					"FromQty Details from Stock information retrieved successfully");
+			responseObjectsMap.put("fromQty", fromQty);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve AvlQty from Stock information", errorMsg);
+					"Failed to retrieve FromQty from Stock information", errorMsg);
 		}
-
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}

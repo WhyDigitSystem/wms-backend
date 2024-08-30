@@ -21,25 +21,25 @@ import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.ReversePickDTO;
+import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.entity.ReversePickVO;
 import com.whydigit.wms.service.ReversePickService;
 
 @RestController
 @RequestMapping("/api/reversePick")
-public class ReversePickController extends BaseController{
+public class ReversePickController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(ReversePickController.class);
-	
+
 	@Autowired
 	ReversePickService reversePickService;
-	
-	//REVERSEPICK
-	
+
+	// REVERSEPICK
+
 	@PutMapping("/createUpdateReversePick")
 	public ResponseEntity<ResponseDTO> createUpdateReversePick(@RequestBody ReversePickDTO reversePickDTO) {
 		String methodName = "createUpdateReversePick()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
@@ -48,14 +48,15 @@ public class ReversePickController extends BaseController{
 			responseObjectsMap.put("reversePickVO", reversePick.get("reversePickVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-			errorMsg = e.getMessage();
+
+			String errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getReversePickDocId")
 	public ResponseEntity<ResponseDTO> getReversePickDocId(@RequestParam Long orgId, @RequestParam String finYear,
 			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client) {
@@ -75,12 +76,13 @@ public class ReversePickController extends BaseController{
 		}
 
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "reverse pick docId information retrieved successfully");
-			responseObjectsMap.put("CycleCountInDocId", mapp);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"reverse pick docId information retrieved successfully");
+			responseObjectsMap.put("reversePickDocId", mapp);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"reverse pick docId information get failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "reverse pick docId information get failed",
+					errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -109,13 +111,13 @@ public class ReversePickController extends BaseController{
 			responseObjectsMap.put("reversePickVO", reversePickVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "ReversePick  Details information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"ReversePick  Details information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getReversePickById")
 	public ResponseEntity<ResponseDTO> getReversePickById(@RequestParam(required = false) Long id) {
 		String methodName = "getReversePickById()";
@@ -142,6 +144,63 @@ public class ReversePickController extends BaseController{
 					errorMsg);
 		}
 
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("getPickRequestDetailsForReversePick")
+	public ResponseEntity<ResponseDTO> getPickRequestDetailsForReversePick(@RequestParam(required = true) Long orgId,
+			@RequestParam String finYear, @RequestParam String branch, @RequestParam String branchCode,
+			@RequestParam String client) {
+		String methodName = "getPickRequestDetailsForReversePick()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PickRequestVO> pickRequestVO = new ArrayList<PickRequestVO>();
+		try {
+			pickRequestVO = reversePickService.getPickRequestDetailsForReversePick(orgId, finYear, branch, branchCode, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Pick Request Details information get successfully");
+			responseObjectsMap.put("pickRequestVO", pickRequestVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Pick Request Details information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getFillGridDetailsForReversePick")
+	public ResponseEntity<ResponseDTO> getFillGridDetailsForReversePick(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String pickRequestDocId) {
+		String methodName = "getFillGridDetailsForReversePick()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
+		try {
+			fillGridDetails = reversePickService.getPickRequestFillDetailsForReversePick(orgId, branchCode, client, pickRequestDocId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"fill Grid Details  from Stock information retrieved successfully");
+			responseObjectsMap.put("fillGridDetails", fillGridDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve fill Grid Details  from Stock information", errorMsg);
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}

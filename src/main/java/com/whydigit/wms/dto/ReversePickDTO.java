@@ -3,6 +3,8 @@ package com.whydigit.wms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,22 +15,22 @@ import lombok.NoArgsConstructor;
 public class ReversePickDTO {
 
 	private Long id;
-	private String pickRequestId;
-	private String dispatch;
+	private String buyerRefNo;
+	private LocalDate buyerRefDate;
 	private String buyerOrderNo;
-	private String buyerOrderRefNo;
-	private String shipmentMethod;
-	private String refNo;
-	private LocalDate buyerOrderRefDate;
-	private int noOfBoxes;
-	private int dueDays;
+	private String buyerOrderDate;
+	private String pickRequestDocId;
+	private LocalDate pickRequestDocDate;
+	private String buyersReference;
+	private String invoiceNo;
+	private String clientShortName;
 	private String clientName;
-	private String customerName;
-	private String outTime;
 	private String clientAddress;
+	private String customerShortName;
+	private String customerName;
 	private String customerAddress;
-	private String status;
-	private String boAmmount;
+	private String pickOrder;
+	private String inTime;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -37,8 +39,9 @@ public class ReversePickDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String cancelRemarks;
-
+	private String status;
+	private String boAmendment;
+	
 	private List<ReversePickDetailsDTO> reversePickDetailsDTO;
 
 }

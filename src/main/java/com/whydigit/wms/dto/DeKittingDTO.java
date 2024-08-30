@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class DeKittingDTO {
 
 	private Long id;
-	private String transactionType;
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -22,9 +21,6 @@ public class DeKittingDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String freeze;
-	private boolean active = true;
-	private LocalDate grnDate = LocalDate.now();
 	
 	private List<DeKittingParentDTO> deKittingParentDTO;
 	

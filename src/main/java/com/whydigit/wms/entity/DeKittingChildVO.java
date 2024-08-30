@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class DeKittingChildVO {
 
 	@Id
@@ -37,47 +36,40 @@ public class DeKittingChildVO {
 	private String partNo;
 	@Column(name = "partdesc")
 	private String partDesc;
-	@Column(name = "bin")
-	private String bin;
-	@Column(name = "batchno")
-	private String batchNo;
-	@Column(name = "lotNo")
-	private String lotNo;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "grnno")
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "qty")
-	private int qty;
-	@Column(name = "unitrate")
-	private BigDecimal unitRate;
-	@Column(name = "amount")
-	private BigDecimal amount;
-	@Column(name="status")
-	private String status="R";
-	@Column(name = "qcflag")
-	private boolean qcFlag;
+	@Column(name = "batchno")
+	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
+	@Column(name = "bin")
+	private String bin;
+	@Column(name = "bintype")
+	private String binType;
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "celltype")
 	private String cellType;
-	@Column(name = "clientcode")
-	private String clientCode;
 	@Column(name = "core")
 	private String core;
+	@Column(name = "qty")
+	private int qty;
+	@Column(name = "qcflag")
+	private String qcFlag;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "pockey")
-	private String pcKey;
-	@Column(name = "ssku")
-	private String ssku;
-	@Column(name = "stokcdate")
+	private String status;
+	@Column(name = "stockdate")
 	private LocalDate stockDate;
 	
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "dekittingid")
 	private DeKittingVO deKittingVO;
+
+	
 }

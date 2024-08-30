@@ -26,17 +26,24 @@ public interface DeKittingService {
 	List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String branch,
 			String branchCode, String client);
 
-	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch,
-			String branchCode, String client);
+	List<Map<String, Object>> getGrnNoFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+			String client, String partno);
+	
+	List<Map<String, Object>> getBatchAndBatchFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+			String client, String partno, String grnno);
 
-	List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client, String bin, String partNo, String partDesc,
-			String sku);
+	List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+			String client, String partno, String grnno, String batchNo);
 
-	int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
-			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo);
+	Integer getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+			String client, String partno, String grnno, String batchNo,String bin);
 
 	// CHILD
-	List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,
+	List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId,
 			String branchCode, String client);
+
+	
+
+	
 
 }

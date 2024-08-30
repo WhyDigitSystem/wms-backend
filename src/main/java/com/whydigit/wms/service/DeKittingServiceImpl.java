@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +23,18 @@ import com.whydigit.wms.entity.DeKittingParentVO;
 import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.StockDetailsVO;
+import com.whydigit.wms.entity.VasPutawayDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DeKittingChildRepo;
 import com.whydigit.wms.repo.DeKittingParentRepo;
 import com.whydigit.wms.repo.DeKittingRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
+
 @Service
-public class DeKittingServiceImpl implements DeKittingService{
+public class DeKittingServiceImpl implements DeKittingService {
 	public static final Logger LOGGER = LoggerFactory.getLogger(DeKittingServiceImpl.class);
 
 	@Autowired
@@ -38,7 +42,7 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-	
+
 	@Autowired
 	DeKittingRepo deKittingRepo;
 
@@ -50,7 +54,9 @@ public class DeKittingServiceImpl implements DeKittingService{
 	@Autowired
 	MaterialRepo materialRepo;
 
-	
+	@Autowired
+	ClientRepo clientRepo;
+
 	@Override
 	public List<DeKittingVO> getAllDeKitting(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse) {
@@ -100,98 +106,100 @@ public class DeKittingServiceImpl implements DeKittingService{
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 			message = "DeKitting Created Successfully";
 		}
-		DeKittingVO savedDeKittingVO = deKittingRepo.save(deKittingVO);
+		DeKittingVO savedPickRequestVO = deKittingRepo.save(deKittingVO);
 
-		List<DeKittingParentVO> deKittingParentVOLists = savedDeKittingVO.getDeKittingParentVO();
-		if (deKittingParentVOLists != null && !deKittingParentVOLists.isEmpty()) {
-			for (DeKittingParentVO parentDetailsVO : deKittingParentVOLists) {
-
-				StockDetailsVO stockDetailsVOPar = new StockDetailsVO();
-				stockDetailsVOPar.setBin(parentDetailsVO.getBin());
-				stockDetailsVOPar.setPartno(parentDetailsVO.getPartNo());
-				stockDetailsVOPar.setPartDesc(parentDetailsVO.getPartDesc());
-				stockDetailsVOPar.setBatch(parentDetailsVO.getBatchNo());
-				stockDetailsVOPar.setLotNo(parentDetailsVO.getLotNo());
-				stockDetailsVOPar.setSku(parentDetailsVO.getSku());
-				stockDetailsVOPar.setGrnNo(parentDetailsVO.getGrnNo());
-				stockDetailsVOPar.setGrnDate(parentDetailsVO.getGrnDate());
-				stockDetailsVOPar.setExpDate(parentDetailsVO.getExpDate());
-				stockDetailsVOPar.setStatus(parentDetailsVO.getStatus());
-
-				stockDetailsVOPar.setBinClass(parentDetailsVO.getBinClass());
-				stockDetailsVOPar.setCellType(parentDetailsVO.getCellType());
-				stockDetailsVOPar.setClientCode(parentDetailsVO.getClientCode());
-				stockDetailsVOPar.setCore(parentDetailsVO.getCore());
-				stockDetailsVOPar.setPcKey(parentDetailsVO.getPcKey());
-				stockDetailsVOPar.setSSku(parentDetailsVO.getSsku());
-				stockDetailsVOPar.setStockDate(parentDetailsVO.getStockDate());
-				stockDetailsVOPar.setStockDate(parentDetailsVO.getStockDate());
-
-				stockDetailsVOPar.setSQty(parentDetailsVO.getQty() * -1);
-				stockDetailsVOPar.setStatus(parentDetailsVO.getStatus());
-//				dekitting->stock
-				stockDetailsVOPar.setRefNo(savedDeKittingVO.getDocId());
-				stockDetailsVOPar.setRefDate(savedDeKittingVO.getDocDate());
-				stockDetailsVOPar.setOrgId(savedDeKittingVO.getOrgId());
-				stockDetailsVOPar.setCustomer(savedDeKittingVO.getCustomer());
-				stockDetailsVOPar.setClient(savedDeKittingVO.getClient());
-				stockDetailsVOPar.setBranch(savedDeKittingVO.getBranch());
-				stockDetailsVOPar.setRefDate(savedDeKittingVO.getDocDate());
-				stockDetailsVOPar.setCreatedBy(savedDeKittingVO.getUpdatedBy());
-				stockDetailsVOPar.setBranchCode(savedDeKittingVO.getBranchCode());
-				stockDetailsVOPar.setBranch(savedDeKittingVO.getBranch());
-				stockDetailsVOPar.setClient(savedDeKittingVO.getClient());
-				stockDetailsVOPar.setWarehouse(savedDeKittingVO.getWarehouse());
-				stockDetailsVOPar.setFinYear(savedDeKittingVO.getFinYear());
-				stockDetailsRepo.save(stockDetailsVOPar);
+		List<DeKittingParentVO> pickRequestDetailsVOLists = savedPickRequestVO.getDeKittingParentVO();
+		if (pickRequestDetailsVOLists != null && !pickRequestDetailsVOLists.isEmpty()) {
+			for (DeKittingParentVO detailsVO : pickRequestDetailsVOLists) {
+				StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
+				stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
+				stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+				stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
+				stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
+				stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
+				stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
+				stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
+				stockDetailsVOFrom.setClientCode(
+						clientRepo.getClientCode(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient()));
+				stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
+				stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
+				stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
+				stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
+				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
+				stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(),
+						savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
+				stockDetailsVOFrom.setSQty(detailsVO.getQty() * -1);
+				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
+				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+				stockDetailsVOFrom.setStatus("R");
+				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+				stockDetailsVOFrom.setBin(detailsVO.getBin());
+				stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
+				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
+				stockDetailsVOFrom.setPQty(detailsVO.getQty());
+				stockDetailsVOFrom.setPickedQty(detailsVO.getQty());
+				stockDetailsVOFrom.setQcFlag("T");
+				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+				stockDetailsVOFrom.setSku(detailsVO.getSku());
+				stockDetailsVOFrom.setCellType(detailsVO.getCellType());
+				stockDetailsVOFrom.setCore(detailsVO.getCore());
+				stockDetailsVOFrom.setSSku(detailsVO.getSku());
+				stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
+				stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
+				stockDetailsVOFrom.setSourceId(detailsVO.getId());
+				stockDetailsVOFrom.setStockDate(LocalDate.now());
+				stockDetailsRepo.save(stockDetailsVOFrom);
 			}
-		}
-
-		List<DeKittingChildVO> deKittingChildVOLists = savedDeKittingVO.getDeKittingChildVO();
-		if (deKittingChildVOLists != null && !deKittingChildVOLists.isEmpty()) {
-			for (DeKittingChildVO childDetailsVO : deKittingChildVOLists) {
-				// child -> stock
-				StockDetailsVO stockDetailsVOChi = new StockDetailsVO();
-				stockDetailsVOChi.setBin(childDetailsVO.getBin());
-				stockDetailsVOChi.setPartno(childDetailsVO.getPartNo());
-				stockDetailsVOChi.setPartDesc(childDetailsVO.getPartDesc());
-				stockDetailsVOChi.setBatch(childDetailsVO.getBatchNo());
-				stockDetailsVOChi.setLotNo(childDetailsVO.getLotNo());
-				stockDetailsVOChi.setSku(childDetailsVO.getSku());
-				stockDetailsVOChi.setGrnNo(childDetailsVO.getGrnNo());
-				stockDetailsVOChi.setGrnDate(childDetailsVO.getGrnDate());
-				stockDetailsVOChi.setExpDate(childDetailsVO.getExpDate());
-				stockDetailsVOChi.setStatus(childDetailsVO.getStatus());
-				stockDetailsVOChi.setSQty(childDetailsVO.getQty());
-				stockDetailsVOChi.setBranch(savedDeKittingVO.getBranch());
-				stockDetailsVOChi.setBin(childDetailsVO.getBin());
-				stockDetailsVOChi.setStatus(childDetailsVO.getStatus());
-
-				stockDetailsVOChi.setBinClass(childDetailsVO.getBinClass());
-				stockDetailsVOChi.setCellType(childDetailsVO.getCellType());
-				stockDetailsVOChi.setClientCode(childDetailsVO.getClientCode());
-				stockDetailsVOChi.setCore(childDetailsVO.getCore());
-				stockDetailsVOChi.setPcKey(childDetailsVO.getPcKey());
-				stockDetailsVOChi.setSSku(childDetailsVO.getSsku());
-				stockDetailsVOChi.setStockDate(childDetailsVO.getStockDate());
-				stockDetailsVOChi.setStockDate(childDetailsVO.getStockDate());
-
-//				dekitting->stock
-				stockDetailsVOChi.setRefNo(savedDeKittingVO.getDocId());
-				stockDetailsVOChi.setRefDate(savedDeKittingVO.getDocDate());
-				stockDetailsVOChi.setOrgId(savedDeKittingVO.getOrgId());
-				stockDetailsVOChi.setCustomer(savedDeKittingVO.getCustomer());
-				stockDetailsVOChi.setClient(savedDeKittingVO.getClient());
-				stockDetailsVOChi.setBranch(savedDeKittingVO.getBranch());
-				stockDetailsVOChi.setRefDate(savedDeKittingVO.getDocDate());
-				stockDetailsVOChi.setCreatedBy(savedDeKittingVO.getUpdatedBy());
-				stockDetailsVOChi.setBranchCode(savedDeKittingVO.getBranchCode());
-				stockDetailsVOChi.setBranch(savedDeKittingVO.getBranch());
-				stockDetailsVOChi.setClient(savedDeKittingVO.getClient());
-				stockDetailsVOChi.setWarehouse(savedDeKittingVO.getWarehouse());
-				stockDetailsVOChi.setFinYear(savedDeKittingVO.getFinYear());
-				stockDetailsRepo.save(stockDetailsVOChi);
+			List<DeKittingChildVO> pickRequestDetailsVOLists1 = savedPickRequestVO.getDeKittingChildVO();
+			for (DeKittingChildVO detailsVO : pickRequestDetailsVOLists1) {
+				StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
+				stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
+				stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
+				stockDetailsVOFrom.setBranch(savedPickRequestVO.getBranch());
+				stockDetailsVOFrom.setBranchCode(savedPickRequestVO.getBranchCode());
+				stockDetailsVOFrom.setWarehouse(savedPickRequestVO.getWarehouse());
+				stockDetailsVOFrom.setCustomer(savedPickRequestVO.getCustomer());
+				stockDetailsVOFrom.setClient(savedPickRequestVO.getClient());
+				stockDetailsVOFrom.setClientCode(
+						clientRepo.getClientCode(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient()));
+				stockDetailsVOFrom.setCreatedBy(savedPickRequestVO.getUpdatedBy());
+				stockDetailsVOFrom.setRefNo(savedPickRequestVO.getDocId());
+				stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
+				stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
+				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
+				stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(),
+						savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
+				stockDetailsVOFrom.setSQty(detailsVO.getQty());
+				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
+				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+				stockDetailsVOFrom.setBin(detailsVO.getBin());
+				stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
+				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
+				if ("Defective".equals(detailsVO.getBin())) {
+					stockDetailsVOFrom.setQcFlag("F");
+					stockDetailsVOFrom.setStatus("D");
+				} else {
+					stockDetailsVOFrom.setQcFlag("T");
+					stockDetailsVOFrom.setStatus("R");
+				}
+				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+				stockDetailsVOFrom.setSku(detailsVO.getSku());
+				stockDetailsVOFrom.setCellType(detailsVO.getCellType());
+				stockDetailsVOFrom.setCore(detailsVO.getCore());
+				stockDetailsVOFrom.setSSku(detailsVO.getSku());
+				stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
+				stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
+				stockDetailsVOFrom.setSourceId(detailsVO.getId());
+				stockDetailsVOFrom.setStockDate(LocalDate.now());
+				stockDetailsRepo.save(stockDetailsVOFrom);
 			}
+
 		}
 		Map<String, Object> response = new HashMap<>();
 		response.put("deKittingVO", deKittingVO);
@@ -199,10 +207,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 		return response;
 	}
 
-	private void createUpdateDeKittingVOByDeKittingDTO(DeKittingDTO deKittingDTO, DeKittingVO deKittingVO) {
+	private void createUpdateDeKittingVOByDeKittingDTO(DeKittingDTO deKittingDTO, DeKittingVO deKittingVO)
+			throws ApplicationException {
 
 		deKittingVO.setOrgId(deKittingDTO.getOrgId());
-		deKittingVO.setTransactionType(deKittingDTO.getTransactionType());
 		deKittingVO.setClient(deKittingDTO.getClient());
 		deKittingVO.setOrgId(deKittingDTO.getOrgId());
 		deKittingVO.setCustomer(deKittingDTO.getCustomer());
@@ -210,9 +218,6 @@ public class DeKittingServiceImpl implements DeKittingService{
 		deKittingVO.setBranch(deKittingDTO.getBranch());
 		deKittingVO.setBranchCode(deKittingDTO.getBranchCode());
 		deKittingVO.setWarehouse(deKittingDTO.getWarehouse());
-		deKittingVO.setFreeze(deKittingDTO.getFreeze());
-		deKittingVO.setActive(deKittingDTO.isActive());
-
 		if (ObjectUtils.isNotEmpty(deKittingVO.getId())) {
 			List<DeKittingParentVO> deKittingParentVO1 = deKittingParentRepo.findByDeKittingVO(deKittingVO);
 			deKittingParentRepo.deleteAll(deKittingParentVO1);
@@ -226,33 +231,34 @@ public class DeKittingServiceImpl implements DeKittingService{
 		for (DeKittingParentDTO deKittingParentDTO : deKittingDTO.getDeKittingParentDTO()) {
 
 			DeKittingParentVO deKittingParentVO = new DeKittingParentVO();
-			deKittingParentVO.setBin(deKittingParentDTO.getBin());
+
 			deKittingParentVO.setPartNo(deKittingParentDTO.getPartNo());
 			deKittingParentVO.setPartDesc(deKittingParentDTO.getPartDesc());
-			deKittingParentVO.setGrnNo(deKittingParentDTO.getGrnNo());
-			deKittingParentVO.setBatchNo(deKittingParentDTO.getBatchNo());
-			deKittingParentVO.setLotNo(deKittingParentDTO.getLotNo());
 			deKittingParentVO.setSku(deKittingParentDTO.getSku());
+			deKittingParentVO.setGrnNo(deKittingParentDTO.getGrnNo());
 			deKittingParentVO.setGrnDate(deKittingParentDTO.getGrnDate());
+			deKittingParentVO.setBatchNo(deKittingParentDTO.getBatchNo());
+			deKittingParentVO.setBatchDate(deKittingParentDTO.getBatchDate());
 			deKittingParentVO.setExpDate(deKittingParentDTO.getExpDate());
-			deKittingParentVO.setAvlQty(deKittingParentDTO.getAvlQty());
-			deKittingParentVO.setQty(deKittingParentDTO.getQty());
-			deKittingParentVO.setUnitRate(deKittingParentDTO.getUnitRate());
-			deKittingParentVO.setStatus(deKittingParentDTO.getStatus());
-			deKittingParentVO.setAmount(deKittingParentDTO.getAmount());
-			deKittingParentVO.setQcFlag(deKittingParentDTO.isQcFlag());
-
+			deKittingParentVO.setBin(deKittingParentDTO.getBin());
 			deKittingParentVO.setBinClass(deKittingParentDTO.getBinClass());
 			deKittingParentVO.setCellType(deKittingParentDTO.getCellType());
-			deKittingParentVO.setClientCode(deKittingParentDTO.getClientCode());
 			deKittingParentVO.setCore(deKittingParentDTO.getCore());
-			deKittingParentVO.setPcKey(deKittingParentDTO.getPcKey());
-			deKittingParentVO.setSsku(deKittingParentDTO.getSsku());
-			deKittingParentVO.setStockDate(deKittingParentDTO.getStockDate());
-			deKittingParentVO.setStockDate(deKittingParentDTO.getStockDate());
+			deKittingParentVO.setBinType(deKittingParentDTO.getBinType());
 
+			int avlqty = deKittingRepo.findAvlQtyFromStockForDeKittingParent(deKittingDTO.getOrgId(),
+					deKittingDTO.getBranch(), deKittingDTO.getBranchCode(), deKittingDTO.getClient(),
+					deKittingParentDTO.getPartNo(), deKittingParentDTO.getGrnNo(), deKittingParentDTO.getBatchNo(),
+					deKittingParentDTO.getBin());
+
+			if (avlqty >= deKittingParentDTO.getQty()) {
+				deKittingParentVO.setAvlQty(deKittingParentDTO.getAvlQty());
+				deKittingParentVO.setQty(deKittingParentDTO.getQty());
+			} else {
+				throw new ApplicationException("Qty should not More then Avl Qty");
+			}
+			deKittingParentVO.setQcFlag("T");
 			deKittingParentVO.setDeKittingVO(deKittingVO);
-
 			deKittingParentVOs.add(deKittingParentVO);
 		}
 		deKittingVO.setDeKittingParentVO(deKittingParentVOs);
@@ -262,29 +268,29 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 			DeKittingChildVO deKittingChildVO = new DeKittingChildVO();
 			deKittingChildVO.setBin(deKittingChildDTO.getBin());
+			deKittingChildVO.setBinType(deKittingChildDTO.getBinType());
 			deKittingChildVO.setPartNo(deKittingChildDTO.getPartNo());
 			deKittingChildVO.setPartDesc(deKittingChildDTO.getPartDesc());
-			deKittingChildVO.setGrnNo(deKittingChildDTO.getGrnNo());
-			deKittingChildVO.setBatchNo(deKittingChildDTO.getBatchNo());
-			deKittingChildVO.setLotNo(deKittingChildDTO.getLotNo());
 			deKittingChildVO.setSku(deKittingChildDTO.getSku());
+			deKittingChildVO.setGrnNo(deKittingChildDTO.getGrnNo());
 			deKittingChildVO.setGrnDate(deKittingChildDTO.getGrnDate());
+			deKittingChildVO.setBatchNo(deKittingChildDTO.getBatchNo());
+			deKittingChildVO.setBatchDate(deKittingChildDTO.getBatchDate());
 			deKittingChildVO.setExpDate(deKittingChildDTO.getExpDate());
 			deKittingChildVO.setQty(deKittingChildDTO.getQty());
-			deKittingChildVO.setUnitRate(deKittingChildDTO.getUnitRate());
-			deKittingChildVO.setStatus(deKittingChildDTO.getStatus());
-			deKittingChildVO.setAmount(deKittingChildDTO.getAmount());
-			deKittingChildVO.setQcFlag(deKittingChildDTO.isQcFlag());
-			deKittingChildVO.setDeKittingVO(deKittingVO);
 
+			if ("Defective".equals(deKittingChildDTO.getBin())) {
+				deKittingChildVO.setQcFlag("F");
+				deKittingChildVO.setStatus("D");
+			} else {
+				deKittingChildVO.setQcFlag("T");
+				deKittingChildVO.setStatus("R");
+			}
+			deKittingChildVO.setDeKittingVO(deKittingVO);
 			deKittingChildVO.setBinClass(deKittingChildDTO.getBinClass());
 			deKittingChildVO.setCellType(deKittingChildDTO.getCellType());
-			deKittingChildVO.setClientCode(deKittingChildDTO.getClientCode());
 			deKittingChildVO.setCore(deKittingChildDTO.getCore());
-			deKittingChildVO.setPcKey(deKittingChildDTO.getPcKey());
-			deKittingChildVO.setSsku(deKittingChildDTO.getSsku());
-			deKittingChildVO.setStockDate(deKittingChildDTO.getStockDate());
-			deKittingChildVO.setStockDate(deKittingChildDTO.getStockDate());
+			deKittingChildVO.setStockDate(LocalDate.now());
 
 			deKittingChildVOs.add(deKittingChildVO);
 		}
@@ -302,11 +308,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 	// PARENT
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String branch,
-			String branchCode, String client) {
+	public List<Map<String, Object>> getPartNoFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+			String client) {
 
-		Set<Object[]> result = deKittingRepo.findPartNoFromStockForDeKittingParent(orgId, branch, branchCode,
-				client);
+		Set<Object[]> result = deKittingRepo.findPartNoFromStockForDeKittingParent(orgId, branch, branchCode, client);
 		return getPartNoResult(result);
 	}
 
@@ -317,20 +322,56 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
-			part.put("avlQty", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
 	}
 
+	@Transactional
+	public List<Map<String, Object>> getGrnNoFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+			String client, String partNo) {
+		Set<Object[]> result = deKittingRepo.findGrnNoFromStockForDeKittingParent(orgId, branch, branchCode, client,
+				partNo);
+		return getGrnNoResult(result);
+	}
+
+	private List<Map<String, Object>> getGrnNoResult(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("grnDate", fs[1] != null ? fs[1].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
+
+	@Transactional
+	public List<Map<String, Object>> getBatchAndBatchFromStockForDeKittingParent(Long orgId, String branch,
+			String branchCode, String client, String partNo, String grnNo) {
+		Set<Object[]> resultBatch = deKittingRepo.findBatchDetails(orgId, branch, branchCode, client, partNo, grnNo);
+		return batchNoResult(resultBatch);
+	}
+
+	private List<Map<String, Object>> batchNoResult(Set<Object[]> resultBatch) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : resultBatch) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("batchNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("expDate", fs[2] != null ? fs[2].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+	}
 
 	@Override
 	@Transactional
-	public List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch,
-			String branchCode, String client) {
+	public List<Map<String, Object>> getBinFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
+			String client, String partno, String grnno, String batchNo) {
 
-		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, branch, branchCode,
-				client);
+		Set<Object[]> result = deKittingRepo.findBinFromStockForDeKittingParent(orgId, branch, branchCode, client,
+				partno, grnno, batchNo);
 		return getDBinResult(result);
 	}
 
@@ -341,36 +382,10 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
 			part.put("binclass", fs[1] != null ? fs[1].toString() : "");
 			part.put("celltype", fs[2] != null ? fs[2].toString() : "");
-			part.put("clientcode", fs[3] != null ? fs[3].toString() : "");
-			part.put("core", fs[4] != null ? fs[4].toString() : "");
-			part.put("expdate", fs[5] != null ? fs[5].toString() : "");
-			part.put("pckey", fs[6] != null ? fs[6].toString() : "");
-			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
-			part.put("stockdate", fs[8] != null ? fs[8].toString() : "");
-			details1.add(part);
-		}
-		return details1;
-	}
-
-	@Transactional
-	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
-			Long orgId, String branch, String branchCode, String client, String bin, String partNo,
-			String partDesc, String sku) {
-
-		Set<Object[]> result = deKittingRepo.findGrnNoAndBatchAndBatchDateAndLotNoAndExpDateFromStockForDeKittingParent(
-				orgId, branch, branchCode, client, bin, partNo, partDesc, sku);
-		return getGrnNoResult(result);
-	}
-
-	private List<Map<String, Object>> getGrnNoResult(Set<Object[]> result) {
-		List<Map<String, Object>> details1 = new ArrayList<>();
-		for (Object[] fs : result) {
-			Map<String, Object> part = new HashMap<>();
-			part.put("grnNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("batchNo", fs[1] != null ? fs[1].toString() : "");
-			part.put("batchDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("lotNo", fs[3] != null ? fs[3].toString() : "");
-			part.put("expDate", fs[4] != null ? fs[4].toString() : "");
+			part.put("core", fs[3] != null ? fs[3].toString() : "");
+			part.put("binType", fs[4] != null ? fs[4].toString() : "");
+			part.put("qcFlag", fs[5] != null ? fs[5].toString() : "");
+			part.put("status", "R");
 			details1.add(part);
 		}
 		return details1;
@@ -378,29 +393,22 @@ public class DeKittingServiceImpl implements DeKittingService{
 
 	@Override
 	@Transactional
-	public int getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode,
-			String client, String bin, String partDesc, String sku, String partNo, String grnNo, String lotNo) {
+	public Integer getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client,
+			String partno, String grnno, String batchNo, String bin) {
 
-		Set<Object[]> result = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode,
-				client, bin, partDesc, sku, partNo, grnNo, lotNo);
-		return getAvlQtyResult(result);
-	}
+		Integer qty = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode, client, partno,
+				grnno, batchNo, bin);
+		return (qty != null) ? qty : 0;
 
-	private int getAvlQtyResult(Set<Object[]> result) {
-		int totalQty = 0;
-		for (Object[] qt : result) {
-			totalQty += (qt[0] != null ? Integer.parseInt(qt[0].toString()) : 0);
-		}
-		return totalQty;
 	}
 
 	// CHILD
 	@Transactional
-	public List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branch,
+	public List<Map<String, Object>> getPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId,
 			String branchCode, String client) {
 
-		Set<Object[]> result = deKittingRepo.findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(orgId, branch,
-				branchCode, client);
+		Set<Object[]> result = deKittingRepo.findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(orgId, branchCode,
+				client);
 		return getChildResult(result);
 	}
 
@@ -411,9 +419,9 @@ public class DeKittingServiceImpl implements DeKittingService{
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("sku", fs[2] != null ? fs[2].toString() : "");
-			part.put("sku", fs[3] != null ? fs[3].toString() : "");
 			details1.add(part);
 		}
 		return details1;
 	}
+
 }

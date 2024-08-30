@@ -35,7 +35,7 @@ public class VasPickVO {
 	@Column(name = "picbin")
 	private String picBin;
 	@Column(name = "screenname")
-	private String screenName="VASPICK";
+	private String screenName="VAS PICK";
 	@Column(name = "screencode")
 	private String screenCode="VPR";
 	@Column(name = "docdate")

@@ -973,18 +973,36 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Override
 	public Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) throws ApplicationException {
-		FinancialYearVO financialYearVO;
+		FinancialYearVO financialYearVO = null;
 		String message;
 		
 		if(ObjectUtils.isEmpty(financialYearDTO.getId()))
 		{
-			
+			if(financialYearRepo.existsByFinYearAndOrgId(financialYearDTO.getFinYear(),financialYearDTO.getOrgId())) {
+				String errorMessage=String.format("ThiS finyear:%s Already Exists This Organization .", financialYearDTO.getFinYear());
+				throw new ApplicationException(errorMessage);
+			}
 			financialYearVO=new FinancialYearVO();
 			financialYearVO.setCreatedBy(financialYearDTO.getCreatedBy());
 			financialYearVO.setUpdatedBy(financialYearDTO.getCreatedBy());
 			message="Financial Year Creation Successfully";
 			
 		}else {
+			financialYearVO = financialYearRepo.findById(financialYearDTO.getId())
+				    .orElseThrow(() -> new ApplicationException(
+				        String.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));
+			
+			
+			if (financialYearVO.getFinYear() != financialYearDTO.getFinYear()) {
+			    if (financialYearRepo.existsByFinYearAndOrgId(financialYearDTO.getFinYear(), financialYearDTO.getOrgId())) {
+			        String errorMessage = String.format("This financial year: %s already exists for this organization.", financialYearDTO.getFinYear());
+			        throw new ApplicationException(errorMessage);
+			    }
+			    financialYearVO.setFinYear(financialYearDTO.getFinYear());
+			}
+
+
+			
 			 financialYearVO = financialYearRepo.findById(financialYearDTO.getId())
 				    .orElseThrow(() -> new ApplicationException(
 				        String.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));

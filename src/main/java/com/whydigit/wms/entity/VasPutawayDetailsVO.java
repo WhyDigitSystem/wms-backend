@@ -38,6 +38,10 @@ public class VasPutawayDetailsVO {
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
+	@Column(name = "batchno")
+	private String batchNo;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 	@Column(name = "status")
 	private String status ="R";
 	@Column(name = "invqty")
@@ -46,31 +50,32 @@ public class VasPutawayDetailsVO {
 	private int putAwayQty;
 	@Column(name = "frombin")
 	private String fromBin;
-	@Column(name = "bin")
-	private String bin;
+	@Column(name = "tobin")
+	private String toBin;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "qcflag")
 	private String qcFlag;
-	
-	@Column(name = "binclass")
-	private String binClass;
-	@Column(name = "bintype")
-	private String binType;
-	@Column(name = "celltype")
-	private String cellType;
-	@Column(name = "clientcode")
-	private String clientCode;	
-	@Column(name = "core")
-	private String core;
+	@Column(name = "frombinclass")
+	private String fromBinClass;
+	@Column(name = "frombintype")
+	private String fromBinType;
+	@Column(name = "fromcelltype")
+	private String fromCellType;
+	@Column(name = "fromcore")
+	private String fromCore;	
+	@Column(name = "tobinclass")
+	private String toBinClass;
+	@Column(name = "tobintype")
+	private String toBinType;
+	@Column(name = "tocelltype")
+	private String toCellType;
+	@Column(name = "tocore")
+	private String toCore;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "pckey")
-	private String pckey;
-	@Column(name = "ssku")
-	private String ssku;
 	@Column(name = "stockdate")
 	private LocalDate stockDate;
 	

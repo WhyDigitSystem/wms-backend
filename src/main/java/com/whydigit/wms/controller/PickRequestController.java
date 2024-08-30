@@ -100,7 +100,6 @@ public class PickRequestController extends BaseController {
 	public ResponseEntity<ResponseDTO> createUpdatePickRequest(@RequestBody @Valid PickRequestDTO pickRequestDTO) {
 		String methodName = "createUpdatePickRequest()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
@@ -109,7 +108,7 @@ public class PickRequestController extends BaseController {
 			responseObjectsMap.put("pickRequestVO", pickRequestVO.get("pickRequestVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-			errorMsg = e.getMessage();
+			String errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
@@ -174,5 +173,36 @@ public class PickRequestController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getFillGridDetailsForPickRequest")
+	public ResponseEntity<ResponseDTO> getFillGridDetailsForPickRequest(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client,
+			@RequestParam String buyerOrderDocId, @RequestParam(required = false) String pickRequestDocId,@RequestParam String pickStatus) {
+		String methodName = "getFillGridDetailsForPickRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
+		try {
+			fillGridDetails = pickRequestService.getFillGridDetailsForPickRequest(orgId, branchCode, client, buyerOrderDocId, pickRequestDocId, pickStatus);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"fill Grid Details  from Stock information retrieved successfully");
+			responseObjectsMap.put("fillGridDetails", fillGridDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve fill Grid Details  from Stock information", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
+	
 }
+
