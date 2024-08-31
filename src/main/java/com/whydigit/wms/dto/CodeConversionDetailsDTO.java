@@ -3,6 +3,8 @@ package com.whydigit.wms.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,4 +50,12 @@ public class CodeConversionDetailsDTO {
 	private String ssku;
 	private LocalDate stockDate;
 
+	private String cBinClass;
+	private String cCellType;
+	private String cClientCode;	
+	private String cCore;
+	private LocalDate cExpDate;
+	private String cPckey;
+	private String cSsku;
+	private LocalDate cStockDate;
 }

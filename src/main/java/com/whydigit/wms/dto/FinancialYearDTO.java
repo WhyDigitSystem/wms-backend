@@ -14,7 +14,7 @@ public class FinancialYearDTO {
 	private Long id;
 	private int finYear;
 	private Long finYearId;
-	private int finYearIdentifier;
+	private String finYearIdentifier;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private boolean currentFinYear;
