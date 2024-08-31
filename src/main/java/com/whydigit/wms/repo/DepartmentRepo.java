@@ -18,7 +18,7 @@ public interface DepartmentRepo extends JpaRepository<DepartmentVO, Long> {
 	@Query(value = "select *from department where orgid=?1", nativeQuery = true)
 	List<DepartmentVO> findDepartmentByOrgId(Long orgId);
 
-	@Query(value = "select *from department where departmentid=?1", nativeQuery = true)
+	@Query(value = "select  *from department where deptid=?1", nativeQuery = true)
 	List<DepartmentVO> findDepartmentById(Long id);
 
 }

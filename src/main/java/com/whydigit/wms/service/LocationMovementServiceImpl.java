@@ -123,9 +123,15 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOFrom.setSku(detailsVO.getSku());
+				stockDetailsVOFrom.setSourceId(detailsVO.getId());
+				stockDetailsVOFrom.setSku(detailsVO.getSku());
+				stockDetailsVOFrom.setPickedQty(detailsVO.getToQty());
+				stockDetailsVOFrom.setPQty(detailsVO.getToQty());
+				stockDetailsVOFrom.setSSku(detailsVO.getSku());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOFrom.setSQty(detailsVO.getToQty() * -1); // Negative quantity
 				stockDetailsVOFrom.setRefNo(savedLocationMovementVO.getDocId());
+				stockDetailsVOFrom.setUpdatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOFrom.setOrgId(savedLocationMovementVO.getOrgId());
 				stockDetailsVOFrom.setRefDate(savedLocationMovementVO.getDocDate());
 				stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedLocationMovementVO.getOrgId(),
@@ -133,6 +139,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setCreatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOFrom.setBranchCode(savedLocationMovementVO.getBranchCode());
 				stockDetailsVOFrom.setBranch(savedLocationMovementVO.getBranch());
+				stockDetailsVOFrom.setCustomer(savedLocationMovementVO.getCustomer());
 				stockDetailsVOFrom.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),
 						savedLocationMovementVO.getClient()));
 				stockDetailsVOFrom.setClient(savedLocationMovementVO.getClient());
@@ -141,6 +148,9 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setStockDate(LocalDate.now());
 				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOFrom.setStatus(detailsVO.getStatus());
+				stockDetailsVOFrom.setSourceScreenName("LOCATION MOVEMENT");
+				stockDetailsVOFrom.setSourceScreenCode("LM");
+
 				stockDetailsRepo.save(stockDetailsVOFrom);
 			}
 			for (LocationMovementDetailsVO detailsVO : locationMovementDetailsVOLists) {
@@ -162,15 +172,21 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOTo.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
+				stockDetailsVOTo.setSourceId(detailsVO.getId());
 				stockDetailsVOTo.setCellType(detailsVO.getCellType());
 				stockDetailsVOTo.setSku(detailsVO.getSku());
 				stockDetailsVOTo.setStockDate(LocalDate.now());
 				stockDetailsVOTo.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOTo.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOTo.setCore(detailsVO.getCore());
-				stockDetailsVOTo.setSQty(detailsVO.getToQty()); // Positive quantity
+				stockDetailsVOTo.setSSku(detailsVO.getSku());
+				stockDetailsVOTo.setSQty(detailsVO.getToQty());
+				stockDetailsVOTo.setPickedQty(detailsVO.getToQty());
+				stockDetailsVOTo.setPQty(detailsVO.getToQty());// Positive quantity
 				stockDetailsVOTo.setRefNo(savedLocationMovementVO.getDocId());
+				stockDetailsVOTo.setUpdatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOTo.setOrgId(savedLocationMovementVO.getOrgId());
+				stockDetailsVOTo.setCustomer(savedLocationMovementVO.getCustomer());
 				stockDetailsVOTo.setRefDate(savedLocationMovementVO.getDocDate());
 				stockDetailsVOTo.setCreatedBy(savedLocationMovementVO.getUpdatedBy());
 				stockDetailsVOTo.setBranchCode(savedLocationMovementVO.getBranchCode());
@@ -180,9 +196,11 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 						savedLocationMovementVO.getClient(), detailsVO.getPartNo()));
 				stockDetailsVOTo.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),
 						savedLocationMovementVO.getClient()));
+				stockDetailsVOTo.setSourceScreenName("LOCATION MOVEMENT");
+				stockDetailsVOTo.setSourceScreenCode("LM");
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
-				
+
 				if ("Defective".equals(detailsVO.getBin())) {
 					stockDetailsVOTo.setQcFlag("F");
 					stockDetailsVOTo.setStatus("D");
@@ -233,7 +251,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 						+ locationMovementDetailsDTO.getPartNo());
 			}
 			LocationMovementDetailsVO locationMovementDetailsVO = new LocationMovementDetailsVO();
-			
+
 			locationMovementDetailsVO.setPartNo(locationMovementDetailsDTO.getPartNo());
 			locationMovementDetailsVO.setPartDesc(locationMovementDetailsDTO.getPartDesc());
 			locationMovementDetailsVO.setSku(locationMovementDetailsDTO.getSku());
@@ -333,10 +351,11 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 
 	@Transactional
 	@Override
-	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId, String branch,
-			String branchCode, String client, String bin, String partNo) {
+	public List<Map<String, Object>> getGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(Long orgId,
+			String branch, String branchCode, String client, String bin, String partNo) {
 
-		Set<Object[]> result = locationMovementRepo.findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(orgId, branch, branchCode, client, bin, partNo);
+		Set<Object[]> result = locationMovementRepo.findGrnNoAndBatchAndBatchDateAndLotNoFromStockForLocationMovement(
+				orgId, branch, branchCode, client, bin, partNo);
 		return getGrnResult(result);
 	}
 
@@ -350,13 +369,14 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		}
 		return details1;
 	}
-	
+
 	@Transactional
 	@Override
 	public List<Map<String, Object>> getBatchNoAndBatchDateFromStockForLocationMovement(Long orgId, String branch,
-			String branchCode, String client, String bin, String partNo,String grnNo) {
+			String branchCode, String client, String bin, String partNo, String grnNo) {
 
-		Set<Object[]> result11 = locationMovementRepo.findBatchNoAndBatchDateFromStockForLocationMovement(orgId, branch, branchCode, client, bin, partNo,grnNo);
+		Set<Object[]> result11 = locationMovementRepo.findBatchNoAndBatchDateFromStockForLocationMovement(orgId, branch,
+				branchCode, client, bin, partNo, grnNo);
 		return getBatchResult(result11);
 	}
 
@@ -402,16 +422,15 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
 			part.put("lotNo", fs[15] != null ? fs[15].toString() : "");
 			part.put("grnDate", fs[16] != null ? fs[16].toString() : "");
-			part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()): 0);
+			part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
 			part.put("binType", fs[18] != null ? fs[18].toString() : "");
-			part.put("id", fs[19] != null ? Integer.parseInt(fs[19].toString()): 0);
-			
+			part.put("id", fs[19] != null ? Integer.parseInt(fs[19].toString()) : 0);
+
 			details1.add(part);
 		}
 		return details1;
 	}
 
-	
 	@Override
 	public String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode,
 			String client) {
@@ -420,16 +439,15 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		return result;
 	}
 
-	
 	@Override
-	public Integer getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
-	        String branchCode, String client, String bin, String partNo, String grnNo, String batchNo) {
+	public Integer getAvlQtyFromStockForLocationMovement(Long orgId, String branch, String branchCode, String client,
+			String bin, String partNo, String grnNo, String batchNo) {
 
-	    Integer qty = stockDetailsRepo.findAvlQtyForLocationMovement(orgId, branch, branchCode, client, bin, partNo, grnNo, batchNo);
-	    
-	    // Return 0 if qty is null
-	    return (qty != null) ? qty : 0;
+		Integer qty = stockDetailsRepo.findAvlQtyForLocationMovement(orgId, branch, branchCode, client, bin, partNo,
+				grnNo, batchNo);
+
+		// Return 0 if qty is null
+		return (qty != null) ? qty : 0;
 	}
-
 
 }

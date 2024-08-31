@@ -30,6 +30,7 @@ public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 	@Query(nativeQuery = true,value = "select client,clientcode from client where orgid=?1")
 	Set<Object[]> getClientDetailsByOrgId(Long orgId);
 
+	
 	List<ClientVO> getAllClientByOrgId(Long orgId);
 	
 	@Query(nativeQuery = true,value = "select client,clientcode from client where orgid=?1 and concat(client,clientcode) not in(\r\n"
