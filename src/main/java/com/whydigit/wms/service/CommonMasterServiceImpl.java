@@ -1012,26 +1012,23 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 			    financialYearVO.setFinYear(financialYearDTO.getFinYear());
 			}
 			
-//			if (financialYearVO.getFinYearIdentifier() != financialYearDTO.getFinYearIdentifier()) {
-//			    if (financialYearRepo.existsByFinYearIdentifierAndOrgId(financialYearDTO.getFinYearIdentifier(), financialYearDTO.getOrgId())) {
-//			        String errorMessage = String.format("This finyearIdentifier: %s already exists for this organization.", financialYearDTO.getFinYearIdentifier());
-//			        throw new ApplicationException(errorMessage);
-//			    }
-//			    financialYearVO.setFinYearIdentifier(financialYearDTO.getFinYearIdentifier());
-//			}
-//
-//			if (financialYearVO.getFinYearId() != financialYearDTO.getFinYearId()) {
-//			    if (financialYearRepo.existsByFinYearIdAndOrgId(financialYearDTO.getFinYearId(), financialYearDTO.getOrgId())) {
-//			        String errorMessage = String.format("This finyearId: %s already exists for this organization.", financialYearDTO.getFinYearId());
-//			        throw new ApplicationException(errorMessage);
-//			    }
-//			    financialYearVO.setFinYearId(financialYearDTO.getFinYearId());
-//			}
-//  
-			
-			 financialYearVO = financialYearRepo.findById(financialYearDTO.getId())
-				    .orElseThrow(() -> new ApplicationException(
-				        String.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));
+			if (!financialYearVO.getFinYearIdentifier().equals(financialYearDTO.getFinYearIdentifier())) {
+			    if (financialYearRepo.existsByFinYearIdentifierAndOrgId(financialYearDTO.getFinYearIdentifier(), financialYearDTO.getOrgId())) {
+			        String errorMessage = String.format("This finyearIdentifier: %s already exists for this organization.", financialYearDTO.getFinYearIdentifier());
+			        throw new ApplicationException(errorMessage);
+			    }
+			    financialYearVO.setFinYearIdentifier(financialYearDTO.getFinYearIdentifier());
+			}
+
+			if (financialYearVO.getFinYearId() != financialYearDTO.getFinYearId()) {
+			    if (financialYearRepo.existsByFinYearIdAndOrgId(financialYearDTO.getFinYearId(), financialYearDTO.getOrgId())) {
+			        String errorMessage = String.format("This finyearId: %s already exists for this organization.", financialYearDTO.getFinYearId());
+			        throw new ApplicationException(errorMessage);
+			    }
+			    financialYearVO.setFinYearId(financialYearDTO.getFinYearId());
+			}
+
+  
 			
 			financialYearVO.setUpdatedBy(financialYearDTO.getCreatedBy());
 			message="Financial Year Updation Successfully";
