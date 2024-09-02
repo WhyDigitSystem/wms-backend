@@ -32,6 +32,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 	Set<Object[]> findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String branch, String branchCode,
 			String client, String buyerOrderNo);
 	
+	
 	@Query(nativeQuery =true,value = "SELECT partno,\n"
 			+ "       partdesc,\n"
 			+ "       batch,\n"
@@ -41,7 +42,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 			+ "  AND  branchcode =?2\n"
 			+ "  AND client = ?3\n"
 			+ "  AND status = 'R'\n"
-			+ "  AND BATCH=?4\n"
+			+ "  AND BATCH=?4 OR NULL\n"
 			+ "  AND warehouse=?5\n"
 			+ "GROUP BY partno, partdesc, batch\n"
 			+ "HAVING SUM(sqty) > 0")
