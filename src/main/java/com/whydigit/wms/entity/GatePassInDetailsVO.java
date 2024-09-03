@@ -79,6 +79,10 @@ public class GatePassInDetailsVO {
 	private double amount;
 	@Column(name = "remarks")
 	private String remarks;
+	@Column(name = "expdate")
+	private LocalDate expDate;
+	@Column(name = "batchdate")
+	private LocalDate batchDate;
 
 	@JsonBackReference
 	@ManyToOne

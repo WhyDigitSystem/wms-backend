@@ -190,6 +190,8 @@ public class GatePassInServiceImpl implements GatePassInService {
 				detailsVO.setRowNo(gatePassInDetailsDTO.getRowNo());
 				detailsVO.setAmount(gatePassInDetailsDTO.getAmount());
 				detailsVO.setRemarks(gatePassInDetailsDTO.getRemarks());
+				detailsVO.setExpDate(gatePassInDetailsDTO.getExpDate());
+				detailsVO.setBatchDate(gatePassInDetailsDTO.getBatchDate());
 				detailsVO.setGatePassInVO(gatePassInVO);
 				detailsVOList.add(detailsVO);
 			}

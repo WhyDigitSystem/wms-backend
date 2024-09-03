@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.VasPickDTO;
 import com.whydigit.wms.dto.VasPickDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
-import com.whydigit.wms.entity.PickRequestDetailsVO;
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.entity.VasPickDetailsVO;
 import com.whydigit.wms.entity.VasPickVO;
@@ -65,7 +64,7 @@ public class VasPickServiceImpl implements VasPickService {
 					vasPicDTO.getBranchCode(), vasPicDTO.getClient(), screenCode);
 			vasPickVO.setDocId(docId);
 
-			// GETDOCID LASTNO +1
+			// GETDOCID LASTNO +1 
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
 					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(vasPicDTO.getOrgId(),
 							vasPicDTO.getFinYear(), vasPicDTO.getBranchCode(), vasPicDTO.getClient(), screenCode);

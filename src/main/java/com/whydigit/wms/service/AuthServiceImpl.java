@@ -236,7 +236,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         userResponseDTO.setRoleVO(roleVOList);
-
+        userResponseDTO.setScreensVO(roleVOList);
 		TokenVO tokenVO = tokenProvider.createToken(userVO.getId(), loginRequest.getUserName());
 		userResponseDTO.setToken(tokenVO.getToken());
 		userResponseDTO.setTokenId(tokenVO.getId());
