@@ -18,7 +18,7 @@ public interface MaterialRepo extends JpaRepository<MaterialVO, Long>{
 
 	boolean existsByOrgIdAndCustomerAndClientAndPartDesc(Long orgId, String customer, String client, String partDesc);
 
-	@Query(value ="select partno,sku,partdesc from material where orgid=?1 and client=?2 and branch=?3 and (cbranch='ALL' or cbranch=?4) and customer=?5 and active=true",nativeQuery =true )
+	@Query(value ="select partno,sku,partdesc from material where orgid=?1 and client=?2 and branch=?3 and (cbranch='ALL' or cbranch=?4) and customer=?5 ",nativeQuery =true )
 	Set<Object[]> findPartNo(Long orgId, String client, String branch, String branchCode, String customer);
 
 	@Query(value = "select a.parentChildKey from MaterialVO a where a.orgId=?1 and a.client=?2 and a.partno=?3")

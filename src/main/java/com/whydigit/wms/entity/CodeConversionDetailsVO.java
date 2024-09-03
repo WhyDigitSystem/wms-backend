@@ -73,7 +73,7 @@ public class CodeConversionDetailsVO {
 	@Column(name = "cbatchno")
 	private String cBatchNo;
 	@Column(name = "cbatchdate")
-	private LocalDate cBatchDate;
+	private LocalDate cBatchDate=LocalDate.now();
 	@Column(name = "clotno")
 	private String cLotNo;
 	@Column(name = "cbin")
@@ -101,6 +101,19 @@ public class CodeConversionDetailsVO {
 	private String ssku;
 	@Column(name = "stockdate")
 	private LocalDate stockDate;
+	
+	@Column(name = "cbinclass")
+	private String cBinClass;
+	@Column(name = "ccelltype")
+	private String cCellType;
+	@Column(name = "cclientcode")
+	private String cClientCode;
+	@Column(name = "ccore")
+	private String cCore;
+	@Column(name = "cexpdate")
+	private LocalDate cExpDate=LocalDate.now();
+	@Column(name = "cstockdate")
+	private LocalDate cStockDate;
 	
 	@JsonBackReference
 	@ManyToOne

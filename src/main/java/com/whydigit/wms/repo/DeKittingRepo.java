@@ -29,7 +29,7 @@ public interface DeKittingRepo extends JpaRepository<DeKittingVO, Long> {
 
 	@Query(nativeQuery = true, value = "select a.bin,a.binclass,a.celltype,a.core,a.bintype,a.qcflag from(\r\n"
 			+ "			(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty) from stockdetails\r\n"
-			+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT' and partno=?5 and grnno=?6 and batch=?7\r\n"
+			+ "			where orgid=?1 and branch=?2 and branchcode=?3  and client=?4 and status='R' and pckey='PARENT' and partno=?5 and grnno=?6 and batch=?7 OR NULL\r\n"
 			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0))\r\n"
 			+ "            a group by a.bintype,a.binclass,a.celltype,a.core,a.bin,a.qcflag")
 	Set<Object[]> findBinFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client,

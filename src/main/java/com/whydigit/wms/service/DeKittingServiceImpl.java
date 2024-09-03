@@ -396,8 +396,8 @@ public class DeKittingServiceImpl implements DeKittingService {
 	public Integer getAvlQtyFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client,
 			String partno, String grnno, String batchNo, String bin) {
 
-		Integer qty= deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode, client, partno, grnno,
-				batchNo, bin);
+		Integer qty = deKittingRepo.findAvlQtyFromStockForDeKittingParent(orgId, branch, branchCode, client, partno,
+				grnno, batchNo, bin);
 		return (qty != null) ? qty : 0;
 
 	}
