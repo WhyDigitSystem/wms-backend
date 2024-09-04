@@ -41,7 +41,7 @@ public interface CycleCountRepo extends JpaRepository<CycleCountVO, Long> {
 	Set<Object[]> getBatch(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNO);
 
 	@Query(nativeQuery = true, value = "select bin,bintype,lotno,celltype,binclass,core,qcflag from stockdetails  where orgid=?1 and client=?3 \n"
-			+ "and branchcode=?2 and warehouse=?4 and partno=?5 and grnno=?6 and batch=?7 group by bin,bintype,lotno,celltype,binclass,core,qcflag")
+			+ "and branchcode=?2 and warehouse=?4 and partno=?5 and grnno=?6 and batch=?7 OR NULL group by bin,bintype,lotno,celltype,binclass,core,qcflag")
 	Set<Object[]> getBinDetails(Long orgId, String branchCode, String client, String warehouse, String partNo,
 			String grnNO, String batch);
 

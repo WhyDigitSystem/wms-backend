@@ -107,7 +107,7 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 
 	@Query(nativeQuery = true, value = "select cast(a.sqty as unsigned)sqty from(\r\n"
 			+ "            select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
-			+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and batch=?8\r\n"
+			+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and batch=?8 OR NULL\r\n"
 			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0\r\n"
 			+ "            ) a")
 	public int findAvlQtyFromStockForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,

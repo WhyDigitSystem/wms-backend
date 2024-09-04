@@ -40,11 +40,4 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			+ " where a.gatepassid=b.gatepassinid and  b.orgid= ?1 and b.finyear=?2 and b.branchcode=?3 and b.client=?4  and b.docid=?5 ")
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
-	
-	
-
-	
-
-	
-
 }
