@@ -34,16 +34,11 @@ public class KittingVO {
 	@SequenceGenerator(name = "kittinggen", sequenceName = "kittingseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "kittingid")
 	private Long id;
-	
-	
-	@Column(name = "screenname")
-	private String screenName="KITTING";
-	@Column(name = "screencode")
-	private String screenCode="KT";
-	@Column(name = "docdate")
-	private LocalDate docDate=LocalDate.now();
-	@Column(name = "docid",unique = true)
+
+	@Column(name = "docid", unique = true)
 	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate = LocalDate.now();
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "customer")
@@ -69,26 +64,27 @@ public class KittingVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze=true;
+	private boolean freeze = true;
 	@Column(name = "refno")
 	private String refNo;
-	private String sku;
 	@Column(name = "refdate")
-	private LocalDate refDate=LocalDate.now();
-	
-	
-	
+	private LocalDate refDate = LocalDate.now();
+
+	@Column(name = "screenname")
+	private String screenName = "KITTING";
+	@Column(name = "screencode")
+	private String screenCode = "KT";
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
-	@OneToMany(mappedBy ="kittingVO",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "kittingVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<KittingDetails1VO> kittingDetails1VO;
-	
-	@OneToMany(mappedBy ="kittingVO",cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "kittingVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<KittingDetails2VO> kittingDetails2VO;
-	
 
 	@PrePersist
 	private void setDefaultFinyr() {

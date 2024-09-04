@@ -32,4 +32,6 @@ public class GatePassInDetailsDTO {
 	private String rowNo;
 	private double amount;
 	private String remarks;
+	private LocalDate expDate;
+	private LocalDate batchDate;
 }

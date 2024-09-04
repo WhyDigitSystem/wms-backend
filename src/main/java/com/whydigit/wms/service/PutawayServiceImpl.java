@@ -258,7 +258,11 @@ public class PutawayServiceImpl implements PutawayService {
 	private void getPutawayVOFromPutawayDTO(PutAwayDTO putAwayDTO, PutAwayVO putAwayVO) {
 
 		GrnVO grnVO = grnRepo.findByDocId(putAwayDTO.getGrnNo());
-		grnVO.setFreeze(true);
+		if ("Confirm".equals(putAwayDTO.getStatus())) {
+			grnVO.setFreeze(true);
+		} else {
+			grnVO.setFreeze(false);
+		}
 		grnRepo.save(grnVO);
 
 		putAwayVO.setGrnNo(putAwayDTO.getGrnNo());
@@ -270,7 +274,9 @@ public class PutawayServiceImpl implements PutawayService {
 		putAwayVO.setModeOfShipment(putAwayDTO.getModeOfShipment());
 		putAwayVO.setCarrier(putAwayDTO.getCarrier());
 		putAwayVO.setBinType(putAwayDTO.getBinType());
+
 		putAwayVO.setStatus(putAwayDTO.getStatus());
+
 		putAwayVO.setLotNo(putAwayDTO.getLotNo());
 		putAwayVO.setEntryDate(putAwayDTO.getEntryDate());
 		putAwayVO.setEnteredPerson(putAwayDTO.getEnteredPerson());
@@ -314,13 +320,13 @@ public class PutawayServiceImpl implements PutawayService {
 			putAwayDetailsVOs.setBinType(putAwayDetailsDTO.getBinType());
 			putAwayDetailsVOs.setSSku(putAwayDetailsDTO.getSSku());
 			putAwayDetailsVOs.setCellType(putAwayDetailsDTO.getCellType());
-			String celltype=putAwayRepo.getCelltype(putAwayDTO.getOrgId(),putAwayDetailsDTO.getBin());
+			String celltype = putAwayRepo.getCelltype(putAwayDTO.getOrgId(), putAwayDetailsDTO.getBin());
 			putAwayDetailsVOs.setCellType(celltype);
 			putAwayDetailsVOs.setBinClass(putAwayDTO.getBinClass());
 			putAwayDetailsVOs.setBatchDate(putAwayDetailsDTO.getBatchDate());
 			putAwayDetailsVOs.setExpdate(putAwayDetailsDTO.getExpdate());
 			putAwayDetailsVOs.setPutAwayVO(putAwayVO);
-			totalPutawayQty=totalPutawayQty+putAwayDetailsDTO.getPutAwayQty();
+			totalPutawayQty = totalPutawayQty + putAwayDetailsDTO.getPutAwayQty();
 
 			if ("Defective".equals(putAwayDetailsDTO.getBin())) {
 				putAwayDetailsVOs.setQcFlag("F");
@@ -366,7 +372,7 @@ public class PutawayServiceImpl implements PutawayService {
 			mapDetails.put("batchNo", gridDetails[12] != null ? gridDetails[12].toString() : "");
 			mapDetails.put("batchDate", gridDetails[13] != null ? gridDetails[13].toString() : "");
 			mapDetails.put("expDate", gridDetails[14] != null ? gridDetails[14].toString() : "");
-			mapDetails.put("id", gridDetails[15] != null ?parseStringToInt(gridDetails[15].toString()) : 0);
+			mapDetails.put("id", gridDetails[15] != null ? parseStringToInt(gridDetails[15].toString()) : 0);
 			getDetails.add(mapDetails);
 		}
 		return getDetails;
