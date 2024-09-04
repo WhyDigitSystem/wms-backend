@@ -12,7 +12,7 @@ import com.whydigit.wms.entity.RolesVO;
 
 public interface ResponsibilitiesRepo extends JpaRepository<ResponsibilityVO, Long> {
 
-	boolean existsByResponsibility(String responsibility);
+	boolean existsByResponsibilityAndOrgId(String responsibility,Long OrgId);
 
 	@Query(value="select a.id,a.responsibility from ResponsibilityVO a where a.orgId=?1 and a.active=true")
 	Set<Object[]> findActiveByOrgId(Long orgId);

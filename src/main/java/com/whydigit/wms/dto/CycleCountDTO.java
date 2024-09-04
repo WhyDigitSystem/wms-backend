@@ -20,7 +20,6 @@ private Long id;
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private String cancelRemarks;
 
 	
 	private List<CycleCountDetailsDTO> cycleCountDetailsDTO;
