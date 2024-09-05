@@ -207,9 +207,9 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String batch,
+	public List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, 
 			String warehouse) {
-		Set<Object[]> result = buyerOrderRepo.getBoSku(orgId, branchCode, client, batch, warehouse);
+		Set<Object[]> result = buyerOrderRepo.getBoSku(orgId, branchCode, client, warehouse);
 		return getAllSkuDetails(result);
 	}
 
@@ -254,6 +254,24 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("batch", fs[0] != null ? fs[0].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getPartNoByBuyerOrder(Long orgId, String branchCode, String client,
+			String warehouse) {
+		Set<Object[]> result = stockDetailsRepo.getPartNo(orgId, branchCode, client, warehouse);
+		return getPartNoByBO(result);
+	}
+
+	private List<Map<String, Object>> getPartNoByBO(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			details1.add(part);
 		}
 		return details1;
