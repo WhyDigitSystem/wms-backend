@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.persistence.Embedded;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +39,10 @@ public class UserResponseDTO {
     private String tokenId;
 	
 
+    @JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
     // Setter method to accept List<Map<String, Object>>
    
    

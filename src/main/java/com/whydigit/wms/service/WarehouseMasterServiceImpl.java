@@ -289,6 +289,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		unitVO.setActive(unitDTO.isActive());
 		unitVO.setCancel(unitDTO.isCancel());
 		unitVO.setOrgId(unitDTO.getOrgId());
+		unitVO.setUom(unitDTO.getUom());
 	}
 
 	@Override
