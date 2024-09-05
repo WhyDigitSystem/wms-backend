@@ -233,6 +233,7 @@ public class VasPickServiceImpl implements VasPickService {
 			if (getFromQty == null) {
 			    getFromQty = 0;
 			}
+			
 
 			System.out.println("from qty"+getFromQty);
 			System.out.println("orgid"+vasPicDTO.getOrgId());
