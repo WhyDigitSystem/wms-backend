@@ -74,7 +74,7 @@ public class PutAwayDetailsVO {
 	@Column(name = "status")
 	private String status;
 	@Column(name = "expdate")
-	private LocalDate expdate;
+	private LocalDate expDate;
 	@Column(name = "qcflag")
 	private String qcFlag;
 
