@@ -14,20 +14,18 @@ public class CycleCountDetailsDTO {
 	private Long id;
 	private String partNo;
 	private String partDescription;
-	private String grnNo;
 	private String sku;
-	private String binType;
+	private String grnNo;
+	private LocalDate grnDate;
 	private String batchNo;
 	private LocalDate batchDate;
-	private String bin;
-	private int avlQty;
-	private int actualQty;
-	private LocalDate grnDate;
 	private LocalDate expDate;
+	private String binType;
+	private String bin;
 	private String binClass;
 	private String cellType;
 	private String core;
-	private String lotNo;
+	private int avlQty;
+	private int actualQty;
 	private String qcFlag;
-	private String status;
 }

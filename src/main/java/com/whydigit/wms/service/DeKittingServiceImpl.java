@@ -181,7 +181,7 @@ public class DeKittingServiceImpl implements DeKittingService {
 				stockDetailsVOFrom.setBin(detailsVO.getBin());
 				stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
-				if ("Defective".equals(detailsVO.getBin())) {
+				if ("DEFECTIVE".equals(detailsVO.getBin())) {
 					stockDetailsVOFrom.setQcFlag("F");
 					stockDetailsVOFrom.setStatus("D");
 				} else {
@@ -279,7 +279,7 @@ public class DeKittingServiceImpl implements DeKittingService {
 			deKittingChildVO.setExpDate(deKittingChildDTO.getExpDate());
 			deKittingChildVO.setQty(deKittingChildDTO.getQty());
 
-			if ("Defective".equals(deKittingChildDTO.getBin())) {
+			if ("DEFECTIVE".equals(deKittingChildDTO.getBin())) {
 				deKittingChildVO.setQcFlag("F");
 				deKittingChildVO.setStatus("D");
 			} else {

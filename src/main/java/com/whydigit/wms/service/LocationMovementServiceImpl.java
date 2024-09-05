@@ -161,7 +161,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOTo.setBinClass(detailsVO.getToBinClass());
 				stockDetailsVOTo.setBinType(detailsVO.getToBinType());
 				stockDetailsVOTo.setCellType(detailsVO.getToCellType());
-				if ("Defective".equals(detailsVO.getToBin())) {
+				if ("DEFECTIVE".equals(detailsVO.getToBin())) {
 					stockDetailsVOTo.setQcFlag("F");
 					stockDetailsVOTo.setStatus("D");
 				} else {
@@ -201,7 +201,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
 
-				if ("Defective".equals(detailsVO.getBin())) {
+				if ("DEFECTIVE".equals(detailsVO.getBin())) {
 					stockDetailsVOTo.setQcFlag("F");
 					stockDetailsVOTo.setStatus("D");
 				} else {
