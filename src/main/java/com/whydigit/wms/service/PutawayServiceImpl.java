@@ -180,7 +180,7 @@ public class PutawayServiceImpl implements PutawayService {
 				handlingStockInVO.setBatchno(putAwayDetailsVO.getBatch());
 				handlingStockInVO.setBatchdt(putAwayDetailsVO.getBatchDate());
 				// Check if damageqty is 0
-				if ("Defective".equals(putAwayDetailsVO.getBin())) {
+				if ("DEFECTIVE".equals(putAwayDetailsVO.getBin())) {
 					handlingStockInVO.setQcflag("F");
 					handlingStockInVO.setDamageqty(putAwayDetailsVO.getPutAwayQty());
 				} else {
@@ -235,7 +235,7 @@ public class PutawayServiceImpl implements PutawayService {
 				stockDetailsVO.setPcKey(materialRepo.getParentChildKey(savedPutAwayVO.getOrgId(),
 						savedPutAwayVO.getClient(), putAwayDetailsVO.getPartNo()));
 				stockDetailsVO.setSourceId(putAwayDetailsVO.getId());
-				if ("Defective".equals(putAwayDetailsVO.getBin())) {
+				if ("DEFECTIVE".equals(putAwayDetailsVO.getBin())) {
 					stockDetailsVO.setQcFlag("F");
 					stockDetailsVO.setStatus("D");
 					stockDetailsVO.setBinType("DAMAGE");
@@ -328,7 +328,7 @@ public class PutawayServiceImpl implements PutawayService {
 			putAwayDetailsVOs.setPutAwayVO(putAwayVO);
 			totalPutawayQty = totalPutawayQty + putAwayDetailsDTO.getPutAwayQty();
 
-			if ("Defective".equals(putAwayDetailsDTO.getBin())) {
+			if ("DEFECTIVE".equals(putAwayDetailsDTO.getBin())) {
 				putAwayDetailsVOs.setQcFlag("F");
 				putAwayDetailsVOs.setStatus("D");
 			} else {
