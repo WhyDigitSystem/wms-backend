@@ -226,9 +226,14 @@ public class VasPickServiceImpl implements VasPickService {
 			detailsVO.setBinType(vasPickDTO.getBinType());
 			detailsVO.setBatchDate(vasPickDTO.getBatchDate());
 			
-			int getFromQty= stockDetailsRepo.getAvlQtyforVasPick(vasPicDTO.getOrgId(), vasPicDTO.getBranchCode(),vasPicDTO.getWarehouse(),
-					vasPicDTO.getClient(),vasPickDTO.getBin(),vasPickDTO.getPartNo(),vasPickDTO.getGrnNo(),
-					vasPickDTO.getBatchNo(), vasPicDTO.getStateStatus());
+			Integer getFromQty = stockDetailsRepo.getAvlQtyforVasPick(vasPicDTO.getOrgId(), vasPicDTO.getBranchCode(),
+			        vasPicDTO.getWarehouse(), vasPicDTO.getClient(), vasPickDTO.getBin(), vasPickDTO.getPartNo(),
+			        vasPickDTO.getGrnNo(), vasPickDTO.getBatchNo(), vasPicDTO.getStateStatus());
+
+			if (getFromQty == null) {
+			    getFromQty = 0;
+			}
+
 			System.out.println("from qty"+getFromQty);
 			System.out.println("orgid"+vasPicDTO.getOrgId());
 			System.out.println("branchcode"+vasPicDTO.getBranchCode());
@@ -240,7 +245,7 @@ public class VasPickServiceImpl implements VasPickService {
 			System.out.println("batchno"+vasPickDTO.getBatchNo());
 			System.out.println("status"+ vasPicDTO.getStateStatus());
 			
-			
+	
 		    if(getFromQty>=vasPickDTO.getPicQty())
 		    {
 		    	detailsVO.setAvlQty(vasPickDTO.getAvlQty());
