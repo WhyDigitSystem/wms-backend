@@ -11,4 +11,6 @@ public interface LocationMappingDetailsRepo extends JpaRepository<LocationMappin
 
 	List<LocationMappingDetailsVO> findByLocationMappingVO(LocationMappingVO locationMappingVO);
 
+	boolean existsByBinAndWarehouse(String bin, String warehouse);
+
 }
