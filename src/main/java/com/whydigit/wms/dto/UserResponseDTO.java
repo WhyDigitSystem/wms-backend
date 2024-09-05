@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 public class UserResponseDTO {
 	private Long usersId;
 	private String userName;
-	private String employeeName;
-	private String email;
+	private String employeeName; 
+	private String email; 
 	private String userType;
 	private Long orgId;
 	private String customer;
@@ -27,8 +27,8 @@ public class UserResponseDTO {
 	private boolean loginStatus;
 	private boolean active;
 	private List<Map<String, Object>> roleVO;
-	private List<Map<String, Object>> responsibilityVO;
-	private List<Map<String, Object>> screensVO;
+//	private List<Map<String, Object>> responsibilityVO;
+//	private List<Map<String, Object>> screensVO;
 	
     @Embedded
     private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

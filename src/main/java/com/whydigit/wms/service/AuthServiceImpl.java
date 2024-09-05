@@ -1,5 +1,8 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -212,19 +215,25 @@ public class AuthServiceImpl implements AuthService {
             if (rolesVO != null && rolesVO.getRolesReposibilitiesVO() != null) {
                 for (RolesResponsibilityVO rolesResponsibilityVO : rolesVO.getRolesReposibilitiesVO()) {
                     Map<String, Object> responsibilityMap = new HashMap<>();
-                    responsibilityMap.put("responsibilityVO", rolesResponsibilityVO.getResponsibility());
+                    responsibilityMap.put("responsibilityName", rolesResponsibilityVO.getResponsibility());
 
                     ResponsibilityVO responsibilityVO = responsibilityRepo.findById(rolesResponsibilityVO.getResponsibilityId()).orElse(null);
-                    if (responsibilityVO != null && responsibilityVO.getScreensVO() != null) {
-                        List<Map<String, Object>> screensList = new ArrayList<>();
-                        for (ScreensVO screenVO : responsibilityVO.getScreensVO()) {
-                            Map<String, Object> screenMap = new HashMap<>();
-                            screenMap.put("screenName", screenVO.getScreenName());
-                            screensList.add(screenMap);
+                    if (loginRolesVO.getEndDate() == null || !loginRolesVO.getEndDate().isBefore(LocalDate.now())) {
+                        if (responsibilityVO != null && responsibilityVO.getScreensVO() != null) {
+                            List<String> screensList = new ArrayList<>();
+                            for (ScreensVO screenVO : responsibilityVO.getScreensVO()) {
+                                screensList.add(screenVO.getScreenName());
+                            }
+                            responsibilityMap.put("screensVO", screensList);
                         }
-                        responsibilityMap.put("screensVO", screensList);
+                        responsibilityVOList.add(responsibilityMap);
+                    } else {
+                    	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                         String endDateFormatted = loginRolesVO.getEndDate().format(formatter);
+                         responsibilityMap.put("screensVO",null);
+                         responsibilityMap.put("expiredMessage","Your Role "+loginRolesVO.getRole() +" was expired on " + endDateFormatted);
+                         responsibilityVOList.add(responsibilityMap);
                     }
-                    responsibilityVOList.add(responsibilityMap);
                 }
             }
 
@@ -236,7 +245,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         userResponseDTO.setRoleVO(roleVOList);
-
+//        userResponseDTO.setScreensVO(roleVOList);
 		TokenVO tokenVO = tokenProvider.createToken(userVO.getId(), loginRequest.getUserName());
 		userResponseDTO.setToken(tokenVO.getToken());
 		userResponseDTO.setTokenId(tokenVO.getId());
@@ -433,7 +442,7 @@ public class AuthServiceImpl implements AuthService {
 	    if (ObjectUtils.isEmpty(responsibilityDTO.getId())) {
 
 	        // Validate if responsibility already exists by responsibility name
-	        if (responsibilityRepo.existsByResponsibility(responsibilityDTO.getResponsibility())) {
+	        if (responsibilityRepo.existsByResponsibilityAndOrgId(responsibilityDTO.getResponsibility(),responsibilityDTO.getOrgId())) {
 	            throw new ApplicationException("Responsibility Name already exists");
 	        }
 
@@ -451,7 +460,7 @@ public class AuthServiceImpl implements AuthService {
 
 	        // Validate and update unique fields if changed
 	        if (!responsibilityVO.getResponsibility().equalsIgnoreCase(responsibilityDTO.getResponsibility())) {
-	            if (responsibilityRepo.existsByResponsibility(responsibilityDTO.getResponsibility())) {
+	            if (responsibilityRepo.existsByResponsibilityAndOrgId(responsibilityDTO.getResponsibility(),responsibilityDTO.getOrgId())) {
 	                throw new ApplicationException("Responsibility Name already exists");
 	            }
 	            responsibilityVO.setResponsibility(responsibilityDTO.getResponsibility());
