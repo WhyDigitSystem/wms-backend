@@ -190,7 +190,7 @@ public class VasPutawayServiceImpl implements VasPutawayService {
 					stockDetailsVOFrom.setBin(detailsVO.getToBin());
 					stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
 					stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
-					if ("Defective".equals(detailsVO.getToBin())) {
+					if ("DEFECTIVE".equals(detailsVO.getToBin())) {
 						stockDetailsVOFrom.setQcFlag("F");
 						stockDetailsVOFrom.setStatus("D");
 					} else {

@@ -289,6 +289,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		unitVO.setActive(unitDTO.isActive());
 		unitVO.setCancel(unitDTO.isCancel());
 		unitVO.setOrgId(unitDTO.getOrgId());
+		unitVO.setUom(unitDTO.getUom());
 	}
 
 	@Override
@@ -1398,12 +1399,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		String message = null;
 		if (ObjectUtils.isEmpty(locationMappingDTO.getId())) {
 
-			if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
-					locationMappingDTO.getOrgId())) {
-				String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
-						locationMappingDTO.getWarehouse());
-				throw new ApplicationException(errorMessage);
-			}
+//			if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
+//					locationMappingDTO.getOrgId())) {
+//				String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
+//						locationMappingDTO.getWarehouse());
+//				throw new ApplicationException(errorMessage);
+//			}
 
 			if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
 					locationMappingDTO.getOrgId())) {
@@ -1430,15 +1431,15 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 							"This Id Is Not Found Any Information,Invalid Id" + locationMappingDTO.getId()));
 			locationMappingVO.setUpdatedBy(locationMappingDTO.getCreatedBy());
 
-			if (!locationMappingVO.getWarehouse().equalsIgnoreCase(locationMappingDTO.getWarehouse())) {
-				if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
-						locationMappingDTO.getOrgId())) {
-					String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
-							locationMappingDTO.getWarehouse());
-					throw new ApplicationException(errorMessage);
-				}
-				locationMappingVO.setWarehouse(locationMappingDTO.getWarehouse());
-			}
+//			if (!locationMappingVO.getWarehouse().equalsIgnoreCase(locationMappingDTO.getWarehouse())) {
+//				if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
+//						locationMappingDTO.getOrgId())) {
+//					String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
+//							locationMappingDTO.getWarehouse());
+//					throw new ApplicationException(errorMessage);
+//				}
+//				locationMappingVO.setWarehouse(locationMappingDTO.getWarehouse());
+//			}
 			if (!locationMappingVO.getRowNo().equalsIgnoreCase(locationMappingDTO.getRowNo())) {
 				if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
 						locationMappingDTO.getOrgId())) {
@@ -1459,6 +1460,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			}
 			message = "Location Mapping Updation Successfully";
 		}
+		
+
+	    // Check for duplicate bins in the same warehouse
+	    for (LocationMappingDetailsDTO locationMappingDetailsDTO : locationMappingDTO.getLocationMappingDetailsDTO()) {
+	        if (locationMappingDetailsRepo.existsByBinAndWarehouse(locationMappingDetailsDTO.getBin(),
+	                locationMappingDTO.getWarehouse())) {
+	            String errorMessage = String.format("This Bin :%s Already Exists in Warehouse :%s.",
+	                    locationMappingDetailsDTO.getBin(), locationMappingDTO.getWarehouse());
+	            throw new ApplicationException(errorMessage);
+	        }
+	    }
+		
 		getLocationMappingVOFromLocationMappingDTO(locationMappingVO, locationMappingDTO);
 		locationMappingRepo.save(locationMappingVO);
 		Map<String, Object> response = new HashMap<String, Object>();

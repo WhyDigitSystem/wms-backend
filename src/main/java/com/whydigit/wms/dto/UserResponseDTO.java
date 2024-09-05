@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.persistence.Embedded;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,8 +29,8 @@ public class UserResponseDTO {
 	private boolean loginStatus;
 	private boolean active;
 	private List<Map<String, Object>> roleVO;
-	private List<Map<String, Object>> responsibilityVO;
-	private List<Map<String, Object>> screensVO;
+//	private List<Map<String, Object>> responsibilityVO;
+//	private List<Map<String, Object>> screensVO;
 	
     @Embedded
     private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
@@ -37,6 +39,10 @@ public class UserResponseDTO {
     private String tokenId;
 	
 
+    @JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
     // Setter method to accept List<Map<String, Object>>
    
    
