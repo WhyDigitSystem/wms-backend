@@ -254,6 +254,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("batch", fs[0] != null ? fs[0].toString() : "");
+			part.put("expDate", fs[1] != null ? fs[1].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -272,10 +273,19 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
+			part.put("sku", fs[2] != null ? fs[2].toString() : "");
 			details1.add(part);
 		}
 		return details1;
 
+	}
+	
+	@Override
+	public int getAvlQtyForBuyerOrder(Long orgId, String branchCode, String client,
+			String warehouse,String partNo,String batchNo) {
+		
+		return stockDetailsRepo.getAvlQtyforBuyerOrder(orgId, branchCode, client, warehouse, partNo, batchNo);
 	}
 
 }

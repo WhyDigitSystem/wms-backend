@@ -266,6 +266,34 @@ public class BuyerOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/getAvlQtyForBuyerOrder")
+	public ResponseEntity<ResponseDTO> getAvlQtyForBuyerOrder(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,@RequestParam(required = true) String batchNo) {
+		String methodName = "getAvlQtyForBuyerOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		int avalQty=0;
+		try {
+			avalQty = buyerOrderService.getAvlQtyForBuyerOrder(orgId, branchCode, client, warehouse, partNo, batchNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "avlQty Details information get successfully Id");
+			responseObjectsMap.put("avlQty", avalQty);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "avlQty Details  information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 	
 	
 }

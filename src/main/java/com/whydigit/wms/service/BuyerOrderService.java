@@ -34,6 +34,10 @@ public interface BuyerOrderService {
 
 	List<Map<String, Object>> getPartNoByBuyerOrder(Long orgId, String branchCode, String client, String warehouse);
 
+
+	int getAvlQtyForBuyerOrder(Long orgId, String branchCode, String client, String warehouse, String partNo,
+			String batchNo);
+
 	
 
 

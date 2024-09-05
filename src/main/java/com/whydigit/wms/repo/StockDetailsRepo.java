@@ -34,7 +34,8 @@ public int getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, 
 		String fromBin, String partNo, String grnNo, String batchNo,String status);
 
 
-@Query(value ="select batch from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 group by batch",nativeQuery =true)
+@Query(value ="select batch,expdate from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5\r\n"
+		+ "		group by batch,expdate",nativeQuery =true)
 Set<Object[]> getDetails(Long orgId, String branchCode, String client, String warehouse, String partNo);
 
 
@@ -80,8 +81,13 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 	                      String partNo, String grnNo, String batch, String bin);
 
 
-@Query(nativeQuery =true,value ="select partno from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4\r\n"
-		+ "group by partno")
+@Query(nativeQuery =true,value ="select partno,partdesc,sku from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4\r\n"
+		+ "		group by partno,partdesc,sku")
 Set<Object[]> getPartNo(Long orgId, String branchCode, String client, String warehouse);
+
+
+@Query(nativeQuery =true,value ="select cast(sum(sqty) as unsigned)sqty from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5 and batch=?6")
+int getAvlQtyforBuyerOrder(Long orgId, String branchCode, String client,String warehouse,
+		String partNo, String batchNo);
 
 }
