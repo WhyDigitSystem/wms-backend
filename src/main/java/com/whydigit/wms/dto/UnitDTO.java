@@ -15,5 +15,6 @@ public class UnitDTO {
 	private String createdBy;
 	private Long orgId;
 	private boolean cancel;
+	private String uom;
 }
    

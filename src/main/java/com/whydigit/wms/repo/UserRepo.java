@@ -24,6 +24,8 @@ public interface UserRepo extends JpaRepository<UserVO, Long> {
 	@Query(value = "select u from UserVO u where u.orgId =?1")
 	List<UserVO> findAllByOrgId(Long orgId);
 
+	boolean existsByUserNameOrEmailOrMobileNo(String userName, String email, String email2);
+
 
 //	UserVO findByUserNameAndUsersId(String userName, Long usersId);
 

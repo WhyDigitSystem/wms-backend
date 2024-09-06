@@ -23,7 +23,7 @@ public interface BuyerOrderService {
 
 	String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String batch,
+	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client,
 			String warehouse);
 
 	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
@@ -31,6 +31,12 @@ public interface BuyerOrderService {
 
 	List<Map<String, Object>> getBatchByBuyerOrder(Long orgId, String branchCode, String client, String warehouse,
 			String partNo);
+
+	List<Map<String, Object>> getPartNoByBuyerOrder(Long orgId, String branchCode, String client, String warehouse);
+
+
+	int getAvlQtyForBuyerOrder(Long orgId, String branchCode, String client, String warehouse, String partNo,
+			String batchNo);
 
 	
 
