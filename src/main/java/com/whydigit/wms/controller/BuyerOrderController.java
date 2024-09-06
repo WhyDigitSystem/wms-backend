@@ -247,16 +247,16 @@ public class BuyerOrderController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> skuDetails = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> partNoDetails = new ArrayList<Map<String, Object>>();
 		try {
-			skuDetails = buyerOrderService.getPartNoByBuyerOrder(orgId, branchCode, client, warehouse);
+			partNoDetails = buyerOrderService.getPartNoByBuyerOrder(orgId, branchCode, client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo Details information get successfully Id");
-			responseObjectsMap.put("skuDetails", skuDetails);
+			responseObjectsMap.put("partNoDetails", partNoDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "PartNo Details  information get Failed ",

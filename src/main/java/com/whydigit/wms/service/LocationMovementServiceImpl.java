@@ -147,9 +147,9 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setFinYear(savedLocationMovementVO.getFinYear());
 				stockDetailsVOFrom.setStockDate(LocalDate.now());
 				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
-				stockDetailsVOFrom.setStatus(detailsVO.getStatus());
-				stockDetailsVOFrom.setSourceScreenName("LOCATION MOVEMENT");
-				stockDetailsVOFrom.setSourceScreenCode("LM");
+				stockDetailsVOFrom.setStatus("R");
+				stockDetailsVOFrom.setSourceScreenName(savedLocationMovementVO.getScreenName());
+				stockDetailsVOFrom.setSourceScreenCode(savedLocationMovementVO.getScreenCode());
 
 				stockDetailsRepo.save(stockDetailsVOFrom);
 			}
@@ -173,12 +173,11 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOTo.setGrnDate(detailsVO.getGrnDate());
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOTo.setSourceId(detailsVO.getId());
-				stockDetailsVOTo.setCellType(detailsVO.getCellType());
 				stockDetailsVOTo.setSku(detailsVO.getSku());
 				stockDetailsVOTo.setStockDate(LocalDate.now());
 				stockDetailsVOTo.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOTo.setExpDate(detailsVO.getExpDate());
-				stockDetailsVOTo.setCore(detailsVO.getCore());
+				stockDetailsVOTo.setCore(detailsVO.getToCore());
 				stockDetailsVOTo.setSSku(detailsVO.getSku());
 				stockDetailsVOTo.setSQty(detailsVO.getToQty());
 				stockDetailsVOTo.setPickedQty(detailsVO.getToQty());
@@ -196,8 +195,8 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 						savedLocationMovementVO.getClient(), detailsVO.getPartNo()));
 				stockDetailsVOTo.setClientCode(clientRepo.getClientCode(savedLocationMovementVO.getOrgId(),
 						savedLocationMovementVO.getClient()));
-				stockDetailsVOTo.setSourceScreenName("LOCATION MOVEMENT");
-				stockDetailsVOTo.setSourceScreenCode("LM");
+				stockDetailsVOTo.setSourceScreenName(savedLocationMovementVO.getScreenName());
+				stockDetailsVOTo.setSourceScreenCode(savedLocationMovementVO.getScreenCode());
 				stockDetailsVOTo.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOTo.setFinYear(savedLocationMovementVO.getFinYear());
 
@@ -208,7 +207,6 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 
 					stockDetailsVOTo.setQcFlag("T");
 					stockDetailsVOTo.setStatus("R");
-					stockDetailsVOTo.setBinType(detailsVO.getBinType());
 				}
 //				if (detailsVO.getFromQty() > detailsVO.getToQty()) {
 //					stockDetailsRepo.save(stockDetailsVOFrom);
@@ -226,7 +224,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 	}
 
 	private void createUpdateLocationMovementVOByLocationMovementDTO(LocationMovementDTO locationMovementDTO,
-			LocationMovementVO locationMovementVO) {
+			LocationMovementVO locationMovementVO) throws ApplicationException {
 
 		locationMovementVO.setOrgId(locationMovementDTO.getOrgId());
 		locationMovementVO.setCustomer(locationMovementDTO.getCustomer());
@@ -270,9 +268,20 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 			locationMovementDetailsVO.setToCellType(locationMovementDetailsDTO.getToCellType());
 			locationMovementDetailsVO.setToCore(locationMovementDetailsDTO.getToCore());
 			locationMovementDetailsVO.setFromQty(locationMovementDetailsDTO.getFromQty());
-			locationMovementDetailsVO.setToQty(locationMovementDetailsDTO.getToQty());
-			locationMovementDetailsVO
-					.setRemainingQty(locationMovementDetailsDTO.getFromQty() - locationMovementDetailsDTO.getToQty());
+			Integer fromqty = stockDetailsRepo.findAvlQtyForLocationMovement(locationMovementDTO.getOrgId(),
+					locationMovementDTO.getBranch(), locationMovementDTO.getBranchCode(),
+					locationMovementDTO.getClient(), locationMovementDetailsDTO.getFromBin(),
+					locationMovementDetailsDTO.getPartNo(), locationMovementDetailsDTO.getGrnNo(),
+					locationMovementDetailsDTO.getBatchNo());
+			if (fromqty >= locationMovementDetailsDTO.getToQty()) {
+				locationMovementDetailsVO.setToQty(locationMovementDetailsDTO.getToQty());
+				locationMovementDetailsVO
+				.setRemainingQty(locationMovementDetailsDTO.getFromQty() - locationMovementDetailsDTO.getToQty());
+			}
+			elseR
+			{
+				throw new ApplicationException("Toqty Should not More then FromQty");
+			}
 			locationMovementDetailsVO.setExpDate(locationMovementDetailsDTO.getExpDate());
 			locationMovementDetailsVO.setLocationMovementVO(locationMovementVO);
 			locationMovementDetailsVO.setQcFlag(locationMovementDetailsDTO.getQcFlag());
@@ -319,9 +328,10 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		for (Object[] fs : result) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("toBin", fs[0] != null ? fs[0].toString() : "");
-			part.put("toBinClass", fs[1] != null ? fs[1].toString() : "");
-			part.put("toBinType", fs[2] != null ? fs[2].toString() : "");
+			part.put("toBinType", fs[1] != null ? fs[1].toString() : "");
+			part.put("toBinClass", fs[2] != null ? fs[2].toString() : "");
 			part.put("toCellType", fs[3] != null ? fs[3].toString() : "");
+			part.put("toCore", fs[4] != null ? fs[4].toString() : "");
 			details1.add(part);
 		}
 		return details1;
@@ -408,23 +418,19 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
 			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
 			part.put("cellType", fs[2] != null ? fs[2].toString() : "");
-			part.put("clientCode", fs[3] != null ? fs[3].toString() : "");
-			part.put("core", fs[4] != null ? fs[4].toString() : "");
-			part.put("expDate", fs[5] != null ? fs[5].toString() : "");
-			part.put("pcKey", fs[6] != null ? fs[6].toString() : "");
-			part.put("ssku", fs[7] != null ? fs[7].toString() : "");
-			part.put("stockDate", fs[8] != null ? fs[8].toString() : "");
-			part.put("partNo", fs[9] != null ? fs[9].toString() : "");
-			part.put("partDesc", fs[10] != null ? fs[10].toString() : "");
-			part.put("sku", fs[11] != null ? fs[11].toString() : "");
-			part.put("grnNo", fs[12] != null ? fs[12].toString() : "");
-			part.put("batchNo", fs[13] != null ? fs[13].toString() : "");
-			part.put("batchDate", fs[14] != null ? fs[14].toString() : "");
-			part.put("lotNo", fs[15] != null ? fs[15].toString() : "");
-			part.put("grnDate", fs[16] != null ? fs[16].toString() : "");
-			part.put("avlQty", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
-			part.put("binType", fs[18] != null ? fs[18].toString() : "");
-			part.put("id", fs[19] != null ? Integer.parseInt(fs[19].toString()) : 0);
+			part.put("core", fs[3] != null ? fs[3].toString() : "");
+			part.put("expDate", fs[4] != null ? fs[4].toString() : "");
+			part.put("pcKey", fs[5] != null ? fs[5].toString() : "");
+			part.put("partNo", fs[6] != null ? fs[6].toString() : "");
+			part.put("partDesc", fs[7] != null ? fs[7].toString() : "");
+			part.put("sku", fs[8] != null ? fs[8].toString() : "");
+			part.put("grnNo", fs[9] != null ? fs[9].toString() : "");
+			part.put("batchNo", fs[10] != null ? fs[10].toString() : "");
+			part.put("batchDate", fs[11] != null ? fs[11].toString() : "");
+			part.put("grnDate", fs[12] != null ? fs[12].toString() : "");
+			part.put("avlQty", fs[13] != null ? Integer.parseInt(fs[13].toString()) : 0);
+			part.put("binType", fs[14] != null ? fs[14].toString() : "");
+			part.put("id", fs[15] != null ? Integer.parseInt(fs[15].toString()) : 0);
 
 			details1.add(part);
 		}
