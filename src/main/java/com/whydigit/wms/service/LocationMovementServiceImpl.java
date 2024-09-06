@@ -278,7 +278,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				locationMovementDetailsVO
 				.setRemainingQty(locationMovementDetailsDTO.getFromQty() - locationMovementDetailsDTO.getToQty());
 			}
-			elseR
+			else
 			{
 				throw new ApplicationException("Toqty Should not More then FromQty");
 			}
