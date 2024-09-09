@@ -265,7 +265,6 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				codeConversionDetailsVO.setPckey(codeConversionDetailsDTO.getPckey());
 				codeConversionDetailsVO.setSsku(codeConversionDetailsDTO.getSsku());
 				codeConversionDetailsVO.setStockDate(codeConversionDetailsDTO.getStockDate());
-				
 				codeConversionDetailsVO.setCBinClass(codeConversionDetailsDTO.getCBinClass());
 				codeConversionDetailsVO.setCCellType(codeConversionDetailsDTO.getCCellType());
 				codeConversionDetailsVO.setCClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));

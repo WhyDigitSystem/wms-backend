@@ -176,7 +176,7 @@ public class PutawayServiceImpl implements PutawayService {
 				handlingStockInVO.setPalletqty(0);
 				handlingStockInVO.setSku(putAwayDetailsVO.getSku());
 				handlingStockInVO.setSsku(putAwayDetailsVO.getSku());
-				handlingStockInVO.setExpdate(putAwayDetailsVO.getExpdate());
+				handlingStockInVO.setExpdate(putAwayDetailsVO.getExpDate());
 				handlingStockInVO.setBatchno(putAwayDetailsVO.getBatch());
 				handlingStockInVO.setBatchdt(putAwayDetailsVO.getBatchDate());
 				// Check if damageqty is 0
@@ -225,7 +225,7 @@ public class PutawayServiceImpl implements PutawayService {
 				stockDetailsVO.setPartno(putAwayDetailsVO.getPartNo());
 				stockDetailsVO.setPartDesc(putAwayDetailsVO.getPartDesc());
 				stockDetailsVO.setSku(putAwayDetailsVO.getSku());
-				stockDetailsVO.setExpDate(putAwayDetailsVO.getExpdate());
+				stockDetailsVO.setExpDate(putAwayDetailsVO.getExpDate());
 				stockDetailsVO.setCellType(putAwayDetailsVO.getCellType());
 				stockDetailsVO.setCore(putAwayVO.getCore());
 				stockDetailsVO.setBinClass(putAwayVO.getBinClass());
@@ -238,7 +238,7 @@ public class PutawayServiceImpl implements PutawayService {
 				if ("DEFECTIVE".equals(putAwayDetailsVO.getBin())) {
 					stockDetailsVO.setQcFlag("F");
 					stockDetailsVO.setStatus("D");
-					stockDetailsVO.setBinType("DAMAGE");
+					stockDetailsVO.setBinType("DEFECTIVE");
 				} else {
 
 					stockDetailsVO.setQcFlag("T");
@@ -324,7 +324,7 @@ public class PutawayServiceImpl implements PutawayService {
 			putAwayDetailsVOs.setCellType(celltype);
 			putAwayDetailsVOs.setBinClass(putAwayDTO.getBinClass());
 			putAwayDetailsVOs.setBatchDate(putAwayDetailsDTO.getBatchDate());
-			putAwayDetailsVOs.setExpdate(putAwayDetailsDTO.getExpdate());
+			putAwayDetailsVOs.setExpDate(putAwayDetailsDTO.getExpdate());
 			putAwayDetailsVOs.setPutAwayVO(putAwayVO);
 			totalPutawayQty = totalPutawayQty + putAwayDetailsDTO.getPutAwayQty();
 

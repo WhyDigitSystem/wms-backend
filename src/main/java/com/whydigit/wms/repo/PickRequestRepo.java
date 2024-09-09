@@ -184,7 +184,7 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	@Query(nativeQuery = true,value = "select cast(sum(a.sqty)as unsigned)sqty from(\r\n"
 			+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
 			+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status='R' and bin=?5 and partno=?6 and grnno=?7\r\n"
-			+ "and batch=?8\r\n"
+			+ "and batch=?8 or batch is null\r\n"
 			+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
 	int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 			String fromBin, String partNo, String grnNo, String batchNo);
