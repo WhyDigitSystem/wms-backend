@@ -317,7 +317,7 @@ public class KittingServiceImpl implements KittingService {
 		List<Map<String, Object>> grnDetails = new ArrayList<>();
 		for (Object[] record : getGrnData) {
 			Map<String, Object> details = new HashMap<>();
-			details.put("grnnNo", record[0] != null ? record[0].toString() : "");
+			details.put("grnNo", record[0] != null ? record[0].toString() : "");
 			details.put("GrnDate", record[1] != null ? record[1].toString() : "");
 			grnDetails.add(details);
 		}
