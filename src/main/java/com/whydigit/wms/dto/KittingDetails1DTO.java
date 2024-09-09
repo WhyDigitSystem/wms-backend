@@ -21,13 +21,11 @@ public class KittingDetails1DTO {
 	private String batchNo;
 	private LocalDate batchDate;
 	private String binType;
+	private String bin;
 	private String binClass;
 	private String cellType;
 	private String core;
-	private String lotNo;
 	private int avlQty;
 	private int qty;
-	private int unitRate;
-	private int amount;
 	private LocalDate expDate;
 }

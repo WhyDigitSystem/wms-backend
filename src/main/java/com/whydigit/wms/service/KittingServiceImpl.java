@@ -154,7 +154,7 @@ public class KittingServiceImpl implements KittingService {
 				stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedKittingVO.getOrgId(),
 						savedKittingVO.getClient(), detailsVO.getPartNo()));
 				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
-				stockDetailsVOFrom.setSQty(detailsVO.getQty());
+				stockDetailsVOFrom.setSQty(detailsVO.getQty()*-1);
 				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
@@ -162,13 +162,6 @@ public class KittingServiceImpl implements KittingService {
 				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
 				stockDetailsVOFrom.setGrnNo(detailsVO.getGrnNo());
 				stockDetailsVOFrom.setGrnDate(detailsVO.getGrnDate());
-//				if ("Defective".equals(detailsVO.getBin())) {
-//					stockDetailsVOFrom.setQcFlag("F");
-//					stockDetailsVOFrom.setStatus("D");
-//				} else {
-//					stockDetailsVOFrom.setQcFlag("T");
-//					stockDetailsVOFrom.setStatus("R");
-//				}
 				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
 				stockDetailsVOFrom.setSku(detailsVO.getSku());
 				stockDetailsVOFrom.setCellType(detailsVO.getCellType());
@@ -228,11 +221,11 @@ public class KittingServiceImpl implements KittingService {
 			kittingDetails1VO.setBinClass(details1dto.getBinClass());
 			kittingDetails1VO.setCellType(details1dto.getCellType());
 			kittingDetails1VO.setCore(details1dto.getCore());
-			kittingDetails1VO.setLotNo(details1dto.getLotNo());
+			
+			int avlqty=stockDetailsRepo.getKittingQtyDetails(kittingDTO.getOrgId(), kittingDTO.getBranchCode(), kittingDTO.getClient(), kittingDTO.getWarehouse(),
+					details1dto.getPartNo(), details1dto.getGrnNo(), details1dto.getBatchNo(), details1dto.getBin());
 			kittingDetails1VO.setAvlQty(details1dto.getAvlQty());
 			kittingDetails1VO.setQty(details1dto.getQty());
-			kittingDetails1VO.setUnitRate(details1dto.getUnitRate());
-			kittingDetails1VO.setAmount(details1dto.getAmount());
 			kittingDetails1VO.setExpDate(details1dto.getExpDate());
 
 			// Avoid recursive reference to kittingVO in KittingDetails1VO
@@ -259,7 +252,7 @@ public class KittingServiceImpl implements KittingService {
 			kittingDetails2VO.setCore(details2dto.getCore());
 			kittingDetails2VO.setLotNo(details2dto.getLotNo());
 			kittingDetails2VO.setQcflag(details2dto.isQcflag());
-			kittingDetails2VO.setQty(details2dto.getQty() * -1);
+			kittingDetails2VO.setQty(details2dto.getQty());
 			kittingDetails2VO.setExpDate(details2dto.getExpDate());
 
 			// Avoid recursive reference to kittingVO in KittingDetails2VO
@@ -318,7 +311,7 @@ public class KittingServiceImpl implements KittingService {
 		for (Object[] record : getGrnData) {
 			Map<String, Object> details = new HashMap<>();
 			details.put("grnNo", record[0] != null ? record[0].toString() : "");
-			details.put("GrnDate", record[1] != null ? record[1].toString() : "");
+			details.put("grnDate", record[1] != null ? record[1].toString() : "");
 			grnDetails.add(details);
 		}
 		return grnDetails;
@@ -336,7 +329,7 @@ public class KittingServiceImpl implements KittingService {
 		List<Map<String, Object>> grnDetails = new ArrayList<>();
 		for (Object[] record : getGrnData) {
 			Map<String, Object> details = new HashMap<>();
-			details.put("batch", record[0] != null ? record[0].toString() : "");
+			details.put("batchNo", record[0] != null ? record[0].toString() : "");
 			details.put("batchDate", record[1] != null ? record[1].toString() : "");
 			details.put("expDate", record[2] != null ? record[2].toString() : "");
 			details.put("id", record[3] != null ? Integer.parseInt(record[3].toString()) : 0);
@@ -347,8 +340,8 @@ public class KittingServiceImpl implements KittingService {
 
 	@Override
 	public List<Map<String, Object>> getBinByChild(Long orgId, String branchCode, String client, String warehouse,
-			String partNo, String grnNo, String batch) {
-		Set<Object[]> getGrnData = kittingRepo.getBin(orgId, branchCode, client, warehouse, partNo, grnNo);
+			String partNo, String grnNo, String batchNo) {
+		Set<Object[]> getGrnData = kittingRepo.getBin(orgId, branchCode, client, warehouse, partNo, grnNo,batchNo);
 
 		return getBin1(getGrnData);
 	}
@@ -359,23 +352,21 @@ public class KittingServiceImpl implements KittingService {
 			Map<String, Object> details = new HashMap<>();
 			details.put("bin", record[0] != null ? record[0].toString() : "");
 			details.put("binType", record[1] != null ? record[1].toString() : "");
-			details.put("lotNo", record[2] != null ? record[2].toString() : "");
-			details.put("cellType", record[3] != null ? record[3].toString() : "");
-			details.put("binClass", record[4] != null ? record[4].toString() : "");
-			details.put("core", record[5] != null ? record[5].toString() : "");
-			details.put("qcFlag", record[6] != null ? record[6].toString() : "");
+			details.put("cellType", record[2] != null ? record[2].toString() : "");
+			details.put("binClass", record[3] != null ? record[3].toString() : "");
+			details.put("core", record[4] != null ? record[4].toString() : "");
 			grnDetails.add(details);
 		}
 		return grnDetails;
 	}
 
 	@Override
-	public Integer getSqtyByKitting(Long orgId, String branchCode, String client, String warehouse, String partNo,
+	public int getSqtyByKitting(Long orgId, String branchCode, String client, String warehouse, String partNo,
 			String grnNo, String batch, String bin) {
-		List<Integer> qtyList = stockDetailsRepo.getQtyDetails(orgId, branchCode, client, warehouse, partNo, grnNo,
+		int qtyList = stockDetailsRepo.getKittingQtyDetails(orgId, branchCode, client, warehouse, partNo, grnNo,
 				batch, bin);
 		// Return the first result if list is not empty, or 0 otherwise
-		return (!qtyList.isEmpty()) ? qtyList.get(0) : 0;
+		return qtyList;
 	}
 
 	@Override
@@ -396,26 +387,6 @@ public class KittingServiceImpl implements KittingService {
 		return gridDetails;
 	}
 
-	@Override
-	public List<Map<String, Object>> getGrnNOByParent(Long orgId, String bin, String branch, String branchCode,
-			String client, String partNo, String partDesc, String sku) {
-		Set<Object[]> getGrnData = kittingRepo.getGrnNOByParent(orgId, bin, branch, branchCode, client, partNo,
-				partDesc, sku);
 
-		return processParentGrnData(getGrnData);
-	}
-
-	private List<Map<String, Object>> processParentGrnData(Set<Object[]> getGrnData) {
-		List<Map<String, Object>> grnDetails = new ArrayList<>();
-		for (Object[] record : getGrnData) {
-			Map<String, Object> details = new HashMap<>();
-			details.put("grnnNo", record[0] != null ? record[0].toString() : "");
-			details.put("GrnDate", record[1] != null ? record[1].toString() : "");
-			details.put("batch", record[2] != null ? record[2].toString() : "");
-			details.put("batchDate", record[3] != null ? record[3].toString() : "");
-			grnDetails.add(details);
-		}
-		return grnDetails;
-	}
 
 }

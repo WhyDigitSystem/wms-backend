@@ -57,18 +57,10 @@ public class KittingDetails1VO {
 	private int avlQty;
 	@Column(name = "qty")
 	private int qty;
-	@Column(name = "lotno")
-	private String lotNo;
-	@Column(name = "unitrate")
-	private int unitRate;
-	@Column(name = "amount")
-	private int amount;
-	@Column(name = "qcflag")
-	private String qcFlag;
+	@Column(name = "bin")
+	private String bin;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "stokcdate")
-	private LocalDate stockDate;
 
 	@ManyToOne
 	@JoinColumn(name = "kittingid")

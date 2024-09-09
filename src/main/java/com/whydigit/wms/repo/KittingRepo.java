@@ -22,7 +22,7 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 	String getKittingDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
 
-	@Query(nativeQuery =true,value ="select partno,partdesc,sku from material where parentchildkey='PARENT' and client=?3 and cbranch='ALL' or cbranch=?2 and orgid=?1 and active=1 group by partno,partdesc,sku")
+	@Query(nativeQuery =true,value ="select partno,partdesc,sku from material where parentchildkey='PARENT' and client=?3 and (cbranch='ALL' or cbranch=?2) and orgid=?1 and active=1 group by partno,partdesc,sku")
 	Set<Object[]> getPartNOByParent(Long orgId,String branchCode, String client);
 	
 	
@@ -85,7 +85,7 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 
 	
 	
-	@Query(value ="SELECT bin, bintype, lotno, celltype, binclass, core, qcflag\r\n"
+	@Query(value ="SELECT bin, bintype, celltype, binclass, core,sum(sqty)\r\n"
 			+ "FROM stockdetails\r\n"
 			+ "WHERE orgid = ?1\r\n"
 			+ "  AND client = ?3\r\n"
@@ -95,8 +95,9 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 			+ "  AND grnno = ?6\r\n"
 			+ "  AND status = 'R'\r\n"
 			+ "  AND pckey = 'CHILD'\r\n"
-			+ "GROUP BY bin, bintype, lotno, celltype, binclass, core, qcflag\r\n"
+			+ "  and batch=?7\r\n"
+			+ "GROUP BY bin, bintype, celltype, binclass, core having sum(sqty)>0"
 			+ "",nativeQuery =true)
-	Set<Object[]> getBin(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo);
+	Set<Object[]> getBin(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo,String batchNo);
 
 }

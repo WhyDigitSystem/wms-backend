@@ -71,7 +71,7 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 	    "        AND bin = ?8 " +
 	    "        AND partno = ?5 " +
 	    "        AND grnno = ?6 " +
-	    "        AND batch = ?7 or batch is null " +
+	    "        AND (batch = ?7 or batch is null) " +
 	    "        AND status = 'R' " +
 	    "        AND pckey = 'CHILD' " +
 	    "    GROUP BY " +
@@ -79,7 +79,7 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 	    "        bintype, binclass, celltype, core, bin, qcflag " +
 	    "    HAVING SUM(sqty) > 0 " +
 	    ") a")
-	List<Integer> getQtyDetails(Long orgId, String branchCode, String client, String warehouse, 
+	int getKittingQtyDetails(Long orgId, String branchCode, String client, String warehouse, 
 	                      String partNo, String grnNo, String batch, String bin);
 
 
