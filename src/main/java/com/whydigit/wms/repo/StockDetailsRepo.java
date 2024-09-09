@@ -44,7 +44,7 @@ Set<Object[]> getDetails(Long orgId, String branchCode, String client, String wa
 		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status='V' and bin=?5 and partno=?6 and grnno=?7\r\n"
 		+ "and batch=?8 or batch is null\r\n"
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
-public Integer getAvlQtyforVasPutaway(Long orgId, String branchCode, String warehouse, String client, String fromBin,
+int getAvlQtyforVasPutaway(Long orgId, String branchCode, String warehouse, String client, String fromBin,
 		String partNo, String grnNo, String batchNo);
 
 
