@@ -25,6 +25,7 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 		String fromBin, String partNo, String grnNo, String batchNo);
 
+
 @Query(nativeQuery = true,value = "select sum(a.sqty)sqty from\r\n"
 		+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
 		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status=?9 and bin=?5 and partno=?6 and grnno=?7\r\n"
@@ -32,6 +33,7 @@ int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0) a")
 int getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, String client,
 		String fromBin, String partNo, String grnNo, String batchNo,String status);
+
 
 
 @Query(value ="select batch,expdate from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5\r\n"

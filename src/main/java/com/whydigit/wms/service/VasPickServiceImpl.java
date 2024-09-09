@@ -227,6 +227,7 @@ public class VasPickServiceImpl implements VasPickService {
 			detailsVO.setBinType(vasPickDTO.getBinType());
 			detailsVO.setBatchDate(vasPickDTO.getBatchDate());
 
+
 			int FromQty = stockDetailsRepo.getAvlQtyforVasPick(vasPicDTO.getOrgId(), vasPicDTO.getBranchCode(),
 					vasPicDTO.getWarehouse(), vasPicDTO.getClient(), vasPickDTO.getBin(), vasPickDTO.getPartNo(),
 					vasPickDTO.getGrnNo(), vasPickDTO.getBatchNo(), vasPicDTO.getStateStatus());
@@ -237,6 +238,7 @@ public class VasPickServiceImpl implements VasPickService {
 			} else {
 				throw new ApplicationException("Pick Qty is Must Below or Equal to Avl Qty");
 			}
+
 			detailsVO.setQcFlag(vasPickDTO.getQcflag());
 			detailsVO.setGrnDate(vasPickDTO.getGrnDate());
 			detailsVO.setBinClass(vasPickDTO.getBinClass());
