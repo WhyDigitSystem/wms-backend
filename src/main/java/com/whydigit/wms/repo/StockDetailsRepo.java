@@ -79,4 +79,9 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 	List<Integer> getQtyDetails(Long orgId, String branchCode, String client, String warehouse, 
 	                      String partNo, String grnNo, String batch, String bin);
 
+
+@Query(nativeQuery =true,value ="select partno from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4\r\n"
+		+ "group by partno")
+Set<Object[]> getPartNo(Long orgId, String branchCode, String client, String warehouse);
+
 }

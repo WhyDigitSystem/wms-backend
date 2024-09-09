@@ -12,11 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
@@ -185,7 +187,7 @@ public class BuyerOrderController extends BaseController {
 	@GetMapping("/getBoSkuDetails")
 	public ResponseEntity<ResponseDTO> getBoSkuDetails(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-			@RequestParam(required = true) String batch, @RequestParam(required = true) String warehouse) {
+			 @RequestParam(required = true) String warehouse) {
 		String methodName = "getBoSkuDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -193,7 +195,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> skuDetails = new ArrayList<Map<String, Object>>();
 		try {
-			skuDetails = buyerOrderService.getBoSkuDetails(orgId, branchCode, client, batch, warehouse);
+			skuDetails = buyerOrderService.getBoSkuDetails(orgId, branchCode, client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -238,4 +240,76 @@ public class BuyerOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@GetMapping("/getPartNoByBuyerOrder")
+	public ResponseEntity<ResponseDTO> getPartNoByBuyerOrder(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse) {
+		String methodName = "getPartNoByBuyerOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> skuDetails = new ArrayList<Map<String, Object>>();
+		try {
+			skuDetails = buyerOrderService.getPartNoByBuyerOrder(orgId, branchCode, client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo Details information get successfully Id");
+			responseObjectsMap.put("skuDetails", skuDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "PartNo Details  information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PostMapping("/ExcelUploadForBuyerOrder")
+	public ResponseEntity<ResponseDTO> ExcelUploadForWarehouse(@RequestParam MultipartFile[] files,
+			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String createdBy) {
+		String methodName = "ExcelUploadForBuyerOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		int totalRows = 0;
+		int successfulUploads = 0;
+
+		try {
+			// Call service method to process Excel upload
+			buyerOrderService.ExcelUploadForBo(files, type, orgId, createdBy);
+
+			// Retrieve the counts after processing
+			totalRows = buyerOrderService.getTotalRows(); // Get total rows processed
+			successfulUploads = buyerOrderService.getSuccessfulUploads(); // Get successful uploads count
+			// Construct success response
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", totalRows);
+			responseObjectsMap.put("successfulUploads", successfulUploads);
+			Map<String, Object> paramObjectsMap = new HashMap<>();
+			paramObjectsMap.put("message", "Excel Upload For  warehouse successful");
+			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (Exception e) {
+
+			errorMsg = e.getMessage();
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("errorMessage", errorMsg);
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For warehouse Failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	
 }

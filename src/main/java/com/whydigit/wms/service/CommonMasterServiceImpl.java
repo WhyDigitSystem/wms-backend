@@ -33,6 +33,7 @@ import com.whydigit.wms.entity.CountryVO;
 import com.whydigit.wms.entity.CurrencyVO;
 import com.whydigit.wms.entity.DepartmentVO;
 import com.whydigit.wms.entity.DesignationVO;
+import com.whydigit.wms.entity.EmployeeVO;
 import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
@@ -570,9 +571,16 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		CompanyVO companyVO = new CompanyVO();
 		getCompanyVOFromCompanyDTO(companyVO, companyDTO);
 		companyRepo.save(companyVO);
+		
+		EmployeeVO employeeVO= new EmployeeVO();
+		employeeVO.setEmployeeName(companyVO.getEmployeeName());
+		employeeVO.setEmployeeCode(companyVO.getEmployeeCode());
+		employeeVO.setActive(true);
+		employeeVO.setOrgId(companyVO.getId());
+		employeeRepo.save(employeeVO);
 
 		UserVO userVO = new UserVO();
-		userVO.setUserName(companyVO.getEmployeeName());
+		userVO.setUserName(companyVO.getEmployeeCode());
 		userVO.setEmployeeName(companyVO.getEmployeeName());
 		userVO.setEmail(companyVO.getEmail());
 		userVO.setMobileNo(companyVO.getPhone());

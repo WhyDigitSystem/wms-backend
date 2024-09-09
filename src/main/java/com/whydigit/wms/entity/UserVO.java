@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 import com.whydigit.wms.dto.Role;
 
@@ -94,10 +95,15 @@ public class UserVO {
 	@JoinColumn(name="companyid")
 	private CompanyVO companyVO;
 	
-//	@JsonGetter("active")
-//	public String getActive() {
-//		return active ? "Active" : "In-Active";
-//	}
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+
+	public boolean isActive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	
 }

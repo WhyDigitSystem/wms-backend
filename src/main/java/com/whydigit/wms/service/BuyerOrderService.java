@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.dto.BuyerOrderDTO;
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.exception.ApplicationException;
 
@@ -23,7 +25,7 @@ public interface BuyerOrderService {
 
 	String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String batch,
+	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client,
 			String warehouse);
 
 	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
@@ -31,6 +33,14 @@ public interface BuyerOrderService {
 
 	List<Map<String, Object>> getBatchByBuyerOrder(Long orgId, String branchCode, String client, String warehouse,
 			String partNo);
+
+	List<Map<String, Object>> getPartNoByBuyerOrder(Long orgId, String branchCode, String client, String warehouse);
+
+	void ExcelUploadForBo(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy) throws ApplicationException;
+
+	int getTotalRows();
+
+	int getSuccessfulUploads();
 
 	
 
