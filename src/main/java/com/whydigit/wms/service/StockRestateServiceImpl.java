@@ -194,7 +194,10 @@ public class StockRestateServiceImpl implements StockRestateService {
 			stockDetailsVO.setCore(restateDetailsVO.getFromCore());
 			stockDetailsVO.setStockDate(LocalDate.now());
 			stockDetailsVO.setSQty(restateDetailsVO.getToQty()*-1);
+			stockDetailsVO.setSourceScreenCode(restateVO.getScreenCode());
+			stockDetailsVO.setSourceScreenName(restateVO.getScreenName());
 			stockDetailsRepo.save(stockDetailsVO);
+			
 		}
 		for(StockRestateDetailsVO restateDetailsVO:restateDetailsVOs)
 		{
@@ -232,13 +235,15 @@ public class StockRestateServiceImpl implements StockRestateService {
 			}
 			else
 			{
-			stockDetailsVO.setQcFlag(restateDetailsVO.getQcFlag());
+			stockDetailsVO.setQcFlag("T");
 			}
 			stockDetailsVO.setStatus(restateVO.getTransferToFlag());
 			stockDetailsVO.setExpDate(restateDetailsVO.getExpDate());
 			stockDetailsVO.setCore(restateDetailsVO.getToCore());
 			stockDetailsVO.setStockDate(LocalDate.now());
 			stockDetailsVO.setSQty(restateDetailsVO.getToQty());
+			stockDetailsVO.setSourceScreenCode(restateVO.getScreenCode());
+			stockDetailsVO.setSourceScreenName(restateVO.getScreenName());
 			stockDetailsRepo.save(stockDetailsVO);
 		}
 		

@@ -73,7 +73,7 @@ public class CodeConversionDetailsVO {
 	@Column(name = "cbatchno")
 	private String cBatchNo;
 	@Column(name = "cbatchdate")
-	private LocalDate cBatchDate=LocalDate.now();
+	private LocalDate cBatchDate;
 	@Column(name = "clotno")
 	private String cLotNo;
 	@Column(name = "cbin")
@@ -111,7 +111,7 @@ public class CodeConversionDetailsVO {
 	@Column(name = "ccore")
 	private String cCore;
 	@Column(name = "cexpdate")
-	private LocalDate cExpDate=LocalDate.now();
+	private LocalDate cExpDate;
 	@Column(name = "cstockdate")
 	private LocalDate cStockDate;
 	

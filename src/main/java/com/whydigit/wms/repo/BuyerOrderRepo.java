@@ -35,7 +35,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 	
 	@Query(nativeQuery =true,value = "SELECT partno,\n"
 			+ "       partdesc,\n"
-			+ "       batch,\n"
+			+ "       batch,expdate,\n"
 			+ "       SUM(sqty) AS total_sqty\n"
 			+ "FROM stockdetails\n"
 			+ "WHERE orgid =?1\n"
@@ -43,7 +43,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 			+ "  AND client = ?3\n"
 			+ "  AND status = 'R'\n"
 			+ "  AND warehouse=?4\n"
-			+ "GROUP BY partno, partdesc, batch\n"
+			+ "GROUP BY partno, partdesc, batch,expdate\n"
 			+ "HAVING SUM(sqty) > 0")
 	Set<Object[]> getBoSku(Long orgId, String branchCode, String client,String warehouse);
 

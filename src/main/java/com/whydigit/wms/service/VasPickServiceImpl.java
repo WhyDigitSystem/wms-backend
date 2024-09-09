@@ -40,10 +40,10 @@ public class VasPickServiceImpl implements VasPickService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-	
+
 	@Autowired
 	ClientRepo clientRepo;
-	
+
 	@Autowired
 	MaterialRepo materialRepo;
 
@@ -64,7 +64,7 @@ public class VasPickServiceImpl implements VasPickService {
 					vasPicDTO.getBranchCode(), vasPicDTO.getClient(), screenCode);
 			vasPickVO.setDocId(docId);
 
-			// GETDOCID LASTNO +1 
+			// GETDOCID LASTNO +1
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
 					.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(vasPicDTO.getOrgId(),
 							vasPicDTO.getFinYear(), vasPicDTO.getBranchCode(), vasPicDTO.getClient(), screenCode);
@@ -84,9 +84,6 @@ public class VasPickServiceImpl implements VasPickService {
 			vasPickVO.setUpdatedBy(vasPicDTO.getCreatedBy());
 			message = "VasPicK Update Successfully";
 
-			// Remove existing details if updating
-			List<VasPickDetailsVO> detailsVOs = vasPickDetailsRepo.findByVasPickVO(vasPickVO);
-			vasPickDetailsRepo.deleteAll(detailsVOs);
 		}
 
 		vasPickVO = getVasPickVOFromVasPickDTO(vasPickVO, vasPicDTO);
@@ -112,7 +109,8 @@ public class VasPickServiceImpl implements VasPickService {
 					stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
 					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
 					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
-					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(),
+							savedPickRequestVO.getClient(), detailsVO.getPartNo()));
 					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDescription());
 					stockDetailsVOFrom.setSQty(detailsVO.getPicQty() * -1);
 					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
@@ -138,7 +136,7 @@ public class VasPickServiceImpl implements VasPickService {
 					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
-				
+
 				for (VasPickDetailsVO detailsVO : pickRequestDetailsVOLists) {
 					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
 					stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
@@ -155,7 +153,8 @@ public class VasPickServiceImpl implements VasPickService {
 					stockDetailsVOFrom.setRefDate(savedPickRequestVO.getDocDate());
 					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
 					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
-					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(),
+							savedPickRequestVO.getClient(), detailsVO.getPartNo()));
 					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDescription());
 					stockDetailsVOFrom.setSQty(detailsVO.getPicQty());
 					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
@@ -190,7 +189,8 @@ public class VasPickServiceImpl implements VasPickService {
 		return response;
 	}
 
-	private VasPickVO getVasPickVOFromVasPickDTO(VasPickVO vasPickVO, VasPickDTO vasPicDTO) throws ApplicationException {
+	private VasPickVO getVasPickVOFromVasPickDTO(VasPickVO vasPickVO, VasPickDTO vasPicDTO)
+			throws ApplicationException {
 		vasPickVO.setPicBin(vasPicDTO.getPicBin());
 		vasPickVO.setOrgId(vasPicDTO.getOrgId());
 		vasPickVO.setStockState(vasPicDTO.getStockState());
@@ -202,18 +202,19 @@ public class VasPickServiceImpl implements VasPickService {
 		vasPickVO.setBranch(vasPicDTO.getBranch());
 		vasPickVO.setBranchCode(vasPicDTO.getBranchCode());
 		vasPickVO.setWarehouse(vasPicDTO.getWarehouse());
-		if("Confirm".equals(vasPicDTO.getStatus()))
-		{
+		if ("Confirm".equals(vasPicDTO.getStatus())) {
 			vasPickVO.setFreeze(true);
-		}
-		else
-		{
+		} else {
 			vasPickVO.setFreeze(false);
 		}
 
 		int totalOrderQty = 0;
 		int pickedQty = 0;
 
+		if (vasPicDTO.getId() != null) {
+			List<VasPickDetailsVO> detailsVOs = vasPickDetailsRepo.findByVasPickVO(vasPickVO);
+			vasPickDetailsRepo.deleteAll(detailsVOs);
+		}
 		List<VasPickDetailsVO> vasPickDetailsVOs = new ArrayList<>();
 		for (VasPickDetailsDTO vasPickDTO : vasPicDTO.getVasPickDetailsDTO()) {
 			VasPickDetailsVO detailsVO = new VasPickDetailsVO();
@@ -225,38 +226,19 @@ public class VasPickServiceImpl implements VasPickService {
 			detailsVO.setGrnNo(vasPickDTO.getGrnNo());
 			detailsVO.setBinType(vasPickDTO.getBinType());
 			detailsVO.setBatchDate(vasPickDTO.getBatchDate());
-			
-			Integer getFromQty = stockDetailsRepo.getAvlQtyforVasPick(vasPicDTO.getOrgId(), vasPicDTO.getBranchCode(),
-			        vasPicDTO.getWarehouse(), vasPicDTO.getClient(), vasPickDTO.getBin(), vasPickDTO.getPartNo(),
-			        vasPickDTO.getGrnNo(), vasPickDTO.getBatchNo(), vasPicDTO.getStateStatus());
 
-			if (getFromQty == null) {
-			    getFromQty = 0;
+
+			int FromQty = stockDetailsRepo.getAvlQtyforVasPick(vasPicDTO.getOrgId(), vasPicDTO.getBranchCode(),
+					vasPicDTO.getWarehouse(), vasPicDTO.getClient(), vasPickDTO.getBin(), vasPickDTO.getPartNo(),
+					vasPickDTO.getGrnNo(), vasPickDTO.getBatchNo(), vasPicDTO.getStateStatus());
+			if (FromQty >= vasPickDTO.getPicQty()) {
+				detailsVO.setAvlQty(vasPickDTO.getAvlQty());
+				detailsVO.setPicQty(vasPickDTO.getPicQty());
+				detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
+			} else {
+				throw new ApplicationException("Pick Qty is Must Below or Equal to Avl Qty");
 			}
-			
 
-			System.out.println("from qty"+getFromQty);
-			System.out.println("orgid"+vasPicDTO.getOrgId());
-			System.out.println("branchcode"+vasPicDTO.getBranchCode());
-			System.out.println("warehouse"+vasPicDTO.getWarehouse());
-			System.out.println("client"+vasPicDTO.getClient());
-			System.out.println("bin"+vasPickDTO.getBin());
-			System.out.println("partno"+vasPickDTO.getPartNo());
-			System.out.println("grnno"+vasPickDTO.getGrnNo());
-			System.out.println("batchno"+vasPickDTO.getBatchNo());
-			System.out.println("status"+ vasPicDTO.getStateStatus());
-			
-	
-		    if(getFromQty>=vasPickDTO.getPicQty())
-		    {
-		    	detailsVO.setAvlQty(vasPickDTO.getAvlQty());
-		    	detailsVO.setPicQty(vasPickDTO.getPicQty());
-		    	detailsVO.setRemaningQty(vasPickDTO.getRemaningQty());
-		    }
-		    else
-		    {
-		    	throw new ApplicationException("Pick Qty is Must Below or Equal to Avl Qty");
-		    }
 			detailsVO.setQcFlag(vasPickDTO.getQcflag());
 			detailsVO.setGrnDate(vasPickDTO.getGrnDate());
 			detailsVO.setBinClass(vasPickDTO.getBinClass());

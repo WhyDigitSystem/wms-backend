@@ -220,7 +220,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("partNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("partDesc", fs[1] != null ? fs[1].toString() : "");
 			part.put("batch", fs[2] != null ? fs[2].toString() : "");
-			part.put("sqty", fs[3] != null ? Integer.parseInt(fs[3].toString()) : 0);
+			part.put("expDate", fs[3] != null ? fs[3].toString() : "");
+			part.put("sqty", fs[4] != null ? Integer.parseInt(fs[4].toString()) : 0);
 
 			details1.add(part);
 		}

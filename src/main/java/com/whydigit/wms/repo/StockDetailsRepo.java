@@ -20,28 +20,20 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 @Query(nativeQuery = true,value = "select sum(a.sqty)sqty from(\r\n"
 		+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
 		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status='R' and bin=?5 and partno=?6 and grnno=?7\r\n"
-		+ "and batch=?8\r\n"
+		+ "and batch=?8 or batch is null \r\n"
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
 int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 		String fromBin, String partNo, String grnNo, String batchNo);
 
-//@Query(nativeQuery = true,value = "select cast(a.sqty as unsigned)sqty from(\r\n"
-//		+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
-//		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status=?9 and bin=?5 and partno=?6 and grnno=?7\r\n"
-//		+ "and batch=?8\r\n"
-//		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
-//public int getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, String client,
-//		String fromBin, String partNo, String grnNo, String batchNo,String status);
 
-@Query(nativeQuery = true, value = "select cast(a.sqty as unsigned) as sqty from ("
-	    + "select partno, partdesc, sku, grnno, grndate, batch, batchdate, expdate, bintype, binclass, celltype, core, bin, qcflag, sum(sqty) as sqty "
-	    + "from stockdetails "
-	    + "where orgid = ?1 and branchcode = ?2 and warehouse = ?3 and client = ?4 and status = ?9 "
-	    + "and bin = ?5 and partno = ?6 and grnno = ?7 and batch = ?8 "
-	    + "group by partno, partdesc, sku, grnno, grndate, batch, batchdate, expdate, bintype, binclass, celltype, core, bin, qcflag "
-	    + "having sum(sqty) > 0) a")
-	public Integer getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, String client, 
-	                                   String fromBin, String partNo, String grnNo, String batchNo, String status);
+@Query(nativeQuery = true,value = "select sum(a.sqty)sqty from\r\n"
+		+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
+		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status=?9 and bin=?5 and partno=?6 and grnno=?7\r\n"
+		+ "and batch=?8 or batch is null\r\n"
+		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0) a")
+int getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, String client,
+		String fromBin, String partNo, String grnNo, String batchNo,String status);
+
 
 
 @Query(value ="select batch,expdate from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5\r\n"
@@ -52,15 +44,15 @@ Set<Object[]> getDetails(Long orgId, String branchCode, String client, String wa
 @Query(nativeQuery = true,value = "select sum(a.sqty)sqty from(\r\n"
 		+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
 		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status='V' and bin=?5 and partno=?6 and grnno=?7\r\n"
-		+ "and batch=?8\r\n"
+		+ "and batch=?8 or batch is null\r\n"
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
-public Integer getAvlQtyforVasPutaway(Long orgId, String branchCode, String warehouse, String client, String fromBin,
+int getAvlQtyforVasPutaway(Long orgId, String branchCode, String warehouse, String client, String fromBin,
 		String partNo, String grnNo, String batchNo);
 
 
 @Query(nativeQuery = true, value = "select cast(a.sqty as unsigned)sqty from(\r\n"
 		+ "            select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
-		+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and batch=?8\r\n"
+		+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and batch=?8 or batch is null\r\n"
 		+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0\r\n"
 		+ "            ) a")
 Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
@@ -79,7 +71,7 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 	    "        AND bin = ?8 " +
 	    "        AND partno = ?5 " +
 	    "        AND grnno = ?6 " +
-	    "        AND batch = ?7 " +
+	    "        AND batch = ?7 or batch is null " +
 	    "        AND status = 'R' " +
 	    "        AND pckey = 'CHILD' " +
 	    "    GROUP BY " +
@@ -96,7 +88,7 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 Set<Object[]> getPartNo(Long orgId, String branchCode, String client, String warehouse);
 
 
-@Query(nativeQuery =true,value ="select cast(sum(sqty) as unsigned)sqty from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5 and batch=?6")
+@Query(nativeQuery =true,value ="select cast(sum(sqty) as unsigned)sqty from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5 and batch=?6 or batch is null")
 int getAvlQtyforBuyerOrder(Long orgId, String branchCode, String client,String warehouse,
 		String partNo, String batchNo);
 

@@ -67,6 +67,9 @@ public class LocationMovementVO {
 	private String cancelRemarks;
 	@Column(name="movedqty")
 	private Integer movedQty;
+	@Column(name = "freeze")
+	private boolean freeze = true;
+	
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
