@@ -99,13 +99,13 @@ int getAvlQtyforBuyerOrder(Long orgId, String branchCode, String client,String w
 		+ "FROM material b \r\n"
 		+ "LEFT OUTER JOIN stockdetails a \r\n"
 		+ "ON a.partno = b.partno and a.orgid=b.orgid and a.customer=b.customer and b.cbranch=a.branchcode or b.cbranch='ALL' and a.client=b.client\r\n"
-		+ "  AND a.orgid = 1000000001 \r\n"
-		+ "  AND a.branchcode = 'BLRW' \r\n"
-		+ "  AND a.warehouse = 'BLRWAREHOUSE'  \r\n"
-		+ "  AND a.customer = 'BACARDI IND PVT LTD' \r\n"
-		+ "  AND a.client = 'BACARDI' \r\n"
+		+ "  AND a.orgid = ?1 \r\n"
+		+ "  AND a.branchcode = ?2 \r\n"
+		+ "  AND a.warehouse = ?3  \r\n"
+		+ "  AND a.customer = ?4 \r\n"
+		+ "  AND a.client = ?5 \r\n"
 		+ "  AND a.stockdate <= DATE(NOW()) \r\n"
-		+ "WHERE (b.partno = '101010' OR 'ALL' = 'ALL') \r\n"
+		+ "WHERE (b.partno = ?6 OR 'ALL' = ?6) \r\n"
 		+ "GROUP BY b.partno, b.partdesc")
 Set<Object[]> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse, String customer,
 		String client, String partNo);
