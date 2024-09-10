@@ -55,8 +55,8 @@ public class PutawayExcelUploadVO {
     @Column(name = "core")
     private String core;
 
-    @Column(name = "palletpick")
-    private String palletPick;
+    @Column(name = "binpick")
+    private String binPick;
 
     @Column(name = "lrhawbhblno")
     private String lrHawbhblNo;
@@ -64,8 +64,8 @@ public class PutawayExcelUploadVO {
     @Column(name = "indcno")
     private String indcNo;
 
-    @Column(name = "locationtype")
-    private String locationType;
+    @Column(name = "bintype")
+    private String binType;
 
     @Column(name = "partno")
     private String partNo;
@@ -106,11 +106,11 @@ public class PutawayExcelUploadVO {
     @Column(name = "sssqty")
     private Integer sssQty;
 
-    @Column(name = "palletqty")
-    private Integer palletQty;
+    @Column(name = "binqty")
+    private Integer binQty;
 
-    @Column(name = "palletno")
-    private String palletNo;
+    @Column(name = "binno")
+    private String binNo;
 
     @Column(name = "weight")
     private Double weight;

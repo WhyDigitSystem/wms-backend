@@ -443,10 +443,10 @@ public class PutawayServiceImpl implements PutawayService {
 	                        String carrier = getStringCellValue(row.getCell(6));
 	                        String type1 = getStringCellValue(row.getCell(7));
 	                        String core = getStringCellValue(row.getCell(8));
-	                        String palletPick = getStringCellValue(row.getCell(9));
+	                        String binPick = getStringCellValue(row.getCell(9));
 	                        String lrHawbhblNo = getStringCellValue(row.getCell(10));
 	                        String indcNo = getStringCellValue(row.getCell(11));
-	                        String locationType = getStringCellValue(row.getCell(12));
+	                        String binType = getStringCellValue(row.getCell(12));
 	                        String partNo = getStringCellValue(row.getCell(13));
 	                        String batchNo = getStringCellValue(row.getCell(14));
 	                        String partDesc = getStringCellValue(row.getCell(15));
@@ -460,8 +460,8 @@ public class PutawayServiceImpl implements PutawayService {
 	                        Integer sqty = parseInteger(getStringCellValue(row.getCell(23)));
 	                        Integer ssQty = parseInteger(getStringCellValue(row.getCell(24)));
 	                        Integer sssQty = parseInteger(getStringCellValue(row.getCell(25)));
-	                        Integer palletQty = parseInteger(getStringCellValue(row.getCell(26)));
-	                        String palletNo = getStringCellValue(row.getCell(27));
+	                        Integer binQty = parseInteger(getStringCellValue(row.getCell(26)));
+	                        String binNo = getStringCellValue(row.getCell(27));
 	                        Double weight = parseDouble(getStringCellValue(row.getCell(28)));
 	                        Double rate = parseDouble(getStringCellValue(row.getCell(29)));
 	                        String remarks = getStringCellValue(row.getCell(30));
@@ -488,10 +488,10 @@ public class PutawayServiceImpl implements PutawayService {
 	                        putawayExcelUploadVO.setCarrier(carrier);
 	                        putawayExcelUploadVO.setType(type1);
 	                        putawayExcelUploadVO.setCore(core);
-	                        putawayExcelUploadVO.setPalletPick(palletPick);
+	                        putawayExcelUploadVO.setBinPick(binPick);
 	                        putawayExcelUploadVO.setLrHawbhblNo(lrHawbhblNo);
 	                        putawayExcelUploadVO.setIndcNo(indcNo);
-	                        putawayExcelUploadVO.setLocationType(locationType);
+	                        putawayExcelUploadVO.setBinType(binType);
 	                        putawayExcelUploadVO.setPartNo(partNo);
 	                        putawayExcelUploadVO.setBatchNo(batchNo);
 	                        putawayExcelUploadVO.setPartDesc(partDesc);
@@ -505,8 +505,8 @@ public class PutawayServiceImpl implements PutawayService {
 	                        putawayExcelUploadVO.setSqty(sqty);
 	                        putawayExcelUploadVO.setSsQty(ssQty);
 	                        putawayExcelUploadVO.setSssQty(sssQty);
-	                        putawayExcelUploadVO.setPalletQty(palletQty);
-	                        putawayExcelUploadVO.setPalletNo(palletNo);
+	                        putawayExcelUploadVO.setBinQty(binQty);
+	                        putawayExcelUploadVO.setBinNo(binNo);
 	                        putawayExcelUploadVO.setWeight(weight);
 	                        putawayExcelUploadVO.setRate(rate);
 	                        putawayExcelUploadVO.setRemarks(remarks);
@@ -602,10 +602,10 @@ public class PutawayServiceImpl implements PutawayService {
 	                && "carrier".equalsIgnoreCase(getStringCellValue(headerRow.getCell(6)))
 	                && "type".equalsIgnoreCase(getStringCellValue(headerRow.getCell(7)))
 	                && "core".equalsIgnoreCase(getStringCellValue(headerRow.getCell(8)))
-	                && "palletpick".equalsIgnoreCase(getStringCellValue(headerRow.getCell(9)))
+	                && "binpick".equalsIgnoreCase(getStringCellValue(headerRow.getCell(9)))
 	                && "lrhawbhblno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(10)))
 	                && "indcno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(11)))
-	                && "locationtype".equalsIgnoreCase(getStringCellValue(headerRow.getCell(12)))
+	                && "bintype".equalsIgnoreCase(getStringCellValue(headerRow.getCell(12)))
 	                && "partno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(13)))
 	                && "batchno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(14)))
 	                && "partdesc".equalsIgnoreCase(getStringCellValue(headerRow.getCell(15)))
@@ -619,8 +619,8 @@ public class PutawayServiceImpl implements PutawayService {
 	                && "sqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(23)))
 	                && "ssqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(24)))
 	                && "sssqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(25)))
-	                && "palletqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(26)))
-	                && "palletno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(27)))
+	                && "binqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(26)))
+	                && "binno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(27)))
 	                && "weight".equalsIgnoreCase(getStringCellValue(headerRow.getCell(28)))
 	                && "rate".equalsIgnoreCase(getStringCellValue(headerRow.getCell(29)))
 	                && "remarks".equalsIgnoreCase(getStringCellValue(headerRow.getCell(30)))
