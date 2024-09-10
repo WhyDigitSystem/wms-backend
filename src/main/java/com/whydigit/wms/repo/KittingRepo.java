@@ -95,7 +95,7 @@ public interface KittingRepo extends JpaRepository<KittingVO, Long> {
 			+ "  AND grnno = ?6\r\n"
 			+ "  AND status = 'R'\r\n"
 			+ "  AND pckey = 'CHILD'\r\n"
-			+ "  and batch=?7\r\n"
+			+ "  and batch=?7 or batch is null \r\n"
 			+ "GROUP BY bin, bintype, celltype, binclass, core having sum(sqty)>0"
 			+ "",nativeQuery =true)
 	Set<Object[]> getBin(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo,String batchNo);

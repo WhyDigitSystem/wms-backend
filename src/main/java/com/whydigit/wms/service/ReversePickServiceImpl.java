@@ -1,6 +1,5 @@
 package com.whydigit.wms.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.whydigit.wms.controller.ReversePickController;
 import com.whydigit.wms.dto.ReversePickDTO;
 import com.whydigit.wms.dto.ReversePickDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
@@ -32,7 +30,7 @@ import com.whydigit.wms.repo.StockDetailsRepo;
 @Service
 public class ReversePickServiceImpl implements ReversePickService {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(ReversePickController.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(ReversePickServiceImpl.class);
 	
 	@Autowired
 	ReversePickRepo reversePickRepo;
@@ -133,7 +131,6 @@ public class ReversePickServiceImpl implements ReversePickService {
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsVOFrom.setStockDate(LocalDate.now());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
 			}

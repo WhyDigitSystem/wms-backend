@@ -92,4 +92,22 @@ Set<Object[]> getPartNo(Long orgId, String branchCode, String client, String war
 int getAvlQtyforBuyerOrder(Long orgId, String branchCode, String client,String warehouse,
 		String partNo, String batchNo);
 
+
+@Query(nativeQuery = true,value="SELECT b.partno, \r\n"
+		+ "       b.partdesc, \r\n"
+		+ "       COALESCE(SUM(a.sqty), 0) AS avlqty \r\n"
+		+ "FROM material b \r\n"
+		+ "LEFT OUTER JOIN stockdetails a \r\n"
+		+ "ON a.partno = b.partno and a.orgid=b.orgid and a.customer=b.customer and b.cbranch=a.branchcode or b.cbranch='ALL' and a.client=b.client\r\n"
+		+ "  AND a.orgid = 1000000001 \r\n"
+		+ "  AND a.branchcode = 'BLRW' \r\n"
+		+ "  AND a.warehouse = 'BLRWAREHOUSE'  \r\n"
+		+ "  AND a.customer = 'BACARDI IND PVT LTD' \r\n"
+		+ "  AND a.client = 'BACARDI' \r\n"
+		+ "  AND a.stockdate <= DATE(NOW()) \r\n"
+		+ "WHERE (b.partno = '101010' OR 'ALL' = 'ALL') \r\n"
+		+ "GROUP BY b.partno, b.partdesc")
+Set<Object[]> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse, String customer,
+		String client, String partNo);
+
 }

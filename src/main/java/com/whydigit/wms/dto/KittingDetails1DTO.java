@@ -14,7 +14,7 @@ public class KittingDetails1DTO {
 
 	private Long id;
 	private String partNo;
-	private String partDesc;
+	private String partDescription;
 	private String sku;
 	private String grnNo;
 	private LocalDate grnDate;

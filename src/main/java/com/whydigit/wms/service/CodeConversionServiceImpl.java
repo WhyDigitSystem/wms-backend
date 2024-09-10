@@ -145,7 +145,6 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(codeConversionVO.getOrgId(),
 							codeConversionVO.getClient(), codeConversionDetailsVO.getPartNo()));
 					stockDetailsVOFrom.setSSku(codeConversionDetailsVO.getSku());
-					stockDetailsVOFrom.setStockDate(codeConversionDetailsVO.getStockDate());
 					stockDetailsVOFrom.setPartno(codeConversionDetailsVO.getPartNo());
 					stockDetailsVOFrom.setPartDesc(codeConversionDetailsVO.getPartDesc());
 					stockDetailsVOFrom.setGrnNo(codeConversionDetailsVO.getGrnNo());
@@ -186,7 +185,6 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 					stockDetailsVOTo.setPcKey(materialRepo.getParentChildKey(codeConversionVO.getOrgId(),
 							codeConversionVO.getClient(), codeConversionDetailsVO.getPartNo()));
 					stockDetailsVOTo.setSSku(codeConversionDetailsVO.getSku());
-					stockDetailsVOTo.setStockDate(codeConversionDetailsVO.getStockDate());
 					stockDetailsVOTo.setSQty(codeConversionDetailsVO.getConvertQty());
 					stockDetailsVOTo.setRate(codeConversionDetailsVO.getCRate());
 					stockDetailsVOTo.setPartno(codeConversionDetailsVO.getCPartNo());
@@ -411,7 +409,6 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("batchNo", fs[0] != null ? fs[0].toString() : "");
 				part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
 				part.put("expDate", fs[2] != null ? fs[2].toString() : "");
-				part.put("lotNo", fs[3] != null ? fs[3].toString() : "");
 				details1.add(part);
 			}
 			return details1;

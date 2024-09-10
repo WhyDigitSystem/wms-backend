@@ -34,7 +34,7 @@ public class KittingDetails1VO {
 	@Column(name = "partno")
 	private String partNo;
 	@Column(name = "partdesc")
-	private String partDesc;
+	private String partDescription;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "grnno")
