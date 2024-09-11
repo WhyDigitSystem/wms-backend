@@ -70,7 +70,8 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<BuyerOrderVO> buyerOrderVOs = new ArrayList<>();
 		try {
-			buyerOrderVOs = buyerOrderService.getAllBuyerOrderByOrgId(orgId, finYear, branch, branchCode, client, warehouse);
+			buyerOrderVOs = buyerOrderService.getAllBuyerOrderByOrgId(orgId, finYear, branch, branchCode, client,
+					warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -157,8 +158,7 @@ public class BuyerOrderController extends BaseController {
 	public ResponseEntity<ResponseDTO> getAvlQtyByBO(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String client, @RequestParam(required = true) String branchCode,
 			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String branch,
-			@RequestParam(required = true) String partNo,
-			@RequestParam(required = true) String batch) {
+			@RequestParam(required = true) String partNo, @RequestParam(required = true) String batch) {
 		String methodName = "getAvlQtyByBO()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -166,8 +166,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		int avalQty = 0;
 		try {
-			avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo,
-					batch);
+			avalQty = buyerOrderService.getAvlQtyByBO(orgId, client, branchCode, warehouse, branch, partNo, batch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -187,7 +186,7 @@ public class BuyerOrderController extends BaseController {
 	@GetMapping("/getBoSkuDetails")
 	public ResponseEntity<ResponseDTO> getBoSkuDetails(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-			 @RequestParam(required = true) String warehouse) {
+			@RequestParam(required = true) String warehouse) {
 		String methodName = "getBoSkuDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -211,7 +210,7 @@ public class BuyerOrderController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getBatchByBuyerOrder")
 	public ResponseEntity<ResponseDTO> getBatchByBuyerOrder(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
@@ -249,16 +248,16 @@ public class BuyerOrderController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> skuDetails = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> partNoDetails = new ArrayList<Map<String, Object>>();
 		try {
-			skuDetails = buyerOrderService.getPartNoByBuyerOrder(orgId, branchCode, client, warehouse);
+			partNoDetails = buyerOrderService.getPartNoByBuyerOrder(orgId, branchCode, client, warehouse);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo Details information get successfully Id");
-			responseObjectsMap.put("skuDetails", skuDetails);
+			responseObjectsMap.put("partNoDetails", partNoDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "PartNo Details  information get Failed ",
@@ -267,19 +266,45 @@ public class BuyerOrderController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
+	@GetMapping("/getAvlQtyForBuyerOrder")
+	public ResponseEntity<ResponseDTO> getAvlQtyForBuyerOrder(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
+			@RequestParam(required = true) String warehouse, @RequestParam(required = true) String partNo,
+			@RequestParam(required = true) String batchNo) {
+		String methodName = "getAvlQtyForBuyerOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		int avalQty = 0;
+		try {
+			avalQty = buyerOrderService.getAvlQtyForBuyerOrder(orgId, branchCode, client, warehouse, partNo, batchNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "avlQty Details information get successfully Id");
+			responseObjectsMap.put("avlQty", avalQty);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "avlQty Details  information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 	@PostMapping("/ExcelUploadForBuyerOrder")
 	public ResponseEntity<ResponseDTO> ExcelUploadForWarehouse(@RequestParam MultipartFile[] files,
 			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String createdBy) {
 		String methodName = "ExcelUploadForBuyerOrder()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
 		int totalRows = 0;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
 		int successfulUploads = 0;
-
+		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
 			buyerOrderService.ExcelUploadForBo(files, type, orgId, createdBy);
@@ -299,7 +324,7 @@ public class BuyerOrderController extends BaseController {
 
 		} catch (Exception e) {
 
-			errorMsg = e.getMessage();
+			String errorMsg = e.getMessage();
 			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
 			responseObjectsMap.put("statusFlag", "Error");
 			responseObjectsMap.put("status", false);
@@ -311,5 +336,4 @@ public class BuyerOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 }

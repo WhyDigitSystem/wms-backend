@@ -36,11 +36,17 @@ public interface BuyerOrderService {
 
 	List<Map<String, Object>> getPartNoByBuyerOrder(Long orgId, String branchCode, String client, String warehouse);
 
+
+
+	int getAvlQtyForBuyerOrder(Long orgId, String branchCode, String client, String warehouse, String partNo,
+			String batchNo);
+
 	void ExcelUploadForBo(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy) throws ApplicationException;
 
 	int getTotalRows();
 
 	int getSuccessfulUploads();
+
 
 	
 

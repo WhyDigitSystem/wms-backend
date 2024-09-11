@@ -244,10 +244,12 @@ public class GrnServiceImpl implements GrnService {
 		grnVO.setGrnDate(grnDTO.getGrnDate());
 		grnVO.setGatePassId(grnDTO.getGatePassId());
 
+		if(!grnDTO.getGatePassId().isEmpty())
+		{
 		GatePassInVO gatePassInVO = gatePassInRepo.findByDocId(grnDTO.getGatePassId());
 		gatePassInVO.setFreeze(true);
 		gatePassInRepo.save(gatePassInVO);
-
+		}
 		grnVO.setGatePassDate(grnDTO.getGatePassDate());
 		grnVO.setCustomerPo(grnDTO.getCustomerPo());
 		grnVO.setSupplierShortName(grnDTO.getSupplierShortName());

@@ -142,7 +142,6 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 
 		List<SalesReturnDetailsVO> salesReturnDetailsVOs = new ArrayList<>();
 		for (SalesReturnDetailsDTO salesReturnDetailsDTO : salesReturnDTO.getSalesReturnDetailsDTO()) {
-
 			SalesReturnDetailsVO salesReturnDetailsVO = new SalesReturnDetailsVO();
 			salesReturnDetailsVO.setLRNo(salesReturnDetailsDTO.getLRNo());
 			salesReturnDetailsVO.setInvoiceNo(salesReturnDetailsDTO.getInvoiceNo());
@@ -158,13 +157,12 @@ public class SalesReturnServiceImpl implements SalesReturnService{
 			salesReturnDetailsVO.setNoOfBin(salesReturnDetailsDTO.getNoOfBin());
 			salesReturnDetailsVO.setBinQty(salesReturnDetailsDTO.getBinQty());
 			salesReturnDetailsVO.setRemarks(salesReturnDetailsDTO.getRemarks());
-			salesReturnDetailsVO.setQcFlag(salesReturnDetailsDTO.isQcFlag());
+			salesReturnDetailsVO.setQcFlag(salesReturnDetailsDTO.getQcFlag());
 			salesReturnDetailsVO.setSalesReturnVO(salesReturnVO);
 			salesReturnDetailsVOs.add(salesReturnDetailsVO);
 		}
 		salesReturnVO.setSalesReturnDetailsVO(salesReturnDetailsVOs);
 	}
-
 
 	@Override
 	@Transactional

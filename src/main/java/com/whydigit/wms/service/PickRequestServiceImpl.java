@@ -192,7 +192,6 @@ public class PickRequestServiceImpl implements PickRequestService {
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
 			}

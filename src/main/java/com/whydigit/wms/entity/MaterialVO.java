@@ -104,6 +104,10 @@ public class MaterialVO {
 	private Float height;
 	@Column(name = "weight")
 	private Float weight;
+	@Column(name = "movingtype")
+	private String movingType;
+	@Column(name = "racklevel")
+	private String rackLevel;
 	
 
 	@JsonGetter("active")

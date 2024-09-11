@@ -153,7 +153,6 @@ public class CycleCountServiceImpl implements CycleCountService {
 	            stockDetailsVOFrom.setSourceScreenCode(savedCycleCount.getScreenCode());
 	            stockDetailsVOFrom.setSourceScreenName(savedCycleCount.getScreenName());
 	            stockDetailsVOFrom.setSourceId(detailsVO.getId());
-	            stockDetailsVOFrom.setStockDate(LocalDate.now());
 	            stockDetailsRepo.save(stockDetailsVOFrom);
 	        }
 	    }
@@ -246,18 +245,17 @@ public class CycleCountServiceImpl implements CycleCountService {
 			part.put("bin", fs[3] != null ? fs[3].toString() : "");
 			part.put("batch", fs[4] != null ? fs[4].toString() : "");
 			part.put("batchDate", fs[5] != null ? fs[5].toString() : "");
-			part.put("lotNo", fs[6] != null ? fs[6].toString() : "");
-			part.put("grnNo", fs[7] != null ? fs[7].toString() : "");
-			part.put("grnDate", fs[8] != null ? fs[8].toString() : "");
-			part.put("binclass", fs[9] != null ? fs[9].toString() : "");
-			part.put("bintype", fs[10] != null ? fs[10].toString() : "");
-			part.put("status", fs[11] != null ? fs[11].toString() : "");
-			part.put("qcflag", fs[12] != null ? fs[12].toString() : "");
-			part.put("expdate", fs[13] != null ? fs[13].toString() : "");
-			part.put("core", fs[14] != null ? fs[14].toString() : "");
-			part.put("cellType", fs[15] != null ? fs[15].toString() : "");
-			part.put("avlQty", fs[16] != null ? Integer.parseInt(fs[16].toString()) : 0);
-			part.put("id", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
+			part.put("grnNo", fs[6] != null ? fs[6].toString() : "");
+			part.put("grnDate", fs[7] != null ? fs[7].toString() : "");
+			part.put("binclass", fs[8] != null ? fs[8].toString() : "");
+			part.put("bintype", fs[9] != null ? fs[9].toString() : "");
+			part.put("status", fs[10] != null ? fs[10].toString() : "");
+			part.put("qcflag", fs[11] != null ? fs[11].toString() : "");
+			part.put("expdate", fs[12] != null ? fs[12].toString() : "");
+			part.put("core", fs[13] != null ? fs[13].toString() : "");
+			part.put("cellType", fs[14] != null ? fs[14].toString() : "");
+			part.put("avlQty", fs[15] != null ? Integer.parseInt(fs[15].toString()) : 0);
+			part.put("id", fs[16] != null ? Integer.parseInt(fs[16].toString()) : 0);
 
 			details1.add(part);
 		}
