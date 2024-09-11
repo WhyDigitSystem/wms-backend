@@ -34,16 +34,17 @@ public class SecurityConfig {
 				.permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
 						"/swagger-ui.html", "/swagger-ui/*", "/api/auth/signup", "/api/auth/login", "/api/auth/logout",
-						"/api/auth/getRefreshToken", "/api/auth/logout", "/api/auth/**", "/api/auth/getRefreshToken",
-						"/api/commonmaster/**", "/api/inward/**", "/api/user/**", "/api/outward/**","/api/reversePick/**",
+						"/api/auth/getRefreshToken", "/api/auth/logout", "/api/auth/**",
+						"/api/inward/**", "/api/user/**", "/api/outward/**","/api/reversePick/**",
 						"/api/deliverychallan/**", "/api/codeconversion/**", "/api/vasputaway/**","/api/vasPick/**",
-						"/api/stockprocess/**", "/api/warehousemastercontroller/**", "/api/commonmaster/**",
+						"/api/stockprocess/**", "/api/warehousemastercontroller/**",
 						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**","/api/buyerOrder/**",
 						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**","/api/kitting/**",
 						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/cycleCount/**",
 						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**",
-						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**",
-						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/salesReturn/**","/api/locationMovement/**","/api/deKitting/**","/api/pickrequest/**")
+						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**","/api/Reports/**",
+						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/salesReturn/**","/api/locationMovement/**","/api/deKitting/**","/api/pickrequest/**"
+								+ "")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

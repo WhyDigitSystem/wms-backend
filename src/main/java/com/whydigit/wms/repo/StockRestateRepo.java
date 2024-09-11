@@ -51,7 +51,7 @@ Set<Object[]> getBatchNoDetails(Long orgId, String branchCode, String warehouse,
 @Query(nativeQuery = true,value = "select sum(a.sqty)sqty from(\r\n"
 		+ "(select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
 		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status=?5 and bin=?6 and partno=?7 and grnno=?8\r\n"
-		+ "and batch=?9\r\n"
+		+ "and batch=?9 OR batch is NULL\r\n"
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0)) a")
 int getAvlQty(Long orgId, String branchCode, String warehouse, String client, String tranferFromFlag,
 		String fromBin, String partNo, String grnNo, String batchNo);
@@ -59,7 +59,7 @@ int getAvlQty(Long orgId, String branchCode, String warehouse, String client, St
 @Query(nativeQuery = true,value = "select bin,bintype,binclass,celltype,core from wv_locationstatus where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4")
 Set<Object[]> getToBinDetails(Long orgId, String branchCode, String warehouse, String client);
 
-@Query(nativeQuery = true,value = "select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,case when ?6='D' then 'Defective' else bin end toBin,case when ?6='D' then 'Defective' else bintype end toBinType,binclass tobinclass,celltype tocellType,core tocore, qcflag,sum(sqty),ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id from stockdetails \r\n"
+@Query(nativeQuery = true,value = "select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,case when ?6='D' then 'DEFECTIVE' else bin end toBin,case when ?6='D' then 'DEFECTIVE' else bintype end toBinType,binclass tobinclass,celltype tocellType,core tocore, qcflag,sum(sqty),ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id from stockdetails \r\n"
 		+ "where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and status=?5\r\n"
 		+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0")
 Set<Object[]> getFillGridDetailsForRestate(Long orgId, String branchCode, String warehouse, String client,

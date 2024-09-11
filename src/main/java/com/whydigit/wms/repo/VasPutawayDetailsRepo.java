@@ -19,9 +19,9 @@ public interface VasPutawayDetailsRepo extends JpaRepository<VasPutawayDetailsVO
 	Set<Object[]> getAllDetailsFromVasPickDetailsForVasPutawayDetails(Long orgId, String branch, String client,
 			String docId);
 
-	@Query(nativeQuery = true,value="select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,stockdate,bin,bintype,binclass,core,celltype,qcflag,sum(sqty),ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id from stockdetails\r\n"
-			+ "    where orgid=?1 and branch=?2 AND branchcode=?3 and client=?4 and refno=?5 group by \r\n"
-			+ "    partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,stockdate,bin,bintype,binclass,core,celltype,qcflag having sum(sqty)>0")
+	@Query(nativeQuery = true,value="select a.partno,a.partdescription,a.sku,a.grnno,a.grndate,a.batchno,a.batchdate,a.expdate,stockdate,bin,bintype,binclass,core,celltype,qcflag,sum(a.picqty)sqty,ROW_NUMBER() OVER (ORDER BY partdescription, partno) AS id from vaspickdetails a,vaspick b where \r\n"
+			+ "        a.vaspickid=b.vaspickid and b.orgid= ?1 and b.branch=?2 AND b.branchcode=?3 and b.client=?4 and b.docid=?5\r\n"
+			+ "        group by a.partno,a.partdescription,a.sku,a.grnno,a.grndate,a.batchno,a.batchdate,a.stockdate,a.expdate,bin,bintype,binclass,core,celltype,qcflag")
 	Set<Object[]> getAllFillGridFromVasPutaway(Long orgId, String branch, String branchCode, String client,String docId);
 
 

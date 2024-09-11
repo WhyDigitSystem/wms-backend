@@ -10,7 +10,7 @@ import com.whydigit.wms.entity.VasPickVO;
 
 public interface VasPickRepo extends JpaRepository<VasPickVO, Long> {
 
-	@Query(nativeQuery =true,value = "select * from vaspick v where v.orgid=?1 and v.branchcode=?2 and v.client=?3 and v.branch=?4 and v.finYear=?5 and v.warehouse=?6")
+	@Query(nativeQuery =true,value = "select * from vaspick v where v.orgid=?1 and v.branchcode=?2 and v.client=?3 and v.branch=?4 and v.finYear=?5 and v.warehouse=?6 order by docid desc")
 	List<VasPickVO> findALLVasPick(Long orgId, String branchCode, String client, String branch, String finYear,
 			String warehouse);
 

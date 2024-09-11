@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,7 +116,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 	                clientRepo.getClientCode(savedCycleCount.getOrgId(), savedCycleCount.getClient())
 	            );
 	            stockDetailsVOFrom.setCreatedBy(savedCycleCount.getUpdatedBy());
-	           // stockDetailsVOFrom.setRefNo(savedCycleCount.getDocId());
+	            stockDetailsVOFrom.setRefNo(savedCycleCount.getDocId());
 	            stockDetailsVOFrom.setRefDate(savedCycleCount.getDocDate());
 	            stockDetailsVOFrom.setUpdatedBy(savedCycleCount.getUpdatedBy());
 	            stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
@@ -136,7 +137,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 	            }
 	            stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
 	            stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
-	          //  stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+	            stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
 	            stockDetailsVOFrom.setStatus(detailsVO.getStatus());
 	            stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
 	            stockDetailsVOFrom.setBin(detailsVO.getBin());
@@ -152,7 +153,6 @@ public class CycleCountServiceImpl implements CycleCountService {
 	            stockDetailsVOFrom.setSourceScreenCode(savedCycleCount.getScreenCode());
 	            stockDetailsVOFrom.setSourceScreenName(savedCycleCount.getScreenName());
 	            stockDetailsVOFrom.setSourceId(detailsVO.getId());
-	          //  stockDetailsVOFrom.setStockDate(savedCycleCount.getStockDate());
 	            stockDetailsRepo.save(stockDetailsVOFrom);
 	        }
 	    }
@@ -172,7 +172,6 @@ public class CycleCountServiceImpl implements CycleCountService {
 	    cycleCountVO.setBranchCode(cycleCountDTO.getBranchCode());
 	    cycleCountVO.setWarehouse(cycleCountDTO.getWarehouse());
 	    cycleCountVO.setCreatedBy(cycleCountDTO.getCreatedBy());
-	    cycleCountVO.setCancelRemarks(cycleCountDTO.getCancelRemarks());
 
 	    List<CycleCountDetailsVO> cycleCountDetailsVOs = new ArrayList<>();
 	    for (CycleCountDetailsDTO details2dto : cycleCountDTO.getCycleCountDetailsDTO()) {
@@ -185,15 +184,19 @@ public class CycleCountServiceImpl implements CycleCountService {
 	        cycleCountDetailsVO.setBatchNo(details2dto.getBatchNo());
 	        cycleCountDetailsVO.setBatchDate(details2dto.getBatchDate());
 	        cycleCountDetailsVO.setBin(details2dto.getBin());
-	        cycleCountDetailsVO.setAvlQty(details2dto.getAvlQty());
-	        cycleCountDetailsVO.setActualQty(details2dto.getActualQty());
+	        
+	        int avlqty=cycleCountRepo.getAvailQty(cycleCountDTO.getOrgId(), cycleCountDTO.getBranchCode(), cycleCountDTO.getClient(), cycleCountDTO.getWarehouse(),
+	        		details2dto.getPartNo(), details2dto.getGrnNo(), details2dto.getBatchNo(), details2dto.getBin());
+	       	cycleCountDetailsVO.setAvlQty(details2dto.getAvlQty());
+		    cycleCountDetailsVO.setActualQty(details2dto.getActualQty());
+	       
+	        
 	        cycleCountDetailsVO.setGrnDate(details2dto.getGrnDate());
 	        cycleCountDetailsVO.setExpDate(details2dto.getExpDate());
 	        cycleCountDetailsVO.setBinClass(details2dto.getBinClass());
 	        cycleCountDetailsVO.setCellType(details2dto.getCellType());
 	        cycleCountDetailsVO.setCore(details2dto.getCore());
-	        cycleCountDetailsVO.setLotNo(details2dto.getLotNo());
-	        cycleCountDetailsVO.setStatus(details2dto.getStatus());
+	        cycleCountDetailsVO.setStatus("R");
 	        cycleCountDetailsVO.setQcFlag(details2dto.getQcFlag());
 
 	        // Avoid recursive reference to kittingVO in KittingDetails2VO
@@ -242,18 +245,17 @@ public class CycleCountServiceImpl implements CycleCountService {
 			part.put("bin", fs[3] != null ? fs[3].toString() : "");
 			part.put("batch", fs[4] != null ? fs[4].toString() : "");
 			part.put("batchDate", fs[5] != null ? fs[5].toString() : "");
-			part.put("lotNo", fs[6] != null ? fs[6].toString() : "");
-			part.put("grnNo", fs[7] != null ? fs[7].toString() : "");
-			part.put("grnDate", fs[8] != null ? fs[8].toString() : "");
-			part.put("binclass", fs[9] != null ? fs[9].toString() : "");
-			part.put("bintype", fs[10] != null ? fs[10].toString() : "");
-			part.put("status", fs[11] != null ? fs[11].toString() : "");
-			part.put("qcflag", fs[12] != null ? fs[12].toString() : "");
-			part.put("expdate", fs[13] != null ? fs[13].toString() : "");
-			part.put("core", fs[14] != null ? fs[14].toString() : "");
-			part.put("cellType", fs[15] != null ? fs[15].toString() : "");
-			part.put("avlQty", fs[16] != null ? Integer.parseInt(fs[16].toString()) : 0);
-			part.put("id", fs[17] != null ? Integer.parseInt(fs[17].toString()) : 0);
+			part.put("grnNo", fs[6] != null ? fs[6].toString() : "");
+			part.put("grnDate", fs[7] != null ? fs[7].toString() : "");
+			part.put("binclass", fs[8] != null ? fs[8].toString() : "");
+			part.put("bintype", fs[9] != null ? fs[9].toString() : "");
+			part.put("status", fs[10] != null ? fs[10].toString() : "");
+			part.put("qcflag", fs[11] != null ? fs[11].toString() : "");
+			part.put("expdate", fs[12] != null ? fs[12].toString() : "");
+			part.put("core", fs[13] != null ? fs[13].toString() : "");
+			part.put("cellType", fs[14] != null ? fs[14].toString() : "");
+			part.put("avlQty", fs[15] != null ? Integer.parseInt(fs[15].toString()) : 0);
+			part.put("id", fs[16] != null ? Integer.parseInt(fs[16].toString()) : 0);
 
 			details1.add(part);
 		}
@@ -318,6 +320,7 @@ public class CycleCountServiceImpl implements CycleCountService {
 
 			part.put("batch", fs[0] != null ? fs[0].toString() : "");
 			part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("expDate", fs[2] != null ? fs[2].toString() : "");
 
 			details1.add(part);
 		}
@@ -339,11 +342,10 @@ public class CycleCountServiceImpl implements CycleCountService {
 
 			part.put("bin", fs[0] != null ? fs[0].toString() : "");
 			part.put("binType", fs[1] != null ? fs[1].toString() : "");
-			part.put("lotNo", fs[2] != null ? fs[2].toString() : "");
-			part.put("cellType", fs[3] != null ? fs[3].toString() : "");
-			part.put("binClass", fs[4] != null ? fs[4].toString() : "");
-			part.put("core", fs[5] != null ? fs[5].toString() : "");
-			part.put("qcFlag", fs[6] != null ? fs[6].toString() : "");
+			part.put("cellType", fs[2] != null ? fs[2].toString() : "");
+			part.put("binClass", fs[3] != null ? fs[3].toString() : "");
+			part.put("core", fs[4] != null ? fs[4].toString() : "");
+			part.put("qcFlag", "T");
 
 			details1.add(part);
 		}
@@ -365,7 +367,6 @@ public class CycleCountServiceImpl implements CycleCountService {
 			Map<String, Object> part = new HashMap<>();
 
 			part.put("avlQty", fs[0] != null ? Integer.parseInt(fs[0].toString()) : 0);
-			part.put("status", fs[1] != null ? fs[1].toString() : "");
 
 			details1.add(part);
 		}

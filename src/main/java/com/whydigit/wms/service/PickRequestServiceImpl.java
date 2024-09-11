@@ -18,6 +18,7 @@ import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.dto.PickRequestDetailsDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
+import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockOutVO;
 import com.whydigit.wms.entity.PickRequestDetailsVO;
 import com.whydigit.wms.entity.PickRequestVO;
@@ -45,7 +46,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
-	
+
 	@Autowired
 	MaterialRepo materialRepo;
 
@@ -114,7 +115,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 			message = "PickRequest Created Successfully";
 		}
 		PickRequestVO savedPickRequestVO = pickRequestRepo.save(pickRequestVO);
-		
+
 		List<HandlingStockOutVO> handlingStockOutVOs = handlingStockOutRepo.findBySDocid(savedPickRequestVO.getDocId());
 		if (handlingStockOutVOs != null) {
 			handlingStockOutRepo.deleteAll(handlingStockOutVOs);
@@ -167,7 +168,8 @@ public class PickRequestServiceImpl implements PickRequestService {
 					stockDetailsVOFrom.setBuyerOrderNo(savedPickRequestVO.getBuyerOrderNo());
 					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
 					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
-					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(),
+							savedPickRequestVO.getClient(), detailsVO.getPartNo()));
 					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
 					stockDetailsVOFrom.setSQty(detailsVO.getPickQty() * -1);
 					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
@@ -190,7 +192,6 @@ public class PickRequestServiceImpl implements PickRequestService {
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
 			}
@@ -204,6 +205,14 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	private void createUpdatePickRequestVOByPickRequestDTO(PickRequestDTO pickRequestDTO, PickRequestVO pickRequestVO)
 			throws ApplicationException {
+
+		BuyerOrderVO buyerOrderVO = buyerOrderRepo.findByDocId(pickRequestDTO.getBuyerOrderNo());
+		if ("Confirm".equals(pickRequestDTO.getStatus())) {
+			buyerOrderVO.setFreeze(true);
+		} else {
+			buyerOrderVO.setFreeze(false);
+		}
+		pickRequestRepo.save(pickRequestVO);
 
 		if ("Confirm".equals(pickRequestDTO.getStatus())) {
 			pickRequestVO.setFreeze(true);
@@ -233,9 +242,9 @@ public class PickRequestServiceImpl implements PickRequestService {
 		pickRequestVO.setWarehouse(pickRequestDTO.getWarehouse());
 		pickRequestVO.setCreatedBy(pickRequestDTO.getCreatedBy());
 		pickRequestVO.setStatus(pickRequestDTO.getStatus());
-		
-		int totalPickQty=0;
-		int totalOrderQty=buyerOrderRepo.getTotalOrderQty(pickRequestDTO.getBuyerOrderNo());
+
+		int totalPickQty = 0;
+		int totalOrderQty = buyerOrderRepo.getTotalOrderQty(pickRequestDTO.getBuyerOrderNo());
 
 		if (ObjectUtils.isNotEmpty(pickRequestVO.getId())) {
 			List<PickRequestDetailsVO> pickRequestDetailsVO1 = pickRequestDetailsRepo
@@ -264,7 +273,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 				pickRequestDetailsVO.setPickQtyPerBin(pickRequestDetailsDTO.getPickQty());
 				int remainqty = pickRequestDetailsDTO.getAvailQty() - pickRequestDetailsDTO.getPickQty();
 				pickRequestDetailsVO.setRemainingQty(remainqty);
-				totalPickQty=totalPickQty+pickRequestDetailsDTO.getPickQty();
+				totalPickQty = totalPickQty + pickRequestDetailsDTO.getPickQty();
 			} else {
 				throw new ApplicationException("Pick Qty Should not More then AvailQty");
 			}

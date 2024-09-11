@@ -17,6 +17,5 @@ public class LocationMappingDetailsDTO {
 	private String binSeq;
 	private String core;
 	private boolean active;
-	
 
 }

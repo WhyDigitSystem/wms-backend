@@ -64,7 +64,7 @@ public class StockDetailsVO {
 	@Column(name = "client")
 	private String client;
 	@Column(name = "stockdate")
-	private LocalDate stockDate;
+	private LocalDate stockDate=LocalDate.now();
 	@Column(name = "grnno")
 	private String grnNo;
 	@Column(name = "carrier")

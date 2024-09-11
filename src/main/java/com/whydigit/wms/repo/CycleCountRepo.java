@@ -17,40 +17,91 @@ public interface CycleCountRepo extends JpaRepository<CycleCountVO, Long> {
 	List<CycleCountVO> findAllCycleCount(Long orgId, String client, String branch, String branchCode, String finYear,
 			String warehouse);
 
-	@Query(value = "SELECT " + "    partno, " + "    partdesc, " + "    sku, " + "    bin, " + "    batch, "
-			+ "    batchdate, " + "    lotno, " + "    grnno, " + "    grndate, " + "    binclass, " + "    bintype, "
-			+ "    status, " + "    qcflag, " + "    expdate, " + "    core, " + "    celltype, "
-			+ "    SUM(sqty) AS total_sqty, " + "    ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id " + "FROM "
-			+ "    stockdetails " + "WHERE " + "    orgid = ?1 " + "    AND client = ?3 " + "    AND warehouse = ?4 "
-			+ "    AND branchcode = ?2 " + "GROUP BY " + "    partno, " + "    partdesc, " + "    sku, " + "    bin, "
-			+ "    batch, " + "    batchdate, " + "    lotno, " + "    grnno, " + "    grndate, " + "    binclass, "
-			+ "    bintype, " + "    status, " + "    qcflag, " + "    expdate, " + "    core, "
-			+ "    celltype ", nativeQuery = true)
+	@Query(value = "SELECT \r\n"
+			+ "    partno, \r\n"
+			+ "    partdesc, \r\n"
+			+ "    sku, \r\n"
+			+ "    bin, \r\n"
+			+ "    batch, \r\n"
+			+ "    batchdate, \r\n"
+			+ "    grnno, \r\n"
+			+ "    grndate, \r\n"
+			+ "    binclass, \r\n"
+			+ "    bintype, \r\n"
+			+ "    status, \r\n"
+			+ "    qcflag, \r\n"
+			+ "    expdate, \r\n"
+			+ "    core, \r\n"
+			+ "    celltype, \r\n"
+			+ "    SUM(sqty) AS total_sqty, \r\n"
+			+ "    ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id \r\n"
+			+ "FROM \r\n"
+			+ "    stockdetails \r\n"
+			+ "WHERE \r\n"
+			+ "    orgid = ?1 \r\n"
+			+ "    AND client = ?3 \r\n"
+			+ "    AND warehouse = ?4\r\n"
+			+"     AND branchcode=?2\r\n"
+			+"     and status='R'\r\n"
+			+ "    group by partno, \r\n"
+			+ "    partdesc, \r\n"
+			+ "    sku, \r\n"
+			+ "    bin, \r\n"
+			+ "    batch, \r\n"
+			+ "    batchdate, \r\n"
+			+ "    grnno, \r\n"
+			+ "    grndate, \r\n"
+			+ "    binclass, \r\n"
+			+ "    bintype, \r\n"
+			+ "    status, \r\n"
+			+ "    qcflag, \r\n"
+			+ "    expdate, \r\n"
+			+ "    core, \r\n"
+			+ "    celltype\r\n", nativeQuery = true)
 	Set<Object[]> getCycleCountGrid(Long orgId, String branchCode, String client, String warehouse);
 
-	@Query(nativeQuery = true, value = "select partno,partdesc,sku from stockdetails where orgid=?1 and client=?3 \n"
-			+ "and branchcode=?2 and warehouse=?4 group by partno,partdesc,sku")
+	@Query(nativeQuery = true, value = "select a.partno,a.partdesc,a.sku from(\r\n"
+			+ "select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,bin,binclass,celltype,core,status,qcflag,sum(sqty) from stockdetails \r\n"
+			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 \r\n"
+			+ " and status='R'\r\n"
+			+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,bin,binclass,celltype,core,status,qcflag having sum(sqty)>0 )a group by a.partno,partdesc,a.sku")
 	Set<Object[]> getPartNoByCycleCount(Long orgId, String branchCode, String client, String warehouse);
 
-	@Query(nativeQuery = true, value = "select grnno,grndate from stockdetails where orgid=?1 and client=?3 \n"
-			+ "and branchcode=?2 and warehouse=?4 and partno=?5 group by grnno,grndate")
+	@Query(nativeQuery = true, value = "select a.grnno,a.grndate from(\r\n"
+			+ "select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,bin,binclass,celltype,core,status,qcflag,sum(sqty) from stockdetails \r\n"
+			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 and status='R'\r\n"
+			+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,bin,binclass,celltype,core,status,qcflag having sum(sqty)>0 )a group by a.grnno,a.grndate")
 	Set<Object[]> getGrnNo(Long orgId, String branchCode, String client, String warehouse, String partNo);
 
-	@Query(nativeQuery = true, value = "select batch,batchdate,expdate from stockdetails where orgid=?1 and client=?3 \n"
-			+ "and branchcode=?2 and warehouse=?4 and partno=?5 and grnno=?6 group by batch,batchdate,expdate")
+	@Query(nativeQuery = true, value = "select a.batch,a.batchdate,a.expdate from(\r\n"
+			+ "select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,bin,binclass,celltype,core,status,qcflag,sum(sqty) from stockdetails \r\n"
+			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 and grnno=?6\r\n"
+			+ "and status='R'\r\n"
+			+ "group by partno,partdesc,sku,grnno,expdate,grndate,batch,batchdate,bintype,bin,binclass,celltype,core,status,qcflag having sum(sqty)>0 )a group by a.batch,a.batchdate,a.expdate")
 	Set<Object[]> getBatch(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNO);
 
-	@Query(nativeQuery = true, value = "select bin,bintype,lotno,celltype,binclass,core,qcflag from stockdetails  where orgid=?1 and client=?3 \n"
-			+ "and branchcode=?2 and warehouse=?4 and partno=?5 and grnno=?6 and batch=?7 group by bin,bintype,lotno,celltype,binclass,core,qcflag")
+	@Query(nativeQuery = true, value = "select a.bin,a.bintype,a.celltype,a.binclass,a.core from(\r\n"
+			+ "select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,bin,binclass,celltype,core,status,qcflag,sum(sqty) from stockdetails \r\n"
+			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 and grnno=?6\r\n"
+			+ " and batch=?7 or batch IS null and status='R'\r\n"
+			+ "group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,bin,binclass,celltype,core,status,qcflag having sum(sqty)>0 )a group by a.bin,a.bintype,a.celltype,a.binclass,a.core")
 	Set<Object[]> getBinDetails(Long orgId, String branchCode, String client, String warehouse, String partNo,
 			String grnNO, String batch);
 
-	@Query(value = "SELECT \n" + "    SUM(sqty) AS avlqty, \n" + "    status \n" + "FROM \n" + "    stockdetails \n"
-			+ "WHERE \n" + "    orgid =?1 \n" + "    AND client =?3 \n" + "    AND branchcode =?2\n"
-			+ "    AND warehouse =?4\n" + "    AND partno =?5 \n" + "    AND grnno =?6\n" 
-			+ "    AND batch =?7 \n" + "    AND bin =?8 \n" + "GROUP BY \n" + "    status\n"
-			+ "", nativeQuery = true)
+	@Query(value = "select a.sqty from(\r\n"
+			+ "select sum(sqty)sqty from stockdetails \r\n"
+			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 and grnno=?6\r\n"
+			+ " and batch=?7 or batch IS null  and bin=?8 and status='R'\r\n"
+			+ " having sum(sqty)>0 )a", nativeQuery = true)
 	Set<Object[]> getAvlQty(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNO,
 			String batch, String bin);
+	
+	@Query(value = "select a.sqty from(\r\n"
+			+ "select sum(sqty)sqty from stockdetails \r\n"
+			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 and grnno=?6\r\n"
+			+ " and batch=?7 or batch IS null  and bin=?8 and status='R'\r\n"
+			+ " having sum(sqty)>0 )a", nativeQuery = true)
+	int getAvailQty(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo,
+			String batchNo, String bin);
 
 }

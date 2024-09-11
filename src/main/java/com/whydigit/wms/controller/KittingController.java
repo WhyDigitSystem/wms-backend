@@ -307,32 +307,5 @@ public class KittingController extends BaseController{
         return ResponseEntity.ok().body(responseDTO);
     }
     
-    @GetMapping("/getGrnNOByParent")
-    public ResponseEntity<ResponseDTO> getGrnNOByParent(@RequestParam(required = true) Long orgId,
-            @RequestParam(required = true) String bin, @RequestParam(required = true) String branch,
-            @RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-            @RequestParam(required = true) String partNo, @RequestParam(required = true) String partDesc,
-            @RequestParam(required = true) String sku) {
-        String methodName = "getGrnNOByParent()";
-        LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-        String errorMsg = null;
-        Map<String, Object> responseObjectsMap = new HashMap<>();
-        ResponseDTO responseDTO = null;
-        List<Map<String, Object>> kittingVO = new ArrayList<>();
-        try {
-            kittingVO = kittingService.getGrnNOByParent(orgId, bin, branch, branchCode, client, partNo, partDesc, sku);
-        } catch (Exception e) {
-            errorMsg = e.getMessage();
-            LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-        }
-        if (StringUtils.isBlank(errorMsg)) {
-            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "GrnNOByParent Details information retrieved successfully");
-            responseObjectsMap.put("kittingVO", kittingVO);
-            responseDTO = createServiceResponse(responseObjectsMap);
-        } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve GrnNOByParent Details", errorMsg);
-        }
-        return ResponseEntity.ok().body(responseDTO);
-    
-}
+   
 }

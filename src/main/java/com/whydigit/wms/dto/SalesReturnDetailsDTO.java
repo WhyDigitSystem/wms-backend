@@ -27,6 +27,6 @@ public class SalesReturnDetailsDTO {
 	private String noOfBin;
 	private int binQty;
 	private String remarks;
-	private boolean qcFlag;
+	private String qcFlag;
 	
 }

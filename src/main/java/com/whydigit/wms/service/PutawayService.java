@@ -1,10 +1,14 @@
 package com.whydigit.wms.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.EncryptedDocumentException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
@@ -26,5 +30,15 @@ public interface PutawayService {
 	Map<String, Object> createUpdatePutAway(PutAwayDTO putAwayDTO) throws ApplicationException;
 
 	List<GrnVO> getGrnNoForPutAway(Long orgId, String client, String branch, String branchcode, String warehouse);
+
+	int getSuccessfulUploads();
+
+	int getTotalRows();
+
+//	void ExcelUploadForPutAway(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy) throws ApplicationException, EncryptedDocumentException, IOException;
+
+	void ExcelUploadForPutAway(MultipartFile[] files, CustomerAttachmentType type, Long orgId,String createdBy,String customer, String client,
+			String finYear, String branch, String branchCode, String warehouse)
+			throws ApplicationException, EncryptedDocumentException, IOException;
 
 }

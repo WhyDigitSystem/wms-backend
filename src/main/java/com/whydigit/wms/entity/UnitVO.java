@@ -41,6 +41,8 @@ public class UnitVO {
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
+	@Column(name = "uom")
+	private String uom;
 
 	@Column(name = "cancel")
 	private boolean cancel;
