@@ -6,7 +6,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.entity.LocationMovementVO;
 import com.whydigit.wms.exception.ApplicationException;
@@ -45,4 +47,9 @@ public interface LocationMovementService {
 	List<Map<String, Object>> getBatchNoAndBatchDateFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client, String bin, String partNo, String grnno);
 
+	void ExcelUploadForLm(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy) throws ApplicationException;
+
+	int getTotalRows();
+
+	int getSuccessfulUploads();
 }
