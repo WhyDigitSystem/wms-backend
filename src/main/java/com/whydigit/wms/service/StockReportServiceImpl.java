@@ -64,4 +64,27 @@ public class StockReportServiceImpl implements StockReportService{
 		return stock;
 	}
 
+	@Override
+	public List<Map<String, Object>> getStockReportBatchWise(Long orgId, String branchCode, String batch,
+			String warehouse, String customer, String client, String partNo) {
+		Set<Object[]>getDetails=stockDetailsRepo.getStockReportBatchWise( orgId,  branchCode,batch,  warehouse,
+				 customer,  client,  partNo);
+		return getStockReportBatch(getDetails);
+	}
+
+	private List<Map<String, Object>> getStockReportBatch(Set<Object[]> getDetails) {
+		List<Map<String, Object>>stock=new ArrayList<>();
+		for(Object[] st:getDetails)
+		{
+			Map<String,Object>stockDetails=new HashMap<>();
+			stockDetails.put("partNo", st[0] != null ? st[0].toString() : "");
+			stockDetails.put("partDesc", st[1] != null ? st[1].toString() : "");
+			stockDetails.put("batch", st[2] != null ? st[2].toString() : "");
+			stockDetails.put("avlQty", st[3] != null ? Integer.parseInt(st[3].toString()) : 0);
+			stock.add(stockDetails);
+		}
+		return stock;
+	}
+
+
 }
