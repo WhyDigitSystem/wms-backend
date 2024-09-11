@@ -289,7 +289,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		unitVO.setActive(unitDTO.isActive());
 		unitVO.setCancel(unitDTO.isCancel());
 		unitVO.setOrgId(unitDTO.getOrgId());
-		unitVO.setUom(unitDTO.getUom());
 	}
 
 	@Override
@@ -1479,6 +1478,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		response.put("locationMappingVO", locationMappingVO);
 		return response;
 	}
+	
 
 	private LocationMappingVO getLocationMappingVOFromLocationMappingDTO(LocationMappingVO locationMappingVO,
 			LocationMappingDTO locationMappingDTO) {
