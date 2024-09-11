@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface StockReportService {
-	
-	List<Map<String,Object>> getConsolidateStockDetails(Long orgId,String branchCode,String warehouse,String customer,String client,String partNo);
+
+	List<Map<String, Object>> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo);
+
+	List<Map<String, Object>> getStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo, String batch, String bin, String status);
 
 	List<Map<String, Object>> getStockReportBinWise(Long orgId, String branchCode, String bin, String warehouse,
 			String customer, String client, String partNo);
