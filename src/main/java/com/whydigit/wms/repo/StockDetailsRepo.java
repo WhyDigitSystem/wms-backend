@@ -90,4 +90,22 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 	Set<Object[]> findStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo, String batch, String bin, String status);
 
+
+@Query(value ="SELECT b.partno, b.partdesc, b.bin, COALESCE(SUM(b.sqty), 0) AS avlqty \r\n"
+		+ "FROM stockdetails b \r\n"
+		+ "WHERE b.orgid = ?1\r\n"
+		+ "AND b.branchcode = ?2\r\n"
+		+ "AND (b.bin = ?3 OR 'ALL' = ?3)\r\n"
+		+ "AND b.warehouse = ?4\r\n"
+		+ "AND b.customer = ?5\r\n"
+		+ "AND b.client = ?6\r\n"
+		+ "AND b.stockdate <= DATE(NOW()) \r\n"
+		+ "AND (b.partno = ?7 OR 'ALL' = ?7)\r\n"
+		+ "GROUP BY b.partno, b.partdesc, b.bin \r\n"
+		+ "HAVING SUM(b.sqty) > 0 \r\n"
+		+ "ORDER BY b.partno, b.bin;\r\n"
+		+ "",nativeQuery =true)
+Set<Object[]> getStockReportBinWise(Long orgId, String branchCode, String bin, String warehouse, String customer,
+		String client, String partNo);
+
 }

@@ -1,5 +1,8 @@
 package com.whydigit.wms.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,11 +12,22 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.PutAwayDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
@@ -21,6 +35,7 @@ import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
 import com.whydigit.wms.entity.PutAwayDetailsVO;
 import com.whydigit.wms.entity.PutAwayVO;
+import com.whydigit.wms.entity.PutawayExcelUploadVO;
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.ClientRepo;
@@ -30,7 +45,10 @@ import com.whydigit.wms.repo.HandlingStockInRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.PutAwayDetailsRepo;
 import com.whydigit.wms.repo.PutAwayRepo;
+import com.whydigit.wms.repo.PutawayExcelUploadRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
+
+import io.jsonwebtoken.io.IOException;
 
 @Service
 public class PutawayServiceImpl implements PutawayService {
@@ -58,6 +76,9 @@ public class PutawayServiceImpl implements PutawayService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	PutawayExcelUploadRepo putawayExcelUploadRepo;
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PutawayServiceImpl.class);
 
@@ -385,5 +406,262 @@ public class PutawayServiceImpl implements PutawayService {
 			return 0; // default value in case of parsing failure
 		}
 	}
+	
+	  private int totalRows = 0;
+	    private int successfulUploads = 0;
+
+	    @Transactional
+	    @Override
+	    public void ExcelUploadForPutAway(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+	        List<PutawayExcelUploadVO> putawayExcelUploadVOVOsToSave = new ArrayList<>();
+	        List<String> errorMessages = new ArrayList<>();
+
+	        for (MultipartFile file : files) {
+	            try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+	                Sheet sheet = workbook.getSheetAt(0); // Assuming only one sheet
+	                Row headerRow = sheet.getRow(0);
+
+	                if (!isHeaderValid(headerRow)) {
+	                    throw new ApplicationException("Invalid Excel format. Please refer to the sample file.");
+	                }
+
+	                // Validate all rows first
+	                for (Row row : sheet) {
+	                    if (row.getRowNum() == 0 || isRowEmpty(row)) {
+	                        continue; // Skip header row and empty rows
+	                    }
+
+	                    totalRows++; // Increment totalRows
+	                    try {
+	                        // Retrieve cell values based on the provided order
+	                        String grnNo = getStringCellValue(row.getCell(0));
+	                        String grnDate = getStringCellValue(row.getCell(1));
+	                        String entryNo = getStringCellValue(row.getCell(2));
+	                        String entryDate = getStringCellValue(row.getCell(3));
+	                        String shortName = getStringCellValue(row.getCell(4));
+	                        String modeOfShipment = getStringCellValue(row.getCell(5));
+	                        String carrier = getStringCellValue(row.getCell(6));
+	                        String type1 = getStringCellValue(row.getCell(7));
+	                        String core = getStringCellValue(row.getCell(8));
+	                        String binPick = getStringCellValue(row.getCell(9));
+	                        String lrHawbhblNo = getStringCellValue(row.getCell(10));
+	                        String indcNo = getStringCellValue(row.getCell(11));
+	                        String binType = getStringCellValue(row.getCell(12));
+	                        String partNo = getStringCellValue(row.getCell(13));
+	                        String batchNo = getStringCellValue(row.getCell(14));
+	                        String partDesc = getStringCellValue(row.getCell(15));
+	                        String sku = getStringCellValue(row.getCell(16));
+	                        String ssku = getStringCellValue(row.getCell(17));
+	                        Integer invQty = parseInteger(getStringCellValue(row.getCell(18)));
+	                        Integer recQty = parseInteger(getStringCellValue(row.getCell(19)));
+	                        Integer shortQty = parseInteger(getStringCellValue(row.getCell(20)));
+	                        Integer damageQty = parseInteger(getStringCellValue(row.getCell(21)));
+	                        Integer grnQty = parseInteger(getStringCellValue(row.getCell(22)));
+	                        Integer sqty = parseInteger(getStringCellValue(row.getCell(23)));
+	                        Integer ssQty = parseInteger(getStringCellValue(row.getCell(24)));
+	                        Integer sssQty = parseInteger(getStringCellValue(row.getCell(25)));
+	                        Integer binQty = parseInteger(getStringCellValue(row.getCell(26)));
+	                        String binNo = getStringCellValue(row.getCell(27));
+	                        Double weight = parseDouble(getStringCellValue(row.getCell(28)));
+	                        Double rate = parseDouble(getStringCellValue(row.getCell(29)));
+	                        String remarks = getStringCellValue(row.getCell(30));
+	                        String vehicleType = getStringCellValue(row.getCell(31));
+	                        String vehicleNo = getStringCellValue(row.getCell(32));
+	                        String driverName = getStringCellValue(row.getCell(33));
+	                        String contact = getStringCellValue(row.getCell(34));
+	                        String goodsDesc = getStringCellValue(row.getCell(35));
+	                        String securityPersonName = getStringCellValue(row.getCell(36));
+
+	                        // Validate each row
+	                        // if (putawayExcelUploadRepo.existsByGrnNoAndOrgId(grnNo, orgId)) {
+	                        //     errorMessages.add("GRN No " + grnNo + " already exists for this organization. Row: " + (row.getRowNum() + 1));
+	                        // }
+
+	                        // Create and add the entity to the list
+	                        PutawayExcelUploadVO putawayExcelUploadVO = new PutawayExcelUploadVO();
+	                        putawayExcelUploadVO.setGrnNo(grnNo);
+	                        putawayExcelUploadVO.setGrnDate(grnDate);
+	                        putawayExcelUploadVO.setEntryNo(entryNo);
+	                        putawayExcelUploadVO.setEntryDate(entryDate);
+	                        putawayExcelUploadVO.setShortName(shortName);
+	                        putawayExcelUploadVO.setModeOfShipment(modeOfShipment);
+	                        putawayExcelUploadVO.setCarrier(carrier);
+	                        putawayExcelUploadVO.setType(type1);
+	                        putawayExcelUploadVO.setCore(core);
+	                        putawayExcelUploadVO.setBinPick(binPick);
+	                        putawayExcelUploadVO.setLrHawbhblNo(lrHawbhblNo);
+	                        putawayExcelUploadVO.setIndcNo(indcNo);
+	                        putawayExcelUploadVO.setBinType(binType);
+	                        putawayExcelUploadVO.setPartNo(partNo);
+	                        putawayExcelUploadVO.setBatchNo(batchNo);
+	                        putawayExcelUploadVO.setPartDesc(partDesc);
+	                        putawayExcelUploadVO.setSku(sku);
+	                        putawayExcelUploadVO.setSsku(ssku);
+	                        putawayExcelUploadVO.setInvQty(invQty);
+	                        putawayExcelUploadVO.setRecQty(recQty);
+	                        putawayExcelUploadVO.setShortQty(shortQty);
+	                        putawayExcelUploadVO.setDamageQty(damageQty);
+	                        putawayExcelUploadVO.setGrnQty(grnQty);
+	                        putawayExcelUploadVO.setSqty(sqty);
+	                        putawayExcelUploadVO.setSsQty(ssQty);
+	                        putawayExcelUploadVO.setSssQty(sssQty);
+	                        putawayExcelUploadVO.setBinQty(binQty);
+	                        putawayExcelUploadVO.setBinNo(binNo);
+	                        putawayExcelUploadVO.setWeight(weight);
+	                        putawayExcelUploadVO.setRate(rate);
+	                        putawayExcelUploadVO.setRemarks(remarks);
+	                        putawayExcelUploadVO.setVehicleType(vehicleType);
+	                        putawayExcelUploadVO.setVehicleNo(vehicleNo);
+	                        putawayExcelUploadVO.setDriverName(driverName);
+	                        putawayExcelUploadVO.setContact(contact);
+	                        putawayExcelUploadVO.setGoodsDesc(goodsDesc);
+	                        putawayExcelUploadVO.setSecurityPersonName(securityPersonName);
+	                        putawayExcelUploadVO.setOrgId(orgId);
+	                        putawayExcelUploadVO.setCustomer(customer);
+	                        putawayExcelUploadVO.setClient(client);
+	                        putawayExcelUploadVO.setFinYear(finYear);
+	                        putawayExcelUploadVO.setBranch(branch);
+	                        putawayExcelUploadVO.setBranchCode(branchCode);
+	                        putawayExcelUploadVO.setWarehouse(warehouse);
+	                        putawayExcelUploadVO.setCreatedBy(createdBy);
+	                        putawayExcelUploadVO.setUpdatedBy(""); // Assuming you set this later or leave it empty
+	                        putawayExcelUploadVO.setActive(true); // Default or based on some logic
+	                        putawayExcelUploadVO.setCancel(false); // Default or based on some logic
+	                        putawayExcelUploadVO.setCancelRemarks(""); // Default or based on some logic
+
+	                        putawayExcelUploadVOVOsToSave.add(putawayExcelUploadVO);
+	                        successfulUploads++; // Increment successfulUploads
+
+	                    } catch (Exception e) {
+	                        errorMessages.add("Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+	                    }
+	                }
+
+	                // If there are errors, throw ApplicationException and do not save any rows
+	                if (!errorMessages.isEmpty()) {
+	                    throw new ApplicationException("Excel upload validation failed. Errors: " + String.join(", ", errorMessages));
+	                }
+
+	                // Save all valid rows
+	                putawayExcelUploadRepo.saveAll(putawayExcelUploadVOVOsToSave);
+
+	            } catch (IOException e) {
+	                throw new ApplicationException("Failed to process file: " + file.getOriginalFilename() + " - " + e.getMessage());
+	            }
+	        }
+	    }
+
+	    private Double parseDouble(String stringCellValue) {
+	        try {
+	            return Double.parseDouble(stringCellValue);
+	        } catch (NumberFormatException e) {
+	            return null;
+	        }
+	    }
+
+	    private LocalDate parseDate(String stringCellValue) {
+	        try {
+	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	            return LocalDate.parse(stringCellValue, formatter);
+	        } catch (Exception e) {
+	            return null;
+	        }
+	    }
+
+	    private Integer parseInteger(String stringCellValue) {
+	        try {
+	            return Integer.parseInt(stringCellValue);
+	        } catch (NumberFormatException e) {
+	            return null;
+	        }
+	    }
+
+	    private boolean isRowEmpty(Row row) {
+	        for (Cell cell : row) {
+	            if (cell.getCellType() != CellType.BLANK) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+
+	    private boolean isHeaderValid(Row headerRow) {
+	        if (headerRow == null) {
+	            return false;
+	        }
+	        int expectedColumnCount = 37; // Adjust based on the actual number of columns
+	        if (headerRow.getPhysicalNumberOfCells() != expectedColumnCount) {
+	            return false;
+	        }
+	        return "grnno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(0)))
+	                && "grndate".equalsIgnoreCase(getStringCellValue(headerRow.getCell(1)))
+	                && "entryno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(2)))
+	                && "entrydate".equalsIgnoreCase(getStringCellValue(headerRow.getCell(3)))
+	                && "shortname".equalsIgnoreCase(getStringCellValue(headerRow.getCell(4)))
+	                && "modeofshipment".equalsIgnoreCase(getStringCellValue(headerRow.getCell(5)))
+	                && "carrier".equalsIgnoreCase(getStringCellValue(headerRow.getCell(6)))
+	                && "type".equalsIgnoreCase(getStringCellValue(headerRow.getCell(7)))
+	                && "core".equalsIgnoreCase(getStringCellValue(headerRow.getCell(8)))
+	                && "binpick".equalsIgnoreCase(getStringCellValue(headerRow.getCell(9)))
+	                && "lrhawbhblno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(10)))
+	                && "indcno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(11)))
+	                && "bintype".equalsIgnoreCase(getStringCellValue(headerRow.getCell(12)))
+	                && "partno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(13)))
+	                && "batchno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(14)))
+	                && "partdesc".equalsIgnoreCase(getStringCellValue(headerRow.getCell(15)))
+	                && "sku".equalsIgnoreCase(getStringCellValue(headerRow.getCell(16)))
+	                && "ssku".equalsIgnoreCase(getStringCellValue(headerRow.getCell(17)))
+	                && "invqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(18)))
+	                && "recqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(19)))
+	                && "shortqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(20)))
+	                && "damageqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(21)))
+	                && "grnqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(22)))
+	                && "sqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(23)))
+	                && "ssqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(24)))
+	                && "sssqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(25)))
+	                && "binqty".equalsIgnoreCase(getStringCellValue(headerRow.getCell(26)))
+	                && "binno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(27)))
+	                && "weight".equalsIgnoreCase(getStringCellValue(headerRow.getCell(28)))
+	                && "rate".equalsIgnoreCase(getStringCellValue(headerRow.getCell(29)))
+	                && "remarks".equalsIgnoreCase(getStringCellValue(headerRow.getCell(30)))
+	                && "vehicletype".equalsIgnoreCase(getStringCellValue(headerRow.getCell(31)))
+	                && "vehicleno".equalsIgnoreCase(getStringCellValue(headerRow.getCell(32)))
+	                && "drivername".equalsIgnoreCase(getStringCellValue(headerRow.getCell(33)))
+	                && "contact".equalsIgnoreCase(getStringCellValue(headerRow.getCell(34)))
+	                && "goodsdesc".equalsIgnoreCase(getStringCellValue(headerRow.getCell(35)))
+	                && "securitypersonname".equalsIgnoreCase(getStringCellValue(headerRow.getCell(36)));
+	    }
+
+	    private String getStringCellValue(Cell cell) {
+	        if (cell == null) {
+	            return "";
+	        }
+	        switch (cell.getCellType()) {
+	            case STRING:
+	                return cell.getStringCellValue();
+	            case NUMERIC:
+	                if (DateUtil.isCellDateFormatted(cell)) {
+	                    return cell.getLocalDateTimeCellValue().toLocalDate().toString();
+	                } else {
+	                    return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
+	                }
+	            case BOOLEAN:
+	                return String.valueOf(cell.getBooleanCellValue());
+	            case FORMULA:
+	                return cell.getCellFormula();
+	            default:
+	                return "";
+	        }
+	    }
+
+	    @Override
+	    public int getTotalRows() {
+	        return totalRows; // Return the correct value
+	    }
+
+	    @Override
+	    public int getSuccessfulUploads() {
+	        return successfulUploads; // Return the correct value
+	    }
 
 }
