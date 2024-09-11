@@ -26,7 +26,7 @@ public class BoExcelUploadVO {
 	@Column(name = "excelboid")
 	private Long id;
 
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	
 	
@@ -80,5 +80,28 @@ public class BoExcelUploadVO {
 
 	@Column(name = "remark")
 	private String remark;
+	
+	@Column(name = "customer")
+	private String customer;
+	@Column(name = "client")
+	private String client;
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "branch")
+	private String branch;
+	@Column(name = "branchcode")
+	private String branchCode;
+	@Column(name = "warehouse")
+	private String warehouse;
+	@Column(name = "createdby")
+	private String createdBy;
+	@Column(name = "modifiedby")
+	private String updatedBy;
+	@Column(name = "active")
+	private boolean active = true;
+	@Column(name = "cancel")
+	private boolean cancel = false;
+	@Column(name = "cancelremarks")
+	private String cancelRemarks;
 
 }

@@ -10,4 +10,7 @@ public interface StockReportService {
 	
 	List<Map<String,Object>> getConsolidateStockDetails(Long orgId,String branchCode,String warehouse,String customer,String client,String partNo);
 
+	List<Map<String, Object>> getStockReportBinWise(Long orgId, String branchCode, String bin, String warehouse,
+			String customer, String client, String partNo);
+
 }
