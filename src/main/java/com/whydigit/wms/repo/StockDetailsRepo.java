@@ -71,7 +71,7 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 	    "        AND bin = ?8 " +
 	    "        AND partno = ?5 " +
 	    "        AND grnno = ?6 " +
-	    "        AND batch = ?7 or batch is null " +
+	    "        AND (batch = ?7 or batch is null) " +
 	    "        AND status = 'R' " +
 	    "        AND pckey = 'CHILD' " +
 	    "    GROUP BY " +
@@ -79,7 +79,7 @@ Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCo
 	    "        bintype, binclass, celltype, core, bin, qcflag " +
 	    "    HAVING SUM(sqty) > 0 " +
 	    ") a")
-	List<Integer> getQtyDetails(Long orgId, String branchCode, String client, String warehouse, 
+	int getKittingQtyDetails(Long orgId, String branchCode, String client, String warehouse, 
 	                      String partNo, String grnNo, String batch, String bin);
 
 
@@ -91,5 +91,23 @@ Set<Object[]> getPartNo(Long orgId, String branchCode, String client, String war
 @Query(nativeQuery =true,value ="select cast(sum(sqty) as unsigned)sqty from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5 and batch=?6 or batch is null")
 int getAvlQtyforBuyerOrder(Long orgId, String branchCode, String client,String warehouse,
 		String partNo, String batchNo);
+
+
+@Query(nativeQuery = true,value="SELECT b.partno, \r\n"
+		+ "       b.partdesc, \r\n"
+		+ "       COALESCE(SUM(a.sqty), 0) AS avlqty \r\n"
+		+ "FROM material b \r\n"
+		+ "LEFT OUTER JOIN stockdetails a \r\n"
+		+ "ON a.partno = b.partno and a.orgid=b.orgid and a.customer=b.customer and b.cbranch=a.branchcode or b.cbranch='ALL' and a.client=b.client\r\n"
+		+ "  AND a.orgid = ?1 \r\n"
+		+ "  AND a.branchcode = ?2 \r\n"
+		+ "  AND a.warehouse = ?3  \r\n"
+		+ "  AND a.customer = ?4 \r\n"
+		+ "  AND a.client = ?5 \r\n"
+		+ "  AND a.stockdate <= DATE(NOW()) \r\n"
+		+ "WHERE (b.partno = ?6 OR 'ALL' = ?6) \r\n"
+		+ "GROUP BY b.partno, b.partdesc")
+Set<Object[]> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse, String customer,
+		String client, String partNo);
 
 }

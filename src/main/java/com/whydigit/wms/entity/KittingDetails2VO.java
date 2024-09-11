@@ -31,39 +31,39 @@ public class KittingDetails2VO {
 	@Column(name = "kitting2id")
 	private Long id;
 	@Column(name="partno")
-	private String partNo;
+	private String ppartNo;
 	@Column(name="partdesc")
-	private String partDesc;
+	private String ppartDesc;
 	@Column(name = "sku")
-	private String sku;
+	private String psku;
 	@Column(name="grnno")
-	private String grnNo;
+	private String pgrnNo;
 	@Column(name="grndate")
-	private LocalDate grnDate;
+	private LocalDate pgrnDate;
 	@Column(name="batchno")
-	private String batchNo;
+	private String pbatchNo;
 	@Column(name = "batchdate")
-	private LocalDate batchDate;
+	private LocalDate pbatchDate;
 	@Column(name = "bin")
-	private String bin;
+	private String pbin;
 	@Column(name = "bintype")
-	private String binType;
+	private String pbinType;
 	@Column(name = "binclass")
-	private String binClass;
+	private String pbinClass;
 	@Column(name = "celltype")
-	private String cellType;
+	private String pcellType;
 	@Column(name = "core")
-	private String core;
+	private String pcore;
 	@Column(name="qty")
-	private int qty;
+	private int pqty;
 	@Column(name="lotno")
-	private String lotNo;
+	private String plotNo;
 	@Column(name="qcflag")
-	private boolean qcflag;	
+	private String pqcflag;	
 	@Column(name = "expdate")
-	private LocalDate expDate;
+	private LocalDate pexpDate;
 	@Column(name = "stokcdate")
-	private LocalDate stockDate;
+	private LocalDate pstockDate;
 	
 	@ManyToOne
 	@JoinColumn(name ="kittingid")

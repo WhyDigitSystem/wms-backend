@@ -145,7 +145,6 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOFrom.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOFrom.setFinYear(savedLocationMovementVO.getFinYear());
-				stockDetailsVOFrom.setStockDate(LocalDate.now());
 				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOFrom.setStatus("R");
 				stockDetailsVOFrom.setSourceScreenName(savedLocationMovementVO.getScreenName());
@@ -174,7 +173,6 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOTo.setSourceId(detailsVO.getId());
 				stockDetailsVOTo.setSku(detailsVO.getSku());
-				stockDetailsVOTo.setStockDate(LocalDate.now());
 				stockDetailsVOTo.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOTo.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOTo.setCore(detailsVO.getToCore());
