@@ -61,6 +61,9 @@ public class StockReportServiceImpl implements StockReportService {
 			details.put("status", st[4] != null ? st[4].toString() : "");
 			details.put("avlQty", st[5] != null ? Integer.parseInt(st[5].toString()) : 0);
 			stock.add(details);
+		}
+		return stock;
+	}
 
 	public List<Map<String, Object>> getStockReportBinWise(Long orgId, String branchCode, String bin, String warehouse,
 			String customer, String client, String partNo) {
@@ -79,11 +82,10 @@ public class StockReportServiceImpl implements StockReportService {
 			stockDetails.put("bin", st[2] != null ? st[2].toString() : "");
 			stockDetails.put("avlQty", st[3] != null ? Integer.parseInt(st[3].toString()) : 0);
 			stock.add(stockDetails);
-
 		}
 		return stock;
 	}
-
+	
 	@Override
 	public List<Map<String, Object>> getStockReportBatchWise(Long orgId, String branchCode, String batch,
 			String warehouse, String customer, String client, String partNo) {
@@ -105,6 +107,30 @@ public class StockReportServiceImpl implements StockReportService {
 		}
 		return stock;
 	}
+	
+	@Override
+	public List<Map<String, Object>> getStockLedger(Long orgId, String branchCode, String warehouse, String customer,
+			String client, String startDate,String endDate,String partNo) {
+		Set<Object[]>getLedgerDetails=stockDetailsRepo.getLedgerDetails(orgId, branchCode, warehouse, customer, client, startDate, endDate, partNo);
+		return getStockLedgerReport(getLedgerDetails);
+	}
 
+	private List<Map<String, Object>> getStockLedgerReport(Set<Object[]> getLedgerDetails) {
+		List<Map<String, Object>>stock=new ArrayList<>();
+		for(Object[] st:getLedgerDetails)
+		{
+			Map<String,Object>stockDetails=new HashMap<>();
+			stockDetails.put("partNo", st[0] != null ? st[0].toString() : "");
+			stockDetails.put("partDesc", st[1] != null ? st[1].toString() : "");
+			stockDetails.put("refNo", st[2] != null ? st[2].toString() : "");
+			stockDetails.put("sourceScreen", st[3] != null ? st[3].toString() : "");
+			stockDetails.put("oQty", st[4] != null ? Integer.parseInt(st[4].toString()) : 0);
+			stockDetails.put("rQty", st[5] != null ? Integer.parseInt(st[5].toString()) : 0);
+			stockDetails.put("qQty", st[6] != null ? Integer.parseInt(st[6].toString()) : 0);
+			stockDetails.put("cQty", st[7] != null ? Integer.parseInt(st[7].toString()) : 0);
+			stock.add(stockDetails);
+		}
+		return stock;
+	}
 
 }

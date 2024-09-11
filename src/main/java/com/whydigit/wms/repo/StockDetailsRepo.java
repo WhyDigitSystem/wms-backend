@@ -127,6 +127,44 @@ Set<Object[]> getStockReportBinWise(Long orgId, String branchCode, String bin, S
 Set<Object[]> getStockReportBatchWise(Long orgId, String branchCode, String batch, String warehouse, String customer,
 		String client, String partNo);
 
+@Query(nativeQuery = true,value="select a.partno,a.partdesc,a.refno,a.sourcescreenname,sum(openingqty)oqty,sum(recqty)recqty,sum(abs(dispatchqty)) dqty,sum(closingqty)cqty from(\r\n"
+		+ "select partno,partdesc,refno,sourcescreenname,sum(sqty) openingqty,0 recqty,0 dispatchqty,0 closingqty from stockdetails \r\n"
+		+ "where orgid = ?1 \r\n"
+		+ "   AND branchcode = ?2\r\n"
+		+ "   AND warehouse = ?3  \r\n"
+		+ "   AND customer = ?4\r\n"
+		+ "   AND client = ?5 \r\n"
+		+ "   AND stockdate <?6 \r\n"
+		+ "and (partno = ?8 OR 'ALL' = ?8) group by partno,partdesc,refno,sourcescreenname having sum(sqty)>0\r\n"
+		+ "union\r\n"
+		+ "select partno,partdesc,refno,sourcescreenname,0 openingqty,sum(sqty) recqty,0 dispatchqty,0 closingqty from stockdetails \r\n"
+		+ "where orgid = ?1 \r\n"
+		+ "   AND branchcode = ?2\r\n"
+		+ "   AND warehouse = ?3  \r\n"
+		+ "   AND customer = ?4\r\n"
+		+ "   AND client = ?5 \r\n"
+		+ "   AND stockdate between ?6 and ?7 and sqty>0\r\n"
+		+ "and (partno = ?8 OR 'ALL' = ?8) group by partno,partdesc,refno,sourcescreenname \r\n"
+		+ "union\r\n"
+		+ "select partno,partdesc,refno,sourcescreenname,0 openingqty,0 recqty,sum(sqty) dispatchqty,0 closingqty from stockdetails \r\n"
+		+ "where orgid = ?1 \r\n"
+		+ "   AND branchcode = ?2\r\n"
+		+ "   AND warehouse = ?3  \r\n"
+		+ "   AND customer = ?4\r\n"
+		+ "   AND client = ?5 \r\n"
+		+ "   AND stockdate between ?6 and ?7 and sqty<0\r\n"
+		+ "and (partno = ?8 OR 'ALL' = ?8) group by partno,partdesc,refno,sourcescreenname \r\n"
+		+ "union\r\n"
+		+ "select partno,partdesc,refno,sourcescreenname,0 openingqty,0 recqty,0 dispatchqty,sum(sqty) closingqty from stockdetails \r\n"
+		+ "where orgid = ?1 \r\n"
+		+ "   AND branchcode = ?2\r\n"
+		+ "   AND warehouse = ?3  \r\n"
+		+ "   AND customer = ?4\r\n"
+		+ "   AND client = ?5 \r\n"
+		+ "   AND stockdate <=?7\r\n"
+		+ "and (partno = ?8 OR 'ALL' = ?8) group by partno,partdesc,refno,sourcescreenname having sum(sqty)>0 )a group by a.partno,a.partdesc,a.refno,a.sourcescreenname")
+Set<Object[]>getLedgerDetails(Long orgId, String branchCode, String warehouse, String customer,
+		String client, String startDate,String endDate,String partNo);
 
 
 }
