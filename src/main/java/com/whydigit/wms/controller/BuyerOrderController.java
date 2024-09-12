@@ -297,7 +297,7 @@ public class BuyerOrderController extends BaseController {
 	}
 
 	@PostMapping("/ExcelUploadForBuyerOrder")
-	public ResponseEntity<ResponseDTO> ExcelUploadForWarehouse(@RequestParam MultipartFile[] files,
+	public ResponseEntity<ResponseDTO> ExcelUploadForBuyerOrder(@RequestParam MultipartFile[] files,
 			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {
 		String methodName = "ExcelUploadForBuyerOrder()";
