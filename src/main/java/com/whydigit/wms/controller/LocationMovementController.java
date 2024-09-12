@@ -386,45 +386,41 @@ public class LocationMovementController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PostMapping("/ExcelUploadForLocationMovement")
+@PostMapping("/ExcelUploadForLocationMovement")
 	public ResponseEntity<ResponseDTO> ExcelUploadForLocationMovement(@RequestParam MultipartFile[] files,
 			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String createdBy) {
+			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {
 		String methodName = "ExcelUploadForLocationMovement()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
 		int totalRows = 0;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
 		int successfulUploads = 0;
-
+		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			locationMovementService.ExcelUploadForLm(files, type, orgId, createdBy);
+			locationMovementService.ExcelUploadForLm(files, type, orgId, createdBy, customer,  client,  finYear,  branch,  branchCode, warehouse);
 
 			// Retrieve the counts after processing
 			totalRows = locationMovementService.getTotalRows(); // Get total rows processed
 			successfulUploads = locationMovementService.getSuccessfulUploads(); // Get successful uploads count
-
 			// Construct success response
 			responseObjectsMap.put("statusFlag", "Ok");
 			responseObjectsMap.put("status", true);
 			responseObjectsMap.put("totalRows", totalRows);
 			responseObjectsMap.put("successfulUploads", successfulUploads);
 			Map<String, Object> paramObjectsMap = new HashMap<>();
-			paramObjectsMap.put("message", "Excel Upload For Location Movement successful");
+			paramObjectsMap.put("message", "Excel Upload For locationMovement successful");
 			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
 			responseDTO = createServiceResponse(responseObjectsMap);
 
 		} catch (Exception e) {
-			errorMsg = e.getMessage();
+
+			String errorMsg = e.getMessage();
 			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
 			responseObjectsMap.put("statusFlag", "Error");
 			responseObjectsMap.put("status", false);
 			responseObjectsMap.put("errorMessage", errorMsg);
 
-			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Location Movement Failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For locationMovement Failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

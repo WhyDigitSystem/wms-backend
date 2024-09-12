@@ -3,7 +3,9 @@ package com.whydigit.wms.service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,9 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+
+import org.apache.poi.ss.usermodel.DateUtil;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -469,6 +474,416 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		// Return 0 if qty is null
 		return (qty != null) ? qty : 0;
 	}
+	
+//	@Transactional
+//	@Override
+//	public void ExcelUploadForLm(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException {
+//	    List<LmExcelUploadVO> lmExcelUploadVOVOsToSave = new ArrayList<>();
+//	    totalRows = 0; // Reset totalRows for each execution
+//	    int successfulUploads = 0; // Reset successfulUploads for each execution
+//
+//	    for (MultipartFile file : files) {
+//	        try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+//	            Sheet sheet = workbook.getSheetAt(0); // Assuming only one sheet
+//	            List<String> errorMessages = new ArrayList<>();
+//	            System.out.println("Processing file: " + file.getOriginalFilename()); // Debug statement
+//
+//	            Row headerRow = sheet.getRow(0);
+//	            if (!isHeaderValid(headerRow)) {
+//	                throw new ApplicationException("Invalid Excel format. Please refer to the sample file.");
+//	            }
+//
+//	            // Validate rows
+//	            for (Row row : sheet) {
+//	                if (row.getRowNum() == 0 || isRowEmpty(row)) {
+//	                    continue; // Skip header row and empty rows
+//	                }
+//
+//	                totalRows++; // Increment totalRows
+//	                System.out.println("Validating row: " + (row.getRowNum() + 1)); // Debug statement
+//
+//	                try {
+//	                    // Retrieve cell values based on the provided order
+//	                    String typeValue = getStringCellValue(row.getCell(0));
+//	                    String fromLocation = getStringCellValue(row.getCell(1));
+//	                    String fromLocationType = getStringCellValue(row.getCell(2));
+//	                    String locationPick = getStringCellValue(row.getCell(3));
+//	                    String partNo = getStringCellValue(row.getCell(4));
+//	                    String partDesc = getStringCellValue(row.getCell(5));
+//	                    String sku = getStringCellValue(row.getCell(6));
+//	                    String grnNo = getStringCellValue(row.getCell(7));
+//	                    LocalDate grnDate = parseDate(getStringCellValue(row.getCell(8)));
+//	                    String batchNo = getStringCellValue(row.getCell(9));
+//	                    LocalDate expDate = parseDate(getStringCellValue(row.getCell(10)));
+//	                    String entryNo = getStringCellValue(row.getCell(11));
+//
+//	                    // Example validation logic
+//	                    // Uncomment and adjust validation logic as needed
+//	                    // if (lmExcelUploadRepo.existsByGrnNoAndOrgId(grnNo, orgId)) {
+//	                    //     errorMessages.add("GRN No " + grnNo + " already exists for this organization. Row: " + (row.getRowNum() + 1));
+//	                    // }
+//	                } catch (Exception e) {
+//	                    errorMessages.add("Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+//	                }
+//	            }
+//
+//	            // If there are errors, throw ApplicationException and do not save any rows
+//	            if (!errorMessages.isEmpty()) {
+//	                throw new ApplicationException("Excel upload validation failed. Errors: " + String.join(", ", errorMessages));
+//	            }
+//
+//	            // No errors found, now save all rows
+//	            for (Row row : sheet) {
+//	                if (row.getRowNum() == 0 || isRowEmpty(row)) {
+//	                    continue; // Skip header row and empty rows
+//	                }
+//
+//	                System.out.println("Saving row: " + (row.getRowNum() + 1)); // Debug statement
+//
+//	                try {
+//	                    // Retrieve cell values
+//	                    String typeValue = getStringCellValue(row.getCell(0));
+//	                    String fromLocation = getStringCellValue(row.getCell(1));
+//	                    String fromLocationType = getStringCellValue(row.getCell(2));
+//	                    String locationPick = getStringCellValue(row.getCell(3));
+//	                    String partNo = getStringCellValue(row.getCell(4));
+//	                    String partDesc = getStringCellValue(row.getCell(5));
+//	                    String sku = getStringCellValue(row.getCell(6));
+//	                    String grnNo = getStringCellValue(row.getCell(7));
+//	                    LocalDate grnDate = parseDate(getStringCellValue(row.getCell(8)));
+//	                    String batchNo = getStringCellValue(row.getCell(9));
+//	                    LocalDate expDate = parseDate(getStringCellValue(row.getCell(10)));
+//	                    String entryNo = getStringCellValue(row.getCell(11));
+//
+//	                    // Create LmExcelUploadVO and add to list for batch saving
+//	                    LmExcelUploadVO lmExcelUploadVO = new LmExcelUploadVO();
+//	                    lmExcelUploadVO.setType(typeValue);
+//	                    lmExcelUploadVO.setFromLocation(fromLocation);
+//	                    lmExcelUploadVO.setFromLocationType(fromLocationType);
+//	                    lmExcelUploadVO.setLocationPick(locationPick);
+//	                    lmExcelUploadVO.setPartNo(partNo);
+//	                    lmExcelUploadVO.setPartDesc(partDesc);
+//	                    lmExcelUploadVO.setSku(sku);
+//	                    lmExcelUploadVO.setGrnNo(grnNo);
+//	                    lmExcelUploadVO.setGrnDate(grnDate);
+//	                    lmExcelUploadVO.setBatchNo(batchNo);
+//	                    lmExcelUploadVO.setExpDate(expDate);
+//	                    lmExcelUploadVO.setEntryNo(entryNo);
+//
+//	                    lmExcelUploadVO.setOrgId(orgId);
+//	                    lmExcelUploadVO.setCustomer(customer);
+//	                    lmExcelUploadVO.setClient(client);
+//	                    lmExcelUploadVO.setFinYear(finYear);
+//	                    lmExcelUploadVO.setBranch(branch);
+//	                    lmExcelUploadVO.setBranchCode(branchCode);
+//	                    lmExcelUploadVO.setWarehouse(warehouse);
+//	                    lmExcelUploadVO.setCreatedBy(createdBy);
+//	                    lmExcelUploadVO.setUpdatedBy(""); // Assuming you set this later or leave it empty
+//	                    lmExcelUploadVO.setActive(true); // Default or based on some logic
+//	                    lmExcelUploadVO.setCancel(false); // Default or based on some logic
+//	                    lmExcelUploadVO.setCancelRemarks("");
+//
+//	                    lmExcelUploadVOVOsToSave.add(lmExcelUploadVO);
+//	                    successfulUploads++; // Increment successfulUploads
+//	                } catch (Exception e) {
+//	                    // Optionally handle specific row processing exceptions here
+//	                }
+//	            }
+//
+//	            // Save all valid rows
+//	            lmExcelUploadRepo.saveAll(lmExcelUploadVOVOsToSave);
+//	        } catch (IOException e) {
+//	            throw new ApplicationException("Failed to process file: " + file.getOriginalFilename() + " - " + e.getMessage());
+//	        }
+//	    }
+//	}
+//
+//	private Double parseDouble(String stringCellValue) {
+//	    try {
+//	        return Double.parseDouble(stringCellValue);
+//	    } catch (NumberFormatException e) {
+//	        return null;
+//	    }
+//	}
+//
+//	private LocalDate parseDate(String stringCellValue) {
+//	    try {
+//	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//	        return LocalDate.parse(stringCellValue, formatter);
+//	    } catch (Exception e) {
+//	        return null;
+//	    }
+//	}
+//
+//	private Integer parseInteger(String stringCellValue) {
+//	    try {
+//	        return Integer.parseInt(stringCellValue);
+//	    } catch (NumberFormatException e) {
+//	        return null;
+//	    }
+//	}
+//
+//	private boolean isRowEmpty(Row row) {
+//	    for (Cell cell : row) {
+//	        if (cell.getCellType() != CellType.BLANK) {
+//	            return false;
+//	        }
+//	    }
+//	    return true;
+//	}
+//
+//	private boolean isHeaderValid(Row headerRow) {
+//	    if (headerRow == null) {
+//	        return false;
+//	    }
+//	    int expectedColumnCount = 12; // Adjust based on the actual number of columns in your `LmExcelUploadVO`
+//	    if (headerRow.getPhysicalNumberOfCells() != expectedColumnCount) {
+//	        return false;
+//	    }
+//	    return "type".equalsIgnoreCase(getStringCellValue(headerRow.getCell(0)))
+//	            && "from location".equalsIgnoreCase(getStringCellValue(headerRow.getCell(1)))
+//	            && "from location type".equalsIgnoreCase(getStringCellValue(headerRow.getCell(2)))
+//	            && "location pick".equalsIgnoreCase(getStringCellValue(headerRow.getCell(3)))
+//	            && "part no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(4)))
+//	            && "part desc".equalsIgnoreCase(getStringCellValue(headerRow.getCell(5)))
+//	            && "sku".equalsIgnoreCase(getStringCellValue(headerRow.getCell(6)))
+//	            && "grn no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(7)))
+//	            && "grn date".equalsIgnoreCase(getStringCellValue(headerRow.getCell(8)))
+//	            && "batch no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(9)))
+//	            && "exp date".equalsIgnoreCase(getStringCellValue(headerRow.getCell(10)))
+//	            && "entry no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(11)));
+//	}
+//
+//	private String getStringCellValue(Cell cell) {
+//	    if (cell == null) {
+//	        return "";
+//	    }
+//	    switch (cell.getCellType()) {
+//	        case STRING:
+//	            return cell.getStringCellValue();
+//	        case NUMERIC:
+//	            return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
+//	        case BOOLEAN:
+//	            return String.valueOf(cell.getBooleanCellValue());
+//	        case FORMULA:
+//	            return cell.getCellFormula();
+//	        default:
+//	            return "";
+//	    }
+//	}
+//
+//	@Override
+//	public int getTotalRows() {
+//	    return getTotalRows(); // Return the correct value
+//	}
+//
+//	@Override
+//	public int getSuccessfulUploads() {
+//	    return getSuccessfulUploads(); // Return the correct value
+//	}
+
+	
+	 private int totalRows = 0; // Instance variable to keep track of total rows
+	    private int successfulUploads = 0; // Instance variable to keep track of successful uploads
+
+	    @Transactional
+	    @Override
+	    public void ExcelUploadForLm(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException {
+	        List<LmExcelUploadVO> lmExcelUploadVOVOsToSave = new ArrayList<>();
+	        totalRows = 0;
+	        successfulUploads = 0;
+
+	        for (MultipartFile file : files) {
+	            if (file.isEmpty()) {
+	                throw new ApplicationException("The supplied file '" + file.getOriginalFilename() + "' is empty (zero bytes long).");
+	            }
+
+	            try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+	                Sheet sheet = workbook.getSheetAt(0);
+	                List<String> errorMessages = new ArrayList<>();
+	                System.out.println("Processing file: " + file.getOriginalFilename());
+
+	                Row headerRow = sheet.getRow(0);
+	                if (!isHeaderValid(headerRow)) {
+	                    StringBuilder expectedHeaders = new StringBuilder();
+	                    expectedHeaders.append("Expected headers are: ")
+	                                   .append("Type, From location, From location type, Location pick, ")
+	                                   .append("partno, partdesc, sku, Grn No, GRN date, Batch No, Exp date, Entry no");
+	                    throw new ApplicationException("Invalid Excel format in file '" + file.getOriginalFilename() + "'. " + expectedHeaders.toString());
+	                }
+
+	                for (Row row : sheet) {
+	                    if (row.getRowNum() == 0 || isRowEmpty(row)) {
+	                        continue;
+	                    }
+
+	                    totalRows++;
+	                    System.out.println("Validating row: " + (row.getRowNum() + 1));
+
+	                    try {
+	                        String type1 = getStringCellValue(row.getCell(0));
+	                        String fromLocation = getStringCellValue(row.getCell(1));
+	                        String fromLocationType = getStringCellValue(row.getCell(2));
+	                        String locationPick = getStringCellValue(row.getCell(3));
+	                        String partNo = getStringCellValue(row.getCell(4));
+	                        String partDesc = getStringCellValue(row.getCell(5));
+	                        String sku = getStringCellValue(row.getCell(6));
+	                        String grnNo = getStringCellValue(row.getCell(7));
+	                        LocalDate grnDate = parseDate(row.getCell(8));
+	                        String batchNo = getStringCellValue(row.getCell(9));
+	                        LocalDate expDate = parseDate(row.getCell(10));
+	                        String entryNo = getStringCellValue(row.getCell(11));
+
+	                        // Add validation logic here if needed
+	                    } catch (Exception e) {
+	                        errorMessages.add("Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+	                    }
+	                }
+
+	                if (!errorMessages.isEmpty()) {
+	                    throw new ApplicationException("Excel upload validation failed for file '" + file.getOriginalFilename() + "'. Errors: " + String.join(", ", errorMessages));
+	                }
+
+	                for (Row row : sheet) {
+	                    if (row.getRowNum() == 0 || isRowEmpty(row)) {
+	                        continue;
+	                    }
+
+	                    System.out.println("Saving row: " + (row.getRowNum() + 1));
+
+	                    try {
+	                        String type1 = getStringCellValue(row.getCell(0));
+	                        String fromBin = getStringCellValue(row.getCell(1));
+	                        String fromBinType = getStringCellValue(row.getCell(2));
+	                        String binPick = getStringCellValue(row.getCell(3));
+	                        String partNo = getStringCellValue(row.getCell(4));
+	                        String partDesc = getStringCellValue(row.getCell(5));
+	                        String sku = getStringCellValue(row.getCell(6));
+	                        String grnNo = getStringCellValue(row.getCell(7));
+	                        LocalDate grnDate = parseDate(row.getCell(8));
+	                        String batchNo = getStringCellValue(row.getCell(9));
+	                        LocalDate expDate = parseDate(row.getCell(10));
+	                        String entryNo = getStringCellValue(row.getCell(11));
+
+	                        // Create and populate LmExcelUploadVO object
+	                        LmExcelUploadVO lmExcelUploadVO = new LmExcelUploadVO();
+	                        lmExcelUploadVO.setType(type1);
+	                        lmExcelUploadVO.setFrombin(fromBin);
+	                        lmExcelUploadVO.setFromBinType(fromBinType);
+	                        lmExcelUploadVO.setBinPick(binPick);
+	                        lmExcelUploadVO.setPartNo(partNo);
+	                        lmExcelUploadVO.setPartDesc(partDesc);
+	                        lmExcelUploadVO.setSku(sku);
+	                        lmExcelUploadVO.setGrnNo(grnNo);
+	                        lmExcelUploadVO.setGrnDate(grnDate);
+	                        lmExcelUploadVO.setBatchNo(batchNo);
+	                        lmExcelUploadVO.setExpDate(expDate);
+	                        lmExcelUploadVO.setEntryNo(entryNo);
+	                        lmExcelUploadVO.setOrgId(orgId);
+	                        lmExcelUploadVO.setCustomer(customer);
+	                        lmExcelUploadVO.setClient(client);
+	                        lmExcelUploadVO.setFinYear(finYear);
+	                        lmExcelUploadVO.setBranch(branch);
+	                        lmExcelUploadVO.setBranchCode(branchCode);
+	                        lmExcelUploadVO.setWarehouse(warehouse);
+	                        lmExcelUploadVO.setCreatedBy(createdBy);
+	                        lmExcelUploadVO.setUpdatedBy("");
+	                        lmExcelUploadVO.setActive(true);
+	                        lmExcelUploadVO.setCancel(false);
+	                        lmExcelUploadVO.setCancelRemarks("");
+
+	                        lmExcelUploadVOVOsToSave.add(lmExcelUploadVO);
+	                        successfulUploads++;
+	                    } catch (Exception e) {
+	                        // Optionally handle specific row processing exceptions here
+	                    }
+	                }
+
+	                lmExcelUploadRepo.saveAll(lmExcelUploadVOVOsToSave);
+	            } catch (IOException e) {
+	                throw new ApplicationException("Failed to process file: " + file.getOriginalFilename() + " - " + e.getMessage());
+	            }
+	        }
+	    }
+
+	    private LocalDate parseDate(Cell cell) {
+	        if (cell == null) {
+	            return null;
+	        }
+
+	        try {
+	            if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+	                return cell.getLocalDateTimeCellValue().toLocalDate();
+	            } else if (cell.getCellType() == CellType.STRING) {
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Adjusted to dd/MM/yyyy
+	                return LocalDate.parse(cell.getStringCellValue(), formatter);
+	            }
+	        } catch (Exception e) {
+	            System.err.println("Date parsing error for cell value: " + getStringCellValue(cell));
+	        }
+	        return null;
+	    }
+
+	    private String getStringCellValue(Cell cell) {
+	        if (cell == null) {
+	            return "";
+	        }
+	        switch (cell.getCellType()) {
+	            case STRING:
+	                return cell.getStringCellValue();
+	            case NUMERIC:
+	                return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
+	            case BOOLEAN:
+	                return String.valueOf(cell.getBooleanCellValue());
+	            case FORMULA:
+	                return cell.getCellFormula();
+	            default:
+	                return "";
+	        }
+	    }
+
+	    private boolean isRowEmpty(Row row) {
+	        for (Cell cell : row) {
+	            if (cell.getCellType() != CellType.BLANK) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+
+	    private boolean isHeaderValid(Row headerRow) throws ApplicationException {
+	        if (headerRow == null) {
+	            return false;
+	        }
+	        List<String> expectedHeaders = Arrays.asList(
+	            "Type", "From location", "From location type", "Location pick",
+	            "partno", "partdesc", "sku", "Grn No", "GRN date",
+	            "Batch No", "Exp date", "Entry no"
+	        );
+
+	        List<String> actualHeaders = new ArrayList<>();
+	        for (Cell cell : headerRow) {
+	            actualHeaders.add(getStringCellValue(cell).trim());
+	        }
+
+	        if (!expectedHeaders.equals(actualHeaders)) {
+	            String errorDetails = "Expected headers: " + expectedHeaders.toString()
+	                + ", Found headers: " + actualHeaders.toString();
+	            throw new ApplicationException("Invalid Excel format. " + errorDetails);
+	        }
+	        return true;
+	    }
+
+	    @Override
+	    public int getTotalRows() {
+	        return totalRows; // Return the correct value
+	    }
+
+	    @Override
+	    public int getSuccessfulUploads() {
+	        return successfulUploads; // Return the correct value
+	    }
+	
 
 	@Transactional
 	@Override
