@@ -14,9 +14,21 @@ public interface StockReportService {
 	List<Map<String, Object>> getStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
 			String customer, String client, String partNo, String batch, String bin, String status);
 
+	List<Map<String, Object>> getPartNoForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client);
+
+	List<Map<String, Object>> getBatchForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo);
+
+	List<Map<String, Object>> getBinForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo, String batch);
+
+	List<Map<String, Object>> getStatusForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo, String batch, String bin);
+
 	List<Map<String, Object>> getStockReportBinWise(Long orgId, String branchCode, String bin, String warehouse,
 			String customer, String client, String partNo);
-	
+
 	List<Map<String, Object>> getStockReportBatchWise(Long orgId, String branchCode, String batch, String warehouse,
 			String customer, String client, String partNo);
 
@@ -34,4 +46,5 @@ public interface StockReportService {
 			String client);
 	List<Map<String, Object>> getBatchFromBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
 			String client,String partNo);
+
 }
