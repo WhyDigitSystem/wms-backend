@@ -16,5 +16,18 @@ public interface StockReportService {
 
 	List<Map<String, Object>> getStockReportBinWise(Long orgId, String branchCode, String bin, String warehouse,
 			String customer, String client, String partNo);
+	
+	List<Map<String, Object>> getStockReportBatchWise(Long orgId, String branchCode, String batch, String warehouse,
+			String customer, String client, String partNo);
 
+	List<Map<String, Object>> getStockLedger(Long orgId, String branchCode, String warehouse, String customer,
+			String client, String startDate, String endDate, String partNo);
+
+	List<Map<String, Object>> getStockPartNoBatchWise(Long orgId, String branchCode, String warehouse, String customer,
+			String client);
+
+	List<Map<String, Object>> getBatchNoBinWise(Long orgId, String branchCode, String warehouse, String customer,
+			String client, String partNo);
+
+    
 }
