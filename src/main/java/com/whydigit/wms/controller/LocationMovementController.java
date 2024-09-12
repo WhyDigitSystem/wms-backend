@@ -11,11 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
@@ -356,7 +358,8 @@ public class LocationMovementController extends BaseController {
 	public ResponseEntity<ResponseDTO> getFromQtyForLocationMovement(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
 			@RequestParam(required = false) String client, @RequestParam(required = false) String bin,
-			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo,@RequestParam(required = false) String batchNo) {
+			@RequestParam(required = false) String partNo, @RequestParam(required = false) String grnNo,
+			@RequestParam(required = false) String batchNo) {
 		String methodName = "getFromQtyForLocationMovement()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -364,7 +367,8 @@ public class LocationMovementController extends BaseController {
 		ResponseDTO responseDTO = null;
 		int fromQty = 0;
 		try {
-			fromQty = locationMovementService.getAvlQtyFromStockForLocationMovement(orgId, branch, branchCode, client, bin, partNo, grnNo, batchNo);
+			fromQty = locationMovementService.getAvlQtyFromStockForLocationMovement(orgId, branch, branchCode, client,
+					bin, partNo, grnNo, batchNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -381,4 +385,45 @@ public class LocationMovementController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+@PostMapping("/ExcelUploadForLocationMovement")
+	public ResponseEntity<ResponseDTO> ExcelUploadForLocationMovement(@RequestParam MultipartFile[] files,
+			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {
+		String methodName = "ExcelUploadForLocationMovement()";
+		int totalRows = 0;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		int successfulUploads = 0;
+		ResponseDTO responseDTO = null;
+		try {
+			// Call service method to process Excel upload
+			locationMovementService.ExcelUploadForLm(files, type, orgId, createdBy, customer,  client,  finYear,  branch,  branchCode, warehouse);
+
+			// Retrieve the counts after processing
+			totalRows = locationMovementService.getTotalRows(); // Get total rows processed
+			successfulUploads = locationMovementService.getSuccessfulUploads(); // Get successful uploads count
+			// Construct success response
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", totalRows);
+			responseObjectsMap.put("successfulUploads", successfulUploads);
+			Map<String, Object> paramObjectsMap = new HashMap<>();
+			paramObjectsMap.put("message", "Excel Upload For locationMovement successful");
+			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (Exception e) {
+
+			String errorMsg = e.getMessage();
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("errorMessage", errorMsg);
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For locationMovement Failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

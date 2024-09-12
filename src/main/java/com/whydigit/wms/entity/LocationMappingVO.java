@@ -33,32 +33,32 @@ public class LocationMappingVO {
 	private Long id;
 	private String branch;
 	private String warehouse;
-	@Column(name ="bintype")
+	@Column(name = "bintype")
 	private String binType;
-	@Column(name ="clienttype")
+	@Column(name = "clienttype")
 	private String clientType;
-	@Column(name ="rowno")
+	@Column(name = "rowno")
 	private String rowNo;
 	private String customer;
-	@Column(name ="levelno" )
+	@Column(name = "levelno")
 	private String levelNo;
 	private String client;
-	@Column(name ="createdby" )
+	@Column(name = "createdby")
 	private String createdBy;
-	@Column(name ="modifiedby")
+	@Column(name = "modifiedby")
 	private String updatedBy;
-    @Column(name ="orgid")
+	@Column(name = "orgid")
 	private Long orgId;
 	private boolean cancel;
-	@Column(name ="cancelremark")
+	@Column(name = "cancelremark")
 	private String cancelRemark;
 	private boolean active;
-	@Column(name ="branchcode")
+	@Column(name = "branchcode")
 	private String branchCode;
 
 	@JsonManagedReference
 	@OneToMany(mappedBy = "locationMappingVO", cascade = CascadeType.ALL)
-	private List<LocationMappingDetailsVO>locationMappingDetails;
+	private List<LocationMappingDetailsVO> locationMappingDetails;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 }

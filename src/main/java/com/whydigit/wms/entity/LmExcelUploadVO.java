@@ -3,7 +3,6 @@ package com.whydigit.wms.entity;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,57 +10,36 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.whydigit.wms.dto.CreatedUpdatedDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "boexcelupload")
+@Table(name = "lmexcelupload")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoExcelUploadVO {
+public class LmExcelUploadVO {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bogen")
-	@SequenceGenerator(name = "bogen", sequenceName = "boseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "excelboid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lmgen")
+	@SequenceGenerator(name = "lmgen", sequenceName = "lmseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "excellmid")
 	private Long id;
 
 	@Column(name = "orgid")
 	private Long orgId;
-	
-	
+
 	@Column(name = "type")
 	private String type;
+	
+	@Column(name = "frombin")
+	private String frombin;
 
-	@Column(name = "orderno")
-	private Integer orderNo;
+	@Column(name = "frombintype")
+	private String fromBinType;
 
-	@Column(name = "orderdate")
-	private LocalDate orderDate;
-
-	@Column(name = "invoiceno")
-	private String invoiceNo;
-
-	@Column(name = "invoicedate")
-	private LocalDate invoiceDate;
-
-	@Column(name = "referenceno")
-	private String referenceNo;
-
-	@Column(name = "referencedate")
-	private LocalDate referenceDate;
-
-	@Column(name = "buyername")
-	private String buyerName;
-
-	@Column(name = "billto")
-	private String billTo;
-
-	@Column(name = "shipto")
-	private String shipTo;
+	@Column(name = "binpick")
+	private String binPick;
 
 	@Column(name = "partno")
 	private String partNo;
@@ -69,20 +47,23 @@ public class BoExcelUploadVO {
 	@Column(name = "partdesc")
 	private String partDesc;
 
-	@Column(name = "batchno")
-	private String batchNo;
-
 	@Column(name = "sku")
 	private String sku;
 
-	@Column(name = "qty")
-	private Integer qty;
+	@Column(name = "grnno")
+	private String grnNo;
 
-	@Column(name = "unitrate")
-	private Double unitRate;
+	@Column(name = "grndate")
+	private LocalDate grnDate;
 
-	@Column(name = "remark")
-	private String remark;
+	@Column(name = "batchno")
+	private String batchNo;
+
+	@Column(name = "expdate")
+	private LocalDate expDate;
+
+	@Column(name = "entryno")
+	private String entryNo;
 	
 	@Column(name = "customer")
 	private String customer;
@@ -106,8 +87,4 @@ public class BoExcelUploadVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
-
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
 }
