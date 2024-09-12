@@ -81,12 +81,33 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 	Set<Object[]> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo);
 
-	@Query(nativeQuery = true, value = "SELECT bin, batch, partno, partdesc, status, COALESCE(SUM(sqty), 0) AS avlqty\r\n"
-			+ "FROM stockdetails\r\n" + "WHERE orgid = ?1\r\n" + "  AND branchcode = ?2\r\n"
-			+ "  AND warehouse = ?3\r\n" + "  AND customer = ?4\r\n" + "  AND client = ?5\r\n"
-			+ "  AND stockdate <= CURDATE()\r\n" + "  AND (partno = ?6 OR ?6 = 'ALL')\r\n"
-			+ "  AND (batch = ?7 OR ?7 = 'ALL')\r\n" + "  AND (bin = ?8 OR ?8 = 'ALL')\r\n"
-			+ "  AND (status = ?9 OR ?9 = 'ALL')\r\n" + "GROUP BY bin, batch, partno, partdesc, status")
+	@Query(nativeQuery = true, value = "SELECT bin, \r\n"
+			+ "       batch, \r\n"
+			+ "       partno, \r\n"
+			+ "       partdesc, \r\n"
+			+ "       CASE \r\n"
+			+ "           WHEN status = 'R' THEN 'Release'\r\n"
+			+ "           WHEN status = 'V' THEN 'Vas'\r\n"
+			+ "           WHEN status = 'H' THEN 'Hold'\r\n"
+			+ "           ELSE 'Defective'\r\n"
+			+ "       END AS status, \r\n"
+			+ "       COALESCE(SUM(sqty), 0) AS avlqty\r\n"
+			+ "FROM stockdetails\r\n"
+			+ "WHERE orgid = ?1\r\n"
+			+ "  AND branchcode = ?2\r\n"
+			+ "  AND warehouse = ?3\r\n"
+			+ "  AND customer = ?4\r\n"
+			+ "  AND client = ?5\r\n"
+			+ "  AND stockdate <= CURDATE()\r\n"
+			+ "  AND (partno = ?6 OR 'ALL' = ?6)\r\n"
+			+ "  AND (batch = ?7 OR 'ALL' = ?7)\r\n"
+			+ "  AND (bin = ?8 OR 'ALL' = ?8)\r\n"
+			+ "  AND (status = CASE WHEN 'Release' = ?9 THEN 'R'\r\n"
+			+ "                      WHEN 'Vas' = ?9 THEN 'V'\r\n"
+			+ "                      WHEN 'Hold' = ?9 THEN 'H'\r\n"
+			+ "                      else  'D'\r\n"
+			+ "                 END OR 'ALL' = ?9)\r\n"
+			+ "GROUP BY bin, batch, partno, partdesc, status having sum(sqty)>0")
 	Set<Object[]> findStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo, String batch, String bin, String status);
 
