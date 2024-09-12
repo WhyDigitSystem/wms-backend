@@ -147,6 +147,47 @@ Set<Object[]> getStockReportBinWise(Long orgId, String branchCode, String bin, S
 Set<Object[]> getStockReportBatchWise(Long orgId, String branchCode, String batch, String warehouse, String customer,
 		String client, String partNo);
 
+@Query(value="SELECT a.partno\r\n"
+		+ "FROM (\r\n"
+		+ "    SELECT b.partno, \r\n"
+		+ "           b.partdesc, \r\n"
+		+ "           b.batch, \r\n"
+		+ "           COALESCE(SUM(b.sqty), 0) AS avlqty \r\n"
+		+ "    FROM stockdetails b \r\n"
+		+ "    WHERE b.orgid =?1\r\n"
+		+ "      AND b.branchcode =?2\r\n"
+		+ "      AND b.warehouse =?3\r\n"
+		+ "      AND b.customer =?4\r\n"
+		+ "      AND b.client =?5\r\n"
+		+ "      AND b.stockdate <= DATE(NOW())\r\n"
+		+ "    GROUP BY b.partno, b.partdesc, b.batch\r\n"
+		+ "    HAVING avlqty > 0 order by  b.partno, b.batch, b.partdesc\r\n"
+		+ ") a\r\n"
+		+ "GROUP BY a.partno",nativeQuery = true)
+Set<Object[]> getPartNoFromBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
+		String client);
 
+
+@Query(nativeQuery = true,value="SELECT  a.batch\r\n"
+		+ "FROM (\r\n"
+		+ "    SELECT b.partno, \r\n"
+		+ "           b.partdesc, \r\n"
+		+ "           b.batch, \r\n"
+		+ "           COALESCE(SUM(b.sqty), 0) AS avlqty \r\n"
+		+ "    FROM stockdetails b \r\n"
+		+ "    WHERE b.orgid =?1 \r\n"
+		+ "      AND b.branchcode =?2 \r\n"
+		+ "      AND b.warehouse =?3\r\n"
+		+ "      AND b.customer =?4\r\n"
+		+ "      AND b.client =?5\r\n"
+		+ "      AND (b.partno =?6 OR 'ALL' =?6)  \r\n"
+		+ "      AND b.stockdate <= DATE(NOW()) \r\n"
+		+ "    GROUP BY b.partno, b.partdesc, b.batch \r\n"
+		+ "    HAVING avlqty > 0 \r\n"
+		+ "    ORDER BY b.partno, b.batch, b.partdesc\r\n"
+		+ ") a\r\n"
+		+ "GROUP BY a.batch")
+Set<Object[]> getBatchFromBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
+		String client,String partNo);
 
 }
