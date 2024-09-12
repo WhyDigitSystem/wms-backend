@@ -3,12 +3,15 @@ package com.whydigit.wms.entity;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +29,7 @@ public class BoExcelUploadVO {
 	@Column(name = "excelboid")
 	private Long id;
 
-	@Column(name = "orgId")
+	@Column(name = "orgid")
 	private Long orgId;
 	
 	
@@ -80,5 +83,31 @@ public class BoExcelUploadVO {
 
 	@Column(name = "remark")
 	private String remark;
+	
+	@Column(name = "customer")
+	private String customer;
+	@Column(name = "client")
+	private String client;
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "branch")
+	private String branch;
+	@Column(name = "branchcode")
+	private String branchCode;
+	@Column(name = "warehouse")
+	private String warehouse;
+	@Column(name = "createdby")
+	private String createdBy;
+	@Column(name = "modifiedby")
+	private String updatedBy;
+	@Column(name = "active")
+	private boolean active = true;
+	@Column(name = "cancel")
+	private boolean cancel = false;
+	@Column(name = "cancelremarks")
+	private String cancelRemarks;
 
+	@Embedded
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	
 }

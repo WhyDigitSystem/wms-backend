@@ -103,11 +103,6 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.base</groupId>
-            <artifactId>basesetup</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
 
         <!-- Apache POI for working with Excel files -->
         <dependency>
@@ -130,11 +125,12 @@
             <artifactId>xmlbeans</artifactId>
             <version>5.1.1</version>
         </dependency>
-        <dependency>
+        <!-- poi-scratchpad is not required unless specific features are needed -->
+        <!-- <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-scratchpad</artifactId>
             <version>${poi.version}</version>
-        </dependency>
+        </dependency> -->
     </dependencies>
 
     <build>
