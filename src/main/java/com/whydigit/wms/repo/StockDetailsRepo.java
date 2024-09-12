@@ -90,4 +90,45 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 	Set<Object[]> findStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo, String batch, String bin, String status);
 
+	@Query(nativeQuery = true, value = "select a.partno from(\r\n"
+			+ "SELECT b.bin, b.batch, b.partno, b.partdesc, b.status, COALESCE(SUM(b.sqty), 0) AS avlqty\r\n"
+			+ "FROM stockdetails b\r\n" + "WHERE b.orgid = ?1 \r\n" + "  AND b.branchcode = ?2 \r\n"
+			+ "  AND b.warehouse = ?3\r\n" + "  AND b.customer = ?4\r\n" + "  AND b.client = ?5\r\n"
+			+ "  AND b.stockdate <= CURDATE()\r\n"
+			+ "GROUP BY b.bin, b.batch, b.partno, b.partdesc, status having sum(b.sqty)>0)a group by a.partno")
+	Set<Object[]> findPartNoForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client);
+
+	@Query(nativeQuery = true, value = "select a.batch from(\r\n"
+			+ "SELECT b.bin, b.batch, b.partno, b.partdesc, b.status, COALESCE(SUM(b.sqty), 0) AS avlqty\r\n"
+			+ "FROM stockdetails b\r\n" + "WHERE b.orgid = ?1 \r\n" + "  AND b.branchcode = ?2 \r\n"
+			+ "  AND b.warehouse = ?3\r\n" + "  AND b.customer = ?4\r\n" + "  AND b.client = ?5\r\n"
+			+ "  AND (b.partno = ?6 OR 'ALL' = ?6) \r\n" + "  AND b.stockdate <= CURDATE()\r\n"
+			+ "GROUP BY b.bin, b.batch, b.partno, b.partdesc, b.status having sum(b.sqty)>0)a group by a.batch")
+	Set<Object[]> findBatchForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo);
+
+	@Query(nativeQuery = true, value = "select a.bin from(\r\n"
+			+ "SELECT b.bin, b.batch, b.partno, b.partdesc, b.status, COALESCE(SUM(b.sqty), 0) AS avlqty\r\n"
+			+ "FROM stockdetails b\r\n" + "WHERE b.orgid = ?1 \r\n" + "  AND b.branchcode = ?2 \r\n"
+			+ "  AND b.warehouse = ?3\r\n" + "  AND b.customer = ?4\r\n" + "  AND b.client = ?5\r\n"
+			+ "  AND (b.partno = ?6 OR 'ALL' = ?6) \r\n" + "  AND (b.batch = ?7 OR 'ALL' = ?7)\r\n"
+			+ "  AND b.stockdate <= CURDATE()\r\n"
+			+ "GROUP BY b.bin, b.batch, b.partno, b.partdesc, b.status having sum(b.sqty)>0)a group by a.bin")
+	Set<Object[]> findBinForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse, String customer,
+			String client, String partNo, String batch);
+
+	@Query(nativeQuery = true, value = "SELECT \r\n" + "    CASE \r\n"
+			+ "        WHEN a.status = 'R' THEN 'Release'\r\n" + "        WHEN a.status = 'V' THEN 'Vas'\r\n"
+			+ "        WHEN a.status = 'H' THEN 'Hold'\r\n" + "        else 'Defective'\r\n" + "    END AS status\r\n"
+			+ "FROM (\r\n"
+			+ "    SELECT b.bin, b.batch, b.partno, b.partdesc, b.status, COALESCE(SUM(b.sqty), 0) AS avlqty\r\n"
+			+ "    FROM stockdetails b\r\n" + "    WHERE b.orgid = ?1 \r\n" + "  AND b.branchcode = ?2 \r\n"
+			+ "  AND b.warehouse = ?3\r\n" + "  AND b.customer = ?4\r\n" + "  AND b.client = ?5\r\n"
+			+ "  AND (b.partno = ?6 OR 'ALL' = ?6) \r\n" + "  AND (b.batch = ?7 OR 'ALL' = ?7)\r\n"
+			+ "  and (b.bin=?8 or 'ALL'=?8)\r\n" + "      AND b.stockdate <= CURDATE()\r\n"
+			+ "    GROUP BY b.bin, b.batch, b.partno, b.partdesc, b.status\r\n" + "    HAVING SUM(b.sqty) > 0\r\n"
+			+ ") a\r\n" + "GROUP BY a.status")
+	Set<Object[]> findStatusForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo, String batch, String bin);
 }

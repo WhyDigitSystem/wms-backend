@@ -63,5 +63,72 @@ public class StockReportServiceImpl implements StockReportService {
 		}
 		return stock;
 	}
+	
+	public List<Map<String, Object>> getPartNoForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client) {
+		Set<Object[]> getPartNoReport = stockDetailsRepo.findPartNoForStockReportBinAndBatchWise(orgId, branchCode, warehouse,
+				customer, client);
+		return partNoStockReport(getPartNoReport);
+	}
 
+	private List<Map<String, Object>> partNoStockReport(Set<Object[]> getPartNoReport) {
+		List<Map<String, Object>> stock = new ArrayList<>();
+		for (Object[] st : getPartNoReport) {
+			Map<String, Object> details = new HashMap<>();
+			details.put("partNo", st[0] != null ? st[0].toString() : "");
+			stock.add(details);
+		}
+		return stock;
+	}
+	
+	public List<Map<String, Object>> getBatchForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client,String partNo) {
+		Set<Object[]> getBatchReport = stockDetailsRepo.findBatchForStockReportBinAndBatchWise(orgId, branchCode, warehouse,
+				customer, client,partNo);
+		return batchStockReport(getBatchReport);
+	}
+
+	private List<Map<String, Object>> batchStockReport(Set<Object[]> getBatchReport) {
+		List<Map<String, Object>> stock = new ArrayList<>();
+		for (Object[] st : getBatchReport) {
+			Map<String, Object> details = new HashMap<>();
+			details.put("batch", st[0] != null ? st[0].toString() : "");
+			stock.add(details);
+		}
+		return stock;
+	}
+	
+	public List<Map<String, Object>> getBinForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client,String partNo,String batch) {
+		Set<Object[]> getBinReport = stockDetailsRepo.findBinForStockReportBinAndBatchWise(orgId, branchCode, warehouse,
+				customer, client,partNo,batch);
+		return binStockReport(getBinReport);
+	}
+
+	private List<Map<String, Object>> binStockReport(Set<Object[]> getBinReport) {
+		List<Map<String, Object>> stock = new ArrayList<>();
+		for (Object[] st : getBinReport) {
+			Map<String, Object> details = new HashMap<>();
+			details.put("bin", st[0] != null ? st[0].toString() : "");
+			stock.add(details);
+		}
+		return stock;
+	}
+	
+	public List<Map<String, Object>> getStatusForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client,String partNo,String batch,String bin) {
+		Set<Object[]> getStatusReport = stockDetailsRepo.findStatusForStockReportBinAndBatchWise(orgId, branchCode, warehouse,
+				customer, client,partNo,batch,bin);
+		return statusStockReport(getStatusReport);
+	}
+
+	private List<Map<String, Object>> statusStockReport(Set<Object[]> getStatusReport) {
+		List<Map<String, Object>> stock = new ArrayList<>();
+		for (Object[] st : getStatusReport) {
+			Map<String, Object> details = new HashMap<>();
+			details.put("status", st[0] != null ? st[0].toString() : "");
+			stock.add(details);
+		}
+		return stock;
+	}
 }
