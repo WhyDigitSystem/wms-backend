@@ -62,7 +62,7 @@ public class SalesReturnDetailsVO {
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "qcflag")
-	private boolean qcFlag;
+	private String qcFlag;
 	
 	@ManyToOne
 	@JsonBackReference

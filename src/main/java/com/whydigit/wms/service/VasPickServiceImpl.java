@@ -133,7 +133,6 @@ public class VasPickServiceImpl implements VasPickService {
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsVOFrom.setStockDate(detailsVO.getStockDate());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
 
@@ -177,7 +176,6 @@ public class VasPickServiceImpl implements VasPickService {
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsVOFrom.setStockDate(LocalDate.now());
 					stockDetailsRepo.save(stockDetailsVOFrom);
 				}
 			}

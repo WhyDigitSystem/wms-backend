@@ -192,7 +192,6 @@ public class StockRestateServiceImpl implements StockRestateService {
 			stockDetailsVO.setStatus(restateVO.getTransferFromFlag());
 			stockDetailsVO.setExpDate(restateDetailsVO.getExpDate());
 			stockDetailsVO.setCore(restateDetailsVO.getFromCore());
-			stockDetailsVO.setStockDate(LocalDate.now());
 			stockDetailsVO.setSQty(restateDetailsVO.getToQty()*-1);
 			stockDetailsVO.setSourceScreenCode(restateVO.getScreenCode());
 			stockDetailsVO.setSourceScreenName(restateVO.getScreenName());
@@ -240,7 +239,6 @@ public class StockRestateServiceImpl implements StockRestateService {
 			stockDetailsVO.setStatus(restateVO.getTransferToFlag());
 			stockDetailsVO.setExpDate(restateDetailsVO.getExpDate());
 			stockDetailsVO.setCore(restateDetailsVO.getToCore());
-			stockDetailsVO.setStockDate(LocalDate.now());
 			stockDetailsVO.setSQty(restateDetailsVO.getToQty());
 			stockDetailsVO.setSourceScreenCode(restateVO.getScreenCode());
 			stockDetailsVO.setSourceScreenName(restateVO.getScreenName());

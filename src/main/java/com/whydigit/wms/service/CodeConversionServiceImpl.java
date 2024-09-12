@@ -145,17 +145,17 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(codeConversionVO.getOrgId(),
 							codeConversionVO.getClient(), codeConversionDetailsVO.getPartNo()));
 					stockDetailsVOFrom.setSSku(codeConversionDetailsVO.getSku());
-					stockDetailsVOFrom.setStockDate(codeConversionDetailsVO.getStockDate());
 					stockDetailsVOFrom.setPartno(codeConversionDetailsVO.getPartNo());
 					stockDetailsVOFrom.setPartDesc(codeConversionDetailsVO.getPartDesc());
 					stockDetailsVOFrom.setGrnNo(codeConversionDetailsVO.getGrnNo());
 					stockDetailsVOFrom.setGrnDate(codeConversionDetailsVO.getGrnDate());
-					stockDetailsVOFrom.setStatus(codeConversionDetailsVO.getStatus());
+					stockDetailsVOFrom.setStatus("R");
 					stockDetailsVOFrom.setSku(codeConversionDetailsVO.getSku());
 					stockDetailsVOFrom.setBinType(codeConversionDetailsVO.getBinType());
 					stockDetailsVOFrom.setBatch(codeConversionDetailsVO.getBatchNo());
 					stockDetailsVOFrom.setBatchDate(codeConversionDetailsVO.getBatchDate());
 					stockDetailsVOFrom.setLotNo(codeConversionDetailsVO.getLotNo());
+					stockDetailsVOFrom.setQcFlag("T");
 					stockDetailsVOFrom.setBin(codeConversionDetailsVO.getBin());
 					stockDetailsVOFrom.setSQty(codeConversionDetailsVO.getActualQty() * -1); // NEGATIVE QUANTITY
 					stockDetailsVOFrom.setRate(codeConversionDetailsVO.getRate());
@@ -186,21 +186,29 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 					stockDetailsVOTo.setPcKey(materialRepo.getParentChildKey(codeConversionVO.getOrgId(),
 							codeConversionVO.getClient(), codeConversionDetailsVO.getPartNo()));
 					stockDetailsVOTo.setSSku(codeConversionDetailsVO.getSku());
-					stockDetailsVOTo.setStockDate(codeConversionDetailsVO.getStockDate());
 					stockDetailsVOTo.setSQty(codeConversionDetailsVO.getConvertQty());
 					stockDetailsVOTo.setRate(codeConversionDetailsVO.getCRate());
 					stockDetailsVOTo.setPartno(codeConversionDetailsVO.getCPartNo());
 					stockDetailsVOTo.setPartDesc(codeConversionDetailsVO.getCPartDesc());
 					stockDetailsVOTo.setGrnNo(codeConversionDetailsVO.getGrnNo());
 					stockDetailsVOTo.setGrnDate(codeConversionDetailsVO.getGrnDate());
-					stockDetailsVOTo.setStatus(codeConversionDetailsVO.getStatus());
 					stockDetailsVOTo.setSku(codeConversionDetailsVO.getCSku());
+					if(!"DEFECTIVE".equals(codeConversionDetailsVO.getCbin()))
+					{
+					stockDetailsVOTo.setQcFlag("T");
+					stockDetailsVOTo.setStatus("R");
+					}
+					else
+					{
+						stockDetailsVOTo.setQcFlag("F");
+						stockDetailsVOTo.setStatus("D");
+					}
+					
 					stockDetailsVOTo.setBinType(codeConversionDetailsVO.getCbinType());
 					stockDetailsVOTo.setBatch(codeConversionDetailsVO.getCBatchNo());
 					stockDetailsVOTo.setBatchDate(codeConversionDetailsVO.getCBatchDate());
 					stockDetailsVOTo.setLotNo(codeConversionDetailsVO.getCLotNo());
 					stockDetailsVOTo.setBin(codeConversionDetailsVO.getCbin());
-					stockDetailsVOTo.setSQty(codeConversionDetailsVO.getActualQty()); // positive QUANTITY
 					stockDetailsRepo.save(stockDetailsVOTo);
 				}
 			}
@@ -236,7 +244,6 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				codeConversionDetailsVO.setPartDesc(codeConversionDetailsDTO.getPartDesc());
 				codeConversionDetailsVO.setGrnNo(codeConversionDetailsDTO.getGrnNo());
 				codeConversionDetailsVO.setGrnDate(codeConversionDetailsDTO.getGrnDate());
-				codeConversionDetailsVO.setStatus(codeConversionDetailsDTO.getStatus());
 				codeConversionDetailsVO.setSku(codeConversionDetailsDTO.getSku());
 				codeConversionDetailsVO.setBinType(codeConversionDetailsDTO.getBinType());
 				codeConversionDetailsVO.setBatchNo(codeConversionDetailsDTO.getBatchNo());
@@ -251,28 +258,21 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				codeConversionDetailsVO.setCPartNo(codeConversionDetailsDTO.getCPartNo());
 				codeConversionDetailsVO.setCPartDesc(codeConversionDetailsDTO.getCPartDesc());
 				codeConversionDetailsVO.setCSku(codeConversionDetailsDTO.getCSku());
-				codeConversionDetailsVO.setCBatchNo(codeConversionDetailsDTO.getCBatchNo());
-				codeConversionDetailsVO.setCBatchDate(codeConversionDetailsDTO.getCBatchDate());
+				codeConversionDetailsVO.setCBatchNo(codeConversionDetailsDTO.getBatchNo());
+				codeConversionDetailsVO.setCBatchDate(codeConversionDetailsDTO.getBatchDate());
 				codeConversionDetailsVO.setCLotNo(codeConversionDetailsDTO.getCLotNo());
 				codeConversionDetailsVO.setCbin(codeConversionDetailsDTO.getCbin());
 				codeConversionDetailsVO.setCbinType(codeConversionDetailsDTO.getCbinType());
 				codeConversionDetailsVO.setRemarks(codeConversionDetailsDTO.getRemarks());
 				codeConversionDetailsVO.setBinClass(codeConversionDetailsDTO.getBinClass());
 				codeConversionDetailsVO.setCellType(codeConversionDetailsDTO.getCellType());
-				codeConversionDetailsVO.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				codeConversionDetailsVO.setCore(codeConversionDetailsDTO.getCore());
 				codeConversionDetailsVO.setExpDate(codeConversionDetailsDTO.getExpDate());
-				codeConversionDetailsVO.setPckey(codeConversionDetailsDTO.getPckey());
-				codeConversionDetailsVO.setSsku(codeConversionDetailsDTO.getSsku());
-				codeConversionDetailsVO.setStockDate(codeConversionDetailsDTO.getStockDate());
 				codeConversionDetailsVO.setCBinClass(codeConversionDetailsDTO.getCBinClass());
 				codeConversionDetailsVO.setCCellType(codeConversionDetailsDTO.getCCellType());
-				codeConversionDetailsVO.setCClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 				codeConversionDetailsVO.setCCore(codeConversionDetailsDTO.getCCore());
-				codeConversionDetailsVO.setCExpDate(codeConversionDetailsDTO.getCExpDate());
-				codeConversionDetailsVO.setCStockDate(codeConversionDetailsDTO.getCStockDate());
-
-				
+				codeConversionDetailsVO.setCExpDate(codeConversionDetailsDTO.getExpDate());
+			
 				codeConversionDetailsVO.setCodeConversionVO(codeConversionVO);
 				codeConversionDetailsVOs.add(codeConversionDetailsVO);
 
@@ -411,7 +411,6 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 				part.put("batchNo", fs[0] != null ? fs[0].toString() : "");
 				part.put("batchDate", fs[1] != null ? fs[1].toString() : "");
 				part.put("expDate", fs[2] != null ? fs[2].toString() : "");
-				part.put("lotNo", fs[3] != null ? fs[3].toString() : "");
 				details1.add(part);
 			}
 			return details1;

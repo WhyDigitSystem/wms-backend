@@ -386,52 +386,7 @@ public class LocationMovementController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	@PostMapping("/ExcelUploadForLocationMovement")
-//	public ResponseEntity<ResponseDTO> ExcelUploadForLocationMovement(@RequestParam MultipartFile[] files,
-//			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
-//			@RequestParam(required = false) String createdBy,@RequestParam(required = false) String customer, @RequestParam(required = false)  String client, @RequestParam(required = false)  String finYear, 
-//			 @RequestParam(required = false) String branch, @RequestParam(required = false)  String branchCode, @RequestParam(required = false)  String warehouse) {
-//		String methodName = "ExcelUploadForLocationMovement()";
-//		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-//		String errorMsg = null;
-//		Map<String, Object> responseObjectsMap = new HashMap<>();
-//		ResponseDTO responseDTO = null;
-//		int totalRows = 0;
-//		int successfulUploads = 0;
-//
-//		try {
-//			// Call service method to process Excel upload
-//			locationMovementService.ExcelUploadForLm(files, type, orgId, createdBy, customer,  client, finYear,  branch, branchCode,  warehouse);
-//
-//			// Retrieve the counts after processing
-//			totalRows = locationMovementService.getTotalRows(); // Get total rows processed
-//			successfulUploads = locationMovementService.getSuccessfulUploads(); // Get successful uploads count
-//
-//			// Construct success response
-//			responseObjectsMap.put("statusFlag", "Ok");
-//			responseObjectsMap.put("status", true);
-//			responseObjectsMap.put("totalRows", totalRows);
-//			responseObjectsMap.put("successfulUploads", successfulUploads);
-//			Map<String, Object> paramObjectsMap = new HashMap<>();
-//			paramObjectsMap.put("message", "Excel Upload For Location Movement successful");
-//			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
-//			responseDTO = createServiceResponse(responseObjectsMap);
-//
-//		} catch (Exception e) {
-//			errorMsg = e.getMessage();
-//			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
-//			responseObjectsMap.put("statusFlag", "Error");
-//			responseObjectsMap.put("status", false);
-//			responseObjectsMap.put("errorMessage", errorMsg);
-//
-//			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Location Movement Failed",
-//					errorMsg);
-//		}
-//		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-//		return ResponseEntity.ok().body(responseDTO);
-//	}
-
-	@PostMapping("/ExcelUploadForLocationMovement")
+@PostMapping("/ExcelUploadForLocationMovement")
 	public ResponseEntity<ResponseDTO> ExcelUploadForLocationMovement(@RequestParam MultipartFile[] files,
 			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {

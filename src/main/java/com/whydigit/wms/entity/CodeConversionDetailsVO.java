@@ -39,8 +39,6 @@ public class CodeConversionDetailsVO {
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "status")
-	private String status ="R";
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "bintype")
@@ -82,23 +80,15 @@ public class CodeConversionDetailsVO {
 	private String cbinType;
 	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "qcflag")
-	private String qcFlag;
 	
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "celltype")
 	private String cellType;
-	@Column(name = "clientcode")
-	private String clientCode;	
 	@Column(name = "core")
 	private String core;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "pckey")
-	private String pckey;
-	@Column(name = "ssku")
-	private String ssku;
 	@Column(name = "stockdate")
 	private LocalDate stockDate;
 	
@@ -106,8 +96,6 @@ public class CodeConversionDetailsVO {
 	private String cBinClass;
 	@Column(name = "ccelltype")
 	private String cCellType;
-	@Column(name = "cclientcode")
-	private String cClientCode;
 	@Column(name = "ccore")
 	private String cCore;
 	@Column(name = "cexpdate")

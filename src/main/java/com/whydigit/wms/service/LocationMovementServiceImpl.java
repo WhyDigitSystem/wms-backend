@@ -16,7 +16,9 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+
 import org.apache.poi.ss.usermodel.DateUtil;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -30,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.LocationMovementDetailsDTO;
+import com.whydigit.wms.entity.BoExcelUploadVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.LmExcelUploadVO;
 import com.whydigit.wms.entity.LocationMovementDetailsVO;
@@ -163,7 +166,6 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOFrom.setClient(savedLocationMovementVO.getClient());
 				stockDetailsVOFrom.setWarehouse(savedLocationMovementVO.getWarehouse());
 				stockDetailsVOFrom.setFinYear(savedLocationMovementVO.getFinYear());
-				stockDetailsVOFrom.setStockDate(LocalDate.now());
 				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
 				stockDetailsVOFrom.setStatus("R");
 				stockDetailsVOFrom.setSourceScreenName(savedLocationMovementVO.getScreenName());
@@ -192,7 +194,6 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 				stockDetailsVOTo.setBatch(detailsVO.getBatchNo());
 				stockDetailsVOTo.setSourceId(detailsVO.getId());
 				stockDetailsVOTo.setSku(detailsVO.getSku());
-				stockDetailsVOTo.setStockDate(LocalDate.now());
 				stockDetailsVOTo.setBatchDate(detailsVO.getBatchDate());
 				stockDetailsVOTo.setExpDate(detailsVO.getExpDate());
 				stockDetailsVOTo.setCore(detailsVO.getToCore());
@@ -883,5 +884,183 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 	        return successfulUploads; // Return the correct value
 	    }
 	
+
+	@Transactional
+	@Override
+	public void ExcelUploadForLm(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy)
+			throws ApplicationException {
+		List<LmExcelUploadVO> lmExcelUploadVOsToSave = new ArrayList<>();
+		int totalRows = 0; // Reset totalRows for each execution
+		int successfulUploads = 0; // Reset successfulUploads for each execution
+
+		for (MultipartFile file : files) {
+			try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+				Sheet sheet = workbook.getSheetAt(0); // Assuming only one sheet
+				List<String> errorMessages = new ArrayList<>();
+				System.out.println("Processing file: " + file.getOriginalFilename()); // Debug statement
+
+				Row headerRow = sheet.getRow(0);
+				if (!isHeaderValid(headerRow)) {
+					throw new ApplicationException("Invalid Excel format. Please refer to the sample file.");
+				}
+
+				// Check all rows for validity first
+				for (Row row : sheet) {
+					if (row.getRowNum() == 0 || isRowEmpty(row)) {
+						continue; // Skip header row and empty rows
+					}
+
+					totalRows++; // Increment totalRows
+					System.out.println("Validating row: " + (row.getRowNum() + 1)); // Debug statement
+
+					// Retrieve cell values based on the provided order
+					String type1 = getStringCellValue(row.getCell(0));
+					String fromLocation = getStringCellValue(row.getCell(1));
+					String fromLocationType = getStringCellValue(row.getCell(2));
+					String locationPick = getStringCellValue(row.getCell(3));
+					String partNo = getStringCellValue(row.getCell(4));
+					String partDesc = getStringCellValue(row.getCell(5));
+					String sku = getStringCellValue(row.getCell(6));
+					String grnNo = getStringCellValue(row.getCell(7));
+					LocalDate grnDate = parseDate(getStringCellValue(row.getCell(8)));
+					String batchNo = getStringCellValue(row.getCell(9));
+					LocalDate expDate = parseDate(getStringCellValue(row.getCell(10)));
+					String entryNo = getStringCellValue(row.getCell(11));
+
+//	                // Validate each row
+//	                try {
+//	                    if (lmExcelUploadRepo.existsByMovementNoAndOrgId(movementNo, orgId)) {
+//	                        errorMessages.add("Movement No " + movementNo + " already exists for this organization. Row: " + (row.getRowNum() + 1));
+//	                    }
+//	                    // Add more validation as needed
+//	                } catch (Exception e) {
+//	                    errorMessages.add("Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+//	                }
+				}
+
+				// If there are errors, throw ApplicationException and do not save any rows
+				if (!errorMessages.isEmpty()) {
+					throw new ApplicationException(
+							"Excel upload validation failed. Errors: " + String.join(", ", errorMessages));
+				}
+
+				// No errors found, now save all rows
+				for (Row row : sheet) {
+					if (row.getRowNum() == 0 || isRowEmpty(row)) {
+						continue; // Skip header row and empty rows
+					}
+
+					System.out.println("Saving row: " + (row.getRowNum() + 1)); // Debug statement
+
+					// Retrieve cell values
+					String type1 = getStringCellValue(row.getCell(0));
+					String fromLocation = getStringCellValue(row.getCell(1));
+					String fromLocationType = getStringCellValue(row.getCell(2));
+					String locationPick = getStringCellValue(row.getCell(3));
+					String partNo = getStringCellValue(row.getCell(4));
+					String partDesc = getStringCellValue(row.getCell(5));
+					String sku = getStringCellValue(row.getCell(6));
+					String grnNo = getStringCellValue(row.getCell(7));
+					LocalDate grnDate = parseDate(getStringCellValue(row.getCell(8)));
+					String batchNo = getStringCellValue(row.getCell(9));
+					LocalDate expDate = parseDate(getStringCellValue(row.getCell(10)));
+					String entryNo = getStringCellValue(row.getCell(11));
+
+					// Create LmExcelUploadVO and add to list for batch saving
+					LmExcelUploadVO lmExcelUploadVO = new LmExcelUploadVO();
+					lmExcelUploadVO.setType(type1);
+					lmExcelUploadVO.setFromLocation(fromLocation);
+					lmExcelUploadVO.setFromLocationType(fromLocationType);
+					lmExcelUploadVO.setLocationPick(locationPick);
+					lmExcelUploadVO.setPartNo(partNo);
+					lmExcelUploadVO.setPartDesc(partDesc);
+					lmExcelUploadVO.setSku(sku);
+					lmExcelUploadVO.setGrnNo(grnNo);
+					lmExcelUploadVO.setGrnDate(grnDate);
+					lmExcelUploadVO.setBatchNo(batchNo);
+					lmExcelUploadVO.setExpDate(expDate);
+					lmExcelUploadVO.setEntryNo(entryNo);
+
+					lmExcelUploadVOsToSave.add(lmExcelUploadVO);
+					successfulUploads++; // Increment successfulUploads
+				}
+			} catch (IOException e) {
+				throw new ApplicationException(
+						"Failed to process file: " + file.getOriginalFilename() + " - " + e.getMessage());
+			}
+		}
+	}
+
+	private Double parseDouble(String stringCellValue) {
+		// Implement your parsing logic here
+		return null;
+	}
+
+	private LocalDate parseDate(String stringCellValue) {
+		// Implement your parsing logic here
+		return null;
+	}
+
+	private Integer parseInteger(String stringCellValue) {
+		// Implement your parsing logic here
+		return null;
+	}
+
+	private boolean isRowEmpty(Row row) {
+		for (Cell cell : row) {
+			if (cell.getCellType() != CellType.BLANK) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean isHeaderValid(Row headerRow) {
+		if (headerRow == null) {
+			return false;
+		}
+		int expectedColumnCount = 16;
+		if (headerRow.getPhysicalNumberOfCells() != expectedColumnCount) {
+			return false;
+		}
+		return "type".equalsIgnoreCase(getStringCellValue(headerRow.getCell(0)))
+				&& "from location".equalsIgnoreCase(getStringCellValue(headerRow.getCell(1)))
+				&& "from location type".equalsIgnoreCase(getStringCellValue(headerRow.getCell(2)))
+				&& "location pick".equalsIgnoreCase(getStringCellValue(headerRow.getCell(3)))
+				&& "part no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(4)))
+				&& "part desc".equalsIgnoreCase(getStringCellValue(headerRow.getCell(5)))
+				&& "sku".equalsIgnoreCase(getStringCellValue(headerRow.getCell(6)))
+				&& "grn no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(7)))
+				&& "grn date".equalsIgnoreCase(getStringCellValue(headerRow.getCell(8)))
+				&& "batch no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(9)))
+				&& "exp date".equalsIgnoreCase(getStringCellValue(headerRow.getCell(10)))
+				&& "entry no".equalsIgnoreCase(getStringCellValue(headerRow.getCell(11)));
+	}
+
+	private String getStringCellValue(Cell cell) {
+		if (cell == null) {
+			return "";
+		}
+		switch (cell.getCellType()) {
+		case STRING:
+			return cell.getStringCellValue();
+		case NUMERIC:
+			return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
+		case BOOLEAN:
+			return String.valueOf(cell.getBooleanCellValue());
+		case FORMULA:
+			return cell.getCellFormula();
+		default:
+			return "";
+		}
+	}
+
+	public int getTotalRows() {
+		return getTotalRows();
+	}
+
+	public int getSuccessfulUploads() {
+		return getSuccessfulUploads();
+	}
 
 }

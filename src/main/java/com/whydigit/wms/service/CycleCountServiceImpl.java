@@ -153,7 +153,6 @@ public class CycleCountServiceImpl implements CycleCountService {
 	            stockDetailsVOFrom.setSourceScreenCode(savedCycleCount.getScreenCode());
 	            stockDetailsVOFrom.setSourceScreenName(savedCycleCount.getScreenName());
 	            stockDetailsVOFrom.setSourceId(detailsVO.getId());
-	            stockDetailsVOFrom.setStockDate(LocalDate.now());
 	            stockDetailsRepo.save(stockDetailsVOFrom);
 	        }
 	    }
