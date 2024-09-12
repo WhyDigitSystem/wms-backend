@@ -41,4 +41,10 @@ public interface StockReportService {
 	List<Map<String, Object>> getBatchNoBinWise(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo);
 
+    
+	List<Map<String, Object>> getPartNoFromBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
+			String client);
+	List<Map<String, Object>> getBatchFromBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
+			String client,String partNo);
+
 }

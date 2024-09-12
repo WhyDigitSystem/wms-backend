@@ -47,9 +47,13 @@ public interface LocationMovementService {
 	List<Map<String, Object>> getBatchNoAndBatchDateFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client, String bin, String partNo, String grnno);
 
-	void ExcelUploadForLm(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy) throws ApplicationException;
 
 	int getTotalRows();
 
 	int getSuccessfulUploads();
+
+	void ExcelUploadForLm(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
+			String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException;
+
+	
 }

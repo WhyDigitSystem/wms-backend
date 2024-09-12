@@ -182,6 +182,47 @@ public class StockReportServiceImpl implements StockReportService {
 		return getStockLedgerReport(getLedgerDetails);
 	}
 
+
+	@Override
+	public List<Map<String, Object>> getPartNoFromBatchWiseReport(Long orgId, String branchCode, String warehouse,
+			String customer, String client) {
+		Set<Object[]>getDetails=stockDetailsRepo. getPartNoFromBatchWiseReport( orgId,  branchCode, warehouse,
+				 customer,  client);
+		return getPartNoFromBatchWise(getDetails);
+	}
+
+	private List<Map<String, Object>> getPartNoFromBatchWise(Set<Object[]> getDetails) {
+		List<Map<String, Object>>stock=new ArrayList<>();
+		for(Object[] st:getDetails)
+		{
+			Map<String,Object>stockDetails=new HashMap<>();
+			stockDetails.put("partNo", st[0] != null ? st[0].toString() : "");
+			stock.add(stockDetails);
+		}
+		return stock;
+	}
+
+	@Override
+	public List<Map<String, Object>> getBatchFromBatchWiseReport(Long orgId, String branchCode, String warehouse,
+			String customer, String client, String partNo) {
+		Set<Object[]>getDetails=stockDetailsRepo.getBatchFromBatchWiseReport( orgId,  branchCode, warehouse,
+				 customer,client,partNo);
+		return getBatchFromBatchWise(getDetails);
+	}
+
+	private List<Map<String, Object>> getBatchFromBatchWise(Set<Object[]> getDetails) {
+		List<Map<String, Object>>stock=new ArrayList<>();
+		for(Object[] st:getDetails)
+		{
+			Map<String,Object>stockDetails=new HashMap<>();
+			stockDetails.put("batch", st[0] != null ? st[0].toString() : "");
+			stock.add(stockDetails);
+		}
+		return stock;
+	}
+
+
+
 	private List<Map<String, Object>> getStockLedgerReport(Set<Object[]> getLedgerDetails) {
 		List<Map<String, Object>> stock = new ArrayList<>();
 		for (Object[] st : getLedgerDetails) {

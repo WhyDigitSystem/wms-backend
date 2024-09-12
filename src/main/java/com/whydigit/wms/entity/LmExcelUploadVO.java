@@ -32,14 +32,14 @@ public class LmExcelUploadVO {
 	@Column(name = "type")
 	private String type;
 	
-	@Column(name = "fromlocation")
-	private String fromLocation;
+	@Column(name = "frombin")
+	private String frombin;
 
-	@Column(name = "fromlocationtype")
-	private String fromLocationType;
+	@Column(name = "frombintype")
+	private String fromBinType;
 
-	@Column(name = "locationpick")
-	private String locationPick;
+	@Column(name = "binpick")
+	private String binPick;
 
 	@Column(name = "partno")
 	private String partNo;
@@ -64,5 +64,27 @@ public class LmExcelUploadVO {
 
 	@Column(name = "entryno")
 	private String entryNo;
-
+	
+	@Column(name = "customer")
+	private String customer;
+	@Column(name = "client")
+	private String client;
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "branch")
+	private String branch;
+	@Column(name = "branchcode")
+	private String branchCode;
+	@Column(name = "warehouse")
+	private String warehouse;
+	@Column(name = "createdby")
+	private String createdBy;
+	@Column(name = "modifiedby")
+	private String updatedBy;
+	@Column(name = "active")
+	private boolean active = true;
+	@Column(name = "cancel")
+	private boolean cancel = false;
+	@Column(name = "cancelremarks")
+	private String cancelRemarks;
 }
