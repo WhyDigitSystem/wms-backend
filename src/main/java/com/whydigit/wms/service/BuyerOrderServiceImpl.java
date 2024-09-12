@@ -65,6 +65,11 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	// BuyerOrder
 
+//	private LocalDate parseDate(String dateStr) {
+//	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy", Locale.ENGLISH); // Define expected input format
+//	    return LocalDate.parse(dateStr, formatter); // Parse date string into LocalDate
+//	}
+	
 	@Override
 	public Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException {
 		String screenCode = "BO";
@@ -340,6 +345,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	                    totalRows++; // Increment totalRows
 	                    System.out.println("Validating row: " + (row.getRowNum() + 1)); // Debug statement
+	                    
+	                    
 
 	                    try {
 	                        // Retrieve cell values based on the provided order
@@ -450,12 +457,10 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 	            }
 	        }
 	    }
-
 	    
-
 	    private LocalDate parseDate(String stringCellValue) {
 	        try {
-	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 	            return LocalDate.parse(stringCellValue, formatter);
 	        } catch (Exception e) {
 	            return null;

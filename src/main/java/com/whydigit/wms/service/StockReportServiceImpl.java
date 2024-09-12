@@ -269,7 +269,7 @@ public class StockReportServiceImpl implements StockReportService {
 		List<Map<String, Object>> stock = new ArrayList<>();
 		for (Object[] st : getDetails) {
 			Map<String, Object> stockDetails = new HashMap<>();
-			stockDetails.put("BatchNo", st[0] != null ? st[0].toString() : "");
+			stockDetails.put("Bin", st[0] != null ? st[0].toString() : "");
 			stock.add(stockDetails);
 		}
 		return stock;
