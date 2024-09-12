@@ -115,6 +115,7 @@ public class StockReportServiceImpl implements StockReportService {
 		return getStockLedgerReport(getLedgerDetails);
 	}
 
+
 	private List<Map<String, Object>> getStockLedgerReport(Set<Object[]> getLedgerDetails) {
 		List<Map<String, Object>>stock=new ArrayList<>();
 		for(Object[] st:getLedgerDetails)
@@ -128,9 +129,48 @@ public class StockReportServiceImpl implements StockReportService {
 			stockDetails.put("rQty", st[5] != null ? Integer.parseInt(st[5].toString()) : 0);
 			stockDetails.put("qQty", st[6] != null ? Integer.parseInt(st[6].toString()) : 0);
 			stockDetails.put("cQty", st[7] != null ? Integer.parseInt(st[7].toString()) : 0);
+      stock.add(stockDetails);
+		}
+		return stock;
+	}
+
+	@Override
+	public List<Map<String, Object>> getStockPartNoBatchWise(Long orgId, String branchCode, String warehouse,
+			String customer, String client) {
+		Set<Object[]>getDetails=stockDetailsRepo.getStockPartNoBatch(orgId, branchCode,warehouse, customer, client);
+		return getStockPartNo(getDetails);
+	}
+
+	private List<Map<String, Object>> getStockPartNo(Set<Object[]> getDetails) {
+		List<Map<String, Object>>stock=new ArrayList<>();
+		for(Object[] st:getDetails)
+		{
+			Map<String,Object>stockDetails=new HashMap<>();
+			stockDetails.put("partNo", st[0] != null ? st[0].toString() : "");
 			stock.add(stockDetails);
 		}
 		return stock;
 	}
 
+
+	@Override
+	public List<Map<String, Object>> getBatchNoBinWise(Long orgId, String branchCode, String warehouse, String customer,
+			String client, String partNo) {
+		Set<Object[]>getDetails=stockDetailsRepo.getBatchNoBin(orgId, branchCode,warehouse, customer, client,partNo);
+		return getBatchNo(getDetails);
+	}
+
+	private List<Map<String, Object>> getBatchNo(Set<Object[]> getDetails) {
+		List<Map<String, Object>>stock=new ArrayList<>();
+		for(Object[] st:getDetails)
+		{
+			Map<String,Object>stockDetails=new HashMap<>();
+			stockDetails.put("BatchNo", st[0] != null ? st[0].toString() : "");
+			stock.add(stockDetails);
+		}
+		return stock;
+	}
 }
+
+
+

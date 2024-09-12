@@ -22,5 +22,12 @@ public interface StockReportService {
 
 	List<Map<String, Object>> getStockLedger(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String startDate, String endDate, String partNo);
+
+	List<Map<String, Object>> getStockPartNoBatchWise(Long orgId, String branchCode, String warehouse, String customer,
+			String client);
+
+	List<Map<String, Object>> getBatchNoBinWise(Long orgId, String branchCode, String warehouse, String customer,
+			String client, String partNo);
+
     
 }
