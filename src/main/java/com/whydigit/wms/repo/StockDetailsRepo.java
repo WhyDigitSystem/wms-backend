@@ -127,6 +127,38 @@ Set<Object[]> getStockReportBinWise(Long orgId, String branchCode, String bin, S
 Set<Object[]> getStockReportBatchWise(Long orgId, String branchCode, String batch, String warehouse, String customer,
 		String client, String partNo);
 
+@Query(value ="select a.partno from(\r\n"
+		+ "SELECT b.partno, b.partdesc, b.bin, COALESCE(SUM(b.sqty), 0) AS avlqty\r\n"
+		+ "FROM stockdetails b\r\n"
+		+ "WHERE b.orgid = ?1 \r\n"
+		+ "  AND b.branchcode = ?2 \r\n"
+		+ "  AND b.warehouse = ?3\r\n"
+		+ "  AND b.customer = ?4\r\n"
+		+ "  AND b.client = ?5\r\n"
+		+ "AND b.stockdate <= DATE(NOW())\r\n"
+		+ "GROUP BY b.partno, b.partdesc, b.bin\r\n"
+		+ "HAVING SUM(b.sqty) > 0\r\n"
+		+ "ORDER BY b.partno, b.bin)a group by a.partno" ,nativeQuery =true)
+Set<Object[]> getStockPartNoBatch(Long orgId, String branchCode, String warehouse, String customer, String client);
+
+@Query(value ="select a.bin from(\r\n"
+		+ "SELECT b.partno, b.partdesc, b.bin, COALESCE(SUM(b.sqty), 0) AS avlqty\r\n"
+		+ "FROM stockdetails b\r\n"
+		+ "WHERE b.orgid = ?1 \r\n"
+		+ "  AND b.branchcode = ?2 \r\n"
+		+ "  AND b.warehouse = ?3\r\n"
+		+ "  AND b.customer = ?4\r\n"
+		+ "  AND b.client = ?5\r\n"
+		+ "AND b.stockdate <= DATE(NOW())\r\n"
+		+ "AND (b.partno = ?6 OR 'ALL' = ?6)\r\n"
+		+ "GROUP BY b.partno, b.partdesc, b.bin\r\n"
+		+ "HAVING SUM(b.sqty) > 0\r\n"
+		+ "ORDER BY b.partno, b.bin) a group by a.bin",nativeQuery =true)
+Set<Object[]> getBatchNoBin(Long orgId, String branchCode, String warehouse, String customer, String client,
+		String partNo);
+
+
+
 
 
 }
