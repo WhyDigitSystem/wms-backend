@@ -2,6 +2,7 @@ package com.whydigit.wms.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -63,6 +65,11 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	// BuyerOrder
 
+//	private LocalDate parseDate(String dateStr) {
+//	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy", Locale.ENGLISH); // Define expected input format
+//	    return LocalDate.parse(dateStr, formatter); // Parse date string into LocalDate
+//	}
+	
 	@Override
 	public Map<String, Object> createUpdateBuyerOrder(BuyerOrderDTO buyerOrderDTO) throws ApplicationException {
 		String screenCode = "BO";
@@ -338,6 +345,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	                    totalRows++; // Increment totalRows
 	                    System.out.println("Validating row: " + (row.getRowNum() + 1)); // Debug statement
+	                    
+	                    
 
 	                    try {
 	                        // Retrieve cell values based on the provided order
@@ -448,31 +457,17 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 	            }
 	        }
 	    }
-
-	    private Double parseDouble(String stringCellValue) {
-	        try {
-	            return Double.parseDouble(stringCellValue);
-	        } catch (NumberFormatException e) {
-	            return null;
-	        }
-	    }
-
+	    
 	    private LocalDate parseDate(String stringCellValue) {
 	        try {
-	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 	            return LocalDate.parse(stringCellValue, formatter);
 	        } catch (Exception e) {
 	            return null;
 	        }
 	    }
 
-	    private Integer parseInteger(String stringCellValue) {
-	        try {
-	            return Integer.parseInt(stringCellValue);
-	        } catch (NumberFormatException e) {
-	            return null;
-	        }
-	    }
+	   
 
 	    private boolean isRowEmpty(Row row) {
 	        for (Cell cell : row) {
@@ -514,11 +509,23 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 	        if (cell == null) {
 	            return "";
 	        }
+
 	        switch (cell.getCellType()) {
 	            case STRING:
-	                return cell.getStringCellValue();
+	                return cell.getStringCellValue().trim(); // Trim spaces
 	            case NUMERIC:
-	                return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
+	                if (DateUtil.isCellDateFormatted(cell)) {
+	                    // Handle date
+	                    return new SimpleDateFormat("dd/MM/yyyy").format(cell.getDateCellValue());
+	                } else {
+	                    // Check if the numeric value is an integer
+	                    double numericValue = cell.getNumericCellValue();
+	                    if (numericValue == (int) numericValue) {
+	                        return String.valueOf((int) numericValue); // Return as integer
+	                    } else {
+	                        return BigDecimal.valueOf(numericValue).toPlainString(); // Return as double
+	                    }
+	                }
 	            case BOOLEAN:
 	                return String.valueOf(cell.getBooleanCellValue());
 	            case FORMULA:
@@ -527,6 +534,26 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 	                return "";
 	        }
 	    }
+
+	    private Integer parseInteger(String stringCellValue) {
+	        try {
+	            // Remove any potential decimal points
+	            return new BigDecimal(stringCellValue).intValue();
+	        } catch (NumberFormatException e) {
+	            System.err.println("Error parsing integer: " + stringCellValue); // Debugging output
+	            return null;
+	        }
+	    }
+
+	    private Double parseDouble(String stringCellValue) {
+	        try {
+	            return Double.parseDouble(stringCellValue);
+	        } catch (NumberFormatException e) {
+	            System.err.println("Error parsing double: " + stringCellValue); // Debugging output
+	            return null;
+	        }
+	    }
+
 
 	    @Override
 	    public int getTotalRows() {
