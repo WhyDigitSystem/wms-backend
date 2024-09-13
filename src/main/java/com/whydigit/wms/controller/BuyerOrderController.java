@@ -367,19 +367,19 @@ public class BuyerOrderController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String, Object>> pedningOrderDetails = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> pendingOrderDetails = new ArrayList<Map<String, Object>>();
 		try {
-			pedningOrderDetails = buyerOrderService.getPendingBuyerOrderDetails(orgId, branchCode, warehouse, client, finYear);
+			pendingOrderDetails = buyerOrderService.getPendingBuyerOrderDetails(orgId, branchCode, warehouse, client, finYear);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Pedning Order Details information get successfully Id");
-			responseObjectsMap.put("pedningOrderDetails", pedningOrderDetails);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Pending Order Details information get successfully");
+			responseObjectsMap.put("pendingOrderDetails", pendingOrderDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Pedning Order Details information get Failed ",
+			responseDTO = createServiceResponseError(responseObjectsMap, "Pending Order Details information get Failed ",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
