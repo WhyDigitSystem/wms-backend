@@ -31,5 +31,7 @@ public interface GrnRepo extends JpaRepository<GrnVO, Long> {
 			+ "and branch=?3 and a.branchcode=?4 and a.warehouse=?5) order by a.docid asc")
 	List<GrnVO> findGrnNoDetailsForPutAway(Long orgId, String client, String branch, String branchcode,String warehouse);
 
+	boolean existsByDocIdAndOrgIdAndBranchCodeAndWarehouseAndClient(String grnNo1, Long orgId, String branchCode, String warehouse, String client);
+
 
 }
