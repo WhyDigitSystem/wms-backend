@@ -121,18 +121,18 @@ public class StockReportController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getPartNoFromBatchWiseReport")
-	public ResponseEntity<ResponseDTO>getPartNoFromBatchWiseReport(@RequestParam(required = true) Long orgId,
+	@GetMapping("/getPartNoForBatchWiseReport")
+	public ResponseEntity<ResponseDTO>getPartNoForBatchWiseReport(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse, @RequestParam(required = true) String customer,
 			@RequestParam(required = true) String client) {
-		String methodName = "getPartNoFromBatchWiseReport()";
+		String methodName = "getPartNoForBatchWiseReport()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> stockDetails = new ArrayList<Map<String, Object>>();
 		try {
-			stockDetails = stockReportService.getPartNoFromBatchWiseReport(orgId, branchCode,warehouse, customer, client);
+			stockDetails = stockReportService.getPartNoForBatchWiseReport(orgId, branchCode,warehouse, customer, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -149,18 +149,18 @@ public class StockReportController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getBatchFromBatchWiseReport")
-	public ResponseEntity<ResponseDTO>getBatchFromBatchWiseReport(@RequestParam(required = true) Long orgId,
+	@GetMapping("/getBatchForBatchWiseReport")
+	public ResponseEntity<ResponseDTO>getBatchForBatchWiseReport(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse, @RequestParam(required = true) String customer,
 			@RequestParam(required = true) String client,@RequestParam(required = true) String partNo) {
-		String methodName = "getBatchFromBatchWiseReport()";
+		String methodName = "getBatchForBatchWiseReport()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> stockDetails = new ArrayList<Map<String, Object>>();
 		try {
-			stockDetails = stockReportService.getBatchFromBatchWiseReport(orgId, branchCode,warehouse, customer, client,partNo);
+			stockDetails = stockReportService.getBatchForBatchWiseReport(orgId, branchCode,warehouse, customer, client,partNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -228,12 +228,12 @@ public class StockReportController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo from StockDetails found Successfullly");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNo From StockDetails found Successfullly");
 			responseObjectsMap.put("stockDetails", stockDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"PartNo from StockDetails information receive failed", errorMsg);
+					"PartNo From StockDetails information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -361,11 +361,11 @@ public class StockReportController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getPartNoBinhWise")
-	public ResponseEntity<ResponseDTO> getPartNoBinhWise(@RequestParam(required = true) Long orgId,
+	@GetMapping("/getPartNoForBinWise")
+	public ResponseEntity<ResponseDTO> getPartNoForBinWise(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
 			@RequestParam(required = true) String customer, @RequestParam(required = true) String client) {
-		String methodName = "getStockPartNoBatchWise()";
+		String methodName = "getPartNoForBinWise()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -389,12 +389,12 @@ public class StockReportController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@GetMapping("/getBatchNoBinWise")
-	public ResponseEntity<ResponseDTO> getBatchNoBinWise(@RequestParam(required = true) Long orgId,
+	@GetMapping("/getBinNoForBinWise")
+	public ResponseEntity<ResponseDTO> getBinNoForBinWise(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
 			@RequestParam(required = true) String customer, @RequestParam(required = true) String client,
 			@RequestParam(required = true) String partNo) {
-		String methodName = "getPartNoBinWise()";
+		String methodName = "getBinNoForBinWise()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
