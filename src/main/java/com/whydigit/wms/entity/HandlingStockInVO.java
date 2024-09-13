@@ -46,7 +46,7 @@ public class HandlingStockInVO {
 	@Column(name = "rpqty")
 	private int rpqty;
 	@Column(name = "noofpallet")
-	private String noofpallet;
+	private int noofpallet;
 	@Column(name = "locationtype")
 	private String locationtype;
 	@Column(name = "sqty")
@@ -64,7 +64,7 @@ public class HandlingStockInVO {
 	@Column(name = "palletqty")
 	private int palletqty;
 	@Column(name = "rate")
-	private String rate;
+	private double rate;
 	@Column(name = "amount")
 	private double amount;
 	@Column(name = "qcflag")
@@ -86,7 +86,7 @@ public class HandlingStockInVO {
 	@Column(name = "client")
 	private String client;
 	@Column(name = "palletcount")
-	private String palletcount;
+	private int palletcount;
 	@Column(name = "indcno")
 	private String indcno;
 	@Column(name = "lrhawbhblno")
@@ -102,13 +102,11 @@ public class HandlingStockInVO {
 	@Column(name = "sourcescreen")
 	private String sourcescreen;
 	@Column(name = "expdate")
-	private String expdate;
+	private LocalDate expdate;
 	@Column(name = "batchno")
 	private String batchno;
 	@Column(name = "batchdt")
-	private String batchdt;
-	@Column(unique = true)
-	private String dupchk;
+	private LocalDate batchdt;
 	@Column(name = "modifiedby")
 	private String createdby;
 	@Column(name = "updatedby")

@@ -6,36 +6,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//child table
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class KittingDetails1DTO {
 
 	private Long id;
-
-	private String pallet;
-
 	private String partNo;
-
 	private String partDescription;
-
-	private String batchNo;
-
-	private String lotNo;
-
-	private String grnNo;
-
-	private LocalDate grnDate;
-
 	private String sku;
-
+	private String grnNo;
+	private LocalDate grnDate;
+	private String batchNo;
+	private LocalDate batchDate;
+	private String binType;
+	private String bin;
+	private String binClass;
+	private String cellType;
+	private String core;
 	private int avlQty;
-
 	private int qty;
-
-	private int unitRate;
-
-	private int amount;
-	
-	private boolean qcflag;
+	private LocalDate expDate;
 }

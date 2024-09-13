@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -2045,4 +2044,34 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	
+	@GetMapping("/getAllBinDetails")
+	public ResponseEntity<ResponseDTO> getToBinDetails(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String warehouse) {
+		String methodName = "getToBinDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+    List<Map<String, Object>> Bins = new ArrayList<>();
+    try {
+    	Bins = warehouseMasterService.getToBinDetails(orgId, branchCode,
+					client,warehouse);
+      } catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All Client Bin Details information retrieved successfully");
+      responseObjectsMap.put("Bins", Bins);
+      responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve All Client Bin Details information", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

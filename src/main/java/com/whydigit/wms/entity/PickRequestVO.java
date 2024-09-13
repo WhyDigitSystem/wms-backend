@@ -32,67 +32,81 @@ public class PickRequestVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pickrequestgen")
 	@SequenceGenerator(name = "pickrequestgen", sequenceName = "pickrequestseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "pickrequestid")
-	private long id;
-
-	@Column(name = "transactiontype")
-	private String transcationtype;
-	@Column(name = "docid")
-	private String docid;
+	private Long id;
 	@Column(name = "buyerrefno")
-	private String buyerrefno;
-	@Column(name = "docdate")
-	private LocalDate docdate;
-	@Column(name = "shipmentmethod")
-	private String shipmentmethod;
+	private String buyerRefNo;
+	@Column(name = "buyerrefdate")
+	private LocalDate buyerRefDate;
 	@Column(name = "buyerorderno")
-	private String buyerorderno;
+	private String buyerOrderNo;
+	@Column(name = "buyerorderdate")
+	private LocalDate buyerOrderDate;
 	@Column(name = "buyersreference")
-	private String buyersreference;
+	private String buyersReference;
 	@Column(name = "invoiceno")
-	private String invoiceno;
+	private String invoiceNo;
+	@Column(name = "clientshortname")
+	private String clientShortName;
+	@Column(name = "clientname")
+	private String clientName;
+	@Column(name = "clientaddress")
+	private String clientAddress;
+	@Column(name = "customershortname")
+	private String customerShortName;
+	@Column(name = "customername")
+	private String customerName;
+	@Column(name = "customeraddress")
+	private String customerAddress;
+	@Column(name = "pickorder")
+	private String pickOrder;
+	@Column(name = "outtime")
+	private String outTime;
+	@Column(name = "docid",unique = true)
+	private String docId;
+	@Column(name = "docdate")
+	private LocalDate docDate = LocalDate.now();
+	@Column(name = "orgid")
+	private Long orgId;
+	@Column(name = "customer")
+	private String customer;
 	@Column(name = "client")
 	private String client;
-	@Column(name = "clientshortname")
-	private String clientshortname;
-	@Column(name = "clientaddress")
-	private String clientaddress;
-	@Column(name = "dispatch")
-	private String dispatch;
-	@Column(name = "customername")
-	private String customername;
-	@Column(name = "customeraddress")
-	private String customeraddress;
-	@Column(name = "duedays")
-	private String duedays;
-	@Column(name = "noofboxes")
-	private String noofboxes;
-	@Column(name = "pickorder")
-	private String pickorder;
-	@Column(name = "outtime")
-	private String outtime;
-	@Column(unique = true)
-	private String dupchk;
-	@Column(name = "createdby")
-	private String createdby;
-	@Column(name = "modifiedby")
-	private String updatedby;
-	@Column(name = "company")
-	private String company;
-	@Column(name = "cancel")
-	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
-	@Column(name = "cancelremarks")
-	private String cancelremark;
-	@Column(name = "active")
-	private boolean active;
-	@Column(name = "screencode")
-	private String screencode;
-	@Column(name ="orgid")
-	private String orgId;
-	@Column(name="branchcode")
+	@Column(name = "finyear")
+	private String finYear;
+	@Column(name = "branch")
 	private String branch;
+	@Column(name = "branchcode")
+	private String branchCode;
+	@Column(name = "warehouse")
+	private String warehouse;
+	@Column(name = "createdby")
+	private String createdBy;
+	@Column(name = "modifiedby")
+	private String updatedBy;
+	@Column(name = "active")
+	private boolean active = true;
+	@Column(name = "cancel")
+	private boolean cancel = false;
+	@Column(name = "cancelremarks")
+	private String cancelRemarks;
+	@Column(name = "status")
+	private String status;
+	@Column(name = "freeze")
+	private boolean freeze ;
 	
+	@Column(name = "screenname")
+	private String screenName="PICK REQUEST";
+	@Column(name = "screencode")
+	private String screenCode="PR";
+	
+
+//	summary table
+	@Column(name = "totalpickqty")
+	private int totalPickQty;
+	@Column(name = "totalorderqty")
+	private int totalOrderQty;
+	
+
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "pickRequestVO")
 	private List<PickRequestDetailsVO> pickRequestDetailsVO;

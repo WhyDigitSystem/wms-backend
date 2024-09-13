@@ -18,75 +18,61 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "handlingstockaout")
+@Table(name = "handlingstockout")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HandlingStockaOutVO {
+public class HandlingStockOutVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "handlingstockoutgen")
-	@SequenceGenerator(name = "handlingstockingen", sequenceName = "handlingstockoutseq", initialValue = 1000000001, allocationSize = 1)
+	@SequenceGenerator(name = "handlingstockoutgen", sequenceName = "handlingstockoutseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "handlingstockoutid")
 	private Long id;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "refno")
-	private String refno;
+	private String refNo;
 	@Column(name = "partno")
-	private String partno;
+	private String partNo;
 	@Column(name = "refdate")
-	private LocalDate refdate;
+	private LocalDate refDate;
 	@Column(name = "partdesc")
-	private String partdesc;
+	private String partDesc;
 	@Column(name = "rpqty")
-	private int rpqty;
+	private int rpQty;
 	@Column(name = "customer")
 	private String customer;
 	@Column(name = "warehouse")
 	private String warehouse;
 	@Column(name = "sqty")
-	private int sqty;
+	private int sQty;
 	@Column(name = "pickrequestno")
-	private String pickrequestno;
+	private String pickRequestNo;
 	@Column(name = "pickrequestdate")
-	private LocalDate pickrequestdate;
+	private LocalDate pickRequestDate;
 	@Column(name = "buyerorderno")
-	private String buyerorderno;
+	private String buyerOrderNo;
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "buyerorderdate")
-	private LocalDate buyerorderdate;
+	private LocalDate buyerOrderDate;
 	@Column(name = "pickqty")
-	private int pickqty;
-	@Column(name = "buyerordno")
-	private String buyerordno;
+	private int pickQty;
 	@Column(name = "sdocid")
-	private String sdocid;
-	@Column(unique = true)
-	private String dupchk;
-	@Column(name = "createdby")
-	private String createdby;
-	@Column(name = "modifiedby")
-	private String updatedby;
-	@Column(name = "company")
-	private String company;
-	@Column(name = "cancel")
-	private boolean cancel;
-	@Column(name = "userid")
-	private String userid;
-	@Column(name = "cancelremark")
-	private String cancelremark;
-	@Column(name = "active")
-	private boolean active;
+	private String sDocid;
 	@Column(name = "branchcode")
-	private String branchcode;
+	private String branchCode;
 	@Column(name = "branch")
 	private String branch;
 	@Column(name = "screencode")
-	private String screencode;
+	private String screenCode;
 	@Column(name = "client")
 	private String client;
+	@Column(name = "buyerordno")
+	private String buyerOrdNo;
+	@Column(name = "buyerorddate")
+	private LocalDate buyerOrdDate;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

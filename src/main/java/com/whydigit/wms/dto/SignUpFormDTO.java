@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignUpFormDTO {
 
+	private Long id;
 	private String userName;
     private String password;
     private String employeeName;

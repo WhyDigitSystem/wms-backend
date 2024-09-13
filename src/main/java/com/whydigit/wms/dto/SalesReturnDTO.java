@@ -14,13 +14,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SalesReturnDTO {
 	private Long id;
-	private String transactionType;
 	private String entryNo;
 	private LocalDate entryDate;
 	private LocalDate prDate;
-	private String BONo;
-	private LocalDate BODate;
-	private String PRNo;
+	private String boNo;
+	private LocalDate boDate;
+	private String prNo;
 	private String buyerName;
 	private String buyerType;
 	private String supplier;
@@ -34,7 +33,6 @@ public class SalesReturnDTO {
 	private String timeIn;
 	private String timeOut;
 	private String briefDescOfGoods;
-	private int totalReturnQty;
 
 	private Long orgId;
 	private String customer;

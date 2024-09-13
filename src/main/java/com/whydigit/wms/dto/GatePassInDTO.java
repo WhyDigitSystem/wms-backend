@@ -16,7 +16,7 @@ public class GatePassInDTO {
 	private String entryNo;//
 	private Long orgId;
 	private LocalDate docdate = LocalDate.now();
-	private LocalDate dat=LocalDate.now();
+	private LocalDate entryDate;
 	private String supplier;
 	private String supplierShortName;
 	private String modeOfShipment;
@@ -34,7 +34,6 @@ public class GatePassInDTO {
 	private String client;
 	private String customer;
 	private String finYear;
-	
 	
 	private List<GatePassInDetailsDTO> gatePassInDetailsDTO;
 

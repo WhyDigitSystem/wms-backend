@@ -44,11 +44,11 @@ public class SalesReturnVO {
 	@Column(name = "prdate")
 	private LocalDate prDate;
 	@Column(name = "bono")
-	private String BONo;
+	private String boNo;
 	@Column(name = "bodate")
-	private LocalDate BODate;
+	private LocalDate boDate;
 	@Column(name = "prno")
-	private String PRNo;
+	private String prNo;
 	@Column(name = "buyername")
 	private String buyerName;
 	@Column(name = "buyertype")
@@ -111,7 +111,8 @@ public class SalesReturnVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze = true;
+	private boolean freeze;
+	
 
 	
 

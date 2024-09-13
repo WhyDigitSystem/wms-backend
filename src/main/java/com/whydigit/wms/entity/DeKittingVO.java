@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,7 +24,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class DeKittingVO {
 
 	@Id
@@ -33,9 +31,7 @@ public class DeKittingVO {
 	@SequenceGenerator(name = "dekittinggen", sequenceName = "dekittingseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "dekittingid")
 	private Long id;
-	@Column(name = "transactiontype")
-	private String transactionType;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
@@ -65,8 +61,12 @@ public class DeKittingVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze = true;
-	@Column(name = "grndate")
-	private LocalDate grnDate = LocalDate.now();
+	
+	@Column(name = "screenname")
+	private String screenName="DE KITTING";
+	@Column(name = "screencode")
+	private String screenCode="DK";
+	
 	
 	@OneToMany(mappedBy = "deKittingVO",cascade = CascadeType.ALL)
 	@JsonManagedReference

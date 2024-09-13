@@ -1,6 +1,5 @@
 package com.whydigit.wms.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class VasPickDTO {
 	private Long id;
 	private String picBin;
-	private LocalDate docDate = LocalDate.now();
 	private Long orgId;
 	private String customer;
 	private String client;
@@ -22,12 +20,10 @@ public class VasPickDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
-	private boolean active;
-	private boolean cancel;
-	private String cancelRemarks;
-	private boolean freeze;
-	
-	
+	private String stateStatus;
+	private String stockState;
+	private String status;
+
 	private List<VasPickDetailsDTO> vasPickDetailsDTO;
 
 }

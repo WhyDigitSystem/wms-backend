@@ -39,10 +39,10 @@ public class SalesReturnDetailsVO {
 	private String invoiceNo;
 	@Column(name = "partno")
 	private String partNo;
-	@Column(name = "partdescripition")
-	private String partDescripition;
-	@Column(name = "unit")
-	private String unit;
+	@Column(name = "partdesc")
+	private String partDesc;
+	@Column(name = "sku")
+	private String sku;
 	@Column(name = "pickqty")
 	private int pickQty;
 	@Column(name = "retqty")
@@ -55,24 +55,14 @@ public class SalesReturnDetailsVO {
 	private LocalDate batchDate;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "noofpallet")
-	private String noOfPallet;
-	@Column(name = "palletqty")
-	private int palletQty;
-	@Column(name = "weight")
-	private BigDecimal weight;
-	@Column(name = "rate")
-	private BigDecimal rate;
-	@Column(name = "amount")
-	private BigDecimal amount;
-	@Column(name = "insamt")
-	private BigDecimal insAmt;
+	@Column(name = "noofbin")
+	private String noOfBin;
+	@Column(name = "binqty")
+	private int binQty;
 	@Column(name = "remarks")
 	private String remarks;
 	@Column(name = "qcflag")
-	private boolean qcFlag;
-	@Column(name = "status")
-	private String status="R";
+	private String qcFlag;
 	
 	@ManyToOne
 	@JsonBackReference

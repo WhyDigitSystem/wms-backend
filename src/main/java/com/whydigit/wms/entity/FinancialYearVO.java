@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +35,7 @@ public class FinancialYearVO {
 	@Column(name="finyear")
 	private int finYear;
 	@Column(name="finyearidentifier")
-	private int finYearIdentifier;
+	private String finYearIdentifier;
 	@Column(name="startdate")
 	private LocalDate startDate;
 	@Column(name="enddate")
@@ -50,6 +51,12 @@ public class FinancialYearVO {
 	@Column(name="modifiedby")
 	private String updatedBy;
 	private boolean active;
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
+	
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

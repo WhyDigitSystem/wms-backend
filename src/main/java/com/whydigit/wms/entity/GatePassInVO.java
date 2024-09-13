@@ -42,12 +42,12 @@ public class GatePassInVO {
 	private String entryNo;//
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "docid")
+	@Column(name = "docid",unique = true)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docdate = LocalDate.now();
-	@Column(name = "date")
-	private LocalDate date;
+	@Column(name = "entrydate")
+	private LocalDate entryDate;
 	@Column(name = "supplier")
 	private String supplier;
 	@Column(name = "suppliershortname")
@@ -118,20 +118,5 @@ public class GatePassInVO {
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
-	@PrePersist
-	private void setDefaultFinyr() {
-		// Execute the logic to set the default value for finyr
-		String fyFull = calculateFinyr();
-		this.finYear = fyFull;
-	}
-
-	private String calculateFinyr() {
-		// Logic to calculate finyr based on the provided SQL query
-		String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
-		String fyFull = (currentMonthDay.compareTo("0331") > 0)
-				? LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))
-				: LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
-		return fyFull;
-
-	}
+	
 }

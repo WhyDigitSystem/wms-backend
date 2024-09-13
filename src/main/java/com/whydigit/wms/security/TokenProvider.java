@@ -153,10 +153,10 @@ public class TokenProvider {
 	@Value("${app.auth.tokenSecret:efiterpcret}")
 	private String tokenSecret;
 
-	@Value("${app.auth.tokenExpirationMsec:1200000}")
+	@Value("${app.auth.tokenExpirationMsec:1500000}") 
 	private long tokenExpInMSec;
 
-	@Value("${app.auth.refreshtokenExpirationMsec:604800000}")
+	@Value("${app.auth.refreshtokenExpirationMsec:3000000}")
 	private long refreshTokenExpInMSec;
 
 	private byte[] hmacSHA512Byte;

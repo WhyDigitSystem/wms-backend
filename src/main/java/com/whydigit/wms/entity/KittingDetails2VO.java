@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//Parent table
 @Entity
 @Table(name = "kittingdetails2")
 @Data
@@ -29,24 +30,40 @@ public class KittingDetails2VO {
 	@SequenceGenerator(name = "kittingdetails2gen", sequenceName = "kittingdetails2seq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "kitting2id")
 	private Long id;
-	@Column(name="ppartno")
-	private String pPartNo;
-	@Column(name="ppartdescription")
-	private String pPartDescription;
-	@Column(name="pbatchno")
-	private String PBatchNo;
-	@Column(name="plotno")
-	private String pLotNo;
-	@Column(name="pgrnno")
-	private String pGrnNo;
-	@Column(name="pgrndate")
-	private LocalDate pGrnDate;
-	@Column(name="pqcflag")
-	private boolean qQcflag;	
-	@Column(name="pexpdate")
-	private LocalDate pExpDate;
-	@Column(name="pqty")
-	private int pQty;
+	@Column(name="partno")
+	private String ppartNo;
+	@Column(name="partdesc")
+	private String ppartDesc;
+	@Column(name = "sku")
+	private String psku;
+	@Column(name="grnno")
+	private String pgrnNo;
+	@Column(name="grndate")
+	private LocalDate pgrnDate;
+	@Column(name="batchno")
+	private String pbatchNo;
+	@Column(name = "batchdate")
+	private LocalDate pbatchDate;
+	@Column(name = "bin")
+	private String pbin;
+	@Column(name = "bintype")
+	private String pbinType;
+	@Column(name = "binclass")
+	private String pbinClass;
+	@Column(name = "celltype")
+	private String pcellType;
+	@Column(name = "core")
+	private String pcore;
+	@Column(name="qty")
+	private int pqty;
+	@Column(name="lotno")
+	private String plotNo;
+	@Column(name="qcflag")
+	private String pqcflag;	
+	@Column(name = "expdate")
+	private LocalDate pexpDate;
+	@Column(name = "stokcdate")
+	private LocalDate pstockDate;
 	
 	@ManyToOne
 	@JoinColumn(name ="kittingid")

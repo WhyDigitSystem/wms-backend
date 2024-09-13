@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.whydigit.wms.dto.CreatedUpdatedDate;
 
@@ -33,14 +34,14 @@ public class BuyerOrderVO {
 	@SequenceGenerator(name = "buyerordergen", sequenceName = "buyerorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "buyerorderid")
 	private Long id;
-    @Column(name ="docid")
+    @Column(name ="docid",unique = true)
 	private String docId;
 	@Column(name = "orderno")
 	private String orderNo;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate=LocalDate.now();
 	@Column(name = "orderdate")
 	private LocalDate orderDate;
 	@Column(name = "invoiceno")
@@ -53,34 +54,31 @@ public class BuyerOrderVO {
 	private LocalDate refDate;
 	@Column(name = "buyershortname")
 	private String buyerShortName;
+	private String buyer;
 	@Column(name = "currency")
 	private String currency;
-	@Column(name = "exrate")
-	private int exRate;
-	@Column(name = "location")
-	private String location;
+	@Column(name = "billtoshortname")
+	private String billToShortName;
 	@Column(name = "billto")
-	private String billto;
-	@Column(name = "tax")
-	private String tax;
+	private String billToName;
+	@Column(name = "shiptoshortname")
+	private String shipToShortName;
 	@Column(name = "shipto")
-	private String shipTo;
+	private String shipToName;
 	@Column(name = "remarks")
-	private String reMarks;
+	private String remarks;
 	@Column(name = "createdby")
 	private String createdBy;
 	@Column(name = "modifiedby")
 	private String updatedBy;
-	@Column(name = "company")
-	private String company;
 	@Column(name = "cancel")
-	private boolean cancel;
+	private boolean cancel=false;
 	@Column(name = "cancelremark")
 	private String cancelRemark;
 	@Column(name = "screencode")
-	private String screenCode;
+	private String screenCode="BO";
 	@Column(name ="screenname")
-	private String screenName;
+	private String screenName="BUYER ORDER";
 	private String customer;
 	private String client;
 	@Column(name ="finyear")
@@ -90,13 +88,24 @@ public class BuyerOrderVO {
 	@Column(name = "branchcode")
 	private String branchCode;
 	@Column(name = "freeze")
-	private boolean freeze;
-	
+	private boolean freeze=true;
+	@Column(name = "totalorderqty")
+	private int totalOrderQty;
+	@Column(name = "totalavlqty")
+	private int totalAvailQty;
+	private boolean active = true;
+	@Column(name = "warehouse")
+	private String warehouse;
 	
 
 	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "buyerOrderVO")
 	private List<BuyerOrderDetailsVO> buyerOrderDetailsVO;
+	
+	@JsonGetter("active")
+	public String getActive() {
+		return active ? "Active" : "In-Active";
+	}
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

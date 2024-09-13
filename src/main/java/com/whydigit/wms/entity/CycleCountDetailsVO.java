@@ -30,27 +30,43 @@ public class CycleCountDetailsVO {
 	@Column(name = "cyclecountdetailsid")
 	private Long id;
 	@Column(name="partno")
-	private Long partNo;
-	@Column(name="paretdescription")
-	private String paretDescription;
+	private String partNo;
+	@Column(name="partdesc")
+	private String partDescription;
 	@Column(name="grnno")
-	private Long grnNo;
+	private String grnNo;
 	@Column(name="sku")
 	private String sku;
 	@Column(name="bintype")
 	private String binType;
 	@Column(name="batchno")
-	private int batchNo;
+	private String batchNo;
 	@Column(name="batchdate")
 	private LocalDate batchDate;
 	@Column(name="bin")
 	private String bin;
-	@Column(name="qty")
-	private int qty;
+	@Column(name="avlqty")
+	private int avlQty;
 	@Column(name="actualqty")
 	private int actualQty;
-	@Column(name="pqcflag")
-	private boolean qQcflag;	
+	@Column(name="grndate")
+	private LocalDate grnDate;
+	@Column(name="expdate")
+	private LocalDate expDate;
+	@Column(name="binclass")
+	private String binClass;
+	@Column(name="celltype")
+	private String cellType;
+	@Column(name="core")
+	private String core;
+	@Column(name="lotno")
+	private String lotNo;
+	@Column(name="qcflag")
+	private String qcFlag;
+	@Column(name="status")
+	private String status;
+	
+	
 	
 	@ManyToOne
 	@JsonBackReference

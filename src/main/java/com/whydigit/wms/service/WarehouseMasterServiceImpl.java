@@ -81,6 +81,7 @@ import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
+import com.whydigit.wms.repo.VasPutawayRepo;
 import com.whydigit.wms.repo.WarehouseBranchRepo;
 import com.whydigit.wms.repo.WarehouseClientRepo;
 import com.whydigit.wms.repo.WarehouseLocationDetailsRepo;
@@ -110,6 +111,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	BranchRepo branchRepo;
+	
 
 	@Autowired
 	CustomerRepo customerRepo;
@@ -1127,6 +1129,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		materialVO.setStatus(materialDTO.getStatus());
 		materialVO.setOrgId(materialDTO.getOrgId());
 		materialVO.setCustomer(materialDTO.getCustomer());
+		materialVO.setMovingType(materialDTO.getMovingType());
+		materialVO.setRackLevel(materialDTO.getRackLevel());
 		materialVO.setClient(materialDTO.getClient());
 		materialVO.setWarehouse(materialDTO.getWarehouse());
 		materialVO.setWeightofSkuAndUom(materialDTO.getWeightOfSkuAndUom());
@@ -1152,9 +1156,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		List<Map<String, Object>> partNoDetails = new ArrayList<>();
 		for (Object[] ps : getPartNumber) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("parNo", ps[0] != null ? ps[0].toString() : "");
+			part.put("partNo", ps[0] != null ? ps[0].toString() : "");
 			part.put("sku", ps[1] != null ? ps[1].toString() : "");
-			part.put("partdescription", ps[2] != null ? ps[2].toString() : "");
+			part.put("partDesc", ps[2] != null ? ps[2].toString() : "");
 			partNoDetails.add(part);
 		}
 		return partNoDetails;
@@ -1396,12 +1400,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		String message = null;
 		if (ObjectUtils.isEmpty(locationMappingDTO.getId())) {
 
-			if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
-					locationMappingDTO.getOrgId())) {
-				String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
-						locationMappingDTO.getWarehouse());
-				throw new ApplicationException(errorMessage);
-			}
+//			if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
+//					locationMappingDTO.getOrgId())) {
+//				String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
+//						locationMappingDTO.getWarehouse());
+//				throw new ApplicationException(errorMessage);
+//			}
 
 			if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
 					locationMappingDTO.getOrgId())) {
@@ -1428,15 +1432,15 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 							"This Id Is Not Found Any Information,Invalid Id" + locationMappingDTO.getId()));
 			locationMappingVO.setUpdatedBy(locationMappingDTO.getCreatedBy());
 
-			if (!locationMappingVO.getWarehouse().equalsIgnoreCase(locationMappingDTO.getWarehouse())) {
-				if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
-						locationMappingDTO.getOrgId())) {
-					String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
-							locationMappingDTO.getWarehouse());
-					throw new ApplicationException(errorMessage);
-				}
-				locationMappingVO.setWarehouse(locationMappingDTO.getWarehouse());
-			}
+//			if (!locationMappingVO.getWarehouse().equalsIgnoreCase(locationMappingDTO.getWarehouse())) {
+//				if (locationMappingRepo.existsByWarehouseAndOrgId(locationMappingDTO.getWarehouse(),
+//						locationMappingDTO.getOrgId())) {
+//					String errorMessage = String.format("This Warehouse :%s Already Exists By This Organization.",
+//							locationMappingDTO.getWarehouse());
+//					throw new ApplicationException(errorMessage);
+//				}
+//				locationMappingVO.setWarehouse(locationMappingDTO.getWarehouse());
+//			}
 			if (!locationMappingVO.getRowNo().equalsIgnoreCase(locationMappingDTO.getRowNo())) {
 				if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
 						locationMappingDTO.getOrgId())) {
@@ -1457,6 +1461,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			}
 			message = "Location Mapping Updation Successfully";
 		}
+		
+
+	    // Check for duplicate bins in the same warehouse
+	    for (LocationMappingDetailsDTO locationMappingDetailsDTO : locationMappingDTO.getLocationMappingDetailsDTO()) {
+	        if (locationMappingDetailsRepo.existsByBinAndWarehouse(locationMappingDetailsDTO.getBin(),
+	                locationMappingDTO.getWarehouse())) {
+	            String errorMessage = String.format("This Bin :%s Already Exists in Warehouse :%s.",
+	                    locationMappingDetailsDTO.getBin(), locationMappingDTO.getWarehouse());
+	            throw new ApplicationException(errorMessage);
+	        }
+	    }
+		
 		getLocationMappingVOFromLocationMappingDTO(locationMappingVO, locationMappingDTO);
 		locationMappingRepo.save(locationMappingVO);
 		Map<String, Object> response = new HashMap<String, Object>();
@@ -1464,6 +1480,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		response.put("locationMappingVO", locationMappingVO);
 		return response;
 	}
+	
 
 	private LocationMappingVO getLocationMappingVOFromLocationMappingDTO(LocationMappingVO locationMappingVO,
 			LocationMappingDTO locationMappingDTO) {
@@ -1993,5 +2010,28 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return documentTypeMappingVO;
 	}
 
+	@Override
+	@Transactional
+	public List<Map<String, Object>> getToBinDetails(Long orgId, String branchCode,
+			String client,String warehouse) {
+
+		Set<Object[]> result = locationMappingRepo.getToBinDetailsVasPutaway(orgId, branchCode, client,warehouse);
+		return ToBinDetails(result);
+	}
+
+	private List<Map<String, Object>> ToBinDetails(Set<Object[]> result) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : result) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("bin", fs[0] != null ? fs[0].toString() : "");
+			part.put("binClass", fs[1] != null ? fs[1].toString() : "");
+			part.put("cellType", fs[2] != null ? fs[2].toString() : "");
+			part.put("core", fs[3] != null ? fs[3].toString() : "");
+			part.put("binType", fs[4] != null ? fs[4].toString() : "");
+
+			details1.add(part);
+		}
+		return details1;
+	}
 	
 }

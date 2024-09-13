@@ -33,14 +33,12 @@ public class CodeConversionDetailsVO {
 	
 	@Column(name = "partno")
 	private String partNo;
-	@Column(name = "partdescription")
-	private String partDescription;
+	@Column(name = "partdesc")
+	private String partDesc;
 	@Column(name = "grnno")
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "status")
-	private String status ="R";
 	@Column(name = "sku")
 	private String sku;
 	@Column(name = "bintype")
@@ -82,25 +80,28 @@ public class CodeConversionDetailsVO {
 	private String cbinType;
 	@Column(name = "remarks")
 	private String remarks;
-	@Column(name = "qcflags")
-	private boolean qcFlags;
 	
 	@Column(name = "binclass")
 	private String binClass;
 	@Column(name = "celltype")
 	private String cellType;
-	@Column(name = "clientcode")
-	private String clientCode;	
 	@Column(name = "core")
 	private String core;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "pckey")
-	private String pckey;
-	@Column(name = "ssku")
-	private String ssku;
 	@Column(name = "stockdate")
 	private LocalDate stockDate;
+	
+	@Column(name = "cbinclass")
+	private String cBinClass;
+	@Column(name = "ccelltype")
+	private String cCellType;
+	@Column(name = "ccore")
+	private String cCore;
+	@Column(name = "cexpdate")
+	private LocalDate cExpDate;
+	@Column(name = "cstockdate")
+	private LocalDate cStockDate;
 	
 	@JsonBackReference
 	@ManyToOne

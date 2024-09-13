@@ -10,13 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class KittingDetails2DTO {
 	private Long id;
-	private String pPartNo;
-	private String pPartDescription;
-	private String PBatchNo;
-	private String pLotNo;
-	private String pGrnNo;
-	private LocalDate pGrnDate;
-	private boolean qQcflag;	
-	private int pQty;
-	private LocalDate pExpDate;
+	private String ppartNo;
+	private String ppartDescription;
+	private String psku;
+	private String pgrnNo;
+	private LocalDate pgrnDate;
+	private String pbatchNo;
+	private LocalDate pbatchDate;
+	private String pbin;
+	private String pbinType;
+	private String pbinClass;
+	private String pcellType;
+	private String pcore;
+	private String plotNo;
+	private String pqcflag;	
+	private int pqty;
+	private LocalDate pexpDate;
 }

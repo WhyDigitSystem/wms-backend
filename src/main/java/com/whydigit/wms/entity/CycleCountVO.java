@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -34,11 +32,11 @@ public class CycleCountVO {
 	private Long id;
 
 	@Column(name = "screenname")
-	private String screenName = "CYCLECOUNT";
+	private String screenName = "CYCLE COUNT";
 	@Column(name = "screencode")
-	private String screenCode = "CT";
+	private String screenCode = "CY";
 	@Column(name = "docdate")
-	private LocalDate docDate;
+	private LocalDate docDate=LocalDate.now();
 	@Column(name = "docid", unique = true)
 	private String docId;
 	@Column(name = "orgid")
@@ -66,31 +64,15 @@ public class CycleCountVO {
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
 	@Column(name = "freeze")
-	private boolean freeze;
-	@Column(name = "cyclecountno")
-	private String cycleCountNo;
-	@Column(name = "cyclecountdate")
-	private LocalDate cycleCountDate;
+	private Boolean freeze=true;
+
+	@Column(name = "stockdate")
+	private LocalDate stockDate=LocalDate.now();
 
 	@OneToMany(mappedBy ="cycleCountVO",cascade =CascadeType.ALL)
 	@JsonManagedReference
 	private List<CycleCountDetailsVO> cycleCountDetailsVO; 
 	
 	
-	@PrePersist
-	private void setDefaultFinyr() {
-		// Execute the logic to set the default value for finyr
-		String fyFull = calculateFinyr();
-		this.finYear = fyFull;
-	}
-
-	private String calculateFinyr() {
-		// Logic to calculate finyr based on the provided SQL query
-		String currentMonthDay = LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"));
-		String fyFull = (currentMonthDay.compareTo("0331") > 0)
-				? LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"))
-				: LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yyyy"));
-		return fyFull;
-
-	}
+	
 }

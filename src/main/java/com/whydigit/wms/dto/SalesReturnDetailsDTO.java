@@ -1,6 +1,5 @@
 package com.whydigit.wms.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
@@ -17,22 +16,17 @@ public class SalesReturnDetailsDTO {
 	private String LRNo;
 	private String invoiceNo;
 	private String partNo;
-	private String partDescripition;
-	private String unit;
+	private String partDesc;
+	private String sku;
 	private int pickQty;
 	private int retQty;
 	private int damageQty;
 	private String batchNo;
 	private LocalDate batchDate;
 	private LocalDate expDate;
-	private String noOfPallet;
-	private int palletQty;
-	private BigDecimal weight;
-	private BigDecimal rate;
-	private BigDecimal amount;
-	private BigDecimal insAmt;
+	private String noOfBin;
+	private int binQty;
 	private String remarks;
-	private boolean qcFlag;
-	private String status;
+	private String qcFlag;
 	
 }

@@ -33,8 +33,6 @@ public class LocationMovementVO {
 	@SequenceGenerator(name = "locationmovementgen", sequenceName = "locationmovementseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmovementid")
 	private Long id;
-	@Column(name = "type")
-	private String type;
 	@Column(name = "screenname")
 	private String screenName ="LOCATION MOVEMENT";
 	@Column(name = "screencode")
@@ -67,14 +65,10 @@ public class LocationMovementVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks")
 	private String cancelRemarks;
+	@Column(name="movedqty")
+	private Integer movedQty;
 	@Column(name = "freeze")
 	private boolean freeze = true;
-	@Column(name="sku")
-	private String sku;
-	@Column(name = "grndate")
-	private LocalDate grnDate = LocalDate.now();
-	@Column(name="core")
-	private String core;
 	
 	
 	@OneToMany(mappedBy = "locationMovementVO",cascade = CascadeType.ALL)
