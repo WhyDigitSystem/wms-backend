@@ -77,6 +77,8 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 	@Query(value = "select a from BuyerOrderVO a where a.docId=?1")
 	BuyerOrderVO findByDocId(String buyerOrderNo);
 
+	BuyerOrderVO findByOrderNoAndOrgIdAndClient(String orderNo, Long orgId, String client);
+
 	
 	
 	

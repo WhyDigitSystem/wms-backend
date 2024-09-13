@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.BuyerOrderDTO;
+import com.whydigit.wms.dto.MultipleBODTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.service.BuyerOrderService;
@@ -331,6 +332,55 @@ public class BuyerOrderController extends BaseController {
 			responseObjectsMap.put("errorMessage", errorMsg);
 
 			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For BuyerOrder Failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	@PutMapping("/createMultipleBuyerOrder")
+	public ResponseEntity<ResponseDTO> createMultipleBuyerOrder(@RequestBody List<MultipleBODTO> multipleBODTO) {
+		String methodName = "createMultipleBuyerOrder()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> createdMultipleBuyerOrderVO = buyerOrderService.createMultipleBuyerOrder(multipleBODTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdMultipleBuyerOrderVO.get("message"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getPendingBuyerOrderDetails")
+	public ResponseEntity<ResponseDTO> getPendingBuyerOrderDetails(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse,
+			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear) {
+		String methodName = "getPendingBuyerOrderDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> pendingOrderDetails = new ArrayList<Map<String, Object>>();
+		try {
+			pendingOrderDetails = buyerOrderService.getPendingBuyerOrderDetails(orgId, branchCode, warehouse, client, finYear);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Pending Order Details information get successfully");
+			responseObjectsMap.put("pendingOrderDetails", pendingOrderDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Pending Order Details information get Failed ",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
