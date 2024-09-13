@@ -233,7 +233,7 @@ public class StockReportServiceImpl implements StockReportService {
 			stockDetails.put("sourceScreen", st[3] != null ? st[3].toString() : "");
 			stockDetails.put("oQty", st[4] != null ? Integer.parseInt(st[4].toString()) : 0);
 			stockDetails.put("rQty", st[5] != null ? Integer.parseInt(st[5].toString()) : 0);
-			stockDetails.put("qQty", st[6] != null ? Integer.parseInt(st[6].toString()) : 0);
+			stockDetails.put("dQty", st[6] != null ? Integer.parseInt(st[6].toString()) : 0);
 			stockDetails.put("cQty", st[7] != null ? Integer.parseInt(st[7].toString()) : 0);
 			stock.add(stockDetails);
 		}

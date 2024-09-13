@@ -37,7 +37,7 @@ public class BoExcelUploadVO {
 	private String type;
 
 	@Column(name = "orderno")
-	private Integer orderNo;
+	private String orderNo;
 
 	@Column(name = "orderdate")
 	private LocalDate orderDate;

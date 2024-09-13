@@ -300,5 +300,9 @@ Set<Object[]> getBatchNoBin(Long orgId, String branchCode, String warehouse, Str
 Set<Object[]> getBatchFromBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
 		String client,String partNo);
 
+boolean existsByPartnoAndOrgIdAndClient(String partNo, Long orgId, String client);
+
+boolean existsByPartnoAndBatchAndOrgIdAndClient(String partNo, String batchNo, Long orgId, String client);
+
 
 }
