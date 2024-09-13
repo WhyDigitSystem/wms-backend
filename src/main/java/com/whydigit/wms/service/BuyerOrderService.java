@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.dto.BuyerOrderDTO;
 import com.whydigit.wms.dto.CustomerAttachmentType;
+import com.whydigit.wms.dto.MultipleBODTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.exception.ApplicationException;
 
@@ -46,6 +47,12 @@ public interface BuyerOrderService {
 	int getTotalRows();
 
 	int getSuccessfulUploads();
+	
+
+	Map<String, Object> createMultipleBuyerOrder(List<MultipleBODTO> multipleBODTO1) throws ApplicationException;
+
+	List<Map<String, Object>> getPendingBuyerOrderDetails(Long orgId, String branchCode, String warehouse,
+			String client, String finYear);
 
 
 	
