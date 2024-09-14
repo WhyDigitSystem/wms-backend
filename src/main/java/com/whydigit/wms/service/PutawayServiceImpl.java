@@ -420,6 +420,10 @@ public class PutawayServiceImpl implements PutawayService {
 	public void ExcelUploadForPutAway(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
 			String customer, String client, String finYear, String branch, String branchCode, String warehouse)
 			throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+		
+		 totalRows = 0;
+		 successfulUploads = 0;
+		    
 		List<PutawayExcelUploadVO> putawayExcelUploadVOVOsToSave = new ArrayList<>();
 		List<String> errorMessages = new ArrayList<>();
 
@@ -438,7 +442,9 @@ public class PutawayServiceImpl implements PutawayService {
 						continue; // Skip header row and empty rows
 					}
 
-					totalRows =totalRows+1; // Increment totalRows
+					totalRows++; // Increment totalRows
+                    System.out.println("Validating row: " + (row.getRowNum() + 1));
+
 					try {
 						// Retrieve cell values based on the provided order
 						String grnNo1 = getStringCellValue(row.getCell(0));
@@ -605,7 +611,7 @@ public class PutawayServiceImpl implements PutawayService {
 									putawayExcelUploadVO.setCancelRemarks(""); // Default or based on some logic
 
 									putawayExcelUploadVOVOsToSave.add(putawayExcelUploadVO);
-									successfulUploads =successfulUploads +1; // Increment successfulUploads
+									successfulUploads++; // Increment successfulUploads
 
 								} else {
 									throw new ApplicationException( "BinNo " + binNo1
