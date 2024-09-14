@@ -286,6 +286,7 @@ public class GrnServiceImpl implements GrnService {
 		grnVO.setDestinationTo(grnDTO.getDestinationTo());
 		grnVO.setNoOfBins(grnDTO.getNoOfBins());
 		grnVO.setInvoiceNo(grnDTO.getInvoiceNo());
+		grnVO.setRemarks(grnDTO.getRemarks());;
 
 		if (ObjectUtils.isNotEmpty(grnVO.getId())) {
 			List<GrnDetailsVO> grnDetailsVO1 = grnDetailsRepo.findByGrnVO(grnVO);
