@@ -41,32 +41,31 @@ public interface CodeConversionRepo extends JpaRepository<CodeConversionVO, Long
 
 	@Query(nativeQuery = true,value=" SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty,ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id  FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0")
 	Set<Object[]> getAllFillGridFromStockForCodeConversion(Long orgId, String branchCode, String client,String warehouse);
-
 	
 	
-	@Query(nativeQuery = true, value = "SELECT SUM(sqty) AS totalqty FROM stockdetails WHERE orgid = ?1 AND client = ?2 AND branchcode = ?3 AND warehouse = ?4 AND branch = ?5  AND partno = ?6 AND grnno = ?7 and batch=?8 OR batch is NULL and bintype=?9 and bin=?10 AND status = 'R'")
+	@Query(nativeQuery = true, value = "SELECT SUM(sqty) AS totalqty FROM stockdetails WHERE orgid = ?1 AND client = ?2 AND branchcode = ?3 AND warehouse = ?4 AND branch = ?5  AND partno = ?6 AND grnno = ?7 and (batch=?8 OR batch is NULL) and bintype=?9 and bin=?10 AND status = 'R'")
 	Integer getAvlQtyCodeConversion(Long orgId, String client, String branchCode, String warehouse, String branch,
 			String partNo, String grnNo,String batchNo,String binType,String bin);
 
 	@Query(nativeQuery = true,value ="select a.bin,a.binclass,a.celltype,a.core from( SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,status,qcflag,SUM(sqty) AS total_qty FROM stockdetails WHERE orgid =?1 AND branchcode =?2 AND client =?3 AND warehouse =?4 AND partno=?5 and grnno=?6 and bintype=?7 and batch=?8 OR batch is NULL GROUP BY partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,status,binclass,celltype,core,bin,qcflag HAVING SUM(sqty) > 0)a group by a.bin,a.binclass,a.celltype,a.core")
 	Set<Object[]> findBinFromStockForCodeConversion(Long orgId, String branchCode, String client, String warehouse,
 			String partNo, String grnNo, String binType, String batchNo);
-
-
-
+	
+	
 	
 //	@Query(nativeQuery = true,value="select partno,partdesc,sku from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5")
 //	Set<Object[]> getCpartNoAndCpartDescFromStockForCodeConversion(Long orgId, String branch,
 //			String branchCode, String client, String bin);
-//
+
+	
 //	@Query(nativeQuery = true,value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4")
 //	Set<Object[]> findCBinFromStockForCodeConversion(Long orgId, String branch, String branchCode,
 //			String client);
 
+	
 //	@Query(nativeQuery = true,value = " select bin,binclass,celltype,clientcode,core,expdate,pckey,ssku,stockdate from stockdetails  where orgid=?1 and branch=?2 and branchcode=?3 and client=?4")
 //	Set<Object[]> findBinFromStockForCodeConversion(Long orgId,String branch, String branchCode,
 //			String client);
-//	
 	
 	
 
