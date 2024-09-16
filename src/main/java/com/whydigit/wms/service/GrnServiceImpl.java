@@ -1,22 +1,36 @@
 package com.whydigit.wms.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.apache.poi.ss.usermodel.DataFormatter;
 
+
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.dto.GrnDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnDetailsVO;
+import com.whydigit.wms.entity.GrnExcelUploadVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
 import com.whydigit.wms.exception.ApplicationException;
@@ -25,6 +39,7 @@ import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.GatePassInRepo;
 import com.whydigit.wms.repo.GrnDetailsRepo;
+import com.whydigit.wms.repo.GrnExcelUploadRepo;
 import com.whydigit.wms.repo.GrnRepo;
 import com.whydigit.wms.repo.HandlingStockInRepo;
 import com.whydigit.wms.repo.MaterialRepo;
@@ -62,6 +77,9 @@ public class GrnServiceImpl implements GrnService {
 
 	@Autowired
 	CarrierRepo carrierRepo;
+	
+	@Autowired
+	GrnExcelUploadRepo grnExcelUploadRepo;
 	
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
@@ -409,5 +427,167 @@ public class GrnServiceImpl implements GrnService {
 		}
 		return gridDetails;
 	}
+
+	
+	
+	private int totalRows=0; // Instance variable to keep track of total rows
+    private int successfulUploads =0; // Instance variable to keep track of successful uploads
+    
+    private final DataFormatter dataFormatter = new DataFormatter();
+
+
+	 @Transactional
+	    public void ExcelUploadForGrn(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
+	                                   String customer, String client, String finYear,
+	                                   String branch, String branchCode, String warehouse) throws ApplicationException {
+
+	        List<GrnExcelUploadVO> grnExcelUploadVOsToSave = new ArrayList<>();
+	        totalRows = 0;
+	        successfulUploads = 0;
+
+	        for (MultipartFile file : files) {
+	            if (file.isEmpty()) {
+	                throw new ApplicationException("The supplied file '" + file.getOriginalFilename() + "' is empty.");
+	            }
+
+	            try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+	                Sheet sheet = workbook.getSheetAt(0);
+
+	                if (!isHeaderValid(sheet.getRow(0))) {
+	                    throw new ApplicationException("Invalid Excel format in file '" + file.getOriginalFilename() + "'.");
+	                }
+
+	                for (Row row : sheet) {
+	                    if (row.getRowNum() == 0 || isRowEmpty(row)) {
+	                        continue;
+	                    }
+
+	                    totalRows++;
+
+	                    try {
+	                        GrnExcelUploadVO grnExcelUploadVO = new GrnExcelUploadVO();
+
+	                        grnExcelUploadVO.setSno(getNumericCellValue(row.getCell(0)));
+	                        grnExcelUploadVO.setEntryNo(getStringCellValue(row.getCell(1)));
+	                        grnExcelUploadVO.setEntryDate(getStringCellValue(row.getCell(2)));
+	                        grnExcelUploadVO.setSupplierShortname(getStringCellValue(row.getCell(3)));
+	                        grnExcelUploadVO.setModeOfShipment(getStringCellValue(row.getCell(4)));
+	                        grnExcelUploadVO.setCarrier(getStringCellValue(row.getCell(5)));
+	                        grnExcelUploadVO.setLrHblNo(getStringCellValue(row.getCell(6)));
+	                        grnExcelUploadVO.setInvDcNo(getStringCellValue(row.getCell(7)));
+	                        grnExcelUploadVO.setInvDate(getStringCellValue(row.getCell(8)));
+	                        grnExcelUploadVO.setPartNo(getStringCellValue(row.getCell(9)));
+	                        grnExcelUploadVO.setPartDesc(getStringCellValue(row.getCell(10)));
+	                        grnExcelUploadVO.setSku(getStringCellValue(row.getCell(11)));
+	                        grnExcelUploadVO.setInvQty(getNumericCellValue(row.getCell(12)));
+	                        grnExcelUploadVO.setRecQty(getNumericCellValue(row.getCell(13)));
+	                        grnExcelUploadVO.setDamageQty(getNumericCellValue(row.getCell(14)));
+	                        grnExcelUploadVO.setSubStockQty(getNumericCellValue(row.getCell(15)));
+	                        grnExcelUploadVO.setBatchNo(getStringCellValue(row.getCell(16)));
+	                        grnExcelUploadVO.setBatchDate(getStringCellValue(row.getCell(17)));
+	                        grnExcelUploadVO.setExpDate(getStringCellValue(row.getCell(18)));
+	                        grnExcelUploadVO.setNoOfPallet(getNumericCellValue(row.getCell(19)));
+	                        grnExcelUploadVO.setPalletQty(getNumericCellValue(row.getCell(20)));
+	                        grnExcelUploadVO.setWeight(getNumericCellValue1(row.getCell(21)));
+	                        grnExcelUploadVO.setRate(getNumericCellValue1(row.getCell(22)));
+	                        grnExcelUploadVO.setRemark(getStringCellValue(row.getCell(23)));
+
+	                        grnExcelUploadVO.setOrgId(orgId);
+	                        grnExcelUploadVO.setCustomer(customer);
+	                        grnExcelUploadVO.setClient(client);
+	                        grnExcelUploadVO.setFinYear(finYear);
+	                        grnExcelUploadVO.setBranch(branch);
+	                        grnExcelUploadVO.setBranchCode(branchCode);
+	                        grnExcelUploadVO.setWarehouse(warehouse);
+	                        grnExcelUploadVO.setCreatedBy(createdBy);
+	                        grnExcelUploadVO.setUpdatedBy(""); // Assuming you set this later or leave it empty
+	                        grnExcelUploadVO.setActive(true); // Default or based on some logic
+	                        grnExcelUploadVO.setCancel(false); // Default or based on some logic
+	                        grnExcelUploadVO.setCancelRemarks("");
+
+	                        // Set additional fields if necessary
+	                        grnExcelUploadVOsToSave.add(grnExcelUploadVO);
+	                        successfulUploads++;
+	                    } catch (Exception e) {
+	                        throw new ApplicationException("Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+	                    }
+	                }
+
+	                grnExcelUploadRepo.saveAll(grnExcelUploadVOsToSave);
+	            } catch (IOException e) {
+	                throw new ApplicationException("Failed to process file: " + file.getOriginalFilename(), e);
+	            }
+	        }
+	    }
+
+	    private boolean isHeaderValid(Row headerRow) {
+	        List<String> expectedHeaders = Arrays.asList(
+	                "Sno", "Entry No*", "Entry Date", "Supplier Shortname*", "Mode of Shipment*", "Carrier*", "LR/HBL No*", "Inv/DC No*", "Inv date", "Part No*", "Part Desc*", "SKU*",
+	                "Inv Qty", "Rec Qty", "Damage Qty", "Sub Stock Qty", "Batchno", "Batchdate", "Expdate", "NOOFPallet", "Pallet Qty", "Weight*", "Rate", "Remark"
+	        );
+
+	        for (int i = 0; i < expectedHeaders.size(); i++) {
+	            String cellValue = getStringCellValue(headerRow.getCell(i));
+	            if (!expectedHeaders.get(i).equalsIgnoreCase(cellValue)) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+
+	    private boolean isRowEmpty(Row row) {
+	        for (int i = 0; i < row.getLastCellNum(); i++) {
+	            if (row.getCell(i) != null && !getStringCellValue(row.getCell(i)).isEmpty()) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+
+	    private String getStringCellValue(Cell cell) {
+	        if (cell == null) {
+	            return ""; // Return empty string if cell is null
+	        }
+
+	        // Use DataFormatter to get the cell value as a string
+	        return dataFormatter.formatCellValue(cell);
+	    }
+
+	        
+	    
+
+	    private int getNumericCellValue(Cell cell) {
+	        if (cell == null) {
+	            return 0; // or throw an exception if you prefer
+	        }
+	        switch (cell.getCellType()) {
+	            case NUMERIC:
+	                return (int) cell.getNumericCellValue();
+	            default:
+	                return 0; // or throw an exception if the cell type is not numeric
+	        }
+	    }
+	    
+	 // Adjust the getNumericCellValue method if you need it to return Double
+	    private double getNumericCellValue1(Cell cell) {
+	        if (cell == null) {
+	            return 0.0; // Use 0.0 for Double return type
+	        }
+	        switch (cell.getCellType()) {
+	            case NUMERIC:
+	                return cell.getNumericCellValue();
+	            default:
+	                return 0.0; // Default value for non-numeric cells
+	        }
+	    }
+
+	    public int getTotalRows() {
+	        return totalRows;
+	    }
+
+	    public int getSuccessfulUploads() {
+	        return successfulUploads;
+	    }
+ 
 
 }

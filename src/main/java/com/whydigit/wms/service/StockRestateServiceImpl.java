@@ -1,7 +1,6 @@
 package com.whydigit.wms.service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,10 +11,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
+import org.apache.poi.ss.usermodel.DataFormatter;
+
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -433,7 +435,8 @@ public class StockRestateServiceImpl implements StockRestateService {
 	 private int totalRows = 0; // Instance variable to keep track of total rows
 	    private int successfulUploads = 0; // Instance variable to keep track of successful uploads
 
-	   
+	    private final DataFormatter dataFormatter = new DataFormatter();
+
 
 	    @Transactional
 	    public void ExcelUploadForStockRestate(MultipartFile[] files, CustomerAttachmentType type, Long orgId,
@@ -545,20 +548,11 @@ public class StockRestateServiceImpl implements StockRestateService {
 
 	    private String getStringCellValue(Cell cell) {
 	        if (cell == null) {
-	            return "";
+	            return ""; // Return empty string if cell is null
 	        }
-	        switch (cell.getCellType()) {
-	            case STRING:
-	                return cell.getStringCellValue();
-	            case NUMERIC:
-	                return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
-	            case BOOLEAN:
-	                return String.valueOf(cell.getBooleanCellValue());
-	            case FORMULA:
-	                return cell.getCellFormula();
-	            default:
-	                return "";
-	        }
+
+	        // Use DataFormatter to get the cell value as a string
+	        return dataFormatter.formatCellValue(cell);
 	    }
 
 	    private boolean isRowEmpty(Row row) {
