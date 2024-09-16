@@ -180,8 +180,12 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		buyerOrderVO.setRefDate(buyerOrderDTO.getRefDate());
 		buyerOrderVO.setBuyer(buyerOrderDTO.getBuyer());
 		buyerOrderVO.setBuyerShortName(buyerOrderDTO.getBuyerShortName());
+		BuyerVO buyerVO = buyerRepo.findByBuyerAndOrgId(buyerOrderDTO.getBuyer(), buyerOrderDTO.getOrgId());
+		buyerOrderVO.setBuyerAddress(buyerVO.getAddressLine1()+","+buyerVO.getAddressLine2()+","+buyerVO.getCity()+","+buyerVO.getState()+","+buyerVO.getCountry()+","+buyerVO.getZipCode());
 		buyerOrderVO.setBillToShortName(buyerOrderDTO.getBillToShortName());
 		buyerOrderVO.setBillToName(buyerOrderDTO.getBillToName());
+		BuyerVO buyerVO1 = buyerRepo.findByBuyerAndOrgId(buyerOrderDTO.getBillToName(), buyerOrderDTO.getOrgId());
+		buyerOrderVO.setBillToAddress(buyerVO1.getAddressLine1()+","+buyerVO1.getAddressLine2()+","+buyerVO1.getCity()+","+buyerVO1.getState()+","+buyerVO1.getCountry()+","+buyerVO1.getZipCode());
 		buyerOrderVO.setShipToShortName(buyerOrderDTO.getShipToShortName());
 		buyerOrderVO.setShipToName(buyerOrderDTO.getShipToName());
 		buyerOrderVO.setInvoiceDate(buyerOrderDTO.getInvoiceDate());
@@ -253,6 +257,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("batch", fs[2] != null ? fs[2].toString() : "");
 			part.put("expDate", fs[3] != null ? fs[3].toString() : "");
 			part.put("sqty", fs[4] != null ? Integer.parseInt(fs[4].toString()) : 0);
+			part.put("sku", fs[5] != null ? fs[5].toString() : "");
 
 			details1.add(part);
 		}
@@ -703,11 +708,12 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 		BuyerVO buyerVO = buyerRepo.findByBuyerAndOrgId(multipleBODTO.getBuyerName(), multipleBODTO.getOrgId());
 		buyerOrderVO.setBuyerShortName(buyerVO.getBuyerShortName());
-
+		buyerOrderVO.setBuyerAddress(buyerVO.getAddressLine1()+","+buyerVO.getAddressLine2()+","+buyerVO.getCity()+","+buyerVO.getState()+","+buyerVO.getCountry()+","+buyerVO.getZipCode());
+		
 		BuyerVO buyerVO1 = buyerRepo.findByBuyerAndOrgId(multipleBODTO.getBillToName(), multipleBODTO.getOrgId());
 		buyerOrderVO.setBillToName(multipleBODTO.getBillToName());
 		buyerOrderVO.setBillToShortName(buyerVO1.getBuyerShortName());
-
+		buyerOrderVO.setBillToAddress(buyerVO1.getAddressLine1()+","+buyerVO1.getAddressLine2()+","+buyerVO1.getCity()+","+buyerVO1.getState()+","+buyerVO1.getCountry()+","+buyerVO1.getZipCode());
 		BuyerVO buyerVO2 = buyerRepo.findByBuyerAndOrgId(multipleBODTO.getShipToName(), multipleBODTO.getOrgId());
 		buyerOrderVO.setShipToName(multipleBODTO.getShipToName());
 		buyerOrderVO.setShipToShortName(buyerVO2.getBuyerShortName());
@@ -772,13 +778,13 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("sno", fs[0] != null ? fs[0].toString() : "");
 			part.put("orderNo", fs[1] != null ? fs[1].toString() : "");
 			part.put("orderDate", fs[2] != null ? fs[2].toString() : "");
-			part.put("buyerName", fs[3] != null ? fs[1].toString() : "");
-			part.put("billToName", fs[4] != null ? fs[2].toString() : "");
-			part.put("shipToName", fs[5] != null ? fs[1].toString() : "");
-			part.put("refNo", fs[6] != null ? fs[2].toString() : "");
-			part.put("refDate", fs[7] != null ? fs[1].toString() : "");
-			part.put("invoiceNo", fs[8] != null ? fs[2].toString() : "");
-			part.put("invoiceDate", fs[9] != null ? fs[2].toString() : "");
+			part.put("buyerName", fs[3] != null ? fs[3].toString() : "");
+			part.put("billToName", fs[4] != null ? fs[4].toString() : "");
+			part.put("shipToName", fs[5] != null ? fs[5].toString() : "");
+			part.put("refNo", fs[6] != null ? fs[6].toString() : "");
+			part.put("refDate", fs[7] != null ? fs[7].toString() : "");
+			part.put("invoiceNo", fs[8] != null ? fs[8].toString() : "");
+			part.put("invoiceDate", fs[9] != null ? fs[9].toString() : "");
 			details1.add(part);
 		}
 		return details1;
