@@ -195,4 +195,29 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	@Query(nativeQuery = true,value = "select b.partno,b.partdesc,b.sku,b.grnno,b.grndate,b.batchno,b.batchdate,b.bintype,b.binclass,b.celltype,b.core,b.bin,b.orderqty,b.pickqty,b.expdate,b.qcflag,ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id from pickrequest a, pickrequestdetails b\r\n"
 			+ "where a.pickrequestid=b.pickrequestid and a.orgid=?1 and a.branchcode=?2 and a.client=?3 and a.docid=?4")
 	Set<Object[]> fillgridDetails(Long orgId, String branchCode, String client, String pickDocId);
+
+	
+	@Query(nativeQuery =true,value ="select b.orderno, b.orderdate, \r\n"
+			+ "case \r\n"
+			+ "when b.orderno in (\r\n"
+			+ "select a.buyerorderno from pickrequest a \r\n"
+			+ "where a.orgid =?1 \r\n"
+			+ "and a.finyear =?5 \r\n"
+			+ "and a.branchcode =?2 \r\n"
+			+ "and a.warehouse =?3 \r\n"
+			+ "and a.client =?4\r\n"
+			+ "group by a.buyerorderno\r\n"
+			+ ") \r\n"
+			+ "then 'Complete' \r\n"
+			+ "else 'Pending' \r\n"
+			+ "end as status\r\n"
+			+ "from buyerorder b \r\n"
+			+ "where b.orgid =?1 \r\n"
+			+ "and b.finyear =?5 \r\n"
+			+ "and b.branchcode =?3\r\n"
+			+ "and b.client =?4\r\n"
+			+ "group by b.orderno, \r\n"
+			+ "b.orderdate")
+	Set<Object[]> getPicrequestDashboard(Long orgId, String branchCode, String warehouse, String client,
+			String finyear);
 }

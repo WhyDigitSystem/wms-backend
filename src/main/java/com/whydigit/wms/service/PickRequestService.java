@@ -29,6 +29,11 @@ public interface PickRequestService {
 	
 	List<Map<String,Object>>getFillGridDetailsForPickRequest(Long orgId, String branchCode, String client,
 			String buyerOrderDocId, String pickRequestDocId,String pickStatus);
+
+	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String warehouse,
+			String finyear);
+
+	
 	
 	
 }

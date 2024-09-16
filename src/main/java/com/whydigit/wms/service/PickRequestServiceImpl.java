@@ -354,4 +354,25 @@ public class PickRequestServiceImpl implements PickRequestService {
 		return details;
 	}
 
+	@Override
+	public List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client,
+			String warehouse, String finyear) {
+		Set<Object[]> resultq = pickRequestRepo.getPicrequestDashboard(orgId, branchCode, warehouse, client,finyear);
+		return getPicrequest(resultq);
+	}
+
+	private List<Map<String, Object>> getPicrequest(Set<Object[]> resultq) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : resultq) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("orderNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("orderDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("status", fs[2] != null ? fs[2].toString() : "");
+			
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
 }

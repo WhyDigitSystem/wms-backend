@@ -2,7 +2,6 @@ package com.whydigit.wms.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -31,4 +30,6 @@ public interface GrnService {
 
 	List<Map<String, Object>> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode);
+
+	List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode, String client,String warehouse);
 }
