@@ -1,7 +1,5 @@
 package com.whydigit.wms.dto;
 
-import javax.persistence.Column;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,4 +48,5 @@ public class MaterialDTO {
 	private Float weight;
 	private String movingType;
 	private String rackLevel;
+	private String lowQty;
 }

@@ -429,6 +429,7 @@ public class GrnServiceImpl implements GrnService {
 		return gridDetails;
 	}
 
+
 	
 	
 	private int totalRows=0; // Instance variable to keep track of total rows
@@ -590,5 +591,26 @@ public class GrnServiceImpl implements GrnService {
 	        return successfulUploads;
 	    }
  
+
+	@Override
+	public List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode,
+			String client,String warehouse) {
+		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse);
+		return getGrnStatus(getGrnStatus);
+	}
+
+	private List<Map<String, Object>> getGrnStatus(Set<Object[]> gatePassInGridDetails) {
+		List<Map<String, Object>> gridDetails = new ArrayList<>();
+		for (Object[] grid : gatePassInGridDetails) {
+			Map<String, Object> details = new HashMap<>();
+			details.put("entryNo", grid[0] != null ? grid[0].toString() : "");
+			details.put("entryDate", grid[1] != null ? grid[1].toString() : "");
+			details.put("status", grid[2] != null ? grid[2].toString() : "");
+			
+			gridDetails.add(details);
+		}
+		return gridDetails;
+	}
+
 
 }

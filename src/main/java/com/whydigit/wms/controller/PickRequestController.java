@@ -234,6 +234,7 @@ public class PickRequestController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+
 	
 	@PostMapping("/createMultiplePickRequest")
 	public ResponseEntity<ResponseDTO> createMultiplePickRequest(@RequestBody List<MultiplePickDTO> multiplePickDTO) {
@@ -249,10 +250,39 @@ public class PickRequestController extends BaseController {
 			String errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+      }
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getPicrequestDashboard")
+	public ResponseEntity<ResponseDTO> getPicrequestDashboard(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client,@RequestParam String warehouse,
+			@RequestParam String finyear) {
+		String methodName = "getPicrequestDashboard()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> picrequestDashboard = new ArrayList<>();
+		try {
+			picrequestDashboard = pickRequestService.getPicrequestDashboard(orgId, branchCode, client, warehouse, finyear);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"PicRequest Details  information retrieved successfully");
+			responseObjectsMap.put("picrequestDashboard", picrequestDashboard);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve PicRequest Details", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 }
 
