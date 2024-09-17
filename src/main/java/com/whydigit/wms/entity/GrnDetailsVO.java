@@ -88,6 +88,8 @@ public class GrnDetailsVO {
 	private int grnQty;
 	@Column(name = "expdate")
 	private LocalDate expDate;
+	@Column(name = "damageremarks")
+	private String damageRemark;
 	
 	@JsonBackReference
 	@ManyToOne

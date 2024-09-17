@@ -91,7 +91,7 @@ public interface CycleCountRepo extends JpaRepository<CycleCountVO, Long> {
 	@Query(value = "select a.sqty from(\r\n"
 			+ "select sum(sqty)sqty from stockdetails \r\n"
 			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 and grnno=?6\r\n"
-			+ " and batch=?7 or batch IS null  and bin=?8 and status='R'\r\n"
+			+ " and (batch=?7 or batch IS null)  and bin=?8 and status='R'\r\n"
 			+ " having sum(sqty)>0 )a", nativeQuery = true)
 	Set<Object[]> getAvlQty(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNO,
 			String batch, String bin);
@@ -99,7 +99,7 @@ public interface CycleCountRepo extends JpaRepository<CycleCountVO, Long> {
 	@Query(value = "select a.sqty from(\r\n"
 			+ "select sum(sqty)sqty from stockdetails \r\n"
 			+ "where orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4 and partno=?5 and grnno=?6\r\n"
-			+ " and batch=?7 or batch IS null  and bin=?8 and status='R'\r\n"
+			+ " and (batch=?7 or batch IS null)  and bin=?8 and status='R'\r\n"
 			+ " having sum(sqty)>0 )a", nativeQuery = true)
 	int getAvailQty(Long orgId, String branchCode, String client, String warehouse, String partNo, String grnNo,
 			String batchNo, String bin);

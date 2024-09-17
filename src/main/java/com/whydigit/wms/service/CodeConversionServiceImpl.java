@@ -184,7 +184,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 					stockDetailsVOTo.setCore(codeConversionDetailsVO.getCCore());
 					stockDetailsVOTo.setExpDate(codeConversionDetailsVO.getCExpDate());
 					stockDetailsVOTo.setPcKey(materialRepo.getParentChildKey(codeConversionVO.getOrgId(),
-							codeConversionVO.getClient(), codeConversionDetailsVO.getPartNo()));
+							codeConversionVO.getClient(), codeConversionDetailsVO.getCPartNo()));
 					stockDetailsVOTo.setSSku(codeConversionDetailsVO.getSku());
 					stockDetailsVOTo.setSQty(codeConversionDetailsVO.getConvertQty());
 					stockDetailsVOTo.setRate(codeConversionDetailsVO.getCRate());
