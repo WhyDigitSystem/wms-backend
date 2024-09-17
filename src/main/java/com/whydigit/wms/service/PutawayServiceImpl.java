@@ -618,6 +618,7 @@ public class PutawayServiceImpl implements PutawayService {
 									throw new ApplicationException( "BinNo " + binNo1
 											+ " does not exist for this client.");
 								}
+								
 							} else {
 								throw new ApplicationException("BinType" + binType1 + " does not exists for this client");
 
