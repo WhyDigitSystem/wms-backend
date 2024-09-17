@@ -613,6 +613,7 @@ public class PutawayServiceImpl implements PutawayService {
 
 									putawayExcelUploadVOVOsToSave.add(putawayExcelUploadVO);
 									successfulUploads++; // Increment successfulUploads
+									
 
 								} else {
 									throw new ApplicationException( "BinNo " + binNo1

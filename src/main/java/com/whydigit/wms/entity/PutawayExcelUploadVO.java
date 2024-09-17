@@ -30,6 +30,7 @@ public class PutawayExcelUploadVO {
     @Column(name = "orgid")
     private Long orgId;
     
+    
     @Column(name = "grnno")
     private String grnNo;
 
