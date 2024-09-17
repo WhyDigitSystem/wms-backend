@@ -15,6 +15,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+
+import org.apache.poi.ss.usermodel.DataFormatter;
+
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -412,12 +415,19 @@ public class PutawayServiceImpl implements PutawayService {
 
 	private int totalRows = 0;
 	private int successfulUploads = 0;
+	
+    private final DataFormatter dataFormatter = new DataFormatter();
+
 
 	@Transactional
 	@Override
 	public void ExcelUploadForPutAway(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
 			String customer, String client, String finYear, String branch, String branchCode, String warehouse)
 			throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+		
+		 totalRows = 0;
+		 successfulUploads = 0;
+		    
 		List<PutawayExcelUploadVO> putawayExcelUploadVOVOsToSave = new ArrayList<>();
 		List<String> errorMessages = new ArrayList<>();
 
@@ -436,7 +446,9 @@ public class PutawayServiceImpl implements PutawayService {
 						continue; // Skip header row and empty rows
 					}
 
-					totalRows =totalRows+1; // Increment totalRows
+					totalRows++; // Increment totalRows
+                    System.out.println("Validating row: " + (row.getRowNum() + 1));
+
 					try {
 						// Retrieve cell values based on the provided order
 						String grnNo1 = getStringCellValue(row.getCell(0));
@@ -603,7 +615,7 @@ public class PutawayServiceImpl implements PutawayService {
 									putawayExcelUploadVO.setCancelRemarks(""); // Default or based on some logic
 
 									putawayExcelUploadVOVOsToSave.add(putawayExcelUploadVO);
-									successfulUploads =successfulUploads +1; // Increment successfulUploads
+									successfulUploads++; // Increment successfulUploads
 
 								} else {
 									throw new ApplicationException( "BinNo " + binNo1
@@ -720,27 +732,14 @@ public class PutawayServiceImpl implements PutawayService {
 				&& "securitypersonname".equalsIgnoreCase(getStringCellValue(headerRow.getCell(36)));
 	}
 
-	private String getStringCellValue(Cell cell) {
-		if (cell == null) {
-			return "";
-		}
-		switch (cell.getCellType()) {
-		case STRING:
-			return cell.getStringCellValue();
-		case NUMERIC:
-			if (DateUtil.isCellDateFormatted(cell)) {
-				return cell.getLocalDateTimeCellValue().toLocalDate().toString();
-			} else {
-				return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
-			}
-		case BOOLEAN:
-			return String.valueOf(cell.getBooleanCellValue());
-		case FORMULA:
-			return cell.getCellFormula();
-		default:
-			return "";
-		}
-	}
+	 private String getStringCellValue(Cell cell) {
+	        if (cell == null) {
+	            return ""; // Return empty string if cell is null
+	        }
+
+	        // Use DataFormatter to get the cell value as a string
+	        return dataFormatter.formatCellValue(cell);
+	    }
 
 	@Override
 	public int getTotalRows() {

@@ -258,6 +258,49 @@ public class GrnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+
+	
+
+	@PostMapping("/ExcelUploadForGrn")
+	public ResponseEntity<ResponseDTO> ExcelUploadForGrn(@RequestParam MultipartFile[] files,
+			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String createdBy,@RequestParam(required = false) String customer, @RequestParam(required = false)  String client, @RequestParam(required = false)  String finYear, 
+			 @RequestParam(required = false) String branch, @RequestParam(required = false)  String branchCode, @RequestParam(required = false)  String warehouse) {
+		String methodName = "ExcelUploadForGrn()";
+		int totalRows = 0;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		int successfulUploads = 0;
+		ResponseDTO responseDTO = null;
+		try {
+			// Call service method to process Excel upload
+			grnService.ExcelUploadForGrn(files, type, orgId, createdBy,customer,client,finYear,branch, branchCode, warehouse);
+
+			// Retrieve the counts after processing
+			totalRows = grnService.getTotalRows(); // Get total rows processed
+			successfulUploads = grnService.getSuccessfulUploads(); // Get successful uploads count
+			// Construct success response
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", totalRows);
+			responseObjectsMap.put("successfulUploads", successfulUploads);
+			Map<String, Object> paramObjectsMap = new HashMap<>();
+			paramObjectsMap.put("message", "Excel Upload For  Grn successful");
+			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (Exception e) {
+
+			String errorMsg = e.getMessage();
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("errorMessage", errorMsg);
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Grn Failed", errorMsg);
+      }
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 	@GetMapping("/getGrnStatusForDashBoard")
 	public ResponseEntity<ResponseDTO> getGrnStatusForDashBoard(@RequestParam Long orgId,
 			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
@@ -286,6 +329,7 @@ public class GrnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 
 
 }

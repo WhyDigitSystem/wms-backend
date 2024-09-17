@@ -77,6 +77,7 @@ public class StockReportServiceImpl implements StockReportService {
 		for (Object[] st : getPartNoReport) {
 			Map<String, Object> details = new HashMap<>();
 			details.put("partNo", st[0] != null ? st[0].toString() : "");
+			
 			stock.add(details);
 		}
 		return stock;
@@ -94,6 +95,7 @@ public class StockReportServiceImpl implements StockReportService {
 		for (Object[] st : getBatchReport) {
 			Map<String, Object> details = new HashMap<>();
 			details.put("batch", st[0] != null ? st[0].toString() : "");
+			
 			stock.add(details);
 		}
 		return stock;
