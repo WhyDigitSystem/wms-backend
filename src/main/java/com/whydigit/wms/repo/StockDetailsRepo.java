@@ -305,4 +305,30 @@ boolean existsByPartnoAndOrgIdAndClient(String partNo, Long orgId, String client
 boolean existsByPartnoAndBatchAndOrgIdAndClient(String partNo, String batchNo, Long orgId, String client);
 
 
+@Query(value = "SELECT\r\n"
+		+ "s.partno,\r\n"
+		+ "s.partdesc,\r\n"
+		+ "s.sku,\r\n"
+		+ "s.total_sqtyt AS qty,\r\n"
+		+ "'Low Qty' AS status\r\n"
+		+ "FROM\r\n"
+		+ "(SELECT partno,partdesc,sku,SUM(sqty) AS total_sqtyt FROM stockdetails\r\n"
+		+ "WHERE\r\n"
+		+ "status = 'R'\r\n"
+		+ "AND orgid = 1000000001\r\n"
+		+ "AND client = 'BACARDI'\r\n"
+		+ "AND branchcode = 'BLRW'\r\n"
+		+ "AND warehouse = 'BLRWAREHOUSE'\r\n"
+		+ "GROUP BY\r\n"
+		+ "         partno, partdesc, sku) s\r\n"
+		+ "JOIN\r\n"
+		+ "material m\r\n"
+		+ "ON\r\n"
+		+ "s.partno = m.partno\r\n"
+		+ "WHERE m.status = 'R' AND m.orgid =?1 AND m.client =?3 AND m.branchcode =?2 AND m.warehouse =?4 AND s.total_sqtyt < m.lowqty\r\n"
+		+ "LIMIT 0, 1000;\r\n"
+		+ "",nativeQuery =true)
+Set<Object[]> getStock(Long orgId,String branchCode, String client, String warehouse);
+
+
 }

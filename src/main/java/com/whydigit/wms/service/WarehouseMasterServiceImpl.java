@@ -1142,7 +1142,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		materialVO.setBreadth(materialDTO.getBreadth());
 		materialVO.setHeight(materialDTO.getHeight());
 		materialVO.setWeight(materialDTO.getWeight());
-	}
+		materialVO.setLowQty(materialDTO.getLowQty());	}
 
 	@Override
 	public List<Map<String, Object>> getPartNo(Long orgId, String client, String branch, String branchCode,

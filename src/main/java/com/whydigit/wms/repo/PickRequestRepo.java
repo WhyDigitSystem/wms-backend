@@ -214,7 +214,7 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 			+ "from buyerorder b \r\n"
 			+ "where b.orgid =?1 \r\n"
 			+ "and b.finyear =?5 \r\n"
-			+ "and b.branchcode =?3\r\n"
+			+ "and b.branchcode =?2\r\n"
 			+ "and b.client =?4\r\n"
 			+ "group by b.orderno, \r\n"
 			+ "b.orderdate")

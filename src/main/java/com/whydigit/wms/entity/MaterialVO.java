@@ -108,6 +108,9 @@ public class MaterialVO {
 	private String movingType;
 	@Column(name = "racklevel")
 	private String rackLevel;
+	@Column(name = "lowqty")
+	private String lowQty;
+	
 	
 
 	@JsonGetter("active")
