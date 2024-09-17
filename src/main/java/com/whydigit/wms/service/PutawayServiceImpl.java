@@ -469,10 +469,9 @@ public class PutawayServiceImpl implements PutawayService {
 
 									// Retrieve cell values based on the provided order
 									String grnNo = getStringCellValue(row.getCell(0));
-									String grnDate = getStringCellValue(row.getCell(1));
-
+									LocalDate grnDate = parseDate(getStringCellValue(row.getCell(1)));
 									String entryNo = getStringCellValue(row.getCell(2));
-									String entryDate = getStringCellValue(row.getCell(3));
+									LocalDate entryDate = parseDate(getStringCellValue(row.getCell(3)));
 									String shortName = getStringCellValue(row.getCell(4));
 									String modeOfShipment = getStringCellValue(row.getCell(5));
 									String carrier = getStringCellValue(row.getCell(6));
