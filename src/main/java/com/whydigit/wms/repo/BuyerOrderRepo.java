@@ -38,7 +38,7 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 			+ "       batch,\r\n"
 			+ "       expdate,\r\n"
 			+ "       SUM(sqty) AS total_sqty,\r\n"
-			+ "       sku\r\n"
+			+ "       sku,ROW_NUMBER() OVER () AS id\r\n"
 			+ "FROM stockdetails\r\n"
 			+ "WHERE orgid = ?1\r\n"
 			+ "  AND branchcode = ?2\r\n"
