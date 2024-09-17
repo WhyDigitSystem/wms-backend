@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.GrnDTO;
 import com.whydigit.wms.entity.GatePassInVO;
 import com.whydigit.wms.entity.GrnVO;
@@ -31,4 +33,11 @@ public interface GrnService {
 
 	List<Map<String, Object>> getGatePassDetailsByGatePassNo(Long orgId, String client, String entryno, Long docid,
 			String branchcode);
+
+	int getSuccessfulUploads();
+
+	int getTotalRows();
+
+	void ExcelUploadForGrn(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
+			String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException;
 }
