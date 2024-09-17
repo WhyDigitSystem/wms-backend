@@ -304,6 +304,7 @@ public class GrnServiceImpl implements GrnService {
 		grnVO.setDestinationTo(grnDTO.getDestinationTo());
 		grnVO.setNoOfBins(grnDTO.getNoOfBins());
 		grnVO.setInvoiceNo(grnDTO.getInvoiceNo());
+		grnVO.setRemarks(grnDTO.getRemarks());;
 
 		if (ObjectUtils.isNotEmpty(grnVO.getId())) {
 			List<GrnDetailsVO> grnDetailsVO1 = grnDetailsRepo.findByGrnVO(grnVO);
@@ -348,7 +349,7 @@ public class GrnServiceImpl implements GrnService {
 			grnDetailsVO.setAmount(grnDetailsDTO.getAmount());
 			grnDetailsVO.setShipmentNo(grnDetailsDTO.getShipmentNo());
 			grnDetailsVO.setExpDate(grnDetailsDTO.getExpdate());
-
+			grnDetailsVO.setDamageRemark(grnDetailsDTO.getDamageRemark());
 			totalGrnQty = totalGrnQty + grnDetailsDTO.getRecQty();
 			totalNoOfPkgs = totalNoOfPkgs + grnDetailsDTO.getPkgs();
 			totalAmount = totalAmount + grnDetailsDTO.getAmount();
