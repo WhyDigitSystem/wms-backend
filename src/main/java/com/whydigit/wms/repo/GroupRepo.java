@@ -14,7 +14,8 @@ public interface GroupRepo extends JpaRepository<GroupVO, Long>{
 
 	boolean existsByGroupNameAndOrgId(String groupName, Long orgId);
 
-	boolean existsByCompanyAndOrgId(String company, Long orgId);
+
+	boolean existsByOrgId(Long orgId);
 
 
 }

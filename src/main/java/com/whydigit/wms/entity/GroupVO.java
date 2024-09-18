@@ -37,7 +37,6 @@ public class GroupVO {
 	private String createdBy;
 	@Column(name = "modifiedby")
 	private String updatedBy;
-	private String company;
 	private boolean cancel;
 	
 	@JsonGetter("active")

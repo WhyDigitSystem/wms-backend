@@ -206,10 +206,10 @@ public class PickRequestController extends BaseController {
 	}
 	
 	
-	@GetMapping("/getPendingBuyerOrderdetails")
-	public ResponseEntity<ResponseDTO> getPendingBuyerOrderDetails(@RequestParam Long orgId,@RequestParam String finYear,
+	@GetMapping("/getPendingPickDetails")
+	public ResponseEntity<ResponseDTO> getPendingPickDetails(@RequestParam Long orgId,@RequestParam String finYear,
 			@RequestParam	String branchCode,@RequestParam String warehouse,@RequestParam String client) {
-		String methodName = "getPendingBuyerOrderDetails()";
+		String methodName = "getPendingPickDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -224,7 +224,7 @@ public class PickRequestController extends BaseController {
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
 					"Pending Buyer Order Details information retrieved successfully");
-			responseObjectsMap.put("pendingBuyerOrderdetails", pendingBuyerOrderdetails);
+			responseObjectsMap.put("pendingPickdetails", pendingBuyerOrderdetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,

@@ -2,6 +2,8 @@ package com.whydigit.wms.dto;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,8 @@ private Long id;
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
+	private String stockStatus;
+	private String statusFlag;
 
 	
 	private List<CycleCountDetailsDTO> cycleCountDetailsDTO;

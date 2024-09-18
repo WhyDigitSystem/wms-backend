@@ -506,7 +506,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	private LocalDate parseDate(String stringCellValue) {
 		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy");
 			return LocalDate.parse(stringCellValue, formatter);
 		} catch (Exception e) {
 			return null;

@@ -24,6 +24,7 @@ import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.LocationMovementVO;
+import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.service.LocationMovementService;
 
 @RestController
@@ -188,7 +189,7 @@ public class LocationMovementController extends BaseController {
 	@GetMapping("/getAllForLocationMovementDetailsFillGrid")
 	public ResponseEntity<ResponseDTO> getAllForLocationMovementDetailsFillGrid(
 			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String branch,
-			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client) {
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,@RequestParam(required = false) String entryNo) {
 
 		String methodName = "getAllForLocationMovementDetailsFillGrid()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -198,7 +199,7 @@ public class LocationMovementController extends BaseController {
 		List<Map<String, Object>> mov = new ArrayList<>();
 
 		try {
-			mov = locationMovementService.getAllForLocationMovementDetailsFillGrid(orgId, branch, branchCode, client);
+			mov = locationMovementService.getAllForLocationMovementDetailsFillGrid(orgId, branch, branchCode, client,entryNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -211,7 +212,7 @@ public class LocationMovementController extends BaseController {
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve all bin details from Stock information", errorMsg);
+					errorMsg, errorMsg);
 		}
 
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
