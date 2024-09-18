@@ -258,6 +258,7 @@ public class GrnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+
 	
 
 	@PostMapping("/ExcelUploadForGrn")
@@ -296,6 +297,34 @@ public class GrnController extends BaseController {
 			responseObjectsMap.put("errorMessage", errorMsg);
 
 			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Grn Failed", errorMsg);
+      }
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	@GetMapping("/getGrnStatusForDashBoard")
+	public ResponseEntity<ResponseDTO> getGrnStatusForDashBoard(@RequestParam Long orgId,
+			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
+			 @RequestParam String warehouse) {
+		String methodName = "getGrnStatusForDashBoard()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> grnDashboard = new ArrayList<>();
+		try {
+			grnDashboard = grnService.getGrnStatusForDashBoard(orgId, finYear,
+					branchCode, client,warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Grn information get successfully");
+			responseObjectsMap.put("grnDashboard", grnDashboard);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

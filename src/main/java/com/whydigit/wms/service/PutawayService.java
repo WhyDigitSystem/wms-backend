@@ -41,4 +41,7 @@ public interface PutawayService {
 			String finYear, String branch, String branchCode, String warehouse)
 			throws ApplicationException, EncryptedDocumentException, IOException;
 
+	List<Map<String, Object>> getPutawayForDashBoard(Long orgId, String finYear, String branchCode, String client,
+			String warehouse);
+
 }

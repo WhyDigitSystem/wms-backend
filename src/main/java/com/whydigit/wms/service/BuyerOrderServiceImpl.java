@@ -506,7 +506,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	private LocalDate parseDate(String stringCellValue) {
 		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy");
 			return LocalDate.parse(stringCellValue, formatter);
 		} catch (Exception e) {
 			return null;
@@ -786,6 +786,28 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("refDate", fs[7] != null ? fs[7].toString() : "");
 			part.put("invoiceNo", fs[8] != null ? fs[8].toString() : "");
 			part.put("invoiceDate", fs[9] != null ? fs[9].toString() : "");
+			details1.add(part);
+		}
+		return details1;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse,
+			String client, String finYear) {
+		Set<Object[]> resultq = boExcelUploadRepo.getBuyerorderDashboard(orgId, branchCode, warehouse, client,
+				finYear);
+		return getBuyerorder(resultq);
+	}
+
+	private List<Map<String, Object>> getBuyerorder(Set<Object[]> resultq) {
+		List<Map<String, Object>> details1 = new ArrayList<>();
+		for (Object[] fs : resultq) {
+			Map<String, Object> part = new HashMap<>();
+			part.put("orderNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("orderDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("status", fs[2] != null ? fs[2].toString() : "");
+			
 			details1.add(part);
 		}
 		return details1;

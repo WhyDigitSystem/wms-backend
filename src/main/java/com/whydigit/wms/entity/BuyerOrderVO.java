@@ -92,7 +92,7 @@ public class BuyerOrderVO {
 	@Column(name = "branchcode")
 	private String branchCode;
 	@Column(name = "freeze")
-	private boolean freeze=true;
+	private boolean freeze=false;
 	@Column(name = "totalorderqty")
 	private int totalOrderQty;
 	@Column(name = "totalavlqty")

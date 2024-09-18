@@ -41,8 +41,7 @@ public class SecurityConfig {
 						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**","/api/buyerOrder/**",
 						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**","/api/kitting/**",
 						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/cycleCount/**",
-						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**",
-						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**","/api/Reports/**",
+						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**","/api/dashboardController/**","/api/Reports/**",
 						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/salesReturn/**","/api/locationMovement/**","/api/deKitting/**","/api/pickrequest/**"
 								+ "")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();

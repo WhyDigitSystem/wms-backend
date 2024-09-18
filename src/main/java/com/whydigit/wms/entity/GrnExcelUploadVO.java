@@ -1,12 +1,18 @@
 package com.whydigit.wms.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.whydigit.wms.dto.CreatedUpdatedDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +37,7 @@ public class GrnExcelUploadVO {
     private String entryNo;
 
     @Column(name = "entrydate")
-    private String entryDate;  // Use String or LocalDate depending on your format
+    private LocalDate entryDate;  // Use String or LocalDate depending on your format
 
     @Column(name = "suppliershortname")
     private String supplierShortname;
@@ -49,7 +55,7 @@ public class GrnExcelUploadVO {
     private String invDcNo;
 
     @Column(name = "invdate")
-    private String invDate;
+    private LocalDate invDate;
 
     @Column(name = "partno")
     private String partNo;
@@ -76,10 +82,10 @@ public class GrnExcelUploadVO {
     private String batchNo;
 
     @Column(name = "batchdate")
-    private String batchDate;
+    private LocalDate batchDate;
 
     @Column(name = "expdate")
-    private String expDate;
+    private LocalDate expDate;
 
     @Column(name = "noofpallet")
     private Integer noOfPallet;
@@ -132,6 +138,9 @@ public class GrnExcelUploadVO {
 
     @Column(name = "cancelremarks")
     private String cancelRemarks;
+    
+    @Embedded
+	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
     // Add other common fields if needed
 }

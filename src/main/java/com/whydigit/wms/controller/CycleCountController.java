@@ -145,7 +145,7 @@ public class CycleCountController extends BaseController {
 	@GetMapping("getCycleCountGridDetails")
 	public ResponseEntity<ResponseDTO> getCycleCountGridDetails(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-			@RequestParam(required = true) String warehouse) {
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String status) {
 		String methodName = "getCycleCountGridDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -153,7 +153,7 @@ public class CycleCountController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> cycleCountGrid = new ArrayList<Map<String, Object>>();
 		try {
-			cycleCountGrid = cycleCountService.getCycleCountGridDetails(orgId, branchCode, client, warehouse);
+			cycleCountGrid = cycleCountService.getCycleCountGridDetails(orgId, branchCode, client, warehouse,status);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -173,7 +173,7 @@ public class CycleCountController extends BaseController {
 	@GetMapping("getPartNoByCycleCount")
 	public ResponseEntity<ResponseDTO> getPartNoByCycleCount(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-			@RequestParam(required = true) String warehouse) {
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String status) {
 		String methodName = "getPartNoByCycleCount()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -181,7 +181,7 @@ public class CycleCountController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> cycleCountPartNo = new ArrayList<Map<String, Object>>();
 		try {
-			cycleCountPartNo = cycleCountService.getPartNoByCycleCount(orgId, branchCode, client, warehouse);
+			cycleCountPartNo = cycleCountService.getPartNoByCycleCount(orgId, branchCode, client, warehouse,status);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -201,7 +201,7 @@ public class CycleCountController extends BaseController {
 	@GetMapping("getGrnNoByCycleCount")
 	public ResponseEntity<ResponseDTO> getGrnNoByCycleCount(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
-			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo ) {
+			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,@RequestParam(required = true) String status ) {
 		String methodName = "getGrnNoByCycleCount()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -209,7 +209,7 @@ public class CycleCountController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> cycleCountGrnNo = new ArrayList<Map<String, Object>>();
 		try {
-			cycleCountGrnNo = cycleCountService.getGrnNoByCycleCount(orgId, branchCode, client, warehouse,partNo);
+			cycleCountGrnNo = cycleCountService.getGrnNoByCycleCount(orgId, branchCode, client, warehouse,partNo,status);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -230,7 +230,7 @@ public class CycleCountController extends BaseController {
 	public ResponseEntity<ResponseDTO> getBatchByCycleCount(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
 			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,
-			@RequestParam(required = true) String grnNO) {
+			@RequestParam(required = true) String grnNO,@RequestParam(required = true) String status) {
 		String methodName = "getBatchByCycleCount()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -238,7 +238,7 @@ public class CycleCountController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> cycleCountBatch = new ArrayList<Map<String, Object>>();
 		try {
-			cycleCountBatch = cycleCountService.getBatchByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO);
+			cycleCountBatch = cycleCountService.getBatchByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO,status);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -259,7 +259,7 @@ public class CycleCountController extends BaseController {
 	public ResponseEntity<ResponseDTO> getBinDetailsByCycleCount(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
 			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,
-			@RequestParam(required = true) String grnNO,@RequestParam(required = true) String batch) {
+			@RequestParam(required = true) String grnNO,@RequestParam(required = true) String batch,@RequestParam(required = true) String status) {
 		String methodName = "getBinDetailsByCycleCount()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -267,7 +267,7 @@ public class CycleCountController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> cycleBinDetails = new ArrayList<Map<String, Object>>();
 		try {
-			cycleBinDetails = cycleCountService.getBinDetailsByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO,batch);
+			cycleBinDetails = cycleCountService.getBinDetailsByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO,batch,status);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -289,7 +289,7 @@ public class CycleCountController extends BaseController {
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String client,
 			@RequestParam(required = true) String warehouse,@RequestParam(required = true) String partNo,
 			@RequestParam(required = true) String grnNO,@RequestParam(required = true) String batch,
-			@RequestParam(required = true) String bin
+			@RequestParam(required = true) String bin,@RequestParam(required = true) String status
 			) {
 		String methodName = "getAvlQtyByCycleCount()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -298,7 +298,7 @@ public class CycleCountController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> avlQty = new ArrayList<Map<String, Object>>();
 		try {
-			avlQty = cycleCountService.getAvlQtyByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO,batch,bin);
+			avlQty = cycleCountService.getAvlQtyByCycleCount(orgId, branchCode, client, warehouse,partNo,grnNO,batch,bin,status);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
