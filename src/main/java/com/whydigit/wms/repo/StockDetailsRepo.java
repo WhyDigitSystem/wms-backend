@@ -1,6 +1,5 @@
 package com.whydigit.wms.repo;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -306,29 +305,89 @@ boolean existsByPartnoAndBatchAndOrgIdAndClient(String partNo, String batchNo, L
 
 
 @Query(value = "SELECT\r\n"
-		+ "s.partno,\r\n"
-		+ "s.partdesc,\r\n"
-		+ "s.sku,\r\n"
-		+ "s.total_sqtyt AS qty,\r\n"
-		+ "'Low Qty' AS status\r\n"
+		+ "    s.partno,\r\n"
+		+ "    s.partdesc,\r\n"
+		+ "    s.sku,\r\n"
+		+ "    s.total_sqtyt AS qty,\r\n"
+		+ "    'Low Qty' AS status\r\n"
 		+ "FROM\r\n"
-		+ "(SELECT partno,partdesc,sku,SUM(sqty) AS total_sqtyt FROM stockdetails\r\n"
-		+ "WHERE\r\n"
-		+ "status = 'R'\r\n"
-		+ "AND orgid = 1000000001\r\n"
-		+ "AND client = 'BACARDI'\r\n"
-		+ "AND branchcode = 'BLRW'\r\n"
-		+ "AND warehouse = 'BLRWAREHOUSE'\r\n"
-		+ "GROUP BY\r\n"
-		+ "         partno, partdesc, sku) s\r\n"
-		+ "JOIN\r\n"
-		+ "material m\r\n"
-		+ "ON\r\n"
-		+ "s.partno = m.partno\r\n"
-		+ "WHERE m.status = 'R' AND m.orgid =?1 AND m.client =?3 AND m.branchcode =?2 AND m.warehouse =?4 AND s.total_sqtyt < m.lowqty\r\n"
-		+ "LIMIT 0, 1000;\r\n"
-		+ "",nativeQuery =true)
+		+ "    (SELECT \r\n"
+		+ "        partno,\r\n"
+		+ "        partdesc,\r\n"
+		+ "        sku,\r\n"
+		+ "        SUM(sqty) AS total_sqtyt\r\n"
+		+ "     FROM stockdetails\r\n"
+		+ "     WHERE\r\n"
+		+ "        status = 'R'\r\n"
+		+ "        AND orgid =?1\r\n"
+		+ "    AND client =?3\r\n"
+		+ "    AND branchcode =?2\r\n"
+		+ "    AND warehouse =?4\r\n"
+		+ "     GROUP BY \r\n"
+		+ "        partno, partdesc, sku\r\n"
+		+ "    ) s\r\n"
+		+ "JOIN \r\n"
+		+ "    material m\r\n"
+		+ "ON \r\n"
+		+ "    s.partno = m.partno\r\n"
+		+ "WHERE \r\n"
+		+ "    m.status = 'R'\r\n"
+		+ "    AND m.orgid =?1\r\n"
+		+ "    AND m.client =?3\r\n"
+		+ "    AND m.branchcode =?2\r\n"
+		+ "    AND m.warehouse =?4\r\n"
+		+ "    AND s.total_sqtyt > m.lowqty\r\n"
+		,nativeQuery =true)
 Set<Object[]> getStock(Long orgId,String branchCode, String client, String warehouse);
+
+@Query(nativeQuery =true,value ="SELECT \r\n"
+		+ "DATE(docdate) AS orderdate,\r\n"
+		+ "COUNT(*) AS ordercount\r\n"
+		+ "FROM  putaway\r\n"
+		+ "WHERE \r\n"
+		+ "DATE(docdate) = CURDATE() and orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4\r\n"
+		+ "GROUP BY \r\n"
+		+ "DATE(docdate)")
+Set<Object[]> getPutAway(Long orgId, String branchCode, String client, String warehouse);
+
+@Query(value ="select partno,PARTDESC,SKU,STATUS,BATCH,sum(sqty) as availqty from stockdetails\r\n"
+		+ " where orgid=?1 and warehouse=?4 and branchcode=?2 and client=?3 AND BIN=?5\r\n"
+		+ "  group by partno,PARTDESC,SKU,STATUS,BATCH HAVING sum(sqty) > 0",nativeQuery =true)
+Set<Object[]> getBinDetails3(Long orgId, String branchCode, String client, String warehouse,String bin);
+
+@Query(value ="select w.rowno,w.level,W.bin from warehouselocationdetails w where orgid=?1  AND \r\n"
+		+ " branchcode=?2 AND warehouse=?3 GROUP BY w.rowno,w.level,W.bin ORDER BY W.ROWNO,W.bin",nativeQuery =true)
+Set<Object[]> getStorageDetails2(Long orgId, String branchCode, String warehouse);
+
+
+@Query(nativeQuery =true,value ="select count(docid) from grn where month(docdate)=MONTH(DATE(NOW())) and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
+		+ "and branchcode=?2 and client=?4 and warehouse=?3")
+Set<Object[]> getGrnOrderDetailsPerIn(Long orgId, String branchCode, String warehouse, String client,
+		 int finYear);
+
+
+@Query(nativeQuery =true,value ="SELECT rowno,levelno,bin FROM vw_clientbindetails where orgid=?1  AND \r\n"
+		+ " branchcode=?2 AND warehouse=?4 and client=?3 group by rowno,levelno,bin ORDER BY ROWNO,bin")
+Set<Object[]> getBinDetailsForClient(Long orgId, String branchCode, String client, String warehouse);
+
+@Query(value ="select count(docid) from grn where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
+Set<Object[]> getGrnOrderDetails(Long orgId, String branchCode, String warehouse, String client, int finYear);
+
+@Query(nativeQuery =true,value ="select count(docid) from buyerorder where month(docdate)=MONTH(DATE(NOW())) and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
+		+ "and branchcode=?2 and client=?4 and warehouse=?3")
+Set<Object[]> getOutBoundOrderPerMonth1(Long orgId, String branchCode, String warehouse, String client,
+		int finYear);
+
+@Query(value ="select count(docid) from buyerorder where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
+Set<Object[]> getOutBoundOrderPerYear1(Long orgId, String branchCode, String warehouse, String client, int finYear);
+
+@Query(nativeQuery =true,value ="SELECT A.PARTNO,A.PARTDESC,A.SKU,SUM(A.SQTY) as holdQty FROM\r\n"
+		+ " (SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bin,sum(sqty) SQTY FROM stockdetails\r\n"
+		+ "  where orgid=?1 and warehouse=?3 and branchcode=?2 and client=?4 \r\n"
+		+ "  and status='H' group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bin\r\n"
+		+ "   having sum(sqty)>0) A GROUP BY A.PARTNO,A.PARTDESC,A.SKU")
+Set<Object[]> getHoldMaterialCount1(Long orgId, String branchCode, String warehouse, String client);
+
 
 
 }
