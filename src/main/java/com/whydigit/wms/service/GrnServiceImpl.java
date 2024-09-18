@@ -1,6 +1,8 @@
 package com.whydigit.wms.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -471,13 +473,13 @@ public class GrnServiceImpl implements GrnService {
 
 	                        grnExcelUploadVO.setSno(getNumericCellValue(row.getCell(0)));
 	                        grnExcelUploadVO.setEntryNo(getStringCellValue(row.getCell(1)));
-	                        grnExcelUploadVO.setEntryDate(getStringCellValue(row.getCell(2)));
+	                        grnExcelUploadVO.setEntryDate(parseDate(getStringCellValue(row.getCell(2))));
 	                        grnExcelUploadVO.setSupplierShortname(getStringCellValue(row.getCell(3)));
 	                        grnExcelUploadVO.setModeOfShipment(getStringCellValue(row.getCell(4)));
 	                        grnExcelUploadVO.setCarrier(getStringCellValue(row.getCell(5)));
 	                        grnExcelUploadVO.setLrHblNo(getStringCellValue(row.getCell(6)));
 	                        grnExcelUploadVO.setInvDcNo(getStringCellValue(row.getCell(7)));
-	                        grnExcelUploadVO.setInvDate(getStringCellValue(row.getCell(8)));
+	                        grnExcelUploadVO.setInvDate(parseDate(getStringCellValue(row.getCell(8))));
 	                        grnExcelUploadVO.setPartNo(getStringCellValue(row.getCell(9)));
 	                        grnExcelUploadVO.setPartDesc(getStringCellValue(row.getCell(10)));
 	                        grnExcelUploadVO.setSku(getStringCellValue(row.getCell(11)));
@@ -486,8 +488,8 @@ public class GrnServiceImpl implements GrnService {
 	                        grnExcelUploadVO.setDamageQty(getNumericCellValue(row.getCell(14)));
 	                        grnExcelUploadVO.setSubStockQty(getNumericCellValue(row.getCell(15)));
 	                        grnExcelUploadVO.setBatchNo(getStringCellValue(row.getCell(16)));
-	                        grnExcelUploadVO.setBatchDate(getStringCellValue(row.getCell(17)));
-	                        grnExcelUploadVO.setExpDate(getStringCellValue(row.getCell(18)));
+	                        grnExcelUploadVO.setBatchDate(parseDate(getStringCellValue(row.getCell(17))));
+	                        grnExcelUploadVO.setExpDate(parseDate(getStringCellValue(row.getCell(18))));
 	                        grnExcelUploadVO.setNoOfPallet(getNumericCellValue(row.getCell(19)));
 	                        grnExcelUploadVO.setPalletQty(getNumericCellValue(row.getCell(20)));
 	                        grnExcelUploadVO.setWeight(getNumericCellValue1(row.getCell(21)));
@@ -522,7 +524,16 @@ public class GrnServiceImpl implements GrnService {
 	        }
 	    }
 
-	    private boolean isHeaderValid(Row headerRow) {
+	    private LocalDate parseDate(String stringCellValue) {
+	    	try {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy");
+				return LocalDate.parse(stringCellValue, formatter);
+			} catch (Exception e) {
+				return null;
+			}
+	}
+
+		private boolean isHeaderValid(Row headerRow) {
 	        List<String> expectedHeaders = Arrays.asList(
 	                "Sno", "Entry No*", "Entry Date", "Supplier Shortname*", "Mode of Shipment*", "Carrier*", "LR/HBL No*", "Inv/DC No*", "Inv date", "Part No*", "Part Desc*", "SKU*",
 	                "Inv Qty", "Rec Qty", "Damage Qty", "Sub Stock Qty", "Batchno", "Batchdate", "Expdate", "NOOFPallet", "Pallet Qty", "Weight*", "Rate", "Remark"

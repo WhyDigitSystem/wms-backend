@@ -24,6 +24,7 @@ public class LocationMovementDTO {
 	private String warehouse;
 	private String createdBy;
 	private int movedQty;
+	private String entryNo;
 
 	private List<LocationMovementDetailsDTO> locationMovementDetailsDTO;
 }
