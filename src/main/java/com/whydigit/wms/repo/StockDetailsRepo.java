@@ -336,7 +336,7 @@ boolean existsByPartnoAndBatchAndOrgIdAndClient(String partNo, String batchNo, L
 		+ "    AND m.client =?3\r\n"
 		+ "    AND m.branchcode =?2\r\n"
 		+ "    AND m.warehouse =?4\r\n"
-		+ "    AND s.total_sqtyt <= m.lowqty\r\n"
+		+ "    AND s.total_sqtyt > m.lowqty\r\n"
 		,nativeQuery =true)
 Set<Object[]> getStock(Long orgId,String branchCode, String client, String warehouse);
 
@@ -366,8 +366,17 @@ Set<Object[]> getGrnOrderDetailsPerIn(Long orgId, String branchCode, String ware
 		 int finYear);
 
 
-@Query(nativeQuery =true,value ="SELECT rowno,levelno,bin FROM vw_clientbindetails where orgid=?1  AND \r\n"
-		+ " branchcode=?2 AND warehouse=?4 and client=?3 group by rowno,levelno,bin ORDER BY ROWNO,bin")
+@Query(nativeQuery =true,value ="SELECT A.rowno,A.levelno,A.bin,B.binstatus FROM vw_clientbindetails A,wv_locationstatus B where\r\n"
+		+ "  A.orgid =B.ORGID\r\n"
+		+ "  AND A.BIN=B.BIN\r\n"
+		+ "  AND A.warehouse =B.WAREHOUSE\r\n"
+		+ "  AND A.branchcode =B.branchcode\r\n"
+		+ "  AND A.client =B.client AND\r\n"
+		+ "  A.orgid =?1\r\n"
+		+ "  AND A.warehouse =?4\r\n"
+		+ "  AND A.branchcode =?2\r\n"
+		+ "  AND A.client =?3 \r\n"
+		+ " group by A.rowno,A.levelno,A.bin,B.binstatus ORDER BY A.ROWNO,A.bin")
 Set<Object[]> getBinDetailsForClient(Long orgId, String branchCode, String client, String warehouse);
 
 @Query(value ="select count(docid) from grn where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
@@ -387,6 +396,16 @@ Set<Object[]> getOutBoundOrderPerYear1(Long orgId, String branchCode, String war
 		+ "  and status='H' group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bin\r\n"
 		+ "   having sum(sqty)>0) A GROUP BY A.PARTNO,A.PARTDESC,A.SKU")
 Set<Object[]> getHoldMaterialCount1(Long orgId, String branchCode, String warehouse, String client);
+
+@Query(nativeQuery =true,value ="select bin,binstatus from wv_locationstatus where orgid=?1 and branchcode=?2 and client=?3\r\n"
+		+ "and warehouse=?4 group by bin,binstatus order by bin")
+Set<Object[]> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode, String client, String warehouse);
+
+@Query(nativeQuery =true,value ="SELECT partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()) as days from stockdetails  where orgid=?1 and\r\n"
+		+ "  branchcode=?2 and client=?3 and warehouse=?4 and  \r\n"
+		+ "  datediff(expdate,curdate())<20 group by partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()) order by datediff(expdate,curdate()) desc")
+Set<Object[]> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
+
 
 
 
