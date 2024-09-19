@@ -1,5 +1,7 @@
 package com.whydigit.wms.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,18 +30,19 @@ public class PutawayExcelUploadVO {
     @Column(name = "orgid")
     private Long orgId;
     
+    
     @Column(name = "grnno")
     private String grnNo;
 
     @Column(name = "grndate")
-    private String grnDate;  // Use String or LocalDate depending on the format
+    private LocalDate grnDate; 
 
     @Column(name = "entryno")
     private String entryNo;
 
     @Column(name = "entrydate")
-    private String entryDate; // Use String or LocalDate depending on the format
-
+    private LocalDate entryDate; 
+    
     @Column(name = "shortname")
     private String shortName;
 
