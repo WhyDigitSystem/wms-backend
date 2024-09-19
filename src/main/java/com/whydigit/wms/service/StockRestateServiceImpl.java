@@ -111,7 +111,22 @@ public class StockRestateServiceImpl implements StockRestateService {
 		stockRestateVO.setTransferTo(stockRestateDTO.getTransferTo());
 		stockRestateVO.setTransferFromFlag(stockRestateDTO.getTransferFromFlag());
 		stockRestateVO.setTransferToFlag(stockRestateDTO.getTransferToFlag());
-		stockRestateVO.setEntryNo(stockRestateDTO.getEntryNo());
+		if(stockRestateDTO.getEntryNo()!=null && stockRestateRepo.existsByEntryNoAndOrgIdAndClient(stockRestateDTO.getEntryNo(),stockRestateDTO.getOrgId(),stockRestateDTO.getClient()))
+		{
+			throw new ApplicationException("EntryNo already Exist");
+		}
+		else
+		{
+			if(stockRestateDTO.getEntryNo()==null)
+			{
+			stockRestateVO.setEntryNo(null);
+			}
+			else
+			{
+				stockRestateVO.setEntryNo(stockRestateDTO.getEntryNo());
+			}
+		}
+		
 		stockRestateVO.setOrgId(stockRestateDTO.getOrgId());
 		stockRestateVO.setCustomer(stockRestateDTO.getCustomer());
 		stockRestateVO.setClient(stockRestateDTO.getClient());
@@ -390,12 +405,14 @@ public class StockRestateServiceImpl implements StockRestateService {
 		return binDetails;
 	}
 
+	
 	@Override
 	public List<Map<String, Object>> getFillGridDetailsForStockRestate(Long orgId, String branchCode,
-			String warehouse, String client, String transferFromFlag,String transferToFlag) {
+			String warehouse, String client, String tranferFromFlag, String tranferToFlag, String entryNo){
 		
 		Set<Object[]>getFillGridDetails= stockRestateRepo.getFillGridDetailsForRestate(orgId, branchCode,
-				 warehouse, client, transferFromFlag,transferToFlag);
+				 warehouse, client, tranferFromFlag,tranferToFlag,entryNo);
+		
 		return fillGridDetails(getFillGridDetails);
 	}
 
@@ -509,7 +526,7 @@ public class StockRestateServiceImpl implements StockRestateService {
 	                        srsExcelUploadVO.setBranchCode(branchCode);
 	                        srsExcelUploadVO.setWarehouse(warehouse);
 	                        srsExcelUploadVO.setCreatedBy(createdBy);
-	                        srsExcelUploadVO.setUpdatedBy("");
+	                        srsExcelUploadVO.setUpdatedBy(createdBy);
 	                        srsExcelUploadVO.setActive(true);
 	                        srsExcelUploadVO.setCancel(false);
 	                        srsExcelUploadVO.setCancelRemarks("");
@@ -594,6 +611,7 @@ public class StockRestateServiceImpl implements StockRestateService {
 	    public int getSuccessfulUploads() {
 	        return successfulUploads;
 	    }
+
 
 	
 

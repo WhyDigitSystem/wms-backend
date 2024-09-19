@@ -206,6 +206,8 @@ public interface LocationMovementRepo extends JpaRepository<LocationMovementVO, 
 	Set<Object[]> findBatchNoAndBatchDateFromStockForLocationMovement(Long orgId, String branch, String branchCode,
 			String client, String bin, String partNo, String grnNo);
 
+	boolean existsByEntryNoAndOrgIdAndClient(String entryNo, Long orgId, String client);
+
 	
 
 }

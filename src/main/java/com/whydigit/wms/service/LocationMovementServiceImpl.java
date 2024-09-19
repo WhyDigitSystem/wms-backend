@@ -250,7 +250,21 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		locationMovementVO.setFinYear(locationMovementDTO.getFinYear());
 		locationMovementVO.setClient(locationMovementDTO.getClient());
 		locationMovementVO.setBranchCode(locationMovementDTO.getBranchCode());
-		locationMovementVO.setEntryNo(locationMovementDTO.getEntryNo());
+		if(locationMovementDTO.getEntryNo()!=null && locationMovementRepo.existsByEntryNoAndOrgIdAndClient(locationMovementDTO.getEntryNo(),locationMovementDTO.getOrgId(),locationMovementDTO.getClient()))
+		{
+			throw new ApplicationException("EntryNo already Exist");
+		}
+		else
+		{
+			if(locationMovementDTO.getEntryNo()==null)
+			{
+				locationMovementDTO.setEntryNo(null);
+			}
+			else
+			{
+				locationMovementDTO.setEntryNo(locationMovementDTO.getEntryNo());
+			}
+		}
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
 		locationMovementVO.setWarehouse(locationMovementDTO.getWarehouse());
 		locationMovementVO.setMovedQty(locationMovementDTO.getMovedQty());
