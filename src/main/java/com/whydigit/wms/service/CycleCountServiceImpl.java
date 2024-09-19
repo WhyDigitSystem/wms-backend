@@ -32,7 +32,7 @@ import com.whydigit.wms.repo.StockDetailsRepo;
 @Service
 public class CycleCountServiceImpl implements CycleCountService {
  
-	public static final Logger LOGGER = LoggerFactory.getLogger(StockProcessServiceImpl.class);
+	public static final Logger LOGGER = LoggerFactory.getLogger(CycleCountServiceImpl.class);
 
 	@Autowired 
 	CycleCountRepo cycleCountRepo;
