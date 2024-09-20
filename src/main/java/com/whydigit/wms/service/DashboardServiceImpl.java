@@ -235,7 +235,12 @@ public class DashboardServiceImpl implements DashboardService{
 						details.put("partNo", grid[0] != null ? grid[0].toString() : "");
 						details.put("partDesc", grid[1] != null ? grid[1].toString() : "");
 						details.put("sku", grid[2] != null ? grid[2].toString() : "");
-						details.put("holdQty", grid[3] != null ? Integer.parseInt(grid[3].toString()) : 0);						
+						details.put("bin", grid[3] != null ? grid[3].toString() : "");
+						details.put("grnNo", grid[4] != null ? grid[4].toString() : "");
+						details.put("grnDate", grid[5] != null ? grid[5].toString() : "");
+						details.put("expDate", grid[6] != null ? grid[6].toString() : "");
+						details.put("holdQty", grid[7] != null ? Integer.parseInt(grid[7].toString()) : 0);	
+						
 						gridDetails1.add(details);
 					}
 					return gridDetails1;
