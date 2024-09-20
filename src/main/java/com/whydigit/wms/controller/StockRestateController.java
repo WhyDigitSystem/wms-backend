@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -336,7 +337,7 @@ public class StockRestateController extends BaseController{
 	@GetMapping("/getFillGridDetailsForStockRestate")
 	public ResponseEntity<ResponseDTO> getFillGridDetailsForStockRestate(@RequestParam Long orgId,
 			@RequestParam String branchCode, @RequestParam String warehouse, @RequestParam String client,
-			@RequestParam String tranferFromFlag, @RequestParam String tranferToFlag) {
+			@RequestParam String tranferFromFlag, @RequestParam String tranferToFlag,@RequestParam(required = false) String entryNo) {
 		String methodName = "getFillGridDetailsForStockRestate()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -345,7 +346,7 @@ public class StockRestateController extends BaseController{
 		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
 
 		try {
-			fillGridDetails = stockRestateService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse, client, tranferFromFlag, tranferToFlag);
+			fillGridDetails = stockRestateService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse, client, tranferFromFlag, tranferToFlag,entryNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

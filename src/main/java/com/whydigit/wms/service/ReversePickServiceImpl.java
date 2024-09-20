@@ -183,6 +183,9 @@ public class ReversePickServiceImpl implements ReversePickService {
 			reversePickDetailsRepo.deleteAll(reversePickRequestDetailsVO1);
 		}
 		
+		int totalPickQty = pickRequestRepo.getTotalPickQty(reversePickDTO.getPickRequestDocId());
+		int totalrevisedQty = 0;
+		
 		List<ReversePickDetailsVO> reversePickDetailsVOs = new ArrayList<>();
 		for (ReversePickDetailsDTO details2dto : reversePickDTO.getReversePickDetailsDTO()) {
 			ReversePickDetailsVO reversePickDetailsVO = new ReversePickDetailsVO();
@@ -195,7 +198,9 @@ public class ReversePickServiceImpl implements ReversePickService {
 			reversePickDetailsVO.setBatchDate(details2dto.getBatchDate());
 			reversePickDetailsVO.setOrderQty(details2dto.getOrderQty());
 			reversePickDetailsVO.setPickQty(details2dto.getPickQty());
+			
 			reversePickDetailsVO.setRevisedQty(details2dto.getRevisedQty());
+			totalrevisedQty=totalrevisedQty+details2dto.getRevisedQty();
 			reversePickDetailsVO.setRemarks(details2dto.getRemarks());
 			reversePickDetailsVO.setBinClass(details2dto.getBinClass());
 			reversePickDetailsVO.setCellType(details2dto.getCellType());
@@ -214,6 +219,8 @@ public class ReversePickServiceImpl implements ReversePickService {
 			reversePickDetailsVO.setReversePickVO(reversePickVO);
 			reversePickDetailsVOs.add(reversePickDetailsVO);
 		}
+		reversePickVO.setTotalRevisedQty(totalrevisedQty);
+		reversePickVO.setTotalPickQty(totalPickQty);
 		reversePickVO.setReversePickDetailsVO(reversePickDetailsVOs);
 		
 		return reversePickVO;
