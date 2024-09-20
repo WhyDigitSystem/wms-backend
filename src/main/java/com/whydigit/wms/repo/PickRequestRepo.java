@@ -220,4 +220,7 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 			+ "b.orderdate")
 	Set<Object[]> getPicrequestDashboard(Long orgId, String branchCode, String warehouse, String client,
 			String finyear);
+
+	@Query(value="select a.totalPickQty from PickRequestVO a where a.docId=?1")
+	int getTotalPickQty(String pickRequestDocId);
 }

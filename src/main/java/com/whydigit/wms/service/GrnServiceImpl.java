@@ -190,7 +190,7 @@ public class GrnServiceImpl implements GrnService {
 				handlingStockInVO.setExpdate(grnDetailsVO.getExpDate());
 				handlingStockInVO.setPartno(grnDetailsVO.getPartNo());
 				handlingStockInVO.setPartdesc(grnDetailsVO.getPartDesc());
-				handlingStockInVO.setLocationtype(grnDetailsVO.getBinType());
+				handlingStockInVO.setLocationtype("DEFECTIVE");
 				handlingStockInVO.setRate(grnDetailsVO.getRate());
 				handlingStockInVO.setAmount(grnDetailsVO.getAmount());
 				handlingStockInVO.setSku(grnDetailsVO.getSku());
@@ -426,6 +426,7 @@ public class GrnServiceImpl implements GrnService {
 			details.put("subStockShortQty", grid[11] != null ? Integer.parseInt(grid[11].toString()) : 0);
 			details.put("batchNo", grid[12] != null ? grid[12].toString() : "");
 			details.put("weight", grid[13] != null ? grid[13].toString() : "");
+			details.put("id", grid[14] != null ? Integer.parseInt(grid[14].toString()) : 0);
 			gridDetails.add(details);
 		}
 		return gridDetails;
