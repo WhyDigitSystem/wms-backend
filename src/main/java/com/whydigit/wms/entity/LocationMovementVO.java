@@ -67,6 +67,8 @@ public class LocationMovementVO {
 	private String cancelRemarks;
 	@Column(name="movedqty")
 	private Integer movedQty;
+	@Column(name = "entryno")
+	private String entryNo;
 	@Column(name = "freeze")
 	private boolean freeze = true;
 	

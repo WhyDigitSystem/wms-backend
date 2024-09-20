@@ -40,4 +40,28 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			+ " where a.gatepassid=b.gatepassinid and  b.orgid= ?1 and b.finyear=?2 and b.branchcode=?3 and b.client=?4  and b.docid=?5 ")
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
+
+	@Query(nativeQuery =true,value = "select b.entryno, \r\n"
+			+ "       b.entrydate, \r\n"
+			+ "       case \r\n"
+			+ "         when b.entryno in (\r\n"
+			+ "           select a.entryno \r\n"
+			+ "           from grn a \r\n"
+			+ "           where a.orgid =?1 \r\n"
+			+ "             and a.finyear =?2 \r\n"
+			+ "             and a.branchcode =?3 \r\n"
+			+ "             and a.warehouse = ?5\r\n"
+			+ "             and a.client = ?4\r\n"
+			+ "           group by a.entryno\r\n"
+			+ "         ) \r\n"
+			+ "         then 'Complete' \r\n"
+			+ "         else 'Pending' \r\n"
+			+ "       end as status\r\n"
+			+ "from gatepassin b \r\n"
+			+ "where b.orgid =?1 \r\n"
+			+ "  and b.finyear = ?2 \r\n"
+			+ "  and b.branchcode = ?3\r\n"
+			+ "  and b.client = ?4\r\n"
+			+ "group by b.entryno, b.entrydate")
+	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse);
 }

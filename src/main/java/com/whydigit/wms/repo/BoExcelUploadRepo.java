@@ -22,4 +22,29 @@ public interface BoExcelUploadRepo extends JpaRepository<BoExcelUploadVO, Long>{
 	Set<Object[]> getOrderDetailsFromUpload(Long orgId, String branchCode, String warehouse, String client,
 			String finYear);
 
+	@Query(value ="select b.orderno, b.orderdate, \r\n"
+			+ "case \r\n"
+			+ "when b.orderno in (\r\n"
+			+ "select a.orderno \r\n"
+			+ "from boexcelupload a \r\n"
+			+ "where a.orgid =?1 \r\n"
+			+ "and a.finyear =?5 \r\n"
+			+ "and a.branchcode =?2\r\n"
+			+ "and a.warehouse =?3 \r\n"
+			+ "and a.client = ?4\r\n"
+			+ "group by a.orderno\r\n"
+			+ ") \r\n"
+			+ "then 'Complete' \r\n"
+			+ "else 'Pending' \r\n"
+			+ "end as status\r\n"
+			+ "from buyerorder b \r\n"
+			+ "where b.orgid =?1 \r\n"
+			+ "and b.finyear =?5 \r\n"
+			+ "and b.branchcode =?2 \r\n"
+			+ "and b.client =?4\r\n"
+			+ "group by b.orderno, \r\n"
+			+ "b.orderdate",nativeQuery =true)
+	Set<Object[]> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse, String client,
+			String finYear);
+
 }

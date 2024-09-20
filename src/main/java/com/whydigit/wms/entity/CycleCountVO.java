@@ -65,6 +65,10 @@ public class CycleCountVO {
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private Boolean freeze=true;
+	@Column(name = "stockstatus")
+	private String stockStatus;
+	@Column(name = "statusflag")
+	private String statusFlag;
 
 	@Column(name = "stockdate")
 	private LocalDate stockDate=LocalDate.now();

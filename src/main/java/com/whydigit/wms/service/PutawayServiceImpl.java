@@ -12,26 +12,27 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+
+import org.apache.poi.ss.usermodel.DataFormatter;
+
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.PutAwayDTO;
 import com.whydigit.wms.dto.PutAwayDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
-import com.whydigit.wms.entity.GrnDetailsVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
 import com.whydigit.wms.entity.PutAwayDetailsVO;
@@ -414,12 +415,19 @@ public class PutawayServiceImpl implements PutawayService {
 
 	private int totalRows = 0;
 	private int successfulUploads = 0;
+	
+    private final DataFormatter dataFormatter = new DataFormatter();
+
 
 	@Transactional
 	@Override
 	public void ExcelUploadForPutAway(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
 			String customer, String client, String finYear, String branch, String branchCode, String warehouse)
 			throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+		
+		 totalRows = 0;
+		 successfulUploads = 0;
+		    
 		List<PutawayExcelUploadVO> putawayExcelUploadVOVOsToSave = new ArrayList<>();
 		List<String> errorMessages = new ArrayList<>();
 
@@ -438,7 +446,9 @@ public class PutawayServiceImpl implements PutawayService {
 						continue; // Skip header row and empty rows
 					}
 
-					totalRows =totalRows+1; // Increment totalRows
+					totalRows++; // Increment totalRows
+                    System.out.println("Validating row: " + (row.getRowNum() + 1));
+
 					try {
 						// Retrieve cell values based on the provided order
 						String grnNo1 = getStringCellValue(row.getCell(0));
@@ -461,10 +471,9 @@ public class PutawayServiceImpl implements PutawayService {
 
 									// Retrieve cell values based on the provided order
 									String grnNo = getStringCellValue(row.getCell(0));
-									String grnDate = getStringCellValue(row.getCell(1));
-
+									LocalDate grnDate = parseDate(getStringCellValue(row.getCell(1)));
 									String entryNo = getStringCellValue(row.getCell(2));
-									String entryDate = getStringCellValue(row.getCell(3));
+									LocalDate entryDate = parseDate(getStringCellValue(row.getCell(3)));
 									String shortName = getStringCellValue(row.getCell(4));
 									String modeOfShipment = getStringCellValue(row.getCell(5));
 									String carrier = getStringCellValue(row.getCell(6));
@@ -605,12 +614,14 @@ public class PutawayServiceImpl implements PutawayService {
 									putawayExcelUploadVO.setCancelRemarks(""); // Default or based on some logic
 
 									putawayExcelUploadVOVOsToSave.add(putawayExcelUploadVO);
-									successfulUploads =successfulUploads +1; // Increment successfulUploads
+									successfulUploads++; // Increment successfulUploads
+									
 
 								} else {
 									throw new ApplicationException( "BinNo " + binNo1
 											+ " does not exist for this client.");
 								}
+								
 							} else {
 								throw new ApplicationException("BinType" + binType1 + " does not exists for this client");
 
@@ -722,27 +733,14 @@ public class PutawayServiceImpl implements PutawayService {
 				&& "securitypersonname".equalsIgnoreCase(getStringCellValue(headerRow.getCell(36)));
 	}
 
-	private String getStringCellValue(Cell cell) {
-		if (cell == null) {
-			return "";
-		}
-		switch (cell.getCellType()) {
-		case STRING:
-			return cell.getStringCellValue();
-		case NUMERIC:
-			if (DateUtil.isCellDateFormatted(cell)) {
-				return cell.getLocalDateTimeCellValue().toLocalDate().toString();
-			} else {
-				return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
-			}
-		case BOOLEAN:
-			return String.valueOf(cell.getBooleanCellValue());
-		case FORMULA:
-			return cell.getCellFormula();
-		default:
-			return "";
-		}
-	}
+	 private String getStringCellValue(Cell cell) {
+	        if (cell == null) {
+	            return ""; // Return empty string if cell is null
+	        }
+
+	        // Use DataFormatter to get the cell value as a string
+	        return dataFormatter.formatCellValue(cell);
+	    }
 
 	@Override
 	public int getTotalRows() {
@@ -753,5 +751,26 @@ public class PutawayServiceImpl implements PutawayService {
 	public int getSuccessfulUploads() {
 		return successfulUploads; // Return the correct value
 	}
+
+	@Override
+	public List<Map<String, Object>> getPutawayForDashBoard(Long orgId, String finYear, String branchCode,
+			String client, String warehouse) {
+		Set<Object[]> getputawayStatus = putAwayRepo.getPutaway(orgId, finYear, branchCode, client,warehouse);
+		return getPutawayForDashBoard(getputawayStatus);
+	}
+
+	private List<Map<String, Object>> getPutawayForDashBoard(Set<Object[]> gatePassInGridDetails) {
+		List<Map<String, Object>> gridDetails = new ArrayList<>();
+		for (Object[] grid : gatePassInGridDetails) {
+			Map<String, Object> details = new HashMap<>();
+			details.put("entryNo", grid[0] != null ? grid[0].toString() : "");
+			details.put("entryDate", grid[1] != null ? grid[1].toString() : "");
+			details.put("status", grid[2] != null ? grid[2].toString() : "");
+			
+			gridDetails.add(details);
+		}
+		return gridDetails;
+	}
+
 
 }

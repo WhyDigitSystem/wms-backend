@@ -37,6 +37,8 @@ public class LocationTypeVO {
 	private Long orgId;
 	private boolean cancel;
 	private boolean active;
+	@Column(name="core")
+	private String core;
 	
 	@JsonGetter("active")
 	public String getActive() {

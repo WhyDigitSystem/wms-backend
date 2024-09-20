@@ -24,20 +24,20 @@ public interface CycleCountService {
 
 		Optional<CycleCountVO> getCycleCountById(Long id);
 
-		List<Map<String, Object>> getCycleCountGridDetails(Long orgId, String branchCode, String client, String warehouse);
+		List<Map<String, Object>> getCycleCountGridDetails(Long orgId, String branchCode, String client, String warehouse,String status);
 
-		List<Map<String, Object>> getPartNoByCycleCount(Long orgId, String branchCode, String client, String warehouse);
+		List<Map<String, Object>> getPartNoByCycleCount(Long orgId, String branchCode, String client, String warehouse,String status);
 
 		List<Map<String, Object>> getGrnNoByCycleCount(Long orgId, String branchCode, String client, String warehouse,
-				String partNo);
+				String partNo,String status);
 
 		List<Map<String, Object>> getBatchByCycleCount(Long orgId, String branchCode, String client, String warehouse,
-				String partNo, String grnNO);
+				String partNo, String grnNO,String status);
 
 		List<Map<String, Object>> getBinDetailsByCycleCount(Long orgId, String branchCode, String client,
-				String warehouse, String partNo, String grnNO, String batch);
+				String warehouse, String partNo, String grnNO, String batch,String status);
 
 		List<Map<String, Object>> getAvlQtyByCycleCount(Long orgId, String branchCode, String client, String warehouse,
-				String partNo, String grnNO, String batch, String bin);
+				String partNo, String grnNO, String batch, String bin,String status);
 	
 }

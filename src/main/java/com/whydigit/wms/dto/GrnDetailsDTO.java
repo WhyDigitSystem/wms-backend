@@ -37,5 +37,6 @@ public class GrnDetailsDTO {
 	private String shipmentNo; 
 	private LocalDate expdate;
 	private double mrp;
+	private String damageRemark;
 	
 }

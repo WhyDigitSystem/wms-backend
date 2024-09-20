@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -250,6 +250,21 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		locationMovementVO.setFinYear(locationMovementDTO.getFinYear());
 		locationMovementVO.setClient(locationMovementDTO.getClient());
 		locationMovementVO.setBranchCode(locationMovementDTO.getBranchCode());
+		if(locationMovementDTO.getEntryNo()!=null && locationMovementRepo.existsByEntryNoAndOrgIdAndClient(locationMovementDTO.getEntryNo(),locationMovementDTO.getOrgId(),locationMovementDTO.getClient()))
+		{
+			throw new ApplicationException("EntryNo already Exist");
+		}
+		else
+		{
+			if(locationMovementDTO.getEntryNo()==null)
+			{
+				locationMovementDTO.setEntryNo(null);
+			}
+			else
+			{
+				locationMovementDTO.setEntryNo(locationMovementDTO.getEntryNo());
+			}
+		}
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
 		locationMovementVO.setWarehouse(locationMovementDTO.getWarehouse());
 		locationMovementVO.setMovedQty(locationMovementDTO.getMovedQty());
@@ -423,10 +438,13 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 
 	@Transactional
 	public List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long orgId, String branch,
-			String branchCode, String client) {
+			String branchCode, String client, String entryNo) throws ApplicationException {
 
 		Set<Object[]> result = locationMovementRepo.findAllForLocationMovementDetailsFillGrid(orgId, branch, branchCode,
-				client);
+				client,entryNo);
+		if (entryNo != null && result.isEmpty()) {
+	        throw new ApplicationException("EntryNo " + entryNo + " already exists.");
+	    }
 		return getFillGridResult(result);
 	}
 
@@ -477,6 +495,9 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 	
 	 private int totalRows = 0; // Instance variable to keep track of total rows
 	    private int successfulUploads = 0; // Instance variable to keep track of successful uploads
+	    
+	    private final DataFormatter dataFormatter = new DataFormatter();
+
 
 	    @Transactional
 	    @Override
@@ -579,7 +600,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 	                        lmExcelUploadVO.setBranchCode(branchCode);
 	                        lmExcelUploadVO.setWarehouse(warehouse);
 	                        lmExcelUploadVO.setCreatedBy(createdBy);
-	                        lmExcelUploadVO.setUpdatedBy("");
+	                        lmExcelUploadVO.setUpdatedBy(createdBy);
 	                        lmExcelUploadVO.setActive(true);
 	                        lmExcelUploadVO.setCancel(false);
 	                        lmExcelUploadVO.setCancelRemarks("");
@@ -618,22 +639,12 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 
 	    private String getStringCellValue(Cell cell) {
 	        if (cell == null) {
-	            return "";
+	            return ""; // Return empty string if cell is null
 	        }
-	        switch (cell.getCellType()) {
-	            case STRING:
-	                return cell.getStringCellValue();
-	            case NUMERIC:
-	                return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
-	            case BOOLEAN:
-	                return String.valueOf(cell.getBooleanCellValue());
-	            case FORMULA:
-	                return cell.getCellFormula();
-	            default:
-	                return "";
-	        }
-	    }
 
+	        // Use DataFormatter to get the cell value as a string
+	        return dataFormatter.formatCellValue(cell);
+	    }
 	    private boolean isRowEmpty(Row row) {
 	        for (Cell cell : row) {
 	            if (cell.getCellType() != CellType.BLANK) {

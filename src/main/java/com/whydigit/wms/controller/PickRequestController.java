@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
+import com.whydigit.wms.dto.MultiplePickDTO;
 import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
@@ -202,7 +204,85 @@ public class PickRequestController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	
+	@GetMapping("/getPendingPickDetails")
+	public ResponseEntity<ResponseDTO> getPendingPickDetails(@RequestParam Long orgId,@RequestParam String finYear,
+			@RequestParam	String branchCode,@RequestParam String warehouse,@RequestParam String client) {
+		String methodName = "getPendingPickDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> pendingBuyerOrderdetails = new ArrayList<>();
+		try {
+			pendingBuyerOrderdetails = pickRequestService.getPendingBuyerOrderDetailsForPickRequest(orgId, finYear, branchCode, warehouse, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Pending Buyer Order Details information retrieved successfully");
+			responseObjectsMap.put("pendingPickdetails", pendingBuyerOrderdetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve Pending Buyer Order information", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 
 	
+	@PostMapping("/createMultiplePickRequest")
+	public ResponseEntity<ResponseDTO> createMultiplePickRequest(@RequestBody List<MultiplePickDTO> multiplePickDTO) {
+		String methodName = "createMultiplePickRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> multiplePickRequestVO = pickRequestService.createMultiplePickRequest(multiplePickDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, multiplePickRequestVO.get("message"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			String errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+      }
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getPicrequestDashboard")
+	public ResponseEntity<ResponseDTO> getPicrequestDashboard(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client,@RequestParam String warehouse,
+			@RequestParam String finyear) {
+		String methodName = "getPicrequestDashboard()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> picrequestDashboard = new ArrayList<>();
+		try {
+			picrequestDashboard = pickRequestService.getPicrequestDashboard(orgId, branchCode, client, warehouse, finyear);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"PicRequest Details  information retrieved successfully");
+			responseObjectsMap.put("picrequestDashboard", picrequestDashboard);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Failed to retrieve PicRequest Details", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }
 

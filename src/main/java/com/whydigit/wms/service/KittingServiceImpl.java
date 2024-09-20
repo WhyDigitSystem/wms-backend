@@ -390,7 +390,7 @@ public class KittingServiceImpl implements KittingService {
 		List<Map<String, Object>> gridDetails = new ArrayList<>(); // Correct the type here
 		for (Object[] child : getPartNo) {
 			Map<String, Object> details = new HashMap<>();
-			details.put("partNo", child[0] != null ? Integer.parseInt(child[0].toString()) : 0);
+			details.put("partNo", child[0] != null ? child[0].toString() : "");
 			details.put("partDesc", child[1] != null ? child[1].toString() : "");
 			details.put("Sku", child[2] != null ? child[2].toString() : "");
 			gridDetails.add(details);
