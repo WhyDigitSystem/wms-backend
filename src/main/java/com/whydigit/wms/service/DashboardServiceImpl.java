@@ -156,6 +156,7 @@ public class DashboardServiceImpl implements DashboardService{
 				details.put("rowNo", grid[0] != null ? grid[0].toString() : "");
 				details.put("level", grid[1] != null ? grid[1].toString() : "");
 				details.put("bin", grid[2] != null ? grid[2].toString() : "");
+				details.put("binStatus", grid[3] != null ? grid[3].toString() : "");
 				
 				
 				gridDetails.add(details);
@@ -234,26 +235,62 @@ public class DashboardServiceImpl implements DashboardService{
 						details.put("partNo", grid[0] != null ? grid[0].toString() : "");
 						details.put("partDesc", grid[1] != null ? grid[1].toString() : "");
 						details.put("sku", grid[2] != null ? grid[2].toString() : "");
-						details.put("holdQty", grid[3] != null ? Integer.parseInt(grid[3].toString()) : 0);						
+						details.put("bin", grid[3] != null ? grid[3].toString() : "");
+						details.put("grnNo", grid[4] != null ? grid[4].toString() : "");
+						details.put("grnDate", grid[5] != null ? grid[5].toString() : "");
+						details.put("expDate", grid[6] != null ? grid[6].toString() : "");
+						details.put("holdQty", grid[7] != null ? Integer.parseInt(grid[7].toString()) : 0);	
+						
 						gridDetails1.add(details);
 					}
 					return gridDetails1;
 				}
-			 
-//				private List<Map<String, Object>> getHold(Set<Object[]> getHoldMaterial) {
-//					List<Map<String, Object>> gridDetails = new ArrayList<>();
-//					for (Object[] grid : getHoldMaterial) {
-//						Map<String, Object> details = new HashMap<>();
-//						details.put("partNo", grid[0] != null ? grid[0].toString() : "");
-//						details.put("partDesc", grid[1] != null ? grid[1].toString() : "");
-//						details.put("sku", grid[2] != null ? grid[2].toString() : "");
-//						details.put("holdQty", grid[3] != null ? Integer.parseInt(grid[3].toString()) : 0);
-//						
-//						
-//						gridDetails.add(details);
-//					}
-//					return gridDetails;
-//				}
+
+				@Override
+				public List<Map<String, Object>> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode,
+						String client, String warehouse) {
+					Set<Object[]> getBinDetailsForEmpty = stockDetailsRepo.getBinDetailsClientWiseForEmpty(orgId, branchCode, client,warehouse);
+					return getBinDetailsClientWise(getBinDetailsForEmpty);
+				}
+
+				private List<Map<String, Object>> getBinDetailsClientWise(Set<Object[]> getHoldMaterial) {
+					List<Map<String, Object>> gridDetails1 = new ArrayList<>();
+					for (Object[] grid : getHoldMaterial) {
+						Map<String, Object> details = new HashMap<>();
+						details.put("bin", grid[0] != null ? grid[0].toString() : "");
+						details.put("binStatus", grid[1] != null ? grid[1].toString() : "");
+						gridDetails1.add(details);
+					}
+					return gridDetails1;
+				}
+
+				@Override
+				public List<Map<String, Object>> getExpDetailsForMaterials(Long orgId, String branchCode, String client,
+						String warehouse) {
+					Set<Object[]> getExpDetails = stockDetailsRepo.getExpDetailsForMaterials(orgId, branchCode, client,warehouse);
+					return getExpDetailsForMaterials1(getExpDetails);
+				}
+
+				private List<Map<String, Object>> getExpDetailsForMaterials1(Set<Object[]> getHoldMaterial) {
+					List<Map<String, Object>> gridDetails1 = new ArrayList<>();
+					for (Object[] grid : getHoldMaterial) {
+						Map<String, Object> details = new HashMap<>();
+						details.put("partNo", grid[0] != null ? grid[0].toString() : "");
+						details.put("partDesc", grid[1] != null ? grid[1].toString() : "");
+						details.put("sku", grid[2] != null ? grid[2].toString() : "");
+						details.put("batch", grid[3] != null ? grid[3].toString() : "");
+						details.put("batchDate", grid[4] != null ? grid[4].toString() : "");
+						details.put("grnNo", grid[5] != null ? grid[5].toString() : "");
+						details.put("grnDate", grid[6] != null ? grid[6].toString() : "");
+						details.put("expDate", grid[7] != null ? grid[7].toString() : "");
+						details.put("days", grid[8] != null ? Integer.parseInt(grid[8].toString()) : 0);
+						details.put("qty", grid[9] != null ? Integer.parseInt(grid[9].toString()) : 0);
+						details.put("bin", grid[10] != null ? grid[10].toString() : "");
+						
+						gridDetails1.add(details);
+					}
+					return gridDetails1;
+				}
 
 
 

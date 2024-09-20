@@ -366,8 +366,17 @@ Set<Object[]> getGrnOrderDetailsPerIn(Long orgId, String branchCode, String ware
 		 int finYear);
 
 
-@Query(nativeQuery =true,value ="SELECT rowno,levelno,bin FROM vw_clientbindetails where orgid=?1  AND \r\n"
-		+ " branchcode=?2 AND warehouse=?4 and client=?3 group by rowno,levelno,bin ORDER BY ROWNO,bin")
+@Query(nativeQuery =true,value ="SELECT A.rowno,A.levelno,A.bin,B.binstatus FROM vw_clientbindetails A,wv_locationstatus B where\r\n"
+		+ "  A.orgid =B.ORGID\r\n"
+		+ "  AND A.BIN=B.BIN\r\n"
+		+ "  AND A.warehouse =B.WAREHOUSE\r\n"
+		+ "  AND A.branchcode =B.branchcode\r\n"
+		+ "  AND A.client =B.client AND\r\n"
+		+ "  A.orgid =?1\r\n"
+		+ "  AND A.warehouse =?4\r\n"
+		+ "  AND A.branchcode =?2\r\n"
+		+ "  AND A.client =?3 \r\n"
+		+ " group by A.rowno,A.levelno,A.bin,B.binstatus ORDER BY A.ROWNO,A.bin")
 Set<Object[]> getBinDetailsForClient(Long orgId, String branchCode, String client, String warehouse);
 
 @Query(value ="select count(docid) from grn where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
@@ -381,12 +390,59 @@ Set<Object[]> getOutBoundOrderPerMonth1(Long orgId, String branchCode, String wa
 @Query(value ="select count(docid) from buyerorder where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
 Set<Object[]> getOutBoundOrderPerYear1(Long orgId, String branchCode, String warehouse, String client, int finYear);
 
-@Query(nativeQuery =true,value ="SELECT A.PARTNO,A.PARTDESC,A.SKU,SUM(A.SQTY) as holdQty FROM\r\n"
-		+ " (SELECT partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bin,sum(sqty) SQTY FROM stockdetails\r\n"
-		+ "  where orgid=?1 and warehouse=?3 and branchcode=?2 and client=?4 \r\n"
-		+ "  and status='H' group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bin\r\n"
-		+ "   having sum(sqty)>0) A GROUP BY A.PARTNO,A.PARTDESC,A.SKU")
+@Query(nativeQuery =true,value ="SELECT \r\n"
+		+ "    A.PARTNO,\r\n"
+		+ "    A.PARTDESC,\r\n"
+		+ "    A.SKU,\r\n"
+		+ "    A.bin,\r\n"
+		+ "    A.grnno,\r\n"
+		+ "    A.grndate,\r\n"
+		+ "    A.expdate,\r\n"
+		+ "    SUM(A.SQTY) AS holdQty \r\n"
+		+ "FROM \r\n"
+		+ "    (SELECT \r\n"
+		+ "         partno,\r\n"
+		+ "         partdesc,\r\n"
+		+ "         sku,\r\n"
+		+ "         grnno,\r\n"
+		+ "         grndate,\r\n"
+		+ "         batch,\r\n"
+		+ "         batchdate,\r\n"
+		+ "         expdate,\r\n"
+		+ "         bin,\r\n"
+		+ "         SUM(sqty) AS SQTY \r\n"
+		+ "     FROM \r\n"
+		+ "         stockdetails \r\n"
+		+ "     WHERE \r\n"
+		+ "         orgid =?1\r\n"
+		+ "         AND warehouse =?3 \r\n"
+		+ "         AND branchcode =?2\r\n"
+		+ "         AND client =?4\r\n"
+		+ "         AND status = 'H' \r\n"
+		+ "     GROUP BY \r\n"
+		+ "         partno, partdesc, sku, grnno, grndate, batch, batchdate, expdate, bin \r\n"
+		+ "     HAVING \r\n"
+		+ "         SUM(sqty) > 0\r\n"
+		+ "    ) A \r\n"
+		+ "GROUP BY \r\n"
+		+ "A.PARTNO,\r\n"
+		+ "    A.PARTDESC,\r\n"
+		+ "    A.SKU,\r\n"
+		+ "    A.bin,\r\n"
+		+ "    A.grnno,\r\n"
+		+ "    A.grndate,\r\n"
+		+ "    A.expdate")
 Set<Object[]> getHoldMaterialCount1(Long orgId, String branchCode, String warehouse, String client);
+
+@Query(nativeQuery =true,value ="select bin,binstatus from wv_locationstatus where orgid=?1 and branchcode=?2 and client=?3\r\n"
+		+ "and warehouse=?4 group by bin,binstatus order by bin")
+Set<Object[]> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode, String client, String warehouse);
+
+@Query(nativeQuery =true,value ="SELECT partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()) as days,sum(sqty),bin from stockdetails  where orgid=?1 and\r\n"
+		+ "  branchcode=?2 and client=?3 and warehouse=?4 and  \r\n"
+		+ "  datediff(expdate,curdate())<20 group by partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()),bin order by datediff(expdate,curdate()) desc")
+Set<Object[]> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
+
 
 
 

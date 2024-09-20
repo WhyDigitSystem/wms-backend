@@ -190,8 +190,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						groupDTO.getGroupName());
 				throw new ApplicationException(errorMessage);
 			}
-			if (groupRepo.existsByOrgId(groupDTO.getOrgId())) {
-				String errorMessage = String.format("This Group: %s already  in this organization.");
+			if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
+				String errorMessage = String.format("This Group: %s already  Exist",groupDTO.getGroupName());
 				throw new ApplicationException(errorMessage);
 			}
 			groupVO = new GroupVO();
@@ -204,15 +204,15 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			groupVO.setUpdatedBy(groupDTO.getCreatedBy());
 			if (!groupVO.getGroupName().equalsIgnoreCase(groupDTO.getGroupName())) {
 				if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
-					String errorMessage = String.format("This GroupName: %s already  in this organization.",
+					String errorMessage = String.format("This GroupName: %s already  Exist",
 							groupDTO.getGroupName());
 					throw new ApplicationException(errorMessage);
 				}
 				groupVO.setGroupName(groupDTO.getGroupName());
 			}
 			
-				if (groupRepo.existsByOrgId(groupDTO.getOrgId())) {
-					String errorMessage = String.format("This Group: %s already  in this organization.");
+				if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
+					String errorMessage = String.format("This Group: %s already  Exist",groupDTO.getGroupName());
 					throw new ApplicationException(errorMessage);
 				}
 			message = "Group update successfully";
@@ -284,6 +284,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		unitVO.setActive(unitDTO.isActive());
 		unitVO.setCancel(unitDTO.isCancel());
 		unitVO.setOrgId(unitDTO.getOrgId());
+		unitVO.setUom(unitDTO.getUom());
 	}
 
 	@Override

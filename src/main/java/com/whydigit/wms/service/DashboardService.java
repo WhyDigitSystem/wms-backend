@@ -36,4 +36,9 @@ public interface DashboardService {
 
 	List<Map<String, Object>> getHoldMaterialCount(Long orgId, String branchCode, String warehouse, String client);
 
+	List<Map<String, Object>> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode, String client,
+			String warehouse);
+
+	List<Map<String, Object>> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
+
 }

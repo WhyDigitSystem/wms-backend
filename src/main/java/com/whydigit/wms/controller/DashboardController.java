@@ -1,6 +1,5 @@
 package com.whydigit.wms.controller;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -330,6 +328,60 @@ public class DashboardController extends BaseController{
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Hold Material Count  information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getBinDetailsClientWiseForEmpty")
+	public ResponseEntity<ResponseDTO> getBinDetailsClientWiseForEmpty(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client,@RequestParam String warehouse) {
+		String methodName = "getBinDetailsClientWiseForEmpty()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> emptyBinDetails = new ArrayList<>();
+		try {
+			emptyBinDetails = dashboardService.getBinDetailsClientWiseForEmpty(orgId, branchCode,client,warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BinDetails ClientWise For Empty information get successfully");
+			responseObjectsMap.put("emptyBinDetails", emptyBinDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "BinDetails ClientWise For Empty  information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getExpDetailsForMaterials")
+	public ResponseEntity<ResponseDTO> getExpDetailsForMaterials(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client,@RequestParam String warehouse) {
+		String methodName = "getExpDetailsForMaterials()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> expDetails = new ArrayList<>();
+		try {
+			expDetails = dashboardService.getExpDetailsForMaterials(orgId, branchCode,client,warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Expired  information get successfully");
+			responseObjectsMap.put("expDetails", expDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Expired information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

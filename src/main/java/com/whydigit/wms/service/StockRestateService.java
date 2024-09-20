@@ -41,7 +41,7 @@ public interface StockRestateService {
 			String client);
 	
 	List<Map<String, Object>> getFillGridDetailsForStockRestate(Long orgId, String branchCode, String warehouse,
-			String client,String tranferFromFlag,String tranferToFlag);
+			String client,String tranferFromFlag,String tranferToFlag,String entryNo);
 
 	Map<String, Object> createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException;
 
