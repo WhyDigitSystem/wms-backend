@@ -438,9 +438,11 @@ Set<Object[]> getHoldMaterialCount1(Long orgId, String branchCode, String wareho
 		+ "and warehouse=?4 group by bin,binstatus order by bin")
 Set<Object[]> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode, String client, String warehouse);
 
-@Query(nativeQuery =true,value ="SELECT partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()) as days from stockdetails  where orgid=?1 and\r\n"
-		+ "  branchcode=?2 and client=?3 and warehouse=?4 and  \r\n"
-		+ "  datediff(expdate,curdate())<20 group by partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()) order by datediff(expdate,curdate()) desc")
+@Query(nativeQuery =true,value ="SELECT partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,sum(sqty),\r\n"
+		+ "datediff(expdate,curdate()) as days,bin from stockdetails  where orgid=?1 and\r\n"
+		+ "branchcode=?2 and client=?3 and warehouse=?4 and  \r\n"
+		+ "datediff(expdate,curdate())<20 group by partno,partdesc,sku,batch,batchdate,\r\n"
+		+ "grnno,grndate,expdate,datediff(expdate,curdate()),bin order by datediff(expdate,curdate()) desc,bin")
 Set<Object[]> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
 
 
