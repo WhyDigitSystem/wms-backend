@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
@@ -199,6 +200,62 @@ public class GatePassInServiceImpl implements GatePassInService {
 			gatePassInVO.setGatePassDetailsVO(detailsVOList);
 			return gatePassInVO;
 
+		}
+
+		@Override
+		public List<Map<String, Object>> getEntryDetails(Long orgId, String finYear, String branchCode, String client,
+				String entryNo) {
+			Set<Object[]>getEnrty=gatePassInRepo.getEntryNoDetails(orgId, finYear, branchCode, client,entryNo);
+			return entryDetails(getEnrty);
+		}
+
+		private List<Map<String, Object>> entryDetails(Set<Object[]> getEnrty) {
+			List<Map<String,Object>>details= new ArrayList<>();
+			for(Object[] detail:getEnrty)
+			{
+				Map<String, Object>mp= new HashMap<>();
+				mp.put("entryNo", detail[0] != null ? detail[0].toString() : "");
+				mp.put("entryDate", detail[1] != null ? detail[1].toString() : "");
+				mp.put("supplier", detail[2] != null ? detail[2].toString() : "");
+				mp.put("supplierShortName", detail[3] != null ? detail[3].toString() : "");
+				mp.put("modeOfShipment", detail[4] != null ? detail[4].toString() : "");
+				mp.put("carrier", detail[5] != null ? detail[5].toString() : "");
+				mp.put("carrierShortName", detail[6] != null ? detail[6].toString() : "");
+				details.add(mp);
+			}
+			return details;
+		}
+		
+		@Override
+		public List<Map<String, Object>> getEntryFillDetails(Long orgId, String finYear, String branchCode, String client,
+				String entryNo) {
+			Set<Object[]>getEnrtyFillDetails=gatePassInRepo.getEntryNoFillDetails(orgId, finYear, branchCode, client,entryNo);
+			return entryFillDetails(getEnrtyFillDetails);
+		}
+
+		private List<Map<String, Object>> entryFillDetails(Set<Object[]> getEnrtyFillDetails) {
+			List<Map<String,Object>>details= new ArrayList<>();
+			for(Object[] detail:getEnrtyFillDetails)
+			{
+				Map<String, Object>mp= new HashMap<>();
+				mp.put("id", detail[0] != null ? Integer.parseInt(detail[0].toString()) : 0); // row_number() over() as id
+				mp.put("irNoHaw", detail[1] != null ? detail[1].toString() : ""); // now irNoHaw from detail[1]
+				mp.put("invoiceNo", detail[2] != null ? detail[2].toString() : "");
+				mp.put("invoiceDate", detail[3] != null ? detail[3].toString() : "");
+				mp.put("partNo", detail[4] != null ? detail[4].toString() : "");
+				mp.put("partDesc", detail[5] != null ? detail[5].toString() : "");
+				mp.put("sku", detail[6] != null ? detail[6].toString() : "");
+				mp.put("batchNo", detail[7] != null ? detail[7].toString() : "");
+				mp.put("batchDate", detail[8] != null ? detail[8].toString() : "");
+				mp.put("expDate", detail[9] != null ? detail[9].toString() : "");
+				mp.put("invQty", detail[10] != null ? Integer.parseInt(detail[10].toString()) : 0);
+				mp.put("recQty", detail[11] != null ? Integer.parseInt(detail[11].toString()) : 0);
+				mp.put("damageQty", detail[12] != null ? Integer.parseInt(detail[12].toString()) : 0);
+				mp.put("binQty", detail[13] != null ? Integer.parseInt(detail[13].toString()) : 0);
+
+				details.add(mp);
+			}
+			return details;
 		}
 
 }
