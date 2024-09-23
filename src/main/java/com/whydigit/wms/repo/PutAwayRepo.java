@@ -108,7 +108,7 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 			+ "where b.orgid =?1 \r\n"
 			+ "  and b.finyear =?2\r\n"
 			+ "  and b.branchcode =?3 \r\n"
-			+ "  and b.client =?4\r\n"
+			+ "  and b.client =?4\r\n"  
 			+ "group by b.docid, b.grndate",nativeQuery =true)
 	Set<Object[]> getPutaway(Long orgId, String finYear, String branchCode, String client, String warehouse);
 

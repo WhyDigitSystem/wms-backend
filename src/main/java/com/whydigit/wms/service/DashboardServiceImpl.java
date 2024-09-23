@@ -125,8 +125,8 @@ public class DashboardServiceImpl implements DashboardService{
 
 	@Override
 	public List<Map<String, Object>> getGrnOrderDetails(Long orgId, String branchCode, String warehouse, String client,
-			int finYear) {
-		Set<Object[]> getGrnOrder = stockDetailsRepo.getGrnOrderDetailsPerIn(orgId, branchCode,warehouse,client,finYear);
+			int finYear,int month) {
+		Set<Object[]> getGrnOrder = stockDetailsRepo.getGrnOrderDetailsPerIn(orgId, branchCode,warehouse,client,finYear,month);
 		return getGrnOrderDetails1(getGrnOrder);
 		}
 	 
@@ -185,8 +185,8 @@ public class DashboardServiceImpl implements DashboardService{
 
 			@Override
 			public List<Map<String, Object>> getOutBoundOrderPerMonth(Long orgId, String branchCode, String warehouse,
-					String client,int finYear) {
-				Set<Object[]> getOutBoundOrder = stockDetailsRepo.getOutBoundOrderPerMonth1(orgId, branchCode,warehouse,client,finYear);
+					String client,int finYear,int month) {
+				Set<Object[]> getOutBoundOrder = stockDetailsRepo.getOutBoundOrderPerMonth1(orgId, branchCode,warehouse,client,finYear,month);
 				return getOutBound(getOutBoundOrder);
 				}
 			 

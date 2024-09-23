@@ -41,27 +41,15 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
 
-	@Query(nativeQuery =true,value = "select b.entryno, \r\n"
-			+ "       b.entrydate, \r\n"
-			+ "       case \r\n"
-			+ "         when b.entryno in (\r\n"
-			+ "           select a.entryno \r\n"
-			+ "           from grn a \r\n"
-			+ "           where a.orgid =?1 \r\n"
-			+ "             and a.finyear =?2 \r\n"
-			+ "             and a.branchcode =?3 \r\n"
-			+ "             and a.warehouse = ?5\r\n"
-			+ "             and a.client = ?4\r\n"
-			+ "           group by a.entryno\r\n"
-			+ "         ) \r\n"
-			+ "         then 'Complete' \r\n"
-			+ "         else 'Pending' \r\n"
-			+ "       end as status\r\n"
-			+ "from gatepassin b \r\n"
-			+ "where b.orgid =?1 \r\n"
-			+ "  and b.finyear = ?2 \r\n"
-			+ "  and b.branchcode = ?3\r\n"
-			+ "  and b.client = ?4\r\n"
-			+ "group by b.entryno, b.entrydate")
+	@Query(nativeQuery =true,value = "SELECT \r\n"
+			+ "    b.entryno, b.entrydate,  b.docid, CASE  WHEN b.entryno IN (\r\n"
+			+ "    SELECT a.entryno  FROM grn a  WHERE a.orgid =?1 \r\n"
+			+ "    AND a.finyear =?2 AND a.branchcode =?3 AND a.warehouse =?5\r\n"
+			+ "      AND a.client =?4 GROUP BY a.entryno) THEN 'Complete' ELSE 'Pending' \r\n"
+			+ "	END AS status\r\n"
+			+ "    FROM gatepassin b WHERE b.orgid =?1 AND b.finyear =?2 \r\n"
+			+ "    AND b.branchcode =?3 AND b.client = ?4\r\n"
+			+ "	GROUP BY \r\n"
+			+ "    b.entryno, b.entrydate,b.docid")
 	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse);
 }
