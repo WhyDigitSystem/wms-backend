@@ -69,4 +69,17 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			+ "GROUP BY g.docid, g.docdate, g.totalgrnqty, g.entryno\r\n"
 			+ "")
 	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse, int month);
+
+	@Query(nativeQuery = true,value = "select a.entryno,a.entrydate,b.supplier,a.suppliershortname,c.shipmentmode,c.carrier,c.carriershortname from grnexcelupload a,supplier b,carrier c where \r\n"
+			+ "a.suppliershortname=b.suppliershortname and a.carrier=c.carriershortname and b.active=1 and c.active=1 and a.orgid=c.orgid\r\n"
+			+ "and a.orgid=b.orgid and a.orgid=?1 and a.finyear=?2 and a.branchcode=?3 and a.client=?4   and a.entryno=?5\r\n"
+			+ "and a.entryno not in(select entryno from gatepassin where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4  group by entryno)\r\n"
+			+ "and a.entryno not in(select entryno from grn where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4  group by entryno) group by\r\n"
+			+ "a.entryno,a.entrydate,b.supplier,a.suppliershortname,c.shipmentmode,c.carrier,c.carriershortname")
+	Set<Object[]> getEntryNoDetails(Long orgId, String finYear, String branchCode, String client, String entryNo);
+	@Query(nativeQuery = true,value = "select row_number() over() id, a.lrhblno,a.invdcno,a.invdate,b.partno,b.partdesc,b.sku,a.batchno,a.batchdate,a.expdate,a.invqty,a.recqty,a.damageqty,a.palletqty,(a.invqty-a.recqty)shortqty,(a.recqty-a.damageqty)grnqty from grnexcelupload a,material b where a.partno=b.partno and a.orgid=b.orgid and a.client=b.client and b.active=1 and\r\n"
+			+ "a.orgid=b.orgid and a.orgid=?1 and a.finyear=?2 and a.branchcode=?3 and a.client=?4   and a.entryno=?5\r\n"
+			+ "group by a.lrhblno,a.invdcno,a.invdate,b.partno,b.partdesc,b.sku,a.batchno,a.batchdate,a.expdate,a.invqty,a.recqty,a.damageqty,a.palletqty")
+	Set<Object[]> getEntryNoFillDetails(Long orgId, String finYear, String branchCode, String client, String entryNo);
+	
 }
