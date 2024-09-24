@@ -41,6 +41,8 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
 
+
+
 	@Query(nativeQuery =true,value = "select a.docid,a.grnno, a.totalputawayqty,'Complete'status from putaway a where a.orgid =?1 \r\n"
 			+ "  AND a.finyear =?2 \r\n"
 			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
@@ -74,4 +76,5 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			+ "group by a.lrhblno,a.invdcno,a.invdate,b.partno,b.partdesc,b.sku,a.batchno,a.batchdate,a.expdate,a.invqty,a.recqty,a.damageqty,a.palletqty")
 	Set<Object[]> getEntryNoFillDetails(Long orgId, String finYear, String branchCode, String client, String entryNo);
 	
+
 }
