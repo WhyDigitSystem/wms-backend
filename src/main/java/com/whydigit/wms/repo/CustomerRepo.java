@@ -27,7 +27,4 @@ public interface CustomerRepo extends JpaRepository<CustomerVO, Long> {
 
 	boolean existsByPanNoAndOrgId(String panNo, Long orgId);
 	
-	
-
-
 }

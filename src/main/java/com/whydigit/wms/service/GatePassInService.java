@@ -23,5 +23,9 @@ public interface GatePassInService {
 
 		String getGatePassInDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
+		List<Map<String,Object>>getEntryDetails(Long orgId, String finYear, String branchCode, String client,String entryNo);
+
+		List<Map<String, Object>> getEntryFillDetails(Long orgId, String finYear, String branchCode, String client,
+				String entryNo);
 
 }
