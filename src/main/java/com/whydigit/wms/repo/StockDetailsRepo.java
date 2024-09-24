@@ -336,7 +336,7 @@ boolean existsByPartnoAndBatchAndOrgIdAndClient(String partNo, String batchNo, L
 		+ "    AND m.client =?3\r\n"
 		+ "    AND m.branchcode =?2\r\n"
 		+ "    AND m.warehouse =?4\r\n"
-		+ "    AND s.total_sqtyt > m.lowqty\r\n"
+		+ "    AND s.total_sqtyt <= m.lowqty\r\n"
 		,nativeQuery =true)
 Set<Object[]> getStock(Long orgId,String branchCode, String client, String warehouse);
 
