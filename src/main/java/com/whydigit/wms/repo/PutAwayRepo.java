@@ -88,25 +88,25 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 	@Query(nativeQuery = true, value = "select celltype from wv_locationstatus where orgid=?1 and bin=?2 group by celltype")
 	String getCelltype(Long orgId, String bin);
 
-	@Query(value = "select a.docid,a.grnno, a.totalputawayqty,'Complete'status from putaway a where a.orgid =?1 \r\n"
+	@Query(value = "select a.docid,a.grnno, a.totalputawayqty,'Complete'status from putaway a where a.orgid =?1\r\n"
 			+ "  AND a.finyear =?2 \r\n"
 			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
 			+ "  AND a.client =?4 and a.status='Confirm'\r\n"
 			+ "GROUP BY a.docid,a.grnno, a.totalputawayqty\r\n"
 			+ "union\r\n"
-			+ "select a.docid,a.grnno, a.totalputawayqty,'Yet to Confirm'status from putaway a where a.orgid =?1 \r\n"
+			+ "select a.docid,a.grnno, a.totalputawayqty,'Yet to Confirm'status from putaway a where a.orgid =?1\r\n"
 			+ "  AND a.finyear =?2 \r\n"
 			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
 			+ "  AND a.client =?4 and a.status='Edit'\r\n"
 			+ "GROUP BY a.docid,a.grnno, a.totalputawayqty\r\n"
 			+ "union\r\n"
-			+ "select a.docid,a.entryno ,a.totalgrnqty,'Pending' status from grn a  where a.orgid =?1\r\n"
+			+ "select a.docid,a.entryno ,a.totalgrnqty,'Pending' status from grn a  where a.orgid =?1 \r\n"
 			+ "  AND a.finyear =?2  and (month(a.docdate)=?5 or ?5 is null)\r\n"
 			+ "  AND a.branchcode =?3\r\n"
-			+ "  AND a.client =?4 and a.docid not in(select a.grnno from putaway a where a.orgid =?1\r\n"
+			+ "  AND a.client =?4 and a.docid not in(select a.grnno from putaway a where a.orgid =?1 \r\n"
 			+ "  AND a.finyear =?2 \r\n"
 			+ "  AND a.branchcode =?3\r\n"
-			+ "  AND a.client ='BACARDI' group by a.grnno",
+			+ "  AND a.client =?4 group by a.grnno)",
     nativeQuery = true)
 
 	Set<Object[]> getPutaway(Long orgId, String finYear, String branchCode, String client, int month);
