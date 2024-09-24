@@ -41,6 +41,6 @@ public interface GrnService {
 	void ExcelUploadForGrn(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
 			String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException;
 
-	List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode, String client,String warehouse);
+	List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode, String client,String warehouse, int month);
 
 }

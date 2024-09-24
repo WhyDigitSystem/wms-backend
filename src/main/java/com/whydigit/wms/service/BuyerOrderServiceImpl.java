@@ -807,7 +807,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			part.put("orderNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("orderDate", fs[1] != null ? fs[1].toString() : "");
 			part.put("qty", fs[2] != null ? Integer.parseInt(fs[2].toString()):0);
-			part.put("status", fs[2] != null ? fs[2].toString() : "");
+			part.put("status", fs[3] != null ? fs[3].toString() : "");
 			
 			details1.add(part);
 		}
