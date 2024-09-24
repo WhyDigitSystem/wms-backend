@@ -41,40 +41,24 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
 
-	@Query(nativeQuery =true,value = "select b.entryno, \r\n"
-			+ "       b.entrydate, \r\n"
-			+ "       case \r\n"
-			+ "         when b.entryno in (\r\n"
-			+ "           select a.entryno \r\n"
-			+ "           from grn a \r\n"
-			+ "           where a.orgid =?1 \r\n"
-			+ "             and a.finyear =?2 \r\n"
-			+ "             and a.branchcode =?3 \r\n"
-			+ "             and a.warehouse = ?5\r\n"
-			+ "             and a.client = ?4\r\n"
-			+ "           group by a.entryno\r\n"
-			+ "         ) \r\n"
-			+ "         then 'Complete' \r\n"
-			+ "         else 'Pending' \r\n"
-			+ "       end as status\r\n"
-			+ "from gatepassin b \r\n"
-			+ "where b.orgid =?1 \r\n"
-			+ "  and b.finyear = ?2 \r\n"
-			+ "  and b.branchcode = ?3\r\n"
-			+ "  and b.client = ?4\r\n"
-			+ "group by b.entryno, b.entrydate")
-	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse);
-
-	@Query(nativeQuery = true,value = "select a.entryno,a.entrydate,b.supplier,a.suppliershortname,c.shipmentmode,c.carrier,c.carriershortname from grnexcelupload a,supplier b,carrier c where \r\n"
-			+ "a.suppliershortname=b.suppliershortname and a.carrier=c.carriershortname and b.active=1 and c.active=1 and a.orgid=c.orgid\r\n"
-			+ "and a.orgid=b.orgid and a.orgid=?1 and a.finyear=?2 and a.branchcode=?3 and a.client=?4   and a.entryno=?5\r\n"
-			+ "and a.entryno not in(select entryno from gatepassin where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4  group by entryno)\r\n"
-			+ "and a.entryno not in(select entryno from grn where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4  group by entryno) group by\r\n"
-			+ "a.entryno,a.entrydate,b.supplier,a.suppliershortname,c.shipmentmode,c.carrier,c.carriershortname")
-	Set<Object[]> getEntryNoDetails(Long orgId, String finYear, String branchCode, String client, String entryNo);
-
-	@Query(nativeQuery = true,value = "select row_number() over() id, a.lrhblno,a.invdcno,a.invdate,b.partno,b.partdesc,b.sku,a.batchno,a.batchdate,a.expdate,a.invqty,a.recqty,a.damageqty,a.palletqty from grnexcelupload a,material b where a.partno=b.partno and a.orgid=b.orgid and a.client=b.client and b.active=1 and\r\n"
-			+ "a.orgid=b.orgid and a.orgid=?1 and a.finyear=?2 and a.branchcode=?3 and a.client=?4   and a.entryno=?5\r\n"
-			+ "group by a.lrhblno,a.invdcno,a.invdate,b.partno,b.partdesc,b.sku,a.batchno,a.batchdate,a.expdate,a.invqty,a.recqty,a.damageqty,a.palletqty")
-	Set<Object[]> getEntryNoFillDetails(Long orgId, String finYear, String branchCode, String client, String entryNo);
+	@Query(nativeQuery =true,value = "select a.docid,a.grnno, a.totalputawayqty,'Complete'status from putaway a where a.orgid =?1 \r\n"
+			+ "  AND a.finyear =?2 \r\n"
+			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
+			+ "  AND a.client =?4 and a.status='Confirm'\r\n"
+			+ "GROUP BY a.docid,a.grnno, a.totalputawayqty\r\n"
+			+ "union\r\n"
+			+ "select a.docid,a.grnno, a.totalputawayqty,'Yet To Confirm'status from putaway a where a.orgid =?1 \r\n"
+			+ "  AND a.finyear =?2 \r\n"
+			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
+			+ "  AND a.client =?4 and a.status='Edit'\r\n"
+			+ "GROUP BY a.docid,a.grnno, a.totalputawayqty\r\n"
+			+ "union\r\n"
+			+ "select a.docid,a.entryno ,a.totalgrnqty,'Pending' status from grn a  where a.orgid =?1 \r\n"
+			+ "  AND a.finyear =?2  and (month(a.docdate)=?5 or ?5 is null)\r\n"
+			+ "  AND a.branchcode =?3\r\n"
+			+ "  AND a.client ='BACARDI' and a.docid not in(select a.grnno from putaway a where a.orgid =?1 \r\n"
+			+ "  AND a.finyear =?2 \r\n"
+			+ "  AND a.branchcode =?3\r\n"
+			+ "  AND a.client =?4 group by a.grnno)")
+	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client,int month);
 }

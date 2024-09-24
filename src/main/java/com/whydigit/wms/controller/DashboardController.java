@@ -200,7 +200,7 @@ public class DashboardController extends BaseController{
 	@GetMapping("/getInBoundOrderPerMonth")
 	public ResponseEntity<ResponseDTO> getGrnOrderDetailsPerMonth(@RequestParam Long orgId,
 			@RequestParam String branchCode, @RequestParam String warehouse,@RequestParam String client,
-			@RequestParam int finYear) {
+			@RequestParam int finYear,@RequestParam int month) {
 		String methodName = "getGrnOrderDetailsPerMonth()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -208,7 +208,7 @@ public class DashboardController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> grnVo = new ArrayList<>();
 		try {
-			grnVo = dashboardService.getGrnOrderDetails(orgId, branchCode,warehouse,client,finYear);
+			grnVo = dashboardService.getGrnOrderDetails(orgId, branchCode,warehouse,client,finYear,month);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -255,7 +255,7 @@ public class DashboardController extends BaseController{
 	@GetMapping("/getOutBoundOrderPerMonth")
 	public ResponseEntity<ResponseDTO> getOutBoundOrderPerMonth(@RequestParam Long orgId,
 			@RequestParam String branchCode, @RequestParam String warehouse,@RequestParam String client,
-		@RequestParam int finYear) {
+		@RequestParam int finYear,@RequestParam int month) {
 		String methodName = "getOutBoundOrderPerMonth()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -263,7 +263,7 @@ public class DashboardController extends BaseController{
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> buyerorderVO = new ArrayList<>();
 		try {
-			buyerorderVO = dashboardService.getOutBoundOrderPerMonth(orgId, branchCode,warehouse,client,finYear);
+			buyerorderVO = dashboardService.getOutBoundOrderPerMonth(orgId, branchCode,warehouse,client,finYear,month);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

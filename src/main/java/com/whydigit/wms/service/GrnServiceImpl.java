@@ -606,8 +606,8 @@ public class GrnServiceImpl implements GrnService {
 
 	@Override
 	public List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode,
-			String client,String warehouse) {
-		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse);
+			String client,int month) {
+		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,month);
 		return getGrnStatus(getGrnStatus);
 	}
 
@@ -617,7 +617,8 @@ public class GrnServiceImpl implements GrnService {
 			Map<String, Object> details = new HashMap<>();
 			details.put("entryNo", grid[0] != null ? grid[0].toString() : "");
 			details.put("entryDate", grid[1] != null ? grid[1].toString() : "");
-			details.put("status", grid[2] != null ? grid[2].toString() : "");
+			details.put("grnNo", grid[2] != null ? grid[2].toString() : "");
+			details.put("status", grid[3] != null ? grid[3].toString() : "");
 			
 			gridDetails.add(details);
 		}
