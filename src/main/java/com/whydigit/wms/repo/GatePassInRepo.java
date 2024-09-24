@@ -41,24 +41,27 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
 
-	@Query(nativeQuery =true,value = "select a.docid,a.grnno, a.totalputawayqty,'Complete'status from putaway a where a.orgid =?1 \r\n"
-			+ "  AND a.finyear =?2 \r\n"
-			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
-			+ "  AND a.client =?4 and a.status='Confirm'\r\n"
-			+ "GROUP BY a.docid,a.grnno, a.totalputawayqty\r\n"
-			+ "union\r\n"
-			+ "select a.docid,a.grnno, a.totalputawayqty,'Yet To Confirm'status from putaway a where a.orgid =?1 \r\n"
-			+ "  AND a.finyear =?2 \r\n"
-			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
-			+ "  AND a.client =?4 and a.status='Edit'\r\n"
-			+ "GROUP BY a.docid,a.grnno, a.totalputawayqty\r\n"
-			+ "union\r\n"
-			+ "select a.docid,a.entryno ,a.totalgrnqty,'Pending' status from grn a  where a.orgid =?1 \r\n"
-			+ "  AND a.finyear =?2  and (month(a.docdate)=?5 or ?5 is null)\r\n"
-			+ "  AND a.branchcode =?3\r\n"
-			+ "  AND a.client ='BACARDI' and a.docid not in(select a.grnno from putaway a where a.orgid =?1 \r\n"
-			+ "  AND a.finyear =?2 \r\n"
-			+ "  AND a.branchcode =?3\r\n"
-			+ "  AND a.client =?4 group by a.grnno)")
-	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client,int month);
+	@Query(nativeQuery =true,value = "select b.entryno, \r\n"
+			+ "       b.entrydate, \r\n"
+			+ "       case \r\n"
+			+ "         when b.entryno in (\r\n"
+			+ "           select a.entryno \r\n"
+			+ "           from grn a \r\n"
+			+ "           where a.orgid =?1 \r\n"
+			+ "             and a.finyear =?2 \r\n"
+			+ "             and a.branchcode =?3 \r\n"
+			+ "             and a.warehouse = ?5\r\n"
+			+ "             and a.client = ?4\r\n"
+			+ "           group by a.entryno\r\n"
+			+ "         ) \r\n"
+			+ "         then 'Complete' \r\n"
+			+ "         else 'Pending' \r\n"
+			+ "       end as status\r\n"
+			+ "from gatepassin b \r\n"
+			+ "where b.orgid =?1 \r\n"
+			+ "  and b.finyear = ?2 \r\n"
+			+ "  and b.branchcode = ?3\r\n"
+			+ "  and b.client = ?4\r\n"
+			+ "group by b.entryno, b.entrydate")
+	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse);
 }
