@@ -20,7 +20,7 @@ public interface DashboardService {
 	List<Map<String, Object>> getStorageDetails(Long orgId, String branchCode, String warehouse);
 
 	List<Map<String, Object>> getGrnOrderDetails(Long orgId, String branchCode, String warehouse, String client,
-			int finYear);
+			int finYear, int month);
 
 	List<Map<String, Object>> getBinDetailsForClientWise(Long orgId, String branchCode, String client,
 			String warehouse);
@@ -29,7 +29,7 @@ public interface DashboardService {
 			int finYear);
 
 	List<Map<String, Object>> getOutBoundOrderPerMonth(Long orgId, String branchCode, String warehouse, String client,
-			 int finYear);
+			 int finYear, int month);
 
 	List<Map<String, Object>> getOutBoundOrderPerYear(Long orgId, String branchCode, String warehouse, String client,
 			int finYear);

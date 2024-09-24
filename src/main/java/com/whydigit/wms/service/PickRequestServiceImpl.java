@@ -502,10 +502,10 @@ public class PickRequestServiceImpl implements PickRequestService {
 				}
 			}
 		}
-		
+	
 		Map<String, Object> response = new HashMap<>();
 		response.put("message", message);
-		return response;
+		return response;	
 		
 		
 	}

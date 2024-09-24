@@ -190,7 +190,7 @@ public class GrnServiceImpl implements GrnService {
 				handlingStockInVO.setExpdate(grnDetailsVO.getExpDate());
 				handlingStockInVO.setPartno(grnDetailsVO.getPartNo());
 				handlingStockInVO.setPartdesc(grnDetailsVO.getPartDesc());
-				handlingStockInVO.setLocationtype(grnDetailsVO.getBinType());
+				handlingStockInVO.setLocationtype("DEFECTIVE");
 				handlingStockInVO.setRate(grnDetailsVO.getRate());
 				handlingStockInVO.setAmount(grnDetailsVO.getAmount());
 				handlingStockInVO.setSku(grnDetailsVO.getSku());
@@ -426,6 +426,7 @@ public class GrnServiceImpl implements GrnService {
 			details.put("subStockShortQty", grid[11] != null ? Integer.parseInt(grid[11].toString()) : 0);
 			details.put("batchNo", grid[12] != null ? grid[12].toString() : "");
 			details.put("weight", grid[13] != null ? grid[13].toString() : "");
+			details.put("id", grid[14] != null ? Integer.parseInt(grid[14].toString()) : 0);
 			gridDetails.add(details);
 		}
 		return gridDetails;
@@ -605,8 +606,8 @@ public class GrnServiceImpl implements GrnService {
 
 	@Override
 	public List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode,
-			String client,String warehouse) {
-		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse);
+			String client,String warehouse,int month) {
+		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse,month);
 		return getGrnStatus(getGrnStatus);
 	}
 
@@ -614,9 +615,10 @@ public class GrnServiceImpl implements GrnService {
 		List<Map<String, Object>> gridDetails = new ArrayList<>();
 		for (Object[] grid : gatePassInGridDetails) {
 			Map<String, Object> details = new HashMap<>();
-			details.put("entryNo", grid[0] != null ? grid[0].toString() : "");
-			details.put("entryDate", grid[1] != null ? grid[1].toString() : "");
-			details.put("status", grid[2] != null ? grid[2].toString() : "");
+			details.put("grnNo", grid[0] != null ? grid[0].toString() : "");
+			details.put("grnDate", grid[1] != null ? grid[1].toString() : "");
+			details.put("qty", grid[2] != null ? Integer.parseInt(grid[2].toString()):0);
+			details.put("status", grid[3] != null ? grid[3].toString() : "");
 			
 			gridDetails.add(details);
 		}

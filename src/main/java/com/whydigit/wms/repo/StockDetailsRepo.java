@@ -336,7 +336,7 @@ boolean existsByPartnoAndBatchAndOrgIdAndClient(String partNo, String batchNo, L
 		+ "    AND m.client =?3\r\n"
 		+ "    AND m.branchcode =?2\r\n"
 		+ "    AND m.warehouse =?4\r\n"
-		+ "    AND s.total_sqtyt > m.lowqty\r\n"
+		+ "    AND s.total_sqtyt <= m.lowqty\r\n"
 		,nativeQuery =true)
 Set<Object[]> getStock(Long orgId,String branchCode, String client, String warehouse);
 
@@ -360,10 +360,10 @@ Set<Object[]> getBinDetails3(Long orgId, String branchCode, String client, Strin
 Set<Object[]> getStorageDetails2(Long orgId, String branchCode, String warehouse);
 
 
-@Query(nativeQuery =true,value ="select count(docid) from grn where month(docdate)=MONTH(DATE(NOW())) and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
+@Query(nativeQuery =true,value ="select count(docid) from grn where month(docdate)=?6 and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
 		+ "and branchcode=?2 and client=?4 and warehouse=?3")
 Set<Object[]> getGrnOrderDetailsPerIn(Long orgId, String branchCode, String warehouse, String client,
-		 int finYear);
+		 int finYear, int month);
 
 
 @Query(nativeQuery =true,value ="SELECT A.rowno,A.levelno,A.bin,B.binstatus FROM vw_clientbindetails A,wv_locationstatus B where\r\n"
@@ -382,10 +382,10 @@ Set<Object[]> getBinDetailsForClient(Long orgId, String branchCode, String clien
 @Query(value ="select count(docid) from grn where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
 Set<Object[]> getGrnOrderDetails(Long orgId, String branchCode, String warehouse, String client, int finYear);
 
-@Query(nativeQuery =true,value ="select count(docid) from buyerorder where month(docdate)=MONTH(DATE(NOW())) and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
+@Query(nativeQuery =true,value ="select count(docid) from buyerorder where month(docdate)=?6 and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
 		+ "and branchcode=?2 and client=?4 and warehouse=?3")
 Set<Object[]> getOutBoundOrderPerMonth1(Long orgId, String branchCode, String warehouse, String client,
-		int finYear);
+		int finYear, int month);
 
 @Query(value ="select count(docid) from buyerorder where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
 Set<Object[]> getOutBoundOrderPerYear1(Long orgId, String branchCode, String warehouse, String client, int finYear);
@@ -438,9 +438,42 @@ Set<Object[]> getHoldMaterialCount1(Long orgId, String branchCode, String wareho
 		+ "and warehouse=?4 group by bin,binstatus order by bin")
 Set<Object[]> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode, String client, String warehouse);
 
-@Query(nativeQuery =true,value ="SELECT partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()) as days,sum(sqty),bin from stockdetails  where orgid=?1 and\r\n"
-		+ "  branchcode=?2 and client=?3 and warehouse=?4 and  \r\n"
-		+ "  datediff(expdate,curdate())<20 group by partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,datediff(expdate,curdate()),bin order by datediff(expdate,curdate()) desc")
+
+@Query(nativeQuery =true,value ="SELECT \r\n"
+		+ "    partno,\r\n"
+		+ "    partdesc,\r\n"
+		+ "    sku,\r\n"
+		+ "    batch,\r\n"
+		+ "    batchdate,\r\n"
+		+ "    grnno,\r\n"
+		+ "    grndate,\r\n"
+		+ "    expdate,\r\n"
+		+ "    SUM(sqty) AS total_quantity,\r\n"
+		+ "    DATEDIFF(expdate, CURDATE()) AS days_until_expiration,\r\n"
+		+ "    bin\r\n"
+		+ "FROM \r\n"
+		+ "    stockdetails\r\n"
+		+ "WHERE \r\n"
+		+ "    orgid =?1\r\n"
+		+ "    AND branchcode =?2\r\n"
+		+ "    AND client =?3\r\n"
+		+ "    AND warehouse =?4\r\n"
+		+ "    AND DATEDIFF(expdate, CURDATE()) < 20\r\n"
+		+ "GROUP BY \r\n"
+		+ "    partno,\r\n"
+		+ "    partdesc,\r\n"
+		+ "    sku,\r\n"
+		+ "    batch,\r\n"
+		+ "    batchdate,\r\n"
+		+ "    grnno,\r\n"
+		+ "    grndate,\r\n"
+		+ "    expdate,\r\n"
+		+ "    bin\r\n"
+		+ "    having  SUM(sqty)>0\r\n"
+		+ "ORDER BY \r\n"
+		+ "    days_until_expiration DESC,\r\n"
+		+ "    bin\r\n"
+		+ "")
 Set<Object[]> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
 
 
