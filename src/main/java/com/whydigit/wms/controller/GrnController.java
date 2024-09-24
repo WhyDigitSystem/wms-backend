@@ -303,8 +303,7 @@ public class GrnController extends BaseController {
 	}
 	@GetMapping("/getGrnStatusForDashBoard")
 	public ResponseEntity<ResponseDTO> getGrnStatusForDashBoard(@RequestParam Long orgId,
-			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
-			 @RequestParam String warehouse) {
+			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,@RequestParam int month) {
 		String methodName = "getGrnStatusForDashBoard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -313,7 +312,7 @@ public class GrnController extends BaseController {
 		List<Map<String, Object>> grnDashboard = new ArrayList<>();
 		try {
 			grnDashboard = grnService.getGrnStatusForDashBoard(orgId, finYear,
-					branchCode, client,warehouse);
+					branchCode, client,month);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
