@@ -53,7 +53,7 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			+ "              AND a.finyear =?2\r\n"
 			+ "              AND a.branchcode =?3 \r\n"
 			+ "              AND a.client =?4 \r\n"
-			+ "              AND month(a.docdate)=?6 or ?6 is null\r\n"
+			+ "              AND (month(a.docdate)=?6 or ?6 is null)\r\n"
 			+ "            GROUP BY a.entryno\r\n"
 			+ "        ) \r\n"
 			+ "        THEN 'Complete' \r\n"
@@ -65,7 +65,7 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			+ "  AND g.branchcode =?3 \r\n"
 			+ "  AND g.warehouse =?5 \r\n"
 			+ "  AND g.client =?4 \r\n"
-			+ "  AND month(g.docdate)=?6 or ?6 is null\r\n"
+			+ "  AND (month(g.docdate)=?6 or ?6 is null)\r\n"
 			+ "GROUP BY g.docid, g.docdate, g.totalgrnqty, g.entryno\r\n"
 			+ "")
 	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse, int month);
