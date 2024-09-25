@@ -109,7 +109,7 @@ public class MaterialVO {
 	@Column(name = "racklevel")
 	private String rackLevel;
 	@Column(name = "lowqty")
-	private String lowQty;
+	private int lowQty;
 	
 	
 

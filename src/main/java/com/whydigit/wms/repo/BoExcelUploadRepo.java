@@ -50,7 +50,10 @@ public interface BoExcelUploadRepo extends JpaRepository<BoExcelUploadVO, Long>{
 			+ "    a.qty, \r\n"
 			+ "    'Pending' AS status \r\n"
 			+ "FROM boexcelupload a \r\n"
+
 			+ "WHERE a.orgid =?1 \r\n"
+
+
 			+ "  AND a.finyear =?5\r\n"
 			+ "  AND a.branchcode =?2\r\n"
 			+ "  AND a.warehouse = ?3\r\n"
@@ -86,8 +89,10 @@ public interface BoExcelUploadRepo extends JpaRepository<BoExcelUploadVO, Long>{
 			+ "        AND b.branchcode =?2 \r\n"
 			+ "        AND b.client =?4\r\n"
 			+ "        AND (MONTH(b.orderdate) = ?6 or ?6 is null)\r\n"
+
 			+ "  )\r\n"
 			+ "",nativeQuery =true)
+
 	Set<Object[]> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse, String client,
 			String finYear, String month);
 
