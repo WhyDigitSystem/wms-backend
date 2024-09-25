@@ -115,7 +115,7 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 	String getCelltype(Long orgId, String bin);
 
 	@Query(value = "select a.docid,a.grnno, a.totalputawayqty,'Complete'status from putaway a where a.orgid =?1\r\n"
-			+ "  AND a.finyear =?2 \r\n"
+			+ "  AND a.finyear =?2 \r\n "
 			+ "  AND a.branchcode =?3 and (month(a.docdate)=?5 or ?5 is null)\r\n"
 			+ "  AND a.client =?4 and a.status='Confirm'\r\n"
 			+ "GROUP BY a.docid,a.grnno, a.totalputawayqty\r\n"

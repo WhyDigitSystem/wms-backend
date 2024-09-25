@@ -639,8 +639,8 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	@Override
 	public List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client,
-			String warehouse, String finyear) {
-		Set<Object[]> resultq = pickRequestRepo.getPicrequestDashboard(orgId, branchCode, warehouse, client, finyear);
+			int month, String finyear) {
+		Set<Object[]> resultq = pickRequestRepo.getPicrequestDashboard(orgId, branchCode,client,month, finyear);
 		return getPicrequest(resultq);
 	}
 
@@ -648,9 +648,10 @@ public class PickRequestServiceImpl implements PickRequestService {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : resultq) {
 			Map<String, Object> part = new HashMap<>();
-			part.put("orderNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("orderDate", fs[1] != null ? fs[1].toString() : "");
-			part.put("status", fs[2] != null ? fs[2].toString() : "");
+			part.put("pickNo", fs[0] != null ? fs[0].toString() : "");
+			part.put("orderQty", fs[1] != null ? Integer.parseInt(fs[1].toString()):0);
+			part.put("pickQty", fs[2] != null ? Integer.parseInt(fs[2].toString()):0);
+			part.put("status", fs[3] != null ? fs[3].toString() : "");
 
 			details1.add(part);
 		}
