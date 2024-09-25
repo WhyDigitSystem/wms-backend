@@ -252,6 +252,8 @@ public class GatePassInServiceImpl implements GatePassInService {
 				mp.put("recQty", detail[11] != null ? Integer.parseInt(detail[11].toString()) : 0);
 				mp.put("damageQty", detail[12] != null ? Integer.parseInt(detail[12].toString()) : 0);
 				mp.put("binQty", detail[13] != null ? Integer.parseInt(detail[13].toString()) : 0);
+				mp.put("shortQty", detail[14] != null ? Integer.parseInt(detail[14].toString()) : 0);
+				mp.put("grnQty", detail[15] != null ? Integer.parseInt(detail[15].toString()) : 0);
 
 				details.add(mp);
 			}
