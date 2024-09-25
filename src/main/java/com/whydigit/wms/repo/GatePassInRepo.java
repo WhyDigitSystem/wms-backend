@@ -68,7 +68,7 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 			+ "  AND (month(g.docdate)=?6 or ?6 is null)\r\n"
 			+ "GROUP BY g.docid, g.docdate, g.totalgrnqty, g.entryno\r\n"
 			+ "")
-	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse, int month);
+	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse, String month);
 
 	@Query(nativeQuery = true,value = "select a.entryno,a.entrydate,b.supplier,a.suppliershortname,c.shipmentmode,c.carrier,c.carriershortname from grnexcelupload a,supplier b,carrier c where \r\n"
 			+ "a.suppliershortname=b.suppliershortname and a.carrier=c.carriershortname and b.active=1 and c.active=1 and a.orgid=c.orgid\r\n"

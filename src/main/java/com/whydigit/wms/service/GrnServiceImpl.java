@@ -606,7 +606,7 @@ public class GrnServiceImpl implements GrnService {
 
 	@Override
 	public List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode,
-			String client,String warehouse,int month) {
+			String client,String warehouse,String month) {
 		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse,month);
 		return getGrnStatus(getGrnStatus);
 	}

@@ -39,7 +39,7 @@ public interface PickRequestService {
 	
 	Map<String, Object> createMultiplePickRequest(List<MultiplePickDTO> multiplePickDTO1) throws ApplicationException;
 
-	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, int month,
+	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String month,
 			String finyear);
 
 	

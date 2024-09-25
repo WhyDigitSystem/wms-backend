@@ -363,7 +363,7 @@ Set<Object[]> getStorageDetails2(Long orgId, String branchCode, String warehouse
 @Query(nativeQuery =true,value ="select count(docid) from grn where month(docdate)=?6 and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
 		+ "and branchcode=?2 and client=?4 and warehouse=?3")
 Set<Object[]> getGrnOrderDetailsPerIn(Long orgId, String branchCode, String warehouse, String client,
-		 int finYear, int month);
+		 int finYear, String month);
 
 
 @Query(nativeQuery =true,value ="SELECT A.rowno,A.levelno,A.bin,B.binstatus FROM vw_clientbindetails A,wv_locationstatus B where\r\n"
@@ -385,7 +385,7 @@ Set<Object[]> getGrnOrderDetails(Long orgId, String branchCode, String warehouse
 @Query(nativeQuery =true,value ="select count(docid) from buyerorder where month(docdate)=?6 and cancel=0 AND finyear=?5 AND orgid=?1\r\n"
 		+ "and branchcode=?2 and client=?4 and warehouse=?3")
 Set<Object[]> getOutBoundOrderPerMonth1(Long orgId, String branchCode, String warehouse, String client,
-		int finYear, int month);
+		int finYear, String month);
 
 @Query(value ="select count(docid) from buyerorder where orgid=?1 and branchcode=?2 and warehouse=?3 and client=?4 and  finyear=?5 and cancel=0 ",nativeQuery=true)
 Set<Object[]> getOutBoundOrderPerYear1(Long orgId, String branchCode, String warehouse, String client, int finYear);
