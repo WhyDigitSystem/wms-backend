@@ -45,6 +45,32 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 			+ "        AND l.warehouse = ?3 \r\n" + "        AND l.client = ?4 \r\n" + "        and orgid=?1\r\n"
 			+ "        AND l.bintype = ?6 \r\n" + "        AND l.binclass = ?7 \r\n"
 			+ "        AND (l.binstatus = ?8 or 'Both'=?8 ) \r\n" + "        AND l.bin NOT IN ('Inbound', 'Bulk')\r\n"
+			+"AND NOT EXISTS (\r\n"
+			+ "      SELECT 1 \r\n"
+			+ "      FROM pcexcelupload \r\n"
+			+ "      WHERE orgid = ?1 \r\n"
+			+ "      AND branchcode = ?2\r\n"
+			+ "      AND client = ?4\r\n"
+			+ "      GROUP BY grnno\r\n"
+			+ "  )union all\r\n"
+			+"SELECT a.bin, a.binstatus\r\n"
+			+ "FROM wv_locationstatus a\r\n"
+			+ "JOIN pcexcelupload b\r\n"
+			+ "  ON a.orgid = b.orgid\r\n"
+			+ "  AND a.client = b.client\r\n"
+			+ "  AND a.branchcode = b.branchcode\r\n"
+			+ "  AND a.bin = b.binno\r\n"
+			+ "WHERE a.orgid = ?1\r\n"
+			+ "  AND a.branchcode = ?2\r\n"
+			+ "  AND a.client = ?4\r\n"
+			+ "  AND b.grnno = ?5\r\n"
+			+ "  AND EXISTS (\r\n"
+			+ "      SELECT 1 \r\n"
+			+ "      FROM pcexcelupload \r\n"
+			+ "      WHERE orgid = ?1 \r\n"
+			+ "      AND branchcode = ?2\r\n"
+			+ "      AND client = ?4\r\n"
+			+ "      GROUP BY grnno)\r\n"
 			+ "        UNION ALL\r\n" + "        SELECT \r\n" + "            'Inbound' AS bin, \r\n"
 			+ "            'Empty' AS binstatus \r\n" + "        WHERE 'Inbound' = ?6 AND 'Empty' = ?8\r\n"
 			+ "        \r\n" + "        UNION ALL\r\n" + "        \r\n" + "        SELECT \r\n"
@@ -109,6 +135,9 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 			+ "  AND a.client =?4 group by a.grnno)",
     nativeQuery = true)
 
+
 	Set<Object[]> getPutaway(Long orgId, String finYear, String branchCode, String client, String month);
+
+	
 
 }
