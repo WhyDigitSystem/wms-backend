@@ -257,7 +257,7 @@ public class PickRequestController extends BaseController {
 
 	@GetMapping("/getPicrequestDashboard")
 	public ResponseEntity<ResponseDTO> getPicrequestDashboard(@RequestParam Long orgId,
-			@RequestParam String branchCode, @RequestParam String client,@RequestParam String month,
+			@RequestParam String branchCode, @RequestParam String client,@RequestParam(required =false) String month,
 			@RequestParam String finyear) {
 		String methodName = "getPicrequestDashboard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);

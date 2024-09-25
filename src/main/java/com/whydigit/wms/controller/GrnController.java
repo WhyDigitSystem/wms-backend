@@ -304,7 +304,7 @@ public class GrnController extends BaseController {
 	@GetMapping("/getGrnStatusForDashBoard")
 	public ResponseEntity<ResponseDTO> getGrnStatusForDashBoard(@RequestParam Long orgId,
 			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
-			 @RequestParam String warehouse, @RequestParam String month) {
+			 @RequestParam String warehouse, @RequestParam(required = false) String month) {
 		String methodName = "getGrnStatusForDashBoard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
