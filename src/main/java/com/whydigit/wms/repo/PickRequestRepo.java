@@ -239,7 +239,7 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 			+ "  )\r\n"
 			+ "GROUP BY a.docid, a.totalorderqty, a.totalpickqty\r\n"
 			+ "")
-	Set<Object[]> getPicrequestDashboard(Long orgId, String branchCode, String client, int month, String finyear);
+	Set<Object[]> getPicrequestDashboard(Long orgId, String branchCode, String client, String month, String finyear);
 
 	@Query(value="select a.totalPickQty from PickRequestVO a where a.docId=?1")
 	int getTotalPickQty(String pickRequestDocId);

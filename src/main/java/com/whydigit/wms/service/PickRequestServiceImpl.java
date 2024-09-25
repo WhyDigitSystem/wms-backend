@@ -639,7 +639,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	@Override
 	public List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client,
-			int month, String finyear) {
+			String month, String finyear) {
 		Set<Object[]> resultq = pickRequestRepo.getPicrequestDashboard(orgId, branchCode,client,month, finyear);
 		return getPicrequest(resultq);
 	}

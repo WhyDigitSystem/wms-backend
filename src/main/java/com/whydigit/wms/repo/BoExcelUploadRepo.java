@@ -89,6 +89,6 @@ public interface BoExcelUploadRepo extends JpaRepository<BoExcelUploadVO, Long>{
 			+ "  )\r\n"
 			+ "",nativeQuery =true)
 	Set<Object[]> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse, String client,
-			String finYear, int month);
+			String finYear, String month);
 
 }
