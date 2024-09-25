@@ -799,6 +799,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 				finYear,month);
 		return getBuyerorder(resultq);
 	}
+	
 
 	private List<Map<String, Object>> getBuyerorder(Set<Object[]> resultq) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
