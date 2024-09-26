@@ -2040,7 +2040,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	int totalRows = 0; // Reset totalRows at the beginning of the method
 	int successfulUploads = 0;
-	
+
 	@Transactional
 	public void uploadMaterials(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
 			String branch, String branchCode, String createdBy)
@@ -2060,7 +2060,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 				if (!isMaterialHeaderValid(sheet.getRow(0))) {
 					throw new ApplicationException(
-							"Invalid Excel format in file '" + file.getOriginalFilename() + "'.");
+							"Invalid Excel format Header in file '" + file.getOriginalFilename() + "'.");
 				}
 
 				for (Row row : sheet) {
@@ -2078,7 +2078,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						materialVO.setPartno(getStringCellValue(row.getCell(1)).toUpperCase());
 						materialVO.setPartDesc(getStringCellValue(row.getCell(2)).toUpperCase());
 						materialVO.setSku(getStringCellValue(row.getCell(3)).toUpperCase());
-						materialVO.setPurchaseUnit(getStringCellValue(row.getCell(3)).toUpperCase());	
+						materialVO.setPurchaseUnit(getStringCellValue(row.getCell(3)).toUpperCase());
 						materialVO.setStorageUnit(getStringCellValue(row.getCell(3)).toUpperCase());
 						materialVO.setSsku(getStringCellValue(row.getCell(3)).toUpperCase());
 						materialVO.setCbranch(getStringCellValue(row.getCell(4)).toUpperCase());
@@ -2088,11 +2088,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						// Check for duplicates in the database
 						if (isDuplicatePartNo(orgId, customer, client, getStringCellValue(row.getCell(1)))) {
 							throw new ApplicationException("Duplicate PartNo :'" + getStringCellValue(row.getCell(1))
-									+" for Client :" + client + ".");
+									+ " for Client :" + client + ".");
 						}
 
 						if (isDuplicatePartDesc(orgId, customer, client, getStringCellValue(row.getCell(2)))) {
-							throw new ApplicationException("Duplicate PartDesc :'" + getStringCellValue(row.getCell(2))+" for Client :" + client + ".");
+							throw new ApplicationException("Duplicate PartDesc :'" + getStringCellValue(row.getCell(2))
+									+ " for Client :" + client + ".");
 						}
 
 						// Set remaining fields from method parameters
@@ -2168,6 +2169,223 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	public int getSuccessfulUploads() {
 		return successfulUploads;
+	}
+
+	@Transactional
+	public void uploadCarrier(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy)
+			throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+
+		List<CarrierVO> carrierToSave = new ArrayList<>();
+		totalRows = 0; // Reset totalRows at the beginning of the method
+		successfulUploads = 0; // Reset successfulUploads at the beginning of the method
+
+		for (MultipartFile file : files) {
+			if (file.isEmpty()) {
+				throw new ApplicationException("The supplied file '" + file.getOriginalFilename() + "' is empty.");
+			}
+
+			try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+				Sheet sheet = workbook.getSheetAt(0);
+
+				if (!isCarrierHeaderValid(sheet.getRow(0))) {
+					throw new ApplicationException(
+							"Invalid Excel format Header in file '" + file.getOriginalFilename() + "'.");
+				}
+
+				for (Row row : sheet) {
+					if (row.getRowNum() == 0 || isRowEmpty(row)) {
+						continue;
+					}
+
+					totalRows++; // Increment totalRows for each processed row
+
+					try {
+						CarrierVO carrierVO = new CarrierVO();
+
+						// Extract values from the Excel file for specific fields
+						carrierVO.setCarrier(getStringCellValue(row.getCell(0)).toUpperCase());
+						carrierVO.setCarrierShortName(getStringCellValue(row.getCell(1)).toUpperCase());
+						carrierVO.setShipmentMode(getStringCellValue(row.getCell(2)).toUpperCase());
+						carrierVO.setCbranch(getStringCellValue(row.getCell(3)).toUpperCase());
+						carrierVO.setClient(client);
+						carrierVO.setOrgId(orgId);
+						carrierVO.setActive(true);
+						carrierVO.setCancel(false);
+						carrierVO.setCustomer(customer);
+						carrierVO.setWarehouse(warehouse);
+						carrierVO.setBranch(branch);
+						carrierVO.setCreatedBy(createdBy);
+						carrierVO.setUpdatedBy(createdBy);
+						carrierVO.setBranchCode(branchCode);
+
+						// Check for duplicates in the database
+						if (isDuplicateCarrierName(orgId, getStringCellValue(row.getCell(0)))) {
+							throw new ApplicationException("Duplicate Carrier Full Name :'"
+									+ getStringCellValue(row.getCell(0)) + "' Already Exist");
+						}
+
+						if (isDuplicateCarrierShortName(orgId, getStringCellValue(row.getCell(1)))) {
+							throw new ApplicationException("Duplicate Carrier Short Name :'"
+									+ getStringCellValue(row.getCell(1)) + "' Already Exist");
+						}
+
+						// Set remaining fields from method parameters
+
+						// Add to the list of materials to save
+						carrierToSave.add(carrierVO);
+						successfulUploads++; // Increment successfulUploads for each added material
+					} catch (Exception e) {
+						throw new ApplicationException(
+								"Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+					}
+				}
+
+				// Save all material records in batch
+				carrierRepo.saveAll(carrierToSave);
+
+			} catch (IOException e) {
+				throw new ApplicationException("Failed to process file: " + file.getOriginalFilename(), e);
+			}
+		}
+	}
+
+	private boolean isDuplicateCarrierName(Long orgId, String carrier) {
+		// TODO Auto-generated method stub
+		return carrierRepo.existsByOrgIdAndCarrierIgnoreCase(orgId, carrier);
+	}
+
+	private boolean isDuplicateCarrierShortName(Long orgId, String carrierShortName) {
+		// TODO Auto-generated method stub
+		return carrierRepo.existsByOrgIdAndCarrierShortNameIgnoreCase(orgId, carrierShortName);
+	}
+
+	private boolean isCarrierHeaderValid(Row headerRow) {
+		List<String> expectedHeaders = Arrays.asList("Carrier Full Name", "Carrier Short Name", "Shipment Mode",
+				"Cbranch");
+
+		for (int i = 0; i < expectedHeaders.size(); i++) {
+			String cellValue = getStringCellValue(headerRow.getCell(i));
+			if (!expectedHeaders.get(i).equalsIgnoreCase(cellValue)) {
+				return false; // Return false if any header does not match
+			}
+		}
+		return true; // Return true if all headers match
+	}
+
+	@Transactional
+	public void uploadSupplier(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy)
+			throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+
+		List<SupplierVO> supplierToSave = new ArrayList<>();
+		totalRows = 0; // Reset totalRows at the beginning of the method
+		successfulUploads = 0; // Reset successfulUploads at the beginning of the method
+
+		for (MultipartFile file : files) {
+			if (file.isEmpty()) {
+				throw new ApplicationException("The supplied file '" + file.getOriginalFilename() + "' is empty.");
+			}
+
+			try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+				Sheet sheet = workbook.getSheetAt(0);
+
+				if (!isSupplierHeaderValid(sheet.getRow(0))) {
+					throw new ApplicationException(
+							"Invalid Excel format Header in file '" + file.getOriginalFilename() + "'.");
+				}
+
+				for (Row row : sheet) {
+					if (row.getRowNum() == 0 || isRowEmpty(row)) {
+						continue;
+					}
+
+					totalRows++; // Increment totalRows for each processed row
+
+					try {
+						SupplierVO supplierVO = new SupplierVO();
+
+						// Extract values from the Excel file for specific fields
+						supplierVO.setSupplier(getStringCellValue(row.getCell(0)).toUpperCase());
+						supplierVO.setSupplierShortName(getStringCellValue(row.getCell(1)).toUpperCase());
+						supplierVO.setSupplierType(getStringCellValue(row.getCell(2)).toUpperCase());
+						supplierVO.setPanNo(getStringCellValue(row.getCell(3)).toUpperCase());
+						supplierVO.setTanNo(getStringCellValue(row.getCell(4)).toUpperCase());
+						supplierVO.setMobileNo(getStringCellValue(row.getCell(5)).toUpperCase());
+						supplierVO.setAddressLine1(getStringCellValue(row.getCell(6)).toUpperCase());
+						supplierVO.setAddressLine2(getStringCellValue(row.getCell(7)).toUpperCase());
+						supplierVO.setCity(getStringCellValue(row.getCell(8)).toUpperCase());
+						supplierVO.setState(getStringCellValue(row.getCell(9)).toUpperCase());
+						supplierVO.setCountry(getStringCellValue(row.getCell(10)).toUpperCase());
+						supplierVO.setZipCode(getStringCellValue(row.getCell(11)).toUpperCase());
+						supplierVO.setCbranch(getStringCellValue(row.getCell(12)).toUpperCase());
+						supplierVO.setClient(client);
+						supplierVO.setOrgId(orgId);
+						supplierVO.setActive(true);
+						supplierVO.setCancel(false);
+						supplierVO.setCustomer(customer);
+						supplierVO.setWarehouse(warehouse);
+						supplierVO.setCreatedBy(createdBy);
+						supplierVO.setUpdatedBy(createdBy);
+						supplierVO.setBranch(branch);
+						supplierVO.setBranchCode(branchCode);
+
+						// Check for duplicates in the database
+						if (isDuplicateSupplierFullName(orgId,customer,client,getStringCellValue(row.getCell(0)),getStringCellValue(row.getCell(2)))) {
+							throw new ApplicationException("Duplicate Supplier Full Name :'"
+									+ getStringCellValue(row.getCell(0)) + "' Already Exist");
+						}
+
+						if (isDuplicateSupplierShortName(orgId,customer,client,getStringCellValue(row.getCell(1)),getStringCellValue(row.getCell(2)))) {
+							throw new ApplicationException("Duplicate Supplier Short Name :'"
+									+ getStringCellValue(row.getCell(1)) + "' Already Exist");
+						}
+
+						// Set remaining fields from method parameters
+
+						// Add to the list of materials to save
+						supplierToSave.add(supplierVO);
+						successfulUploads++; // Increment successfulUploads for each added material
+					} catch (Exception e) {
+						throw new ApplicationException(
+								"Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+					}
+				}
+
+				// Save all material records in batch
+				supplierRepo.saveAll(supplierToSave);
+
+			} catch (IOException e) {
+				throw new ApplicationException("Failed to process file: " + file.getOriginalFilename(), e);
+			}
+		}
+	}
+
+	private boolean isDuplicateSupplierFullName(Long orgId, String customer, String client, String supplier,
+			String supplierType) {
+		// TODO Auto-generated method stub
+		return supplierRepo.existsByOrgIdAndCustomerAndClientAndSupplierAndSupplierTypeIgnoreCase(orgId, customer, client,
+				supplier, supplierType);
+	}
+
+	private boolean isDuplicateSupplierShortName(Long orgId, String customer, String client, String supplierShortName,
+			String supplierType) {
+		// TODO Auto-generated method stub
+		return supplierRepo.existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierTypeIgnoreCase(orgId, customer, client,
+				supplierShortName, supplierType);
+	}
+
+	private boolean isSupplierHeaderValid(Row headerRow) {
+		List<String> expectedHeaders = Arrays.asList("Supplier Full Name", "Supplier Short Name", "Supplier Type","Pan","Tan","Mobile","Address Line1","Address Line2",
+				"City","State","Country","Zipcode","Cbranch");
+
+		for (int i = 0; i < expectedHeaders.size(); i++) {
+			String cellValue = getStringCellValue(headerRow.getCell(i));
+			if (!expectedHeaders.get(i).equalsIgnoreCase(cellValue)) {
+				return false; // Return false if any header does not match
+			}
+		}
+		return true; // Return true if all headers match
 	}
 
 }

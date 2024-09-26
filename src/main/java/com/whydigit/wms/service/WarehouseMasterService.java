@@ -271,6 +271,11 @@ public interface WarehouseMasterService {
 
 	int getSuccessfulUploads();
 
+	void uploadCarrier(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy) throws ApplicationException, EncryptedDocumentException, IOException;
+
+	void uploadSupplier(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy) throws ApplicationException, EncryptedDocumentException, IOException;
 	
 
 	
