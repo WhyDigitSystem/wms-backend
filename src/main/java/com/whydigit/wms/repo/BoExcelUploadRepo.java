@@ -22,4 +22,42 @@ public interface BoExcelUploadRepo extends JpaRepository<BoExcelUploadVO, Long>{
 	Set<Object[]> getOrderDetailsFromUpload(Long orgId, String branchCode, String warehouse, String client,
 			String finYear);
 
+	@Query(value ="SELECT \r\n"
+			+ "    b.orderno, \r\n"
+			+ "    b.orderdate, \r\n"
+			+ "    sum(b.totalorderqty) AS qty, \r\n"
+			+ "    'Complete' AS status\r\n"
+			+ "FROM buyerorder b \r\n"
+			+ "WHERE b.orgid = ?1\r\n"
+			+ "  AND b.finyear = ?5 \r\n"
+			+ "  AND b.branchcode = ?2\r\n"
+			+ "  AND b.client = ?4 \r\n"
+			+ "  AND (MONTH(b.docdate) = ?6 OR ?6 IS NULL)\r\n"
+			+ "GROUP BY b.orderno, b.orderdate \r\n"
+			+ "UNION\r\n"
+			+ "SELECT \r\n"
+			+ "    a.orderno, \r\n"
+			+ "    a.orderdate, \r\n"
+			+ "    sum(a.qty) AS qty, \r\n"
+			+ "    'Pending' AS status \r\n"
+			+ "FROM boexcelupload a \r\n"
+			+ "WHERE a.orgid = ?1 \r\n"
+			+ "  AND a.finyear = ?5\r\n"
+			+ "  AND a.branchcode = ?2\r\n"
+			+ "  AND a.warehouse = ?3\r\n"
+			+ "  AND a.client = ?4 \r\n"
+			+ "  AND (MONTH(a.orderdate) = ?6 OR ?6 IS NULL)\r\n"
+			+ "  AND a.orderno NOT IN (\r\n"
+			+ "      SELECT b.orderno \r\n"
+			+ "      FROM buyerorder b \r\n"
+			+ "      WHERE b.orgid = ?1\r\n"
+			+ "        AND b.finyear = ?5\r\n"
+			+ "        AND b.branchcode = ?2\r\n"
+			+ "        AND b.client = ?4\r\n"
+			+ "  )\r\n"
+			+ "GROUP BY a.orderno, a.orderdate\r\n"
+			+ "",nativeQuery =true)
+	Set<Object[]> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse, String client,
+			String finYear, String month);
+
 }

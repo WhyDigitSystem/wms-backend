@@ -1,4 +1,4 @@
-package com.whydigit.wms.entity;
+ package com.whydigit.wms.entity;
 
 import java.time.LocalDate;
 import java.util.List;

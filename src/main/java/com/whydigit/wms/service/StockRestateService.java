@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.StockRestateDTO;
 import com.whydigit.wms.entity.StockRestateVO;
 import com.whydigit.wms.exception.ApplicationException;
@@ -39,8 +41,15 @@ public interface StockRestateService {
 			String client);
 	
 	List<Map<String, Object>> getFillGridDetailsForStockRestate(Long orgId, String branchCode, String warehouse,
-			String client,String tranferFromFlag,String tranferToFlag);
+			String client,String tranferFromFlag,String tranferToFlag,String entryNo);
 
 	Map<String, Object> createStockRestate(StockRestateDTO stockRestateDTO) throws ApplicationException;
+
+	void ExcelUploadForStockRestate(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
+			String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException;
+
+	int getTotalRows();
+
+	int getSuccessfulUploads();
 
 }

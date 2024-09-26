@@ -9,13 +9,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
@@ -334,7 +337,7 @@ public class StockRestateController extends BaseController{
 	@GetMapping("/getFillGridDetailsForStockRestate")
 	public ResponseEntity<ResponseDTO> getFillGridDetailsForStockRestate(@RequestParam Long orgId,
 			@RequestParam String branchCode, @RequestParam String warehouse, @RequestParam String client,
-			@RequestParam String tranferFromFlag, @RequestParam String tranferToFlag) {
+			@RequestParam String tranferFromFlag, @RequestParam String tranferToFlag,@RequestParam(required = false) String entryNo) {
 		String methodName = "getFillGridDetailsForStockRestate()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -343,7 +346,7 @@ public class StockRestateController extends BaseController{
 		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
 
 		try {
-			fillGridDetails = stockRestateService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse, client, tranferFromFlag, tranferToFlag);
+			fillGridDetails = stockRestateService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse, client, tranferFromFlag, tranferToFlag,entryNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -356,6 +359,47 @@ public class StockRestateController extends BaseController{
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve fill Grid Details  from Stock information", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	
+	@PostMapping("/ExcelUploadForStockRestate")
+	public ResponseEntity<ResponseDTO> ExcelUploadForStockRestate(@RequestParam MultipartFile[] files,
+			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {
+		String methodName = "ExcelUploadForStockRestate()";
+		int totalRows = 0;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		int successfulUploads = 0;
+		ResponseDTO responseDTO = null;
+		try {
+			// Call service method to process Excel upload
+			stockRestateService.ExcelUploadForStockRestate(files, type, orgId, createdBy, customer,  client,  finYear,  branch,  branchCode, warehouse);
+
+			// Retrieve the counts after processing
+			totalRows = stockRestateService.getTotalRows(); // Get total rows processed
+			successfulUploads = stockRestateService.getSuccessfulUploads(); // Get successful uploads count
+			// Construct success response
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", totalRows);
+			responseObjectsMap.put("successfulUploads", successfulUploads);
+			Map<String, Object> paramObjectsMap = new HashMap<>();
+			paramObjectsMap.put("message", "Excel Upload For srs successful");
+			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (Exception e) {
+
+			String errorMsg = e.getMessage();
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("errorMessage", errorMsg);
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Srs Failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

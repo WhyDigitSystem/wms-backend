@@ -55,12 +55,16 @@ public class BuyerOrderVO {
 	@Column(name = "buyershortname")
 	private String buyerShortName;
 	private String buyer;
+	@Column(name = "buyeraddress")
+	private String buyerAddress;
 	@Column(name = "currency")
 	private String currency;
 	@Column(name = "billtoshortname")
 	private String billToShortName;
 	@Column(name = "billto")
 	private String billToName;
+	@Column(name = "billtoaddress")
+	private String billToAddress;
 	@Column(name = "shiptoshortname")
 	private String shipToShortName;
 	@Column(name = "shipto")
@@ -88,7 +92,7 @@ public class BuyerOrderVO {
 	@Column(name = "branchcode")
 	private String branchCode;
 	@Column(name = "freeze")
-	private boolean freeze=true;
+	private boolean freeze=false;
 	@Column(name = "totalorderqty")
 	private int totalOrderQty;
 	@Column(name = "totalavlqty")

@@ -1,17 +1,37 @@
 package com.whydigit.wms.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.entity.MaterialVO;
+import com.whydigit.wms.entity.StockDetailsVO;
+import com.whydigit.wms.exception.ApplicationException;
+import com.whydigit.wms.repo.ClientRepo;
+import com.whydigit.wms.repo.LocationMappingDetailsRepo;
+import com.whydigit.wms.repo.MaterialRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
+
+import io.jsonwebtoken.io.IOException;
 
 @Service
 public class StockReportServiceImpl implements StockReportService {
@@ -20,6 +40,15 @@ public class StockReportServiceImpl implements StockReportService {
 
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
+
+	@Autowired
+	MaterialRepo materialRepo;
+
+	@Autowired
+	LocationMappingDetailsRepo locationMappingDetailsRepo;
+
+	@Autowired
+	ClientRepo clientRepo;
 
 	@Override
 	public List<Map<String, Object>> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse,
@@ -77,6 +106,7 @@ public class StockReportServiceImpl implements StockReportService {
 		for (Object[] st : getPartNoReport) {
 			Map<String, Object> details = new HashMap<>();
 			details.put("partNo", st[0] != null ? st[0].toString() : "");
+
 			stock.add(details);
 		}
 		return stock;
@@ -94,6 +124,7 @@ public class StockReportServiceImpl implements StockReportService {
 		for (Object[] st : getBatchReport) {
 			Map<String, Object> details = new HashMap<>();
 			details.put("batch", st[0] != null ? st[0].toString() : "");
+
 			stock.add(details);
 		}
 		return stock;
@@ -182,20 +213,18 @@ public class StockReportServiceImpl implements StockReportService {
 		return getStockLedgerReport(getLedgerDetails);
 	}
 
-
 	@Override
 	public List<Map<String, Object>> getPartNoForBatchWiseReport(Long orgId, String branchCode, String warehouse,
 			String customer, String client) {
-		Set<Object[]>getDetails=stockDetailsRepo. getPartNoFromBatchWiseReport( orgId,  branchCode, warehouse,
-				 customer,  client);
+		Set<Object[]> getDetails = stockDetailsRepo.getPartNoFromBatchWiseReport(orgId, branchCode, warehouse, customer,
+				client);
 		return getPartNoFromBatchWise(getDetails);
 	}
 
 	private List<Map<String, Object>> getPartNoFromBatchWise(Set<Object[]> getDetails) {
-		List<Map<String, Object>>stock=new ArrayList<>();
-		for(Object[] st:getDetails)
-		{
-			Map<String,Object>stockDetails=new HashMap<>();
+		List<Map<String, Object>> stock = new ArrayList<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> stockDetails = new HashMap<>();
 			stockDetails.put("partNo", st[0] != null ? st[0].toString() : "");
 			stock.add(stockDetails);
 		}
@@ -205,23 +234,20 @@ public class StockReportServiceImpl implements StockReportService {
 	@Override
 	public List<Map<String, Object>> getBatchForBatchWiseReport(Long orgId, String branchCode, String warehouse,
 			String customer, String client, String partNo) {
-		Set<Object[]>getDetails=stockDetailsRepo.getBatchFromBatchWiseReport( orgId,  branchCode, warehouse,
-				 customer,client,partNo);
+		Set<Object[]> getDetails = stockDetailsRepo.getBatchFromBatchWiseReport(orgId, branchCode, warehouse, customer,
+				client, partNo);
 		return getBatchFromBatchWise(getDetails);
 	}
 
 	private List<Map<String, Object>> getBatchFromBatchWise(Set<Object[]> getDetails) {
-		List<Map<String, Object>>stock=new ArrayList<>();
-		for(Object[] st:getDetails)
-		{
-			Map<String,Object>stockDetails=new HashMap<>();
+		List<Map<String, Object>> stock = new ArrayList<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> stockDetails = new HashMap<>();
 			stockDetails.put("batch", st[0] != null ? st[0].toString() : "");
 			stock.add(stockDetails);
 		}
 		return stock;
 	}
-
-
 
 	private List<Map<String, Object>> getStockLedgerReport(Set<Object[]> getLedgerDetails) {
 		List<Map<String, Object>> stock = new ArrayList<>();
@@ -274,4 +300,150 @@ public class StockReportServiceImpl implements StockReportService {
 		}
 		return stock;
 	}
+
+	private int totalRows = 0; // Instance variable to keep track of total rows
+	private int successfulUploads = 0; // Instance variable to keep track of successful uploads
+
+	private final DataFormatter dataFormatter = new DataFormatter();
+
+	@Transactional
+	public void uploadStockDetails(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy, String FinYear) throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+
+		List<StockDetailsVO> stockDetailsToSave = new ArrayList<>();
+		totalRows = 0; // Reset totalRows at the beginning of the method
+		successfulUploads = 0; // Reset successfulUploads at the beginning of the method
+
+		for (MultipartFile file : files) {
+			if (file.isEmpty()) {
+				throw new ApplicationException("The supplied file '" + file.getOriginalFilename() + "' is empty.");
+			}
+
+			try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+				Sheet sheet = workbook.getSheetAt(0);
+
+				if (!isStockHeaderValid(sheet.getRow(0))) {
+					throw new ApplicationException(
+							"Invalid Excel format in file '" + file.getOriginalFilename() + "'.");
+				}
+
+				for (Row row : sheet) {
+					if (row.getRowNum() == 0 || isRowEmpty(row)) {
+						continue;
+					}
+
+					totalRows++; // Increment totalRows for each processed row
+
+					try {
+						StockDetailsVO stockDetailsVO = new StockDetailsVO();
+
+						MaterialVO materialVO = materialRepo.findPartNoDetails(orgId, customer, client,
+								getStringCellValue(row.getCell(0)));
+
+						Set<Object[]> bindetails = locationMappingDetailsRepo.getBinDetails(orgId, branchCode,
+								warehouse, client, getStringCellValue(row.getCell(3)));
+						if (!bindetails.isEmpty()) {
+							for (Object[] bin : bindetails) {
+								stockDetailsVO.setBin(bin[0].toString());
+								stockDetailsVO.setBinType(bin[1].toString());
+								stockDetailsVO.setBinClass(bin[2].toString());
+								stockDetailsVO.setCore(bin[3].toString());
+								stockDetailsVO.setCellType(bin[4].toString());
+
+							}
+						}
+						// Extract values from the Excel file for specific fields
+						stockDetailsVO.setPartno(materialVO.getPartno());
+						stockDetailsVO.setPartDesc(materialVO.getPartDesc());
+						stockDetailsVO.setSku(materialVO.getSku());
+						stockDetailsVO.setBin(getStringCellValue(row.getCell(3)));
+						stockDetailsVO.setSQty(getNumericCellValue(row.getCell(4)));
+						stockDetailsVO.setGrnNo("OPSTOCK");
+						stockDetailsVO.setGrnDate(LocalDate.now());
+						stockDetailsVO.setSSku(materialVO.getSku());
+						stockDetailsVO.setUpdatedBy(createdBy);
+						stockDetailsVO.setOrgId(orgId);
+						stockDetailsVO.setRefNo("OPSTOCK");
+						stockDetailsVO.setRefDate(LocalDate.now());
+						stockDetailsVO.setPcKey(materialVO.getParentChildKey());
+						stockDetailsVO.setCreatedBy(createdBy);
+						stockDetailsVO.setBranchCode(branchCode);
+						stockDetailsVO.setBranch(branch);
+						stockDetailsVO.setCustomer(customer);
+						stockDetailsVO.setClient(client);
+						stockDetailsVO.setClientCode(clientRepo.getClientCode(orgId, client));
+						stockDetailsVO.setWarehouse(warehouse);
+						stockDetailsVO.setFinYear(FinYear);
+						stockDetailsVO.setQcFlag("T");
+						stockDetailsVO.setStatus("R");
+						stockDetailsVO.setSourceScreenName("OPSTOCK");
+						stockDetailsVO.setSourceScreenCode("OB");
+						stockDetailsVO.setActive(true); // Assuming default values
+
+						// Add to the list of stock details to save
+						stockDetailsToSave.add(stockDetailsVO);
+						successfulUploads++; // Increment successfulUploads for each added stock detail
+					} catch (Exception e) {
+						throw new ApplicationException(
+								"Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+					}
+				}
+
+				// Save all stock detail records in batch
+				stockDetailsRepo.saveAll(stockDetailsToSave);
+
+			} catch (IOException e) {
+				throw new ApplicationException("Failed to process file: " + file.getOriginalFilename(), e);
+			}
+		}
+	}
+
+	private boolean isRowEmpty(Row row) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private boolean isStockHeaderValid(Row row) {
+		List<String> expectedHeaders = Arrays.asList("Part No", "Part Desc", "SKU", "Bin", "Qty");
+
+		for (int i = 0; i < expectedHeaders.size(); i++) {
+			String cellValue = getStringCellValue(row.getCell(i));
+			if (!expectedHeaders.get(i).equalsIgnoreCase(cellValue)) {
+				return false; // Return false if any header does not match
+			}
+		}
+		return true;
+	}
+
+	// Getter for totalRows
+	public int getTotalRows() {
+		return totalRows;
+	}
+
+	// Getter for successfulUploads
+	public int getSuccessfulUploads() {
+		return successfulUploads;
+	}
+
+	private String getStringCellValue(Cell cell) {
+		if (cell == null) {
+			return ""; // Return empty string if cell is null
+		}
+
+		// Use DataFormatter to get the cell value as a string
+		return dataFormatter.formatCellValue(cell);
+	}
+
+	private int getNumericCellValue(Cell cell) {
+		if (cell == null) {
+			return 0; // or throw an exception if you prefer
+		}
+		switch (cell.getCellType()) {
+		case NUMERIC:
+			return (int) cell.getNumericCellValue();
+		default:
+			return 0; // or throw an exception if the cell type is not numeric
+		}
+	}
+
 }

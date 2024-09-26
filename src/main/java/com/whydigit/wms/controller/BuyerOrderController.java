@@ -386,4 +386,35 @@ public class BuyerOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	
+	@GetMapping("/getBuyerorderDashboard")
+	public ResponseEntity<ResponseDTO> getBuyerorderDashboard(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse,
+			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear,
+			@RequestParam(required = false) String month) {
+		String methodName = "getBuyerorderDashboard()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> buyerorderDashboard = new ArrayList<Map<String, Object>>();
+		try {
+			buyerorderDashboard = buyerOrderService.getBuyerorderDashboard(orgId, branchCode, warehouse, client, finYear,month);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyerorder Dashboard  Details information get successfully");
+			responseObjectsMap.put("buyerorderDashboard", buyerorderDashboard);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Buyerorder Dashboard Details information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
 }
