@@ -33,17 +33,19 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 			String client, String buyerOrderNo);
 	
 	
-	@Query(nativeQuery =true,value = "SELECT partno,\n"
-			+ "       partdesc,\n"
-			+ "       batch,expdate,\n"
-			+ "       SUM(sqty) AS total_sqty\n"
-			+ "FROM stockdetails\n"
-			+ "WHERE orgid =?1\n"
-			+ "  AND  branchcode =?2\n"
-			+ "  AND client = ?3\n"
-			+ "  AND status = 'R'\n"
-			+ "  AND warehouse=?4\n"
-			+ "GROUP BY partno, partdesc, batch,expdate\n"
+	@Query(nativeQuery =true,value = "SELECT partno,\r\n"
+			+ "       partdesc,\r\n"
+			+ "       batch,\r\n"
+			+ "       expdate,\r\n"
+			+ "       SUM(sqty) AS total_sqty,\r\n"
+			+ "       sku,ROW_NUMBER() OVER () AS id\r\n"
+			+ "FROM stockdetails\r\n"
+			+ "WHERE orgid = ?1\r\n"
+			+ "  AND branchcode = ?2\r\n"
+			+ "  AND client = ?3\r\n"
+			+ "  AND status = 'R'\r\n"
+			+ "  AND warehouse = ?4\r\n"
+			+ "GROUP BY partno, partdesc, sku, batch, expdate\r\n"
 			+ "HAVING SUM(sqty) > 0")
 	Set<Object[]> getBoSku(Long orgId, String branchCode, String client,String warehouse);
 
@@ -78,6 +80,20 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 	BuyerOrderVO findByDocId(String buyerOrderNo);
 
 	BuyerOrderVO findByOrderNoAndOrgIdAndClient(String orderNo, Long orgId, String client);
+
+	@Query(nativeQuery = true, value = "select c.docid,c.docdate,c.orderno,c.orderdate,c.refno,c.refdate,C.invoiceno,C.billto,C.billtoshortname,C.buyer,C.buyershortname,ROW_NUMBER() OVER () AS sno from buyerorder c where c.cancel=0 and c.orderno in (\r\n"
+			+ "    select a.buyerorderno from (\r\n"
+			+ "        select orgid, branch, branchcode, customer, client, warehouse, buyerorderno, buyerorderdate, buyerordno, buyerorddate, partno, partdesc, sum(sqty) sqty\r\n"
+			+ "        from handlingstockout \r\n"
+			+ "        where orgid=?1 and finyear=?2 and branchcode=?3 and warehouse=?4 and client=?5\r\n"
+			+ "        group by orgid, branch, branchcode, customer, client, warehouse, buyerorderno, buyerorderdate, buyerordno, buyerorddate, partno, partdesc \r\n"
+			+ "        having sum(sqty) > 0\r\n"
+			+ "    ) a) group by c.docid,c.docdate,c.orderno,c.orderdate,c.refno,c.refdate,C.invoiceno,C.billto,C.billtoshortname,C.buyer,C.buyershortname order by c.docid asc")
+	Set<Object[]> getPendingBuyerOrderDetails(Long orgId, String finYear, String branchCode, String warehouse,
+			String client);
+	
+	
+	
 
 	
 	

@@ -170,5 +170,61 @@ public class GatePassInController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getEntryNoDetails")
+	public ResponseEntity<ResponseDTO> getEntryNoDetails(@RequestParam Long orgId,
+			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
+			 @RequestParam String entryNo) {
+		String methodName = "getEntryNoDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> entryNoDetails = new ArrayList<>();
+		try {
+			entryNoDetails = gatePassInService.getEntryDetails(orgId, finYear, branchCode, client, entryNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "EntryNo Details information get successfully");
+			responseObjectsMap.put("entryNoDetails", entryNoDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "EntryNo Details information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getEntryNoFillDetails")
+	public ResponseEntity<ResponseDTO> getEntryNoFillDetails(@RequestParam Long orgId,
+			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
+			 @RequestParam String entryNo) {
+		String methodName = "getEntryNoFillDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> entryNoFillDetails = new ArrayList<>();
+		try {
+			entryNoFillDetails = gatePassInService.getEntryFillDetails(orgId, finYear, branchCode, client, entryNo);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "EntryNo Fill Details information get successfully");
+			responseObjectsMap.put("entryNoFillDetails", entryNoFillDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "EntryNo Fill Details information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 }

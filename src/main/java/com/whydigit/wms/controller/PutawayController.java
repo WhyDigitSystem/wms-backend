@@ -238,7 +238,34 @@ public class PutawayController extends BaseController{
 			return ResponseEntity.ok().body(responseDTO);
 		}
 
-	
+		@GetMapping("/getPutawayForDashBoard")
+		public ResponseEntity<ResponseDTO> getPutawayForDashBoard(@RequestParam Long orgId,
+				@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client, @RequestParam int month) {
+			String methodName = "getPutawayForDashBoard()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<Map<String, Object>> putawayDashboard = new ArrayList<>();
+			try {
+				putawayDashboard = putawayService.getPutawayForDashBoard(orgId, finYear,
+						branchCode, client,month);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Putaway information get successfully");
+				responseObjectsMap.put("putawayDashboard", putawayDashboard);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "Putaway information receive failed",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
 	
 
 }

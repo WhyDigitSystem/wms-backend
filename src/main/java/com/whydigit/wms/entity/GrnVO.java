@@ -146,6 +146,8 @@ public class GrnVO {
 	private String noOfBins;
 	@Column(name = "invoiceno")
 	private String invoiceNo;
+	@Column(name = "remarks")
+	private String remarks;
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)

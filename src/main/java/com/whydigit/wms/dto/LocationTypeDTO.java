@@ -14,5 +14,6 @@ public class LocationTypeDTO {
 	private Long orgId;
 	private boolean cancel;
 	private boolean active;
+	private String core;
 
 }

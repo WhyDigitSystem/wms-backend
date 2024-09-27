@@ -88,4 +88,34 @@ public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {
 	@Query(nativeQuery = true, value = "select celltype from wv_locationstatus where orgid=?1 and bin=?2 group by celltype")
 	String getCelltype(Long orgId, String bin);
 
+	@Query(value = "SELECT " +
+            "    a.docid AS putawayno, a.grnno, a.docdate, a.totalputawayqty, 'Complete' AS status " +
+            "FROM putaway a " +
+            "WHERE a.orgid = ?1 AND a.finyear = ?2 AND a.branchcode = ?3 " +
+            "AND (MONTH(a.docdate) = ?5 OR ?5 IS NULL) " +
+            "AND a.client = ?4 AND a.status = 'Confirm' " +
+            "GROUP BY a.docid, a.docdate, a.grnno, a.totalputawayqty " +
+            "UNION " +
+            "SELECT a.docid, a.docdate, a.grnno, a.totalputawayqty, 'Yet To Confirm' AS status " +
+            "FROM putaway a " +
+            "WHERE a.orgid = ?1 AND a.finyear = ?2 AND a.branchcode = ?3 " +
+            "AND (MONTH(a.docdate) = ?5 OR ?5 IS NULL) " +
+            "AND a.client = ?4 AND a.status = 'Edit' " +
+            "GROUP BY a.docid, a.grnno, a.totalputawayqty, a.docdate " +
+            "UNION " +
+            "SELECT a.docid, a.entryno, a.totalgrnqty, a.docdate, 'Pending' AS status " +
+            "FROM grn a " +
+            "WHERE a.orgid = ?1 AND a.finyear = ?2 " +
+            "AND (MONTH(a.docdate) = ?5 OR ?5 IS NULL) " +
+            "AND a.branchcode = ?3 AND a.client = ?4 " +
+            "AND a.docid NOT IN ( " +
+            "    SELECT a.grnno FROM putaway a " +
+            "    WHERE a.orgid = ?1 AND a.finyear = ?2 " +
+            "    AND a.branchcode = ?3 AND a.client = ?4 " +
+            "    GROUP BY a.grnno " +
+            ")",
+    nativeQuery = true)
+
+	Set<Object[]> getPutaway(Long orgId, String finYear, String branchCode, String client, int month);
+
 }

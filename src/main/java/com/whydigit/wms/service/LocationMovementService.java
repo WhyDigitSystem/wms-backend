@@ -36,7 +36,7 @@ public interface LocationMovementService {
 	String getLocationMovementDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	List<Map<String, Object>> getAllForLocationMovementDetailsFillGrid(Long id, String branch, String branchCode,
-			String client);
+			String client,String entryNo) throws ApplicationException;
 
 	Integer getAvlQtyFromStockForLocationMovement(Long orgId, String branch,
 			String branchCode, String client, String bin, String partNo, String grnno,String batchNo);

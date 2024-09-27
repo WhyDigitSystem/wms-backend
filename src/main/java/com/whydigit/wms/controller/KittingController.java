@@ -297,11 +297,11 @@ public class KittingController extends BaseController{
             LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
         }
         if (StringUtils.isBlank(errorMsg)) {
-            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNOByParent Details information retrieved successfully");
+            responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PartNO By Parent Details information retrieved successfully");
             responseObjectsMap.put("kittingVO", kittingVO);
             responseDTO = createServiceResponse(responseObjectsMap);
         } else {
-            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PartNOByChild Details", errorMsg);
+            responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PartNO By Parent  Details", errorMsg);
         }
         LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
         return ResponseEntity.ok().body(responseDTO);

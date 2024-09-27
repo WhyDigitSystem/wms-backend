@@ -1,23 +1,39 @@
 package com.whydigit.wms.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
+import org.apache.poi.ss.usermodel.DataFormatter;
+
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.StockRestateDTO;
 import com.whydigit.wms.dto.StockRestateDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
+import com.whydigit.wms.entity.SrsExcelUploadVO;
 import com.whydigit.wms.entity.StockDetailsVO;
 import com.whydigit.wms.entity.StockRestateDetailsVO;
 import com.whydigit.wms.entity.StockRestateVO;
@@ -25,6 +41,7 @@ import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.MaterialRepo;
+import com.whydigit.wms.repo.SrsExcelUploadRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
 import com.whydigit.wms.repo.StockRestateRepo;
 
@@ -47,6 +64,9 @@ public class StockRestateServiceImpl implements StockRestateService {
 	
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	SrsExcelUploadRepo srsExcelUploadRepo;
 	
 	//StockRestate
 	@Override
@@ -91,7 +111,22 @@ public class StockRestateServiceImpl implements StockRestateService {
 		stockRestateVO.setTransferTo(stockRestateDTO.getTransferTo());
 		stockRestateVO.setTransferFromFlag(stockRestateDTO.getTransferFromFlag());
 		stockRestateVO.setTransferToFlag(stockRestateDTO.getTransferToFlag());
-		stockRestateVO.setEntryNo(stockRestateDTO.getEntryNo());
+		if(stockRestateDTO.getEntryNo()!=null && stockRestateRepo.existsByEntryNoAndOrgIdAndClient(stockRestateDTO.getEntryNo(),stockRestateDTO.getOrgId(),stockRestateDTO.getClient()))
+		{
+			throw new ApplicationException("EntryNo already Exist");
+		}
+		else
+		{
+			if(stockRestateDTO.getEntryNo()==null)
+			{
+			stockRestateVO.setEntryNo(null);
+			}
+			else
+			{
+				stockRestateVO.setEntryNo(stockRestateDTO.getEntryNo());
+			}
+		}
+		
 		stockRestateVO.setOrgId(stockRestateDTO.getOrgId());
 		stockRestateVO.setCustomer(stockRestateDTO.getCustomer());
 		stockRestateVO.setClient(stockRestateDTO.getClient());
@@ -370,12 +405,14 @@ public class StockRestateServiceImpl implements StockRestateService {
 		return binDetails;
 	}
 
+	
 	@Override
 	public List<Map<String, Object>> getFillGridDetailsForStockRestate(Long orgId, String branchCode,
-			String warehouse, String client, String transferFromFlag,String transferToFlag) {
+			String warehouse, String client, String tranferFromFlag, String tranferToFlag, String entryNo){
 		
 		Set<Object[]>getFillGridDetails= stockRestateRepo.getFillGridDetailsForRestate(orgId, branchCode,
-				 warehouse, client, transferFromFlag,transferToFlag);
+				 warehouse, client, tranferFromFlag,tranferToFlag,entryNo);
+		
 		return fillGridDetails(getFillGridDetails);
 	}
 
@@ -411,6 +448,171 @@ public class StockRestateServiceImpl implements StockRestateService {
 		}
 		return gridDetails;
 	}
+	
+	 private int totalRows = 0; // Instance variable to keep track of total rows
+	    private int successfulUploads = 0; // Instance variable to keep track of successful uploads
+
+	    private final DataFormatter dataFormatter = new DataFormatter();
+
+
+	    @Transactional
+	    public void ExcelUploadForStockRestate(MultipartFile[] files, CustomerAttachmentType type, Long orgId,
+				String createdBy, String customer, String client, String finYear, String branch, String branchCode,
+				String warehouse) throws ApplicationException {
+	        List<SrsExcelUploadVO> srsExcelUploadVOsToSave = new ArrayList<>();
+	        totalRows = 0;
+	        successfulUploads = 0;
+
+	        for (MultipartFile file : files) {
+	            if (file.isEmpty()) {
+	                throw new ApplicationException("The supplied file '" + file.getOriginalFilename() + "' is empty (zero bytes long).");
+	            }
+
+	            try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+	                Sheet sheet = workbook.getSheetAt(0);
+	                List<String> errorMessages = new ArrayList<>();
+	                System.out.println("Processing file: " + file.getOriginalFilename());
+
+	                Row headerRow = sheet.getRow(0);
+	                if (!isHeaderValid(headerRow)) {
+	                    throw new ApplicationException("Invalid Excel format in file '" + file.getOriginalFilename() + "'. Expected headers are: Type, From location, From location type, Location pick, partno, partdesc, sku, Grn No, GRN date, Batch No, Exp date, Entry no, From Status, To Status");
+	                }
+
+	                for (Row row : sheet) {
+	                    if (row.getRowNum() == 0 || isRowEmpty(row)) {
+	                        continue;
+	                    }
+
+	                    totalRows++;
+	                    System.out.println("Validating row: " + (row.getRowNum() + 1));
+	                    
+	                    try {
+	                        String type1 = getStringCellValue(row.getCell(0));
+	                        String fromBin = getStringCellValue(row.getCell(1));
+	                        String fromBinType = getStringCellValue(row.getCell(2));
+	                        String binPick = getStringCellValue(row.getCell(3));
+	                        String partNo = getStringCellValue(row.getCell(4));
+	                        String partDesc = getStringCellValue(row.getCell(5));
+	                        String sku = getStringCellValue(row.getCell(6));
+	                        String grnNo = getStringCellValue(row.getCell(7));
+	                        LocalDate grnDate = parseDate(row.getCell(8));
+	                        String batchNo = getStringCellValue(row.getCell(9));
+	                        LocalDate expDate = parseDate(row.getCell(10));
+	                        String entryNo = getStringCellValue(row.getCell(11));
+	                        String fromStatus = getStringCellValue(row.getCell(12));
+	                        String toStatus = getStringCellValue(row.getCell(13));
+
+	                        // Create and populate SrsExcelUploadVO object
+	                        SrsExcelUploadVO srsExcelUploadVO = new SrsExcelUploadVO();
+	                        srsExcelUploadVO.setType(type1);
+	                        srsExcelUploadVO.setFrombin(fromBin);
+	                        srsExcelUploadVO.setFromBinType(fromBinType);
+	                        srsExcelUploadVO.setBinPick(binPick);
+	                        srsExcelUploadVO.setPartNo(partNo);
+	                        srsExcelUploadVO.setPartDesc(partDesc);
+	                        srsExcelUploadVO.setSku(sku);
+	                        srsExcelUploadVO.setGrnNo(grnNo);
+	                        srsExcelUploadVO.setGrnDate(grnDate);
+	                        srsExcelUploadVO.setBatchNo(batchNo);
+	                        srsExcelUploadVO.setExpDate(expDate);
+	                        srsExcelUploadVO.setEntryNo(entryNo);
+	                        srsExcelUploadVO.setFromStatus(fromStatus);
+	                        srsExcelUploadVO.setToStatus(toStatus);
+	                        srsExcelUploadVO.setOrgId(orgId);
+	                        srsExcelUploadVO.setCustomer(customer);
+	                        srsExcelUploadVO.setClient(client);
+	                        srsExcelUploadVO.setFinYear(finYear);
+	                        srsExcelUploadVO.setBranch(branch);
+	                        srsExcelUploadVO.setBranchCode(branchCode);
+	                        srsExcelUploadVO.setWarehouse(warehouse);
+	                        srsExcelUploadVO.setCreatedBy(createdBy);
+	                        srsExcelUploadVO.setUpdatedBy(createdBy);
+	                        srsExcelUploadVO.setActive(true);
+	                        srsExcelUploadVO.setCancel(false);
+	                        srsExcelUploadVO.setCancelRemarks("");
+
+	                        srsExcelUploadVOsToSave.add(srsExcelUploadVO);
+	                        successfulUploads++;
+	                    } catch (Exception e) {
+	                        // Optionally handle specific row processing exceptions here
+	                    }
+	                }
+
+	                srsExcelUploadRepo.saveAll(srsExcelUploadVOsToSave);
+	            } catch (IOException e) {
+	                throw new ApplicationException("Failed to process file: " + file.getOriginalFilename() + " - " + e.getMessage());
+	            }
+	        }
+	    }
+
+	    private LocalDate parseDate(Cell cell) {
+	        if (cell == null) {
+	            return null;
+	        }
+
+	        try {
+	            if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+	                return cell.getLocalDateTimeCellValue().toLocalDate();
+	            } else if (cell.getCellType() == CellType.STRING) {
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Adjusted to dd/MM/yyyy
+	                return LocalDate.parse(cell.getStringCellValue(), formatter);
+	            }
+	        } catch (Exception e) {
+	            System.err.println("Date parsing error for cell value: " + getStringCellValue(cell));
+	        }
+	        return null;
+	    }
+
+	    private String getStringCellValue(Cell cell) {
+	        if (cell == null) {
+	            return ""; // Return empty string if cell is null
+	        }
+
+	        // Use DataFormatter to get the cell value as a string
+	        return dataFormatter.formatCellValue(cell);
+	    }
+
+	    private boolean isRowEmpty(Row row) {
+	        for (Cell cell : row) {
+	            if (cell.getCellType() != CellType.BLANK) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+
+	    private boolean isHeaderValid(Row headerRow) throws ApplicationException {
+	        if (headerRow == null) {
+	            return false;
+	        }
+	        List<String> expectedHeaders = Arrays.asList(
+	            "Type", "From location", "From location type", "Location pick",
+	            "partno", "partdesc", "sku", "Grn No", "GRN date",
+	            "Batch No", "Exp date", "Entry no", "From Status", "To Status"
+	        );
+
+	        List<String> actualHeaders = new ArrayList<>();
+	        for (Cell cell : headerRow) {
+	            actualHeaders.add(getStringCellValue(cell).trim());
+	        }
+
+	        if (!expectedHeaders.equals(actualHeaders)) {
+	            String errorDetails = "Expected headers: " + expectedHeaders.toString()
+	                + ", Found headers: " + actualHeaders.toString();
+	            throw new ApplicationException("Invalid Excel format. " + errorDetails);
+	        }
+	        return true;
+	    }
+
+	    public int getTotalRows() {
+	        return totalRows;
+	    }
+
+	    public int getSuccessfulUploads() {
+	        return successfulUploads;
+	    }
+
+
 	
 
 }
