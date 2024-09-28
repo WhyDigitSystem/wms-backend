@@ -32,7 +32,6 @@ public interface PickRequestService {
 	List<Map<String,Object>>getFillGridDetailsForPickRequest(Long orgId, String branchCode, String client,
 			String buyerOrderDocId, String pickRequestDocId,String pickStatus);
 
-
 	
 	//BO details for Multiple Pick request
 	List<Map<String, Object>> getPendingBuyerOrderDetailsForPickRequest(Long orgId, String finYear, String branchCode,
@@ -40,7 +39,7 @@ public interface PickRequestService {
 	
 	Map<String, Object> createMultiplePickRequest(List<MultiplePickDTO> multiplePickDTO1) throws ApplicationException;
 
-	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String warehouse,
+	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String month,
 			String finyear);
 
 	

@@ -1,11 +1,14 @@
 package com.whydigit.wms.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.poi.EncryptedDocumentException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
@@ -259,7 +262,23 @@ public interface WarehouseMasterService {
 	DocumentTypeMappingVO getDocumentTypeMappingById(Long id)throws ApplicationException;
 
 	List<Map<String, Object>> getToBinDetails(Long orgId, String branchCode, String client, String warehouse);
+	
+	
+	void uploadMaterials(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy) throws ApplicationException, EncryptedDocumentException, IOException;
 
+	int getTotalRows();
+
+	int getSuccessfulUploads();
+
+	void uploadCarrier(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy) throws ApplicationException, EncryptedDocumentException, IOException;
+
+	void uploadSupplier(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy) throws ApplicationException, EncryptedDocumentException, IOException;
+
+	void uploadBuyer(MultipartFile[] files, Long orgId, String customer, String client, String warehouse, String branch,
+			String branchCode, String createdBy)throws ApplicationException, EncryptedDocumentException, IOException;
 	
 
 	

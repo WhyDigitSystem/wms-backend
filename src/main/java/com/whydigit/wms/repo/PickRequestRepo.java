@@ -197,27 +197,52 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	Set<Object[]> fillgridDetails(Long orgId, String branchCode, String client, String pickDocId);
 
 	
-	@Query(nativeQuery =true,value ="select b.orderno, b.orderdate, \r\n"
-			+ "case \r\n"
-			+ "when b.orderno in (\r\n"
-			+ "select a.buyerrefno from pickrequest a \r\n"
-			+ "where a.orgid =?1 \r\n"
-			+ "and a.finyear =?5 \r\n"
-			+ "and a.branchcode =?2 \r\n"
-			+ "and a.warehouse =?3 \r\n"
-			+ "and a.client =?4\r\n"
-			+ "group by a.buyerrefno \r\n"
-			+ ") \r\n"
-			+ "then 'Complete' \r\n"
-			+ "else 'Pending' \r\n"
-			+ "end as status\r\n"
-			+ "from buyerorder b \r\n"
-			+ "where b.orgid =?1 \r\n"
-			+ "and b.finyear =?5 \r\n"
-			+ "and b.branchcode =?2\r\n"
-			+ "and b.client =?4\r\n"
-			+ "group by b.orderno, \r\n"
-			+ "b.orderdate")
-	Set<Object[]> getPicrequestDashboard(Long orgId, String branchCode, String warehouse, String client,
-			String finyear);
+	@Query(nativeQuery =true,value ="SELECT a.docid, a.totalorderqty, a.totalpickqty, 'Complete' AS status \r\n"
+			+ "FROM pickrequest a \r\n"
+			+ "WHERE a.orgid = ?1\r\n"
+			+ "  AND a.finyear = ?5\r\n"
+			+ "  AND a.branchcode = ?2 \r\n"
+			+ "  AND (MONTH(a.docdate) = ?4 OR ?4 IS NULL)\r\n"
+			+ "  AND a.client = ?3 \r\n"
+			+ "  AND a.status = 'Confirm'\r\n"
+			+ "GROUP BY a.docid, a.totalorderqty, a.totalpickqty\r\n"
+			+ "\r\n"
+			+ "UNION\r\n"
+			+ "\r\n"
+			+ "SELECT a.docid, a.totalorderqty, a.totalpickqty, 'Yet to Confirm' AS status \r\n"
+			+ "FROM pickrequest a \r\n"
+			+ "WHERE a.orgid = ?1\r\n"
+			+ "  AND a.finyear = ?5\r\n"
+			+ "  AND a.branchcode = ?2 \r\n"
+			+ "  AND (MONTH(a.docdate) = ?4 OR ?4 IS NULL)\r\n"
+			+ "  AND a.client = ?3  \r\n"
+			+ "  AND a.status = 'Edit'\r\n"
+			+ "GROUP BY a.docid, a.totalorderqty, a.totalpickqty\r\n"
+			+ "\r\n"
+			+ "UNION\r\n"
+			+ "\r\n"
+			+ "SELECT a.docid, a.totalorderqty, a.totalpickqty, 'Pending' AS status \r\n"
+			+ "FROM pickrequest a \r\n"
+			+ "WHERE a.orgid = ?1\r\n"
+			+ "  AND a.finyear = ?5\r\n"
+			+ "  AND a.branchcode = ?2 \r\n"
+			+ "  AND (MONTH(a.docdate) = ?4 OR ?4 IS NULL)\r\n"
+			+ "  AND a.client = ?3   \r\n"
+			+ "  AND a.buyerrefno NOT IN (\r\n"
+			+ "      SELECT b.orderno \r\n"
+			+ "      FROM buyerorder b \r\n"
+			+ "      WHERE b.orgid = ?1 \r\n"
+			+ "        AND b.finyear = ?5\r\n"
+			+ "        AND b.branchcode = ?2 \r\n"
+			+ "        AND b.client = ?3 \r\n"
+			+ "      GROUP BY b.orderno\r\n"
+			+ "  )\r\n"
+			+ "GROUP BY a.docid, a.totalorderqty, a.totalpickqty\r\n"
+			+ "")
+	Set<Object[]> getPicrequestDashboard(Long orgId, String branchCode, String client, String month, String finyear);
+
+	@Query(value="select a.totalPickQty from PickRequestVO a where a.docId=?1")
+	int getTotalPickQty(String pickRequestDocId);
+
+	
 }

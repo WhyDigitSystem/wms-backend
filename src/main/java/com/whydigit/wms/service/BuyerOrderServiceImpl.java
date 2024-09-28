@@ -794,11 +794,12 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	@Override
 	public List<Map<String, Object>> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse,
-			String client, String finYear) {
+			String client, String finYear,String month) {
 		Set<Object[]> resultq = boExcelUploadRepo.getBuyerorderDashboard(orgId, branchCode, warehouse, client,
-				finYear);
+				finYear,month);
 		return getBuyerorder(resultq);
 	}
+	
 
 	private List<Map<String, Object>> getBuyerorder(Set<Object[]> resultq) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
@@ -806,7 +807,8 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("orderNo", fs[0] != null ? fs[0].toString() : "");
 			part.put("orderDate", fs[1] != null ? fs[1].toString() : "");
-			part.put("status", fs[2] != null ? fs[2].toString() : "");
+			part.put("qty", fs[2] != null ? Integer.parseInt(fs[2].toString()):0);
+			part.put("status", fs[3] != null ? fs[3].toString() : "");
 			
 			details1.add(part);
 		}

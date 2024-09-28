@@ -55,7 +55,7 @@ public interface BuyerOrderService {
 			String client, String finYear);
 
 	List<Map<String, Object>> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse, String client,
-			String finYear);
+			String finYear, String month);
 
 
 	

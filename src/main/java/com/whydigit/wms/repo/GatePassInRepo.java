@@ -36,32 +36,58 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	@Query(value = "select a from GatePassInVO a where a.docId=?1")
 	GatePassInVO findByDocId(String gatePassId);
 
-	@Query(nativeQuery = true,value ="select a.irnohaw,a.invoiceno,a.invoicedate,a.partno,a.partdescription,a.sku,a.invqty,a.recqty,(a.invqty-a.recqty)shortqty,a.damageqty,(a.recqty-a.damageqty)grnqty,a.substockshortqty,a.batchno,a.weight from gatepassindetails a,gatepassin b\r\n"
+	@Query(nativeQuery = true,value ="select a.irnohaw,a.invoiceno,a.invoicedate,a.partno,a.partdescription,a.sku,a.invqty,a.recqty,(a.invqty-a.recqty)shortqty,a.damageqty,(a.recqty-a.damageqty)grnqty,a.substockshortqty,a.batchno,a.weight,ROW_NUMBER() OVER () AS id from gatepassindetails a,gatepassin b\r\n"
 			+ " where a.gatepassid=b.gatepassinid and  b.orgid= ?1 and b.finyear=?2 and b.branchcode=?3 and b.client=?4  and b.docid=?5 ")
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);
 
-	@Query(nativeQuery =true,value = "select b.entryno, \r\n"
-			+ "       b.entrydate, \r\n"
-			+ "       case \r\n"
-			+ "         when b.entryno in (\r\n"
-			+ "           select a.entryno \r\n"
-			+ "           from grn a \r\n"
-			+ "           where a.orgid =?1 \r\n"
-			+ "             and a.finyear =?2 \r\n"
-			+ "             and a.branchcode =?3 \r\n"
-			+ "             and a.warehouse = ?5\r\n"
-			+ "             and a.client = ?4\r\n"
-			+ "           group by a.entryno\r\n"
-			+ "         ) \r\n"
-			+ "         then 'Complete' \r\n"
-			+ "         else 'Pending' \r\n"
-			+ "       end as status\r\n"
-			+ "from gatepassin b \r\n"
-			+ "where b.orgid =?1 \r\n"
-			+ "  and b.finyear = ?2 \r\n"
-			+ "  and b.branchcode = ?3\r\n"
-			+ "  and b.client = ?4\r\n"
-			+ "group by b.entryno, b.entrydate")
-	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse);
+	@Query(nativeQuery =true,value = "SELECT \r\n"
+			+ "    b.entryno, \r\n"
+			+ "    b.entrydate, \r\n"
+			+ "    SUM(b.totalgrnqty) AS qty, \r\n"
+			+ "    'Complete' AS status\r\n"
+			+ "FROM grn b \r\n"
+			+ "WHERE b.orgid = ?1\r\n"
+			+ "  AND b.finyear = ?2 \r\n"
+			+ "  AND b.branchcode = ?3\r\n"
+			+ "  AND b.client = ?4\r\n"
+			+ "  AND b.warehouse = ?5\r\n"
+			+ "  AND (MONTH(b.docdate) = ?6 OR ?6 IS NULL)\r\n"
+			+ "GROUP BY b.entryno, b.entrydate\r\n"
+			+ "UNION\r\n"
+			+ "SELECT \r\n"
+			+ "    a.entryno, \r\n"
+			+ "    a.entrydate, \r\n"
+			+ "    sum((a.recqty-a.damageqty)) AS qty, \r\n"
+			+ "    'Pending' AS status \r\n"
+			+ "FROM grnexcelupload a \r\n"
+			+ "WHERE a.orgid = ?1\r\n"
+			+ "  AND a.finyear = ?2\r\n"
+			+ "  AND a.branchcode = ?3\r\n"
+			+ "  AND a.warehouse = ?5\r\n"
+			+ "  AND a.client = ?4\r\n"
+			+ "  AND (MONTH(a.entrydate) = ?6 OR ?6 IS NULL)\r\n"
+			+ "  AND a.entryno NOT IN (\r\n"
+			+ "      SELECT b.entryno \r\n"
+			+ "      FROM grn b \r\n"
+			+ "      WHERE b.orgid = ?1\r\n"
+			+ "        AND b.finyear = ?2\r\n"
+			+ "        AND b.branchcode = ?3\r\n"
+			+ "        AND b.client = ?4\r\n"
+			+ "  )\r\n"
+			+ "GROUP BY a.entryno, a.entrydate")
+	Set<Object[]> getGrnDetails(Long orgId, String finYear, String branchCode, String client, String warehouse, String month);
+
+	@Query(nativeQuery = true,value = "select a.entryno,a.entrydate,b.supplier,a.suppliershortname,c.shipmentmode,c.carrier,c.carriershortname from grnexcelupload a,supplier b,carrier c where \r\n"
+			+ "a.suppliershortname=b.suppliershortname and a.carrier=c.carriershortname and b.active=1 and c.active=1 and a.orgid=c.orgid\r\n"
+			+ "and a.orgid=b.orgid and a.orgid=?1 and a.finyear=?2 and a.branchcode=?3 and a.client=?4   and a.entryno=?5\r\n"
+			+ "and a.entryno not in(select entryno from gatepassin where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4  group by entryno)\r\n"
+			+ "and a.entryno not in(select entryno from grn where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4  group by entryno) group by\r\n"
+			+ "a.entryno,a.entrydate,b.supplier,a.suppliershortname,c.shipmentmode,c.carrier,c.carriershortname")
+	Set<Object[]> getEntryNoDetails(Long orgId, String finYear, String branchCode, String client, String entryNo);
+	@Query(nativeQuery = true,value = "select row_number() over() id, a.lrhblno,a.invdcno,a.invdate,b.partno,b.partdesc,b.sku,a.batchno,a.batchdate,a.expdate,a.invqty,a.recqty,a.damageqty,a.palletqty,(a.invqty-a.recqty)shortqty,(a.recqty-a.damageqty)grnqty from grnexcelupload a,material b where a.partno=b.partno and a.orgid=b.orgid and a.client=b.client and b.active=1 and\r\n"
+			+ "a.orgid=b.orgid and a.orgid=?1 and a.finyear=?2 and a.branchcode=?3 and a.client=?4   and a.entryno=?5\r\n"
+			+ "group by a.lrhblno,a.invdcno,a.invdate,b.partno,b.partdesc,b.sku,a.batchno,a.batchdate,a.expdate,a.invqty,a.recqty,a.damageqty,a.palletqty")
+	Set<Object[]> getEntryNoFillDetails(Long orgId, String finYear, String branchCode, String client, String entryNo);
+	
 }

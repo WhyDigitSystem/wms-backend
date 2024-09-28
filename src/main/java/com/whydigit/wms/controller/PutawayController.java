@@ -240,8 +240,7 @@ public class PutawayController extends BaseController{
 
 		@GetMapping("/getPutawayForDashBoard")
 		public ResponseEntity<ResponseDTO> getPutawayForDashBoard(@RequestParam Long orgId,
-				@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
-				 @RequestParam String warehouse) {
+				@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client, @RequestParam(required = false) String month) {
 			String methodName = "getPutawayForDashBoard()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;
@@ -250,7 +249,7 @@ public class PutawayController extends BaseController{
 			List<Map<String, Object>> putawayDashboard = new ArrayList<>();
 			try {
 				putawayDashboard = putawayService.getPutawayForDashBoard(orgId, finYear,
-						branchCode, client,warehouse);
+						branchCode, client,month);
 			} catch (Exception e) {
 				errorMsg = e.getMessage();
 				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

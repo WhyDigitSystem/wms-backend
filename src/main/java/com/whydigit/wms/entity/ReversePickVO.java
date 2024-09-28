@@ -106,6 +106,11 @@ public class ReversePickVO {
 	@Column(name = "screencode")
 	private String screenCode="RP";
 	
+	@Column(name = "totalpickqty")
+	private int totalPickQty;
+	@Column(name = "totalrevisedqty")
+	private int totalRevisedQty;
+	
 	
 	@OneToMany(mappedBy ="reversePickVO",cascade =CascadeType.ALL)
 	@JsonManagedReference

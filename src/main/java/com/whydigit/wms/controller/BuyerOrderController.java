@@ -386,10 +386,12 @@ public class BuyerOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	
 	@GetMapping("/getBuyerorderDashboard")
 	public ResponseEntity<ResponseDTO> getBuyerorderDashboard(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse,
-			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear) {
+			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear,
+			@RequestParam(required = false) String month) {
 		String methodName = "getBuyerorderDashboard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -397,7 +399,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> buyerorderDashboard = new ArrayList<Map<String, Object>>();
 		try {
-			buyerorderDashboard = buyerOrderService.getBuyerorderDashboard(orgId, branchCode, warehouse, client, finYear);
+			buyerorderDashboard = buyerOrderService.getBuyerorderDashboard(orgId, branchCode, warehouse, client, finYear,month);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
