@@ -70,13 +70,24 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 	int getAvlQtyforBuyerOrder(Long orgId, String branchCode, String client, String warehouse, String partNo,
 			String batchNo);
 
-	@Query(nativeQuery = true, value = "SELECT b.partno, \r\n" + "       b.partdesc, \r\n"
-			+ "       COALESCE(SUM(a.sqty), 0) AS avlqty \r\n" + "FROM material b \r\n"
+	@Query(nativeQuery = true, value = "SELECT b.partno, \r\n"
+			+ "       b.partdesc, \r\n"
+			+ "       COALESCE(SUM(a.sqty), 0) AS avlqty \r\n"
+			+ "FROM material b \r\n"
 			+ "LEFT OUTER JOIN stockdetails a \r\n"
-			+ "ON a.partno = b.partno and a.orgid=b.orgid and a.customer=b.customer and b.cbranch=a.branchcode or b.cbranch='ALL' and a.client=b.client\r\n"
-			+ "  AND a.orgid = ?1 \r\n" + "  AND a.branchcode = ?2 \r\n" + "  AND a.warehouse = ?3  \r\n"
-			+ "  AND a.customer = ?4 \r\n" + "  AND a.client = ?5 \r\n" + "  AND a.stockdate <= DATE(NOW()) \r\n"
-			+ "WHERE (b.partno = ?6 OR 'ALL' = ?6) \r\n" + "GROUP BY b.partno, b.partdesc")
+			+ "ON a.partno = b.partno \r\n"
+			+ "   AND a.orgid = b.orgid \r\n"
+			+ "   AND a.customer = b.customer \r\n"
+			+ "   AND (b.cbranch = a.branchcode OR b.cbranch = 'ALL') \r\n"
+			+ "   AND a.client = b.client\r\n"
+			+ "   AND a.orgid = ?1\r\n"
+			+ "   AND a.branchcode = ?2\r\n"
+			+ "   AND a.warehouse = ?3\r\n"
+			+ "   AND a.customer = ?4\r\n"
+			+ "   AND a.client = ?5\r\n"
+			+ "   AND a.stockdate <= DATE(NOW()) \r\n"
+			+ "WHERE (b.partno = ?6 OR ?6 = 'ALL') \r\n"
+			+ "GROUP BY b.partno, b.partdesc")
 	Set<Object[]> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo);
 
@@ -615,6 +626,16 @@ Set<Object[]> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode, Str
 		+ "    bin\r\n"
 		+ "")
 Set<Object[]> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
+
+@Query(nativeQuery =true,value ="SELECT \r\n"
+		+ "DATE(docdate) AS orderdate,\r\n"
+		+ "COUNT(*) AS ordercount\r\n"
+		+ "FROM  pickrequest\r\n"
+		+ "WHERE \r\n"
+		+ "DATE(docdate) = CURDATE() and orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4\r\n"
+		+ "GROUP BY \r\n"
+		+ "DATE(docdate)")
+Set<Object[]> getPickRequest(Long orgId, String branchCode, String client, String warehouse);
 
 
 

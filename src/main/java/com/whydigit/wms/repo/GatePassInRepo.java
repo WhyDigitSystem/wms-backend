@@ -36,7 +36,7 @@ public interface GatePassInRepo extends JpaRepository<GatePassInVO, Long> {
 	@Query(value = "select a from GatePassInVO a where a.docId=?1")
 	GatePassInVO findByDocId(String gatePassId);
 
-	@Query(nativeQuery = true,value ="select a.irnohaw,a.invoiceno,a.invoicedate,a.partno,a.partdescription,a.sku,a.invqty,a.recqty,(a.invqty-a.recqty)shortqty,a.damageqty,(a.recqty-a.damageqty)grnqty,a.substockshortqty,a.batchno,a.weight,ROW_NUMBER() OVER () AS id from gatepassindetails a,gatepassin b\r\n"
+	@Query(nativeQuery = true,value ="select a.irnohaw,a.invoiceno,a.invoicedate,a.partno,a.partdescription,a.sku,a.invqty,a.recqty,(a.invqty-a.recqty)shortqty,a.damageqty,(a.recqty-a.damageqty)grnqty,a.substockshortqty,a.batchno,a.weight,ROW_NUMBER() OVER () AS id,a.batchdate,a.expdate from gatepassindetails a,gatepassin b\r\n"
 			+ " where a.gatepassid=b.gatepassinid and  b.orgid= ?1 and b.finyear=?2 and b.branchcode=?3 and b.client=?4  and b.docid=?5 ")
 	Set<Object[]> getGridDetailsByDocId(Long orgId, String finYear, String branchCode, String client,
 			String gatePassDocId);

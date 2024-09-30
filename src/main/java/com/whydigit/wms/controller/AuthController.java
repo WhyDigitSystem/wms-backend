@@ -91,7 +91,7 @@ public class AuthController extends BaseController {
 			responseObjectsMap.put(UserConstants.KEY_USER_VO, userResponseDTO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_LOGIN_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

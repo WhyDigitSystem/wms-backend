@@ -201,7 +201,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public UserResponseDTO login(LoginFormDTO loginRequest) {
+	public UserResponseDTO login(LoginFormDTO loginRequest) throws ApplicationException {
 		String methodName = "login()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(loginRequest) || StringUtils.isBlank(loginRequest.getUserName())
@@ -212,6 +212,10 @@ public class AuthServiceImpl implements AuthService {
 				loginRequest.getUserName());
 
 		if (ObjectUtils.isNotEmpty(userVO)) {
+			if(userVO.getActive()=="In-Active")
+			{
+				throw new ApplicationException("Your account is In-Active, Please Contact Administrator");
+			}
 			if (compareEncodedPasswordWithEncryptedPassword(loginRequest.getPassword(), userVO.getPassword())) {
 				updateUserLoginInformation(userVO);
 			} else {

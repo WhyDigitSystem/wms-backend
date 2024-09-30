@@ -23,7 +23,7 @@ public interface AuthService {
 
 	public void signup(SignUpFormDTO signUpRequest);
 
-	public UserResponseDTO login(LoginFormDTO loginRequest);
+	public UserResponseDTO login(LoginFormDTO loginRequest) throws ApplicationException;
 
 	public void logout(String userName);
 
