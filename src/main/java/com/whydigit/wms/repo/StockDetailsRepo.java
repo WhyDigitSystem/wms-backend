@@ -623,8 +623,7 @@ Set<Object[]> getBinDetailsClientWiseForEmpty(Long orgId, String branchCode, Str
 		+ "    having  SUM(sqty)>0\r\n"
 		+ "ORDER BY \r\n"
 		+ "    days_until_expiration DESC,\r\n"
-		+ "    bin\r\n"
-		+ "")
+		+ "    bin")
 Set<Object[]> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
 
 @Query(nativeQuery =true,value ="SELECT \r\n"
