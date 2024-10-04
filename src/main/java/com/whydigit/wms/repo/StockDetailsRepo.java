@@ -132,6 +132,8 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 
 	@Query(nativeQuery = true, value = "SELECT a.batch \r\n"
 			+ "FROM (\r\n"
+			+ "    SELECT 'ALL' AS bin, 'ALL' AS batch, 'ALL' AS partno, 'ALL' AS partdesc, 'ALL' AS status, 0 AS avlqty\r\n"
+			+ "    UNION ALL\r\n"
 			+ "    SELECT b.bin, \r\n"
 			+ "           b.batch, \r\n"
 			+ "           b.partno, \r\n"
@@ -148,10 +150,6 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 			+ "      AND b.stockdate <= CURDATE()\r\n"
 			+ "    GROUP BY b.bin, b.batch, b.partno, b.partdesc, b.status \r\n"
 			+ "    HAVING SUM(b.sqty) > 0\r\n"
-			+ "\r\n"
-			+ "    UNION ALL\r\n"
-			+ "\r\n"
-			+ "    SELECT 'ALL' AS bin, 'ALL' AS batch, 'ALL' AS partno, 'ALL' AS partdesc, 'ALL' AS status, 0 AS avlqty\r\n"
 			+ ") a \r\n"
 			+ "GROUP BY a.batch")
 	Set<Object[]> findBatchForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse,
@@ -159,6 +157,8 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 
 	@Query(nativeQuery = true, value = "SELECT a.bin \r\n"
 			+ "FROM (\r\n"
+			+ "    SELECT 'ALL' AS bin, 'ALL' AS batch, 'ALL' AS partno, 'ALL' AS partdesc,'ALL' status, 0 AS avlqty\r\n"
+			+ "    UNION ALL\r\n"
 			+ "    SELECT b.bin, \r\n"
 			+ "           b.batch, \r\n"
 			+ "           b.partno, \r\n"
@@ -176,10 +176,6 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 			+ "      AND b.stockdate <= CURDATE()\r\n"
 			+ "    GROUP BY b.bin, b.batch, b.partno, b.partdesc, b.status \r\n"
 			+ "    HAVING SUM(b.sqty) > 0\r\n"
-			+ "\r\n"
-			+ "    UNION ALL\r\n"
-			+ "\r\n"
-			+ "    SELECT 'ALL' AS bin, 'ALL' AS batch, 'ALL' AS partno, 'ALL' AS partdesc,'ALL' status, 0 AS avlqty\r\n"
 			+ ") a \r\n"
 			+ "GROUP BY a.bin")
 	Set<Object[]> findBinForStockReportBinAndBatchWise(Long orgId, String branchCode, String warehouse, String customer,
@@ -187,10 +183,10 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 
 	@Query(nativeQuery = true, value = "SELECT \r\n"
 			+ "    CASE \r\n"
+			+ "        WHEN a.status = 'ALL' THEN 'ALL'  -- Handle 'ALL' status explicitly\r\n"
 			+ "        WHEN a.status = 'R' THEN 'Release'\r\n"
 			+ "        WHEN a.status = 'V' THEN 'Vas'\r\n"
 			+ "        WHEN a.status = 'H' THEN 'Hold'\r\n"
-			+ "        WHEN a.status = 'ALL' THEN 'ALL'  -- Handle 'ALL' status explicitly\r\n"
 			+ "        ELSE 'Defective'\r\n"
 			+ "    END AS status\r\n"
 			+ "FROM (\r\n"
@@ -366,6 +362,8 @@ Set<Object[]> getStockPartNoBatch(Long orgId, String branchCode, String warehous
 
 @Query(value ="SELECT a.bin \r\n"
 		+ "FROM (\r\n"
+		+ "    SELECT 'ALL' AS partno, 'ALL' AS partdesc, 'ALL' AS bin, 0 AS avlqty\r\n"
+		+ "    UNION ALL\r\n"
 		+ "    SELECT b.partno, \r\n"
 		+ "           b.partdesc, \r\n"
 		+ "           b.bin, \r\n"
@@ -380,10 +378,6 @@ Set<Object[]> getStockPartNoBatch(Long orgId, String branchCode, String warehous
 		+ "      AND (b.partno = ?6 OR 'ALL' = ?6)\r\n"
 		+ "    GROUP BY b.partno, b.partdesc, b.bin\r\n"
 		+ "    HAVING SUM(b.sqty) > 0\r\n"
-		+ "\r\n"
-		+ "    UNION ALL\r\n"
-		+ "\r\n"
-		+ "    SELECT 'ALL' AS partno, 'ALL' AS partdesc, 'ALL' AS bin, 0 AS avlqty\r\n"
 		+ ") a \r\n"
 		+ "GROUP BY a.bin",nativeQuery =true)
 Set<Object[]> getBatchNoBin(Long orgId, String branchCode, String warehouse, String customer, String client,
@@ -391,6 +385,8 @@ Set<Object[]> getBatchNoBin(Long orgId, String branchCode, String warehouse, Str
 
 @Query(nativeQuery = true,value="SELECT a.batch\r\n"
 		+ "FROM (\r\n"
+		+ "    SELECT 'ALL' AS partno, 'ALL' AS partdesc, 'ALL' AS batch, 0 AS avlqty\r\n"
+		+ "    UNION\r\n"
 		+ "    SELECT b.partno, \r\n"
 		+ "           b.partdesc, \r\n"
 		+ "           b.batch, \r\n"
@@ -405,10 +401,6 @@ Set<Object[]> getBatchNoBin(Long orgId, String branchCode, String warehouse, Str
 		+ "      AND b.stockdate <= DATE(NOW())\r\n"
 		+ "    GROUP BY b.partno, b.partdesc, b.batch\r\n"
 		+ "    HAVING avlqty > 0\r\n"
-		+ "    \r\n"
-		+ "    UNION\r\n"
-		+ "    \r\n"
-		+ "    SELECT 'ALL' AS partno, 'ALL' AS partdesc, 'ALL' AS batch, 0 AS avlqty\r\n"
 		+ ") a\r\n"
 		+ "GROUP BY a.batch")
 Set<Object[]> getBatchFromBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
