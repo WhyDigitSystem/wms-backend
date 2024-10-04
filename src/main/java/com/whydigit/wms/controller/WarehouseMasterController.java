@@ -2193,4 +2193,43 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@PostMapping("/BuyerUpload")
+	public ResponseEntity<ResponseDTO> BuyerUpload(@RequestParam MultipartFile[] files,@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String customer,@RequestParam(required = false) String client, @RequestParam(required = false)  String warehouse, @RequestParam(required = false)  String branch, 
+			 @RequestParam(required = false) String branchCode, @RequestParam(required = false)  String createdBy) {
+		String methodName = "BuyerUpload()";
+		int totalRows = 0;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		int successfulUploads = 0;
+		ResponseDTO responseDTO = null;
+		try {
+			// Call service method to process Excel upload
+			warehouseMasterService.uploadBuyer(files, orgId, customer, client, warehouse, branch, branchCode, createdBy);
+			// Retrieve the counts after processing
+			totalRows = warehouseMasterService.getTotalRows(); // Get total rows processed
+			successfulUploads = warehouseMasterService.getSuccessfulUploads(); // Get successful uploads count
+			// Construct success response
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", totalRows);
+			responseObjectsMap.put("successfulUploads", successfulUploads);
+			Map<String, Object> paramObjectsMap = new HashMap<>();
+			paramObjectsMap.put("message", "Excel Upload For  Buyer successful");
+			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (Exception e) {
+
+			String errorMsg = e.getMessage();
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("errorMessage", errorMsg);
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Buyer Failed", errorMsg);
+      }
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

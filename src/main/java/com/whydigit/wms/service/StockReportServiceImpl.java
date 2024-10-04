@@ -1,6 +1,7 @@
 package com.whydigit.wms.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -341,7 +342,7 @@ public class StockReportServiceImpl implements StockReportService {
 								getStringCellValue(row.getCell(0)));
 
 						Set<Object[]> bindetails = locationMappingDetailsRepo.getBinDetails(orgId, branchCode,
-								warehouse, client, getStringCellValue(row.getCell(3)));
+								warehouse, client, getStringCellValue(row.getCell(8)));
 						if (!bindetails.isEmpty()) {
 							for (Object[] bin : bindetails) {
 								stockDetailsVO.setBin(bin[0].toString());
@@ -352,14 +353,38 @@ public class StockReportServiceImpl implements StockReportService {
 
 							}
 						}
+						
+						String grnNo=getStringCellValue(row.getCell(3));
+						String batchNo=getStringCellValue(row.getCell(5));
 						// Extract values from the Excel file for specific fields
 						stockDetailsVO.setPartno(materialVO.getPartno());
 						stockDetailsVO.setPartDesc(materialVO.getPartDesc());
 						stockDetailsVO.setSku(materialVO.getSku());
-						stockDetailsVO.setBin(getStringCellValue(row.getCell(3)));
-						stockDetailsVO.setSQty(getNumericCellValue(row.getCell(4)));
-						stockDetailsVO.setGrnNo("OPSTOCK");
-						stockDetailsVO.setGrnDate(LocalDate.now());
+						stockDetailsVO.setBin(getStringCellValue(row.getCell(8)));
+						stockDetailsVO.setSQty(getNumericCellValue(row.getCell(9)));
+						
+						if (grnNo == null || grnNo.trim().isEmpty()) {
+							stockDetailsVO.setGrnNo("OPSTOCK");
+							stockDetailsVO.setGrnDate(LocalDate.now());
+						}
+						else
+						{
+							stockDetailsVO.setGrnNo(grnNo);
+						    stockDetailsVO.setGrnDate(parseDate(getStringCellValue(row.getCell(4))));
+						}
+						
+						if (batchNo == null || batchNo.trim().isEmpty()) {
+						    stockDetailsVO.setBatch(null);
+						    stockDetailsVO.setBatchDate(null);
+						    stockDetailsVO.setExpDate(null);
+						}
+						else
+						{
+							stockDetailsVO.setBatch(batchNo);
+						    stockDetailsVO.setBatchDate(parseDate(getStringCellValue(row.getCell(6))));
+						    stockDetailsVO.setExpDate(parseDate(getStringCellValue(row.getCell(7))));
+						}
+						
 						stockDetailsVO.setSSku(materialVO.getSku());
 						stockDetailsVO.setUpdatedBy(createdBy);
 						stockDetailsVO.setOrgId(orgId);
@@ -404,7 +429,7 @@ public class StockReportServiceImpl implements StockReportService {
 	}
 
 	private boolean isStockHeaderValid(Row row) {
-		List<String> expectedHeaders = Arrays.asList("Part No", "Part Desc", "SKU", "Bin", "Qty");
+		List<String> expectedHeaders = Arrays.asList("Part No", "Part Desc", "SKU","Grn No","Grn Date","Batch No","Batch Date","Exp Date", "Bin", "Qty");
 
 		for (int i = 0; i < expectedHeaders.size(); i++) {
 			String cellValue = getStringCellValue(row.getCell(i));
@@ -444,6 +469,15 @@ public class StockReportServiceImpl implements StockReportService {
 		default:
 			return 0; // or throw an exception if the cell type is not numeric
 		}
+	}
+	
+	 private LocalDate parseDate(String stringCellValue) {
+	    	try {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy");
+				return LocalDate.parse(stringCellValue, formatter);
+			} catch (Exception e) {
+				return null;
+			}
 	}
 
 }

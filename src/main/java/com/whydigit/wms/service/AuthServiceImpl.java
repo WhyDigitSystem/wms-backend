@@ -133,7 +133,7 @@ public class AuthServiceImpl implements AuthService {
 				signUpFormDTO.getEmail())) {
 			userVO = userRepo.findByUserNameOrEmailOrMobileNo(signUpFormDTO.getUserName(), signUpFormDTO.getEmail(),
 					signUpFormDTO.getEmail());
-		
+
 			List<UserLoginRolesVO> roles = loginRolesRepo.findByUserVO(userVO);
 			loginRolesRepo.deleteAll(roles);
 			List<UserLoginClientAccessVO> client = clientAccessRepo.findByUserVO(userVO);
@@ -143,7 +143,9 @@ public class AuthServiceImpl implements AuthService {
 		}
 		userVO.setUserName(signUpFormDTO.getUserName());
 		try {
-			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(signUpFormDTO.getPassword())));
+			if (StringUtils.isNotEmpty(signUpFormDTO.getPassword())) {
+				userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(signUpFormDTO.getPassword())));
+			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
@@ -152,7 +154,7 @@ public class AuthServiceImpl implements AuthService {
 		userVO.setNickName(signUpFormDTO.getNickName());
 		userVO.setEmail(signUpFormDTO.getEmail());
 		userVO.setMobileNo(signUpFormDTO.getMobileNo());
-		userVO.setUserType(signUpFormDTO.getUserType());
+		userVO.setUserType(signUpFormDTO.getUserType().toLowerCase());
 		userVO.setActive(signUpFormDTO.isActive());
 		userVO.setOrgId(signUpFormDTO.getOrgId());
 
@@ -381,7 +383,6 @@ public class AuthServiceImpl implements AuthService {
 		}
 		return refreshTokenDTO;
 	}
-
 
 	/**
 	 * @param userVO

@@ -19,4 +19,7 @@ public interface BuyerRepo extends JpaRepository<BuyerVO, Long> {
 
 	BuyerVO findByBuyerAndOrgId(String buyerName, Long orgId);
 
+	boolean existsByOrgIdAndCustomerAndClientAndBuyerIgnoreCase(Long orgId, String customer, String client,
+			String buyer);
+
 }

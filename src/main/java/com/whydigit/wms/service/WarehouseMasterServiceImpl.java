@@ -2387,5 +2387,119 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		}
 		return true; // Return true if all headers match
 	}
+	
+	
+	@Transactional
+	public void uploadBuyer(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy)
+			throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+
+		List<BuyerVO> buyerToSave = new ArrayList<>();
+		totalRows = 0; // Reset totalRows at the beginning of the method
+		successfulUploads = 0; // Reset successfulUploads at the beginning of the method
+
+		for (MultipartFile file : files) {
+			if (file.isEmpty()) {
+				throw new ApplicationException("The supplied file '" + file.getOriginalFilename() + "' is empty.");
+			}
+
+			try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+				Sheet sheet = workbook.getSheetAt(0);
+
+				if (!isBuyerHeaderValid(sheet.getRow(0))) {
+					throw new ApplicationException(
+							"Invalid Excel format Header in file '" + file.getOriginalFilename() + "'.");
+				}
+
+				for (Row row : sheet) {
+					if (row.getRowNum() == 0 || isRowEmpty(row)) {
+						continue;
+					}
+
+					totalRows++; // Increment totalRows for each processed row
+
+					try {
+						BuyerVO buyerVO = new BuyerVO();
+
+						// Extract values from the Excel file for specific fields
+						buyerVO.setBuyer(getStringCellValue(row.getCell(0)).toUpperCase());
+						buyerVO.setBuyerShortName(getStringCellValue(row.getCell(1)).toUpperCase());
+						buyerVO.setGstNo(getStringCellValue(row.getCell(2)).toUpperCase());
+						buyerVO.setPanNo(getStringCellValue(row.getCell(3)).toUpperCase());
+						buyerVO.setTanNo(getStringCellValue(row.getCell(4)).toUpperCase());
+						buyerVO.setMobileNo(getStringCellValue(row.getCell(5)).toUpperCase());
+						buyerVO.setAddressLine1(getStringCellValue(row.getCell(6)).toUpperCase());
+						buyerVO.setAddressLine2(getStringCellValue(row.getCell(7)).toUpperCase());
+						buyerVO.setCity(getStringCellValue(row.getCell(8)).toUpperCase());
+						buyerVO.setState(getStringCellValue(row.getCell(9)).toUpperCase());
+						buyerVO.setCountry(getStringCellValue(row.getCell(10)).toUpperCase());
+						buyerVO.setZipCode(getStringCellValue(row.getCell(11)).toUpperCase());
+						buyerVO.setCbranch(getStringCellValue(row.getCell(12)).toUpperCase());
+						buyerVO.setClient(client);
+						buyerVO.setOrgId(orgId);
+						buyerVO.setActive(true);
+						buyerVO.setCancel(false);
+						buyerVO.setCustomer(customer);
+						buyerVO.setWarehouse(warehouse);
+						buyerVO.setCreatedBy(createdBy);
+						buyerVO.setUpdatedBy(createdBy);
+						buyerVO.setBranch(branch);
+						buyerVO.setBranchCode(branchCode);
+
+						// Check for duplicates in the database
+						if (isDuplicateBuyerFullName(orgId,customer,client,getStringCellValue(row.getCell(0)))) {
+							throw new ApplicationException("Duplicate Buyer Full Name :'"
+									+ getStringCellValue(row.getCell(0)) + "' Already Exist");
+						}
+
+						if (isDuplicateBuyerShortName(orgId,customer,client,getStringCellValue(row.getCell(1)))) {
+							throw new ApplicationException("Duplicate Buyer Short Name :'"
+									+ getStringCellValue(row.getCell(1)) + "' Already Exist");
+						}
+
+						// Set remaining fields from method parameters
+
+						// Add to the list of materials to save
+						buyerToSave.add(buyerVO);
+						successfulUploads++; // Increment successfulUploads for each added material
+					} catch (Exception e) {
+						throw new ApplicationException(
+								"Error processing row " + (row.getRowNum() + 1) + ": " + e.getMessage());
+					}
+				}
+
+				// Save all material records in batch
+				buyerRepo.saveAll(buyerToSave);
+
+			} catch (IOException e) {
+				throw new ApplicationException("Failed to process file: " + file.getOriginalFilename(), e);
+			}
+		}
+	}
+
+	private boolean isDuplicateBuyerFullName(Long orgId, String customer, String client, String buyer) {
+		// TODO Auto-generated method stub
+		return buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerIgnoreCase(orgId, customer, client,
+				buyer);
+	}
+
+	private boolean isDuplicateBuyerShortName(Long orgId, String customer, String client, String buyerShortName) {
+		// TODO Auto-generated method stub
+		return buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerShortName(orgId, customer, client,
+				buyerShortName);
+	}
+
+	private boolean isBuyerHeaderValid(Row headerRow) {
+		List<String> expectedHeaders = Arrays.asList("Buyer Full Name", "Buyer Short Name", "GST No","Pan","Tan","Mobile","Address Line1","Address Line2",
+				"City","State","Country","Zipcode","Cbranch");
+
+		for (int i = 0; i < expectedHeaders.size(); i++) {
+			String cellValue = getStringCellValue(headerRow.getCell(i));
+			if (!expectedHeaders.get(i).equalsIgnoreCase(cellValue)) {
+				return false; // Return false if any header does not match
+			}
+		}
+		return true; // Return true if all headers match
+	}
 
 }
