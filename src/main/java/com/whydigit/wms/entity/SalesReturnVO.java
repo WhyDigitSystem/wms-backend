@@ -35,52 +35,52 @@ public class SalesReturnVO {
 	@SequenceGenerator(name = "salesreturngen", sequenceName = "salesreturnseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "salesreturnid")
 	private Long id;
-	@Column(name = "transactiontype")
+	@Column(name = "transactiontype",length =25)
 	private String transactionType;
-	@Column(name = "entryno")
+	@Column(name = "entryno",length =25)
 	private String entryNo;
 	@Column(name = "entrydate")
 	private LocalDate entryDate;
 	@Column(name = "prdate")
 	private LocalDate prDate;
-	@Column(name = "bono")
+	@Column(name = "bono",length =25)
 	private String boNo;
 	@Column(name = "bodate")
 	private LocalDate boDate;
-	@Column(name = "prno")
+	@Column(name = "prno",length =25)
 	private String prNo;
-	@Column(name = "buyername")
+	@Column(name = "buyername",length =150)
 	private String buyerName;
-	@Column(name = "buyertype")
+	@Column(name = "buyertype",length =25)
 	private String buyerType;
-	@Column(name = "supplier")
+	@Column(name = "supplier",length =150)
 	private String supplier;
-	@Column(name = "drivername")
+	@Column(name = "drivername",length =150)
 	private String driverName;
-	@Column(name = "carrier")
+	@Column(name = "carrier",length =150)
 	private String carrier;
-	@Column(name = "modeofshipment")
+	@Column(name = "modeofshipment",length =25)
 	private String modeOfShipment;
-	@Column(name = "vehicletype")
+	@Column(name = "vehicletype",length =25)
 	private String vehicleType;
-	@Column(name = "vehicleno")
+	@Column(name = "vehicleno",length =25)
 	private String vehicleNo;
-	@Column(name = "contact")
+	@Column(name = "contact",length =25)
 	private String contact;
-	@Column(name = "securitypersonname")
+	@Column(name = "securitypersonname",length =25)
 	private String securityPersonName;
 	@Column(name = "timein")
 	private String timeIn;
 	@Column(name = "timeout")
 	private String timeOut;
-	@Column(name = "briefdescofgoods")
+	@Column(name = "briefdescofgoods",length =25)
 	private String briefDescOfGoods;
 	@Column(name = "totalreturnqty")
 	private int totalReturnQty;
 
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName ="SALES RETURN";
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode = "SR";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
@@ -88,27 +88,27 @@ public class SalesReturnVO {
 	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length=150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze;

@@ -40,39 +40,39 @@ public class UserVO {
 	@Column(name = "userid")
 	private Long id;
 
-	@Column(name = "username")
+	@Column(name = "username",length =150)
 	private String userName;
 	@Column(name = "password")
 	private String password;
-	@Column(name = "employeename")
+	@Column(name = "employeename",length =150)
 	private String employeeName;
-	@Column(name = "nickname")
+	@Column(name = "nickname",length =150)
 	private String nickName;
-	@Column(name = "email")
+	@Column(name = "email",length =25)
 	private String email;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "mobileno")
+	@Column(name = "mobileno",length =25)
 	private String mobileNo;
-	@Column(name = "usertype")
+	@Column(name = "usertype",length =25)
 	private String userType;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchcode;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
 	@Column(name = "loginstatus")
 	private boolean loginStatus;
 	@Column(name = "isActive")
 	private boolean active;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdby;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedby;
 	@Column(name = "role")
 	private Role role;

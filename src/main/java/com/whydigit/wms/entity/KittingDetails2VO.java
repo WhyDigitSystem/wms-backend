@@ -30,13 +30,13 @@ public class KittingDetails2VO {
 	@SequenceGenerator(name = "kittingdetails2gen", sequenceName = "kittingdetails2seq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "kitting2id")
 	private Long id;
-	@Column(name="partno")
+	@Column(name="partno",length =25)
 	private String ppartNo;
-	@Column(name="partdesc")
+	@Column(name="partdesc",length =150)
 	private String ppartDesc;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String psku;
-	@Column(name="grnno")
+	@Column(name="grnno",length =25)
 	private String pgrnNo;
 	@Column(name="grndate")
 	private LocalDate pgrnDate;
@@ -44,21 +44,21 @@ public class KittingDetails2VO {
 	private String pbatchNo;
 	@Column(name = "batchdate")
 	private LocalDate pbatchDate;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String pbin;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String pbinType;
-	@Column(name = "binclass")
+	@Column(name = "binclass",length =25)
 	private String pbinClass;
-	@Column(name = "celltype")
+	@Column(name = "celltype",length =25)
 	private String pcellType;
-	@Column(name = "core")
+	@Column(name = "core",length =25)
 	private String pcore;
 	@Column(name="qty")
 	private int pqty;
-	@Column(name="lotno")
+	@Column(name="lotno",length =25)
 	private String plotNo;
-	@Column(name="qcflag")
+	@Column(name="qcflag",length =25)
 	private String pqcflag;	
 	@Column(name = "expdate")
 	private LocalDate pexpDate;

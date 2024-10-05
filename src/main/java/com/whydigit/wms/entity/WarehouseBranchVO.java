@@ -22,7 +22,7 @@ public class WarehouseBranchVO {
 	@SequenceGenerator(name = "warehousebranchgen", sequenceName = "warehousebranchseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "warehousebranchid")
 	private Long id;
-	@Column(name ="customerbranchcode")
+	@Column(name ="customerbranchcode",length =25)
 	private String customerBranchCode;
 	@Column(name = "active")
 	private boolean active;

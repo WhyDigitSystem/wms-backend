@@ -31,7 +31,7 @@ public class UserLoginRolesVO {
 	@Column(name="userloginrolesid")
 	private long id;
 	
-	@Column(name="role")
+	@Column(name="role",length =25)
 	private String role;
 	@Column(name="roleid")
 	private Long roleId;
@@ -39,7 +39,7 @@ public class UserLoginRolesVO {
 	private LocalDate startDate;
 	@Column(name="enddate")
 	private LocalDate endDate;
-	@Column(name="screenname")
+	@Column(name="screenname",length =25)
 	private String screenName;
 	
 	@JsonBackReference

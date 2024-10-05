@@ -34,29 +34,29 @@ public class WarehouseLocationVO {
 	@Column(name = "warehouselocationid")
 	private Long id;
 
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
-	@Column(name = "rowno")
+	@Column(name = "rowno",length =25)
 	private String rowNo;
-	@Column(name = "level")
+	@Column(name = "level",length =25)
 	private String level;
-	@Column(name = "cellform")
+	@Column(name = "cellform",length =25)
 	private String cellFrom;
-	@Column(name = "cellto")
+	@Column(name = "cellto",length =25)
 	private String cellTo;
 	@Column(name = "cancel")
 	private boolean cancel=false;
 	@Column(name = "active")
 	private boolean active=true;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;

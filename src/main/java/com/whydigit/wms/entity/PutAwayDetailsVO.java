@@ -33,15 +33,15 @@ public class PutAwayDetailsVO {
 	@Column(name = "putawaydetailsid")
 	private Long id;
 	
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "batch")
+	@Column(name = "batch",length =25)
 	private String batch;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
 	@Column(name = "invqty")
 	private int invQty;
@@ -53,29 +53,29 @@ public class PutAwayDetailsVO {
 	private int putAwayQty;
 	@Column(name = "putawaypieceqty")
 	private int putAwayPiecesQty;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String bin;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =25)
 	private String remarks;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
 	@Column(name = "shortqty")
 	private int shortQty;
 	@Column(name = "grnQty")
 	private int grnQty;
-	@Column(name = "ssku")
+	@Column(name = "ssku",length =25)
 	private String sSku;
-	@Column(name = "binclass")
+	@Column(name = "binclass",length =25)
 	private String binClass;
-	@Column(name = "celltype")
+	@Column(name = "celltype",length =25)
 	private String cellType;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
-	@Column(name = "status")
+	@Column(name = "status",length =25)
 	private String status;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "qcflag")
+	@Column(name = "qcflag",length =25)
 	private String qcFlag;
 
 	@JsonBackReference

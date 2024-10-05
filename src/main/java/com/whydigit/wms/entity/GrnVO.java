@@ -35,118 +35,118 @@ public class GrnVO {
 	@Column(name = "grnid")
 	private Long id;
 
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid",unique = true,length =25)
 	private String docId;
 	@Column(name = "docdate")
 	@Builder.Default
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "entryno")
+	@Column(name = "entryno",length =25)
 	private String entryNo;
 	@Column(name = "entrydate")
 	private LocalDate entryDate;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "gatepassid")
+	@Column(name = "gatepassid",length =25)
 	private String gatePassId;
 	@Column(name = "gatepassdate")
 	private LocalDate gatePassDate;
-	@Column(name = "customerpo")
+	@Column(name = "customerpo",length =25)
 	private String customerPo;
-	@Column(name = "suppliershortname")
+	@Column(name = "suppliershortname",length =150)
 	private String supplierShortName;
-	@Column(name = "supplier")
+	@Column(name = "supplier",length =150)
 	private String supplier;
-	@Column(name = "carrier")
+	@Column(name = "carrier",length =150)
 	private String carrier;
-	@Column(name = "lotno")
+	@Column(name = "lotno",length =25)
 	private String lotNo;
-	@Column(name = "modeofshipment")
+	@Column(name = "modeofshipment",length =25)
 	private String modeOfShipment;
 	@Column(name = "noofpackage")
 	private int noOfPackage;
 	
 	@Builder.Default
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode="GN";
 	
 	@Builder.Default
 	private String screenName="GRN";
 	
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	@Builder.Default
 	private boolean cancel=false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemark;
 	@Column(name = "active")
 	@Builder.Default
 	private boolean active=true;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "billofentryno")
+	@Column(name = "billofentryno",length =25)
 	private String billOfEnrtyNo;
-	@Column(name = "containerno")
+	@Column(name = "containerno",length =25)
 	private String containerNo;
-	@Column(name = "fifoflag")
+	@Column(name = "fifoflag",length =25)
 	private String fifoFlag;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
 	@Column(name = "freeze")
 	private boolean freeze=false;
 	@Column(name = "vas")
 	private boolean vas;
-	@Column(name = "vehicleno")
+	@Column(name = "vehicleno",length =25)
 	private String vehicleNo;
-	@Column(name = "vehicledetails")
+	@Column(name = "vehicledetails",length =150)
 	private String vehicleDetails;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
 	@Column(name = "totalamount")
 	private double totalAmount;
 	@Column(name = "totalgrnqty")
 	private int totalGrnQty;//
-	@Column(name = "sealno")
+	@Column(name = "sealno",length =25)
 	private String sealNo;
-	@Column(name = "vesselno")
+	@Column(name = "vesselno",length =25)
 	private String vesselNo;
-	@Column(name = "hsnno")
+	@Column(name = "hsnno",length =25)
 	private String hsnNo;
-	@Column(name = "securityname")
+	@Column(name = "securityname",length =25)
 	private String securityName;
-	@Column(name = "vehicletype")
+	@Column(name = "vehicletype",length =25)
 	private String vehicleType;
-	@Column(name = "vessedetails")
+	@Column(name = "vessedetails",length =150)
 	private String vesselDetails;
-	@Column(name = "lrno")
+	@Column(name = "lrno",length =25)
 	private String lrNo;
-	@Column(name = "drivername")
+	@Column(name = "drivername",length =25)
 	private String driverName;
-	@Column(name = "contact")
+	@Column(name = "contact",length =25)
 	private String contact;
 	@Column(name = "lrdate")
 	private LocalDate lrDate;
-	@Column(name = "goodsdescripition")
+	@Column(name = "goodsdescripition",length =150)
 	private String goodsDescripition;
-	@Column(name = "destinatiomfrom")
+	@Column(name = "destinatiomfrom",length =150)
 	private String destinationFrom;
-	@Column(name = "destinationto")
+	@Column(name = "destinationto",length =150)
 	private String destinationTo;
-	@Column(name = "noofbins")
+	@Column(name = "noofbins",length =25)
 	private String noOfBins;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
 	
 	@JsonManagedReference

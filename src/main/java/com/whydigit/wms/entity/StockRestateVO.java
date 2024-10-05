@@ -33,47 +33,47 @@ public class StockRestateVO {
 	@SequenceGenerator(name = "stockrestategen", sequenceName = "stockrestateseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "stockrestateid")
 	private Long id;
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid",unique = true,length =25)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "transferfrom")
+	@Column(name = "transferfrom",length =25)
 	private String transferFrom;
-	@Column(name = "transferto")
+	@Column(name = "transferto",length =25)
 	private String transferTo;
-	@Column(name = "transferfromflag")
+	@Column(name = "transferfromflag",length =25)
 	private String transferFromFlag;
-	@Column(name = "transfertoflag")
+	@Column(name = "transfertoflag",length =25)
 	private String transferToFlag;
-	@Column(name = "entryno")
+	@Column(name = "entryno",length =25)
 	private String entryNo;
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName = "STOCK RESTATE";
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode ="SRS";
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 
 	@Column(name = "freeze")

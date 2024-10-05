@@ -29,19 +29,19 @@ public class UnitVO {
 	@Column(name = "unitid")
 	private Long id;
 
-	@Column(name = "unitname")
+	@Column(name = "unitname",length =25)
 	private String unitName;
-	@Column(name = "unittype")
+	@Column(name = "unittype",length =25)
 	private String unitType;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "uom")
+	@Column(name = "uom",length =25)
 	private String uom;
 
 	@Column(name = "cancel")

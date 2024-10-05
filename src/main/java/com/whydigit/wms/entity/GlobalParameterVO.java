@@ -30,19 +30,19 @@ public class GlobalParameterVO {
 
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "userid")
+	@Column(name = "userid",length =25)
 	private String userid;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchcode;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
 	
 	@Embedded

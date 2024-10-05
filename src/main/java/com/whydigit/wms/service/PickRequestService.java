@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 
-import com.whydigit.wms.dto.MultipleBODTO;
 import com.whydigit.wms.dto.MultiplePickDTO;
 import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;

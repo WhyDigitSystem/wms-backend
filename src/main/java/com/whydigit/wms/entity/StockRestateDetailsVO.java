@@ -30,39 +30,39 @@ public class StockRestateDetailsVO {
 	@Column(name = "stockrestatedetailsid")
 	private Long id;
 	
-	@Column(name = "frombin")
+	@Column(name = "frombin",length =25)
 	private String fromBin;
-	@Column(name = "frombinclass")
+	@Column(name = "frombinclass",length =25)
 	private String fromBinClass;
-	@Column(name = "frombintype")
+	@Column(name = "frombintype",length =25)
 	private String fromBinType;
-	@Column(name = "fromCelltype")
+	@Column(name = "fromCelltype",length =25)
 	private String fromCellType;
-	@Column(name = "fromcore")
+	@Column(name = "fromcore",length =25)
 	private String fromCore;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batch;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;	
-	@Column(name = "tobin")
+	@Column(name = "tobin",length =25)
 	private String toBin;
-	@Column(name = "tobinclass")
+	@Column(name = "tobinclass",length =25)
 	private String toBinClass;
-	@Column(name = "tobintype")
+	@Column(name = "tobintype",length =25)
 	private String toBinType;
-	@Column(name = "tocelltype")
+	@Column(name = "tocelltype",length =25)
 	private String toCellType;
-	@Column(name = "tocore")
+	@Column(name = "tocore",length =25)
 	private String toCore;
 	@Column(name = "fromqty")
 	private int fromQty;
@@ -70,7 +70,7 @@ public class StockRestateDetailsVO {
 	private int toQty;
 	@Column(name = "remainqty")
 	private int remainQty;
-	@Column(name = "qcflag")
+	@Column(name = "qcflag",length =10)
 	private String qcFlag;
 	@Column(name = "expdate")
 	private LocalDate expDate;

@@ -38,77 +38,77 @@ public class PutAwayVO {
 	private Long id;
 	@Column(name = "docdate")
 	private LocalDate docDate= LocalDate.now();
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnNo;
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid",unique = true,length =25)
 	private String docId;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "entryno")
+	@Column(name = "entryno",length =25)
 	private String entryNo;
 	@Column(name = "entrydate")
 	private LocalDate entryDate;
-	@Column(name = "core")
+	@Column(name = "core",length =25)
 	private String core;
-	@Column(name = "suppliershortname")
+	@Column(name = "suppliershortname",length =150)
 	private String supplierShortName;
-	@Column(name = "supplier")
+	@Column(name = "supplier",length =150)
 	private String supplier;
-	@Column(name = "modeofshipment")
+	@Column(name = "modeofshipment",length =25)
 	private String modeOfShipment;
-	@Column(name = "carrier")
+	@Column(name = "carrier",length =150)
 	private String carrier;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
-	@Column(name = "contact")
+	@Column(name = "contact",length =25)
 	private String contact;
-	@Column(name = "vehicletype")
+	@Column(name = "vehicletype",length =25)
 	private String vehicleType;
-	@Column(name = "vehicleno")
+	@Column(name = "vehicleno",length =25)
 	private String vehicleNo;
-	@Column(name = "drivername")
+	@Column(name = "drivername",length =25)
 	private String driverName;
-	@Column(name = "status")
+	@Column(name = "status",length =25)
 	private String status;
-	@Column(name = "lotno")
+	@Column(name = "lotno",length =25)
 	private String lotNo;
-	@Column(name = "enteredperson")
+	@Column(name = "enteredperson",length =25)
 	private String enteredPerson;
-	@Column(name = "binclass")
+	@Column(name = "binclass",length =25)
 	private String binClass;
-	@Column(name = "binpick")
+	@Column(name = "binpick",length =25)
 	private String binPick;
 	@Column(name = "totalgrnqty")
 	private int totalGrnQty;
 	@Column(name = "totalputawayqty")
 	private int totalPutawayQty;
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName = "PUTAWAY";
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =25)
 	private String screenCode ="PC";
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =25)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze;

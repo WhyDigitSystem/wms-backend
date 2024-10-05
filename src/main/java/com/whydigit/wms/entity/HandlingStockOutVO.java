@@ -31,45 +31,45 @@ public class HandlingStockOutVO {
 	private Long id;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "refno")
+	@Column(name = "refno",length =25)
 	private String refNo;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
 	@Column(name = "refdate")
 	private LocalDate refDate;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
 	@Column(name = "rpqty")
 	private int rpQty;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =150)
 	private String warehouse;
 	@Column(name = "sqty")
 	private int sQty;
-	@Column(name = "pickrequestno")
+	@Column(name = "pickrequestno",length =25)
 	private String pickRequestNo;
 	@Column(name = "pickrequestdate")
 	private LocalDate pickRequestDate;
-	@Column(name = "buyerorderno")
+	@Column(name = "buyerorderno",length =25)
 	private String buyerOrderNo;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
 	@Column(name = "buyerorderdate")
 	private LocalDate buyerOrderDate;
 	@Column(name = "pickqty")
 	private int pickQty;
-	@Column(name = "sdocid")
+	@Column(name = "sdocid",length =25)
 	private String sDocid;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode;
-	@Column(name = "client")
+	@Column(name = "client",length =25)
 	private String client;
-	@Column(name = "buyerordno")
+	@Column(name = "buyerordno",length =25)
 	private String buyerOrdNo;
 	@Column(name = "buyerorddate")
 	private LocalDate buyerOrdDate;

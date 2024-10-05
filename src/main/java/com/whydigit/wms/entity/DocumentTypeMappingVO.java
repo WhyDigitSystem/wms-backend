@@ -33,25 +33,25 @@ public class DocumentTypeMappingVO {
 	@Column(name = "documenttypemappingid")
 	private Long id;
 	
-	
+	@Column(name = "branch",length =25)
 	private String branch;
 	
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
 	
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
 	
-	@Column(name = "finyearidentifier")
+	@Column(name = "finyearidentifier",length =10)
 	private String finYearIdentifier;
 	
 	@Column(name = "orgid")
 	private Long orgId;
 	
-	@Column(name="createdby")
+	@Column(name="createdby",length =25)
 	private String createdBy;
 	
-	@Column(name="modifiedby")
+	@Column(name="modifiedby",length =25)
 	private String updatedBy;
 	
 	@JsonManagedReference

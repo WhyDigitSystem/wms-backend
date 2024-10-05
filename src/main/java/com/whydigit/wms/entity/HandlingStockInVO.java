@@ -31,23 +31,23 @@ public class HandlingStockInVO {
 	private Long id;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "refno")
+	@Column(name = "refno",length =25)
 	private String refno;
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnno;
 	@Column(name = "refdate")
 	private LocalDate refdate;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partno;
 	@Column(name = "grndate")
 	private LocalDate grndate;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partdesc;
 	@Column(name = "rpqty")
 	private int rpqty;
 	@Column(name = "noofpallet")
 	private int noofpallet;
-	@Column(name = "locationtype")
+	@Column(name = "locationtype",length =25)
 	private String locationtype;
 	@Column(name = "sqty")
 	private int sqty;
@@ -69,61 +69,61 @@ public class HandlingStockInVO {
 	private double amount;
 	@Column(name = "qcflag")
 	private String qcflag;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
-	@Column(name = "finyr")
+	@Column(name = "finyr",length =10)
 	private String finyr;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
 	@Column(name = "branchid")
 	private String branchid;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchcode;
-	@Column(name = "customer")
+	@Column(name = "customer",length =25)
 	private String customer;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "client")
+	@Column(name = "client",length =25)
 	private String client;
 	@Column(name = "palletcount")
 	private int palletcount;
-	@Column(name = "indcno")
+	@Column(name = "indcno",length =25)
 	private String indcno;
-	@Column(name = "lrhawbhblno")
+	@Column(name = "lrhawbhblno",length =25)
 	private String lrhawbhblno;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "sdocid")
+	@Column(name = "sdocid",length =25)
 	private String sdocid;
 	@Column(name = "stockdate")
 	private LocalDate stockdate;
 	@Column(name = "sdocdate")
 	private LocalDate sdocdate;
-	@Column(name = "sourcescreen")
+	@Column(name = "sourcescreen",length =25)
 	private String sourcescreen;
 	@Column(name = "expdate")
 	private LocalDate expdate;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchno;
 	@Column(name = "batchdt")
 	private LocalDate batchdt;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String createdby;
-	@Column(name = "updatedby")
+	@Column(name = "updatedby",length =25)
 	private String updatedby;
-	@Column(name = "company")
+	@Column(name = "company",length =25)
 	private String company;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid")
+	@Column(name = "userid",length =25)
 	private String userid;
-	@Column(name = "cancelremark")
+	@Column(name = "cancelremark",length =150)
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "ssku")
+	@Column(name = "ssku",length =25)
 	private String ssku;
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screencode;
 
 	@Embedded
