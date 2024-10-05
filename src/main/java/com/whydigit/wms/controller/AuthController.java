@@ -9,7 +9,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.LoggerFactory; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +56,7 @@ public class AuthController extends BaseController {
 			authService.signup(signUpRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
+			
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, signUpRequest.getEmail(),
 					errorMsg);
 		}
@@ -90,7 +91,7 @@ public class AuthController extends BaseController {
 			responseObjectsMap.put(UserConstants.KEY_USER_VO, userResponseDTO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_LOGIN_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

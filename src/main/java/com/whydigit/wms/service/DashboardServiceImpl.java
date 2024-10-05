@@ -63,7 +63,7 @@ public class DashboardServiceImpl implements DashboardService{
 	@Override
 	public List<Map<String, Object>> getPickRequestOrderPerDay(Long orgId, String branchCode, String client,
 			String warehouse) {
-		Set<Object[]> getPickRequestOrder = stockDetailsRepo.getPutAway(orgId, branchCode, client,warehouse);
+		Set<Object[]> getPickRequestOrder = stockDetailsRepo.getPickRequest(orgId, branchCode, client,warehouse);
 		return getPick(getPickRequestOrder);
 	}
  

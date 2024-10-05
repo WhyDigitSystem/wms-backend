@@ -1413,18 +1413,18 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 //				throw new ApplicationException(errorMessage);
 //			}
 
-			if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
-					locationMappingDTO.getOrgId())) {
-				String errorMessage = String.format("This RowNo :%s Already Exists By This Organization.",
-						locationMappingDTO.getWarehouse());
-				throw new ApplicationException(errorMessage);
-			}
-			if (locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),
-					locationMappingDTO.getOrgId())) {
-				String errorMessage = String.format("This LevelNo :%s Already Exists By This Organization.",
-						locationMappingDTO.getWarehouse());
-				throw new ApplicationException(errorMessage);
-			}
+//			if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
+//					locationMappingDTO.getOrgId())) {
+//				String errorMessage = String.format("This RowNo :%s Already Exists By This Organization.",
+//						locationMappingDTO.getWarehouse());
+//				throw new ApplicationException(errorMessage);
+//			}
+//			if (locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),
+//					locationMappingDTO.getOrgId())) {
+//				String errorMessage = String.format("This LevelNo :%s Already Exists By This Organization.",
+//						locationMappingDTO.getWarehouse());
+//				throw new ApplicationException(errorMessage);
+//			}
 
 			locationMappingVO = new LocationMappingVO();
 			locationMappingVO.setCreatedBy(locationMappingDTO.getCreatedBy());
@@ -1447,24 +1447,24 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 //				}
 //				locationMappingVO.setWarehouse(locationMappingDTO.getWarehouse());
 //			}
-			if (!locationMappingVO.getRowNo().equalsIgnoreCase(locationMappingDTO.getRowNo())) {
-				if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
-						locationMappingDTO.getOrgId())) {
-					String errorMessage = String.format("This RowNo :%s Already Exists By This Organization.",
-							locationMappingDTO.getWarehouse());
-					throw new ApplicationException(errorMessage);
-				}
-				locationMappingVO.setRowNo(locationMappingDTO.getRowNo());
-			}
-			if (!locationMappingVO.getLevelNo().equalsIgnoreCase(locationMappingDTO.getLevelNo())) {
-				if (locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),
-						locationMappingDTO.getOrgId())) {
-					String errorMessage = String.format("This LevelNo :%s Already Exists By This Organization.",
-							locationMappingDTO.getWarehouse());
-					throw new ApplicationException(errorMessage);
-				}
-				locationMappingVO.setLevelNo(locationMappingDTO.getLevelNo());
-			}
+//			if (!locationMappingVO.getRowNo().equalsIgnoreCase(locationMappingDTO.getRowNo())) {
+//				if (locationMappingRepo.existsByRowNoAndOrgId(locationMappingDTO.getRowNo(),
+//						locationMappingDTO.getOrgId())) {
+//					String errorMessage = String.format("This RowNo :%s Already Exists By This Organization.",
+//							locationMappingDTO.getWarehouse());
+//					throw new ApplicationException(errorMessage);
+//				}
+//				locationMappingVO.setRowNo(locationMappingDTO.getRowNo());
+//			}
+//			if (!locationMappingVO.getLevelNo().equalsIgnoreCase(locationMappingDTO.getLevelNo())) {
+//				if (locationMappingRepo.existsByLevelNoAndOrgId(locationMappingDTO.getLevelNo(),
+//						locationMappingDTO.getOrgId())) {
+//					String errorMessage = String.format("This LevelNo :%s Already Exists By This Organization.",
+//							locationMappingDTO.getWarehouse());
+//					throw new ApplicationException(errorMessage);
+//				}
+//				locationMappingVO.setLevelNo(locationMappingDTO.getLevelNo());
+//			}
 			message = "Location Mapping Updation Successfully";
 		}
 

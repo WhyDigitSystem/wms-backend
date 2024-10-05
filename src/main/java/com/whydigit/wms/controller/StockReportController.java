@@ -447,7 +447,6 @@ public class StockReportController extends BaseController {
 			responseDTO = createServiceResponse(responseObjectsMap);
 
 		} catch (Exception e) {
-
 			String errorMsg = e.getMessage();
 			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
 			responseObjectsMap.put("statusFlag", "Error");
