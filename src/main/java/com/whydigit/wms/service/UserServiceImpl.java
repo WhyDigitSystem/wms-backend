@@ -2,6 +2,8 @@ package com.whydigit.wms.service;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,13 +40,26 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	TokenRepo tokenRepo;
-
+	
 	public void createUserAction(String userName, Long usersId, String actionType) {
 		try {
 			UserActionVO userActionVO = new UserActionVO();
 			userActionVO.setUserName(userName);
 			userActionVO.setUsersId(usersId);
 			userActionVO.setActionType(actionType);
+			userActionRepo.save(userActionVO);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+	}
+
+	public void createUserLoginAction(String userName, Long usersId, String actionType, HttpServletRequest httpRequest) {
+		try {
+			UserActionVO userActionVO = new UserActionVO();
+			userActionVO.setUserName(userName);
+			userActionVO.setUsersId(usersId);
+			userActionVO.setActionType(actionType);
+			userActionVO.setIpAddress(httpRequest.getRemoteAddr());
 			userActionRepo.save(userActionVO);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());

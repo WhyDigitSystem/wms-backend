@@ -26,10 +26,16 @@ public class UserActionVO {
 	@SequenceGenerator(name = "useractiongen", sequenceName = "useractionseq", initialValue = 1000000001, allocationSize = 1)
 	private Long actionId;
 	
+	@Column(length = 150)
 	private String userName;
 	private Long usersId;
+	@Column(length = 25)
 	private String actionType;
+	@Column(length = 25)
 	private Date actionDate;
+	
+	@Column(length = 25)
+	private String ipAddress;
 	
 	@PrePersist
 	public void onSave() {
