@@ -29,62 +29,62 @@ public class LmExcelUploadVO {
 	@Column(name = "orgid")
 	private Long orgId;
 
-	@Column(name = "type")
+	@Column(name = "type",length =25)
 	private String type;
 	
-	@Column(name = "frombin")
+	@Column(name = "frombin",length =25)
 	private String frombin;
 
-	@Column(name = "frombintype")
+	@Column(name = "frombintype",length =25)
 	private String fromBinType;
 
-	@Column(name = "binpick")
+	@Column(name = "binpick",length =25)
 	private String binPick;
 
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
 
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
 
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
 
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnNo;
 
 	@Column(name = "grndate")
 	private LocalDate grnDate;
 
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 
 	@Column(name = "expdate")
 	private LocalDate expDate;
 
-	@Column(name = "entryno")
+	@Column(name = "entryno",length =25)
 	private String entryNo;
 	
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 }

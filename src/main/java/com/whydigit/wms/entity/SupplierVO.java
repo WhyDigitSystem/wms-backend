@@ -27,67 +27,67 @@ public class SupplierVO {
 	@SequenceGenerator(name = "suppliergen", sequenceName = "supplierseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "supplierid")
 	private Long id;
-	@Column(name = "supplier")
+	@Column(name = "supplier",length =150)
 	private String supplier;
-	@Column(name = "suppliershortname")
+	@Column(name = "suppliershortname",length =25)
 	private String supplierShortName;
-	@Column(name = "suppliertype")
+	@Column(name = "suppliertype",length =25)
 	private String supplierType;
-	@Column(name = "suppliergroupof")
+	@Column(name = "suppliergroupof",length =25)
 	private String supplierGroupOf;
-	@Column(name = "category")
+	@Column(name = "category",length =25)
 	private String category;
-	@Column(name = "panno")
+	@Column(name = "panno",length =25)
 	private String panNo;
-	@Column(name = "tanno")
+	@Column(name = "tanno",length =25)
 	private String tanNo;
-	@Column(name = "contactperson")
+	@Column(name = "contactperson",length =150)
 	private String contactPerson;
-	@Column(name = "landlinenumber")
+	@Column(name = "landlinenumber",length =25)
 	private String landLineNo;
-	@Column(name = "mobileno")
+	@Column(name = "mobileno",length =25)
 	private String mobileNo;
-	@Column(name = "addressline1")
+	@Column(name = "addressline1",length =150)
 	private String addressLine1;
-	@Column(name = "addressline2")
+	@Column(name = "addressline2",length =150)
 	private String addressLine2;
-	@Column(name = "city")
+	@Column(name = "city",length =25)
 	private String city;
-	@Column(name = "cbranch")
+	@Column(name = "cbranch",length =25)
 	private String cbranch;
-	@Column(name = "state")
+	@Column(name = "state",length =25)
 	private String state;
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String country;
-	@Column(name = "zipcode")
+	@Column(name = "zipcode",length =10)
 	private String zipCode;
-	@Column(name = "email")
+	@Column(name = "email",length =25)
 	private String email;
-	@Column(name = "eccno")
+	@Column(name = "eccno",length =25)
 	private String eccNo;
-	@Column(name = "rangeaddress")
+	@Column(name = "rangeaddress",length =150)
 	private String rangeAddress;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
 
 	@Embedded

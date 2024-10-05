@@ -33,9 +33,9 @@ public class LocationMovementVO {
 	@SequenceGenerator(name = "locationmovementgen", sequenceName = "locationmovementseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmovementid")
 	private Long id;
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName ="LOCATION MOVEMENT";
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode = "LM";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
@@ -43,31 +43,31 @@ public class LocationMovementVO {
 	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =25)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 	@Column(name="movedqty")
 	private Integer movedQty;
-	@Column(name = "entryno")
+	@Column(name = "entryno",length =25)
 	private String entryNo;
 	@Column(name = "freeze")
 	private boolean freeze = true;

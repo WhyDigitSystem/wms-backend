@@ -31,25 +31,25 @@ public class CodeConversionDetailsVO {
 	@Column(name = "codeconversiondetailsid")
 	private Long id;
 	
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
-	@Column(name = "lotno")
+	@Column(name = "lotno",length =25)
 	private String lotNo;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String bin;
 	@Column(name = "qty")
 	private int qty;
@@ -61,42 +61,42 @@ public class CodeConversionDetailsVO {
 	private int convertQty;
 	@Column(name = "crate")
 	private BigDecimal cRate;
-	@Column(name = "cpartno")
+	@Column(name = "cpartno",length =25)
 	private String cPartNo;
-	@Column(name = "cpartdesc")
+	@Column(name = "cpartdesc",length =150)
 	private String cPartDesc;
 	
-	@Column(name = "csku")
+	@Column(name = "csku",length =25)
 	private String cSku;
-	@Column(name = "cbatchno")
+	@Column(name = "cbatchno",length =25)
 	private String cBatchNo;
 	@Column(name = "cbatchdate")
 	private LocalDate cBatchDate;
-	@Column(name = "clotno")
+	@Column(name = "clotno",length =25)
 	private String cLotNo;
-	@Column(name = "cbin")
+	@Column(name = "cbin",length =25)
 	private String cbin;
-	@Column(name = "cbintype")
+	@Column(name = "cbintype",length =25)
 	private String cbinType;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
 	
-	@Column(name = "binclass")
+	@Column(name = "binclass",length =25)
 	private String binClass;
-	@Column(name = "celltype")
+	@Column(name = "celltype",length =25)
 	private String cellType;
-	@Column(name = "core")
+	@Column(name = "core",length =25)
 	private String core;
 	@Column(name = "expdate")
 	private LocalDate expDate;
 	@Column(name = "stockdate")
 	private LocalDate stockDate;
 	
-	@Column(name = "cbinclass")
+	@Column(name = "cbinclass",length =25)
 	private String cBinClass;
-	@Column(name = "ccelltype")
+	@Column(name = "ccelltype",length =25)
 	private String cCellType;
-	@Column(name = "ccore")
+	@Column(name = "ccore",length =25)
 	private String cCore;
 	@Column(name = "cexpdate")
 	private LocalDate cExpDate;

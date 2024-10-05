@@ -1,6 +1,5 @@
 package com.whydigit.wms.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.whydigit.wms.dto.KittingDTO;
 import com.whydigit.wms.dto.KittingDetails1DTO;
 import com.whydigit.wms.dto.KittingDetails2DTO;
-import com.whydigit.wms.entity.DeKittingChildVO;
-import com.whydigit.wms.entity.DeKittingParentVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.KittingDetails1VO;
 import com.whydigit.wms.entity.KittingDetails2VO;

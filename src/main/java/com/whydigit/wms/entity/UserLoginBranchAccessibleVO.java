@@ -28,9 +28,9 @@ public class UserLoginBranchAccessibleVO {
 	@Column(name="userloginbranchaccessibleid")
 	private long id;
 	
-	@Column(name="branch")
+	@Column(name="branch",length =25)
 	private String branch;
-	@Column(name="branchcode")
+	@Column(name="branchcode",length =25)
 	private String branchcode;
 	
 	@JsonBackReference

@@ -22,7 +22,7 @@ public class SignUpFormDTO {
     private String userType;
     private boolean isActive;
     private List<UserLoginRoleAccessDTO>roleAccessDTO;
-    private List<UserLoginClientAccessDTO> clientAccessDTOList;
+  //  private List<UserLoginClientAccessDTO> clientAccessDTOList;
     private List<UserLoginBranchAccessDTO> branchAccessDTOList;
  
 	

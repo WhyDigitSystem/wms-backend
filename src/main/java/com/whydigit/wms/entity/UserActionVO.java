@@ -2,6 +2,7 @@ package com.whydigit.wms.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class UserActionVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "useractiongen")
 	@SequenceGenerator(name = "useractiongen", sequenceName = "useractionseq", initialValue = 1000000001, allocationSize = 1)
 	private Long actionId;
+	
 	private String userName;
 	private Long usersId;
 	private String actionType;

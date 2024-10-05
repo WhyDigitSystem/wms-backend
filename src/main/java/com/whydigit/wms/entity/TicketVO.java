@@ -34,42 +34,42 @@ public class TicketVO {
 
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private Long createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private Long updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel=false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemark;
 	@Column(name = "active")
 	private boolean active=true;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
 	@Column(name = "freeze")
 	private boolean freeze=false;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "name")
+	@Column(name = "name",length =150)
 	private String name;
-	@Column(name = "email")
+	@Column(name = "email",length =25)
 	private String email;
-	@Column(name = "issuedesc")
+	@Column(name = "issuedesc",length =25)
 	private String issueDesc;
-	@Column(name = "ticketstatus")
+	@Column(name = "ticketstatus",length =25)
 	private String ticketStatus;
 	
-	@Column(name = "ticketremarks")
+	@Column(name = "ticketremarks",length =150)
 	private String ticketRemarks;
 	
 	@Embedded

@@ -34,7 +34,7 @@ public class ReversePickVO {
 	@SequenceGenerator(name = "reversepickgen", sequenceName = "reversepickseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "reversepickid")
 	private Long id;
-	@Column(name = "buyerrefno")
+	@Column(name = "buyerrefno",length =25)
 	private String buyerRefNo;
 	@Column(name = "buyerrefdate")
 	private LocalDate buyerRefDate;
@@ -42,68 +42,68 @@ public class ReversePickVO {
 	private String pickRequestDocId;
 	@Column(name = "pickrequestdocdate")
 	private LocalDate pickRequestDocDate;
-	@Column(name = "boamendment")
+	@Column(name = "boamendment",length =25)
 	private String boAmendment;
-	@Column(name = "buyerorderno")
+	@Column(name = "buyerorderno",length =25)
 	private String buyerOrderNo;
 	@Column(name = "buyerorderdate")
 	private String buyerOrderDate;
-	@Column(name = "buyersreference")
+	@Column(name = "buyersreference",length =25)
 	private String buyersReference;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
-	@Column(name = "clientshortname")
+	@Column(name = "clientshortname",length =25)
 	private String clientShortName;
-	@Column(name = "clientname")
+	@Column(name = "clientname",length =150)
 	private String clientName;
-	@Column(name = "clientaddress")
+	@Column(name = "clientaddress",length =150)
 	private String clientAddress;
-	@Column(name = "customershortname")
+	@Column(name = "customershortname",length =25)
 	private String customerShortName;
-	@Column(name = "customername")
+	@Column(name = "customername",length =150)
 	private String customerName;
-	@Column(name = "customeraddress")
+	@Column(name = "customeraddress",length =150)
 	private String customerAddress;
-	@Column(name = "pickorder")
+	@Column(name = "pickorder",length =25)
 	private String pickOrder;
 	@Column(name = "intime")
 	private String inTime;
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid",unique = true,length =25)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =10)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
-	@Column(name = "status")
+	@Column(name = "status",length =25)
 	private String status;
 	@Column(name = "freeze")
 	private boolean freeze ;
 	
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName="REVERSE PICK";
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode="RP";
 	
 	@Column(name = "totalpickqty")

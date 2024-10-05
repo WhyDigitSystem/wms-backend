@@ -1,6 +1,5 @@
 package com.whydigit.wms.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -33,35 +32,35 @@ public class DeKittingParentVO {
 	@SequenceGenerator(name = "dekittingparentgen", sequenceName = "dekittingparentseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "dekittingparentid")
 	private Long id;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String bin;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
-	@Column(name = "binclass")
+	@Column(name = "binclass",length =25)
 	private String binClass;
-	@Column(name = "celltype")
+	@Column(name = "celltype",length =25)
 	private String cellType;
-	@Column(name = "core")
+	@Column(name = "core",length =25)
 	private String core;
 	@Column(name = "avlqty")
 	private int avlQty;
 	@Column(name = "qty")
 	private int qty;
-	@Column(name = "qcflag")
+	@Column(name = "qcflag",length =25)
 	private String qcFlag;
 	@Column(name = "expdate")
 	private LocalDate expDate;

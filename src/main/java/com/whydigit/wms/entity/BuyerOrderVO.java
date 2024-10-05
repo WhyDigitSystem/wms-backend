@@ -34,9 +34,9 @@ public class BuyerOrderVO {
 	@SequenceGenerator(name = "buyerordergen", sequenceName = "buyerorderseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "buyerorderid")
 	private Long id;
-    @Column(name ="docid",unique = true)
+    @Column(name ="docid",unique = true,length =25)
 	private String docId;
-	@Column(name = "orderno")
+	@Column(name = "orderno",length =25)
 	private String orderNo;
 	@Column(name = "orgid")
 	private Long orgId;
@@ -44,52 +44,55 @@ public class BuyerOrderVO {
 	private LocalDate docDate=LocalDate.now();
 	@Column(name = "orderdate")
 	private LocalDate orderDate;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
-	@Column(name = "refno")
+	@Column(name = "refno",length =25)
 	private String refNo;
 	@Column(name = "invoicedate")
 	private LocalDate invoiceDate;
 	@Column(name = "refdate")
 	private LocalDate refDate;
-	@Column(name = "buyershortname")
+	@Column(name = "buyershortname",length =150)
 	private String buyerShortName;
+	@Column(name = "buyer",length =150)
 	private String buyer;
-	@Column(name = "buyeraddress")
+	@Column(name = "buyeraddress",length =150)
 	private String buyerAddress;
-	@Column(name = "currency")
+	@Column(name = "currency",length =25)
 	private String currency;
-	@Column(name = "billtoshortname")
+	@Column(name = "billtoshortname",length =150)
 	private String billToShortName;
-	@Column(name = "billto")
+	@Column(name = "billto",length =150)
 	private String billToName;
-	@Column(name = "billtoaddress")
+	@Column(name = "billtoaddress",length =150)
 	private String billToAddress;
-	@Column(name = "shiptoshortname")
+	@Column(name = "shiptoshortname",length =150)
 	private String shipToShortName;
-	@Column(name = "shipto")
+	@Column(name = "shipto",length =150)
 	private String shipToName;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "cancel")
 	private boolean cancel=false;
-	@Column(name = "cancelremark")
+	@Column(name = "cancelremark",length =150)
 	private String cancelRemark;
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode="BO";
-	@Column(name ="screenname")
+	@Column(name ="screenname",length =25)
 	private String screenName="BUYER ORDER";
+	@Column(name ="customer",length =150)
 	private String customer;
+	@Column(name ="client",length =150)
 	private String client;
-	@Column(name ="finyear")
+	@Column(name ="finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =10)
 	private String branchCode;
 	@Column(name = "freeze")
 	private boolean freeze=false;
@@ -98,7 +101,7 @@ public class BuyerOrderVO {
 	@Column(name = "totalavlqty")
 	private int totalAvailQty;
 	private boolean active = true;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
 	
 

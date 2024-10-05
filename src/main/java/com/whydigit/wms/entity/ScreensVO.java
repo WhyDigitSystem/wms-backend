@@ -29,7 +29,7 @@ public class ScreensVO {
 	@Column(name = "screensid")
 	private Long id;
 	
-	@Column(name="screenname")
+	@Column(name="screenname",length =25)
 	private String screenName;
 	
 	@Column(name="orgid")
