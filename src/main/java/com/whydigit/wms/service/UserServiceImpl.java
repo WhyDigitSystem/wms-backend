@@ -41,11 +41,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	TokenRepo tokenRepo;
 	
-	public void createUserAction(String userName, Long usersId, String actionType) {
+	public void createUserAction(String userName, Long usersId, String actionType,Long orgId) {
 		try {
 			UserActionVO userActionVO = new UserActionVO();
 			userActionVO.setUserName(userName);
 			userActionVO.setUsersId(usersId);
+			userActionVO.setOrgId(orgId);
 			userActionVO.setActionType(actionType);
 			userActionRepo.save(userActionVO);
 		} catch (Exception e) {
@@ -53,11 +54,12 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public void createUserLoginAction(String userName, Long usersId, String actionType, HttpServletRequest httpRequest) {
+	public void createUserLoginAction(String userName, Long usersId, String actionType, HttpServletRequest httpRequest,Long orgId) {
 		try {
 			UserActionVO userActionVO = new UserActionVO();
 			userActionVO.setUserName(userName);
 			userActionVO.setUsersId(usersId);
+			userActionVO.setOrgId(orgId);
 			userActionVO.setActionType(actionType);
 			userActionVO.setIpAddress(httpRequest.getRemoteAddr());
 			userActionRepo.save(userActionVO);

@@ -9,9 +9,9 @@ public interface UserService {
 
 	
 
-	public void createUserAction(String userName, Long userId, String actionType);
+	public void createUserAction(String userName, Long userId, String actionType,Long orgId);
 	
-	public void createUserLoginAction(String userName, Long userId, String actionType, HttpServletRequest httpRequest);
+	public void createUserLoginAction(String userName, Long userId, String actionType, HttpServletRequest httpRequest, Long orgId);
 
 	public void removeUser(String userName);
 	

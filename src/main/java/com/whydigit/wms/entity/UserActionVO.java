@@ -34,6 +34,7 @@ public class UserActionVO {
 	@Column(length = 25)
 	private Date actionDate;
 	
+	private Long orgId;
 	@Column(length = 25)
 	private String ipAddress;
 	
