@@ -3,6 +3,8 @@ package com.whydigit.wms.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 
 import com.whydigit.wms.dto.ChangePasswordFormDTO;
@@ -23,7 +25,7 @@ public interface AuthService {
 
 	public void signup(SignUpFormDTO signUpRequest);
 
-	public UserResponseDTO login(LoginFormDTO loginRequest) throws ApplicationException;
+	public UserResponseDTO login(LoginFormDTO loginRequest,HttpServletRequest httpRequest) throws ApplicationException;
 
 	public void logout(String userName);
 
