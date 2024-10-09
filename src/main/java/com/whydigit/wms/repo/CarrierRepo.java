@@ -24,6 +24,10 @@ public interface CarrierRepo extends JpaRepository<CarrierVO, Long>{
 	@Query(value = "select shipmentMode from CarrierVO where orgId=?1 group by shipmentMode")
 	Set<Object[]>findmodeOfShipment(Long orgId);
 
+	boolean existsByOrgIdAndCarrierShortNameIgnoreCase(Long orgId, String carrierShortName);
+
+	boolean existsByOrgIdAndCarrierIgnoreCase(Long orgId, String carrier);
+
 	
 
 }

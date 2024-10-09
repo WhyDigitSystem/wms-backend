@@ -11,9 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
@@ -414,6 +416,46 @@ public class StockReportController extends BaseController {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"StockDetails Batch information receive failed", errorMsg);
 		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PostMapping("/OpeningStockUpload")
+	public ResponseEntity<ResponseDTO> OpeningStockUpload(@RequestParam MultipartFile[] files,@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String customer,@RequestParam(required = false) String client, @RequestParam(required = false)  String warehouse, @RequestParam(required = false)  String branch, 
+			 @RequestParam(required = false) String branchCode, @RequestParam(required = false)  String createdBy,@RequestParam(required = false)  String finYear) {
+		String methodName = "OpeningStockUpload()";
+		int totalRows = 0;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		int successfulUploads = 0;
+		ResponseDTO responseDTO = null;
+		try {
+			// Call service method to process Excel upload
+			stockReportService.uploadStockDetails(files, orgId, customer, client, warehouse, branch, branchCode, createdBy, finYear);
+
+			// Retrieve the counts after processing
+			totalRows = stockReportService.getTotalRows(); // Get total rows processed
+			successfulUploads = stockReportService.getSuccessfulUploads(); // Get successful uploads count
+			// Construct success response
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", totalRows);
+			responseObjectsMap.put("successfulUploads", successfulUploads);
+			Map<String, Object> paramObjectsMap = new HashMap<>();
+			paramObjectsMap.put("message", "Excel Upload For  Opening Stock successful");
+			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (Exception e) {
+
+			String errorMsg = e.getMessage();
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("errorMessage", errorMsg);
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Opening Stock Failed", errorMsg);
+      }
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
