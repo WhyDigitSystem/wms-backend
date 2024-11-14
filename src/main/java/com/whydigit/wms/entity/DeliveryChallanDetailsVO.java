@@ -32,15 +32,15 @@ public class DeliveryChallanDetailsVO {
 	@Column(name = "deliverychallandetailsid")
 	private Long id;
 	
-	@Column(name = "pickrequestno")
+	@Column(name = "pickrequestno",length =25)
 	private String pickRequestNo;
 	@Column(name = "prdate")
 	private LocalDate prDate;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdescription")
+	@Column(name = "partdescription",length =150)
 	private String partDescription;
-	@Column(name = "outboundbin")
+	@Column(name = "outboundbin",length =25)
 	private String outBoundBin;
 	@Column(name = "shippedqty")
 	private int shippedQty;
@@ -66,7 +66,7 @@ public class DeliveryChallanDetailsVO {
 	private BigDecimal totalGst;
 	@Column(name = "billamount")
 	private BigDecimal billAmount;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
 //	@Column(name = "qcflag")
 //	private String qcFlag;

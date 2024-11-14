@@ -29,9 +29,9 @@ public class WarehouseClientVO {
 	@Column(name = "warehouseclientid")
 	private Long id;
 
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "clientcode")
+	@Column(name = "clientcode",length =25)
 	private String clientCode;
 	@Column(name = "active")
 	private boolean active;

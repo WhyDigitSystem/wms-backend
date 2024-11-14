@@ -33,19 +33,19 @@ public class WarehouseVO {
 	@Column(name = "warehouseid")
 	private Long id;
 
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "cancel")
 	private boolean cancel;

@@ -6,7 +6,6 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.PutAwayVO;
 
 public interface PutAwayRepo extends JpaRepository<PutAwayVO, Long> {

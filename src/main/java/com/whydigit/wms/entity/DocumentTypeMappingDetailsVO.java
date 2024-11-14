@@ -29,40 +29,40 @@ public class DocumentTypeMappingDetailsVO {
 	@Column(name = "documenttypemappingdetailsid")
 	private Long id;
 	
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode;
 	
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName;
 	
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
 	
-	@Column(name = "clientcode")
+	@Column(name = "clientcode",length =25)
 	private String clientCode;
 	
-	@Column(name = "doccode")
+	@Column(name = "doccode",length =25)
 	private String docCode;
 	
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
 	
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
 	
-	@Column(name = "prefixfield")
+	@Column(name = "prefixfield",length =25)
 	private String prefixField;
 	
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
 	
-	@Column(name = "finyearidentifier")
+	@Column(name = "finyearidentifier",length =10)
 	private String finYearIdentifier;
 	
 	@Column(name = "orgid")
 	private Long orgId;
 	
-	@Column(name = "concatenation")
+	@Column(name = "concatenation",length =25)
 	private String concatenation;
 	
 	@Column(name="lastno")

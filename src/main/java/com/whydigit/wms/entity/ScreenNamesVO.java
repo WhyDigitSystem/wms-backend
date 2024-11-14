@@ -27,16 +27,16 @@ public class ScreenNamesVO {
 	@Column(name = "screennameid")
 	private Long id;
 	
-	@Column(name="screenname")
+	@Column(name="screenname",length =25)
 	private String screenName;
 	
-	@Column(name="screencode")
+	@Column(name="screencode",length =10)
 	private  String screenCode;
 	
 	private boolean active;
-	@Column(name="createdby")
+	@Column(name="createdby",length =25)
 	private String createdBy;
-	@Column(name="modifiedby")
+	@Column(name="modifiedby",length =25)
 	private String updatedBy;
 	
 	

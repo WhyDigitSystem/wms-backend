@@ -29,9 +29,9 @@ public class CountryVO {
 	@Column(name = "countryid")
 	private Long id;
 
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String countryName;
-	@Column(name = "countrycode")
+	@Column(name = "countrycode",length =25)
 	private String countryCode;
 	@Column(name = "active")
 	private boolean active;
@@ -39,11 +39,11 @@ public class CountryVO {
 	private Long orgId;
 //	@Column(name = "userid")
 //	private String userId;
-	@Column(unique = true)
+	@Column(unique = true,length =25)
 	private String dupchk;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "cancel")
 	private boolean cancel;

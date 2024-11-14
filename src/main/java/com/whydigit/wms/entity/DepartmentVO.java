@@ -28,16 +28,16 @@ public class DepartmentVO {
 	@SequenceGenerator(name = "departmentgen",sequenceName = "departmentseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="deptid")
 	private Long id;
-	@Column(name = "departmentname")
+	@Column(name = "departmentname",length =25)
 	private String departmentName;
-	@Column(name = "deptcode")
+	@Column(name = "deptcode",length =25)
 	private String code;
 	private boolean active;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	private boolean cancel;
 	

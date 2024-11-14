@@ -28,65 +28,65 @@ public class BuyerVO {
 	@Column(name = "buyerid")
 	private Long id;
 
-	@Column(name = "buyer")
+	@Column(name = "buyer",length =150)
 	private String buyer;
-	@Column(name = "buyershortname")
+	@Column(name = "buyershortname",length =150)
 	private String buyerShortName;
-	@Column(name = "buyertype")
+	@Column(name = "buyertype",length =25)
 	private String buyerType;
-	@Column(name = "buyergroupof")
+	@Column(name = "buyergroupof",length =25)
 	private String buyerGroupOf;
-	@Column(name = "contactperson")
+	@Column(name = "contactperson",length =150)
 	private String contactPerson;
-	@Column(name = "panno")
+	@Column(name = "panno",length =25)
 	private String panNo;
-	@Column(name = "tanno")
+	@Column(name = "tanno",length =25)
 	private String tanNo;
-	@Column(name = "zipcode")
+	@Column(name = "zipcode",length =10)
 	private String zipCode;
-	@Column(name = "email")
+	@Column(name = "email",length =150)
 	private String email;
-	@Column(name = "gst")
+	@Column(name = "gst",length =25)
 	private String gst;
-	@Column(name = "gstno")
+	@Column(name = "gstno",length =25)
 	private String gstNo;
-	@Column(name = "mobileno")
+	@Column(name = "mobileno",length =25)
 	private String mobileNo;
-	@Column(name = "addressline1")
+	@Column(name = "addressline1",length =150)
 	private String addressLine1;
-	@Column(name = "addressline2")
+	@Column(name = "addressline2",length =150)
 	private String addressLine2;
-	@Column(name = "city")
+	@Column(name = "city",length =25)
 	private String city;
-	@Column(name = "state")
+	@Column(name = "state",length =25)
 	private String state;
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String country;
-	@Column(name = "eccno")
+	@Column(name = "eccno",length =25)
 	private String eccNo;
-	@Column(name = "cbranch")
+	@Column(name = "cbranch",length =10)
 	private String cbranch;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =10)
 	private String branchCode;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "client")
+	@Column(name = "client",length =25)
 	private String client;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
 
 	@JsonGetter("active")

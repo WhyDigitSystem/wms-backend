@@ -30,21 +30,21 @@ public class CurrencyVO {
 	@Column(name="currencyid")
 	private Long id;
 	
-	@Column(name="country")
+	@Column(name="country",length =25)
 	private String country;
-	@Column(name="currency")
+	@Column(name="currency",length =25)
 	private String currency;
-	@Column(name="subcurrency")
+	@Column(name="subcurrency",length =25)
     private String subCurrency;
-	@Column(name="currencysymbol")
+	@Column(name="currencysymbol",length =25)
     private String currencySymbol;
 	@Column(name="orgid")
     private Long orgId;
 	@Column(name="active")
     private boolean active;
-	@Column(name="createdby")
+	@Column(name="createdby",length =25)
 	private String createdBy;
-	@Column(name="modifiedby")
+	@Column(name="modifiedby",length =25)
 	private String updatedBy;
 	@Column(name="cancel")
 	private boolean cancel;

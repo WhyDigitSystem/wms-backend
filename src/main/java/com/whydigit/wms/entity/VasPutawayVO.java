@@ -34,13 +34,13 @@ public class VasPutawayVO {
 	@SequenceGenerator(name = "vasputawaygen", sequenceName = "vasputawayseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "vasputawayid")
 	private Long id;
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid",unique = true,length =25)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "vaspickno")
+	@Column(name = "vaspickno",length =25)
 	private String vasPickNo;
-	@Column(name = "status")
+	@Column(name = "status",length =10)
 	private String status;
 
 	@Column(name = "screenname")

@@ -427,6 +427,8 @@ public class GrnServiceImpl implements GrnService {
 			details.put("batchNo", grid[12] != null ? grid[12].toString() : "");
 			details.put("weight", grid[13] != null ? grid[13].toString() : "");
 			details.put("id", grid[14] != null ? Integer.parseInt(grid[14].toString()) : 0);
+			details.put("batchDate", grid[15] != null ? grid[15].toString() : "");
+			details.put("expDate", grid[16] != null ? grid[16].toString() : "");
 			gridDetails.add(details);
 		}
 		return gridDetails;

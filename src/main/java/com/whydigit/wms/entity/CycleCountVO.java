@@ -31,41 +31,41 @@ public class CycleCountVO {
 	@Column(name = "cyclecountid")
 	private Long id;
 
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName = "CYCLE COUNT";
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode = "CY";
 	@Column(name = "docdate")
 	private LocalDate docDate=LocalDate.now();
-	@Column(name = "docid", unique = true)
+	@Column(name = "docid", unique = true,length =25)
 	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private Boolean freeze=true;
-	@Column(name = "stockstatus")
+	@Column(name = "stockstatus",length =25)
 	private String stockStatus;
 	@Column(name = "statusflag")
 	private String statusFlag;

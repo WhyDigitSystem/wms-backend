@@ -28,35 +28,35 @@ public class CarrierVO {
 	@Column(name = "carrierid")
 	private Long id;
 
-	@Column(name = "carrier")
+	@Column(name = "carrier",length =150)
 	private String carrier;
-	@Column(name = "carriershortname")
+	@Column(name = "carriershortname",length =150)
 	private String carrierShortName;
-	@Column(name = "shipmentmode")
+	@Column(name = "shipmentmode",length =25)
 	private String shipmentMode;
-	@Column(name = "cbranch")
+	@Column(name = "cbranch",length =10)
 	private String cbranch;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =10)
 	private String branchCode;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 
 //	@JsonManagedReference

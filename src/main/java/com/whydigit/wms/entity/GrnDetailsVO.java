@@ -32,25 +32,25 @@ public class GrnDetailsVO {
 	@Column(name = "grndetailsid")
 	private Long id;
 
-	@Column(name = "qrcode")
+	@Column(name = "qrcode",length =150)
 	private String qrCode;
-	@Column(name = "lrnohawbno")
+	@Column(name = "lrnohawbno",length =150)
 	private String lrNoHawbNo;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
 	@Column(name = "invoicedate")
 	private LocalDate invoiceDate;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
 	@Column(name = "rate")
 	private double rate;
 	@Column(name = "amount")
 	private double amount;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
 	@Column(name = "invqty")
 	private int invQty;
@@ -70,17 +70,17 @@ public class GrnDetailsVO {
 	private int noOfBins;
 	@Column(name = "pkgs")
 	private int pkgs;
-	@Column(name = "weight")
+	@Column(name = "weight",length =25)
 	private String weight;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 	@Column(name = "batchdt")
 	private LocalDate batchDt;
 	@Column(name = "qcflag")
 	private String qcFlag;
-	@Column(name = "shipmentno")
+	@Column(name = "shipmentno",length =25)
 	private String shipmentNo;
 	@Column(name = "sqty")
 	private int sQty;
@@ -88,7 +88,7 @@ public class GrnDetailsVO {
 	private int grnQty;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "damageremarks")
+	@Column(name = "damageremarks",length =150)
 	private String damageRemark;
 	
 	@JsonBackReference

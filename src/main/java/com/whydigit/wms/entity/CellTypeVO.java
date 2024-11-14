@@ -29,13 +29,13 @@ public class CellTypeVO {
 	@Column(name="celltypeid")
 	private Long id;
 	
-	@Column(name="celltype")
+	@Column(name="celltype",length =25)
 	private String cellType;
 	@Column(name="active")
 	private boolean active;
-	@Column(name="createdby")
+	@Column(name="createdby",length =25)
 	private String createdBy;
-	@Column(name="modifiedby")
+	@Column(name="modifiedby",length =25)
 	private String updatedBy;
 	@Column(name="orgid")
 	private Long orgId;

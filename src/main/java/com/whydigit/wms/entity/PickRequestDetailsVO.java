@@ -13,7 +13,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,21 +31,21 @@ public class PickRequestDetailsVO {
 	@Column(name = "pickrequestdetailsid")
 	private Long id;
 
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "core")
+	@Column(name = "core",length =25)
 	private String core;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String bin;
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
@@ -60,23 +59,23 @@ public class PickRequestDetailsVO {
 	private int pickQtyPerBin;
 	@Column(name = "remainingqty")
 	private int remainingQty;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
-	@Column(name = "binclass")
+	@Column(name = "binclass",length =25)
 	private String binClass;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
-	@Column(name = "celltype")
+	@Column(name = "celltype",length =25)
 	private String cellType;
-	@Column(name = "ssku")
+	@Column(name = "ssku",length =25)
 	private String ssku;
-	@Column(name = "status")
+	@Column(name = "status",length =25)
 	private String status;
 	@Column(name = "stockdate")
 	private LocalDate stockDate;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "qcflag")
+	@Column(name = "qcflag",length =25)
 	private String qcFlag;
 	
 	

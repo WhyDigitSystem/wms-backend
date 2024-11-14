@@ -36,102 +36,102 @@ public class DeliveryChallanVO {
 	@Column(name = "deliverychallanid")
 	private Long id;
 	
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid",unique = true,length =25)
 	private String docId;
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "buyerorderno")
+	@Column(name = "buyerorderno",length =150)
 	private String buyerOrderNo;
 	@Column(name = "pickrequestdate")
 	private LocalDate pickReqDate;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
-	@Column(name = "containerno")
+	@Column(name = "containerno",length =25)
 	private String containerNO;
-	@Column(name = "vechileno")
+	@Column(name = "vechileno",length =25)
 	private String vechileNo;
-	@Column(name = "exciseinvoiceno")
+	@Column(name = "exciseinvoiceno",length =25)
 	private String exciseInvoiceNo;
-	@Column(name = "commercialinvoiceno")
+	@Column(name = "commercialinvoiceno",length =25)
 	private String commercialInvoiceNo;
 	@Column(name = "bodate")
 	private LocalDate boDate;
 	@Column(name = "buyer")
 	private String buyer;
-	@Column(name = "deliveryterms")
+	@Column(name = "deliveryterms",length =250)
 	private String deliveryTerms;
-	@Column(name = "payterms")
+	@Column(name = "payterms",length =250)
 	private String payTerms;
-	@Column(name = "grwaiverno")
+	@Column(name = "grwaiverno",length =25)
 	private String grWaiverNo;
 	@Column(name = "grwaiverdate")
 	private LocalDate grWaiverDate;
-	@Column(name = "bankname")
+	@Column(name = "bankname",length =25)
 	private String bankName;
 	@Column(name = "grwaiverclosuredate")
 	private LocalDate grWaiverClosureDate;
-	@Column(name = "gatepassno")
+	@Column(name = "gatepassno",length =25)
 	private String gatePassNo;
 	@Column(name = "gatepassdate")
 	private LocalDate gatePassDate;
-	@Column(name = "insuranceno")
+	@Column(name = "insuranceno",length =25)
 	private String insuranceNo;
-	@Column(name = "billto")
+	@Column(name = "billto",length =150)
 	private String billTo;
-	@Column(name = "shipto")
+	@Column(name = "shipto",length =150)
 	private String shipTo;
-	@Column(name = "automailergroup")
+	@Column(name = "automailergroup",length =25)
 	private String automailerGroup;
-	@Column(name = "docketno")
+	@Column(name = "docketno",length =25)
 	private String docketNo;
-	@Column(name = "noofboxes")
+	@Column(name = "noofboxes",length =25)
 	private String noOfBoxes;
-	@Column(name = "pkguom")
+	@Column(name = "pkguom",length =25)
 	private String pkgUom;
 	@Column(name = "grossweight")
 	private String grossWeight;
-	@Column(name = "gwtuom")
+	@Column(name = "gwtuom",length =25)
 	private String gwtUom;
-	@Column(name = "transportname")
+	@Column(name = "transportname",length =150)
 	private String transportName;
 	@Column(name = "transporterdate")
 	private LocalDate transporterDate;
-	@Column(name = "packingslipno")
+	@Column(name = "packingslipno",length =25)
 	private String packingSlipNo;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String bin;
-	@Column(name = "taxtype")
+	@Column(name = "taxtype",length =25)
 	private String taxType;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
 	
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName ="DeliveryChallan" ;
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode ="DC";
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze = true;

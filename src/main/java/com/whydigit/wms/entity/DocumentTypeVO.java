@@ -33,22 +33,22 @@ public class DocumentTypeVO {
 	@Column(name = "documenttypeid")
 	private Long id;
 	
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode;
 	
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName;
 	
-	@Column(name = "description")
+	@Column(name = "description",length =150)
 	private String description;
 	
-	@Column(name = "doccode")
+	@Column(name = "doccode",length =25)
 	private String docCode;
 	
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
 	
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	
 	@Column(name="orgid")

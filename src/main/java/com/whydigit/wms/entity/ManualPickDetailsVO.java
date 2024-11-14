@@ -1,7 +1,6 @@
 package com.whydigit.wms.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +11,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.whydigit.wms.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,21 +29,21 @@ public class ManualPickDetailsVO {
 	@Column(name = "manualpickdetailsid")
 	private Long id;
 
-	@Column(name = "serialno")
+	@Column(name = "serialno",length =25)
 	private String serialno;
-	@Column(name = "partcode")
+	@Column(name = "partcode",length =25)
 	private String partcode;
-	@Column(name = "partdescripition")
+	@Column(name = "partdescripition",length =150)
 	private String partdescripition;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchno;
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnno;
-	@Column(name = "location")
+	@Column(name = "location",length =25)
 	private String location;
-	@Column(name = "lotno")
+	@Column(name = "lotno",length =25)
 	private String lotno;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
 	@Column(name = "orderqty")
 	private int orderqty;
@@ -53,29 +51,29 @@ public class ManualPickDetailsVO {
 	private int avlqty;
 	@Column(name = "pickqty")
 	private int pickqty;
-	@Column(name = "weight")
+	@Column(name = "weight",length =25)
 	private String weight;
-	@Column(name = "rate")
+	@Column(name = "rate",length =25)
 	private String rate;
-	@Column(name = "amount")
+	@Column(name = "amount",length =25)
 	private String amount;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdby;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedby;
-	@Column(name = "company")
+	@Column(name = "company",length =25)
 	private String company;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "userid")
+	@Column(name = "userid",length =25)
 	private String userid;
-	@Column(name = "cancelremark")
+	@Column(name = "cancelremark",length =25)
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screencode;
 
 	@JsonBackReference

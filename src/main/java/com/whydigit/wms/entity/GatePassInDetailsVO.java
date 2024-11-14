@@ -31,27 +31,27 @@ public class GatePassInDetailsVO {
 	@Column(name = "gatepassindetailsid")
 	private Long id;
 
-	@Column(name = "sno")
+	@Column(name = "sno",length =25)
 	private String sNo;
 	@Column(name = "orgid")
 	private String orgId;
-	@Column(name = "irnohaw")
+	@Column(name = "irnohaw",length =25)
 	private String irNoHaw;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
 	@Column(name = "invoicedate")
 	private LocalDate invoiceDate;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partcode")
+	@Column(name = "partcode",length =25)
 	private String partCode;
-	@Column(name = "partdescription")
+	@Column(name = "partdescription",length =150)
 	private String partDescription;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
-	@Column(name = "unit")
+	@Column(name = "unit",length =25)
 	private String unit;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
 	@Column(name = "invqty")
 	private int invQty;
@@ -63,7 +63,7 @@ public class GatePassInDetailsVO {
 	private int damageQty;
 	@Column(name = "grnqty")
 	private int grnQty;
-	@Column(name = "subunit")
+	@Column(name = "subunit",length =25)
 	private String subUnit;
 	@Column(name = "substockshortqty")
 	private int subStockShortQty;
@@ -73,11 +73,11 @@ public class GatePassInDetailsVO {
 	private double weight;
 	@Column(name = "rate")
 	private double rate;
-	@Column(name = "rowno")
+	@Column(name = "rowno",length =25)
 	private String rowNo;
 	@Column(name = "amount")
 	private double amount;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
 	@Column(name = "expdate")
 	private LocalDate expDate;

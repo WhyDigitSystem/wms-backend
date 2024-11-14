@@ -28,9 +28,9 @@ public class UserLoginClientAccessVO {
 	@Column(name="userloginclientaccessid")
 	private long id;
 	
-	@Column(name="client")
+	@Column(name="client",length =150)
 	private String client;
-	@Column(name="customer")
+	@Column(name="customer",length =150)
 	private String customer;
 	
 	@JsonBackReference
