@@ -1,5 +1,6 @@
 package com.whydigit.wms.repo;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -727,10 +728,16 @@ Set<Object[]> getExpDetailsForMaterials(Long orgId, String branchCode, String cl
 		+ "COUNT(*) AS ordercount\r\n"
 		+ "FROM  pickrequest\r\n"
 		+ "WHERE \r\n"
-		+ "DATE(docdate) = CURDATE() and orgid=?1 and branchcode=?2 and client=?3 and warehouse=?4\r\n"
+		+ "DATE(docdate) = CURDATE() and orgid=?1 and branchcode=?2 and client=?3  and warehouse=?4\r\n"
 		+ "GROUP BY \r\n"
 		+ "DATE(docdate)")
 Set<Object[]> getPickRequest(Long orgId, String branchCode, String client, String warehouse);
+
+List<StockDetailsVO> findByOrgIdAndBranchAndBranchCodeAndClient(Long orgid, String branch, String branch2,
+		String client);
+
+@Query(nativeQuery = true,value = "select case when stockfreeze=1 then 'true' else 'false' end freezestatus from stockdetails where orgid=?1 and branch=?2  and branchcode=?3 and client=?4  group by stockfreeze")
+boolean getStockFreezeStatus(Long orgId, String branch, String branchCode, String client);
 
 
 
