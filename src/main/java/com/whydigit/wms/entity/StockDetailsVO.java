@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -177,6 +179,10 @@ public class StockDetailsVO {
 //	private String screenCode;
 	@Column(name = "finyear")
 	private String finYear;
+	@Column(name="stockfreeze")
+	private boolean stockFreeze=false;
+	@Column(name="stockpreviousstatus",length =25)
+	private String stockPreviousStatus;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

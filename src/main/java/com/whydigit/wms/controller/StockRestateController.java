@@ -28,13 +28,13 @@ import com.whydigit.wms.service.StockRestateService;
 
 @RestController
 @RequestMapping("/api/stockRestate")
-public class StockRestateController extends BaseController{
-	
+public class StockRestateController extends BaseController {
+
 	public static final Logger LOGGER = LoggerFactory.getLogger(StockRestateController.class);
-	
+
 	@Autowired
 	StockRestateService stockRestateService;
-	
+
 	@GetMapping("/getAllStockRestate")
 	public ResponseEntity<ResponseDTO> getAllStockRestate(@RequestParam Long orgId, @RequestParam String finYear,
 			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String client,
@@ -304,9 +304,8 @@ public class StockRestateController extends BaseController{
 	}
 
 	@GetMapping("/getToBinDetails")
-	public ResponseEntity<ResponseDTO> getToBinDetails(@RequestParam Long orgId,
-			@RequestParam String branchCode, @RequestParam String warehouse, @RequestParam String client,
-			@RequestParam String tranferFromFlag) {
+	public ResponseEntity<ResponseDTO> getToBinDetails(@RequestParam Long orgId, @RequestParam String branchCode,
+			@RequestParam String warehouse, @RequestParam String client, @RequestParam String tranferFromFlag) {
 		String methodName = "getToBinDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -336,7 +335,8 @@ public class StockRestateController extends BaseController{
 	@GetMapping("/getFillGridDetailsForStockRestate")
 	public ResponseEntity<ResponseDTO> getFillGridDetailsForStockRestate(@RequestParam Long orgId,
 			@RequestParam String branchCode, @RequestParam String warehouse, @RequestParam String client,
-			@RequestParam String tranferFromFlag, @RequestParam String tranferToFlag,@RequestParam(required = false) String entryNo) {
+			@RequestParam String tranferFromFlag, @RequestParam String tranferToFlag,
+			@RequestParam(required = false) String entryNo) {
 		String methodName = "getFillGridDetailsForStockRestate()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -345,7 +345,8 @@ public class StockRestateController extends BaseController{
 		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
 
 		try {
-			fillGridDetails = stockRestateService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse, client, tranferFromFlag, tranferToFlag,entryNo);
+			fillGridDetails = stockRestateService.getFillGridDetailsForStockRestate(orgId, branchCode, warehouse,
+					client, tranferFromFlag, tranferToFlag, entryNo);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -363,11 +364,11 @@ public class StockRestateController extends BaseController{
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 	@PostMapping("/ExcelUploadForStockRestate")
 	public ResponseEntity<ResponseDTO> ExcelUploadForStockRestate(@RequestParam MultipartFile[] files,
 			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {
+			@RequestParam(required = false) String createdBy, String customer, String client, String finYear,
+			String branch, String branchCode, String warehouse) {
 		String methodName = "ExcelUploadForStockRestate()";
 		int totalRows = 0;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -375,7 +376,8 @@ public class StockRestateController extends BaseController{
 		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			stockRestateService.ExcelUploadForStockRestate(files, type, orgId, createdBy, customer,  client,  finYear,  branch,  branchCode, warehouse);
+			stockRestateService.ExcelUploadForStockRestate(files, type, orgId, createdBy, customer, client, finYear,
+					branch, branchCode, warehouse);
 
 			// Retrieve the counts after processing
 			totalRows = stockRestateService.getTotalRows(); // Get total rows processed
@@ -403,5 +405,50 @@ public class StockRestateController extends BaseController{
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	@PutMapping("/createStockFreeze")
+	public ResponseEntity<ResponseDTO> createStockFreeze(@RequestParam Long orgId, @RequestParam String branch,
+			@RequestParam String branchCode, @RequestParam String client, @RequestParam String freezeStatus) {
+		String methodName = "createStockFreeze()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			String freezeMessage = stockRestateService.stockFreeze(orgId, branch, branchCode, client, freezeStatus);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, freezeMessage);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getStockFreezeStatus")
+	public ResponseEntity<ResponseDTO> getStockFreezeStatus(@RequestParam Long orgId, @RequestParam String branch,
+			@RequestParam String branchCode, @RequestParam String client) {
+		String methodName = "getStockFreezeStatus()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			boolean freezeStatus = stockRestateService.getStockFreezeStatus(orgId, branch, branchCode, client);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, freezeStatus);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	
 
 }
