@@ -240,7 +240,7 @@ public class PutawayController extends BaseController{
 
 		@GetMapping("/getPutawayForDashBoard")
 		public ResponseEntity<ResponseDTO> getPutawayForDashBoard(@RequestParam Long orgId,
-				@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client, @RequestParam int month) {
+				@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client, @RequestParam(required = false) String month) {
 			String methodName = "getPutawayForDashBoard()";
 			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 			String errorMsg = null;

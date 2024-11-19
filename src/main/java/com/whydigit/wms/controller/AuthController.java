@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -56,6 +57,7 @@ public class AuthController extends BaseController {
 			authService.signup(signUpRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
+			
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, signUpRequest.getEmail(),
 					errorMsg);
 		}
@@ -71,7 +73,7 @@ public class AuthController extends BaseController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<ResponseDTO> login(@Valid @RequestBody LoginFormDTO loginRequest) {
+	public ResponseEntity<ResponseDTO> login(@Valid @RequestBody LoginFormDTO loginRequest,HttpServletRequest httpRequest) {
 		String methodName = "login()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -79,7 +81,7 @@ public class AuthController extends BaseController {
 		ResponseDTO responseDTO = null;
 		UserResponseDTO userResponseDTO = null;
 		try {
-			userResponseDTO = authService.login(loginRequest);
+			userResponseDTO = authService.login(loginRequest,httpRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, loginRequest.getUserName(),
@@ -90,7 +92,7 @@ public class AuthController extends BaseController {
 			responseObjectsMap.put(UserConstants.KEY_USER_VO, userResponseDTO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_LOGIN_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

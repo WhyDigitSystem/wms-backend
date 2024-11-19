@@ -34,43 +34,43 @@ public class CustomerVO {
 	@Column(name = "customerid")
 	private Long id;
 
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customerName;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customershortname")
+	@Column(name = "customershortname",length =150)
 	private String customerShortName;
-	@Column(name = "panno")
+	@Column(name = "panno",length =25)
 	private String panNo;
-	@Column(name = "contactperson")
+	@Column(name = "contactperson",length =150)
 	private String contactPerson;
-	@Column(name = "mobilenumber")
+	@Column(name = "mobilenumber",length =25)
 	private String mobileNumber;
-	@Column(name = "gstregistration")
+	@Column(name = "gstregistration",length =25)
 	private String gstRegistration;
-	@Column(name = "emailid")
+	@Column(name = "emailid",length =25)
 	private String emailId;
-	@Column(name = "groupof")
+	@Column(name = "groupof",length =25)
 	private String groupOf;
-	@Column(name = "tanno")
+	@Column(name = "tanno",length =25)
 	private String tanNo;
-	@Column(name = "address1")
+	@Column(name = "address1",length =150)
 	private String address1;
-	@Column(name = "address2")
+	@Column(name = "address2",length =150)
 	private String address2;
-	@Column(name = "gstno")
+	@Column(name = "gstno",length =25)
 	private String gstNo;
-	@Column(name = "city")
+	@Column(name = "city",length =25)
 	private String city;
-	@Column(name = "state")
+	@Column(name = "state",length =25)
 	private String state;
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String country;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active;

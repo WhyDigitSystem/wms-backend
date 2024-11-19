@@ -24,7 +24,6 @@ import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.LocationMovementVO;
-import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.service.LocationMovementService;
 
 @RestController

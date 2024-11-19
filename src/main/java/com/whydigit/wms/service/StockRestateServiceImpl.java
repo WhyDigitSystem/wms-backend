@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
-import org.apache.poi.ss.usermodel.DataFormatter;
-
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -612,7 +610,44 @@ public class StockRestateServiceImpl implements StockRestateService {
 	        return successfulUploads;
 	    }
 
+	    @Override
+	    @Transactional // Ensures all database operations are part of a single transaction
+	    public String stockFreeze(Long orgid, String branch, String branchCode, String client, String freezeStatus) {
+	        String message = null;
 
-	
+	        // Fetch all relevant stock details
+	        List<StockDetailsVO> stockDetailsVOList = stockDetailsRepo.findByOrgIdAndBranchAndBranchCodeAndClient(orgid, branch, branchCode, client);
+
+	        if (freezeStatus.equalsIgnoreCase("freeze")) {
+	            // Freeze stock items
+	            for (StockDetailsVO detailsVO : stockDetailsVOList) {
+	                detailsVO.setStockFreeze(true); // Set stockFreeze to true
+	                detailsVO.setStockPreviousStatus(detailsVO.getStatus()); // Save current status to stockPreviousStatus
+	                detailsVO.setStatus("F"); // Set status to "F" for freeze
+	            }
+	            stockDetailsRepo.saveAll(stockDetailsVOList); // Save all changes in one batch
+	            message = "Successfully Freezed";
+	        } else {
+	            // Unfreeze stock items
+	            for (StockDetailsVO detailsVO : stockDetailsVOList) {
+	                detailsVO.setStockFreeze(false); // Set stockFreeze to false
+	                String preStatus=detailsVO.getStockPreviousStatus();
+	                String currStatus=detailsVO.getStatus();
+	                detailsVO.setStatus(preStatus);
+	                detailsVO.setStockPreviousStatus(currStatus);// Restore the previous status
+	            }
+	            stockDetailsRepo.saveAll(stockDetailsVOList); // Save all changes in one batch
+	            message = "Successfully UnFreezed";
+	        }
+
+	        return message;
+	    }
+
+		@Override
+		public boolean getStockFreezeStatus(Long orgId, String branch, String branchCode, String client) {
+			
+			boolean message= stockDetailsRepo.getStockFreezeStatus(orgId, branch, branchCode, client);
+			return message;
+		}
 
 }

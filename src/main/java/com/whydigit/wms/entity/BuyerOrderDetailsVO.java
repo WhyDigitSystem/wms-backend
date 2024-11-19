@@ -31,19 +31,19 @@ public class BuyerOrderDetailsVO {
 	@Column(name = "buyerorderdetailsid")
 	private Long id;
 
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
 	@Column(name = "qty")
 	private int qty;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 	@Column(name = "availqty")
 	private int availQty;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String reMarks;
 	@Column(name="expdate")
 	private LocalDate expDate;

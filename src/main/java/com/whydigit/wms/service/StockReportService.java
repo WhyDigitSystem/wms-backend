@@ -1,9 +1,14 @@
 package com.whydigit.wms.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.EncryptedDocumentException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.whydigit.wms.exception.ApplicationException;
 
 @Service
 public interface StockReportService {
@@ -46,5 +51,12 @@ public interface StockReportService {
 			String client);
 	List<Map<String, Object>> getBatchForBatchWiseReport(Long orgId, String branchCode,String warehouse, String customer,
 			String client,String partNo);
+	
+	void uploadStockDetails(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
+			String branch, String branchCode, String createdBy, String FinYear) throws ApplicationException, EncryptedDocumentException, IOException;
+
+	int getTotalRows();
+
+	int getSuccessfulUploads();
 
 }

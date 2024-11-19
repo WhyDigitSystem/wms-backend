@@ -43,7 +43,7 @@ public interface DeKittingRepo extends JpaRepository<DeKittingVO, Long> {
 	Set<Object[]> findGrnNoFromStockForDeKittingParent(Long orgId, String branch, String branchCode, String client,
 			String partNo);
 
-	@Query(nativeQuery = true, value = "select partno,partdesc,sku from material where active=1 and orgid=?1 and client=?3 and cbranch='ALL' or cbranch=?2 and parentchildkey='CHILD'\r\n"
+	@Query(nativeQuery = true, value = "select partno,partdesc,sku from material where active=1 and orgid=?1 and client=?3 and (cbranch='ALL' or cbranch=?2) and parentchildkey='CHILD'\r\n"
 			+ "            group by partno,partdesc,sku")
 	Set<Object[]> findPartNoAndPartDescAndSkuFromMaterialForDeKittingChild(Long orgId, String branchCode,
 			String client);

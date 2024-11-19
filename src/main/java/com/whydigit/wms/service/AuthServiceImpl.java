@@ -1,7 +1,7 @@
 package com.whydigit.wms.service;
 
+import java.net.http.HttpRequest;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -120,7 +122,7 @@ public class AuthServiceImpl implements AuthService {
 //		}
 		UserVO userVO = getUserVOFromSignUpFormDTO(signUpRequest);
 		userRepo.save(userVO);
-		userService.createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
+		userService.createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_ADD_ACCOUNT,userVO.getOrgId());
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
 
@@ -133,7 +135,7 @@ public class AuthServiceImpl implements AuthService {
 				signUpFormDTO.getEmail())) {
 			userVO = userRepo.findByUserNameOrEmailOrMobileNo(signUpFormDTO.getUserName(), signUpFormDTO.getEmail(),
 					signUpFormDTO.getEmail());
-		
+
 			List<UserLoginRolesVO> roles = loginRolesRepo.findByUserVO(userVO);
 			loginRolesRepo.deleteAll(roles);
 			List<UserLoginClientAccessVO> client = clientAccessRepo.findByUserVO(userVO);
@@ -143,7 +145,9 @@ public class AuthServiceImpl implements AuthService {
 		}
 		userVO.setUserName(signUpFormDTO.getUserName());
 		try {
-			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(signUpFormDTO.getPassword())));
+			if (StringUtils.isNotEmpty(signUpFormDTO.getPassword())) {
+				userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(signUpFormDTO.getPassword())));
+			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
@@ -152,7 +156,7 @@ public class AuthServiceImpl implements AuthService {
 		userVO.setNickName(signUpFormDTO.getNickName());
 		userVO.setEmail(signUpFormDTO.getEmail());
 		userVO.setMobileNo(signUpFormDTO.getMobileNo());
-		userVO.setUserType(signUpFormDTO.getUserType());
+		userVO.setUserType(signUpFormDTO.getUserType().toLowerCase());
 		userVO.setActive(signUpFormDTO.isActive());
 		userVO.setOrgId(signUpFormDTO.getOrgId());
 
@@ -199,7 +203,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public UserResponseDTO login(LoginFormDTO loginRequest) {
+	public UserResponseDTO login(LoginFormDTO loginRequest,HttpServletRequest httpRequest) throws ApplicationException {
 		String methodName = "login()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(loginRequest) || StringUtils.isBlank(loginRequest.getUserName())
@@ -210,8 +214,12 @@ public class AuthServiceImpl implements AuthService {
 				loginRequest.getUserName());
 
 		if (ObjectUtils.isNotEmpty(userVO)) {
+			if(userVO.getActive()=="In-Active")
+			{
+				throw new ApplicationException("Your account is In-Active, Please Contact Administrator");
+			}
 			if (compareEncodedPasswordWithEncryptedPassword(loginRequest.getPassword(), userVO.getPassword())) {
-				updateUserLoginInformation(userVO);
+				updateUserLoginInformation(userVO,httpRequest);
 			} else {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_PASSWORD_MISMATCH);
 			}
@@ -330,7 +338,7 @@ public class AuthServiceImpl implements AuthService {
 				}
 				userRepo.save(userVO);
 				userService.createUserAction(userVO.getUserName(), userVO.getId(),
-						UserConstants.USER_ACTION_TYPE_CHANGE_PASSWORD);
+						UserConstants.USER_ACTION_TYPE_CHANGE_PASSWORD,userVO.getOrgId());
 			} else {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_OLD_PASSWORD_MISMATCH);
 			}
@@ -357,7 +365,7 @@ public class AuthServiceImpl implements AuthService {
 			}
 			userRepo.save(userVO);
 			userService.createUserAction(userVO.getUserName(), userVO.getId(),
-					UserConstants.USER_ACTION_TYPE_RESET_PASSWORD);
+					UserConstants.USER_ACTION_TYPE_RESET_PASSWORD,userVO.getOrgId());
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 		}
@@ -382,15 +390,15 @@ public class AuthServiceImpl implements AuthService {
 		return refreshTokenDTO;
 	}
 
-
 	/**
 	 * @param userVO
+	 * @param httpRequest 
 	 */
-	private void updateUserLoginInformation(UserVO userVO) {
+	private void updateUserLoginInformation(UserVO userVO, HttpServletRequest httpRequest) {
 		try {
 			userVO.setLoginStatus(true);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_TYPE_LOGIN);
+			userService.createUserLoginAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_TYPE_LOGIN,httpRequest,userVO.getOrgId());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);
@@ -401,7 +409,7 @@ public class AuthServiceImpl implements AuthService {
 		try {
 			userVO.setLoginStatus(false);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_TYPE_LOGOUT);
+			userService.createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_TYPE_LOGOUT,userVO.getOrgId());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);

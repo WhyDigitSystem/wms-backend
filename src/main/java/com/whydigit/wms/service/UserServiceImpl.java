@@ -1,7 +1,8 @@
 package com.whydigit.wms.service;
 
 import java.util.Date;
-import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,13 +40,28 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	TokenRepo tokenRepo;
-
-	public void createUserAction(String userName, Long usersId, String actionType) {
+	
+	public void createUserAction(String userName, Long usersId, String actionType,Long orgId) {
 		try {
 			UserActionVO userActionVO = new UserActionVO();
 			userActionVO.setUserName(userName);
 			userActionVO.setUsersId(usersId);
+			userActionVO.setOrgId(orgId);
 			userActionVO.setActionType(actionType);
+			userActionRepo.save(userActionVO);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+	}
+
+	public void createUserLoginAction(String userName, Long usersId, String actionType, HttpServletRequest httpRequest,Long orgId) {
+		try {
+			UserActionVO userActionVO = new UserActionVO();
+			userActionVO.setUserName(userName);
+			userActionVO.setUsersId(usersId);
+			userActionVO.setOrgId(orgId);
+			userActionVO.setActionType(actionType);
+			userActionVO.setIpAddress(httpRequest.getRemoteAddr());
 			userActionRepo.save(userActionVO);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -66,7 +82,7 @@ public class UserServiceImpl implements UserService {
 //			userVO.setActive(false);
 			userVO.setAccountRemovedDate(new Date());
 			userRepo.save(userVO);
-			createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
+			createUserAction(userVO.getUserName(), userVO.getId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT,userVO.getOrgId());
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
 		}

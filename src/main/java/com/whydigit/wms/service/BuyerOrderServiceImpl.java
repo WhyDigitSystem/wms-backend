@@ -794,11 +794,12 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	@Override
 	public List<Map<String, Object>> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse,
-			String client, String finYear,int month) {
+			String client, String finYear,String month) {
 		Set<Object[]> resultq = boExcelUploadRepo.getBuyerorderDashboard(orgId, branchCode, warehouse, client,
 				finYear,month);
 		return getBuyerorder(resultq);
 	}
+	
 
 	private List<Map<String, Object>> getBuyerorder(Set<Object[]> resultq) {
 		List<Map<String, Object>> details1 = new ArrayList<>();

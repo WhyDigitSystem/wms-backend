@@ -29,33 +29,33 @@ public class EmployeeVO {
 	@Column(name = "employeeid")
 	private Long id;
 
-	@Column(name = "employeecode")
+	@Column(name = "employeecode",length =25)
 	private String employeeCode;
-	@Column(name = "employee")
+	@Column(name = "employee",length =150)
 	private String employeeName;
-	@Column(name = "gender")
+	@Column(name = "gender",length =25)
 	private String gender;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "department")
+	@Column(name = "department",length =25)
 	private String department;
-	@Column(name = "designation")
+	@Column(name = "designation",length =25)
 	private String designation;
-	@Column(name = "dateofbirth")
+	@Column(name = "dateofbirth",length =25)
 	private String dateOfBirth;
 	@Column(name = "joiningdate")
 	private String joiningDate;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemark;
 	@Column(name = "active")
 	private boolean active;

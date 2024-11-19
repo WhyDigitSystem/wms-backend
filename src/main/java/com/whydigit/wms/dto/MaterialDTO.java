@@ -48,5 +48,5 @@ public class MaterialDTO {
 	private Float weight;
 	private String movingType;
 	private String rackLevel;
-	private String lowQty;
+	private int lowQty;
 }

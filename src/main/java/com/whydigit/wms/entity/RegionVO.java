@@ -28,15 +28,15 @@ public class RegionVO {
 	@SequenceGenerator(name = "regiongen", sequenceName = "regionseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "regionid")
 	private Long id;
-   	@Column(name = "regioncode")
+   	@Column(name = "regioncode",length =25)
 	private String regionCode;
-	@Column(name = "region")
+	@Column(name = "region",length =25)
 	private String regionName;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;

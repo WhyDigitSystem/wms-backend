@@ -27,17 +27,17 @@ public class LocationTypeVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "locationtypegen")
 	@SequenceGenerator(name = "locationtypegen", sequenceName = "locationtypeseq", initialValue = 1000000001, allocationSize = 1)
 	private Long id;
-	@Column(name="locationtype")
+	@Column(name="locationtype",length =25)
 	private String binType;
-	@Column(name="createdby")
+	@Column(name="createdby",length =25)
 	private String createdBy;
-	@Column(name="updatedby")
+	@Column(name="updatedby",length =25)
 	private String updatedBy;
 	@Column(name="orgid")
 	private Long orgId;
 	private boolean cancel;
 	private boolean active;
-	@Column(name="core")
+	@Column(name="core",length =25)
 	private String core;
 	
 	@JsonGetter("active")

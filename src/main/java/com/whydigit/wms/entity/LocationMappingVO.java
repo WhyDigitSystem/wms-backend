@@ -31,29 +31,33 @@ public class LocationMappingVO {
 	@SequenceGenerator(name = "locationmappinggen", sequenceName = "locationmappingseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmappingid")
 	private Long id;
+	@Column(name = "branch",length =25)
 	private String branch;
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
-	@Column(name = "clienttype")
+	@Column(name = "clienttype",length =25)
 	private String clientType;
-	@Column(name = "rowno")
+	@Column(name = "rowno",length =25)
 	private String rowNo;
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "levelno")
+	@Column(name = "levelno",length =25)
 	private String levelNo;
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
 	private boolean cancel;
-	@Column(name = "cancelremark")
+	@Column(name = "cancelremark",length =150)
 	private String cancelRemark;
 	private boolean active;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
 
 	@JsonManagedReference

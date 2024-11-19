@@ -28,21 +28,21 @@ public class LocationMappingDetailsVO {
 	@SequenceGenerator(name = "locationmappingdetailsgen", sequenceName = "locationmappingdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmappingdetailsid")
 	private Long id;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "rowno")
+	@Column(name = "rowno",length =25)
 	private String rowNo;
-	@Column(name = "levelno")
+	@Column(name = "levelno",length =25)
 	private String levelNo;
-	@Column(name = "bincategory")
+	@Column(name = "bincategory",length =25)
 	private String binCategory;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String bin;
-	@Column(name = "binstatus")
+	@Column(name = "binstatus",length =25)
 	private String binStatus;
-	@Column(name = "binseq")
+	@Column(name = "binseq",length =25)
 	private String binSeq;
-	@Column(name = "core")
+	@Column(name = "core",length =25)
 	private String core;
 	private boolean active;
 

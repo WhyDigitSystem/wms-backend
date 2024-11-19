@@ -32,39 +32,39 @@ public class LocationMovementDetailsVO {
 	@SequenceGenerator(name = "locationmovementdetailsgen", sequenceName = "locationmovementdetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "locationmovementdetailsid")
 	private Long id;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
-	@Column(name = "grnno")
+	@Column(name = "grnno",length =25)
 	private String grnNo;
 	@Column(name = "grndate")
 	private LocalDate grnDate;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
-	@Column(name = "bin")
+	@Column(name = "bin",length =25)
 	private String bin;
-	@Column(name = "bintype")
+	@Column(name = "bintype",length =25)
 	private String binType;
-	@Column(name = "binclass")
+	@Column(name = "binclass",length =25)
 	private String binClass;
-	@Column(name = "celltype")
+	@Column(name = "celltype",length =25)
 	private String cellType;
-	@Column(name = "core")
+	@Column(name = "core",length =25)
 	private String core;
-	@Column(name = "tobin")
+	@Column(name = "tobin",length =25)
 	private String toBin;
-	@Column(name = "tobinclass")
+	@Column(name = "tobinclass",length =25)
 	private String toBinClass;
-	@Column(name = "tobintype")
+	@Column(name = "tobintype",length =25)
 	private String toBinType;
-	@Column(name = "tocelltype")
+	@Column(name = "tocelltype",length =25)
 	private String toCellType;
-	@Column(name = "tocore")
+	@Column(name = "tocore",length =25)
 	private String toCore;
 	@Column(name = "fromqty")
 	private int fromQty;
@@ -72,9 +72,9 @@ public class LocationMovementDetailsVO {
 	private int toQty;
 	@Column(name = "remainingqty")
 	private int remainingQty;
-	@Column(name = "qcflag")
+	@Column(name = "qcflag",length =25)
 	private String qcFlag;
-	@Column(name = "status")
+	@Column(name = "status",length =25)
 	private String status;
 	@Column(name = "expdate")
 	private LocalDate expDate;
