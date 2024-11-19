@@ -40,7 +40,7 @@ public class SecurityConfig {
 						"/api/stockprocess/**", "/api/warehousemastercontroller/**",
 						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**","/api/buyerOrder/**",
 						"/api/warehousemastercontroller/**", "/api/vasanth/**", "/api/vascontroller/**","/api/kitting/**",
-						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/cycleCount/**",
+						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/cycleCount/**","/api/ticket/**",
 						"/api/inward/**", "/api/user/**", "/api/guhan/**", "/api/outward/**","/api/dashboardController/**","/api/Reports/**",
 						"/api/gatePassIn/**", "/api/grn/**", "/api/putaway/**", "/api/stockRestate/**","/api/salesReturn/**","/api/locationMovement/**","/api/deKitting/**","/api/pickrequest/**"
 								+ "")

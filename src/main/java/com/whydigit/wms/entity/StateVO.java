@@ -29,23 +29,23 @@ public class StateVO {
 	@Column(name="stateid")
 	private Long id;
 	
-	@Column(name="statecode")
+	@Column(name="statecode",length =25)
 	private String stateCode;
-	@Column(name="state")
+	@Column(name="state",length =25)
 	private String stateName;
-	@Column(name="country")
+	@Column(name="country",length =25)
     private String country;
-	@Column(name="region")
+	@Column(name="region",length =25)
     private String region;
-	@Column(name="statenumber")
+	@Column(name="statenumber",length =25)
 	 private String stateNumber;
 	@Column(name="active")
     private boolean active;
 //	@Column(name="userid")
 //    private String userId;
-    @Column(name="createdby")
+    @Column(name="createdby",length =25)
     private String createdBy;
-    @Column(name="modifiedby")
+    @Column(name="modifiedby",length =25)
 	private String updatedBy;
     @Column(name="orgid")
 	private Long orgId;

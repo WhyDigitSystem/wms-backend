@@ -386,11 +386,12 @@ public class BuyerOrderController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	
 	@GetMapping("/getBuyerorderDashboard")
 	public ResponseEntity<ResponseDTO> getBuyerorderDashboard(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse,
 			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear,
-			@RequestParam(required = true) int month) {
+			@RequestParam(required = false) String month) {
 		String methodName = "getBuyerorderDashboard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;

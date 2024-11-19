@@ -29,31 +29,31 @@ public class CompanyVO {
 	@Column(name = "companyid")
 	private Long id;
 
-    @Column(name = "companycode")
+    @Column(name = "companycode",length =25)
 	private String companyCode;
-    @Column(name = "companyname")
+    @Column(name = "companyname",length =150)
 	private String companyName;
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String country;
-	@Column(name = "currency")
+	@Column(name = "currency",length =25)
 	private String currency;
-	@Column(name = "maincurrency")
+	@Column(name = "maincurrency",length =25)
 	private String mainCurrency;
-	@Column(name = "address")
+	@Column(name = "address",length =150)
 	private String address;
-	@Column(name = "zipcode")
+	@Column(name = "zipcode",length =25)
 	private String zip;
-	@Column(name = "city")
+	@Column(name = "city",length =25)
 	private String city;
-	@Column(name = "state")
+	@Column(name = "state",length =25)
 	private String state;
-	@Column(name = "phone")
+	@Column(name = "phone",length =25)
 	private String phone;
-	@Column(name = "email")
+	@Column(name = "email",length =25)
 	private String email;
-	@Column(name = "website")
+	@Column(name = "website",length =25)
 	private String webSite;
-	@Column(name = "notes")
+	@Column(name = "notes",length =25)
 	private String note;
 //	@Column(name = "userd")
 //	private String userId;
@@ -61,20 +61,22 @@ public class CompanyVO {
 	private boolean active;
 //	@Column(unique = true)
 //	private String dupchk;
-	@Column(name = "employeename")
+	@Column(name = "employeename",length =150)
 	private String employeeName;
-	@Column(name = "employeecode")
+	@Column(name = "employeecode",length =25)
 	private String employeeCode;
 	@Column(name = "password")
 	private String password;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "cancel")
 	private boolean cancel;
 	private int role;
+	@Column(name = "ceo",length =25)
 	private String ceo;
+	@Column(name = "gst",length =25)
 	private String gst;
 	
 	

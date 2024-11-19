@@ -33,37 +33,37 @@ public class GrnExcelUploadVO {
     @Column(name = "sno")
     private Integer sno;
 
-    @Column(name = "entryno")
+    @Column(name = "entryno",length =25)
     private String entryNo;
 
     @Column(name = "entrydate")
     private LocalDate entryDate;  // Use String or LocalDate depending on your format
 
-    @Column(name = "suppliershortname")
+    @Column(name = "suppliershortname",length =150)
     private String supplierShortname;
 
-    @Column(name = "modeofshipment")
+    @Column(name = "modeofshipment",length =25)
     private String modeOfShipment;
 
-    @Column(name = "carrier")
+    @Column(name = "carrier",length =150)
     private String carrier;
 
-    @Column(name = "lrhblno")
+    @Column(name = "lrhblno",length =25)
     private String lrHblNo;
 
-    @Column(name = "invdcno")
+    @Column(name = "invdcno",length =25)
     private String invDcNo;
 
     @Column(name = "invdate")
     private LocalDate invDate;
 
-    @Column(name = "partno")
+    @Column(name = "partno",length =25)
     private String partNo;
 
-    @Column(name = "partdesc")
+    @Column(name = "partdesc",length =150)
     private String partDesc;
 
-    @Column(name = "sku")
+    @Column(name = "sku",length =25)
     private String sku;
 
     @Column(name = "invqty")
@@ -78,7 +78,7 @@ public class GrnExcelUploadVO {
     @Column(name = "substockqty")
     private Integer subStockQty;
 
-    @Column(name = "batchno")
+    @Column(name = "batchno",length =25)
     private String batchNo;
 
     @Column(name = "batchdate")
@@ -99,35 +99,35 @@ public class GrnExcelUploadVO {
     @Column(name = "rate")
     private Double rate;
 
-    @Column(name = "remark")
+    @Column(name = "remark",length =150)
     private String remark;
     
     @Column(name = "orgid")
     private Long orgId;
 
     
-    @Column(name = "customer")
+    @Column(name = "customer",length =150)
     private String customer;
 
-    @Column(name = "client")
+    @Column(name = "client",length =150)
     private String client;
 
-    @Column(name = "finyear")
+    @Column(name = "finyear",length =10)
     private String finYear;
 
-    @Column(name = "branch")
+    @Column(name = "branch",length =25)
     private String branch;
 
-    @Column(name = "branchcode")
+    @Column(name = "branchcode",length =25)
     private String branchCode;
 
-    @Column(name = "warehouse")
+    @Column(name = "warehouse",length =25)
     private String warehouse;
 
-    @Column(name = "createdby")
+    @Column(name = "createdby",length =25)
     private String createdBy;
 
-    @Column(name = "modifiedby")
+    @Column(name = "modifiedby",length =25)
     private String updatedBy;
 
     @Column(name = "active")
@@ -136,7 +136,7 @@ public class GrnExcelUploadVO {
     @Column(name = "cancel")
     private boolean cancel = false;
 
-    @Column(name = "cancelremarks")
+    @Column(name = "cancelremarks",length =150)
     private String cancelRemarks;
     
     @Embedded

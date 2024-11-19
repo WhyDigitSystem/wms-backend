@@ -30,21 +30,21 @@ public class CarrierDetailsVO {
 	@Column(name = "carrierdetailsid")
 	private Long id;
 
-	@Column(name = "addresstype")
+	@Column(name = "addresstype",length =25)
 	private String addresstype;
-	@Column(name = "address")
+	@Column(name = "address",length =150)
 	private String address;
-	@Column(name = "state")
+	@Column(name = "state",length =25)
 	private String state;
-	@Column(name = "zipcode")
+	@Column(name = "zipcode",length =10)
 	private String zipcode;
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String country;
-	@Column(name = "contact")
+	@Column(name = "contact",length =25)
 	private String contact;
-	@Column(name = "phone")
+	@Column(name = "phone",length =25)
 	private String phone;
-	@Column(name = "emailid")
+	@Column(name = "emailid",length =150)
 	private String emailid;
 
 	@ManyToOne

@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;
 
-import com.whydigit.wms.dto.MultipleBODTO;
 import com.whydigit.wms.dto.MultiplePickDTO;
 import com.whydigit.wms.dto.PickRequestDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
@@ -39,7 +38,7 @@ public interface PickRequestService {
 	
 	Map<String, Object> createMultiplePickRequest(List<MultiplePickDTO> multiplePickDTO1) throws ApplicationException;
 
-	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String warehouse,
+	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String month,
 			String finyear);
 
 	

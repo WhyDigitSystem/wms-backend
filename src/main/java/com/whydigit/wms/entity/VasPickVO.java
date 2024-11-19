@@ -32,39 +32,39 @@ public class VasPickVO {
 	@SequenceGenerator(name = "vaspickgen", sequenceName = "vaspickseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "vaspickid")
 	private Long id;
-	@Column(name = "picbin")
+	@Column(name = "picbin",length =25)
 	private String picBin;
-	@Column(name = "screenname")
+	@Column(name = "screenname",length =25)
 	private String screenName="VAS PICK";
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screenCode="VPR";
 	@Column(name = "docdate")
 	private LocalDate docDate = LocalDate.now();
-	@Column(name = "docid",unique =true)
+	@Column(name = "docid",unique =true,length =25)
 	private String docId;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 	@Column(name = "freeze")
 	private boolean freeze;
@@ -72,10 +72,11 @@ public class VasPickVO {
 	private int totalOrderQty;
 	@Column(name = "pickedqty")
 	private int pickedQty;
-	@Column(name = "statestatus")
+	@Column(name = "statestatus",length =10)
     private String stateStatus;
-	@Column(name = "stockstate")
+	@Column(name = "stockstate",length =25)
 	private String stockState;
+	@Column(name = "status",length =10)
 	private String status;
 	
 	

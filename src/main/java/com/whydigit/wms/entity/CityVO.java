@@ -28,19 +28,19 @@ public class CityVO {
 	@Column(name = "cityid")
 	private Long id;
 
-	@Column(name = "citycode")
+	@Column(name = "citycode",length =10)
 	private String cityCode;
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String country;
-	@Column(name = "city")
+	@Column(name = "city",length =25)
 	private String cityName;
-	@Column(name = "state")
+	@Column(name = "state",length =25)
 	private String state;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;

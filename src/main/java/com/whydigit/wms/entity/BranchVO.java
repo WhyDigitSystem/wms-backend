@@ -29,45 +29,45 @@ public class BranchVO {
 	@Column(name = "branchid")
 	private Long id;
 
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchode")
+	@Column(name = "branchode",length =25)
 	private String branchCode;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "addressline1")
+	@Column(name = "addressline1",length =150)
 	private String addressLine1;
-	@Column(name = "addressline2")
+	@Column(name = "addressline2",length =150)
 	private String addressLine2;
-	@Column(name = "panno")
+	@Column(name = "panno",length =25)
 	private String pan;
-	@Column(name = "gstin")
+	@Column(name = "gstin",length =25)
 	private String gstIn;
-	@Column(name = "phone")
+	@Column(name = "phone",length =25)
 	private String phone;
-	@Column(name = "state")
+	@Column(name = "state",length =25)
 	private String state;
-	@Column(name = "city")
+	@Column(name = "city",length =25)
 	private String city;
-	@Column(name = "pincode")
+	@Column(name = "pincode",length =25)
 	private String pinCode;
-	@Column(name = "country")
+	@Column(name = "country",length =25)
 	private String country;
-	@Column(name = "stateno")
+	@Column(name = "stateno",length =10)
 	private String stateNo;
-	@Column(name = "statecode")
+	@Column(name = "statecode",length =10)
 	private String stateCode;
-	@Column(name = "region")
+	@Column(name = "region",length =25)
 	private String region;
-	@Column(name = "lccurrency")
+	@Column(name = "lccurrency",length =25)
 	private String lccurrency;
 	@Column(name = "cancel")
 	private boolean cancel;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active;

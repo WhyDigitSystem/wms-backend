@@ -33,53 +33,53 @@ public class ManualPickVO {
 	@Column(name = "manualpickid")
 	private Long id;
 
-	@Column(name = "transactiontype")
+	@Column(name = "transactiontype",length =25)
 	private String transactiontype;
-	@Column(name = "docid",unique = true)
+	@Column(name = "docid",unique = true,length =25)
 	private String docid;
 	@Column(name = "docdate")
 	private LocalDate docdate;
-	@Column(name = "buyerrefno")
+	@Column(name = "buyerrefno",length =25)
 	private String buyerrefno;
-	@Column(name = "buyerorderno")
+	@Column(name = "buyerorderno",length =25)
 	private String buyerorderno;
 	@Column(name = "buyerrefdate")
 	private LocalDate buyerrefdate;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceno;
-	@Column(name = "clientname")
+	@Column(name = "clientname",length =150)
 	private String clientname;
-	@Column(name = "shortname")
+	@Column(name = "shortname",length =150)
 	private String shortname;
-	@Column(name = "clientaddress")
+	@Column(name = "clientaddress",length =150)
 	private String clientaddress;
-	@Column(name = "customername")
+	@Column(name = "customername",length =25)
 	private String customername;
-	@Column(name = "customeraddress")
+	@Column(name = "customeraddress",length =150)
 	private String customeraddress;
-	@Column(name = "noofboxes")
+	@Column(name = "noofboxes",length =25)
 	private String noofboxes;
-	@Column(name = "duedays")
+	@Column(name = "duedays",length =25)
 	private String duedays;
-	@Column(name = "outtime")
+	@Column(name = "outtime",length =25)
 	private String outtime;
 	@Column(unique = true)
 	private String dupchk;
-	@Column(name = "cretaedby")
+	@Column(name = "cretaedby",length =25)
 	private String createdby;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedby;
-	@Column(name = "company")
+	@Column(name = "company",length =25)
 	private String company;
 	@Column(name = "camcel")
 	private boolean cancel;
-	@Column(name = "userid")
+	@Column(name = "userid",length =25)
 	private String userid;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelremark;
 	@Column(name = "active")
 	private boolean active;
-	@Column(name = "screencode")
+	@Column(name = "screencode",length =10)
 	private String screencode;
 
 	@JsonManagedReference

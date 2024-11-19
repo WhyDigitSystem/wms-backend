@@ -34,7 +34,7 @@ public class FinancialYearVO {
 	private Long finYearId;
 	@Column(name="finyear")
 	private int finYear;
-	@Column(name="finyearidentifier")
+	@Column(name="finyearidentifier",length =10)
 	private String finYearIdentifier;
 	@Column(name="startdate")
 	private LocalDate startDate;
@@ -46,9 +46,9 @@ public class FinancialYearVO {
 	private boolean closed;
 	@Column(name="orgid")
 	private Long orgId;
-	@Column(name="createdby")
+	@Column(name="createdby",length =25)
 	private String createdBy;
-	@Column(name="modifiedby")
+	@Column(name="modifiedby",length =25)
 	private String updatedBy;
 	private boolean active;
 	

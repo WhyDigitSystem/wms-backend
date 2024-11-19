@@ -31,58 +31,58 @@ public class PutawayExcelUploadVO {
     private Long orgId;
     
     
-    @Column(name = "grnno")
+    @Column(name = "grnno",length =25)
     private String grnNo;
 
     @Column(name = "grndate")
     private LocalDate grnDate; 
 
-    @Column(name = "entryno")
+    @Column(name = "entryno",length =25)
     private String entryNo;
 
     @Column(name = "entrydate")
     private LocalDate entryDate; 
     
-    @Column(name = "shortname")
+    @Column(name = "shortname",length =25)
     private String shortName;
 
-    @Column(name = "modeofshipment")
+    @Column(name = "modeofshipment",length =25)
     private String modeOfShipment;
 
-    @Column(name = "carrier")
+    @Column(name = "carrier",length =150)
     private String carrier;
 
-    @Column(name = "type")
+    @Column(name = "type",length =25)
     private String type;
 
-    @Column(name = "core")
+    @Column(name = "core",length =25)
     private String core;
 
-    @Column(name = "binpick")
+    @Column(name = "binpick",length =25)
     private String binPick;
 
-    @Column(name = "lrhawbhblno")
+    @Column(name = "lrhawbhblno",length =25)
     private String lrHawbhblNo;
 
-    @Column(name = "indcno")
+    @Column(name = "indcno",length =25)
     private String indcNo;
 
-    @Column(name = "bintype")
+    @Column(name = "bintype",length =25)
     private String binType;
 
-    @Column(name = "partno")
+    @Column(name = "partno",length =25)
     private String partNo;
 
-    @Column(name = "batchno")
+    @Column(name = "batchno",length =25)
     private String batchNo;
 
-    @Column(name = "partdesc")
+    @Column(name = "partdesc",length =150)
     private String partDesc;
 
-    @Column(name = "sku")
+    @Column(name = "sku",length =25)
     private String sku;
 
-    @Column(name = "ssku")
+    @Column(name = "ssku",length =25)
     private String ssku;
 
     @Column(name = "invqty")
@@ -112,7 +112,7 @@ public class PutawayExcelUploadVO {
     @Column(name = "binqty")
     private Integer binQty;
 
-    @Column(name = "binno")
+    @Column(name = "binno",length =25)
     private String binNo;
 
     @Column(name = "weight")
@@ -121,48 +121,48 @@ public class PutawayExcelUploadVO {
     @Column(name = "rate")
     private Double rate;
 
-    @Column(name = "remarks")
+    @Column(name = "remarks",length =25)
     private String remarks;
 
-    @Column(name = "vehicletype")
+    @Column(name = "vehicletype",length =25)
     private String vehicleType;
 
-    @Column(name = "vehicleno")
+    @Column(name = "vehicleno",length =25)
     private String vehicleNo;
 
-    @Column(name = "drivername")
+    @Column(name = "drivername",length =25)
     private String driverName;
 
-    @Column(name = "contact")
+    @Column(name = "contact",length =25)
     private String contact;
 
-    @Column(name = "goodsdesc")
+    @Column(name = "goodsdesc",length =150)
     private String goodsDesc;
 
-    @Column(name = "securitypersonname")
+    @Column(name = "securitypersonname",length =25)
     private String securityPersonName;
     
-	@Column(name = "customer")
+	@Column(name = "customer",length =150)
 	private String customer;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client;
-	@Column(name = "finyear")
+	@Column(name = "finyear",length =10)
 	private String finYear;
-	@Column(name = "branch")
+	@Column(name = "branch",length =25)
 	private String branch;
-	@Column(name = "branchcode")
+	@Column(name = "branchcode",length =25)
 	private String branchCode;
-	@Column(name = "warehouse")
+	@Column(name = "warehouse",length =25)
 	private String warehouse;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
 	private boolean active = true;
 	@Column(name = "cancel")
 	private boolean cancel = false;
-	@Column(name = "cancelremarks")
+	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
 }
 

@@ -200,7 +200,7 @@ public class DashboardController extends BaseController{
 	@GetMapping("/getInBoundOrderPerMonth")
 	public ResponseEntity<ResponseDTO> getGrnOrderDetailsPerMonth(@RequestParam Long orgId,
 			@RequestParam String branchCode, @RequestParam String warehouse,@RequestParam String client,
-			@RequestParam int finYear,@RequestParam int month) {
+			@RequestParam int finYear,@RequestParam String month) {
 		String methodName = "getGrnOrderDetailsPerMonth()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -255,7 +255,7 @@ public class DashboardController extends BaseController{
 	@GetMapping("/getOutBoundOrderPerMonth")
 	public ResponseEntity<ResponseDTO> getOutBoundOrderPerMonth(@RequestParam Long orgId,
 			@RequestParam String branchCode, @RequestParam String warehouse,@RequestParam String client,
-		@RequestParam int finYear,@RequestParam int month) {
+		@RequestParam int finYear,@RequestParam String month) {
 		String methodName = "getOutBoundOrderPerMonth()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;

@@ -1,6 +1,5 @@
 package com.whydigit.wms.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -33,15 +32,15 @@ public class SalesReturnDetailsVO {
 	@SequenceGenerator(name = "salesreturndetailsgen", sequenceName = "salesreturndetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "salesreturndetailsid")
 	private Long id;
-	@Column(name = "lrno")
+	@Column(name = "lrno",length =25)
 	private String LRNo;
-	@Column(name = "invoiceno")
+	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
-	@Column(name = "partno")
+	@Column(name = "partno",length =25)
 	private String partNo;
-	@Column(name = "partdesc")
+	@Column(name = "partdesc",length =150)
 	private String partDesc;
-	@Column(name = "sku")
+	@Column(name = "sku",length =25)
 	private String sku;
 	@Column(name = "pickqty")
 	private int pickQty;
@@ -49,19 +48,19 @@ public class SalesReturnDetailsVO {
 	private int retQty;
 	@Column(name = "damageqty")
 	private int damageQty;
-	@Column(name = "batchno")
+	@Column(name = "batchno",length =25)
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "noofbin")
+	@Column(name = "noofbin",length =25)
 	private String noOfBin;
 	@Column(name = "binqty")
 	private int binQty;
-	@Column(name = "remarks")
+	@Column(name = "remarks",length =150)
 	private String remarks;
-	@Column(name = "qcflag")
+	@Column(name = "qcflag",length =10)
 	private String qcFlag;
 	
 	@ManyToOne

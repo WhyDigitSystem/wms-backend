@@ -32,13 +32,13 @@ public class ClientVO {
 
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "client")
+	@Column(name = "client",length =150)
 	private String client; // caps
-	@Column(name = "clientcode")
+	@Column(name = "clientcode",length =25)
 	private String clientCode; // caps
-	@Column(name = "clienttype")
+	@Column(name = "clienttype",length =25)
 	private String clientType;
-	@Column(name = "fifofife")
+	@Column(name = "fifofife",length =25)
 	private String fifofife;
 	
 	private boolean active=true;

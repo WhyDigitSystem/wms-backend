@@ -23,7 +23,6 @@ import com.whydigit.wms.entity.DeKittingParentVO;
 import com.whydigit.wms.entity.DeKittingVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.StockDetailsVO;
-import com.whydigit.wms.entity.VasPutawayDetailsVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DeKittingChildRepo;

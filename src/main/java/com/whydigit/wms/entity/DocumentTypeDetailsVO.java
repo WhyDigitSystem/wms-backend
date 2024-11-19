@@ -29,19 +29,19 @@ public class DocumentTypeDetailsVO {
 	@Column(name = "documenttypedetailsid")
 	private Long id;
 	
-	@Column(name="client")
+	@Column(name="client",length =150)
 	private String client;
 	
-	@Column(name="clientcode")
+	@Column(name="clientcode",length =25)
 	private String clientCode;
 	
-	@Column(name="screencode")
+	@Column(name="screencode",length =10)
 	private String screenCode;
 	
-	@Column(name="screenname")
+	@Column(name="screenname",length =25)
 	private String screenName;
 	
-	@Column(name="doccode")
+	@Column(name="doccode",length =25)
 	private String docCode;
 	
 	@Column(name="orgid")

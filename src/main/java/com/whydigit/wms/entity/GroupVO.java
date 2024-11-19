@@ -28,14 +28,14 @@ public class GroupVO {
 	@SequenceGenerator(name = "itemgroupgen",sequenceName = "itemgroupseq",initialValue = 1000000001,allocationSize = 1)
 	@Column(name="itemgroupid")
 	private Long id;
-	@Column(name = "groupname")
+	@Column(name = "groupname",length =25)
 	private String groupName;
 	private boolean active;
 	@Column(name = "orgid")
 	private Long orgId;
-	@Column(name = "createdby")
+	@Column(name = "createdby",length =25)
 	private String createdBy;
-	@Column(name = "modifiedby")
+	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	private boolean cancel;
 	

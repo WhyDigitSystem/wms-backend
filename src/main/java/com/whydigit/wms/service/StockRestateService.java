@@ -51,5 +51,11 @@ public interface StockRestateService {
 	int getTotalRows();
 
 	int getSuccessfulUploads();
+	
+	
+	
+	String stockFreeze(Long orgid,String branch,String branchCode,String client,String freezeStatus);
+
+	boolean getStockFreezeStatus(Long orgId, String branch, String branchCode, String client);
 
 }

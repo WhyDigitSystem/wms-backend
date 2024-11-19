@@ -427,6 +427,8 @@ public class GrnServiceImpl implements GrnService {
 			details.put("batchNo", grid[12] != null ? grid[12].toString() : "");
 			details.put("weight", grid[13] != null ? grid[13].toString() : "");
 			details.put("id", grid[14] != null ? Integer.parseInt(grid[14].toString()) : 0);
+			details.put("batchDate", grid[15] != null ? grid[15].toString() : "");
+			details.put("expDate", grid[16] != null ? grid[16].toString() : "");
 			gridDetails.add(details);
 		}
 		return gridDetails;
@@ -606,7 +608,7 @@ public class GrnServiceImpl implements GrnService {
 
 	@Override
 	public List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode,
-			String client,String warehouse,int month) {
+			String client,String warehouse,String month) {
 		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse,month);
 		return getGrnStatus(getGrnStatus);
 	}
