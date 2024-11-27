@@ -218,11 +218,6 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 				}
 				groupVO.setGroupName(groupDTO.getGroupName());
 			}
-
-			if (groupRepo.existsByGroupNameAndOrgId(groupDTO.getGroupName(), groupDTO.getOrgId())) {
-				String errorMessage = String.format("This Group: %s already  Exist", groupDTO.getGroupName());
-				throw new ApplicationException(errorMessage);
-			}
 			message = "Group update successfully";
 		}
 
