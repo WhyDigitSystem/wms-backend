@@ -34,5 +34,7 @@ public class CompanyDTO {
 	private String ceo;
 	private String gst;
 	private int role;
+	
+	
 
 }

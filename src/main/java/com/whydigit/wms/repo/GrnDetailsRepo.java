@@ -12,8 +12,6 @@ public interface GrnDetailsRepo extends JpaRepository<GrnDetailsVO, Long> {
 
 	List<GrnDetailsVO> findByGrnVO(GrnVO grnVO);
 
-
-
 	@Query(nativeQuery = true,value="Select bintype from wv_locationstatus where bintype=?1 and orgid=?2 and branchcode=?3 and warehouse=?4 and client =?5 group By bintype ")
 	String getBinType(String binType, Long orgId, String branchCode, String warehouse, String client);
 
