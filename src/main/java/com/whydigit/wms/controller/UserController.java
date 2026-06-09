@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.ResponseDTO;
-import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.service.UserService;
 
 @RestController
@@ -27,31 +26,7 @@ public class UserController extends BaseController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/getUserById")
-	public ResponseEntity<ResponseDTO> getUserById(@RequestParam Long userId) {
-		String methodName = "getUserById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		String errorMsg = null;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		ResponseDTO responseDTO = null;
-		UserVO userVO = null;
-		try {
-			userVO = userService.getUserById(userId);
-		} catch (Exception e) {
-			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_ID, methodName, userId, errorMsg);
-		}
-		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.GET_USER_INFORMATION_SUCCESS_MESSAGE);
-			responseObjectsMap.put(UserConstants.KEY_USER_VO, userVO);
-			responseDTO = createServiceResponse(responseObjectsMap);
-		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					UserConstants.GET_USER_INFORMATION_FAILED_MESSAGE, errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
-	}
+	
 
 	@GetMapping("/removeUser")
 	public ResponseEntity<ResponseDTO> removeUser(@RequestParam String userName) {
@@ -76,4 +51,6 @@ public class UserController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	
 }

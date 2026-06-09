@@ -36,7 +36,7 @@ public class UserPrincipal implements UserDetails {
                 singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new UserPrincipal(
-                user.getUserId(),
+                user.getId(),
                 user.getUserName(),
                 user.getPassword(),
                 authorities

@@ -9,5 +9,7 @@ public class WMSApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WMSApplication.class, args);
 	}
-
+ 
 }
+
+
