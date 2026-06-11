@@ -143,12 +143,13 @@ public class GrnVO {
 	@Column(name = "destinationto",length =150)
 	private String destinationTo;
 	@Column(name = "noofbins",length =25)
-	private String noOfBins;
+	private Long noOfBins;
 	@Column(name = "invoiceno",length =25)
 	private String invoiceNo;
 	@Column(name = "remarks",length =150)
 	private String remarks;
-	
+	@Column(name = "capacity")
+	private String capacity;
 	@JsonManagedReference
 	@OneToMany(mappedBy = "grnVO", cascade = CascadeType.ALL)
 	private List<GrnDetailsVO> grnDetailsVO;

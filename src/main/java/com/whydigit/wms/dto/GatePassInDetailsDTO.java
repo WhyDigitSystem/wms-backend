@@ -34,4 +34,6 @@ public class GatePassInDetailsDTO {
 	private String remarks;
 	private LocalDate expDate;
 	private LocalDate batchDate;
+	private String qrCode;
+
 }

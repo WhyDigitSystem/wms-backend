@@ -30,7 +30,7 @@ public class GrnDetailsDTO {
 	private int pkgs; 
 	private int noOfBins;
 	private double rate;
-	private String weight; 
+	private Long weight; 
 	private String batchNo;
 	private LocalDate batchDt; 
 	private double amount;
