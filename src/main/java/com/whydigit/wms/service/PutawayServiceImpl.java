@@ -317,6 +317,13 @@ public class PutawayServiceImpl implements PutawayService {
 		putAwayVO.setVehicleNo(putAwayDTO.getVehicleNo());
 		putAwayVO.setVehicleType(putAwayDTO.getVehicleType());
 		putAwayVO.setDriverName(putAwayDTO.getDriverName());
+		
+		putAwayVO.setRemarks(putAwayDTO.getRemarks());
+		putAwayVO.setCreatedDate(putAwayDTO.getCreatedOn());
+
+		putAwayVO.setGoodsDesc(putAwayDTO.getGoodsDesc());
+		putAwayVO.setSecurityName(putAwayDTO.getSecurityName());
+		
 		if (putAwayDTO.getId() != null) {
 
 			List<PutAwayDetailsVO> detailsVOs = putAwayDetailsRepo.findByPutAwayVO(putAwayVO);
