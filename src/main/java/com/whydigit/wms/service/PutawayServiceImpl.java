@@ -353,7 +353,7 @@ public class PutawayServiceImpl implements PutawayService {
 			String celltype = putAwayRepo.getCelltype(putAwayDTO.getOrgId(), putAwayDetailsDTO.getBin());
 			putAwayDetailsVOs.setCellType(celltype);
 			putAwayDetailsVOs.setBinClass(putAwayDTO.getBinClass());
-			putAwayDetailsVOs.setBatchDate(putAwayDetailsDTO.getBatchDate());
+			putAwayDetailsVOs.setBatchDate(putAwayDetailsDTO.getBatchDt());
 			putAwayDetailsVOs.setExpDate(putAwayDetailsDTO.getExpdate());
 			putAwayDetailsVOs.setPutAwayVO(putAwayVO);
 			totalPutawayQty = totalPutawayQty + putAwayDetailsDTO.getPutAwayQty();

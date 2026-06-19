@@ -255,11 +255,11 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 		{
 			if(locationMovementDTO.getEntryNo()==null)
 			{
-				locationMovementDTO.setEntryNo(null);
+				locationMovementVO.setEntryNo(null);
 			}
 			else
 			{
-				locationMovementDTO.setEntryNo(locationMovementDTO.getEntryNo());
+				locationMovementVO.setEntryNo(locationMovementDTO.getEntryNo());
 			}
 		}
 		locationMovementVO.setBranch(locationMovementDTO.getBranch());
@@ -357,6 +357,15 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 	private List<Map<String, Object>> getToBinResult(Set<Object[]> result) {
 		List<Map<String, Object>> details1 = new ArrayList<>();
 		for (Object[] fs : result) {
+			
+			 if ((fs[0] == null || fs[0].toString().trim().isEmpty())
+		                && (fs[1] == null || fs[1].toString().trim().isEmpty())
+		                && (fs[2] == null || fs[2].toString().trim().isEmpty())
+		                && (fs[3] == null || fs[3].toString().trim().isEmpty())
+		                && (fs[4] == null || fs[4].toString().trim().isEmpty())) {
+		            continue; // skip empty row
+		        }
+			 
 			Map<String, Object> part = new HashMap<>();
 			part.put("toBin", fs[0] != null ? fs[0].toString() : "");
 			part.put("toBinType", fs[1] != null ? fs[1].toString() : "");
@@ -498,7 +507,7 @@ public class LocationMovementServiceImpl implements LocationMovementService {
 
 	    @Transactional
 	    @Override
-	    public void ExcelUploadForLm(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException {
+	    public void ExcelUploadForLm(MultipartFile[] files, Long orgId, String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException {
 	        List<LmExcelUploadVO> lmExcelUploadVOVOsToSave = new ArrayList<>();
 	        totalRows = 0;
 	        successfulUploads = 0;

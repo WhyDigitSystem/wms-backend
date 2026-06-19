@@ -46,7 +46,7 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 
 	@Query(nativeQuery = true, value = "select cast(a.sqty as unsigned)sqty from(\r\n"
 			+ "            select partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag,sum(sqty)sqty from stockdetails \r\n"
-			+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and batch=?8 or batch is null\r\n"
+			+ "			where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and bin=?5 AND PARTNO=?6 and grnno=?7 and ( batch=?8 or batch is null )\r\n"
 			+ "			group by partno,partdesc,sku,grnno,grndate,batch,batchdate,expdate,bintype,binclass,celltype,core,bin,qcflag having sum(sqty)>0\r\n"
 			+ "            ) a")
 	Integer findAvlQtyForLocationMovement(Long orgId, String branch, String branchCode, String client, String bin,
