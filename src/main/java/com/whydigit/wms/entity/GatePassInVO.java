@@ -83,6 +83,10 @@ public class GatePassInVO {
 	@Column(name = "cancelremarks",length =150)
 	private String cancelRemark;
 
+	@Column(name = "remarks",length =255)
+	private String remarks;
+
+	
 	@Column(name = "active")
 	private boolean active=true;
 

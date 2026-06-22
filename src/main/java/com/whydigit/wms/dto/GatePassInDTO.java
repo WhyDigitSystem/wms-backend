@@ -3,6 +3,8 @@ package com.whydigit.wms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,7 +36,7 @@ public class GatePassInDTO {
 	private String client;
 	private String customer;
 	private String finYear;
-	
+	private String remarks;
 	private List<GatePassInDetailsDTO> gatePassInDetailsDTO;
 
 }

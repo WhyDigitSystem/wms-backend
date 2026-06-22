@@ -84,6 +84,9 @@ public class GatePassInDetailsVO {
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
 
+	@Column(name = "qrcode",length =255)
+	private String qrCode;
+	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "gatepassid")

@@ -28,6 +28,6 @@ public class PutAwayDetailsDTO {
 	private String sSku;
 	private String cellType;
 	private LocalDate expdate;
-	private LocalDate batchDate;
+	private LocalDate batchDt;
 
 }

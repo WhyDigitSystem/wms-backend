@@ -113,6 +113,16 @@ public class PutAwayVO {
 	@Column(name = "freeze")
 	private boolean freeze;
 	
+	@Column(name = "remarks")
+	private String remarks;
+	@Column(name = "createddate")
+	private String createdDate;
+	
+	@Column(name = "securityname")
+	private String securityName;
+	@Column(name = "goodsDesc")
+	private String goodsDesc;
+	
 	@JsonGetter("active")
 	public String getActive() {
 		return active ? "Active" : "In-Active";

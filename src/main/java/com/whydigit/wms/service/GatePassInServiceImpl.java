@@ -152,6 +152,7 @@ public class GatePassInServiceImpl implements GatePassInService {
 			gatePassInVO.setClient(gatePassInDTO.getClient());
 			gatePassInVO.setCustomer(gatePassInDTO.getCustomer());
 			gatePassInVO.setFinYear(gatePassInDTO.getFinYear());
+			gatePassInVO.setRemarks(gatePassInDTO.getRemarks());
 
 			if (gatePassInDTO.getId() != null) {
 
@@ -176,6 +177,7 @@ public class GatePassInServiceImpl implements GatePassInService {
 				detailsVO.setSku(gatePassInDetailsDTO.getSku());
 				detailsVO.setInvQty(gatePassInDetailsDTO.getInvQty());
 				detailsVO.setRecQty(gatePassInDetailsDTO.getRecQty());
+				detailsVO.setQrCode(gatePassInDetailsDTO.getQrCode());
 
 				int shortQty = gatePassInDetailsDTO.getInvQty() - gatePassInDetailsDTO.getRecQty();
 				detailsVO.setShortQty(shortQty);

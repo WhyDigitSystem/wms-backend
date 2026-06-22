@@ -71,7 +71,7 @@ public class GrnDetailsVO {
 	@Column(name = "pkgs")
 	private int pkgs;
 	@Column(name = "weight",length =25)
-	private String weight;
+	private Long weight;
 	@Column(name = "warehouse",length =25)
 	private String warehouse;
 	@Column(name = "batchno",length =25)
@@ -90,7 +90,6 @@ public class GrnDetailsVO {
 	private LocalDate expDate;
 	@Column(name = "damageremarks",length =150)
 	private String damageRemark;
-	
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "grnid") // Specify the name of the foreign key column

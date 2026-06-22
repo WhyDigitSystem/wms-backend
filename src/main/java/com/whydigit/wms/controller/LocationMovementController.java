@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.LocationMovementDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.LocationMovementVO;
@@ -387,9 +388,17 @@ public class LocationMovementController extends BaseController {
 	}
 
 @PostMapping("/ExcelUploadForLocationMovement")
-	public ResponseEntity<ResponseDTO> ExcelUploadForLocationMovement(@RequestParam MultipartFile[] files,
-			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {
+	public ResponseEntity<ResponseDTO> ExcelUploadForLocationMovement(
+			@RequestParam("files") MultipartFile[] files,
+//	        @RequestParam("type") CustomerAttachmentType type,
+	        @RequestParam("orgId") Long orgId,
+	        @RequestParam("createdBy") String createdBy,
+	        @RequestParam("customer") String customer,
+	        @RequestParam("client") String client,
+	        @RequestParam("finYear") String finYear,
+	        @RequestParam("branch") String branch,
+	        @RequestParam("branchCode") String branchCode,
+	        @RequestParam("warehouse") String warehouse) {
 		String methodName = "ExcelUploadForLocationMovement()";
 		int totalRows = 0;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -397,7 +406,7 @@ public class LocationMovementController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			locationMovementService.ExcelUploadForLm(files, type, orgId, createdBy, customer,  client,  finYear,  branch,  branchCode, warehouse);
+			locationMovementService.ExcelUploadForLm(files, orgId, createdBy, customer,  client,  finYear,  branch,  branchCode, warehouse);
 
 			// Retrieve the counts after processing
 			totalRows = locationMovementService.getTotalRows(); // Get total rows processed

@@ -208,7 +208,7 @@ public class KittingServiceImpl implements KittingService {
 		for (KittingDetails1DTO details1dto : kittingDTO.getKittingDetails1DTO()) {
 			KittingDetails1VO kittingDetails1VO = new KittingDetails1VO();
 			kittingDetails1VO.setPartNo(details1dto.getPartNo());
-			kittingDetails1VO.setPartDescription(details1dto.getPartDescription());
+			kittingDetails1VO.setPartDescription(details1dto.getPartDesc());
 			kittingDetails1VO.setSku(details1dto.getSku());
 			kittingDetails1VO.setGrnNo(details1dto.getGrnNo());
 			kittingDetails1VO.setGrnDate(details1dto.getGrnDate());
@@ -220,7 +220,7 @@ public class KittingServiceImpl implements KittingService {
 			kittingDetails1VO.setBatchDate(details1dto.getBatchDate());
 			kittingDetails1VO.setBin(details1dto.getBin());
 			kittingDetails1VO.setExpDate(details1dto.getExpDate());
-			kittingDetails1VO.setPartDescription(details1dto.getPartDescription());
+			kittingDetails1VO.setPartDescription(details1dto.getPartDesc());
 			kittingDetails1VO.setCore(details1dto.getCore());
 			
 			int avlqty=stockDetailsRepo.getKittingQtyDetails(kittingDTO.getOrgId(), kittingDTO.getBranchCode(), kittingDTO.getClient(), kittingDTO.getWarehouse(),
@@ -247,7 +247,7 @@ public class KittingServiceImpl implements KittingService {
 		for (KittingDetails2DTO details2dto : kittingDTO.getKittingDetails2DTO()) {
 			KittingDetails2VO kittingDetails2VO = new KittingDetails2VO();
 			kittingDetails2VO.setPpartNo(details2dto.getPpartNo());
-			kittingDetails2VO.setPpartDesc(details2dto.getPpartDescription());
+			kittingDetails2VO.setPpartDesc(details2dto.getPpartDesc());
 			kittingDetails2VO.setPsku(details2dto.getPsku());
 			kittingDetails2VO.setPgrnNo(details2dto.getPgrnNo());
 			kittingDetails2VO.setPgrnDate(details2dto.getPgrnDate());
@@ -371,8 +371,13 @@ public class KittingServiceImpl implements KittingService {
 	@Override
 	public int getSqtyByKitting(Long orgId, String branchCode, String client, String warehouse, String partNo,
 			String grnNo, String batch, String bin) {
-		int qtyList = stockDetailsRepo.getKittingQtyDetails(orgId, branchCode, client, warehouse, partNo, grnNo,
-				batch, bin);
+//		int qtyList = stockDetailsRepo.getKittingQtyDetails(orgId, branchCode, client, warehouse, partNo, grnNo,
+//				batch, bin);
+		int qtyList = Optional.ofNullable(
+		        stockDetailsRepo.getKittingQtyDetails(
+		            orgId, branchCode, client, warehouse,
+		            partNo, grnNo, batch, bin)
+		    ).orElse(0);
 		// Return the first result if list is not empty, or 0 otherwise
 		return qtyList;
 	}

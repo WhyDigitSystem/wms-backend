@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class KittingDetails2DTO {
 	private Long id;
 	private String ppartNo;
-	private String ppartDescription;
+	private String ppartDesc;
 	private String psku;
 	private String pgrnNo;
 	private LocalDate pgrnDate;

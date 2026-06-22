@@ -201,7 +201,7 @@ public class GrnServiceImpl implements GrnService {
 				handlingStockInVO.setRecqty(grnDetailsVO.getRecQty());
 				handlingStockInVO.setShortqty(grnDetailsVO.getShortQty());
 				handlingStockInVO.setDamageqty(grnDetailsVO.getDamageQty());
-				handlingStockInVO.setSqty(grnDetailsVO.getDamageQty());
+				handlingStockInVO.setSqty(grnDetailsVO.getShortQty());
 				handlingStockInVO.setPalletqty(grnDetailsVO.getDamageQty());
 				handlingStockInVO.setRpqty(grnDetailsVO.getDamageQty());
 				handlingStockInVO.setQcflag("F");
@@ -264,12 +264,12 @@ public class GrnServiceImpl implements GrnService {
 		grnVO.setGrnDate(grnDTO.getGrnDate());
 		grnVO.setGatePassId(grnDTO.getGatePassId());
 
-		if(!grnDTO.getGatePassId().isEmpty())
-		{
-		GatePassInVO gatePassInVO = gatePassInRepo.findByDocId(grnDTO.getGatePassId());
-		gatePassInVO.setFreeze(true);
-		gatePassInRepo.save(gatePassInVO);
-		}
+//		if(!grnDTO.getGatePassId().isEmpty())
+//		{
+//		GatePassInVO gatePassInVO = gatePassInRepo.findByDocId(grnDTO.getGatePassId());
+//		gatePassInVO.setFreeze(true);
+//		gatePassInRepo.save(gatePassInVO);
+//		}
 		grnVO.setGatePassDate(grnDTO.getGatePassDate());
 		grnVO.setCustomerPo(grnDTO.getCustomerPo());
 		grnVO.setSupplierShortName(grnDTO.getSupplierShortName());
@@ -306,7 +306,9 @@ public class GrnServiceImpl implements GrnService {
 		grnVO.setDestinationTo(grnDTO.getDestinationTo());
 		grnVO.setNoOfBins(grnDTO.getNoOfBins());
 		grnVO.setInvoiceNo(grnDTO.getInvoiceNo());
-		grnVO.setRemarks(grnDTO.getRemarks());;
+		grnVO.setRemarks(grnDTO.getRemarks());
+//		grnVO.setFreeze(grnDTO.isFreeze());
+		grnVO.setCapacity(grnDTO.getCapacity());
 
 		if (ObjectUtils.isNotEmpty(grnVO.getId())) {
 			List<GrnDetailsVO> grnDetailsVO1 = grnDetailsRepo.findByGrnVO(grnVO);

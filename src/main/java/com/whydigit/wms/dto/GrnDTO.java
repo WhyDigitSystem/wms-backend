@@ -53,9 +53,12 @@ public class GrnDTO {
 	private String goodsDescripition;
 	private String destinationFrom;
 	private String destinationTo;
-	private String noOfBins;
+	private Long noOfBins;
 	private String invoiceNo;
+//	private boolean freeze;
 	private String remarks;
+	private String capacity;
+
 	List<GrnDetailsDTO> grnDetailsDTO;
 	
 

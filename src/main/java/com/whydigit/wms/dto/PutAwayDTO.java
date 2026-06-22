@@ -43,8 +43,10 @@ public class PutAwayDTO {
 	private String vehicleType;
 	private String vehicleNo;
 	private String driverName;
-	
-
+	private String createdOn;
+	private String remarks;
+	private String securityName;
+	private String goodsDesc;
 
 	List<PutAwayDetailsDTO> putAwayDetailsDTO;
 	
