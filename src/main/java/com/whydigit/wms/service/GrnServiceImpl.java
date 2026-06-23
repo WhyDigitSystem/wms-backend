@@ -125,7 +125,14 @@ public class GrnServiceImpl implements GrnService {
 		String message;
 
 		if (ObjectUtils.isNotEmpty(grnDTO.getId())) {
+			
+			
 			grnVO = grnRepo.findById(grnDTO.getId()).orElseThrow(() -> new ApplicationException("GRN not found"));
+			
+			int deletedRows = handlingStockInRepo.deleteGrnNo(grnVO.getDocId());
+
+			System.out.println("Deleted Rows : " + deletedRows);
+			System.out.println("DocId : " + grnVO.getDocId());
 
 			if (!grnVO.getEntryNo().equalsIgnoreCase(grnDTO.getEntryNo())) {
 				if (grnRepo.existsByEntryNoAndOrgIdAndClientAndBranchCodeAndWarehouse(grnDTO.getEntryNo(),
