@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.ResponseDTO.MaterialUploadResponseDTO;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.BranchDTO;
@@ -1179,6 +1180,40 @@ public class WarehouseMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PostMapping("/uploadExcelMaterial")
+	public ResponseEntity<ResponseDTO> uploadMaterial(
+	        @RequestParam("files") MultipartFile file,
+	        @RequestParam("orgId") Long orgId,
+	        @RequestParam("createdBy") String createdBy) {
+
+	    String methodName = "uploadMaterial()";
+
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO;
+
+	    try {
+
+	        MaterialUploadResponseDTO uploadResponse =
+	                warehouseMasterService.uploadMaterial(
+	                        file,
+	                        orgId,
+	                        createdBy);
+
+	        responseObjectsMap.put("uploadResult", uploadResponse);
+
+	        responseDTO = createServiceResponse(responseObjectsMap);
+
+	    } catch (Exception e) {
+
+	        responseDTO = createServiceResponseError(
+	                responseObjectsMap,
+	                "Material Upload Failed",
+	                e.getMessage());
+	    }
+
+	    return ResponseEntity.ok(responseDTO);
 	}
 	
 	@GetMapping("/getPartNo")

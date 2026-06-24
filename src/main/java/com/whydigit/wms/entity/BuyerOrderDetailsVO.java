@@ -39,6 +39,8 @@ public class BuyerOrderDetailsVO {
 	private int qty;
 	@Column(name = "batchno",length =25)
 	private String batchNo;
+	@Column(name = "batchdate")
+	private String batchDate;
 	@Column(name = "availqty")
 	private int availQty;
 	@Column(name = "sku",length =25)

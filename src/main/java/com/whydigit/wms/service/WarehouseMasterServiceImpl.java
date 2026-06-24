@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,19 +12,23 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.ResponseDTO.MaterialUploadResponseDTO;
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
 import com.whydigit.wms.dto.CarrierDTO;
@@ -2079,7 +2084,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						materialVO.setCbranch(getStringCellValue(row.getCell(4)).toUpperCase());
 						materialVO.setLowQty(0);
 						materialVO.setParentChildKey(getStringCellValue(row.getCell(5)).toUpperCase());
-
+						materialVO.setStatus("R");
 						// Check for duplicates in the database
 						if (isDuplicatePartNo(orgId, customer, client, getStringCellValue(row.getCell(1)))) {
 							throw new ApplicationException("Duplicate PartNo :'" + getStringCellValue(row.getCell(1))
@@ -2495,6 +2500,251 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			}
 		}
 		return true; // Return true if all headers match
+	}
+	
+	@Override
+	@Transactional
+	public MaterialUploadResponseDTO uploadMaterial(
+	        MultipartFile file,
+	        Long orgId,
+	        String createdBy) throws Exception {
+
+	    MaterialUploadResponseDTO response = new MaterialUploadResponseDTO();
+
+	    try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+
+	        Sheet sheet = workbook.getSheetAt(0);
+
+	        response.setTotalRecords(sheet.getLastRowNum());
+
+	        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+
+	            Row row = sheet.getRow(i);
+
+	            if (row == null) {
+	                continue;
+	            }
+
+	            try {
+
+	                MaterialDTO dto = new MaterialDTO();
+
+	                dto.setOrgId(orgId);
+	                dto.setCreatedBy(createdBy);
+
+	                dto.setItemType(getCellValue(row.getCell(0)));
+	                dto.setPartno(getCellValue(row.getCell(1)));
+	                dto.setPartDesc(getCellValue(row.getCell(2)));
+	                dto.setCustPartno(getCellValue(row.getCell(3)));
+	                dto.setGroupName(getCellValue(row.getCell(4)));
+	                dto.setBarcode(getCellValue(row.getCell(5)));
+	                dto.setStyleCode(getCellValue(row.getCell(6)));
+	                dto.setBaseSku(getCellValue(row.getCell(7)));
+	                dto.setPurchaseUnit(getCellValue(row.getCell(8)));
+	                dto.setStorageUnit(getCellValue(row.getCell(9)));
+	                dto.setFsn(getCellValue(row.getCell(10)));
+	                dto.setSaleUnit(getCellValue(row.getCell(11)));
+	                dto.setType(getCellValue(row.getCell(12)));
+	                dto.setSku(getCellValue(row.getCell(13)));
+	                dto.setSkuQty(getCellValue(row.getCell(14)));
+	                dto.setSsku(getCellValue(row.getCell(15)));
+	                dto.setSskuQty(getCellValue(row.getCell(16)));
+	                dto.setWeightOfSkuAndUom(getCellValue(row.getCell(17)));
+	                dto.setHsnCode(getCellValue(row.getCell(18)));
+	                dto.setParentChildKey(getCellValue(row.getCell(19)));
+	                dto.setCbranch(getCellValue(row.getCell(20)));
+	                dto.setCriticalStockLevel(getCellValue(row.getCell(21)));
+	                dto.setStatus("TRUE");
+	                dto.setCustomer(getCellValue(row.getCell(22)));
+	                dto.setMovingType(getCellValue(row.getCell(23)));
+	                dto.setRackLevel(getCellValue(row.getCell(24)));
+	                dto.setClient(getCellValue(row.getCell(25)));
+	                dto.setWarehouse(getCellValue(row.getCell(26)));
+	                dto.setBranch(getCellValue(row.getCell(27)));
+	                dto.setBranchCode(getCellValue(row.getCell(28)));
+	                dto.setPalletQty(getCellValue(row.getCell(29)));
+	                dto.setActive(true);
+//	                dto.setLength(getFloatValue(row.getCell(32)));
+//	                dto.setBreadth(getFloatValue(row.getCell(33)));
+//	                dto.setHeight(getFloatValue(row.getCell(34)));
+//	                dto.setWeight(getFloatValue(row.getCell(35)));
+	                dto.setLowQty(getIntValue(row.getCell(30)));
+
+	                // Mandatory Validations
+
+	                if (StringUtils.isBlank(dto.getPartno())) {
+	                    throw new ApplicationException("PartNo is mandatory");
+	                }
+
+	                if (StringUtils.isBlank(dto.getPartDesc())) {
+	                    throw new ApplicationException("PartDesc is mandatory");
+	                }
+
+	                if (StringUtils.isBlank(dto.getCustomer())) {
+	                    throw new ApplicationException("Customer is mandatory");
+	                }
+
+	                if (StringUtils.isBlank(dto.getClient())) {
+	                    throw new ApplicationException("Client is mandatory");
+	                }
+
+	                if (StringUtils.isBlank(dto.getWarehouse())) {
+	                    throw new ApplicationException("Warehouse is mandatory");
+	                }
+
+	                dto.setActive(true);
+	                dto.setStatus("Active");
+
+	                // Existing validation inside createUpdateMaterial()
+	                createUpdateMaterial(dto);
+
+	                response.getSuccessRows()
+	                        .add("Row " + (i + 1) + " Uploaded Successfully");
+
+	                response.setSuccessCount(
+	                        response.getSuccessCount() + 1);
+
+	            } catch (Exception e) {
+
+	                response.getErrorRows()
+	                        .add("Row " + (i + 1)
+	                                + " [PartNo : "
+	                                + getCellValue(row.getCell(1))
+	                                + "] : "
+	                                + e.getMessage());
+
+	                response.setFailedCount(
+	                        response.getFailedCount() + 1);
+	            }
+	        }
+	    }
+
+	    return response;
+	}
+	
+	private String getCellValue(Cell cell) {
+
+	    if (cell == null) {
+	        return "";
+	    }
+
+	    switch (cell.getCellType()) {
+
+	    case STRING:
+	        return cell.getStringCellValue().trim();
+
+	    case NUMERIC:
+
+	        if (DateUtil.isCellDateFormatted(cell)) {
+	            return cell.getDateCellValue().toString();
+	        }
+
+	        return String.valueOf(
+	                BigDecimal.valueOf(cell.getNumericCellValue())
+	                        .stripTrailingZeros()
+	                        .toPlainString());
+
+	    case BOOLEAN:
+	        return String.valueOf(cell.getBooleanCellValue());
+
+	    default:
+	        return "";
+	    }
+	}
+	
+	private Double getDoubleValue(Cell cell) {
+
+	    if (cell == null) {
+	        return 0.0;
+	    }
+
+	    try {
+
+	        switch (cell.getCellType()) {
+
+	        case NUMERIC:
+	            return cell.getNumericCellValue();
+
+	        case STRING:
+
+	            String value = cell.getStringCellValue();
+
+	            if (value == null || value.trim().isEmpty()) {
+	                return 0.0;
+	            }
+
+	            return Double.parseDouble(value.trim());
+
+	        default:
+	            return 0.0;
+	        }
+
+	    } catch (Exception e) {
+	        return 0.0;
+	    }
+	}
+	
+	private Float getFloatValue(Cell cell) {
+
+	    if (cell == null) {
+	        return 0f;
+	    }
+
+	    try {
+
+	        switch (cell.getCellType()) {
+
+	        case NUMERIC:
+	            return (float) cell.getNumericCellValue();
+
+	        case STRING:
+
+	            String value = cell.getStringCellValue();
+
+	            if (value == null || value.trim().isEmpty()) {
+	                return 0f;
+	            }
+
+	            return Float.parseFloat(value.trim());
+
+	        default:
+	            return 0f;
+	        }
+
+	    } catch (Exception e) {
+	        return 0f;
+	    }
+	}
+	
+	private Integer getIntValue(Cell cell) {
+
+	    if (cell == null) {
+	        return 0;
+	    }
+
+	    try {
+
+	        switch (cell.getCellType()) {
+
+	        case NUMERIC:
+	            return (int) cell.getNumericCellValue();
+
+	        case STRING:
+	            String value = cell.getStringCellValue();
+
+	            if (value == null || value.trim().isEmpty()) {
+	                return 0;
+	            }
+
+	            return Integer.parseInt(value.trim());
+
+	        default:
+	            return 0;
+	        }
+
+	    } catch (Exception e) {
+	        return 0;
+	    }
 	}
 
 }

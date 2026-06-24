@@ -2,6 +2,7 @@ package com.whydigit.wms.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -216,6 +217,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			detailsVO.setAvailQty(buyerOrderDetailsDTO.getAvailQty());
 			detailsVO.setSku(buyerOrderDetailsDTO.getSku());
 			detailsVO.setExpDate(buyerOrderDetailsDTO.getExpDate());
+			detailsVO.setBatchDate(buyerOrderDetailsDTO.getBatchDate());
 
 			avilQty = avilQty + buyerOrderDetailsDTO.getAvailQty();
 			orderQty = orderQty + buyerOrderDetailsDTO.getQty();
@@ -292,6 +294,11 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 			Map<String, Object> part = new HashMap<>();
 			part.put("batch", fs[0] != null ? fs[0].toString() : "");
 			part.put("expDate", fs[1] != null ? fs[1].toString() : "");
+			part.put("batchDate",
+			        fs[2] != null
+			        ? new SimpleDateFormat("yyyy-MM-dd")
+			                .format((Date) fs[2])
+			        : "");
 			details1.add(part);
 		}
 		return details1;

@@ -10,6 +10,7 @@ import org.apache.poi.EncryptedDocumentException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.whydigit.wms.ResponseDTO.MaterialUploadResponseDTO;
 import com.whydigit.wms.dto.BranchDTO;
 import com.whydigit.wms.dto.BuyerDTO;
 import com.whydigit.wms.dto.CarrierDTO;
@@ -279,6 +280,8 @@ public interface WarehouseMasterService {
 
 	void uploadBuyer(MultipartFile[] files, Long orgId, String customer, String client, String warehouse, String branch,
 			String branchCode, String createdBy)throws ApplicationException, EncryptedDocumentException, IOException;
+
+	MaterialUploadResponseDTO uploadMaterial(MultipartFile file, Long orgId, String createdBy) throws Exception;
 	
 
 	
