@@ -32,8 +32,8 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 	int getAvlQtyforVasPick(Long orgId, String branchCode, String warehouse, String client, String fromBin,
 			String partNo, String grnNo, String batchNo, String status);
 
-	@Query(value = "select batch,expdate from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5\r\n"
-			+ "		group by batch,expdate", nativeQuery = true)
+	@Query(value = "select batch,expdate,batchdate from stockdetails where orgid=?1 and branchcode=?2 and client=?3 and status='R'and warehouse=?4 and partno=?5\r\n"
+			+ "		group by batch,expdate,batchdate", nativeQuery = true)
 	Set<Object[]> getDetails(Long orgId, String branchCode, String client, String warehouse, String partNo);
 
 	@Query(nativeQuery = true, value = "select sum(a.sqty)sqty from(\r\n"

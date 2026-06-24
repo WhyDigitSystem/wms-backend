@@ -195,7 +195,9 @@ public class Views {
     			+ "            b.partdesc,\r\n"
     			+ "            b.batchno,\r\n"
     			+ "            b.expdate sdate,\r\n"
-    			+ "            SUM(b.qty) BOQTY\r\n"
+    			+ "            SUM(b.qty) BOQTY,"
+    			+ "b.batchdate,\r\n"
+    			+ "b.expdate\r\n"
     			+ "       FROM buyerorder a, buyerorderdetails b\r\n"
     			+ "      WHERE a.buyerorderid = b.buyerorderid AND cancel = 0\r\n"
     			+ "   GROUP BY a.orgid,a.finyear,\r\n"
@@ -214,7 +216,7 @@ public class Views {
     			+ "            b.partno,\r\n"
     			+ "            b.partdesc,\r\n"
     			+ "            b.batchno,\r\n"
-    			+ "            b.expdate");
+    			+ "            b.expdate,b.batchdate");
     	
     	jdbcTemplate.execute("CREATE OR REPLACE  VIEW VW_PR as SELECT c.orgid,c.finyear,\r\n"
     			+ "            c.branchcode,\r\n"

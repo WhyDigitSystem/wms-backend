@@ -16,6 +16,7 @@ public class BuyerOrderDetailsDTO {
 	private String partDesc;
 	private int qty;
 	private String batchNo;
+	private String batchDate;
 	private int availQty;
 	private String sku;
 	private String remarks;
