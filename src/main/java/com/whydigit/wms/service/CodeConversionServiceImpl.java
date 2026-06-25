@@ -227,7 +227,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 			codeConversionVO.setBranch(codeConversionDTO.getBranch());
 			codeConversionVO.setBranchCode(codeConversionDTO.getBranchCode());
 			codeConversionVO.setWarehouse(codeConversionDTO.getWarehouse());
-
+			codeConversionVO.setRemarks(codeConversionDTO.getRemarks());
 			if (ObjectUtils.isNotEmpty(codeConversionVO.getId())) {
 				List<CodeConversionDetailsVO> CodeConversionDetailsVO1 = codeConversionDetailsRepo
 						.findByCodeConversionVO(codeConversionVO);
