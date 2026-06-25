@@ -458,4 +458,85 @@ public class StockReportController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/getBuyerOrderFulFilmentReport")
+	public ResponseEntity<ResponseDTO> getBuyerOrderFulFilmentReport(@RequestParam String buyerDocId,
+			@RequestParam String partNo, @RequestParam String fromDate,
+			@RequestParam String toDate, @RequestParam String branchCode,@RequestParam String client
+			) {
+		String methodName = "getBuyerOrderFulFilmentReport()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> buyerOrderFulFilment = new ArrayList<Map<String, Object>>();
+		try {
+			buyerOrderFulFilment = stockReportService.getBuyerOrderFulFilmentReport(buyerDocId, partNo, fromDate, toDate, branchCode, client);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BuyerOrderFulFilment found Successfullly");
+			responseObjectsMap.put("buyerOrderFulFilment", buyerOrderFulFilment);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"BuyerOrderFulFilment information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getLocationStatusReport")
+	public ResponseEntity<ResponseDTO> getLocationStatusReport(@RequestParam String client,
+			@RequestParam String branchCode, @RequestParam String type
+			) {
+		String methodName = "getLocationStatusReport()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> locationStatus = new ArrayList<Map<String, Object>>();
+		try {
+			locationStatus = stockReportService.getLocationStatusReport(client, branchCode, type);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "locationStatus Report found Successfullly");
+			responseObjectsMap.put("locationStatus", locationStatus);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"locationStatus Report information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	
+	@GetMapping("/getBuyerOrderDocIdAndPartNo")
+	public ResponseEntity<ResponseDTO> getBuyerOrderPartNo(@RequestParam Long orgId,@RequestParam String customer,@RequestParam String client,@RequestParam String branchCode) {
+
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO;
+
+	    try {
+	    	List<Map<String, Object>> data = stockReportService.getBuyerOrderPartNo(orgId,customer,client,branchCode);
+
+	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+	                "Buyer Order PartNos Found Successfully");
+	        responseObjectsMap.put("buyerOrder", data);
+
+	        responseDTO = createServiceResponse(responseObjectsMap);
+
+	    } catch (Exception e) {
+	        responseDTO = createServiceResponseError(responseObjectsMap,
+	                "Buyer Order PartNos Failed", e.getMessage());
+	    }
+
+	    return ResponseEntity.ok(responseDTO);
+	}
 }

@@ -59,4 +59,13 @@ public interface StockReportService {
 
 	int getSuccessfulUploads();
 
+	List<Map<String, Object>> getBuyerOrderFulFilmentReport(String buyerDocId, String partNo, String fromDate,
+			String toDate, String branchCode, String client);
+
+	List<Map<String, Object>> getLocationStatusReport(String client, String branchCode, String type);
+
+
+	List<Map<String, Object>> getBuyerOrderPartNo(Long orgId, String customer, String client, String branchCode);
+
+
 }
