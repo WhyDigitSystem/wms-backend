@@ -19,6 +19,7 @@ public class CodeConversionDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
+	private String remarks;
 
 	List<CodeConversionDetailsDTO> CodeConversionDetailsDTO;
 }

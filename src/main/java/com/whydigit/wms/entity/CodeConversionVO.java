@@ -67,6 +67,8 @@ public class CodeConversionVO {
 	private boolean cancel = false;
 	@Column(name = "cancelremarks",length =150)
 	private String cancelRemarks;
+	@Column(name = "remarks")
+	private String remarks;
 	@Column(name = "freeze")
 	private boolean freeze = true;
 	
