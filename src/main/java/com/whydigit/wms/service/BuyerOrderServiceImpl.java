@@ -197,6 +197,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		buyerOrderVO.setBranch(buyerOrderDTO.getBranch());
 		buyerOrderVO.setBranchCode(buyerOrderDTO.getBranchCode());
 		buyerOrderVO.setWarehouse(buyerOrderDTO.getWarehouse());
+		buyerOrderVO.setRemarks(buyerOrderDTO.getRemarks());
 
 		if (buyerOrderDTO.getId() != null) {
 			List<BuyerOrderDetailsVO> detailsVOs = buyerOrderDetailsRepo.findByBuyerOrderVO(buyerOrderVO);

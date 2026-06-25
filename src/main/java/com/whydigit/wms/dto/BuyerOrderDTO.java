@@ -31,7 +31,7 @@ public class BuyerOrderDTO {
 	private String finYear;
 	private String branch;
 	private String branchCode;
-	
+	private String remarks;
 	private String warehouse;
 	
 	private List<BuyerOrderDetailsDTO> buyerOrderDetailsDTO;
