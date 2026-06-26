@@ -55,7 +55,7 @@ public class StockReportServiceImpl implements StockReportService {
 
 	@Autowired
 	BuyerOrderRepo buyerOrderRepo;
-	
+
 	@Override
 	public List<Map<String, Object>> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse,
 			String customer, String client, String partNo) {
@@ -314,7 +314,8 @@ public class StockReportServiceImpl implements StockReportService {
 
 	@Transactional
 	public void uploadStockDetails(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
-			String branch, String branchCode, String createdBy, String FinYear) throws ApplicationException, EncryptedDocumentException, java.io.IOException {
+			String branch, String branchCode, String createdBy, String FinYear)
+			throws ApplicationException, EncryptedDocumentException, java.io.IOException {
 
 		List<StockDetailsVO> stockDetailsToSave = new ArrayList<>();
 		totalRows = 0; // Reset totalRows at the beginning of the method
@@ -358,38 +359,34 @@ public class StockReportServiceImpl implements StockReportService {
 
 							}
 						}
-						
-						String grnNo=getStringCellValue(row.getCell(3));
-						String batchNo=getStringCellValue(row.getCell(5));
+
+						String grnNo = getStringCellValue(row.getCell(3));
+						String batchNo = getStringCellValue(row.getCell(5));
 						// Extract values from the Excel file for specific fields
 						stockDetailsVO.setPartno(materialVO.getPartno());
 						stockDetailsVO.setPartDesc(materialVO.getPartDesc());
 						stockDetailsVO.setSku(materialVO.getSku());
 						stockDetailsVO.setBin(getStringCellValue(row.getCell(8)));
 						stockDetailsVO.setSQty(getNumericCellValue(row.getCell(9)));
-						
+
 						if (grnNo == null || grnNo.trim().isEmpty()) {
 							stockDetailsVO.setGrnNo("OPSTOCK");
 							stockDetailsVO.setGrnDate(LocalDate.now());
-						}
-						else
-						{
+						} else {
 							stockDetailsVO.setGrnNo(grnNo);
-						    stockDetailsVO.setGrnDate(parseDate(getStringCellValue(row.getCell(4))));
+							stockDetailsVO.setGrnDate(parseDate(getStringCellValue(row.getCell(4))));
 						}
-						
+
 						if (batchNo == null || batchNo.trim().isEmpty()) {
-						    stockDetailsVO.setBatch(null);
-						    stockDetailsVO.setBatchDate(null);
-						    stockDetailsVO.setExpDate(null);
-						}
-						else
-						{
+							stockDetailsVO.setBatch(null);
+							stockDetailsVO.setBatchDate(null);
+							stockDetailsVO.setExpDate(null);
+						} else {
 							stockDetailsVO.setBatch(batchNo);
-						    stockDetailsVO.setBatchDate(parseDate(getStringCellValue(row.getCell(6))));
-						    stockDetailsVO.setExpDate(parseDate(getStringCellValue(row.getCell(7))));
+							stockDetailsVO.setBatchDate(parseDate(getStringCellValue(row.getCell(6))));
+							stockDetailsVO.setExpDate(parseDate(getStringCellValue(row.getCell(7))));
 						}
-						
+
 						stockDetailsVO.setSSku(materialVO.getSku());
 						stockDetailsVO.setUpdatedBy(createdBy);
 						stockDetailsVO.setOrgId(orgId);
@@ -434,7 +431,8 @@ public class StockReportServiceImpl implements StockReportService {
 	}
 
 	private boolean isStockHeaderValid(Row row) {
-		List<String> expectedHeaders = Arrays.asList("Part No", "Part Desc", "SKU","Grn No","Grn Date","Batch No","Batch Date","Exp Date", "Bin", "Qty");
+		List<String> expectedHeaders = Arrays.asList("Part No", "Part Desc", "SKU", "Grn No", "Grn Date", "Batch No",
+				"Batch Date", "Exp Date", "Bin", "Qty");
 
 		for (int i = 0; i < expectedHeaders.size(); i++) {
 			String cellValue = getStringCellValue(row.getCell(i));
@@ -475,98 +473,102 @@ public class StockReportServiceImpl implements StockReportService {
 			return 0; // or throw an exception if the cell type is not numeric
 		}
 	}
-	
-	 private LocalDate parseDate(String stringCellValue) {
-	    	try {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/M/yyyy");
-				return LocalDate.parse(stringCellValue, formatter);
+
+	private LocalDate parseDate(String value) {
+
+		if (value == null || value.trim().isEmpty()) {
+			return null;
+		}
+
+		String[] formats = { "M/d/yy", "M/d/yyyy", "dd-MM-yyyy", "dd/MM/yyyy" };
+
+		for (String pattern : formats) {
+			try {
+				return LocalDate.parse(value, DateTimeFormatter.ofPattern(pattern));
 			} catch (Exception e) {
-				return null;
 			}
+		}
+
+		return null;
 	}
-	 
-	 //buyerorderFulfilment
-	 
 
-		@Override
-		public List<Map<String, Object>>  getBuyerOrderFulFilmentReport(String buyerDocId, String partNo, String fromDate,
-				String toDate, String branchCode, String client) {
-			List<Object[]> getDetails = buyerOrderRepo.getBuyerOrderFulFilmentReport(buyerDocId, partNo, fromDate, toDate, branchCode,
-					client);
-			return getBuyerOrderFulFilmentReport(getDetails);
+	// buyerorderFulfilment
+
+	@Override
+	public List<Map<String, Object>> getBuyerOrderFulFilmentReport(String buyerDocId, String partNo, String fromDate,
+			String toDate, String branchCode, String client) {
+		List<Object[]> getDetails = buyerOrderRepo.getBuyerOrderFulFilmentReport(buyerDocId, partNo, fromDate, toDate,
+				branchCode, client);
+		return getBuyerOrderFulFilmentReport(getDetails);
+	}
+
+	private List<Map<String, Object>> getBuyerOrderFulFilmentReport(List<Object[]> getDetails) {
+		List<Map<String, Object>> buyerOrder = new ArrayList<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> buyerOrderReport = new HashMap<>();
+			buyerOrderReport.put("orderNo", st[0] != null ? st[0].toString() : "");
+			buyerOrderReport.put("boDocId", st[1] != null ? st[1].toString() : "");
+			buyerOrderReport.put("boDate", st[2] != null ? st[2].toString() : "");
+			buyerOrderReport.put("buyerName", st[3] != null ? st[3].toString() : "");
+			buyerOrderReport.put("partNo", st[4] != null ? st[4].toString() : "");
+			buyerOrderReport.put("boQty", st[5] != null ? st[5].toString() : "");
+			buyerOrderReport.put("orderQty", st[6] != null ? st[6].toString() : "");
+			buyerOrderReport.put("picked", st[7] != null ? st[7].toString() : "");
+			buyerOrderReport.put("pending", st[8] != null ? st[8].toString() : "");
+			buyerOrderReport.put("prDocId", st[9] != null ? st[9].toString() : "");
+
+			buyerOrder.add(buyerOrderReport);
+		}
+		return buyerOrder;
+	}
+
+	// LocationStatus Report
+
+	@Override
+	public List<Map<String, Object>> getLocationStatusReport(String client, String branchCode, String type) {
+		List<Object[]> getDetails = buyerOrderRepo.getLocationStatusReport(client, branchCode, type);
+		return getLocationStatusReport(getDetails);
+	}
+
+	private List<Map<String, Object>> getLocationStatusReport(List<Object[]> getDetails) {
+		List<Map<String, Object>> locationStatus = new ArrayList<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> locationStatusReport = new HashMap<>();
+			locationStatusReport.put("branchCode", st[0] != null ? st[0].toString() : "");
+			locationStatusReport.put("client", st[1] != null ? st[1].toString() : "");
+			locationStatusReport.put("bin", st[2] != null ? st[2].toString() : "");
+			locationStatusReport.put("sQty", st[3] != null ? st[3].toString() : "");
+			locationStatusReport.put("status", st[4] != null ? st[4].toString() : "");
+
+			locationStatus.add(locationStatusReport);
+		}
+		return locationStatus;
+	}
+
+	@Override
+	public List<Map<String, Object>> getBuyerOrderPartNo(Long orgId, String customer, String client,
+			String branchCode) {
+
+		List<Object[]> details = buyerOrderRepo.getBuyerOrderPartNo(orgId, customer, client, branchCode);
+
+		Map<String, List<String>> grouped = new LinkedHashMap<>();
+
+		for (Object[] row : details) {
+			String docId = row[0] != null ? row[0].toString() : "";
+			String partNo = row[1] != null ? row[1].toString() : "";
+
+			grouped.computeIfAbsent(docId, k -> new ArrayList<>()).add(partNo);
 		}
 
-		private List<Map<String, Object>> getBuyerOrderFulFilmentReport(List<Object[]> getDetails) {
-			List<Map<String, Object>> buyerOrder = new ArrayList<>();
-			for (Object[] st : getDetails) {
-				Map<String, Object> buyerOrderReport = new HashMap<>();
-				buyerOrderReport.put("orderNo", st[0] != null ? st[0].toString() : "");
-				buyerOrderReport.put("boDocId", st[1] != null ? st[1].toString() : "");
-				buyerOrderReport.put("boDate", st[2] != null ? st[2].toString() : "");
-				buyerOrderReport.put("buyerName", st[3] != null ? st[3].toString() : "");
-				buyerOrderReport.put("partNo", st[4] != null ? st[4].toString() : "");
-				buyerOrderReport.put("boQty", st[5] != null ? st[5].toString() : "");
-				buyerOrderReport.put("orderQty", st[6] != null ? st[6].toString() : "");
-				buyerOrderReport.put("picked", st[7] != null ? st[7].toString() : "");
-				buyerOrderReport.put("pending", st[8] != null ? st[8].toString() : "");
-				buyerOrderReport.put("prDocId", st[9] != null ? st[9].toString() : "");
+		List<Map<String, Object>> response = new ArrayList<>();
 
-				buyerOrder.add(buyerOrderReport);
-			}
-			return buyerOrder;
-		}
-		
-		//LocationStatus Report
-		
-		@Override
-		public List<Map<String, Object>>  getLocationStatusReport(String client, String branchCode, String type) {
-			List<Object[]> getDetails = buyerOrderRepo.getLocationStatusReport(client, branchCode,
-					type);
-			return getLocationStatusReport(getDetails);
+		for (Map.Entry<String, List<String>> entry : grouped.entrySet()) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("docId", entry.getKey());
+			map.put("partNo", entry.getValue());
+			response.add(map);
 		}
 
-		private List<Map<String, Object>> getLocationStatusReport(List<Object[]> getDetails) {
-			List<Map<String, Object>> locationStatus = new ArrayList<>();
-			for (Object[] st : getDetails) {
-				Map<String, Object> locationStatusReport = new HashMap<>();
-				locationStatusReport.put("branchCode", st[0] != null ? st[0].toString() : "");
-				locationStatusReport.put("client", st[1] != null ? st[1].toString() : "");
-				locationStatusReport.put("bin", st[2] != null ? st[2].toString() : "");
-				locationStatusReport.put("sQty", st[3] != null ? st[3].toString() : "");
-				locationStatusReport.put("status", st[4] != null ? st[4].toString() : "");
-				
-
-				locationStatus.add(locationStatusReport);
-			}
-			return locationStatus;
-		}
-		
-		@Override
-		public List<Map<String, Object>> getBuyerOrderPartNo(Long orgId,
-		                                                     String customer,
-		                                                     String client,
-		                                                     String branchCode) {
-
-		    List<Object[]> details = buyerOrderRepo.getBuyerOrderPartNo(orgId, customer, client, branchCode);
-
-		    Map<String, List<String>> grouped = new LinkedHashMap<>();
-
-		    for (Object[] row : details) {
-		        String docId = row[0] != null ? row[0].toString() : "";
-		        String partNo = row[1] != null ? row[1].toString() : "";
-
-		        grouped.computeIfAbsent(docId, k -> new ArrayList<>()).add(partNo);
-		    }
-
-		    List<Map<String, Object>> response = new ArrayList<>();
-
-		    for (Map.Entry<String, List<String>> entry : grouped.entrySet()) {
-		        Map<String, Object> map = new HashMap<>();
-		        map.put("docId", entry.getKey());
-		        map.put("partNo", entry.getValue());
-		        response.add(map);
-		    }
-
-		    return response;
-		}
+		return response;
+	}
 }

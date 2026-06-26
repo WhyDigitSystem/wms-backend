@@ -22,6 +22,7 @@ private Long id;
 	private String createdBy;
 	private String stockStatus;
 	private String statusFlag;
+	private String remarks;
 
 	
 	private List<CycleCountDetailsDTO> cycleCountDetailsDTO;
