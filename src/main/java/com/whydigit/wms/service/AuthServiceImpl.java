@@ -249,23 +249,38 @@ public class AuthServiceImpl implements AuthService {
 					responsibilityMap.put("responsibilityName", rolesResponsibilityVO.getResponsibility());
 
 					ResponsibilityVO responsibilityVO = responsibilityRepo
-							.findById(rolesResponsibilityVO.getResponsibilityId()).orElse(null);
+					        .findById(rolesResponsibilityVO.getResponsibilityId())
+					        .orElse(null);
+
 					if (loginRolesVO.getEndDate() == null || !loginRolesVO.getEndDate().isBefore(LocalDate.now())) {
-						if (responsibilityVO != null && responsibilityVO.getScreensVO() != null) {
-							List<String> screensList = new ArrayList<>();
-							for (ScreensVO screenVO : responsibilityVO.getScreensVO()) {
-								screensList.add(screenVO.getScreenName());
-							}
-							responsibilityMap.put("screensVO", screensList);
-						}
-						responsibilityVOList.add(responsibilityMap);
+
+					    if (responsibilityVO != null) {
+
+					        List<String> screensList = new ArrayList<>();
+
+					        if (responsibilityVO.getScreensVO() != null) {
+					            for (ScreensVO screenVO : responsibilityVO.getScreensVO()) {
+					                screensList.add(screenVO.getScreenName());
+					            }
+					        }
+
+					        responsibilityMap.put("responsibilityName", responsibilityVO.getResponsibility());
+					        responsibilityMap.put("screensVO", screensList);
+					    }
+
+					    responsibilityVOList.add(responsibilityMap);
+
 					} else {
-						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-						String endDateFormatted = loginRolesVO.getEndDate().format(formatter);
-						responsibilityMap.put("screensVO", null);
-						responsibilityMap.put("expiredMessage",
-								"Your Role " + loginRolesVO.getRole() + " was expired on " + endDateFormatted);
-						responsibilityVOList.add(responsibilityMap);
+
+					    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+					    String endDateFormatted = loginRolesVO.getEndDate().format(formatter);
+
+					    responsibilityMap.put("responsibilityName", rolesResponsibilityVO.getResponsibility());
+					    responsibilityMap.put("screensVO", new ArrayList<>());
+					    responsibilityMap.put("expiredMessage",
+					            "Your Role " + loginRolesVO.getRole() + " was expired on " + endDateFormatted);
+
+					    responsibilityVOList.add(responsibilityMap);
 					}
 				}
 			}
