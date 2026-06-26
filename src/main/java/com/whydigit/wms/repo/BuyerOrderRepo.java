@@ -93,7 +93,120 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 			String client);
 	
 	
-	
+	@Query(value = "SELECT " +
+	        "orderno, " +
+	        "bodocid, " +
+	        "DATE_FORMAT(bodate,'%d-%b-%Y') AS bodate, " +
+	        "buyername, " +
+	        "partno, " +
+	        "boqty, " +
+	        "orderqty, " +
+	        "SUM(IFNULL(pickedqty,0)) AS picked, " +
+	        "(orderqty - SUM(IFNULL(pickedqty,0))) AS pending, " +
+	        "prdocid " +
+	        "FROM ( " +
+	        "   SELECT " +
+	        "       b.client, " +
+	        "       b.branchcode, " +
+	        "       b.orderno, " +
+	        "       b.docid AS bodocid, " +
+	        "       b.docdate AS bodate, " +
+	        "       b.buyername, " +
+	        "       b.partno, " +
+	        "       b.boqty, " +
+	        "       p.orderqty, " +
+	        "       p.pickedqty, " +
+	        "       p.docid AS prdocid " +
+	        "   FROM vw_bo b " +
+	        "   LEFT JOIN vw_pr p " +
+	        "       ON b.docid = p.buyerordno " +
+	        "      AND b.partno = p.partno " +
+	        "   WHERE (b.docid = ?1 OR 'ALL' = ?1) " +
+	        ") a " +
+	        "WHERE (partno = ?2 OR 'ALL' = ?2) " +
+	        "  AND bodate BETWEEN ?3 AND ?4 " +
+	        "  AND branchcode = ?5 " +
+	        "  AND client = ?6 " +
+	        "GROUP BY " +
+	        "branchcode, " +
+	        "orderno, " +
+	        "bodocid, " +
+	        "bodate, " +
+	        "buyername, " +
+	        "partno, " +
+	        "boqty, " +
+	        "orderqty, " +
+	        "prdocid " +
+	        "ORDER BY bodocid",
+	nativeQuery = true)
+	List<Object[]> getBuyerOrderFulFilmentReport(
+	        String docId,      // ?1
+	        String partNo,     // ?2
+	        String  fromDate,     // ?3
+	        String toDate,       // ?4
+	        String branchCode, // ?5
+	        String client      // ?6
+	);
+
+	@Query(value = "SELECT\r\n"
+			+ "    branchcode,\r\n"
+			+ "    client,\r\n"
+			+ "    bin,\r\n"
+			+ "    sqty,\r\n"
+			+ "    status\r\n"
+			+ "FROM\r\n"
+			+ "(\r\n"
+			+ "    SELECT\r\n"
+			+ "        branchcode,\r\n"
+			+ "        client,\r\n"
+			+ "        bin,\r\n"
+			+ "        SUM(sqty) AS sqty,\r\n"
+			+ "        'Occupied' AS status\r\n"
+			+ "    FROM stockdetails\r\n"
+			+ "    WHERE client = ?1\r\n"
+			+ "      AND branchcode = ?2\r\n"
+			+ "    GROUP BY branchcode, client, bin\r\n"
+			+ "    HAVING SUM(sqty) > 0\r\n"
+			+ "\r\n"
+			+ "    UNION\r\n"
+			+ "\r\n"
+			+ "    SELECT\r\n"
+			+ "        branchcode,\r\n"
+			+ "        client,\r\n"
+			+ "        bin,\r\n"
+			+ "        0 AS sqty,\r\n"
+			+ "        'Empty' AS status\r\n"
+			+ "    FROM wv_locationstatus\r\n"
+			+ "    WHERE client = ?1\r\n"
+			+ "      AND branchcode = ?2\r\n"
+			+ "      AND bin NOT IN\r\n"
+			+ "      (\r\n"
+			+ "          SELECT bin\r\n"
+			+ "          FROM stockdetails\r\n"
+			+ "          WHERE client = ?1\r\n"
+			+ "            AND branchcode = ?2\r\n"
+			+ "          GROUP BY bin\r\n"
+			+ "          HAVING SUM(sqty) > 0\r\n"
+			+ "      )\r\n"
+			+ "    GROUP BY branchcode, client, bin\r\n"
+			+ ") t\r\n"
+			+ "WHERE\r\n"
+			+ "(\r\n"
+			+ "    (?3 = 'Occupied' AND status = 'Occupied')\r\n"
+			+ "    OR\r\n"
+			+ "    (?3 = 'Empty' AND status = 'Empty')\r\n"
+			+ ")\r\n"
+			+ "ORDER BY bin",
+	nativeQuery = true)
+	List<Object[]> getLocationStatusReport(String client, String branchCode, String type);
+
+	@Query(value = "SELECT b.docid, d.partno " +
+            "FROM buyerorder b " +
+            "INNER JOIN buyerorderdetails d " +
+            "ON b.buyerorderid = d.buyerorderid " +
+            "WHERE b.orgid = ?1 and customer=?2 and client=?3 and branchCode=?4",
+    nativeQuery = true)
+List<Object[]> getBuyerOrderPartNo(Long orgId, String customer, String client, String branchCode);
 
 	
 	
