@@ -55,6 +55,8 @@ public class CycleCountVO {
 	private String warehouse;
 	@Column(name = "createdby",length =25)
 	private String createdBy;
+	@Column(name = "remarks")
+	private String remarks;
 	@Column(name = "modifiedby",length =25)
 	private String updatedBy;
 	@Column(name = "active")
