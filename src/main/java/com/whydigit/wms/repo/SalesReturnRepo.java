@@ -18,10 +18,10 @@ public interface SalesReturnRepo extends JpaRepository<SalesReturnVO, Long> {
 	SalesReturnVO findSalesReturnById(Long id);
 
 	@Query(nativeQuery = true, value = "select d.partno,d.partdesc,d.sku,d.pickqty,ROW_NUMBER() OVER (ORDER BY partdesc\r\n"
-			+ "			, partno) AS id,batchno,batchdate,expdate,bin,binclass,bintype,celltype,core,qcflag,sku from pickrequestdetails d , pickrequest p\r\n"
+			+ "			, partno) AS id,batchno,batchdate,expdate,bin,binclass,bintype,celltype,core,qcflag from pickrequestdetails d , pickrequest p\r\n"
 			+ "            where p.pickrequestid=d.pickrequestid and p.docid=?1 and p.client =?2 and p.orgid =?3\r\n"
 			+ "            and p.branchcode=?4 group by partno,d.partdesc,d.sku,d.pickqty,batchno,batchdate,expdate,\r\n"
-			+ "            bin,binclass,bintype,celltype,core,qcflag,sku")
+			+ "            bin,binclass,bintype,celltype,core,qcflag")
 	Set<Object[]> findSalesReturnFillGridDetails(String docId, String client, Long orgId, String branchCode);
 
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,6,'0')) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client =?4 and screencode=?5")

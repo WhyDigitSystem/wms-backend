@@ -243,8 +243,17 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	@Query(value="select a.totalPickQty from PickRequestVO a where a.docId=?1")
 	int getTotalPickQty(String pickRequestDocId);
 	
-	@Query(nativeQuery = true,value = "select p.* from pickrequest p join pickrequestdetails p1 ON p.pickrequestid = p1.pickrequestid join salesreturn s ON p.docid = s.prno join salesreturndetails s1 ON s.salesreturnid = s1.salesreturnid where s.orgid =?1 and \r\n"
-			+ "s.finyear =?2 and s.branch =?3 and s.branchcode =?4 and s.client =?5 and s.warehouse =?6 group by  p.pickrequestid having SUM(p1.orderqty - s1.pickqty) > 0 order by p.docid desc")
+	@Query(nativeQuery = true,value = "select p.* from pickrequest p join pickrequestdetails p1 on p.pickrequestid = p1.pickrequestid left join salesreturn s on p.docid = s.prno\r\n"
+			+ "left join salesreturndetails s1 on s.salesreturnid = s1.salesreturnid and p1.partno = s1.partno and p1.batchno = s1.batchno\r\n"
+			+ "where  p.orgid = ?1\r\n"
+			+ "  and p.finyear = ?2\r\n"
+			+ "  and p.branch = ?3\r\n"
+			+ "  and p.branchcode = ?4\r\n"
+			+ "  and p.client = ?5\r\n"
+			+ "  and p.warehouse = ?6\r\n"
+			+ "group by p.pickrequestid\r\n"
+			+ "having SUM(p1.orderqty - IFNULL(s1.pickqty, 0)) > 0\r\n"
+			+ "ORDER BY p.docid DESC")
 	List<PickRequestVO> getAllPickRequestFillGridDetails(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse);
 

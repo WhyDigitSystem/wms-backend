@@ -263,7 +263,6 @@ public class SalesReturnServiceImpl implements SalesReturnService {
 			part.put("cellType", fs[11] != null ? fs[11].toString() : "");
 			part.put("core", fs[12] != null ? fs[12].toString() : "");
 			part.put("qcFlag", fs[13] != null ? fs[13].toString() : "");
-			part.put("sku1", fs[14] != null ? fs[14].toString() : "");
 
 			details1.add(part);
 		}
