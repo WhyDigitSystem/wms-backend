@@ -242,6 +242,11 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 
 	@Query(value="select a.totalPickQty from PickRequestVO a where a.docId=?1")
 	int getTotalPickQty(String pickRequestDocId);
+	
+	@Query(nativeQuery = true,value = "select p.* from pickrequest p join pickrequestdetails p1 ON p.pickrequestid = p1.pickrequestid join salesreturn s ON p.docid = s.prno join salesreturndetails s1 ON s.salesreturnid = s1.salesreturnid where s.orgid =?1 and \r\n"
+			+ "s.finyear =?2 and s.branch =?3 and s.branchcode =?4 and s.client =?5 and s.warehouse =?6 group by  p.pickrequestid having SUM(p1.orderqty - s1.pickqty) > 0 order by p.docid desc")
+	List<PickRequestVO> getAllPickRequestFillGridDetails(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse);
 
 	
 }

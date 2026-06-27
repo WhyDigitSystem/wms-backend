@@ -658,5 +658,12 @@ public class PickRequestServiceImpl implements PickRequestService {
 		return details1;
 
 	}
+	
+	@Override
+	public List<PickRequestVO> getAllPickRequestFillGridDetails(Long orgId, String finYear, String branch, String branchCode,
+			String client, String warehouse) {
+		return pickRequestRepo.getAllPickRequestFillGridDetails(orgId, finYear, branch, branchCode, client, warehouse);
+	}
+
 
 }
