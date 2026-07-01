@@ -22,6 +22,7 @@ public class WarehouseLocationDTO {
 	private String cellTo;
 	private String createdBy;
 	private Long orgId;
+	private int qty;
 
 	private List<WarehouseLocationDetailsDTO> warehouseLocationDetailsDTO;
 

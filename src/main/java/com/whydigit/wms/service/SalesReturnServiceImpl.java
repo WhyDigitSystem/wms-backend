@@ -111,50 +111,53 @@ public class SalesReturnServiceImpl implements SalesReturnService {
 
 		List<SalesReturnDetailsVO> salesReturnDetailsVOLists = savedSalesReturnVO.getSalesReturnDetailsVO();
 		if (salesReturnDetailsVOLists != null && !salesReturnDetailsVOLists.isEmpty()) {
-			if ("Confirm".equals(savedSalesReturnVO.getStatus())) {
-				for (SalesReturnDetailsVO detailsVO : salesReturnDetailsVOLists) {
+			for (SalesReturnDetailsVO detailsVO : salesReturnDetailsVOLists) {
 
-					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
-					stockDetailsVOFrom.setOrgId(savedSalesReturnVO.getOrgId());
-					stockDetailsVOFrom.setFinYear(savedSalesReturnVO.getFinYear());
-					stockDetailsVOFrom.setBranch(savedSalesReturnVO.getBranch());
-					stockDetailsVOFrom.setBranchCode(savedSalesReturnVO.getBranchCode());
-					stockDetailsVOFrom.setWarehouse(savedSalesReturnVO.getWarehouse());
-					stockDetailsVOFrom.setCustomer(savedSalesReturnVO.getCustomer());
-					stockDetailsVOFrom.setClient(savedSalesReturnVO.getClient());
-					stockDetailsVOFrom.setClientCode(
-							clientRepo.getClientCode(savedSalesReturnVO.getOrgId(), savedSalesReturnVO.getClient()));
-					stockDetailsVOFrom.setCreatedBy(savedSalesReturnVO.getUpdatedBy());
-					stockDetailsVOFrom.setRefNo(savedSalesReturnVO.getDocId());
-					stockDetailsVOFrom.setRefDate(savedSalesReturnVO.getDocDate());
-					stockDetailsVOFrom.setBuyerOrderNo(savedSalesReturnVO.getBoNo());
-					stockDetailsVOFrom.setUpdatedBy(savedSalesReturnVO.getUpdatedBy());
-					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
-					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedSalesReturnVO.getOrgId(),
-							savedSalesReturnVO.getClient(), detailsVO.getPartNo()));
-					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
-					stockDetailsVOFrom.setSQty(detailsVO.getPickQty());
-					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
-					stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
-					stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
-					stockDetailsVOFrom.setStatus("R");
-					stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
-					stockDetailsVOFrom.setBin(detailsVO.getBin());
-					stockDetailsVOFrom.setPQty(detailsVO.getPickQty());
-					stockDetailsVOFrom.setPickedQty(detailsVO.getPickQty());
-					stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
-					stockDetailsVOFrom.setBinType(detailsVO.getBinType());
-					stockDetailsVOFrom.setSku(detailsVO.getSku());
-					stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
-					stockDetailsVOFrom.setCellType(detailsVO.getCellType());
-					stockDetailsVOFrom.setCore(detailsVO.getCore());
-					stockDetailsVOFrom.setSSku(detailsVO.getSku());
-					stockDetailsVOFrom.setActive(true);
-					stockDetailsVOFrom.setSourceScreenCode(savedSalesReturnVO.getScreenCode());
-					stockDetailsVOFrom.setSourceScreenName(savedSalesReturnVO.getScreenName());
-					stockDetailsVOFrom.setSourceId(detailsVO.getId());
-					stockDetailsRepo.save(stockDetailsVOFrom);
+				StockDetailsVO stockDetailsVOFrom = stockDetailsRepo.findByRefNoAndPartnoAndSourceScreenCode(
+						savedSalesReturnVO.getDocId(), detailsVO.getPartNo(), savedSalesReturnVO.getScreenCode());
+				if (stockDetailsVOFrom == null) {
+					stockDetailsVOFrom = new StockDetailsVO();
 				}
+
+				stockDetailsVOFrom.setOrgId(savedSalesReturnVO.getOrgId());
+				stockDetailsVOFrom.setFinYear(savedSalesReturnVO.getFinYear());
+				stockDetailsVOFrom.setBranch(savedSalesReturnVO.getBranch());
+				stockDetailsVOFrom.setBranchCode(savedSalesReturnVO.getBranchCode());
+				stockDetailsVOFrom.setWarehouse(savedSalesReturnVO.getWarehouse());
+				stockDetailsVOFrom.setCustomer(savedSalesReturnVO.getCustomer());
+				stockDetailsVOFrom.setClient(savedSalesReturnVO.getClient());
+				stockDetailsVOFrom.setClientCode(
+						clientRepo.getClientCode(savedSalesReturnVO.getOrgId(), savedSalesReturnVO.getClient()));
+				stockDetailsVOFrom.setCreatedBy(savedSalesReturnVO.getUpdatedBy());
+				stockDetailsVOFrom.setRefNo(savedSalesReturnVO.getDocId());
+				stockDetailsVOFrom.setRefDate(savedSalesReturnVO.getDocDate());
+				stockDetailsVOFrom.setBuyerOrderNo(savedSalesReturnVO.getBoNo());
+				stockDetailsVOFrom.setUpdatedBy(savedSalesReturnVO.getUpdatedBy());
+				stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
+				stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedSalesReturnVO.getOrgId(),
+						savedSalesReturnVO.getClient(), detailsVO.getPartNo()));
+				stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
+				stockDetailsVOFrom.setSQty(detailsVO.getPickQty());
+				stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
+				stockDetailsVOFrom.setBatchDate(detailsVO.getBatchDate());
+				stockDetailsVOFrom.setExpDate(detailsVO.getExpDate());
+				stockDetailsVOFrom.setStatus("R");
+				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+				stockDetailsVOFrom.setBin(detailsVO.getBin());
+				stockDetailsVOFrom.setPQty(detailsVO.getPickQty());
+				stockDetailsVOFrom.setPickedQty(detailsVO.getPickQty());
+				stockDetailsVOFrom.setQcFlag(detailsVO.getQcFlag());
+				stockDetailsVOFrom.setBinType(detailsVO.getBinType());
+				stockDetailsVOFrom.setSku(detailsVO.getSku());
+				stockDetailsVOFrom.setBinClass(detailsVO.getBinClass());
+				stockDetailsVOFrom.setCellType(detailsVO.getCellType());
+				stockDetailsVOFrom.setCore(detailsVO.getCore());
+				stockDetailsVOFrom.setSSku(detailsVO.getSku());
+				stockDetailsVOFrom.setActive(true);
+				stockDetailsVOFrom.setSourceScreenCode(savedSalesReturnVO.getScreenCode());
+				stockDetailsVOFrom.setSourceScreenName(savedSalesReturnVO.getScreenName());
+				stockDetailsVOFrom.setSourceId(detailsVO.getId());
+				stockDetailsRepo.save(stockDetailsVOFrom);
 			}
 		}
 

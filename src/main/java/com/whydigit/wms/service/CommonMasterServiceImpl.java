@@ -809,6 +809,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 			existingRecord.setClient(globalParameterVO.getClient());
 			existingRecord.setWarehouse(globalParameterVO.getWarehouse());
 			existingRecord.setOrgId(globalParameterVO.getOrgId());
+			existingRecord.setUserid(globalParameterVO.getUserid());
 
 			return globalParameterRepo.save(existingRecord);
 		} else {

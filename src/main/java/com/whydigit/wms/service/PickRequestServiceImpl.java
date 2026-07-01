@@ -394,7 +394,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 			throws ApplicationException {
 		String message = null;
 		for (MultiplePickDTO multiplePickDTO : multiplePickDTO1) {
-			
+
 			PickRequestVO pickRequestVO = new PickRequestVO();
 			String screenCode = "PR";
 
@@ -502,12 +502,11 @@ public class PickRequestServiceImpl implements PickRequestService {
 				}
 			}
 		}
-	
+
 		Map<String, Object> response = new HashMap<>();
 		response.put("message", message);
-		return response;	
-		
-		
+		return response;
+
 	}
 
 	private PickRequestVO saveFillGridDetails(MultiplePickDTO multiplePickDTO, PickRequestVO pickRequestVO)
@@ -516,7 +515,7 @@ public class PickRequestServiceImpl implements PickRequestService {
 		BuyerOrderVO buyerOrderVO = buyerOrderRepo.findByDocId(multiplePickDTO.getBuyerOrderNo());
 		buyerOrderVO.setFreeze(true);
 		buyerOrderRepo.save(buyerOrderVO);
-		
+
 		pickRequestVO.setFreeze(false);
 
 		pickRequestVO.setBuyerRefNo(multiplePickDTO.getBuyerRefNo());
@@ -548,12 +547,12 @@ public class PickRequestServiceImpl implements PickRequestService {
 		pickRequestVO.setBranchCode(multiplePickDTO.getBranchCode());
 		pickRequestVO.setWarehouse(multiplePickDTO.getWarehouse());
 		pickRequestVO.setCreatedBy(multiplePickDTO.getCreatedBy());
-		pickRequestVO.setStatus("Edit");
+		pickRequestVO.setStatus("Confirm");
 
 		int totalPickQty = 0;
 		int totalOrderQty = buyerOrderRepo.getTotalOrderQty(multiplePickDTO.getBuyerOrderNo());
 		String pickRequestDocId = null;
-		String pickStatus = "Edit";
+		String pickStatus = "Confirm";
 
 		List<Map<String, Object>> fillDetails = getFillGridDetailsForPickRequest(multiplePickDTO.getOrgId(),
 				multiplePickDTO.getBranchCode(), multiplePickDTO.getClient(), multiplePickDTO.getBuyerOrderNo(),
@@ -638,9 +637,9 @@ public class PickRequestServiceImpl implements PickRequestService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client,
-			String month, String finyear) {
-		Set<Object[]> resultq = pickRequestRepo.getPicrequestDashboard(orgId, branchCode,client,month, finyear);
+	public List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String month,
+			String finyear) {
+		Set<Object[]> resultq = pickRequestRepo.getPicrequestDashboard(orgId, branchCode, client, month, finyear);
 		return getPicrequest(resultq);
 	}
 
@@ -649,8 +648,8 @@ public class PickRequestServiceImpl implements PickRequestService {
 		for (Object[] fs : resultq) {
 			Map<String, Object> part = new HashMap<>();
 			part.put("pickNo", fs[0] != null ? fs[0].toString() : "");
-			part.put("orderQty", fs[1] != null ? Integer.parseInt(fs[1].toString()):0);
-			part.put("pickQty", fs[2] != null ? Integer.parseInt(fs[2].toString()):0);
+			part.put("orderQty", fs[1] != null ? Integer.parseInt(fs[1].toString()) : 0);
+			part.put("pickQty", fs[2] != null ? Integer.parseInt(fs[2].toString()) : 0);
 			part.put("status", fs[3] != null ? fs[3].toString() : "");
 
 			details1.add(part);
@@ -658,12 +657,11 @@ public class PickRequestServiceImpl implements PickRequestService {
 		return details1;
 
 	}
-	
+
 	@Override
-	public List<PickRequestVO> getAllPickRequestFillGridDetails(Long orgId, String finYear, String branch, String branchCode,
-			String client, String warehouse) {
+	public List<PickRequestVO> getAllPickRequestFillGridDetails(Long orgId, String finYear, String branch,
+			String branchCode, String client, String warehouse) {
 		return pickRequestRepo.getAllPickRequestFillGridDetails(orgId, finYear, branch, branchCode, client, warehouse);
 	}
-
 
 }

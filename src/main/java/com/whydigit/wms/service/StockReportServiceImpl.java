@@ -539,7 +539,9 @@ public class StockReportServiceImpl implements StockReportService {
 			locationStatusReport.put("bin", st[2] != null ? st[2].toString() : "");
 			locationStatusReport.put("sQty", st[3] != null ? st[3].toString() : "");
 			locationStatusReport.put("status", st[4] != null ? st[4].toString() : "");
-
+			locationStatusReport.put("capcity", st[5] != null ? ((Number) st[5]).intValue() : 0);
+			locationStatusReport.put("avQty", st[6] != null ? ((Number) st[6]).intValue() : 0);
+			locationStatusReport.put("utilization", st[7] != null ? ((Number) st[7]).doubleValue() : 0.0);
 			locationStatus.add(locationStatusReport);
 		}
 		return locationStatus;

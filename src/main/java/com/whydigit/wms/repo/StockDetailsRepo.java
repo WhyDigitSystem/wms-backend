@@ -88,7 +88,7 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 			+ "   AND a.client = ?5\r\n"
 			+ "   AND a.stockdate <= DATE(NOW()) \r\n"
 			+ "WHERE (b.partno = ?6 OR ?6 = 'ALL') \r\n"
-			+ "GROUP BY b.partno, b.partdesc")
+			+ "GROUP BY b.partno, b.partdesc having COALESCE(SUM(a.sqty)) >0 ")
 	Set<Object[]> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo);
 
@@ -737,6 +737,8 @@ List<StockDetailsVO> findByOrgIdAndBranchAndBranchCodeAndClient(Long orgid, Stri
 
 @Query(nativeQuery = true,value = "select case when stockfreeze=1 then 'true' else 'false' end freezestatus from stockdetails where orgid=?1 and branch=?2  and branchcode=?3 and client=?4  group by stockfreeze")
 boolean getStockFreezeStatus(Long orgId, String branch, String branchCode, String client);
+
+StockDetailsVO findByRefNoAndPartnoAndSourceScreenCode(String docId, String partNo, String screenCode);
 
 
 

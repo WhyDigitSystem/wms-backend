@@ -49,4 +49,5 @@ public class MaterialDTO {
 	private String movingType;
 	private String rackLevel;
 	private int lowQty;
+	private int binQty;
 }

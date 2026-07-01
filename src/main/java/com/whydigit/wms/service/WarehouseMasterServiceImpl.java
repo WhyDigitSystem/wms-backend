@@ -943,6 +943,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		warehouseLocationVO.setCellTo(warehouseLocationDTO.getCellTo());
 		warehouseLocationVO.setCreatedBy(warehouseLocationDTO.getCreatedBy());
 		warehouseLocationVO.setOrgId(warehouseLocationDTO.getOrgId());
+		warehouseLocationVO.setQty(warehouseLocationDTO.getQty());
+		
 		List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO = new ArrayList<>();
 		if (ObjectUtils.isNotEmpty(warehouseLocationDTO.getId())) {
 			warehouseLocationDetailsVO = warehouseLocationVO.getWarehouseLocationDetailsVO();
@@ -969,6 +971,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 					warehouseLocationDetailsVO1.setBinType(warehouseLocationDTO.getBinType());
 					warehouseLocationDetailsVO1.setRowNo(warehouseLocationDTO.getRowNo());
 					warehouseLocationDetailsVO1.setLevel(warehouseLocationDTO.getLevel());
+					warehouseLocationDetailsVO1.setBinQty(warehouseLocationDTO.getQty());
 					warehouseLocationDetailsVO1.setCellFrom(warehouseLocationDTO.getCellFrom());
 					warehouseLocationDetailsVO1.setCellTo(warehouseLocationDTO.getCellTo());
 					warehouseLocationDetailsVO1.setOrgId(warehouseLocationDTO.getOrgId());
@@ -987,11 +990,11 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						}
 						warehouseLocationDetailsVO1.setBin(warehouseLocationDetailsDTO2.getBin());
 					}
-
 					warehouseLocationDetailsVO1.setBinCategory(warehouseLocationDetailsDTO2.getBinCategory());
 					warehouseLocationDetailsVO1.setStatus(warehouseLocationDetailsDTO2.getStatus());
 					warehouseLocationDetailsVO1.setCore(warehouseLocationDetailsDTO2.getCore());
 					warehouseLocationDetailsVO1.setBranch(warehouseLocationDTO.getBranch());
+					warehouseLocationDetailsVO1.setBinQty(warehouseLocationDTO.getQty());
 					warehouseLocationDetailsVO1.setBranchCode(warehouseLocationDTO.getBranchCode());
 					warehouseLocationDetailsVO1.setWarehouse(warehouseLocationDTO.getWarehouse());
 					warehouseLocationDetailsVO1.setBinType(warehouseLocationDTO.getBinType());
@@ -1019,10 +1022,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						throw new ApplicationException(errorMessage);
 					}
 					warehouseLocationDetailsVO1.setBin(warehouseLocationDetailsDTO2.getBin());
+					warehouseLocationDetailsVO1.setBinQty(warehouseLocationDTO.getQty());
 					warehouseLocationDetailsVO1.setBinCategory(warehouseLocationDetailsDTO2.getBinCategory());
 					warehouseLocationDetailsVO1.setStatus(warehouseLocationDetailsDTO2.getStatus());
 					warehouseLocationDetailsVO1.setCore(warehouseLocationDetailsDTO2.getCore());
 					warehouseLocationDetailsVO1.setBranch(warehouseLocationDTO.getBranch());
+					warehouseLocationDetailsVO1.setBinQty(warehouseLocationDTO.getQty());
 					warehouseLocationDetailsVO1.setBranchCode(warehouseLocationDTO.getBranchCode());
 					warehouseLocationDetailsVO1.setWarehouse(warehouseLocationDTO.getWarehouse());
 					warehouseLocationDetailsVO1.setBinType(warehouseLocationDTO.getBinType());
@@ -1148,6 +1153,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		materialVO.setHeight(materialDTO.getHeight());
 		materialVO.setWeight(materialDTO.getWeight());
 		materialVO.setLowQty(materialDTO.getLowQty());
+		materialVO.setBinQty(materialDTO.getBinQty());
 	}
 
 	@Override

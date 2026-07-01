@@ -1031,7 +1031,7 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			List<Map<String, String>> formattedBins = formatBins(bins);
+			List<Map<String, Object>> formattedBins = formatBins(bins);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Bins Founded");
 			responseObjectsMap.put("Bins", formattedBins);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -1043,16 +1043,17 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	private List<Map<String, String>> formatBins(Set<Object[]> bins) {
-		List<Map<String, String>> formattedBins = new ArrayList<>();
+	private List<Map<String, Object>> formatBins(Set<Object[]> bins) {
+		List<Map<String, Object>> formattedBins = new ArrayList<>();
 		for (Object[] bin : bins) {
-			Map<String, String> formattedBin = new HashMap<>();
+			Map<String, Object> formattedBin = new HashMap<>();
 			formattedBin.put("id", bin[0].toString());
 			formattedBin.put("rowno", bin[1].toString());
 			formattedBin.put("level", bin[2].toString());
 			formattedBin.put("bin", bin[3].toString());
 			formattedBin.put("core", bin[4].toString());
 			formattedBin.put("status", bin[5].toString());
+			formattedBin.put("binQty", (Integer) bin[6]);
 			formattedBins.add(formattedBin);
 		}
 		return formattedBins;

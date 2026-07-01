@@ -110,7 +110,8 @@ public class MaterialVO {
 	private String rackLevel;
 	@Column(name = "lowqty")
 	private int lowQty;
-	
+	@Column(name = "binqty")
+	private int binQty;
 	
 
 	@JsonGetter("active")
