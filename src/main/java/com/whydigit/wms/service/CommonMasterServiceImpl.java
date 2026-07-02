@@ -1,5 +1,6 @@
 package com.whydigit.wms.service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
@@ -27,6 +29,7 @@ import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.Role;
 import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
+import com.whydigit.wms.dto.UserProfileInformationDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -39,6 +42,7 @@ import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.entity.UserProfileInformationVO;
 import com.whydigit.wms.entity.UserVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CarrierRepo;
@@ -58,6 +62,7 @@ import com.whydigit.wms.repo.ScreenNamesRepo;
 import com.whydigit.wms.repo.StateRepo;
 import com.whydigit.wms.repo.UserBranchAccessRepo;
 import com.whydigit.wms.repo.UserClientAccessRepo;
+import com.whydigit.wms.repo.UserProfileInformationRepo;
 import com.whydigit.wms.repo.UserRepo;
 import com.whydigit.wms.util.CryptoUtils;
 
@@ -119,9 +124,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 
 	@Autowired
 	DesignationRepo designationRepo;
-	
+
 	@Autowired
 	DepartmentRepo departmentRepo;
+
+	@Autowired
+	UserProfileInformationRepo userProfileInformationRepo;
 
 	// Country
 
@@ -355,64 +363,68 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	@Transactional
 	public Map<String, Object> createUpdateCity(CityDTO cityDTO) throws ApplicationException {
-	    CityVO cityVO;
-	    String message;
+		CityVO cityVO;
+		String message;
 
-	    if (ObjectUtils.isEmpty(cityDTO.getId())) {
-	        if (cityRepo.existsByCityCodeAndOrgId(cityDTO.getCityCode(), cityDTO.getOrgId())) {
-	            String errorMessage = String.format("The CityCode: %s already exists in this organization.", cityDTO.getCityCode());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        if (cityRepo.existsByCityNameAndOrgId(cityDTO.getCityName(), cityDTO.getOrgId())) {
-	            String errorMessage = String.format("The CityName: %s already exists in this organization.", cityDTO.getCityName());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        // Create new city
-	        cityVO = new CityVO();
-	        cityVO.setCreatedBy(cityDTO.getCreatedBy());
-	        cityVO.setUpdatedBy(cityDTO.getCreatedBy());
-	        message = "City Created Successfully";
-	    } else {
-	        // Update existing city
-	        cityVO = cityRepo.findById(cityDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("City not found with id: " + cityDTO.getId()));
-	        cityVO.setUpdatedBy(cityDTO.getCreatedBy());
+		if (ObjectUtils.isEmpty(cityDTO.getId())) {
+			if (cityRepo.existsByCityCodeAndOrgId(cityDTO.getCityCode(), cityDTO.getOrgId())) {
+				String errorMessage = String.format("The CityCode: %s already exists in this organization.",
+						cityDTO.getCityCode());
+				throw new ApplicationException(errorMessage);
+			}
+			if (cityRepo.existsByCityNameAndOrgId(cityDTO.getCityName(), cityDTO.getOrgId())) {
+				String errorMessage = String.format("The CityName: %s already exists in this organization.",
+						cityDTO.getCityName());
+				throw new ApplicationException(errorMessage);
+			}
+			// Create new city
+			cityVO = new CityVO();
+			cityVO.setCreatedBy(cityDTO.getCreatedBy());
+			cityVO.setUpdatedBy(cityDTO.getCreatedBy());
+			message = "City Created Successfully";
+		} else {
+			// Update existing city
+			cityVO = cityRepo.findById(cityDTO.getId())
+					.orElseThrow(() -> new ApplicationException("City not found with id: " + cityDTO.getId()));
+			cityVO.setUpdatedBy(cityDTO.getCreatedBy());
 
-	        if (!cityVO.getCityCode().equalsIgnoreCase(cityDTO.getCityCode())) {
-	            if (cityRepo.existsByCityCodeAndOrgId(cityDTO.getCityCode(), cityDTO.getOrgId())) {
-	                String errorMessage = String.format("The CityCode: %s already exists in this organization.", cityDTO.getCityCode());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            cityVO.setCityCode(cityDTO.getCityCode().toUpperCase());
-	        }
+			if (!cityVO.getCityCode().equalsIgnoreCase(cityDTO.getCityCode())) {
+				if (cityRepo.existsByCityCodeAndOrgId(cityDTO.getCityCode(), cityDTO.getOrgId())) {
+					String errorMessage = String.format("The CityCode: %s already exists in this organization.",
+							cityDTO.getCityCode());
+					throw new ApplicationException(errorMessage);
+				}
+				cityVO.setCityCode(cityDTO.getCityCode().toUpperCase());
+			}
 
-	        if (!cityVO.getCityName().equalsIgnoreCase(cityDTO.getCityName())) {
-	            if (cityRepo.existsByCityNameAndOrgId(cityDTO.getCityName(), cityDTO.getOrgId())) {
-	                String errorMessage = String.format("The CityName: %s already exists in this organization.", cityDTO.getCityName());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            cityVO.setCityName(cityDTO.getCityName().toUpperCase());
-	        }
-	        message = "City Updated Successfully";
-	    }
+			if (!cityVO.getCityName().equalsIgnoreCase(cityDTO.getCityName())) {
+				if (cityRepo.existsByCityNameAndOrgId(cityDTO.getCityName(), cityDTO.getOrgId())) {
+					String errorMessage = String.format("The CityName: %s already exists in this organization.",
+							cityDTO.getCityName());
+					throw new ApplicationException(errorMessage);
+				}
+				cityVO.setCityName(cityDTO.getCityName().toUpperCase());
+			}
+			message = "City Updated Successfully";
+		}
 
-	    getCityVOFromCityDTO(cityVO, cityDTO);
-	    cityRepo.save(cityVO);
+		getCityVOFromCityDTO(cityVO, cityDTO);
+		cityRepo.save(cityVO);
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("cityVO", cityVO);
-	    return response;
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("cityVO", cityVO);
+		return response;
 	}
 
 	private void getCityVOFromCityDTO(CityVO cityVO, CityDTO cityDTO) {
-	    cityVO.setCityCode(cityDTO.getCityCode().toUpperCase());
-	    cityVO.setCityName(cityDTO.getCityName().toUpperCase());
-	    cityVO.setCountry(cityDTO.getCountry().toUpperCase());
-	    cityVO.setState(cityDTO.getState().toUpperCase());
-	    cityVO.setActive(cityDTO.isActive());
-	    cityVO.setOrgId(cityDTO.getOrgId());
-	    cityVO.setCancel(cityDTO.isCancel());
+		cityVO.setCityCode(cityDTO.getCityCode().toUpperCase());
+		cityVO.setCityName(cityDTO.getCityName().toUpperCase());
+		cityVO.setCountry(cityDTO.getCountry().toUpperCase());
+		cityVO.setState(cityDTO.getState().toUpperCase());
+		cityVO.setActive(cityDTO.isActive());
+		cityVO.setOrgId(cityDTO.getOrgId());
+		cityVO.setCancel(cityDTO.isCancel());
 	}
 
 	@Override
@@ -441,68 +453,67 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Override
 	@Transactional
 	public Map<String, Object> createUpdateRegion(RegionDTO regionDTO) throws ApplicationException {
-	    RegionVO regionVO;
-	    String message;
+		RegionVO regionVO;
+		String message;
 
-	    if (ObjectUtils.isEmpty(regionDTO.getId())) {
-	        if (regionRepo.existsByRegionNameAndOrgId(regionDTO.getRegionName(), regionDTO.getOrgId())) {
-	            String errorMessage = String.format("This RegionName:%s Already Exists in This Organization",
-	                    regionDTO.getRegionName().toUpperCase());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        if (regionRepo.existsByRegionCodeAndOrgId(regionDTO.getRegionCode(), regionDTO.getOrgId())) {
-	            String errorMessage = String.format("This RegionCode:%s Already Exists in This Organization",
-	                    regionDTO.getRegionCode().toUpperCase());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        // Create new region
-	        regionVO = new RegionVO();
-	        regionVO.setCreatedBy(regionDTO.getCreatedBy());
-	        regionVO.setUpdatedBy(regionDTO.getCreatedBy());
-	        message = "Region Created Successfully";
-	    } else {
-	        // Update existing region
-	        regionVO = regionRepo.findById(regionDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("This Id Is Not Found Any Information: " + regionDTO.getId()));
-	        regionVO.setUpdatedBy(regionDTO.getCreatedBy());
+		if (ObjectUtils.isEmpty(regionDTO.getId())) {
+			if (regionRepo.existsByRegionNameAndOrgId(regionDTO.getRegionName(), regionDTO.getOrgId())) {
+				String errorMessage = String.format("This RegionName:%s Already Exists in This Organization",
+						regionDTO.getRegionName().toUpperCase());
+				throw new ApplicationException(errorMessage);
+			}
+			if (regionRepo.existsByRegionCodeAndOrgId(regionDTO.getRegionCode(), regionDTO.getOrgId())) {
+				String errorMessage = String.format("This RegionCode:%s Already Exists in This Organization",
+						regionDTO.getRegionCode().toUpperCase());
+				throw new ApplicationException(errorMessage);
+			}
+			// Create new region
+			regionVO = new RegionVO();
+			regionVO.setCreatedBy(regionDTO.getCreatedBy());
+			regionVO.setUpdatedBy(regionDTO.getCreatedBy());
+			message = "Region Created Successfully";
+		} else {
+			// Update existing region
+			regionVO = regionRepo.findById(regionDTO.getId()).orElseThrow(
+					() -> new ApplicationException("This Id Is Not Found Any Information: " + regionDTO.getId()));
+			regionVO.setUpdatedBy(regionDTO.getCreatedBy());
 
-	        if (!regionVO.getRegionName().equalsIgnoreCase(regionDTO.getRegionName())) {
-	            if (regionRepo.existsByRegionNameAndOrgId(regionDTO.getRegionName(), regionDTO.getOrgId())) {
-	                String errorMessage = String.format("This RegionName:%s Already Exists in This Organization",
-	                        regionDTO.getRegionName());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            regionVO.setRegionName(regionDTO.getRegionName().toUpperCase());
-	        }
+			if (!regionVO.getRegionName().equalsIgnoreCase(regionDTO.getRegionName())) {
+				if (regionRepo.existsByRegionNameAndOrgId(regionDTO.getRegionName(), regionDTO.getOrgId())) {
+					String errorMessage = String.format("This RegionName:%s Already Exists in This Organization",
+							regionDTO.getRegionName());
+					throw new ApplicationException(errorMessage);
+				}
+				regionVO.setRegionName(regionDTO.getRegionName().toUpperCase());
+			}
 
-	        if (!regionVO.getRegionCode().equalsIgnoreCase(regionDTO.getRegionCode())) {
-	            if (regionRepo.existsByRegionCodeAndOrgId(regionDTO.getRegionCode(), regionDTO.getOrgId())) {
-	                String errorMessage = String.format("This RegionCode:%s Already Exists in This Organization",
-	                        regionDTO.getRegionCode());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            regionVO.setRegionCode(regionDTO.getRegionCode().toUpperCase());
-	        }
-	        message = "Region Updated Successfully";
-	    }
+			if (!regionVO.getRegionCode().equalsIgnoreCase(regionDTO.getRegionCode())) {
+				if (regionRepo.existsByRegionCodeAndOrgId(regionDTO.getRegionCode(), regionDTO.getOrgId())) {
+					String errorMessage = String.format("This RegionCode:%s Already Exists in This Organization",
+							regionDTO.getRegionCode());
+					throw new ApplicationException(errorMessage);
+				}
+				regionVO.setRegionCode(regionDTO.getRegionCode().toUpperCase());
+			}
+			message = "Region Updated Successfully";
+		}
 
-	    getRegionVOFromRegionDTO(regionVO, regionDTO);
-	    regionRepo.save(regionVO);
+		getRegionVOFromRegionDTO(regionVO, regionDTO);
+		regionRepo.save(regionVO);
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("regionVO", regionVO);
-	    return response;
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("regionVO", regionVO);
+		return response;
 	}
 
 	private void getRegionVOFromRegionDTO(RegionVO regionVO, RegionDTO regionDTO) {
-	    regionVO.setActive(regionDTO.isActive());
-	    regionVO.setOrgId(regionDTO.getOrgId());
-	    regionVO.setCancel(regionDTO.isCancel());
-	    regionVO.setRegionCode(regionDTO.getRegionCode().toUpperCase());
-	    regionVO.setRegionName(regionDTO.getRegionName().toUpperCase());
+		regionVO.setActive(regionDTO.isActive());
+		regionVO.setOrgId(regionDTO.getOrgId());
+		regionVO.setCancel(regionDTO.isCancel());
+		regionVO.setRegionCode(regionDTO.getRegionCode().toUpperCase());
+		regionVO.setRegionName(regionDTO.getRegionName().toUpperCase());
 	}
-
 
 	@Override
 	public void deleteRegion(Long regionid) {
@@ -571,8 +582,8 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		CompanyVO companyVO = new CompanyVO();
 		getCompanyVOFromCompanyDTO(companyVO, companyDTO);
 		companyRepo.save(companyVO);
-		
-		EmployeeVO employeeVO= new EmployeeVO();
+
+		EmployeeVO employeeVO = new EmployeeVO();
 		employeeVO.setEmployeeName(companyVO.getEmployeeName());
 		employeeVO.setEmployeeCode(companyVO.getEmployeeCode());
 		employeeVO.setActive(true);
@@ -627,7 +638,7 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		companyVO.setCancel(companyDTO.isCancel());
 		companyVO.setGst(companyDTO.getGst());
 		companyVO.setCeo(companyDTO.getCeo());
-		
+
 		try {
 			companyVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(companyDTO.getPassword())));
 		} catch (Exception e) {
@@ -697,83 +708,83 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	@Transactional
 	public Map<String, Object> createUpdateCurrency(CurrencyDTO currencyDTO) throws ApplicationException {
 
-	    CurrencyVO currencyVO;
-	    String message = null;
+		CurrencyVO currencyVO;
+		String message = null;
 
-	    if (ObjectUtils.isEmpty(currencyDTO.getId())) {
-	        if (currencyRepo.existsByCurrencyAndOrgId(currencyDTO.getCurrency(), currencyDTO.getOrgId())) {
-	            String errorMessage = String.format("This Currency:%s Already Exists in This Organization.",
-	                    currencyDTO.getCurrency());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        if (currencyRepo.existsByCurrencySymbolAndOrgId(currencyDTO.getCurrencySymbol(), currencyDTO.getOrgId())) {
-	            String errorMessage = String.format("This CurrencySymbol:%s Already Exists in This Organization.",
-	                    currencyDTO.getCurrencySymbol());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        if (currencyRepo.existsBySubCurrencyAndOrgId(currencyDTO.getSubCurrency(), currencyDTO.getOrgId())) {
-	            String errorMessage = String.format("This SubCurrency:%s Already Exists in This Organization.",
-	                    currencyDTO.getSubCurrency());
-	            throw new ApplicationException(errorMessage);
-	        }
-	        
-	        // Create new currency
-	        currencyVO = new CurrencyVO();
-	        currencyVO.setCreatedBy(currencyDTO.getCreatedBy());
-	        currencyVO.setUpdatedBy(currencyDTO.getCreatedBy());
-	        message = "Currency Created Successfully";
-	    } else {
-	        // Update existing currency
-	        currencyVO = currencyRepo.findById(currencyDTO.getId())
-	                .orElseThrow(() -> new ApplicationException("This Id Is Not Found Any Information: " + currencyDTO.getId()));
-	        currencyVO.setUpdatedBy(currencyDTO.getCreatedBy());
+		if (ObjectUtils.isEmpty(currencyDTO.getId())) {
+			if (currencyRepo.existsByCurrencyAndOrgId(currencyDTO.getCurrency(), currencyDTO.getOrgId())) {
+				String errorMessage = String.format("This Currency:%s Already Exists in This Organization.",
+						currencyDTO.getCurrency());
+				throw new ApplicationException(errorMessage);
+			}
+			if (currencyRepo.existsByCurrencySymbolAndOrgId(currencyDTO.getCurrencySymbol(), currencyDTO.getOrgId())) {
+				String errorMessage = String.format("This CurrencySymbol:%s Already Exists in This Organization.",
+						currencyDTO.getCurrencySymbol());
+				throw new ApplicationException(errorMessage);
+			}
+			if (currencyRepo.existsBySubCurrencyAndOrgId(currencyDTO.getSubCurrency(), currencyDTO.getOrgId())) {
+				String errorMessage = String.format("This SubCurrency:%s Already Exists in This Organization.",
+						currencyDTO.getSubCurrency());
+				throw new ApplicationException(errorMessage);
+			}
 
-	        if (!currencyVO.getCurrency().equalsIgnoreCase(currencyDTO.getCurrency())) {
-	            if (currencyRepo.existsByCurrencyAndOrgId(currencyDTO.getCurrency(), currencyDTO.getOrgId())) {
-	                String errorMessage = String.format("This Currency:%s Already Exists in This Organization.",
-	                        currencyDTO.getCurrency());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            currencyVO.setCurrency(currencyDTO.getCurrency().toUpperCase());
-	        }
-	        if (!currencyVO.getSubCurrency().equalsIgnoreCase(currencyDTO.getSubCurrency())) {
-	            if (currencyRepo.existsBySubCurrencyAndOrgId(currencyDTO.getSubCurrency(), currencyDTO.getOrgId())) {
-	                String errorMessage = String.format("This SubCurrency:%s Already Exists in This Organization.",
-	                        currencyDTO.getSubCurrency());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            currencyVO.setSubCurrency(currencyDTO.getSubCurrency().toUpperCase());
-	        }
-	        if (!currencyVO.getCurrencySymbol().equalsIgnoreCase(currencyDTO.getCurrencySymbol())) {
-	            if (currencyRepo.existsByCurrencySymbolAndOrgId(currencyDTO.getCurrencySymbol(), currencyDTO.getOrgId())) {
-	                String errorMessage = String.format("This CurrencySymbol:%s Already Exists in This Organization.",
-	                        currencyDTO.getCurrencySymbol());
-	                throw new ApplicationException(errorMessage);
-	            }
-	            currencyVO.setCurrencySymbol(currencyDTO.getCurrencySymbol().toUpperCase());
-	        }
-	        message = "Currency Updated Successfully";
-	    }
+			// Create new currency
+			currencyVO = new CurrencyVO();
+			currencyVO.setCreatedBy(currencyDTO.getCreatedBy());
+			currencyVO.setUpdatedBy(currencyDTO.getCreatedBy());
+			message = "Currency Created Successfully";
+		} else {
+			// Update existing currency
+			currencyVO = currencyRepo.findById(currencyDTO.getId()).orElseThrow(
+					() -> new ApplicationException("This Id Is Not Found Any Information: " + currencyDTO.getId()));
+			currencyVO.setUpdatedBy(currencyDTO.getCreatedBy());
 
-	    getCurrencyVOFromCurrencyDTO(currencyVO, currencyDTO);
-	    currencyRepo.save(currencyVO);
+			if (!currencyVO.getCurrency().equalsIgnoreCase(currencyDTO.getCurrency())) {
+				if (currencyRepo.existsByCurrencyAndOrgId(currencyDTO.getCurrency(), currencyDTO.getOrgId())) {
+					String errorMessage = String.format("This Currency:%s Already Exists in This Organization.",
+							currencyDTO.getCurrency());
+					throw new ApplicationException(errorMessage);
+				}
+				currencyVO.setCurrency(currencyDTO.getCurrency().toUpperCase());
+			}
+			if (!currencyVO.getSubCurrency().equalsIgnoreCase(currencyDTO.getSubCurrency())) {
+				if (currencyRepo.existsBySubCurrencyAndOrgId(currencyDTO.getSubCurrency(), currencyDTO.getOrgId())) {
+					String errorMessage = String.format("This SubCurrency:%s Already Exists in This Organization.",
+							currencyDTO.getSubCurrency());
+					throw new ApplicationException(errorMessage);
+				}
+				currencyVO.setSubCurrency(currencyDTO.getSubCurrency().toUpperCase());
+			}
+			if (!currencyVO.getCurrencySymbol().equalsIgnoreCase(currencyDTO.getCurrencySymbol())) {
+				if (currencyRepo.existsByCurrencySymbolAndOrgId(currencyDTO.getCurrencySymbol(),
+						currencyDTO.getOrgId())) {
+					String errorMessage = String.format("This CurrencySymbol:%s Already Exists in This Organization.",
+							currencyDTO.getCurrencySymbol());
+					throw new ApplicationException(errorMessage);
+				}
+				currencyVO.setCurrencySymbol(currencyDTO.getCurrencySymbol().toUpperCase());
+			}
+			message = "Currency Updated Successfully";
+		}
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("message", message);
-	    response.put("currencyVO", currencyVO);
-	    return response;
+		getCurrencyVOFromCurrencyDTO(currencyVO, currencyDTO);
+		currencyRepo.save(currencyVO);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", message);
+		response.put("currencyVO", currencyVO);
+		return response;
 	}
 
 	private void getCurrencyVOFromCurrencyDTO(CurrencyVO currencyVO, CurrencyDTO currencyDTO) {
-	    currencyVO.setCurrency(currencyDTO.getCurrency().toUpperCase());
-	    currencyVO.setSubCurrency(currencyDTO.getSubCurrency().toUpperCase());
-	    currencyVO.setCurrencySymbol(currencyDTO.getCurrencySymbol().toUpperCase());
-	    currencyVO.setActive(currencyDTO.isActive());
-	    currencyVO.setCancel(currencyDTO.isCancel());
-	    currencyVO.setCountry(currencyDTO.getCountry().toUpperCase());
-	    currencyVO.setOrgId(currencyDTO.getOrgId());
+		currencyVO.setCurrency(currencyDTO.getCurrency().toUpperCase());
+		currencyVO.setSubCurrency(currencyDTO.getSubCurrency().toUpperCase());
+		currencyVO.setCurrencySymbol(currencyDTO.getCurrencySymbol().toUpperCase());
+		currencyVO.setActive(currencyDTO.isActive());
+		currencyVO.setCancel(currencyDTO.isCancel());
+		currencyVO.setCountry(currencyDTO.getCountry().toUpperCase());
+		currencyVO.setOrgId(currencyDTO.getOrgId());
 	}
-
 
 	@Override
 	public void deleteCurrency(Long currencyid) {
@@ -984,72 +995,80 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) throws ApplicationException {
 		FinancialYearVO financialYearVO = null;
 		String message;
-		
-		if(ObjectUtils.isEmpty(financialYearDTO.getId()))
-		{
-			if(financialYearRepo.existsByFinYearAndOrgId(financialYearDTO.getFinYear(),financialYearDTO.getOrgId())) {
-				String errorMessage=String.format("ThiS finyear:%s Already Exists This Organization .", financialYearDTO.getFinYear());
+
+		if (ObjectUtils.isEmpty(financialYearDTO.getId())) {
+			if (financialYearRepo.existsByFinYearAndOrgId(financialYearDTO.getFinYear(), financialYearDTO.getOrgId())) {
+				String errorMessage = String.format("ThiS finyear:%s Already Exists This Organization .",
+						financialYearDTO.getFinYear());
 				throw new ApplicationException(errorMessage);
 			}
-			
-			if(financialYearRepo.existsByFinYearIdentifierAndOrgId(financialYearDTO.getFinYearIdentifier(),financialYearDTO.getOrgId())) {
-				String errorMessage=String.format("ThiS finyearidentifier:%s Already Exists This Organization .", financialYearDTO.getFinYearIdentifier());
+
+			if (financialYearRepo.existsByFinYearIdentifierAndOrgId(financialYearDTO.getFinYearIdentifier(),
+					financialYearDTO.getOrgId())) {
+				String errorMessage = String.format("ThiS finyearidentifier:%s Already Exists This Organization .",
+						financialYearDTO.getFinYearIdentifier());
 				throw new ApplicationException(errorMessage);
 			}
-			
-			if(financialYearRepo.existsByFinYearIdAndOrgId(financialYearDTO.getFinYearId(),financialYearDTO.getOrgId())) {
-				String errorMessage=String.format("ThiS finyearid:%s Already Exists This Organization .", financialYearDTO.getFinYearId());
+
+			if (financialYearRepo.existsByFinYearIdAndOrgId(financialYearDTO.getFinYearId(),
+					financialYearDTO.getOrgId())) {
+				String errorMessage = String.format("ThiS finyearid:%s Already Exists This Organization .",
+						financialYearDTO.getFinYearId());
 				throw new ApplicationException(errorMessage);
 			}
-			
-			financialYearVO=new FinancialYearVO();
+
+			financialYearVO = new FinancialYearVO();
 			financialYearVO.setCreatedBy(financialYearDTO.getCreatedBy());
 			financialYearVO.setUpdatedBy(financialYearDTO.getCreatedBy());
-			message="Financial Year Creation Successfully";
-			
-		}else {
+			message = "Financial Year Creation Successfully";
+
+		} else {
 			financialYearVO = financialYearRepo.findById(financialYearDTO.getId())
-				    .orElseThrow(() -> new ApplicationException(
-				        String.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));
-			
-			
+					.orElseThrow(() -> new ApplicationException(String
+							.format("This Id Is Not Found Any Information, Invalid Id: %s", financialYearDTO.getId())));
+
 			if (financialYearVO.getFinYear() != financialYearDTO.getFinYear()) {
-			    if (financialYearRepo.existsByFinYearAndOrgId(financialYearDTO.getFinYear(), financialYearDTO.getOrgId())) {
-			        String errorMessage = String.format("This finyear: %s already exists for this organization.", financialYearDTO.getFinYear());
-			        throw new ApplicationException(errorMessage);
-			    }
-			    financialYearVO.setFinYear(financialYearDTO.getFinYear());
+				if (financialYearRepo.existsByFinYearAndOrgId(financialYearDTO.getFinYear(),
+						financialYearDTO.getOrgId())) {
+					String errorMessage = String.format("This finyear: %s already exists for this organization.",
+							financialYearDTO.getFinYear());
+					throw new ApplicationException(errorMessage);
+				}
+				financialYearVO.setFinYear(financialYearDTO.getFinYear());
 			}
-			
+
 			if (!financialYearVO.getFinYearIdentifier().equals(financialYearDTO.getFinYearIdentifier())) {
-			    if (financialYearRepo.existsByFinYearIdentifierAndOrgId(financialYearDTO.getFinYearIdentifier(), financialYearDTO.getOrgId())) {
-			        String errorMessage = String.format("This finyearIdentifier: %s already exists for this organization.", financialYearDTO.getFinYearIdentifier());
-			        throw new ApplicationException(errorMessage);
-			    }
-			    financialYearVO.setFinYearIdentifier(financialYearDTO.getFinYearIdentifier());
+				if (financialYearRepo.existsByFinYearIdentifierAndOrgId(financialYearDTO.getFinYearIdentifier(),
+						financialYearDTO.getOrgId())) {
+					String errorMessage = String.format(
+							"This finyearIdentifier: %s already exists for this organization.",
+							financialYearDTO.getFinYearIdentifier());
+					throw new ApplicationException(errorMessage);
+				}
+				financialYearVO.setFinYearIdentifier(financialYearDTO.getFinYearIdentifier());
 			}
 
 			if (financialYearVO.getFinYearId() != financialYearDTO.getFinYearId()) {
-			    if (financialYearRepo.existsByFinYearIdAndOrgId(financialYearDTO.getFinYearId(), financialYearDTO.getOrgId())) {
-			        String errorMessage = String.format("This finyearId: %s already exists for this organization.", financialYearDTO.getFinYearId());
-			        throw new ApplicationException(errorMessage);
-			    }
-			    financialYearVO.setFinYearId(financialYearDTO.getFinYearId());
+				if (financialYearRepo.existsByFinYearIdAndOrgId(financialYearDTO.getFinYearId(),
+						financialYearDTO.getOrgId())) {
+					String errorMessage = String.format("This finyearId: %s already exists for this organization.",
+							financialYearDTO.getFinYearId());
+					throw new ApplicationException(errorMessage);
+				}
+				financialYearVO.setFinYearId(financialYearDTO.getFinYearId());
 			}
 
-  
-			
 			financialYearVO.setUpdatedBy(financialYearDTO.getCreatedBy());
-			message="Financial Year Updation Successfully";
-			
+			message = "Financial Year Updation Successfully";
+
 		}
-		getFinancialYearVOFromFinancialYearDTO(financialYearVO,financialYearDTO);
+		getFinancialYearVOFromFinancialYearDTO(financialYearVO, financialYearDTO);
 		financialYearRepo.save(financialYearVO);
-		Map<String, Object> response=new HashMap<String, Object>();
+		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("financialYearVO", financialYearVO);
 		response.put("message", response);
 		return response;
-		
+
 	}
 
 	private void getFinancialYearVOFromFinancialYearDTO(FinancialYearVO financialYearVO,
@@ -1079,62 +1098,71 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 	public Optional<FinancialYearVO> getAllFInYearById(Long id) {
 		return financialYearRepo.findById(id);
 	}
-	
-	//Department
+
+	// Department
 
 	@Override
 	public Map<String, Object> createUpdateDepartment(DepartmentDTO departmentDTO) throws ApplicationException {
 		DepartmentVO departmentVO;
-		String message=null;
-		if(ObjectUtils.isEmpty(departmentDTO.getId())) {
-			
-			if(departmentRepo.existsByCodeAndOrgId(departmentDTO.getCode(),departmentDTO.getOrgId())) {
-				String errorMessage=String.format("ThiS DeptCode:%s Already Exists This Organization .", departmentDTO.getCode());
+		String message = null;
+		if (ObjectUtils.isEmpty(departmentDTO.getId())) {
+
+			if (departmentRepo.existsByCodeAndOrgId(departmentDTO.getCode(), departmentDTO.getOrgId())) {
+				String errorMessage = String.format("ThiS DeptCode:%s Already Exists This Organization .",
+						departmentDTO.getCode());
 				throw new ApplicationException(errorMessage);
 			}
-			if(departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),departmentDTO.getOrgId())) {
-				String errorMessage=String.format("ThiS DepartmentName:%s Already Exists This Organization .", departmentDTO.getDepartmentName());
+			if (departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),
+					departmentDTO.getOrgId())) {
+				String errorMessage = String.format("ThiS DepartmentName:%s Already Exists This Organization .",
+						departmentDTO.getDepartmentName());
 				throw new ApplicationException(errorMessage);
 			}
-			
-			departmentVO=new DepartmentVO();
+
+			departmentVO = new DepartmentVO();
 			departmentVO.setCreatedBy(departmentDTO.getCreatedBy());
 			departmentVO.setUpdatedBy(departmentDTO.getCreatedBy());
-			message="Department Creation Successfully";
-		}else {
-			departmentVO=departmentRepo.findById(departmentDTO.getId()).orElseThrow(()->new ApplicationException("This Id Is Not Found Any Information,Invalid Id . "+ departmentDTO.getId()));
-			
-			if(! departmentVO.getCode().equalsIgnoreCase(departmentDTO.getCode())) {
+			message = "Department Creation Successfully";
+		} else {
+			departmentVO = departmentRepo.findById(departmentDTO.getId()).orElseThrow(() -> new ApplicationException(
+					"This Id Is Not Found Any Information,Invalid Id . " + departmentDTO.getId()));
 
-				if(departmentRepo.existsByCodeAndOrgId(departmentDTO.getCode(),departmentDTO.getOrgId())) {
-					String errorMessage=String.format("ThiS DeptCode:%s Already Exists This Organization .", departmentDTO.getCode());
+			if (!departmentVO.getCode().equalsIgnoreCase(departmentDTO.getCode())) {
+
+				if (departmentRepo.existsByCodeAndOrgId(departmentDTO.getCode(), departmentDTO.getOrgId())) {
+					String errorMessage = String.format("ThiS DeptCode:%s Already Exists This Organization .",
+							departmentDTO.getCode());
 					throw new ApplicationException(errorMessage);
 				}
 				departmentVO.setCode(departmentDTO.getCode());
 			}
-			if(! departmentVO.getDepartmentName().equalsIgnoreCase(departmentDTO.getDepartmentName())) {
-				if(departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),departmentDTO.getOrgId())) {
-					String errorMessage=String.format("ThiS DepartmentName:%s Already Exists This Organization .", departmentDTO.getDepartmentName());
+			if (!departmentVO.getDepartmentName().equalsIgnoreCase(departmentDTO.getDepartmentName())) {
+				if (departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),
+						departmentDTO.getOrgId())) {
+					String errorMessage = String.format("ThiS DepartmentName:%s Already Exists This Organization .",
+							departmentDTO.getDepartmentName());
 					throw new ApplicationException(errorMessage);
 				}
-				if(departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),departmentDTO.getOrgId())) {
-					String errorMessage=String.format("ThiS DepartmentName:%s Already Exists This Organization .", departmentDTO.getDepartmentName());
+				if (departmentRepo.existsByDepartmentNameAndOrgId(departmentDTO.getDepartmentName(),
+						departmentDTO.getOrgId())) {
+					String errorMessage = String.format("ThiS DepartmentName:%s Already Exists This Organization .",
+							departmentDTO.getDepartmentName());
 					throw new ApplicationException(errorMessage);
 				}
 				departmentVO.setDepartmentName(departmentDTO.getDepartmentName());
 			}
-			
+
 			departmentVO.setUpdatedBy(departmentDTO.getCreatedBy());
-			message="Department Updation Successfully";
+			message = "Department Updation Successfully";
 		}
-		
-		getDepartmentVOFromDepartmentDTO(departmentVO,departmentDTO);
+
+		getDepartmentVOFromDepartmentDTO(departmentVO, departmentDTO);
 		departmentRepo.save(departmentVO);
-		Map<String, Object> response=new HashMap<String, Object>();
+		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("message", message);
 		response.put("departmentVO", departmentVO);
 		return response;
-		
+
 	}
 
 	private void getDepartmentVOFromDepartmentDTO(DepartmentVO departmentVO, DepartmentDTO departmentDTO) {
@@ -1155,4 +1183,67 @@ public class CommonMasterServiceImpl implements CommonMasterService {
 		return departmentRepo.findDepartmentById(id);
 	}
 
+	@Override
+	public Map<String, Object> createUpdateUserProfileInformation(UserProfileInformationDTO userProfileInformationDTO)
+			throws ApplicationException {
+
+		UserProfileInformationVO userProfileInformationVO = new UserProfileInformationVO();
+		String message;
+
+		if (ObjectUtils.isNotEmpty(userProfileInformationDTO.getId())) {
+			userProfileInformationVO = userProfileInformationRepo.findById(userProfileInformationDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Invalid ExpenseClaims details"));
+
+			userProfileInformationVO.setUpdatedBy(userProfileInformationVO.getCreatedBy());
+
+			message = "UserProfile Updated Successfully";
+		} else {
+
+			userProfileInformationVO.setCreatedBy(userProfileInformationDTO.getCreatedBy());
+			userProfileInformationVO.setUpdatedBy(userProfileInformationDTO.getCreatedBy());
+			message = "ExpenseClaims Created Successfully";
+		}
+
+		createUpdateUserProfileInformationByUserProfileInformationDTO(userProfileInformationVO,
+				userProfileInformationDTO);
+		userProfileInformationRepo.save(userProfileInformationVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("userProfileInformationVO", userProfileInformationVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void createUpdateUserProfileInformationByUserProfileInformationDTO(
+			UserProfileInformationVO userProfileInformationVO, UserProfileInformationDTO userProfileInformationDTO) {
+
+		userProfileInformationVO.setFullName(userProfileInformationDTO.getFullName());
+		userProfileInformationVO.setEmail(userProfileInformationDTO.getEmail());
+		userProfileInformationVO.setPhoneNumber(userProfileInformationDTO.getPhoneNumber());
+		userProfileInformationVO.setCompanyName(userProfileInformationDTO.getCompanyName());
+		userProfileInformationVO.setAddress(userProfileInformationDTO.getAddress());
+		userProfileInformationVO.setBioInformation(userProfileInformationDTO.getBioInformation());
+		userProfileInformationVO.setCreatedBy(userProfileInformationDTO.getCreatedBy());
+		userProfileInformationVO.setUserId(userProfileInformationDTO.getUserId());
+	}
+
+	@Override
+	public UserProfileInformationVO getUserProfileInformationById(Long id) {
+		return userProfileInformationRepo.getUserProfileInformationById(id);
+	}
+
+	@Override
+	public UserProfileInformationVO uploadExpenseUserProfileInBloob(MultipartFile file, Long id)
+			throws IOException, java.io.IOException {
+		UserProfileInformationVO userProfileInformationVO = userProfileInformationRepo.findById(id).get();
+		if (file != null && !file.isEmpty()) {
+			userProfileInformationVO.setUserProfileImage(file.getBytes());
+
+		}
+		return userProfileInformationRepo.save(userProfileInformationVO);
+	}
+
+	@Override
+	public UserProfileInformationVO getProfileInformationByUserId(Long id) {
+		return userProfileInformationRepo.getProfileInformationByUserId(id);
+	}
 }

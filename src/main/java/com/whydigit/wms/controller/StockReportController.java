@@ -539,4 +539,33 @@ public class StockReportController extends BaseController {
 
 	    return ResponseEntity.ok(responseDTO);
 	}
+	
+	@GetMapping("/getBinUtilizationStatusReport")
+	public ResponseEntity<ResponseDTO> getBinUtilizationStatusReport(@RequestParam String client,
+			@RequestParam String branchCode, @RequestParam String type
+			) {
+		String methodName = "getBinUtilizationStatusReport()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> binUtilizationStatus = new ArrayList<Map<String, Object>>();
+		try {
+			binUtilizationStatus = stockReportService.getBinUtilizationStatusReport(client, branchCode, type);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "BinUtilization Report found Successfullly");
+			responseObjectsMap.put("binUtilizationStatus", binUtilizationStatus);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"BinUtilization Report information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 }

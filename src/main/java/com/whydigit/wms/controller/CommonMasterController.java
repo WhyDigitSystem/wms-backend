@@ -1,6 +1,7 @@
 package com.whydigit.wms.controller;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
@@ -35,6 +37,7 @@ import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
+import com.whydigit.wms.dto.UserProfileInformationDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -46,6 +49,7 @@ import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.entity.UserProfileInformationVO;
 import com.whydigit.wms.service.CommonMasterService;
 
 @RestController
@@ -113,23 +117,22 @@ public class CommonMasterController extends BaseController {
 	public ResponseEntity<ResponseDTO> createUpdateCountry(@RequestBody CountryDTO countryDTO) {
 		String methodName = "createCountry()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		Map<String, Object> responseObjectsMap=new HashMap<String, Object>();
+		Map<String, Object> responseObjectsMap = new HashMap<String, Object>();
 		String errorMsg = null;
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> createdCountryVO = commonMasterService.createUpdateCountry(countryDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdCountryVO.get("message") );
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdCountryVO.get("message"));
 			responseObjectsMap.put("countryVO", createdCountryVO.get("createdCountryVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg ,errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
 
 	// State
 
@@ -223,13 +226,13 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> stateVO = commonMasterService.createUpdateState(stateDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,stateVO.get("message") );
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, stateVO.get("message"));
 			responseObjectsMap.put("stateVO", stateVO.get("stateVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg ,errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -328,12 +331,12 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put("cityVO", createdCityVO.get("cityVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// Region
@@ -428,12 +431,12 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put("regionvo", regionvo.get("regionVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// Currency
@@ -506,12 +509,12 @@ public class CommonMasterController extends BaseController {
 			responseObjectsMap.put("currency", currency.get("currencyVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// Company
@@ -549,7 +552,7 @@ public class CommonMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<CompanyVO> companyVO=new ArrayList<CompanyVO>();
+		List<CompanyVO> companyVO = new ArrayList<CompanyVO>();
 		try {
 			companyVO = commonMasterService.getCompanyById(companyid);
 		} catch (Exception e) {
@@ -1010,8 +1013,8 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	//FINANCIAL YEAR
+
+	// FINANCIAL YEAR
 
 	@PutMapping("/createUpdateFinYear")
 	public ResponseEntity<ResponseDTO> createUpdateFinYear(@RequestBody FinancialYearDTO financialYearDTO) {
@@ -1022,8 +1025,8 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> finYearVO = commonMasterService.createUpdateFinYear(financialYearDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, finYearVO.get("messages")); 
-			responseObjectsMap.put("finYearVO", finYearVO.get("financialYearVO")); 
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, finYearVO.get("messages"));
+			responseObjectsMap.put("finYearVO", finYearVO.get("financialYearVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -1033,7 +1036,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllAciveFInYear")
 	public ResponseEntity<ResponseDTO> getAllFInYear(@RequestParam Long orgId) {
 		String methodName = "getAllFInYear()";
@@ -1059,7 +1062,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllFInYearByOrgId")
 	public ResponseEntity<ResponseDTO> getAllFInYearByOrgId(Long orgId) {
 		String methodName = "getAllFInYearByOrgId()";
@@ -1085,7 +1088,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllFInYearById")
 	public ResponseEntity<ResponseDTO> getAllFInYearById(Long id) {
 		String methodName = "getAllFInYearById()";
@@ -1093,7 +1096,7 @@ public class CommonMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		FinancialYearVO financialYearVOs=null;
+		FinancialYearVO financialYearVOs = null;
 		try {
 			financialYearVOs = commonMasterService.getAllFInYearById(id).orElse(null);
 		} catch (Exception e) {
@@ -1111,9 +1114,9 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	//DEPARTMENT
-	
+
+	// DEPARTMENT
+
 	@PutMapping("/createUpdateDepartment")
 	public ResponseEntity<ResponseDTO> createUpdateDepartment(@RequestBody DepartmentDTO departmentDTO) {
 		String methodName = "createUpdateDepartment()";
@@ -1123,8 +1126,8 @@ public class CommonMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> departmentVO = commonMasterService.createUpdateDepartment(departmentDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, departmentVO.get("messages")); 
-			responseObjectsMap.put("departmentVO", departmentVO.get("departmentVO")); 
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, departmentVO.get("messages"));
+			responseObjectsMap.put("departmentVO", departmentVO.get("departmentVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -1134,7 +1137,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllDepartmentByOrgId")
 	public ResponseEntity<ResponseDTO> getAllDepartmentByOrgId(Long orgId) {
 		String methodName = "getAllDepartmentByOrgId()";
@@ -1160,7 +1163,7 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllDepartmentById")
 	public ResponseEntity<ResponseDTO> getAllDepartmentById(Long id) {
 		String methodName = "getAllDepartmentById()";
@@ -1186,5 +1189,107 @@ public class CommonMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
+	@PostMapping("/uploadExpenseUserProfileInBloob")
+	public ResponseEntity<ResponseDTO> uploadExpenseUserProfileInBloob(@RequestParam("file") MultipartFile file,
+			@RequestParam Long id) {
+		String methodName = "uploadExpenseUserProfileInBloob()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		UserProfileInformationVO userProfileInformationVO = null;
+		try {
+			userProfileInformationVO = commonMasterService.uploadExpenseUserProfileInBloob(file, id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error("Unable To Upload PartImage", methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserInformation Image Successfully Upload");
+			responseObjectsMap.put("userProfileInformationVO", userProfileInformationVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "UserInformation Image Upload Failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("getUserProfileInformationById")
+	public ResponseEntity<ResponseDTO> getUserProfileInformationById(@RequestParam Long id) {
+		String methodName = "getUserProfileInformationById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		UserProfileInformationVO userProfileInformationVO = new UserProfileInformationVO();
+		try {
+			userProfileInformationVO = commonMasterService.getUserProfileInformationById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserInformation found by ID");
+			responseObjectsMap.put("userProfileInformationVO", userProfileInformationVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "UserProfile not found for ID: " + id;
+			responseDTO = createServiceResponseError(responseObjectsMap, "UserInformation not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/createUpdateUserProfileInformation")
+	public ResponseEntity<ResponseDTO> createUpdateUserProfileInformation(
+			@RequestBody UserProfileInformationDTO userProfileInformationDTO) {
+		String methodName = "createUpdateUserProfileInformation()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		Map<String, Object> responseObjectsMap = new HashMap<String, Object>();
+		String errorMsg = null;
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> userProfileInformationVO = commonMasterService
+					.createUpdateUserProfileInformation(userProfileInformationDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, userProfileInformationVO.get("message"));
+			responseObjectsMap.put("userProfileInformationVO",
+					userProfileInformationVO.get("userProfileInformationVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 	
+	@GetMapping("getProfileInformationByUserId")
+	public ResponseEntity<ResponseDTO> getProfileInformationByUserId(@RequestParam Long userId) {
+		String methodName = "getProfileInformationByUserId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		UserProfileInformationVO userProfileInformationVO = new UserProfileInformationVO();
+		try {
+			userProfileInformationVO = commonMasterService.getProfileInformationByUserId(userId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "UserInformation found by ID");
+			responseObjectsMap.put("userProfileInformationVO", userProfileInformationVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "UserProfile not found for ID: " + userId;
+			responseDTO = createServiceResponseError(responseObjectsMap, "UserProfile not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

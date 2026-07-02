@@ -21,7 +21,6 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 	@Query(nativeQuery = true, value = "select concat(prefixfield,lpad(lastno,6,0)) AS docid from m_documenttypemappingdetails where orgid=?1 and finyear=?2 and branchcode=?3 and client=?4 and screencode=?5")
 	String getbuyerOrderDocId(Long orgId, String finYear, String branchCode, String client, String screenCode);
 
-
 //	@Query(nativeQuery = true, value = "select sum(sqty) from stockdetails where orgid=?1 and partno=?6 and branchcode=?3 and\n"
 //			+ "partdesc=?7 and batch?8 and warehouse=?4 \n" + "and branch=?5 and client=?2  and status='R'\n"
 //			+ " group by partno,partdesc,batch,warehouse")
@@ -31,36 +30,24 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 	@Query(nativeQuery = true, value = "select buyer,buyershortname,shipto,billto from buyerorder where orgid=?1 and branch=?2 and branchcode=?3 and client=?4 and docid=?5")
 	Set<Object[]> findBuyerShipToBillToFromBuyerOrderForDeliveryChallan(Long orgId, String branch, String branchCode,
 			String client, String buyerOrderNo);
-	
-	
-	@Query(nativeQuery =true,value = "SELECT partno,\r\n"
-			+ "       partdesc,\r\n"
-			+ "       batch,\r\n"
-			+ "       expdate,\r\n"
-			+ "       SUM(sqty) AS total_sqty,\r\n"
-			+ "       sku,ROW_NUMBER() OVER () AS id\r\n"
-			+ "FROM stockdetails\r\n"
-			+ "WHERE orgid = ?1\r\n"
-			+ "  AND branchcode = ?2\r\n"
-			+ "  AND client = ?3\r\n"
-			+ "  AND status = 'R'\r\n"
-			+ "  AND warehouse = ?4\r\n"
-			+ "GROUP BY partno, partdesc, sku, batch, expdate\r\n"
+
+	@Query(nativeQuery = true, value = "SELECT partno,\r\n" + "       partdesc,\r\n" + "       batch,\r\n"
+			+ "       expdate,\r\n" + "       SUM(sqty) AS total_sqty,\r\n"
+			+ "       sku,ROW_NUMBER() OVER () AS id\r\n" + "FROM stockdetails\r\n" + "WHERE orgid = ?1\r\n"
+			+ "  AND branchcode = ?2\r\n" + "  AND client = ?3\r\n" + "  AND status = 'R'\r\n"
+			+ "  AND warehouse = ?4\r\n" + "GROUP BY partno, partdesc, sku, batch, expdate\r\n"
 			+ "HAVING SUM(sqty) > 0")
-	Set<Object[]> getBoSku(Long orgId, String branchCode, String client,String warehouse);
+	Set<Object[]> getBoSku(Long orgId, String branchCode, String client, String warehouse);
 
-	
-	@Query(nativeQuery =true,value = "select cast(sum(sqty) as unsigned)sqty from stockdetails where orgid=?1 and partno=?6 and branchcode=?3 and\n"
-			+ "batch=?7 and warehouse=?4 \n"
-			+ "and branch=?5 and client=?2  and status='R'\n"
+	@Query(nativeQuery = true, value = "select cast(sum(sqty) as unsigned)sqty from stockdetails where orgid=?1 and partno=?6 and branchcode=?3 and\n"
+			+ "batch=?7 and warehouse=?4 \n" + "and branch=?5 and client=?2  and status='R'\n"
 			+ " group by partno,partdesc,batch,warehouse")
-	int getAvilableQty(Long orgId, String client, String branchCode, String warehouse, String branch,
-			String partNo, String batch);
+	int getAvilableQty(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+			String batch);
 
-
-	@Query(value = "select * from buyerorder where orgid=?1 and finYear=?2 and branch=?3 and branchcode=?4 and client=?5 and warehouse=?6 Order By docid desc",nativeQuery =true)
-	List<BuyerOrderVO> findByBo(Long orgId, String finYear, String branch, String branchCode,
-			String client, String warehouse);
+	@Query(value = "select * from buyerorder where orgid=?1 and finYear=?2 and branch=?3 and branchcode=?4 and client=?5 and warehouse=?6 Order By docid desc", nativeQuery = true)
+	List<BuyerOrderVO> findByBo(Long orgId, String finYear, String branch, String branchCode, String client,
+			String warehouse);
 
 	@Query(nativeQuery = true, value = "select c.* from buyerorder c where c.cancel=0 and c.orderno in(\r\n"
 			+ "select a.buyerorderno from\r\n"
@@ -71,7 +58,8 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 
 	@Query(nativeQuery = true, value = "select sum(sqty) from stockdetails where orgid=?1 and partno=?6 and branchcode=?3 and\n"
 			+ "batch=?7 and warehouse=?4 and branch=?5 and client=?2  and status='R'")
-	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo, String batch);
+	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
+			String batch);
 
 	@Query("select a.totalOrderQty from BuyerOrderVO a where a.docId=?1")
 	int getTotalOrderQty(String buyerOrderNo);
@@ -91,138 +79,103 @@ public interface BuyerOrderRepo extends JpaRepository<BuyerOrderVO, Long> {
 			+ "    ) a) group by c.docid,c.docdate,c.orderno,c.orderdate,c.refno,c.refdate,C.invoiceno,C.billto,C.billtoshortname,C.buyer,C.buyershortname order by c.docid asc")
 	Set<Object[]> getPendingBuyerOrderDetails(Long orgId, String finYear, String branchCode, String warehouse,
 			String client);
-	
-	
-	@Query(value = "SELECT " +
-	        "orderno, " +
-	        "bodocid, " +
-	        "DATE_FORMAT(bodate,'%d-%b-%Y') AS bodate, " +
-	        "buyername, " +
-	        "partno, " +
-	        "boqty, " +
-	        "orderqty, " +
-	        "SUM(IFNULL(pickedqty,0)) AS picked, " +
-	        "(orderqty - SUM(IFNULL(pickedqty,0))) AS pending, " +
-	        "prdocid " +
-	        "FROM ( " +
-	        "   SELECT " +
-	        "       b.client, " +
-	        "       b.branchcode, " +
-	        "       b.orderno, " +
-	        "       b.docid AS bodocid, " +
-	        "       b.docdate AS bodate, " +
-	        "       b.buyername, " +
-	        "       b.partno, " +
-	        "       b.boqty, " +
-	        "       p.orderqty, " +
-	        "       p.pickedqty, " +
-	        "       p.docid AS prdocid " +
-	        "   FROM vw_bo b " +
-	        "   LEFT JOIN vw_pr p " +
-	        "       ON b.docid = p.buyerordno " +
-	        "      AND b.partno = p.partno " +
-	        "   WHERE (b.docid = ?1 OR 'ALL' = ?1) " +
-	        ") a " +
-	        "WHERE (partno = ?2 OR 'ALL' = ?2) " +
-	        "  AND bodate BETWEEN ?3 AND ?4 " +
-	        "  AND branchcode = ?5 " +
-	        "  AND client = ?6 " +
-	        "GROUP BY " +
-	        "branchcode, " +
-	        "orderno, " +
-	        "bodocid, " +
-	        "bodate, " +
-	        "buyername, " +
-	        "partno, " +
-	        "boqty, " +
-	        "orderqty, " +
-	        "prdocid " +
-	        "ORDER BY bodocid",
-	nativeQuery = true)
-	List<Object[]> getBuyerOrderFulFilmentReport(
-	        String docId,      // ?1
-	        String partNo,     // ?2
-	        String  fromDate,     // ?3
-	        String toDate,       // ?4
-	        String branchCode, // ?5
-	        String client      // ?6
+
+	@Query(value = "SELECT " + "orderno, " + "bodocid, " + "DATE_FORMAT(bodate,'%d-%b-%Y') AS bodate, " + "buyername, "
+			+ "partno, " + "boqty, " + "orderqty, " + "SUM(IFNULL(pickedqty,0)) AS picked, "
+			+ "(orderqty - SUM(IFNULL(pickedqty,0))) AS pending, " + "prdocid " + "FROM ( " + "   SELECT "
+			+ "       b.client, " + "       b.branchcode, " + "       b.orderno, " + "       b.docid AS bodocid, "
+			+ "       b.docdate AS bodate, " + "       b.buyername, " + "       b.partno, " + "       b.boqty, "
+			+ "       p.orderqty, " + "       p.pickedqty, " + "       p.docid AS prdocid " + "   FROM vw_bo b "
+			+ "   LEFT JOIN vw_pr p " + "       ON b.docid = p.buyerordno " + "      AND b.partno = p.partno "
+			+ "   WHERE (b.docid = ?1 OR 'ALL' = ?1) " + ") a " + "WHERE (partno = ?2 OR 'ALL' = ?2) "
+			+ "  AND bodate BETWEEN ?3 AND ?4 " + "  AND branchcode = ?5 " + "  AND client = ?6 " + "GROUP BY "
+			+ "branchcode, " + "orderno, " + "bodocid, " + "bodate, " + "buyername, " + "partno, " + "boqty, "
+			+ "orderqty, " + "prdocid " + "ORDER BY bodocid", nativeQuery = true)
+	List<Object[]> getBuyerOrderFulFilmentReport(String docId, // ?1
+			String partNo, // ?2
+			String fromDate, // ?3
+			String toDate, // ?4
+			String branchCode, // ?5
+			String client // ?6
 	);
 
-	@Query(value = "select\r\n"
-			+ "    branchcode,\r\n"
-			+ "    client,\r\n"
-			+ "    bin,\r\n"
-			+ "    sqty,\r\n"
-			+ "    status,\r\n"
-			+ "    capcity,\r\n"
-			+ "    sum(capcity) - sum(sqty) AS avQty,\r\n"
-			+ "    round((sum(sqty) / sum(capcity)) * 100,2) AS utilization\r\n"
-			+ "from\r\n"
-			+ "(\r\n"
-			+ "    select\r\n"
-			+ "        s.branchcode,\r\n"
-			+ "        s.client,\r\n"
-			+ "        s.bin,\r\n"
-			+ "        sum(s.sqty) AS sqty,\r\n"
-			+ "        'Occupied' AS status,\r\n"
-			+ "        w.binqty AS capcity\r\n"
-			+ "    from stockdetails s\r\n"
-			+ "    join warehouselocationdetails w\r\n"
-			+ "        on s.bin = w.bin\r\n"
-			+ "    where s.client = ?1\r\n"
-			+ "      and s.branchcode = ?2\r\n"
-			+ "    group by s.branchcode, s.client, s.bin, w.binqty\r\n"
-			+ "    having sum(s.sqty) > 0\r\n"
-			+ "    union\r\n"
-			+ "    select\r\n"
-			+ "        s.branchcode,\r\n"
-			+ "        s.client,\r\n"
-			+ "        s.bin,\r\n"
-			+ "        0 as sqty,\r\n"
-			+ "        'Empty' as status,\r\n"
-			+ "        w.binqty as capcity\r\n"
-			+ "    from wv_locationstatus s\r\n"
-			+ "    join warehouselocationdetails w\r\n"
-			+ "        on s.bin = w.bin\r\n"
-			+ "    where s.client = ?1\r\n"
-			+ "      and s.branchcode = ?2\r\n"
-			+ "      and s.bin not in\r\n"
-			+ "      (\r\n"
-			+ "          select bin\r\n"
-			+ "          from stockdetails\r\n"
-			+ "          where client = ?1\r\n"
-			+ "            and branchcode = ?2\r\n"
-			+ "          group by bin\r\n"
-			+ "          having sum(sqty) > 0\r\n"
-			+ "      )\r\n"
-			+ "    group by s.branchcode, s.client, s.bin, w.binqty\r\n"
-			+ ") t\r\n"
-			+ "where\r\n"
-			+ "(\r\n"
-			+ "    ( ?3 = 'Occupied' and status = 'Occupied')\r\n"
-			+ "    or\r\n"
-			+ "    ( ?3 = 'Empty' and status = 'Empty')\r\n"
-			+ ")\r\n"
-			+ "group by\r\n"
-			+ "    branchcode,\r\n"
-			+ "    client,\r\n"
-			+ "    bin,\r\n"
-			+ "    sqty,\r\n"
-			+ "    status,\r\n"
-			+ "    capcity\r\n"
-			+ "order by bin",
-	nativeQuery = true)
+	@Query(value = "SELECT\r\n"
+			+ "			    branchcode,\r\n"
+			+ "			    client,\r\n"
+			+ "			    bin,\r\n"
+			+ "			    sqty,\r\n"
+			+ "			    status\r\n"
+			+ "			FROM\r\n"
+			+ "			(\r\n"
+			+ "			    SELECT\r\n"
+			+ "			        branchcode,\r\n"
+			+ "			        client,\r\n"
+			+ "			        bin,\r\n"
+			+ "			        SUM(sqty) AS sqty,\r\n"
+			+ "			        'Occupied' AS status\r\n"
+			+ "			    FROM stockdetails\r\n"
+			+ "			    WHERE client = ?1\r\n"
+			+ "			      AND branchcode = ?2\r\n"
+			+ "			    GROUP BY branchcode, client, bin\r\n"
+			+ "			    HAVING SUM(sqty) > 0\r\n"
+			+ "			\r\n"
+			+ "			    UNION\r\n"
+			+ "			\r\n"
+			+ "			    SELECT\r\n"
+			+ "			        branchcode,\r\n"
+			+ "			        client,\r\n"
+			+ "			        bin,\r\n"
+			+ "			        0 AS sqty,\r\n"
+			+ "			        'Empty' AS status\r\n"
+			+ "			    FROM wv_locationstatus\r\n"
+			+ "			    WHERE client = ?1\r\n"
+			+ "			      AND branchcode = ?2\r\n"
+			+ "			      AND bin NOT IN\r\n"
+			+ "			      (\r\n"
+			+ "			          SELECT bin\r\n"
+			+ "			          FROM stockdetails\r\n"
+			+ "			          WHERE client = ?1\r\n"
+			+ "			            AND branchcode = ?2\r\n"
+			+ "			          GROUP BY bin\r\n"
+			+ "			          HAVING SUM(sqty) > 0\r\n"
+			+ "			      )\r\n"
+			+ "			    GROUP BY branchcode, client, bin\r\n"
+			+ "			) t\r\n"
+			+ "			WHERE\r\n"
+			+ "			(\r\n"
+			+ "			    (?3 = 'Occupied' AND status = 'Occupied')\r\n"
+			+ "			    OR\r\n"
+			+ "			    (?3 = 'Empty' AND status = 'Empty')\r\n"
+			+ "			)\r\n"
+			+ "			ORDER BY bin", nativeQuery = true)
 	List<Object[]> getLocationStatusReport(String client, String branchCode, String type);
 
-	@Query(value = "SELECT b.docid, d.partno " +
-            "FROM buyerorder b " +
-            "INNER JOIN buyerorderdetails d " +
-            "ON b.buyerorderid = d.buyerorderid " +
-            "WHERE b.orgid = ?1 and customer=?2 and client=?3 and branchCode=?4",
-    nativeQuery = true)
-List<Object[]> getBuyerOrderPartNo(Long orgId, String customer, String client, String branchCode);
+	@Query(value = "SELECT b.docid, d.partno " + "FROM buyerorder b " + "INNER JOIN buyerorderdetails d "
+			+ "ON b.buyerorderid = d.buyerorderid "
+			+ "WHERE b.orgid = ?1 and customer=?2 and client=?3 and branchCode=?4", nativeQuery = true)
+	List<Object[]> getBuyerOrderPartNo(Long orgId, String customer, String client, String branchCode);
 
-	
-	
-	
+	@Query(value = "select\r\n" + "    branchcode,\r\n" + "    client,\r\n" + "    bin,\r\n" + "    sqty,\r\n"
+			+ "    status,\r\n" + "    capcity,\r\n" + "    sum(capcity) - sum(sqty) AS avQty,\r\n"
+			+ "    round((sum(sqty) / sum(capcity)) * 100,2) AS utilization\r\n" + "from\r\n" + "(\r\n"
+			+ "    select\r\n" + "        s.branchcode,\r\n" + "        s.client,\r\n" + "        s.bin,\r\n"
+			+ "        sum(s.sqty) AS sqty,\r\n" + "        'Occupied' AS status,\r\n"
+			+ "        w.binqty AS capcity\r\n" + "    from stockdetails s\r\n"
+			+ "    join warehouselocationdetails w\r\n" + "        on s.bin = w.bin\r\n" + "    where s.client = ?1\r\n"
+			+ "      and s.branchcode = ?2\r\n" + "    group by s.branchcode, s.client, s.bin, w.binqty\r\n"
+			+ "    having sum(s.sqty) > 0\r\n" + "    union\r\n" + "    select\r\n" + "        s.branchcode,\r\n"
+			+ "        s.client,\r\n" + "        s.bin,\r\n" + "        0 as sqty,\r\n"
+			+ "        'Empty' as status,\r\n" + "        w.binqty as capcity\r\n" + "    from wv_locationstatus s\r\n"
+			+ "    join warehouselocationdetails w\r\n" + "        on s.bin = w.bin\r\n" + "    where s.client = ?1\r\n"
+			+ "      and s.branchcode = ?2\r\n" + "      and s.bin not in\r\n" + "      (\r\n"
+			+ "          select bin\r\n" + "          from stockdetails\r\n" + "          where client = ?1\r\n"
+			+ "            and branchcode = ?2\r\n" + "          group by bin\r\n"
+			+ "          having sum(sqty) > 0\r\n" + "      )\r\n"
+			+ "    group by s.branchcode, s.client, s.bin, w.binqty\r\n" + ") t\r\n" + "where\r\n" + "(\r\n"
+			+ "    ( ?3 = 'Occupied' and status = 'Occupied')\r\n" + "    or\r\n"
+			+ "    ( ?3 = 'Empty' and status = 'Empty')\r\n" + ")\r\n" + "group by\r\n" + "    branchcode,\r\n"
+			+ "    client,\r\n" + "    bin,\r\n" + "    sqty,\r\n" + "    status,\r\n" + "    capcity\r\n"
+			+ "order by bin", nativeQuery = true)
+	Set<Object[]> getBinUtilizationStatusReport(String client, String branchCode, String type);
+
 }
