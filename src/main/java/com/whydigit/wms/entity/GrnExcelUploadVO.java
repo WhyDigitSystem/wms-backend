@@ -139,6 +139,9 @@ public class GrnExcelUploadVO {
     @Column(name = "cancelremarks",length =150)
     private String cancelRemarks;
     
+    @Column(name = "currentdate",length =150)
+    private LocalDate currentDate;
+    
     @Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 

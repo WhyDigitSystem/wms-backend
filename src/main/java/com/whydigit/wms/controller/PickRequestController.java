@@ -258,7 +258,7 @@ public class PickRequestController extends BaseController {
 
 	@GetMapping("/getPicrequestDashboard")
 	public ResponseEntity<ResponseDTO> getPicrequestDashboard(@RequestParam Long orgId, @RequestParam String branchCode,
-			@RequestParam String client, @RequestParam(required = false) String month, @RequestParam String finyear) {
+			@RequestParam String client, @RequestParam(required = false) String month, @RequestParam String finyear,@RequestParam String type) {
 		String methodName = "getPicrequestDashboard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -266,7 +266,7 @@ public class PickRequestController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> picrequestDashboard = new ArrayList<>();
 		try {
-			picrequestDashboard = pickRequestService.getPicrequestDashboard(orgId, branchCode, client, month, finyear);
+			picrequestDashboard = pickRequestService.getPicrequestDashboard(orgId, branchCode, client, month, finyear,type);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

@@ -744,7 +744,22 @@ StockDetailsVO findByRefNoAndPartnoAndSourceScreenCode(String docId, String part
 		+ "  and m.client =?3 and m.warehouse =?4 group by m.client,m.partno,m.partdesc,m.sku,m.criticalstocklevel having SUM(s.sqty) <= m.criticalstocklevel")
 Set<Object[]> getCriticalStockLevelDetails(Long orgId, String branchCode, String client, String warehouse);
 
-
+@Query(nativeQuery = true, value = "select sum(today) today,sum(yesterday) yesterday,sum(thisweek) thisweek,sum(thismonth) thismonth from (\r\n"
+		+ "select  coalesce(SUM(a.sqty), 0) as today,0 yesterday,0 thisweek,0 thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and date(a.stockdate) = curdate()\r\n"
+		+ "union\r\n"
+		+ "select  0 as today,coalesce(SUM(a.sqty), 0) yesterday,0 thisweek,0 thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and date(a.stockdate) = curdate() - interval 1 day\r\n"
+		+ "union \r\n"
+		+ "select  0 as today,0 yesterday,coalesce(SUM(a.sqty), 0) thisweek,0 thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and date(a.stockdate) between date_sub(curdate(), interval weekday(curdate()) day)\r\n"
+		+ "and date_add(date_sub(curdate(), interval weekday(curdate()) day), interval 6 day)\r\n"
+		+ "union\r\n"
+		+ "select  0 as today,0 yesterday, 0 thisweek,coalesce(SUM(a.sqty), 0) thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and month(a.stockdate)=month(curdate())	\r\n"
+		+ ") a ")
+Set<Object[]> getDashBoardStockDetailsReport(Long orgId, String branchCode, String warehouse, Long finYear,
+		String client);
 
 
 }

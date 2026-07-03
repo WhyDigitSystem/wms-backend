@@ -38,7 +38,7 @@ public interface PickRequestService {
 	Map<String, Object> createMultiplePickRequest(List<MultiplePickDTO> multiplePickDTO1) throws ApplicationException;
 
 	List<Map<String, Object>> getPicrequestDashboard(Long orgId, String branchCode, String client, String month,
-			String finyear);
+			String finyear,String type);
 
 	List<PickRequestVO> getAllPickRequestFillGridDetails(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse);

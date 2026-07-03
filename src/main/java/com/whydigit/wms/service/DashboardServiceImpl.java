@@ -285,11 +285,11 @@ public class DashboardServiceImpl implements DashboardService {
 		return gridDetails1;
 	}
 
-	
 	@Override
 	public List<Map<String, Object>> getCriticalStockLevelDetails(Long orgId, String branchCode, String client,
 			String warehouse) {
-		Set<Object[]> getExpDetails = stockDetailsRepo.getCriticalStockLevelDetails(orgId, branchCode, client, warehouse);
+		Set<Object[]> getExpDetails = stockDetailsRepo.getCriticalStockLevelDetails(orgId, branchCode, client,
+				warehouse);
 		return getCriticalStockLevelDetails(getExpDetails);
 	}
 
@@ -306,5 +306,26 @@ public class DashboardServiceImpl implements DashboardService {
 			gridDetails1.add(details);
 		}
 		return gridDetails1;
+	}
+
+	@Override
+	public List<Map<String, Object>> getDashBoardStockDetailsReport(Long orgId, String branchCode, String warehouse,
+			Long finYear, String client) {
+		Set<Object[]> getDetails = stockDetailsRepo.getDashBoardStockDetailsReport(orgId, branchCode, warehouse,
+				finYear, client);
+		return getDashBoardStockDetailsReport(getDetails);
+	}
+
+	private List<Map<String, Object>> getDashBoardStockDetailsReport(Set<Object[]> getDetails) {
+		List<Map<String, Object>> stock = new ArrayList<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> stockDetails = new HashMap<>();
+			stockDetails.put("today", st[0] != null ? Integer.parseInt(st[0].toString()) : 0);
+			stockDetails.put("yesterday", st[1] != null ? Integer.parseInt(st[1].toString()) : 0);
+			stockDetails.put("thisweek", st[2] != null ? Integer.parseInt(st[2].toString()) : 0);
+			stockDetails.put("thismonth", st[3] != null ? Integer.parseInt(st[3].toString()) : 0);
+			stock.add(stockDetails);
+		}
+		return stock;
 	}
 }
