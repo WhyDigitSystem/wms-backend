@@ -188,7 +188,12 @@ public interface PickRequestRepo extends JpaRepository<PickRequestVO, Long> {
 	int getAvlQty(Long orgId, String branchCode, String warehouse, String client,
 			String fromBin, String partNo, String grnNo, String batchNo);
 
-	@Query(nativeQuery = true,value = "select a.* from pickrequest a where a.cancel=0 and a.status='Confirm' and a.orgid=?1 and a.finyear=?2 and a.branch=?3 and a.branchcode=?4 and a.client=?5 order by a.docid desc")
+	@Query(nativeQuery = true,value = "select a.* from pickrequest a join pickrequestdetails p1 on a.pickrequestid = p1.pickrequestid left join \r\n"
+			+ "reversepick s on a.docid = s.pickrequestdocid\r\n"
+			+ "			left join reversepickdetails s1 on s.reversepickid = s1.reversepickid and p1.partno = s1.partno and p1.batchno = s1.batchno \r\n"
+			+ "where a.cancel=0 and a.status='Confirm' and a.orgid=?1 and a.finyear=?2\r\n"
+			+ " and a.branch=?3 and a.branchcode=?4 and a.client=?5 group by a.pickrequestid having\r\n"
+			+ " SUM(p1.pickqty - IFNULL(s1.revisedqty, 0)) > 0 order by a.docid desc")
 	List<PickRequestVO> getPickDetails(Long orgId, String finYear, String branch, String branchCode, String client);
 
 	@Query(nativeQuery = true,value = "select b.partno,b.partdesc,b.sku,b.grnno,b.grndate,b.batchno,b.batchdate,b.bintype,b.binclass,b.celltype,b.core,b.bin,b.orderqty,b.pickqty,b.expdate,b.qcflag,ROW_NUMBER() OVER (ORDER BY partdesc, partno) AS id from pickrequest a, pickrequestdetails b\r\n"

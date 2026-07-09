@@ -392,9 +392,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		String message;
 
 		if (ObjectUtils.isEmpty(cellTypeDTO.getId())) {
-			if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCelltype(), cellTypeDTO.getOrgId())) {
+			if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCellType(), cellTypeDTO.getOrgId())) {
 				String errorMessage = String.format("This CellType: %s Already Exists By This Organization.",
-						cellTypeDTO.getCelltype());
+						cellTypeDTO.getCellType());
 				throw new ApplicationException(errorMessage);
 			}
 			message = "Cell Type Creation Successfully";
@@ -405,13 +405,13 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 			cellTypeVO = cellTypeRepo.findById(cellTypeDTO.getId()).orElseThrow(() -> new ApplicationException(
 					"This Id Is Not Found Any Information, Invalid Id: " + cellTypeDTO.getId()));
 			cellTypeVO.setUpdatedBy(cellTypeDTO.getCreatedBy());
-			if (!cellTypeVO.getCellType().equalsIgnoreCase(cellTypeDTO.getCelltype())) {
-				if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCelltype(), cellTypeDTO.getOrgId())) {
+			if (!cellTypeVO.getCellType().equalsIgnoreCase(cellTypeDTO.getCellType())) {
+				if (cellTypeRepo.existsByCellTypeAndOrgId(cellTypeDTO.getCellType(), cellTypeDTO.getOrgId())) {
 					String errorMessage = String.format("This CellType: %s Already Exists By This Organization.",
-							cellTypeDTO.getCelltype());
+							cellTypeDTO.getCellType());
 					throw new ApplicationException(errorMessage);
 				}
-				cellTypeVO.setCellType(cellTypeDTO.getCelltype());
+				cellTypeVO.setCellType(cellTypeDTO.getCellType());
 			}
 			message = "Cell Type Updation Successfully";
 		}
@@ -429,7 +429,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	}
 
 	private void getCellTypeVOFromCellTypeDTO(CellTypeVO cellTypeVO, CellTypeDTO cellTypeDTO) {
-		cellTypeVO.setCellType(cellTypeDTO.getCelltype());
+		cellTypeVO.setCellType(cellTypeDTO.getCellType());
 		cellTypeVO.setActive(cellTypeDTO.isActive());
 		cellTypeVO.setCancel(cellTypeDTO.isCancel());
 		cellTypeVO.setOrgId(cellTypeDTO.getOrgId());
@@ -1548,8 +1548,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	// Carrier
 
 	@Override
-	public List<CarrierVO> getAllCarrier(Long orgid, String client, String cbranch) {
-		return carrierRepo.findAll(orgid, client, cbranch);
+	public List<CarrierVO> getAllCarrier(Long orgid, String cbranch) {
+		return carrierRepo.findAll(orgid, cbranch);
 	}
 
 	@Override

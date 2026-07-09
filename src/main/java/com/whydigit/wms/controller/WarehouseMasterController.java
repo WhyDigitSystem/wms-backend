@@ -1507,7 +1507,7 @@ public class WarehouseMasterController extends BaseController {
 	// Carrier
 
 	@GetMapping("/carrier")
-	public ResponseEntity<ResponseDTO> getAllCarrier(@RequestParam Long orgid, @RequestParam String client,
+	public ResponseEntity<ResponseDTO> getAllCarrier(@RequestParam Long orgid,
 			@RequestParam String cbranch) {
 		String methodName = "getAllCarrier()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
@@ -1516,7 +1516,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<CarrierVO> carrierVO = new ArrayList<>();
 		try {
-			carrierVO = warehouseMasterService.getAllCarrier(orgid, client, cbranch);
+			carrierVO = warehouseMasterService.getAllCarrier(orgid, cbranch);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

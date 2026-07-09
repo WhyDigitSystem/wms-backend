@@ -207,7 +207,7 @@ public interface WarehouseMasterService {
 
 	// Carrier
 
-	List<CarrierVO> getAllCarrier(Long orgid, String client, String cbranch);
+	List<CarrierVO> getAllCarrier(Long orgid, String cbranch);
 	
 	Optional<CarrierVO> getCarrierById(Long carrierid);
 

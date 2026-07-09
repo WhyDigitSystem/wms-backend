@@ -27,11 +27,12 @@ import com.whydigit.wms.repo.PickRequestRepo;
 import com.whydigit.wms.repo.ReversePickDetailsRepo;
 import com.whydigit.wms.repo.ReversePickRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
+
 @Service
 public class ReversePickServiceImpl implements ReversePickService {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(ReversePickServiceImpl.class);
-	
+
 	@Autowired
 	ReversePickRepo reversePickRepo;
 
@@ -40,16 +41,16 @@ public class ReversePickServiceImpl implements ReversePickService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
-	
+
 	@Autowired
 	PickRequestRepo pickRequestRepo;
-	
+
 	@Autowired
 	ClientRepo clientRepo;
-	
+
 	@Autowired
 	MaterialRepo materialRepo;
-	
+
 	@Autowired
 	StockDetailsRepo stockDetailsRepo;
 
@@ -65,7 +66,7 @@ public class ReversePickServiceImpl implements ReversePickService {
 					.orElseThrow(() -> new ApplicationException("Reverse PickRequest not found"));
 
 			reversePickVO.setUpdatedBy(reversePickDTO.getCreatedBy());
-			getReversePickVOFromReversePickDTO(reversePickVO,reversePickDTO);
+			getReversePickVOFromReversePickDTO(reversePickVO, reversePickDTO);
 			message = "PickRequest Updated Successfully";
 		} else {
 			reversePickVO.setCreatedBy(reversePickDTO.getCreatedBy());
@@ -75,7 +76,7 @@ public class ReversePickServiceImpl implements ReversePickService {
 					reversePickDTO.getFinYear(), reversePickDTO.getBranchCode(), reversePickDTO.getClient(),
 					screenCode);
 			reversePickVO.setDocId(pickRequestDocId);
-			getReversePickVOFromReversePickDTO(reversePickVO,reversePickDTO);
+			getReversePickVOFromReversePickDTO(reversePickVO, reversePickDTO);
 
 			DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
 					.findByBranchAndClientAndFinYearAndScreenCode(reversePickDTO.getOrgId(),
@@ -85,13 +86,13 @@ public class ReversePickServiceImpl implements ReversePickService {
 			documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
 			message = "PickRequest Created Successfully";
 		}
-		
-		ReversePickVO savedPickRequestVO= reversePickRepo.save(reversePickVO);
+
+		ReversePickVO savedPickRequestVO = reversePickRepo.save(reversePickVO);
 		List<ReversePickDetailsVO> pickRequestDetailsVOLists = savedPickRequestVO.getReversePickDetailsVO();
 		if (pickRequestDetailsVOLists != null && !pickRequestDetailsVOLists.isEmpty()) {
 			if ("Confirm".equals(savedPickRequestVO.getStatus())) {
 				for (ReversePickDetailsVO detailsVO : pickRequestDetailsVOLists) {
-					
+
 					StockDetailsVO stockDetailsVOFrom = new StockDetailsVO();
 					stockDetailsVOFrom.setOrgId(savedPickRequestVO.getOrgId());
 					stockDetailsVOFrom.setFinYear(savedPickRequestVO.getFinYear());
@@ -108,7 +109,8 @@ public class ReversePickServiceImpl implements ReversePickService {
 					stockDetailsVOFrom.setBuyerOrderNo(savedPickRequestVO.getBuyerOrderNo());
 					stockDetailsVOFrom.setUpdatedBy(savedPickRequestVO.getUpdatedBy());
 					stockDetailsVOFrom.setPartno(detailsVO.getPartNo());
-					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(), savedPickRequestVO.getClient(), detailsVO.getPartNo()));
+					stockDetailsVOFrom.setPcKey(materialRepo.getParentChildKey(savedPickRequestVO.getOrgId(),
+							savedPickRequestVO.getClient(), detailsVO.getPartNo()));
 					stockDetailsVOFrom.setPartDesc(detailsVO.getPartDesc());
 					stockDetailsVOFrom.setSQty(detailsVO.getRevisedQty());
 					stockDetailsVOFrom.setBatch(detailsVO.getBatchNo());
@@ -135,7 +137,7 @@ public class ReversePickServiceImpl implements ReversePickService {
 				}
 			}
 		}
-		
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("message", message);
 		response.put("reversePickVO", reversePickVO);
@@ -143,8 +145,9 @@ public class ReversePickServiceImpl implements ReversePickService {
 
 	}
 
-	private ReversePickVO getReversePickVOFromReversePickDTO(ReversePickVO reversePickVO, ReversePickDTO reversePickDTO) {
-		
+	private ReversePickVO getReversePickVOFromReversePickDTO(ReversePickVO reversePickVO, ReversePickDTO reversePickDTO)
+			throws ApplicationException {
+
 		if ("Confirm".equals(reversePickDTO.getStatus())) {
 			reversePickVO.setFreeze(true);
 		} else {
@@ -176,16 +179,16 @@ public class ReversePickServiceImpl implements ReversePickService {
 		reversePickVO.setCreatedBy(reversePickDTO.getCreatedBy());
 		reversePickVO.setStatus(reversePickDTO.getStatus());
 		reversePickVO.setBoAmendment(reversePickDTO.getBoAmendment());
-		
+
 		if (ObjectUtils.isNotEmpty(reversePickVO.getId())) {
 			List<ReversePickDetailsVO> reversePickRequestDetailsVO1 = reversePickDetailsRepo
 					.findByReversePickVO(reversePickVO);
 			reversePickDetailsRepo.deleteAll(reversePickRequestDetailsVO1);
 		}
-		
+
 		int totalPickQty = pickRequestRepo.getTotalPickQty(reversePickDTO.getPickRequestDocId());
 		int totalrevisedQty = 0;
-		
+
 		List<ReversePickDetailsVO> reversePickDetailsVOs = new ArrayList<>();
 		for (ReversePickDetailsDTO details2dto : reversePickDTO.getReversePickDetailsDTO()) {
 			ReversePickDetailsVO reversePickDetailsVO = new ReversePickDetailsVO();
@@ -198,17 +201,35 @@ public class ReversePickServiceImpl implements ReversePickService {
 			reversePickDetailsVO.setBatchDate(details2dto.getBatchDate());
 			reversePickDetailsVO.setOrderQty(details2dto.getOrderQty());
 			reversePickDetailsVO.setPickQty(details2dto.getPickQty());
-			
+
+			Integer alreadyReversedQty = reversePickDetailsRepo.getAlreadyReversedQty(details2dto.getPartNo(),
+					details2dto.getBatchNo());
+
+			if (alreadyReversedQty == null) {
+				alreadyReversedQty = 0;
+			}
+
+			int pickQty = details2dto.getPickQty();
+			int enteredQty = details2dto.getRevisedQty();
+
+			int balanceQty = pickQty - alreadyReversedQty;
+
+			if (enteredQty > balanceQty) {
+
+				throw new ApplicationException("Already returned quantity is " + alreadyReversedQty
+						+ ". You can return only " + balanceQty + " more quantity.");
+			}
+
 			reversePickDetailsVO.setRevisedQty(details2dto.getRevisedQty());
-			totalrevisedQty=totalrevisedQty+details2dto.getRevisedQty();
+			totalrevisedQty = totalrevisedQty + details2dto.getRevisedQty();
+
 			reversePickDetailsVO.setRemarks(details2dto.getRemarks());
 			reversePickDetailsVO.setBinClass(details2dto.getBinClass());
 			reversePickDetailsVO.setCellType(details2dto.getCellType());
 			reversePickDetailsVO.setSsku(details2dto.getSku());
 			reversePickDetailsVO.setBinType(details2dto.getBinType());
 			reversePickDetailsVO.setExpDate(details2dto.getExpDate());
-			if("Defective".equals(details2dto.getBin()))
-			{
+			if ("Defective".equals(details2dto.getBin())) {
 				reversePickDetailsVO.setStatus("D");
 				reversePickDetailsVO.setQcFlag("F");
 			}
@@ -222,7 +243,7 @@ public class ReversePickServiceImpl implements ReversePickService {
 		reversePickVO.setTotalRevisedQty(totalrevisedQty);
 		reversePickVO.setTotalPickQty(totalPickQty);
 		reversePickVO.setReversePickDetailsVO(reversePickDetailsVOs);
-		
+
 		return reversePickVO;
 	}
 
@@ -236,7 +257,7 @@ public class ReversePickServiceImpl implements ReversePickService {
 	@Override
 	public List<ReversePickVO> getAllReversePick(Long orgId, String client, String branch, String branchCode,
 			String finYear, String warehouse) {
-		return reversePickRepo.getReversePickDetails(orgId,client,branch,branchCode,finYear,warehouse);
+		return reversePickRepo.getReversePickDetails(orgId, client, branch, branchCode, finYear, warehouse);
 	}
 
 	@Override
@@ -255,23 +276,20 @@ public class ReversePickServiceImpl implements ReversePickService {
 	@Override
 	public List<PickRequestVO> getPickRequestDetailsForReversePick(Long orgId, String finYear, String branch,
 			String branchCode, String client) {
-		return pickRequestRepo.getPickDetails(orgId, finYear, branch,
-				branchCode, client);
+		return pickRequestRepo.getPickDetails(orgId, finYear, branch, branchCode, client);
 	}
-	
+
 	@Override
-	public List<Map<String,Object>> getPickRequestFillDetailsForReversePick(Long orgId,
-			String branchCode, String client,String pickDocId) {
-		Set<Object[]>fillDetails= pickRequestRepo.fillgridDetails(orgId,
-				branchCode, client,pickDocId);
+	public List<Map<String, Object>> getPickRequestFillDetailsForReversePick(Long orgId, String branchCode,
+			String client, String pickDocId) {
+		Set<Object[]> fillDetails = pickRequestRepo.fillgridDetails(orgId, branchCode, client, pickDocId);
 		return details(fillDetails);
 	}
 
 	private List<Map<String, Object>> details(Set<Object[]> fillDetails) {
-		List<Map<String, Object>> getDetails= new ArrayList<>();
-		for(Object[] gridDetails:fillDetails)
-		{
-			Map<String, Object>mapDetails= new HashMap<>();
+		List<Map<String, Object>> getDetails = new ArrayList<>();
+		for (Object[] gridDetails : fillDetails) {
+			Map<String, Object> mapDetails = new HashMap<>();
 			mapDetails.put("partNo", gridDetails[0] != null ? gridDetails[0].toString() : "");
 			mapDetails.put("partDesc", gridDetails[1] != null ? gridDetails[1].toString() : "");
 			mapDetails.put("sku", gridDetails[2] != null ? gridDetails[2].toString() : "");
@@ -293,6 +311,5 @@ public class ReversePickServiceImpl implements ReversePickService {
 		}
 		return getDetails;
 	}
-	
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class CellTypeDTO {
 
 	private Long id;
-	private String celltype;
+	private String cellType;
 	private boolean active;
 	private String createdBy;
 	private Long orgId;
