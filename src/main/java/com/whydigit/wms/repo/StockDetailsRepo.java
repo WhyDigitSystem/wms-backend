@@ -792,7 +792,7 @@ Set<Object[]> getDashBoardStockDetailsReport(Long orgId, String branchCode, Stri
 		+ "    SUM(s.sqty) > 0\r\n"
 		+ "    AND (\r\n"
 		+ "        pr.last_sale_date IS NULL\r\n"
-		+ "        OR DATEDIFF(CURDATE(), pr.last_sale_date) > 5\r\n"
+		+ "        OR DATEDIFF(CURDATE(), pr.last_sale_date) > 20\r\n"
 		+ "    )\r\n"
 		+ "ORDER BY\r\n"
 		+ "    days_since_sale DESC")
