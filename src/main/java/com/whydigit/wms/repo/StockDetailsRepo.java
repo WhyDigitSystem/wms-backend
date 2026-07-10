@@ -665,7 +665,7 @@ Set<Object[]> getOutBoundOrderPerYear1(Long orgId, String branchCode, String war
 		+ "         AND warehouse =?3 \r\n"
 		+ "         AND branchcode =?2\r\n"
 		+ "         AND client =?4\r\n"
-		+ "         AND status = 'H' \r\n"
+		+ "         AND status in ( 'H','D') \r\n"
 		+ "     GROUP BY \r\n"
 		+ "         partno, partdesc, sku, grnno, grndate, batch, batchdate, expdate, bin \r\n"
 		+ "     HAVING \r\n"
