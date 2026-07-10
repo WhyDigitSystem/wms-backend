@@ -31,15 +31,15 @@ import com.whydigit.wms.service.WarehouseMasterService;
 @RestController
 @RequestMapping("/api/grn")
 public class GrnController extends BaseController {
-	
+
 	public static final Logger LOGGER = LoggerFactory.getLogger(GrnController.class);
-	
+
 	@Autowired
 	GrnService grnService;
-	
+
 	@Autowired
 	WarehouseMasterService warehouseMasterService;
-	
+
 	@GetMapping("/getAllModeOfShipment")
 	public ResponseEntity<ResponseDTO> getAllModeOfShipment(@RequestParam Long orgId) {
 		String methodName = "getAllModeOfShipment()";
@@ -66,7 +66,6 @@ public class GrnController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 	@GetMapping("/getGatePassDetailsByGatePassNo")
 	public ResponseEntity<ResponseDTO> getGatePassDetailsByGatePassNo(@RequestParam Long orgid,
 			@RequestParam String client, @RequestParam String entryno, @RequestParam Long docid,
@@ -76,7 +75,7 @@ public class GrnController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String,Object>> grn = new ArrayList<>();
+		List<Map<String, Object>> grn = new ArrayList<>();
 		try {
 			grn = grnService.getGatePassDetailsByGatePassNo(orgid, client, entryno, docid, branchcode);
 		} catch (Exception e) {
@@ -95,8 +94,6 @@ public class GrnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
-	
 
 	// Grn
 
@@ -240,8 +237,8 @@ public class GrnController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> gatePassInDetailsVO = new ArrayList<>();
 		try {
-			gatePassInDetailsVO = grnService.getGatepassInGridDetailsForPendingGRN(orgId, finYear,
-					branchCode, client, gatePassDocId);
+			gatePassInDetailsVO = grnService.getGatepassInGridDetailsForPendingGRN(orgId, finYear, branchCode, client,
+					gatePassDocId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -257,15 +254,14 @@ public class GrnController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-
-	
 
 	@PostMapping("/ExcelUploadForGrn")
 	public ResponseEntity<ResponseDTO> ExcelUploadForGrn(@RequestParam MultipartFile[] files,
 			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String createdBy,@RequestParam(required = false) String customer, @RequestParam(required = false)  String client, @RequestParam(required = false)  String finYear, 
-			 @RequestParam(required = false) String branch, @RequestParam(required = false)  String branchCode, @RequestParam(required = false)  String warehouse) {
+			@RequestParam(required = false) String createdBy, @RequestParam(required = false) String customer,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String warehouse) {
 		String methodName = "ExcelUploadForGrn()";
 		int totalRows = 0;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -273,7 +269,8 @@ public class GrnController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			grnService.ExcelUploadForGrn(files, type, orgId, createdBy,customer,client,finYear,branch, branchCode, warehouse);
+			grnService.ExcelUploadForGrn(files, type, orgId, createdBy, customer, client, finYear, branch, branchCode,
+					warehouse);
 
 			// Retrieve the counts after processing
 			totalRows = grnService.getTotalRows(); // Get total rows processed
@@ -297,14 +294,15 @@ public class GrnController extends BaseController {
 			responseObjectsMap.put("errorMessage", errorMsg);
 
 			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Grn Failed", errorMsg);
-      }
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@GetMapping("/getGrnStatusForDashBoard")
-	public ResponseEntity<ResponseDTO> getGrnStatusForDashBoard(@RequestParam Long orgId,
-			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String client,
-			 @RequestParam String warehouse, @RequestParam(required = false) String month) {
+	public ResponseEntity<ResponseDTO> getGrnStatusForDashBoard(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branchCode, @RequestParam String client, @RequestParam String warehouse,
+			@RequestParam(required = false) String month, @RequestParam String type) {
 		String methodName = "getGrnStatusForDashBoard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -312,8 +310,8 @@ public class GrnController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> grnDashboard = new ArrayList<>();
 		try {
-			grnDashboard = grnService.getGrnStatusForDashBoard(orgId, finYear,
-					branchCode, client,warehouse,month);
+			grnDashboard = grnService.getGrnStatusForDashBoard(orgId, finYear, branchCode, client, warehouse, month,
+					type);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -323,13 +321,10 @@ public class GrnController extends BaseController {
 			responseObjectsMap.put("grnDashboard", grnDashboard);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Grn information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
-
 
 }

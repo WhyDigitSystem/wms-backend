@@ -516,6 +516,7 @@ public class GrnServiceImpl implements GrnService {
 	                        grnExcelUploadVO.setBranchCode(branchCode);
 	                        grnExcelUploadVO.setWarehouse(warehouse);
 	                        grnExcelUploadVO.setCreatedBy(createdBy);
+	                        grnExcelUploadVO.setCurrentDate(LocalDate.now());
 	                        grnExcelUploadVO.setUpdatedBy(""); // Assuming you set this later or leave it empty
 	                        grnExcelUploadVO.setActive(true); // Default or based on some logic
 	                        grnExcelUploadVO.setCancel(false); // Default or based on some logic
@@ -617,8 +618,8 @@ public class GrnServiceImpl implements GrnService {
 
 	@Override
 	public List<Map<String, Object>> getGrnStatusForDashBoard(Long orgId, String finYear, String branchCode,
-			String client,String warehouse,String month) {
-		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse,month);
+			String client,String warehouse,String month,String type) {
+		Set<Object[]> getGrnStatus = gatePassInRepo.getGrnDetails(orgId, finYear, branchCode, client,warehouse,month,type);
 		return getGrnStatus(getGrnStatus);
 	}
 

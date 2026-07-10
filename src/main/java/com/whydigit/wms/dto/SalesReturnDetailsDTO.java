@@ -2,6 +2,8 @@ package com.whydigit.wms.dto;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +30,11 @@ public class SalesReturnDetailsDTO {
 	private int binQty;
 	private String remarks;
 	private String qcFlag;
-	
+	private String binType;
+	private String cellType;
+	private String ssku;
+	private String status;
+	private String core;
+	private String bin;
+	private String binClass;
 }

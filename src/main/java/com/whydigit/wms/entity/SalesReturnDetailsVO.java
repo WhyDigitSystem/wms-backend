@@ -32,15 +32,15 @@ public class SalesReturnDetailsVO {
 	@SequenceGenerator(name = "salesreturndetailsgen", sequenceName = "salesreturndetailsseq", initialValue = 1000000001, allocationSize = 1)
 	@Column(name = "salesreturndetailsid")
 	private Long id;
-	@Column(name = "lrno",length =25)
+	@Column(name = "lrno", length = 25)
 	private String LRNo;
-	@Column(name = "invoiceno",length =25)
+	@Column(name = "invoiceno", length = 25)
 	private String invoiceNo;
-	@Column(name = "partno",length =25)
+	@Column(name = "partno", length = 25)
 	private String partNo;
-	@Column(name = "partdesc",length =150)
+	@Column(name = "partdesc", length = 150)
 	private String partDesc;
-	@Column(name = "sku",length =25)
+	@Column(name = "sku", length = 25)
 	private String sku;
 	@Column(name = "pickqty")
 	private int pickQty;
@@ -48,25 +48,40 @@ public class SalesReturnDetailsVO {
 	private int retQty;
 	@Column(name = "damageqty")
 	private int damageQty;
-	@Column(name = "batchno",length =25)
+	@Column(name = "batchno", length = 25)
 	private String batchNo;
 	@Column(name = "batchdate")
 	private LocalDate batchDate;
 	@Column(name = "expdate")
 	private LocalDate expDate;
-	@Column(name = "noofbin",length =25)
+	@Column(name = "noofbin", length = 25)
 	private String noOfBin;
 	@Column(name = "binqty")
 	private int binQty;
-	@Column(name = "remarks",length =150)
+	@Column(name = "remarks", length = 150)
 	private String remarks;
-	@Column(name = "qcflag",length =10)
+	@Column(name = "qcflag", length = 10)
 	private String qcFlag;
-	
+	@Column(name = "binclass", length = 25)
+	private String binClass;
+	@Column(name = "bintype", length = 25)
+	private String binType;
+	@Column(name = "celltype", length = 25)
+	private String cellType;
+	@Column(name = "ssku", length = 25)
+	private String ssku;
+	@Column(name = "status", length = 25)
+	private String status;
+	@Column(name = "stockdate")
+	private LocalDate stockDate;
+	@Column(name = "core",length =25)
+	private String core;
+	@Column(name = "bin",length =25)
+	private String bin;
+
 	@ManyToOne
 	@JsonBackReference
 	@JoinColumn(name = "salesreturnid")
 	private SalesReturnVO salesReturnVO;
-		
-	}
 
+}

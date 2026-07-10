@@ -20,5 +20,6 @@ public class WarehouseLocationDetailsDTO {
 	private String status;
 	@Column(name = "core")
 	private String core;
+	private int binQty;
 
 }

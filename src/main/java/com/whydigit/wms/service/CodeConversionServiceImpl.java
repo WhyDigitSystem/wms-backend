@@ -176,8 +176,8 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 					stockDetailsVOTo.setSourceScreenCode(codeConversionVO.getScreenCode());
 					stockDetailsVOTo.setSourceScreenName(codeConversionVO.getScreenName());
 					stockDetailsVOTo.setSourceId(codeConversionVO.getId());
-					stockDetailsVOTo.setBinClass(codeConversionDetailsVO.getCBinClass());
-					stockDetailsVOTo.setCellType(codeConversionDetailsVO.getCCellType());
+					stockDetailsVOTo.setBinClass("Fixed");
+					stockDetailsVOTo.setCellType("True");
 					stockDetailsVOTo.setClientCode(clientRepo.getClientCode(codeConversionVO.getOrgId(),codeConversionVO.getClient()));
 					stockDetailsVOTo.setCore(codeConversionDetailsVO.getCCore());
 					stockDetailsVOTo.setExpDate(codeConversionDetailsVO.getCExpDate());
@@ -202,7 +202,7 @@ public class CodeConversionServiceImpl implements CodeConversionService{
 						stockDetailsVOTo.setStatus("D");
 					}
 					
-					stockDetailsVOTo.setBinType(codeConversionDetailsVO.getCbinType());
+					stockDetailsVOTo.setBinType("RACK STORAGE");
 					stockDetailsVOTo.setBatch(codeConversionDetailsVO.getCBatchNo());
 					stockDetailsVOTo.setBatchDate(codeConversionDetailsVO.getCBatchDate());
 					stockDetailsVOTo.setLotNo(codeConversionDetailsVO.getCLotNo());

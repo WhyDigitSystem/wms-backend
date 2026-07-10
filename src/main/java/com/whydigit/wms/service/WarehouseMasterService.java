@@ -207,7 +207,7 @@ public interface WarehouseMasterService {
 
 	// Carrier
 
-	List<CarrierVO> getAllCarrier(Long orgid, String client, String cbranch);
+	List<CarrierVO> getAllCarrier(Long orgid, String cbranch);
 	
 	Optional<CarrierVO> getCarrierById(Long carrierid);
 
@@ -254,7 +254,7 @@ public interface WarehouseMasterService {
 	
 	List<Map<String, Object>>getClientAndClientCodeForDocTypeFillGrid(Long orgId,String screenCode);
 	
-	List<Map<String, Object>>getPendingDocumentTypeMapping(Long orgId,String branch,String branchCode,String finYear,String finYearIdentifier);
+	List<Map<String, Object>>getPendingDocumentTypeMapping(Long orgId,String branch,String branchCode,String finYear,String finYearIdentifier,String clientCode);
 	
 	Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)throws ApplicationException;
 	
@@ -282,6 +282,8 @@ public interface WarehouseMasterService {
 			String branchCode, String createdBy)throws ApplicationException, EncryptedDocumentException, IOException;
 
 	MaterialUploadResponseDTO uploadMaterial(MultipartFile file, Long orgId, String createdBy) throws Exception;
+
+	List<Map<String, Object>> getClientDetails(Long orgId);
 	
 
 	

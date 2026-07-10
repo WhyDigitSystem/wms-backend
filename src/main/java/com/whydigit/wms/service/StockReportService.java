@@ -67,5 +67,7 @@ public interface StockReportService {
 
 	List<Map<String, Object>> getBuyerOrderPartNo(Long orgId, String customer, String client, String branchCode);
 
+	List<Map<String, Object>> getBinUtilizationStatusReport(String client, String branchCode, String type);
+
 
 }

@@ -148,10 +148,11 @@ public class PickRequestController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getBuyerRefNoForPickRequest")
-	public ResponseEntity<ResponseDTO> getBuyerRefNoForPickRequest(@RequestParam Long orgId,@RequestParam String finYear,
-			@RequestParam	String branchCode,@RequestParam String warehouse,@RequestParam String client) {
+	public ResponseEntity<ResponseDTO> getBuyerRefNoForPickRequest(@RequestParam Long orgId,
+			@RequestParam String finYear, @RequestParam String branchCode, @RequestParam String warehouse,
+			@RequestParam String client) {
 		String methodName = "getBuyerRefNoForPickRequest()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -159,7 +160,8 @@ public class PickRequestController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<BuyerOrderVO> buyerOrderVO = new ArrayList<>();
 		try {
-			buyerOrderVO = pickRequestService.getBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branchCode, warehouse, client);
+			buyerOrderVO = pickRequestService.getBuyerRefNoFromBuyerOrderForPickRequest(orgId, finYear, branchCode,
+					warehouse, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -169,17 +171,17 @@ public class PickRequestController extends BaseController {
 			responseObjectsMap.put("buyerOrderVO", buyerOrderVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Buyer Order refno  information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Buyer Order refno  information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getFillGridDetailsForPickRequest")
 	public ResponseEntity<ResponseDTO> getFillGridDetailsForPickRequest(@RequestParam Long orgId,
-			@RequestParam String branchCode, @RequestParam String client,
-			@RequestParam String buyerOrderDocId, @RequestParam(required = false) String pickRequestDocId,@RequestParam String pickStatus) {
+			@RequestParam String branchCode, @RequestParam String client, @RequestParam String buyerOrderDocId,
+			@RequestParam(required = false) String pickRequestDocId, @RequestParam String pickStatus) {
 		String methodName = "getFillGridDetailsForPickRequest()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -187,7 +189,8 @@ public class PickRequestController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> fillGridDetails = new ArrayList<>();
 		try {
-			fillGridDetails = pickRequestService.getFillGridDetailsForPickRequest(orgId, branchCode, client, buyerOrderDocId, pickRequestDocId, pickStatus);
+			fillGridDetails = pickRequestService.getFillGridDetailsForPickRequest(orgId, branchCode, client,
+					buyerOrderDocId, pickRequestDocId, pickStatus);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -204,11 +207,10 @@ public class PickRequestController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
 	@GetMapping("/getPendingPickDetails")
-	public ResponseEntity<ResponseDTO> getPendingPickDetails(@RequestParam Long orgId,@RequestParam String finYear,
-			@RequestParam	String branchCode,@RequestParam String warehouse,@RequestParam String client) {
+	public ResponseEntity<ResponseDTO> getPendingPickDetails(@RequestParam Long orgId, @RequestParam String finYear,
+			@RequestParam String branchCode, @RequestParam String warehouse, @RequestParam String client) {
 		String methodName = "getPendingPickDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -216,7 +218,8 @@ public class PickRequestController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> pendingBuyerOrderdetails = new ArrayList<>();
 		try {
-			pendingBuyerOrderdetails = pickRequestService.getPendingBuyerOrderDetailsForPickRequest(orgId, finYear, branchCode, warehouse, client);
+			pendingBuyerOrderdetails = pickRequestService.getPendingBuyerOrderDetailsForPickRequest(orgId, finYear,
+					branchCode, warehouse, client);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -234,8 +237,6 @@ public class PickRequestController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-
-	
 	@PostMapping("/createMultiplePickRequest")
 	public ResponseEntity<ResponseDTO> createMultiplePickRequest(@RequestBody List<MultiplePickDTO> multiplePickDTO) {
 		String methodName = "createMultiplePickRequest()";
@@ -250,15 +251,14 @@ public class PickRequestController extends BaseController {
 			String errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-      }
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	@GetMapping("/getPicrequestDashboard")
-	public ResponseEntity<ResponseDTO> getPicrequestDashboard(@RequestParam Long orgId,
-			@RequestParam String branchCode, @RequestParam String client,@RequestParam(required =false) String month,
-			@RequestParam String finyear) {
+	public ResponseEntity<ResponseDTO> getPicrequestDashboard(@RequestParam Long orgId, @RequestParam String branchCode,
+			@RequestParam String client, @RequestParam(required = false) String month, @RequestParam String finyear,@RequestParam String type) {
 		String methodName = "getPicrequestDashboard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -266,7 +266,7 @@ public class PickRequestController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> picrequestDashboard = new ArrayList<>();
 		try {
-			picrequestDashboard = pickRequestService.getPicrequestDashboard(orgId, branchCode, client, month, finyear);
+			picrequestDashboard = pickRequestService.getPicrequestDashboard(orgId, branchCode, client, month, finyear,type);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -277,12 +277,41 @@ public class PickRequestController extends BaseController {
 			responseObjectsMap.put("picrequestDashboard", picrequestDashboard);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"Failed to retrieve PicRequest Details", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve PicRequest Details",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getAllPickRequestFillGridDetails")
+	public ResponseEntity<ResponseDTO> getAllPickRequestFillGridDetails(@RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String finYear, @RequestParam(required = false) String branch,
+			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
+			@RequestParam(required = false) String warehouse) {
+		String methodName = "getAllPickRequestFillGridDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PickRequestVO> pickRequestVO = new ArrayList<>();
+		try {
+			pickRequestVO = pickRequestService.getAllPickRequestFillGridDetails(orgId, finYear, branch, branchCode,
+					client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "PickRequest information get successfully ");
+			responseObjectsMap.put("pickRequestVO", pickRequestVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "PickRequest information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
 }
-

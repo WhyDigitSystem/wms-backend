@@ -41,4 +41,10 @@ public interface DashboardService {
 
 	List<Map<String, Object>> getExpDetailsForMaterials(Long orgId, String branchCode, String client, String warehouse);
 
+	List<Map<String, Object>> getCriticalStockLevelDetails(Long orgId, String branchCode, String client,
+			String warehouse);
+
+	List<Map<String, Object>> getDashBoardStockDetailsReport(Long orgId, String branchCode, String warehouse,
+			Long finYear, String client);
+
 }

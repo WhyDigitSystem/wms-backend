@@ -23,9 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
 import com.whydigit.wms.dto.BuyerOrderDTO;
+import com.whydigit.wms.dto.CustomerAttachmentType;
 import com.whydigit.wms.dto.MultipleBODTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.entity.BuyerOrderVO;
+import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.service.BuyerOrderService;
 
 @RestController
@@ -299,44 +301,63 @@ public class BuyerOrderController extends BaseController {
 
 	@PostMapping("/ExcelUploadForBuyerOrder")
 	public ResponseEntity<ResponseDTO> ExcelUploadForBuyerOrder(@RequestParam MultipartFile[] files,
-			com.whydigit.wms.dto.CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) {
-		String methodName = "ExcelUploadForBuyerOrder()";
-		int totalRows = 0;
-		Map<String, Object> responseObjectsMap = new HashMap<>();
-		int successfulUploads = 0;
-		ResponseDTO responseDTO = null;
-		try {
-			// Call service method to process Excel upload
-			buyerOrderService.ExcelUploadForBo(files, type, orgId, createdBy, customer,  client,  finYear,  branch,  branchCode, warehouse);
+	        CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
+	        @RequestParam(required = false) String createdBy, String customer, String client, 
+	        String finYear, String branch, String branchCode, String warehouse) {
+	    
+	    String methodName = "ExcelUploadForBuyerOrder()";
+	    Map<String, Object> responseObjectsMap = new HashMap<>();
+	    ResponseDTO responseDTO = null;
+	    
+	    try {
+	        buyerOrderService.ExcelUploadForBo(files, type, orgId, createdBy, customer, client, 
+	                finYear, branch, branchCode, warehouse);
 
-			// Retrieve the counts after processing
-			totalRows = buyerOrderService.getTotalRows(); // Get total rows processed
-			successfulUploads = buyerOrderService.getSuccessfulUploads(); // Get successful uploads count
-			// Construct success response
-			responseObjectsMap.put("statusFlag", "Ok");
-			responseObjectsMap.put("status", true);
-			responseObjectsMap.put("totalRows", totalRows);
-			responseObjectsMap.put("successfulUploads", successfulUploads);
-			Map<String, Object> paramObjectsMap = new HashMap<>();
-			paramObjectsMap.put("message", "Excel Upload For BuyerOrder successful");
-			responseObjectsMap.put("paramObjectsMap", paramObjectsMap);
-			responseDTO = createServiceResponse(responseObjectsMap);
+	        int totalRows = buyerOrderService.getTotalRows();
+	        int successfulUploads = buyerOrderService.getSuccessfulUploads();
+	        
+	        // Build response directly
+	        responseObjectsMap.put("statusFlag", "Ok");
+	        responseObjectsMap.put("status", true);
+	        responseObjectsMap.put("totalRows", totalRows);
+	        responseObjectsMap.put("successfulUploads", successfulUploads);
+	        responseObjectsMap.put("message", "Excel Upload For BuyerOrder successful");
+	        
+	        responseDTO = createServiceResponse(responseObjectsMap);
 
-		} catch (Exception e) {
-
-			String errorMsg = e.getMessage();
-			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
-			responseObjectsMap.put("statusFlag", "Error");
-			responseObjectsMap.put("status", false);
-			responseObjectsMap.put("errorMessage", errorMsg);
-
-			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For BuyerOrder Failed", errorMsg);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return ResponseEntity.ok().body(responseDTO);
+	    } catch (ApplicationException e) {
+	        String errorMsg = e.getMessage();
+	        LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+	        
+	        responseObjectsMap.put("statusFlag", "Error");
+	        responseObjectsMap.put("status", false);
+	        responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
+	        responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
+	        responseObjectsMap.put("message", "Excel Upload For BuyerOrder Failed");
+	        responseObjectsMap.put("errorMessage", errorMsg);
+	        
+	        responseDTO = createServiceResponseError(responseObjectsMap, 
+	                "Excel Upload For BuyerOrder Failed", errorMsg);
+	                
+	    } catch (Exception e) {
+	        LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+	        
+	        responseObjectsMap.put("statusFlag", "Error");
+	        responseObjectsMap.put("status", false);
+	        responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
+	        responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
+	        responseObjectsMap.put("message", "Excel Upload For BuyerOrder Failed");
+	        responseObjectsMap.put("errorMessage", "An unexpected error occurred: " + e.getMessage());
+	        
+	        responseDTO = createServiceResponseError(responseObjectsMap, 
+	                "Excel Upload For BuyerOrder Failed", e.getMessage());
+	        
+	        e.printStackTrace();
+	    }
+	    
+	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+	    return ResponseEntity.ok().body(responseDTO);
 	}
-	
 	
 	@PutMapping("/createMultipleBuyerOrder")
 	public ResponseEntity<ResponseDTO> createMultipleBuyerOrder(@RequestBody List<MultipleBODTO> multipleBODTO) {
@@ -391,7 +412,7 @@ public class BuyerOrderController extends BaseController {
 	public ResponseEntity<ResponseDTO> getBuyerorderDashboard(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse,
 			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear,
-			@RequestParam(required = false) String month) {
+			@RequestParam(required = false) String month,@RequestParam(required = true) String type) {
 		String methodName = "getBuyerorderDashboard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -399,7 +420,7 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> buyerorderDashboard = new ArrayList<Map<String, Object>>();
 		try {
-			buyerorderDashboard = buyerOrderService.getBuyerorderDashboard(orgId, branchCode, warehouse, client, finYear,month);
+			buyerorderDashboard = buyerOrderService.getBuyerorderDashboard(orgId, branchCode, warehouse, client, finYear,month,type);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

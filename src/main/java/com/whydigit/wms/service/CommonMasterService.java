@@ -1,11 +1,14 @@
 package com.whydigit.wms.service;
 
+import java.io.IOException;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.dto.CityDTO;
 import com.whydigit.wms.dto.CompanyDTO;
@@ -17,6 +20,7 @@ import com.whydigit.wms.dto.FinancialYearDTO;
 import com.whydigit.wms.dto.RegionDTO;
 import com.whydigit.wms.dto.ScreenNamesDTO;
 import com.whydigit.wms.dto.StateDTO;
+import com.whydigit.wms.dto.UserProfileInformationDTO;
 import com.whydigit.wms.entity.CityVO;
 import com.whydigit.wms.entity.CompanyVO;
 import com.whydigit.wms.entity.CountryVO;
@@ -28,6 +32,7 @@ import com.whydigit.wms.entity.GlobalParameterVO;
 import com.whydigit.wms.entity.RegionVO;
 import com.whydigit.wms.entity.ScreenNamesVO;
 import com.whydigit.wms.entity.StateVO;
+import com.whydigit.wms.entity.UserProfileInformationVO;
 import com.whydigit.wms.exception.ApplicationException;
 
 @Service
@@ -38,8 +43,9 @@ public interface CommonMasterService {
 	List<CountryVO> getAllCountry(Long orgid); // Method names should be in camelCase
 
 	Optional<CountryVO> getCountryById(Long countryid);
-	
-	Map<String, Object> createUpdateCountry(CountryDTO countryDTO) throws ApplicationException; // Return the created entity
+
+	Map<String, Object> createUpdateCountry(CountryDTO countryDTO) throws ApplicationException; // Return the created
+																								// entity
 
 	void deleteCountry(Long countryid);
 
@@ -49,10 +55,9 @@ public interface CommonMasterService {
 
 	Optional<StateVO> getStateById(Long stateid);
 
-	List<StateVO> getStatesByCountry(Long orgid,String country);
+	List<StateVO> getStatesByCountry(Long orgid, String country);
 
 	Map<String, Object> createUpdateState(StateDTO stateDTO) throws ApplicationException;
-
 
 	void deleteState(Long stateid);
 
@@ -60,29 +65,26 @@ public interface CommonMasterService {
 
 	List<CityVO> getAllgetAllCities(Long orgid);
 
-	List<CityVO> getAllCitiesByState(Long orgid,String state);
-	
+	List<CityVO> getAllCitiesByState(Long orgid, String state);
+
 	Optional<CityVO> getCityById(Long cityid);
 
-	
 	Map<String, Object> createUpdateCity(CityDTO cityDTO) throws ApplicationException;
 
-
 	void deleteCity(Long cityid);
-	
+
 	// Currency
-	
+
 	List<CurrencyVO> getAllCurrency(Long orgid);
 
 	Optional<CurrencyVO> getCurrencyById(Long currencyid);
-	
+
 	Map<String, Object> createUpdateCurrency(CurrencyDTO currencyDTO) throws ApplicationException;
 
 	void deleteCurrency(Long currencyid);
-	
 
 	// region
-	
+
 	List<RegionVO> getAllRegios();
 
 	List<RegionVO> getAllRegionsByOrgId(Long orgId);
@@ -92,8 +94,6 @@ public interface CommonMasterService {
 	Map<String, Object> createUpdateRegion(RegionDTO regionDTO) throws ApplicationException;
 
 	void deleteRegion(Long regionid);
-
-	
 
 	// Company
 
@@ -107,43 +107,40 @@ public interface CommonMasterService {
 
 	void deleteCompany(Long companyid);
 
-	
 	// Global Parameter
-	
-	Set<Object[]>getWarehouseNameByOrgIdAndBranchAndClient(Long orgid, String branch, String client);
-	
-	Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid,String userId);
-	
+
+	Set<Object[]> getWarehouseNameByOrgIdAndBranchAndClient(Long orgid, String branch, String client);
+
+	Optional<GlobalParameterVO> getGlobalParamByOrgIdAndUserName(Long orgid, String userId);
+
 	GlobalParameterVO updateGlobaParameter(GlobalParameterVO globalParameterVO);
-	
-		
+
 	// to getAcces Global Param Dteails
-	
-	Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid,String userName);
-	
-	Set<Object[]>getAllAccessCustomerForLogin(Long orgid,String userName,String branchcode);
-	
-	Set<Object[]>getAllAccessClientForLogin(Long orgid,String userName,String branchcode,String customer);
-	
-	
+
+	Set<Object[]> getGlobalParametersBranchAndBranchCodeByOrgIdAndUserName(Long orgid, String userName);
+
+	Set<Object[]> getAllAccessCustomerForLogin(Long orgid, String userName, String branchcode);
+
+	Set<Object[]> getAllAccessClientForLogin(Long orgid, String userName, String branchcode, String customer);
+
 	Map<String, Object> createUpdateScreenNames(ScreenNamesDTO screenNamesDTO) throws ApplicationException;
-	
-	List<ScreenNamesVO>getAllScreenNames();
+
+	List<ScreenNamesVO> getAllScreenNames();
 
 	ScreenNamesVO getScreenNamesById(Long id) throws ApplicationException;
-	
-	//Designation
+
+	// Designation
 
 	Map<String, Object> createUpdateDesignation(DesignationDTO designationDTO) throws ApplicationException;
 
 	List<DesignationVO> getAllDesignation();
-	
+
 	List<DesignationVO> getAllDesignationByOrgId(Long OrdId);
-	
+
 	Optional<DesignationVO> getAllDesignationById(Long id);
-	
+
 // FINANCIAL YEAR
-	
+
 	Map<String, Object> createUpdateFinYear(FinancialYearDTO financialYearDTO) throws ApplicationException;
 
 	List<FinancialYearVO> getAllActiveFInYear(Long orgId);
@@ -151,13 +148,23 @@ public interface CommonMasterService {
 	List<FinancialYearVO> getAllFInYearByOrgId(Long orgId);
 
 	Optional<FinancialYearVO> getAllFInYearById(Long id);
-	
-	//DEPARTMENT
+
+	// DEPARTMENT
 
 	Map<String, Object> createUpdateDepartment(DepartmentDTO departmentDTO) throws ApplicationException;
 
 	List<DepartmentVO> getAllDepartmentByOrgId(Long orgId);
 
 	List<DepartmentVO> getAllDepartmentById(Long id);
+
+	UserProfileInformationVO uploadExpenseUserProfileInBloob(MultipartFile file, Long id)
+			throws IOException, IOException;
+
+	UserProfileInformationVO getUserProfileInformationById(Long id);
+
+	Map<String, Object> createUpdateUserProfileInformation(UserProfileInformationDTO userProfileInformationDTO)
+			throws ApplicationException;
+
+	UserProfileInformationVO getProfileInformationByUserId(Long id);
 
 }

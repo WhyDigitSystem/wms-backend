@@ -60,6 +60,8 @@ public class WarehouseLocationVO {
 	private String updatedBy;
 	@Column(name = "orgid")
 	private Long orgId;
+	@Column(name = "qty")
+	private int qty;
 	@OneToMany(mappedBy = "warehouseLocationVO", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO;

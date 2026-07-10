@@ -55,6 +55,8 @@ public class WarehouseLocationDetailsVO {
 	private String core;
 	@Column(name = "orgid")
 	private Long orgId;
+	@Column(name = "binqty")
+	private int binQty;
 
 	@ManyToOne
 	@JsonBackReference

@@ -3,6 +3,8 @@ package com.whydigit.wms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,6 +44,7 @@ public class SalesReturnDTO {
 	private String branchCode;
 	private String warehouse;
 	private String createdBy;
+	private String status;
 	
 	private List<SalesReturnDetailsDTO> salesReturnDetailsDTO;
 }

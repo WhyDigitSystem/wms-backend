@@ -28,9 +28,9 @@ import lombok.NoArgsConstructor;
 public class DocumentTypeMappingVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documenttypemappinggen")
-	@SequenceGenerator(name = "documenttypemappinggen", sequenceName = "documenttypemappingseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "documenttypemappingid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_documenttypemappinggen")
+	@SequenceGenerator(name = "m_documenttypemappinggen", sequenceName = "m_documenttypemappingseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "m_documenttypemappingid")
 	private Long id;
 	
 	@Column(name = "branch",length =25)

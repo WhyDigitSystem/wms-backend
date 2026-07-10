@@ -88,7 +88,7 @@ public interface StockDetailsRepo extends JpaRepository<StockDetailsVO, Long> {
 			+ "   AND a.client = ?5\r\n"
 			+ "   AND a.stockdate <= DATE(NOW()) \r\n"
 			+ "WHERE (b.partno = ?6 OR ?6 = 'ALL') \r\n"
-			+ "GROUP BY b.partno, b.partdesc")
+			+ "GROUP BY b.partno, b.partdesc having COALESCE(SUM(a.sqty)) >0 ")
 	Set<Object[]> getConsolidateStockDetails(Long orgId, String branchCode, String warehouse, String customer,
 			String client, String partNo);
 
@@ -738,7 +738,28 @@ List<StockDetailsVO> findByOrgIdAndBranchAndBranchCodeAndClient(Long orgid, Stri
 @Query(nativeQuery = true,value = "select case when stockfreeze=1 then 'true' else 'false' end freezestatus from stockdetails where orgid=?1 and branch=?2  and branchcode=?3 and client=?4  group by stockfreeze")
 boolean getStockFreezeStatus(Long orgId, String branch, String branchCode, String client);
 
+StockDetailsVO findByRefNoAndPartnoAndSourceScreenCode(String docId, String partNo, String screenCode);
 
+@Query(nativeQuery =true,value ="select m.client,m.partno,m.partdesc,m.sku,m.criticalstocklevel,sum(s.sqty) as qty from material m inner join stockdetails s on m.partno = s.partno and m.client = s.client and m.orgid = s.orgid where m.orgid =?1 and m.branchcode =?2\r\n"
+		+ "  and m.client =?3 and m.warehouse =?4 group by m.client,m.partno,m.partdesc,m.sku,m.criticalstocklevel having SUM(s.sqty) <= m.criticalstocklevel")
+Set<Object[]> getCriticalStockLevelDetails(Long orgId, String branchCode, String client, String warehouse);
+
+@Query(nativeQuery = true, value = "select sum(today) today,sum(yesterday) yesterday,sum(thisweek) thisweek,sum(thismonth) thismonth from (\r\n"
+		+ "select  coalesce(SUM(a.sqty), 0) as today,0 yesterday,0 thisweek,0 thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and date(a.stockdate) = curdate()\r\n"
+		+ "union\r\n"
+		+ "select  0 as today,coalesce(SUM(a.sqty), 0) yesterday,0 thisweek,0 thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and date(a.stockdate) = curdate() - interval 1 day\r\n"
+		+ "union \r\n"
+		+ "select  0 as today,0 yesterday,coalesce(SUM(a.sqty), 0) thisweek,0 thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and date(a.stockdate) between date_sub(curdate(), interval weekday(curdate()) day)\r\n"
+		+ "and date_add(date_sub(curdate(), interval weekday(curdate()) day), interval 6 day)\r\n"
+		+ "union\r\n"
+		+ "select  0 as today,0 yesterday, 0 thisweek,coalesce(SUM(a.sqty), 0) thismonth  from  stockdetails a where  a.orgid =?1 and a.branchcode =?2\r\n"
+		+ "and a.warehouse =?3 and a.finyear =?4 and a.client =?5 and month(a.stockdate)=month(curdate())	\r\n"
+		+ ") a ")
+Set<Object[]> getDashBoardStockDetailsReport(Long orgId, String branchCode, String warehouse, Long finYear,
+		String client);
 
 
 }

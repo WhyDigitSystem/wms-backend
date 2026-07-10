@@ -40,6 +40,10 @@ public interface ClientRepo extends JpaRepository<ClientVO, Long>{
 	@Query(value="select clientCode from ClientVO a where a.orgId=?1 and a.client=?2")
 	String getClientCode(Long orgId, String client);
 
+	@Query(nativeQuery = true,value = "select client,clientcode from client where orgid=?1 and active=1 \r\n"
+			+ "            group by client,clientcode")
+	Set<Object[]> getClientDetails(Long orgId);
+
 	
 
 

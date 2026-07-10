@@ -24,9 +24,9 @@ import lombok.NoArgsConstructor;
 public class DocumentTypeMappingDetailsVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "documenttypemappingdetailsgen")
-	@SequenceGenerator(name = "documenttypemappingdetailsgen", sequenceName = "documenttypemappingdetailsseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "documenttypemappingdetailsid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "m_documenttypemappingdetailsgen")
+	@SequenceGenerator(name = "m_documenttypemappingdetailsgen", sequenceName = "m_documenttypemappingdetailsseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "m_documenttypemappingdetailsid")
 	private Long id;
 	
 	@Column(name = "screencode",length =10)
@@ -71,6 +71,6 @@ public class DocumentTypeMappingDetailsVO {
 
 	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name = "documenttypemappingid")
+	@JoinColumn(name = "m_documenttypemappingid")
 	private DocumentTypeMappingVO documentTypeMappingVO;
 }

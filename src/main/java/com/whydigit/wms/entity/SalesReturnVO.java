@@ -113,6 +113,9 @@ public class SalesReturnVO {
 	@Column(name = "freeze")
 	private boolean freeze;
 	
+	@Column(name = "status",length =25)
+	private String status="Confirm";
+	
 
 	
 

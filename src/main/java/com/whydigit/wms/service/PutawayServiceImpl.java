@@ -757,8 +757,8 @@ public class PutawayServiceImpl implements PutawayService {
 
 	@Override
 	public List<Map<String, Object>> getPutawayForDashBoard(Long orgId, String finYear, String branchCode,
-			String client,String month) {
-		Set<Object[]> getputawayStatus = putAwayRepo.getPutaway(orgId, finYear, branchCode, client,month);
+			String client,String month,String type) {
+		Set<Object[]> getputawayStatus = putAwayRepo.getPutaway(orgId, finYear, branchCode, client,month,type);
 		return getPutawayForDashBoard(getputawayStatus);
 	}
 

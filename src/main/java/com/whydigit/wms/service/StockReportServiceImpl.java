@@ -539,7 +539,6 @@ public class StockReportServiceImpl implements StockReportService {
 			locationStatusReport.put("bin", st[2] != null ? st[2].toString() : "");
 			locationStatusReport.put("sQty", st[3] != null ? st[3].toString() : "");
 			locationStatusReport.put("status", st[4] != null ? st[4].toString() : "");
-
 			locationStatus.add(locationStatusReport);
 		}
 		return locationStatus;
@@ -570,5 +569,28 @@ public class StockReportServiceImpl implements StockReportService {
 		}
 
 		return response;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getBinUtilizationStatusReport(String client, String branchCode, String type) {
+		Set<Object[]> getDetails = buyerOrderRepo.getBinUtilizationStatusReport(client, branchCode, type);
+		return getBinUtilizationStatusReport(getDetails);
+	}
+
+	private List<Map<String, Object>> getBinUtilizationStatusReport(Set<Object[]> getDetails) {
+		List<Map<String, Object>> locationStatus = new ArrayList<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> locationStatusReport = new HashMap<>();
+			locationStatusReport.put("branchCode", st[0] != null ? st[0].toString() : "");
+			locationStatusReport.put("client", st[1] != null ? st[1].toString() : "");
+			locationStatusReport.put("bin", st[2] != null ? st[2].toString() : "");
+			locationStatusReport.put("sQty", st[3] != null ? st[3].toString() : "");
+			locationStatusReport.put("status", st[4] != null ? st[4].toString() : "");
+			locationStatusReport.put("capcity", st[5] != null ? ((Number) st[5]).intValue() : 0);
+			locationStatusReport.put("avQty", st[6] != null ? ((Number) st[6]).intValue() : 0);
+			locationStatusReport.put("utilization", st[7] != null ? ((Number) st[7]).doubleValue() : 0.0);
+			locationStatus.add(locationStatusReport);
+		}
+		return locationStatus;
 	}
 }
