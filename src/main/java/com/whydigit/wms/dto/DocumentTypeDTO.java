@@ -1,7 +1,5 @@
 package com.whydigit.wms.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +16,7 @@ public class DocumentTypeDTO {
 	private String docCode;
 	private String createdBy;
 	private Long orgId;	
-	private List<DocumentTypeDetailsDTO> documentTypeDetailsDTO;
-	
+//	private List<DocumentTypeDetailsDTO> documentTypeDetailsDTO;
+//	
 
 }

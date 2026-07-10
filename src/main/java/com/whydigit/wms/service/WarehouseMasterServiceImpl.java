@@ -64,6 +64,7 @@ import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.DocumentTypeMappingVO;
 import com.whydigit.wms.entity.DocumentTypeVO;
 import com.whydigit.wms.entity.EmployeeVO;
+import com.whydigit.wms.entity.FinancialYearVO;
 import com.whydigit.wms.entity.GroupVO;
 import com.whydigit.wms.entity.LocationMappingDetailsVO;
 import com.whydigit.wms.entity.LocationMappingVO;
@@ -88,6 +89,7 @@ import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingRepo;
 import com.whydigit.wms.repo.DocumentTypeRepo;
 import com.whydigit.wms.repo.EmployeeRepo;
+import com.whydigit.wms.repo.FinancialYearRepo;
 import com.whydigit.wms.repo.GroupRepo;
 import com.whydigit.wms.repo.LocationMappingDetailsRepo;
 import com.whydigit.wms.repo.LocationMappingRepo;
@@ -180,6 +182,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	LocationMappingDetailsRepo locationMappingDetailsRepo;
+
+	@Autowired
+	FinancialYearRepo financialYearRepo;
 
 	// Group
 
@@ -944,7 +949,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		warehouseLocationVO.setCreatedBy(warehouseLocationDTO.getCreatedBy());
 		warehouseLocationVO.setOrgId(warehouseLocationDTO.getOrgId());
 		warehouseLocationVO.setQty(warehouseLocationDTO.getQty());
-		
+
 		List<WarehouseLocationDetailsVO> warehouseLocationDetailsVO = new ArrayList<>();
 		if (ObjectUtils.isNotEmpty(warehouseLocationDTO.getId())) {
 			warehouseLocationDetailsVO = warehouseLocationVO.getWarehouseLocationDetailsVO();
@@ -1775,202 +1780,202 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return warehouseLocationRepo.getPalletnoByRownoAndLevelno(rowno, level, startno, endno);
 	}
 
-	@Override
-	public Map<String, Object> createUpdateDocumentType(DocumentTypeDTO documentTypeDTO) throws ApplicationException {
-		DocumentTypeVO documentTypeVO = new DocumentTypeVO();
-		String message;
-		if (ObjectUtils.isEmpty(documentTypeDTO.getId())) {
-			if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
-					documentTypeDTO.getScreenCode())) {
-				throw new ApplicationException("ScreenCode already exist ");
-			}
-
-			if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(), documentTypeDTO.getDocCode())) {
-				throw new ApplicationException("Doc Code already exist ");
-			}
-
-			List<DocumentTypeDetailsVO> documentTypeDetailsVO = new ArrayList<>();
-			if (documentTypeDTO.getDocumentTypeDetailsDTO() != null) {
-				for (DocumentTypeDetailsDTO documentTypeDetailsDTO : documentTypeDTO.getDocumentTypeDetailsDTO()) {
-					DocumentTypeDetailsVO documentTypeDetailsVO1 = new DocumentTypeDetailsVO();
-					documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
-					documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
-					documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
-					documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
-					documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
-					documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
-					documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
-					documentTypeDetailsVO.add(documentTypeDetailsVO1);
-				}
-			}
-			documentTypeVO.setDocumentTypeDetailsVO(documentTypeDetailsVO);
-			documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
-			documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
-			documentTypeVO.setCreatedBy(documentTypeDTO.getCreatedBy());
-			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
-			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
-			message = "Document Type Created successfully";
-		} else {
-			documentTypeVO = documentTypeRepo.findById(documentTypeDTO.getId()).orElse(null);
-
-			if (!documentTypeVO.getScreenCode().equalsIgnoreCase(documentTypeDTO.getScreenCode())) {
-				if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
-						documentTypeDTO.getScreenCode())) {
-					throw new ApplicationException("ScreenCode already exist ");
-				}
-				documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
-			}
-
-			if (!documentTypeVO.getDocCode().equalsIgnoreCase(documentTypeDTO.getDocCode())) {
-				if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(),
-						documentTypeDTO.getDocCode())) {
-					throw new ApplicationException("Doc Code already exist ");
-				}
-				documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
-			}
-
-			List<DocumentTypeDetailsVO> documentTypeDetailsVO = documentTypeVO.getDocumentTypeDetailsVO();
-			if (documentTypeDTO.getDocumentTypeDetailsDTO() != null) {
-
-				for (DocumentTypeDetailsDTO documentTypeDetailsDTO : documentTypeDTO.getDocumentTypeDetailsDTO()) {
-					DocumentTypeDetailsVO documentTypeDetailsVO1 = new DocumentTypeDetailsVO();
-					if (ObjectUtils.isEmpty(documentTypeDetailsDTO.getId())) {
-						documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
-						documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
-						documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
-						documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
-						documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
-						documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
-						documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
-						documentTypeDetailsVO.add(documentTypeDetailsVO1);
-					} else {
-						documentTypeDetailsVO1 = documentTypeDetailsRepo.findById(documentTypeDetailsDTO.getId())
-								.orElse(null);
-						documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
-						documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
-						documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
-						documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
-						documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
-						documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
-						documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
-						documentTypeDetailsVO.add(documentTypeDetailsVO1);
-					}
-				}
-			}
-			documentTypeVO.setDocumentTypeDetailsVO(documentTypeDetailsVO);
-			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
-			// Update the remaining fields from carrierDTO to carrierVO
-			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
-			message = "Document Type Updated successfully";
-
-		}
-		documentTypeRepo.save(documentTypeVO);
-		Map<String, Object> response = new HashMap<>();
-		response.put("documentTypeVO", documentTypeVO);
-		response.put("message", message);
-		return response;
-	}
-
-	private void mapDocumentTypeDTOToDocumentTypeVO(DocumentTypeDTO documentTypeDTO, DocumentTypeVO documentTypeVO) {
-
-		documentTypeVO.setDescription(documentTypeDTO.getDescription());
-		documentTypeVO.setOrgId(documentTypeDTO.getOrgId());
-		documentTypeVO.setScreenName(documentTypeDTO.getScreenName());
-	}
-
-	@Override
-	public DocumentTypeVO getDocumentTypeById(Long id) throws ApplicationException {
-		if (ObjectUtils.isEmpty(id)) {
-			throw new ApplicationException("Invalid DocumentType Id");
-		}
-		DocumentTypeVO documentTypeVO = documentTypeRepo.findById(id)
-				.orElseThrow(() -> new ApplicationException("Document Type not found for Id: " + id));
-
-		return documentTypeVO;
-	}
-
-	@Override
-	public List<DocumentTypeVO> getAllDocumentTypeByOrgId(Long orgId) {
-
-		return documentTypeRepo.findAllByOrgId(orgId);
-	}
-
-	@Override
-	public Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)
-			throws ApplicationException {
-		String message;
-		DocumentTypeMappingVO documentTypeMappingVO = new DocumentTypeMappingVO();
-		documentTypeMappingVO.setBranch(documentTypeMappingDTO.getBranch());
-		documentTypeMappingVO.setBranchCode(documentTypeMappingDTO.getBranchCode());
-		documentTypeMappingVO.setFinYear(documentTypeMappingDTO.getFinYear());
-		documentTypeMappingVO.setFinYearIdentifier(documentTypeMappingDTO.getFinYearIdentifier());
-		documentTypeMappingVO.setOrgId(documentTypeMappingDTO.getOrgId());
-		documentTypeMappingVO.setCreatedBy(documentTypeMappingDTO.getCreatedBy());
-		documentTypeMappingVO.setUpdatedBy(documentTypeMappingDTO.getCreatedBy());
-
-		List<DocumentTypeMappingDetailsVO> documentTypeMappingDetailsVO = new ArrayList<>();
-
-		if (documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO() != null) {
-			for (DocumentTypeMappingDetailsDTO documentTypeMappingDetailsDTO : documentTypeMappingDTO
-					.getDocumentTypeMappingDetailsDTO()) {
-				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO1 = new DocumentTypeMappingDetailsVO();
-				documentTypeMappingDetailsVO1.setScreenCode(documentTypeMappingDetailsDTO.getScreenCode());
-				documentTypeMappingDetailsVO1.setScreenName(documentTypeMappingDetailsDTO.getScreenName());
-				documentTypeMappingDetailsVO1.setClient(documentTypeMappingDetailsDTO.getClient());
-				documentTypeMappingDetailsVO1.setClientCode(documentTypeMappingDetailsDTO.getClientCode());
-				documentTypeMappingDetailsVO1.setDocCode(documentTypeMappingDetailsDTO.getDocCode());
-				documentTypeMappingDetailsVO1.setBranch(documentTypeMappingDetailsDTO.getBranch());
-				documentTypeMappingDetailsVO1.setBranchCode(documentTypeMappingDetailsDTO.getBranchCode());
-				documentTypeMappingDetailsVO1.setPrefixField(documentTypeMappingDetailsDTO.getPrefixField());
-				documentTypeMappingDetailsVO1.setFinYear(documentTypeMappingDetailsDTO.getFinYear());
-				documentTypeMappingDetailsVO1
-						.setFinYearIdentifier(documentTypeMappingDetailsDTO.getFinYearIdentifier());
-				documentTypeMappingDetailsVO1.setConcatenation(documentTypeMappingDetailsDTO.getClient()
-						+ documentTypeMappingDetailsDTO.getClientCode() + documentTypeMappingDetailsDTO.getScreenCode()
-						+ documentTypeMappingDetailsDTO.getDocCode());
-				documentTypeMappingDetailsVO1.setOrgId(documentTypeMappingDTO.getOrgId());
-				documentTypeMappingDetailsVO1.setDocumentTypeMappingVO(documentTypeMappingVO);
-				documentTypeMappingDetailsVO.add(documentTypeMappingDetailsVO1);
-			}
-		}
-		documentTypeMappingVO.setDocumentTypeMappingDetailsVO(documentTypeMappingDetailsVO);
-		documentTypeMappingRepo.save(documentTypeMappingVO);
-		message = "Document Type created Successfully";
-		Map<String, Object> response = new HashMap<>();
-		response.put("documentTypeMappingVO", documentTypeMappingVO);
-		response.put("message", message);
-		return response;
-
-	}
-
-	@Override
-	public List<Map<String, Object>> getPendingDocumentTypeMapping(Long orgId, String branch, String branchCode,
-			String finYear, String finYearIdentifier) {
-
-		Set<Object[]> pendingDocTypeDetails = documentTypeMappingRepo.getPendingDoctypeMapping(orgId, branch,
-				branchCode, finYear, finYearIdentifier);
-		return getPendingDocType(pendingDocTypeDetails);
-	}
-
-	private List<Map<String, Object>> getPendingDocType(Set<Object[]> pendingDocTypeDetails) {
-		List<Map<String, Object>> doctypeMappingDetails = new ArrayList<>();
-		for (Object[] sup : pendingDocTypeDetails) {
-			Map<String, Object> doctype = new HashMap<>();
-			doctype.put("screenName", sup[0] != null ? sup[0].toString() : "");
-			doctype.put("screenCode", sup[1] != null ? sup[1].toString() : "");
-			doctype.put("client", sup[2] != null ? sup[2].toString() : "");
-			doctype.put("clientCode", sup[3] != null ? sup[3].toString() : "");
-			doctype.put("docCode", sup[4] != null ? sup[4].toString() : "");
-			doctype.put("finYear", sup[5] != null ? sup[5].toString() : "");
-			doctype.put("branch", sup[6] != null ? sup[6].toString() : "");
-			doctype.put("branchCode", sup[7] != null ? sup[7].toString() : "");
-			doctype.put("finYearIdentifier", sup[8] != null ? sup[8].toString() : "");
-			doctype.put("prefixField", sup[9] != null ? sup[9].toString() : "");
-			doctypeMappingDetails.add(doctype);
-		}
-
-		return doctypeMappingDetails;
-	}
+//	@Override
+//	public Map<String, Object> createUpdateDocumentType(DocumentTypeDTO documentTypeDTO) throws ApplicationException {
+//		DocumentTypeVO documentTypeVO = new DocumentTypeVO();
+//		String message;
+//		if (ObjectUtils.isEmpty(documentTypeDTO.getId())) {
+//			if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
+//					documentTypeDTO.getScreenCode())) {
+//				throw new ApplicationException("ScreenCode already exist ");
+//			}
+//
+//			if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(), documentTypeDTO.getDocCode())) {
+//				throw new ApplicationException("Doc Code already exist ");
+//			}
+//
+//			List<DocumentTypeDetailsVO> documentTypeDetailsVO = new ArrayList<>();
+//			if (documentTypeDTO.getDocumentTypeDetailsDTO() != null) {
+//				for (DocumentTypeDetailsDTO documentTypeDetailsDTO : documentTypeDTO.getDocumentTypeDetailsDTO()) {
+//					DocumentTypeDetailsVO documentTypeDetailsVO1 = new DocumentTypeDetailsVO();
+//					documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
+//					documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
+//					documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
+//					documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
+//					documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
+//					documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
+//					documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
+//					documentTypeDetailsVO.add(documentTypeDetailsVO1);
+//				}
+//			}
+//			documentTypeVO.setDocumentTypeDetailsVO(documentTypeDetailsVO);
+//			documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
+//			documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
+//			documentTypeVO.setCreatedBy(documentTypeDTO.getCreatedBy());
+//			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
+//			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
+//			message = "Document Type Created successfully";
+//		} else {
+//			documentTypeVO = documentTypeRepo.findById(documentTypeDTO.getId()).orElse(null);
+//
+//			if (!documentTypeVO.getScreenCode().equalsIgnoreCase(documentTypeDTO.getScreenCode())) {
+//				if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
+//						documentTypeDTO.getScreenCode())) {
+//					throw new ApplicationException("ScreenCode already exist ");
+//				}
+//				documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
+//			}
+//
+//			if (!documentTypeVO.getDocCode().equalsIgnoreCase(documentTypeDTO.getDocCode())) {
+//				if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(),
+//						documentTypeDTO.getDocCode())) {
+//					throw new ApplicationException("Doc Code already exist ");
+//				}
+//				documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
+//			}
+//
+//			List<DocumentTypeDetailsVO> documentTypeDetailsVO = documentTypeVO.getDocumentTypeDetailsVO();
+//			if (documentTypeDTO.getDocumentTypeDetailsDTO() != null) {
+//
+//				for (DocumentTypeDetailsDTO documentTypeDetailsDTO : documentTypeDTO.getDocumentTypeDetailsDTO()) {
+//					DocumentTypeDetailsVO documentTypeDetailsVO1 = new DocumentTypeDetailsVO();
+//					if (ObjectUtils.isEmpty(documentTypeDetailsDTO.getId())) {
+//						documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
+//						documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
+//						documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
+//						documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
+//						documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
+//						documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
+//						documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
+//						documentTypeDetailsVO.add(documentTypeDetailsVO1);
+//					} else {
+//						documentTypeDetailsVO1 = documentTypeDetailsRepo.findById(documentTypeDetailsDTO.getId())
+//								.orElse(null);
+//						documentTypeDetailsVO1.setClient(documentTypeDetailsDTO.getClient());
+//						documentTypeDetailsVO1.setClientCode(documentTypeDetailsDTO.getClientCode());
+//						documentTypeDetailsVO1.setDocCode(documentTypeDTO.getDocCode());
+//						documentTypeDetailsVO1.setScreenCode(documentTypeDTO.getScreenCode());
+//						documentTypeDetailsVO1.setScreenName(documentTypeDTO.getScreenName());
+//						documentTypeDetailsVO1.setOrgId(documentTypeDTO.getOrgId());
+//						documentTypeDetailsVO1.setDocumentTypeVO(documentTypeVO);
+//						documentTypeDetailsVO.add(documentTypeDetailsVO1);
+//					}
+//				}
+//			}
+//			documentTypeVO.setDocumentTypeDetailsVO(documentTypeDetailsVO);
+//			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
+//			// Update the remaining fields from carrierDTO to carrierVO
+//			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
+//			message = "Document Type Updated successfully";
+//
+//		}
+//		documentTypeRepo.save(documentTypeVO);
+//		Map<String, Object> response = new HashMap<>();
+//		response.put("documentTypeVO", documentTypeVO);
+//		response.put("message", message);
+//		return response;
+//	}
+//
+//	private void mapDocumentTypeDTOToDocumentTypeVO(DocumentTypeDTO documentTypeDTO, DocumentTypeVO documentTypeVO) {
+//
+//		documentTypeVO.setDescription(documentTypeDTO.getDescription());
+//		documentTypeVO.setOrgId(documentTypeDTO.getOrgId());
+//		documentTypeVO.setScreenName(documentTypeDTO.getScreenName());
+//	}
+//
+//	@Override
+//	public DocumentTypeVO getDocumentTypeById(Long id) throws ApplicationException {
+//		if (ObjectUtils.isEmpty(id)) {
+//			throw new ApplicationException("Invalid DocumentType Id");
+//		}
+//		DocumentTypeVO documentTypeVO = documentTypeRepo.findById(id)
+//				.orElseThrow(() -> new ApplicationException("Document Type not found for Id: " + id));
+//
+//		return documentTypeVO;
+//	}
+//
+//	@Override
+//	public List<DocumentTypeVO> getAllDocumentTypeByOrgId(Long orgId) {
+//
+//		return documentTypeRepo.findAllByOrgId(orgId);
+//	}
+//
+//	@Override
+//	public Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)
+//			throws ApplicationException {
+//		String message;
+//		DocumentTypeMappingVO documentTypeMappingVO = new DocumentTypeMappingVO();
+//		documentTypeMappingVO.setBranch(documentTypeMappingDTO.getBranch());
+//		documentTypeMappingVO.setBranchCode(documentTypeMappingDTO.getBranchCode());
+//		documentTypeMappingVO.setFinYear(documentTypeMappingDTO.getFinYear());
+//		documentTypeMappingVO.setFinYearIdentifier(documentTypeMappingDTO.getFinYearIdentifier());
+//		documentTypeMappingVO.setOrgId(documentTypeMappingDTO.getOrgId());
+//		documentTypeMappingVO.setCreatedBy(documentTypeMappingDTO.getCreatedBy());
+//		documentTypeMappingVO.setUpdatedBy(documentTypeMappingDTO.getCreatedBy());
+//
+//		List<DocumentTypeMappingDetailsVO> documentTypeMappingDetailsVO = new ArrayList<>();
+//
+//		if (documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO() != null) {
+//			for (DocumentTypeMappingDetailsDTO documentTypeMappingDetailsDTO : documentTypeMappingDTO
+//					.getDocumentTypeMappingDetailsDTO()) {
+//				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO1 = new DocumentTypeMappingDetailsVO();
+//				documentTypeMappingDetailsVO1.setScreenCode(documentTypeMappingDetailsDTO.getScreenCode());
+//				documentTypeMappingDetailsVO1.setScreenName(documentTypeMappingDetailsDTO.getScreenName());
+//				documentTypeMappingDetailsVO1.setClient(documentTypeMappingDetailsDTO.getClient());
+//				documentTypeMappingDetailsVO1.setClientCode(documentTypeMappingDetailsDTO.getClientCode());
+//				documentTypeMappingDetailsVO1.setDocCode(documentTypeMappingDetailsDTO.getDocCode());
+//				documentTypeMappingDetailsVO1.setBranch(documentTypeMappingDetailsDTO.getBranch());
+//				documentTypeMappingDetailsVO1.setBranchCode(documentTypeMappingDetailsDTO.getBranchCode());
+//				documentTypeMappingDetailsVO1.setPrefixField(documentTypeMappingDetailsDTO.getPrefixField());
+//				documentTypeMappingDetailsVO1.setFinYear(documentTypeMappingDetailsDTO.getFinYear());
+//				documentTypeMappingDetailsVO1
+//						.setFinYearIdentifier(documentTypeMappingDetailsDTO.getFinYearIdentifier());
+//				documentTypeMappingDetailsVO1.setConcatenation(documentTypeMappingDetailsDTO.getClient()
+//						+ documentTypeMappingDetailsDTO.getClientCode() + documentTypeMappingDetailsDTO.getScreenCode()
+//						+ documentTypeMappingDetailsDTO.getDocCode());
+//				documentTypeMappingDetailsVO1.setOrgId(documentTypeMappingDTO.getOrgId());
+//				documentTypeMappingDetailsVO1.setDocumentTypeMappingVO(documentTypeMappingVO);
+//				documentTypeMappingDetailsVO.add(documentTypeMappingDetailsVO1);
+//			}
+//		}
+//		documentTypeMappingVO.setDocumentTypeMappingDetailsVO(documentTypeMappingDetailsVO);
+//		documentTypeMappingRepo.save(documentTypeMappingVO);
+//		message = "Document Type created Successfully";
+//		Map<String, Object> response = new HashMap<>();
+//		response.put("documentTypeMappingVO", documentTypeMappingVO);
+//		response.put("message", message);
+//		return response;
+//
+//	}
+//
+//	@Override
+//	public List<Map<String, Object>> getPendingDocumentTypeMapping(Long orgId, String branch, String branchCode,
+//			String finYear, String finYearIdentifier) {
+//
+//		Set<Object[]> pendingDocTypeDetails = documentTypeMappingRepo.getPendingDoctypeMapping(orgId, branch,
+//				branchCode, finYear, finYearIdentifier);
+//		return getPendingDocType(pendingDocTypeDetails);
+//	}
+//
+//	private List<Map<String, Object>> getPendingDocType(Set<Object[]> pendingDocTypeDetails) {
+//		List<Map<String, Object>> doctypeMappingDetails = new ArrayList<>();
+//		for (Object[] sup : pendingDocTypeDetails) {
+//			Map<String, Object> doctype = new HashMap<>();
+//			doctype.put("screenName", sup[0] != null ? sup[0].toString() : "");
+//			doctype.put("screenCode", sup[1] != null ? sup[1].toString() : "");
+//			doctype.put("client", sup[2] != null ? sup[2].toString() : "");
+//			doctype.put("clientCode", sup[3] != null ? sup[3].toString() : "");
+//			doctype.put("docCode", sup[4] != null ? sup[4].toString() : "");
+//			doctype.put("finYear", sup[5] != null ? sup[5].toString() : "");
+//			doctype.put("branch", sup[6] != null ? sup[6].toString() : "");
+//			doctype.put("branchCode", sup[7] != null ? sup[7].toString() : "");
+//			doctype.put("finYearIdentifier", sup[8] != null ? sup[8].toString() : "");
+//			doctype.put("prefixField", sup[9] != null ? sup[9].toString() : "");
+//			doctypeMappingDetails.add(doctype);
+//		}
+//
+//		return doctypeMappingDetails;
+//	}
 
 	@Override
 
@@ -2002,22 +2007,22 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		return clientList;
 	}
 
-	@Override
-	public List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId) {
+//	@Override
+//	public List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId) {
+//
+//		return documentTypeMappingRepo.findByOrgId(orgId);
+//	}
 
-		return documentTypeMappingRepo.findByOrgId(orgId);
-	}
-
-	@Override
-	public DocumentTypeMappingVO getDocumentTypeMappingById(Long id) throws ApplicationException {
-		if (ObjectUtils.isEmpty(id)) {
-			throw new ApplicationException("Invalid DocumentTypeMapping Id");
-		}
-		DocumentTypeMappingVO documentTypeMappingVO = documentTypeMappingRepo.findById(id)
-				.orElseThrow(() -> new ApplicationException("Document Type Mapping not found for Id: " + id));
-
-		return documentTypeMappingVO;
-	}
+//	@Override
+//	public DocumentTypeMappingVO getDocumentTypeMappingById(Long id) throws ApplicationException {
+//		if (ObjectUtils.isEmpty(id)) {
+//			throw new ApplicationException("Invalid DocumentTypeMapping Id");
+//		}
+//		DocumentTypeMappingVO documentTypeMappingVO = documentTypeMappingRepo.findById(id)
+//				.orElseThrow(() -> new ApplicationException("Document Type Mapping not found for Id: " + id));
+//
+//		return documentTypeMappingVO;
+//	}
 
 	@Override
 	@Transactional
@@ -2337,12 +2342,14 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						supplierVO.setBranchCode(branchCode);
 
 						// Check for duplicates in the database
-						if (isDuplicateSupplierFullName(orgId,customer,client,getStringCellValue(row.getCell(0)),getStringCellValue(row.getCell(2)))) {
+						if (isDuplicateSupplierFullName(orgId, customer, client, getStringCellValue(row.getCell(0)),
+								getStringCellValue(row.getCell(2)))) {
 							throw new ApplicationException("Duplicate Supplier Full Name :'"
 									+ getStringCellValue(row.getCell(0)) + "' Already Exist");
 						}
 
-						if (isDuplicateSupplierShortName(orgId,customer,client,getStringCellValue(row.getCell(1)),getStringCellValue(row.getCell(2)))) {
+						if (isDuplicateSupplierShortName(orgId, customer, client, getStringCellValue(row.getCell(1)),
+								getStringCellValue(row.getCell(2)))) {
 							throw new ApplicationException("Duplicate Supplier Short Name :'"
 									+ getStringCellValue(row.getCell(1)) + "' Already Exist");
 						}
@@ -2370,20 +2377,21 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 	private boolean isDuplicateSupplierFullName(Long orgId, String customer, String client, String supplier,
 			String supplierType) {
 		// TODO Auto-generated method stub
-		return supplierRepo.existsByOrgIdAndCustomerAndClientAndSupplierAndSupplierTypeIgnoreCase(orgId, customer, client,
-				supplier, supplierType);
+		return supplierRepo.existsByOrgIdAndCustomerAndClientAndSupplierAndSupplierTypeIgnoreCase(orgId, customer,
+				client, supplier, supplierType);
 	}
 
 	private boolean isDuplicateSupplierShortName(Long orgId, String customer, String client, String supplierShortName,
 			String supplierType) {
 		// TODO Auto-generated method stub
-		return supplierRepo.existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierTypeIgnoreCase(orgId, customer, client,
-				supplierShortName, supplierType);
+		return supplierRepo.existsByOrgIdAndCustomerAndClientAndAndSupplierShortNameAndSupplierTypeIgnoreCase(orgId,
+				customer, client, supplierShortName, supplierType);
 	}
 
 	private boolean isSupplierHeaderValid(Row headerRow) {
-		List<String> expectedHeaders = Arrays.asList("Supplier Full Name", "Supplier Short Name", "Supplier Type","Pan","Tan","Mobile","Address Line1","Address Line2",
-				"City","State","Country","Zipcode","Cbranch");
+		List<String> expectedHeaders = Arrays.asList("Supplier Full Name", "Supplier Short Name", "Supplier Type",
+				"Pan", "Tan", "Mobile", "Address Line1", "Address Line2", "City", "State", "Country", "Zipcode",
+				"Cbranch");
 
 		for (int i = 0; i < expectedHeaders.size(); i++) {
 			String cellValue = getStringCellValue(headerRow.getCell(i));
@@ -2393,8 +2401,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		}
 		return true; // Return true if all headers match
 	}
-	
-	
+
 	@Transactional
 	public void uploadBuyer(MultipartFile[] files, Long orgId, String customer, String client, String warehouse,
 			String branch, String branchCode, String createdBy)
@@ -2453,12 +2460,12 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 						buyerVO.setBranchCode(branchCode);
 
 						// Check for duplicates in the database
-						if (isDuplicateBuyerFullName(orgId,customer,client,getStringCellValue(row.getCell(0)))) {
+						if (isDuplicateBuyerFullName(orgId, customer, client, getStringCellValue(row.getCell(0)))) {
 							throw new ApplicationException("Duplicate Buyer Full Name :'"
 									+ getStringCellValue(row.getCell(0)) + "' Already Exist");
 						}
 
-						if (isDuplicateBuyerShortName(orgId,customer,client,getStringCellValue(row.getCell(1)))) {
+						if (isDuplicateBuyerShortName(orgId, customer, client, getStringCellValue(row.getCell(1)))) {
 							throw new ApplicationException("Duplicate Buyer Short Name :'"
 									+ getStringCellValue(row.getCell(1)) + "' Already Exist");
 						}
@@ -2485,19 +2492,17 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	private boolean isDuplicateBuyerFullName(Long orgId, String customer, String client, String buyer) {
 		// TODO Auto-generated method stub
-		return buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerIgnoreCase(orgId, customer, client,
-				buyer);
+		return buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerIgnoreCase(orgId, customer, client, buyer);
 	}
 
 	private boolean isDuplicateBuyerShortName(Long orgId, String customer, String client, String buyerShortName) {
 		// TODO Auto-generated method stub
-		return buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerShortName(orgId, customer, client,
-				buyerShortName);
+		return buyerRepo.existsByOrgIdAndCustomerAndClientAndBuyerShortName(orgId, customer, client, buyerShortName);
 	}
 
 	private boolean isBuyerHeaderValid(Row headerRow) {
-		List<String> expectedHeaders = Arrays.asList("Buyer Full Name", "Buyer Short Name", "GST No","Pan","Tan","Mobile","Address Line1","Address Line2",
-				"City","State","Country","Zipcode","Cbranch");
+		List<String> expectedHeaders = Arrays.asList("Buyer Full Name", "Buyer Short Name", "GST No", "Pan", "Tan",
+				"Mobile", "Address Line1", "Address Line2", "City", "State", "Country", "Zipcode", "Cbranch");
 
 		for (int i = 0; i < expectedHeaders.size(); i++) {
 			String cellValue = getStringCellValue(headerRow.getCell(i));
@@ -2507,250 +2512,422 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		}
 		return true; // Return true if all headers match
 	}
-	
+
 	@Override
 	@Transactional
-	public MaterialUploadResponseDTO uploadMaterial(
-	        MultipartFile file,
-	        Long orgId,
-	        String createdBy) throws Exception {
+	public MaterialUploadResponseDTO uploadMaterial(MultipartFile file, Long orgId, String createdBy) throws Exception {
 
-	    MaterialUploadResponseDTO response = new MaterialUploadResponseDTO();
+		MaterialUploadResponseDTO response = new MaterialUploadResponseDTO();
 
-	    try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+		try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
 
-	        Sheet sheet = workbook.getSheetAt(0);
+			Sheet sheet = workbook.getSheetAt(0);
 
-	        response.setTotalRecords(sheet.getLastRowNum());
+			response.setTotalRecords(sheet.getLastRowNum());
 
-	        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+			for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 
-	            Row row = sheet.getRow(i);
+				Row row = sheet.getRow(i);
 
-	            if (row == null) {
-	                continue;
-	            }
+				if (row == null) {
+					continue;
+				}
 
-	            try {
+				try {
 
-	                MaterialDTO dto = new MaterialDTO();
+					MaterialDTO dto = new MaterialDTO();
 
-	                dto.setOrgId(orgId);
-	                dto.setCreatedBy(createdBy);
+					dto.setOrgId(orgId);
+					dto.setCreatedBy(createdBy);
 
-	                dto.setItemType(getCellValue(row.getCell(0)));
-	                dto.setPartno(getCellValue(row.getCell(1)));
-	                dto.setPartDesc(getCellValue(row.getCell(2)));
-	                dto.setCustPartno(getCellValue(row.getCell(3)));
-	                dto.setGroupName(getCellValue(row.getCell(4)));
-	                dto.setBarcode(getCellValue(row.getCell(5)));
-	                dto.setStyleCode(getCellValue(row.getCell(6)));
-	                dto.setBaseSku(getCellValue(row.getCell(7)));
-	                dto.setPurchaseUnit(getCellValue(row.getCell(8)));
-	                dto.setStorageUnit(getCellValue(row.getCell(9)));
-	                dto.setFsn(getCellValue(row.getCell(10)));
-	                dto.setSaleUnit(getCellValue(row.getCell(11)));
-	                dto.setType(getCellValue(row.getCell(12)));
-	                dto.setSku(getCellValue(row.getCell(13)));
-	                dto.setSkuQty(getCellValue(row.getCell(14)));
-	                dto.setSsku(getCellValue(row.getCell(15)));
-	                dto.setSskuQty(getCellValue(row.getCell(16)));
-	                dto.setWeightOfSkuAndUom(getCellValue(row.getCell(17)));
-	                dto.setHsnCode(getCellValue(row.getCell(18)));
-	                dto.setParentChildKey(getCellValue(row.getCell(19)));
-	                dto.setCbranch(getCellValue(row.getCell(20)));
-	                dto.setCriticalStockLevel(getCellValue(row.getCell(21)));
-	                dto.setStatus("TRUE");
-	                dto.setCustomer(getCellValue(row.getCell(22)));
-	                dto.setMovingType(getCellValue(row.getCell(23)));
-	                dto.setRackLevel(getCellValue(row.getCell(24)));
-	                dto.setClient(getCellValue(row.getCell(25)));
-	                dto.setWarehouse(getCellValue(row.getCell(26)));
-	                dto.setBranch(getCellValue(row.getCell(27)));
-	                dto.setBranchCode(getCellValue(row.getCell(28)));
-	                dto.setPalletQty(getCellValue(row.getCell(29)));
-	                dto.setActive(true);
+					dto.setItemType(getCellValue(row.getCell(0)));
+					dto.setPartno(getCellValue(row.getCell(1)));
+					dto.setPartDesc(getCellValue(row.getCell(2)));
+					dto.setCustPartno(getCellValue(row.getCell(3)));
+					dto.setGroupName(getCellValue(row.getCell(4)));
+					dto.setBarcode(getCellValue(row.getCell(5)));
+					dto.setStyleCode(getCellValue(row.getCell(6)));
+					dto.setBaseSku(getCellValue(row.getCell(7)));
+					dto.setPurchaseUnit(getCellValue(row.getCell(8)));
+					dto.setStorageUnit(getCellValue(row.getCell(9)));
+					dto.setFsn(getCellValue(row.getCell(10)));
+					dto.setSaleUnit(getCellValue(row.getCell(11)));
+					dto.setType(getCellValue(row.getCell(12)));
+					dto.setSku(getCellValue(row.getCell(13)));
+					dto.setSkuQty(getCellValue(row.getCell(14)));
+					dto.setSsku(getCellValue(row.getCell(15)));
+					dto.setSskuQty(getCellValue(row.getCell(16)));
+					dto.setWeightOfSkuAndUom(getCellValue(row.getCell(17)));
+					dto.setHsnCode(getCellValue(row.getCell(18)));
+					dto.setParentChildKey(getCellValue(row.getCell(19)));
+					dto.setCbranch(getCellValue(row.getCell(20)));
+					dto.setCriticalStockLevel(getCellValue(row.getCell(21)));
+					dto.setStatus("TRUE");
+					dto.setCustomer(getCellValue(row.getCell(22)));
+					dto.setMovingType(getCellValue(row.getCell(23)));
+					dto.setRackLevel(getCellValue(row.getCell(24)));
+					dto.setClient(getCellValue(row.getCell(25)));
+					dto.setWarehouse(getCellValue(row.getCell(26)));
+					dto.setBranch(getCellValue(row.getCell(27)));
+					dto.setBranchCode(getCellValue(row.getCell(28)));
+					dto.setPalletQty(getCellValue(row.getCell(29)));
+					dto.setActive(true);
 //	                dto.setLength(getFloatValue(row.getCell(32)));
 //	                dto.setBreadth(getFloatValue(row.getCell(33)));
 //	                dto.setHeight(getFloatValue(row.getCell(34)));
 //	                dto.setWeight(getFloatValue(row.getCell(35)));
-	                dto.setLowQty(getIntValue(row.getCell(30)));
+					dto.setLowQty(getIntValue(row.getCell(30)));
 
-	                // Mandatory Validations
+					// Mandatory Validations
 
-	                if (StringUtils.isBlank(dto.getPartno())) {
-	                    throw new ApplicationException("PartNo is mandatory");
-	                }
+					if (StringUtils.isBlank(dto.getPartno())) {
+						throw new ApplicationException("PartNo is mandatory");
+					}
 
-	                if (StringUtils.isBlank(dto.getPartDesc())) {
-	                    throw new ApplicationException("PartDesc is mandatory");
-	                }
+					if (StringUtils.isBlank(dto.getPartDesc())) {
+						throw new ApplicationException("PartDesc is mandatory");
+					}
 
-	                if (StringUtils.isBlank(dto.getCustomer())) {
-	                    throw new ApplicationException("Customer is mandatory");
-	                }
+					if (StringUtils.isBlank(dto.getCustomer())) {
+						throw new ApplicationException("Customer is mandatory");
+					}
 
-	                if (StringUtils.isBlank(dto.getClient())) {
-	                    throw new ApplicationException("Client is mandatory");
-	                }
+					if (StringUtils.isBlank(dto.getClient())) {
+						throw new ApplicationException("Client is mandatory");
+					}
 
-	                if (StringUtils.isBlank(dto.getWarehouse())) {
-	                    throw new ApplicationException("Warehouse is mandatory");
-	                }
+					if (StringUtils.isBlank(dto.getWarehouse())) {
+						throw new ApplicationException("Warehouse is mandatory");
+					}
 
-	                dto.setActive(true);
-	                dto.setStatus("Active");
+					dto.setActive(true);
+					dto.setStatus("Active");
 
-	                // Existing validation inside createUpdateMaterial()
-	                createUpdateMaterial(dto);
+					// Existing validation inside createUpdateMaterial()
+					createUpdateMaterial(dto);
 
-	                response.getSuccessRows()
-	                        .add("Row " + (i + 1) + " Uploaded Successfully");
+					response.getSuccessRows().add("Row " + (i + 1) + " Uploaded Successfully");
 
-	                response.setSuccessCount(
-	                        response.getSuccessCount() + 1);
+					response.setSuccessCount(response.getSuccessCount() + 1);
 
-	            } catch (Exception e) {
+				} catch (Exception e) {
 
-	                response.getErrorRows()
-	                        .add("Row " + (i + 1)
-	                                + " [PartNo : "
-	                                + getCellValue(row.getCell(1))
-	                                + "] : "
-	                                + e.getMessage());
+					response.getErrorRows().add(
+							"Row " + (i + 1) + " [PartNo : " + getCellValue(row.getCell(1)) + "] : " + e.getMessage());
 
-	                response.setFailedCount(
-	                        response.getFailedCount() + 1);
-	            }
-	        }
-	    }
+					response.setFailedCount(response.getFailedCount() + 1);
+				}
+			}
+		}
 
-	    return response;
+		return response;
 	}
-	
+
 	private String getCellValue(Cell cell) {
 
-	    if (cell == null) {
-	        return "";
-	    }
+		if (cell == null) {
+			return "";
+		}
 
-	    switch (cell.getCellType()) {
+		switch (cell.getCellType()) {
 
-	    case STRING:
-	        return cell.getStringCellValue().trim();
+		case STRING:
+			return cell.getStringCellValue().trim();
 
-	    case NUMERIC:
+		case NUMERIC:
 
-	        if (DateUtil.isCellDateFormatted(cell)) {
-	            return cell.getDateCellValue().toString();
-	        }
+			if (DateUtil.isCellDateFormatted(cell)) {
+				return cell.getDateCellValue().toString();
+			}
 
-	        return String.valueOf(
-	                BigDecimal.valueOf(cell.getNumericCellValue())
-	                        .stripTrailingZeros()
-	                        .toPlainString());
+			return String.valueOf(BigDecimal.valueOf(cell.getNumericCellValue()).stripTrailingZeros().toPlainString());
 
-	    case BOOLEAN:
-	        return String.valueOf(cell.getBooleanCellValue());
+		case BOOLEAN:
+			return String.valueOf(cell.getBooleanCellValue());
 
-	    default:
-	        return "";
-	    }
+		default:
+			return "";
+		}
 	}
-	
+
 	private Double getDoubleValue(Cell cell) {
 
-	    if (cell == null) {
-	        return 0.0;
-	    }
+		if (cell == null) {
+			return 0.0;
+		}
 
-	    try {
+		try {
 
-	        switch (cell.getCellType()) {
+			switch (cell.getCellType()) {
 
-	        case NUMERIC:
-	            return cell.getNumericCellValue();
+			case NUMERIC:
+				return cell.getNumericCellValue();
 
-	        case STRING:
+			case STRING:
 
-	            String value = cell.getStringCellValue();
+				String value = cell.getStringCellValue();
 
-	            if (value == null || value.trim().isEmpty()) {
-	                return 0.0;
-	            }
+				if (value == null || value.trim().isEmpty()) {
+					return 0.0;
+				}
 
-	            return Double.parseDouble(value.trim());
+				return Double.parseDouble(value.trim());
 
-	        default:
-	            return 0.0;
-	        }
+			default:
+				return 0.0;
+			}
 
-	    } catch (Exception e) {
-	        return 0.0;
-	    }
+		} catch (Exception e) {
+			return 0.0;
+		}
 	}
-	
+
 	private Float getFloatValue(Cell cell) {
 
-	    if (cell == null) {
-	        return 0f;
-	    }
+		if (cell == null) {
+			return 0f;
+		}
 
-	    try {
+		try {
 
-	        switch (cell.getCellType()) {
+			switch (cell.getCellType()) {
 
-	        case NUMERIC:
-	            return (float) cell.getNumericCellValue();
+			case NUMERIC:
+				return (float) cell.getNumericCellValue();
 
-	        case STRING:
+			case STRING:
 
-	            String value = cell.getStringCellValue();
+				String value = cell.getStringCellValue();
 
-	            if (value == null || value.trim().isEmpty()) {
-	                return 0f;
-	            }
+				if (value == null || value.trim().isEmpty()) {
+					return 0f;
+				}
 
-	            return Float.parseFloat(value.trim());
+				return Float.parseFloat(value.trim());
 
-	        default:
-	            return 0f;
-	        }
+			default:
+				return 0f;
+			}
 
-	    } catch (Exception e) {
-	        return 0f;
-	    }
+		} catch (Exception e) {
+			return 0f;
+		}
 	}
-	
+
 	private Integer getIntValue(Cell cell) {
 
-	    if (cell == null) {
-	        return 0;
-	    }
+		if (cell == null) {
+			return 0;
+		}
 
-	    try {
+		try {
 
-	        switch (cell.getCellType()) {
+			switch (cell.getCellType()) {
 
-	        case NUMERIC:
-	            return (int) cell.getNumericCellValue();
+			case NUMERIC:
+				return (int) cell.getNumericCellValue();
 
-	        case STRING:
-	            String value = cell.getStringCellValue();
+			case STRING:
+				String value = cell.getStringCellValue();
 
-	            if (value == null || value.trim().isEmpty()) {
-	                return 0;
-	            }
+				if (value == null || value.trim().isEmpty()) {
+					return 0;
+				}
 
-	            return Integer.parseInt(value.trim());
+				return Integer.parseInt(value.trim());
 
-	        default:
-	            return 0;
-	        }
+			default:
+				return 0;
+			}
 
-	    } catch (Exception e) {
-	        return 0;
-	    }
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	// Document Type
+
+	@Override
+	public Map<String, Object> createUpdateDocumentType(DocumentTypeDTO documentTypeDTO) throws ApplicationException {
+		DocumentTypeVO documentTypeVO = new DocumentTypeVO();
+		String message;
+		if (ObjectUtils.isEmpty(documentTypeDTO.getId())) {
+			if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
+					documentTypeDTO.getScreenCode())) {
+				throw new ApplicationException("ScreenCode already exist ");
+			}
+
+			if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(), documentTypeDTO.getDocCode())) {
+				throw new ApplicationException("Doc Code already exist ");
+			}
+			documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
+			documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
+			documentTypeVO.setCreatedBy(documentTypeDTO.getCreatedBy());
+			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
+			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
+			message = "Document Type Created successfully";
+		} else {
+			documentTypeVO = documentTypeRepo.findById(documentTypeDTO.getId()).orElse(null);
+
+			if (!documentTypeVO.getScreenCode().equalsIgnoreCase(documentTypeDTO.getScreenCode())) {
+				if (documentTypeRepo.existsByOrgIdAndScreenCode(documentTypeDTO.getOrgId(),
+						documentTypeDTO.getScreenCode())) {
+					throw new ApplicationException("ScreenCode already exist ");
+				}
+				documentTypeVO.setScreenCode(documentTypeDTO.getScreenCode());
+			}
+
+			if (!documentTypeVO.getDocCode().equalsIgnoreCase(documentTypeDTO.getDocCode())) {
+				if (documentTypeRepo.existsByOrgIdAndDocCode(documentTypeDTO.getOrgId(),
+						documentTypeDTO.getDocCode())) {
+					throw new ApplicationException("Doc Code already exist ");
+				}
+				documentTypeVO.setDocCode(documentTypeDTO.getDocCode());
+			}
+			documentTypeVO.setUpdatedBy(documentTypeDTO.getCreatedBy());
+			// Update the remaining fields from carrierDTO to carrierVO
+			mapDocumentTypeDTOToDocumentTypeVO(documentTypeDTO, documentTypeVO);
+			message = "Document Type Updated successfully";
+
+		}
+		documentTypeRepo.save(documentTypeVO);
+		Map<String, Object> response = new HashMap<>();
+		response.put("documentTypeVO", documentTypeVO);
+		response.put("message", message);
+		return response;
+	}
+
+	private void mapDocumentTypeDTOToDocumentTypeVO(DocumentTypeDTO documentTypeDTO, DocumentTypeVO documentTypeVO) {
+
+		documentTypeVO.setDescription(documentTypeDTO.getDescription());
+		documentTypeVO.setOrgId(documentTypeDTO.getOrgId());
+		documentTypeVO.setScreenName(documentTypeDTO.getScreenName());
+	}
+
+	@Override
+	public DocumentTypeVO getDocumentTypeById(Long id) throws ApplicationException {
+		if (ObjectUtils.isEmpty(id)) {
+			throw new ApplicationException("Invalid DocumentType Id");
+		}
+		DocumentTypeVO documentTypeVO = documentTypeRepo.findById(id)
+				.orElseThrow(() -> new ApplicationException("Document Type not found for Id: " + id));
+
+		return documentTypeVO;
+	}
+
+	@Override
+	public List<DocumentTypeVO> getAllDocumentTypeByOrgId(Long orgId) {
+
+		return documentTypeRepo.findAllByOrgId(orgId);
+	}
+
+	@Override
+	public Map<String, Object> createDocumentTypeMapping(DocumentTypeMappingDTO documentTypeMappingDTO)
+			throws ApplicationException {
+		String message;
+		DocumentTypeMappingVO documentTypeMappingVO = new DocumentTypeMappingVO();
+		documentTypeMappingVO.setBranch(documentTypeMappingDTO.getBranch());
+		documentTypeMappingVO.setBranchCode(documentTypeMappingDTO.getBranchCode());
+		documentTypeMappingVO.setFinYear(documentTypeMappingDTO.getFinYear());
+		documentTypeMappingVO.setFinYearIdentifier(documentTypeMappingDTO.getFinYearIdentifier());
+		documentTypeMappingVO.setOrgId(documentTypeMappingDTO.getOrgId());
+		documentTypeMappingVO.setCreatedBy(documentTypeMappingDTO.getCreatedBy());
+		documentTypeMappingVO.setUpdatedBy(documentTypeMappingDTO.getCreatedBy());
+
+		List<DocumentTypeMappingDetailsVO> documentTypeMappingDetailsVO = new ArrayList<>();
+
+		if (documentTypeMappingDTO.getDocumentTypeMappingDetailsDTO() != null) {
+			for (DocumentTypeMappingDetailsDTO documentTypeMappingDetailsDTO : documentTypeMappingDTO
+					.getDocumentTypeMappingDetailsDTO()) {
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO1 = new DocumentTypeMappingDetailsVO();
+				documentTypeMappingDetailsVO1.setScreenCode(documentTypeMappingDetailsDTO.getScreenCode());
+				documentTypeMappingDetailsVO1.setScreenName(documentTypeMappingDetailsDTO.getScreenName());
+				documentTypeMappingDetailsVO1.setDocCode(documentTypeMappingDetailsDTO.getDocCode());
+				documentTypeMappingDetailsVO1.setBranch(documentTypeMappingDetailsDTO.getBranch());
+				documentTypeMappingDetailsVO1.setBranchCode(documentTypeMappingDetailsDTO.getBranchCode());
+				documentTypeMappingDetailsVO1.setPrefixField(documentTypeMappingDetailsDTO.getPrefixField());
+				documentTypeMappingDetailsVO1.setFinYear(documentTypeMappingDetailsDTO.getFinYear());
+				documentTypeMappingDetailsVO1
+						.setFinYearIdentifier(documentTypeMappingDetailsDTO.getFinYearIdentifier());
+				documentTypeMappingDetailsVO1.setConcatenation(
+						documentTypeMappingDetailsDTO.getScreenCode() + documentTypeMappingDetailsDTO.getDocCode());
+				documentTypeMappingDetailsVO1.setOrgId(documentTypeMappingDTO.getOrgId());
+				documentTypeMappingDetailsVO1.setDocumentTypeMappingVO(documentTypeMappingVO);
+				documentTypeMappingDetailsVO.add(documentTypeMappingDetailsVO1);
+			}
+		}
+		documentTypeMappingVO.setDocumentTypeMappingDetailsVO(documentTypeMappingDetailsVO);
+		documentTypeMappingRepo.save(documentTypeMappingVO);
+		message = "Document Type created Successfully";
+		Map<String, Object> response = new HashMap<>();
+		response.put("documentTypeMappingVO", documentTypeMappingVO);
+		response.put("message", message);
+		return response;
+
+	}
+
+	@Override
+	public List<Map<String, Object>> getPendingDocumentTypeMapping(Long orgId, String branch, String branchCode,
+			String finYear, String finYearIdentifier, String clientCode) {
+		int finyear = Integer.parseInt(finYear.toString());
+		FinancialYearVO financialYearVO = financialYearRepo.findByOrgIdAndFinYear(orgId, finyear);
+		String finYearIden = financialYearVO.getFinYearId().toString();
+		Set<Object[]> pendingDocTypeDetails = documentTypeMappingRepo.getPendingDoctypeMapping(orgId, branch,
+				branchCode, finYear, finYearIden, clientCode);
+		return getPendingDocType(pendingDocTypeDetails);
+	}
+
+	private List<Map<String, Object>> getPendingDocType(Set<Object[]> pendingDocTypeDetails) {
+		List<Map<String, Object>> doctypeMappingDetails = new ArrayList<>();
+		for (Object[] sup : pendingDocTypeDetails) {
+			Map<String, Object> doctype = new HashMap<>();
+			doctype.put("screenName", sup[0] != null ? sup[0].toString() : "");
+			doctype.put("screenCode", sup[1] != null ? sup[1].toString() : "");
+			doctype.put("docCode", sup[2] != null ? sup[2].toString() : "");
+			doctype.put("finYear", sup[3] != null ? sup[3].toString() : "");
+			doctype.put("branch", sup[4] != null ? sup[4].toString() : "");
+			doctype.put("branchCode", sup[5] != null ? sup[5].toString() : "");
+			doctype.put("finYearIdentifier", sup[6] != null ? sup[6].toString() : "");
+			doctype.put("prefixField", sup[7] != null ? sup[7].toString() : "");
+			doctypeMappingDetails.add(doctype);
+		}
+
+		return doctypeMappingDetails;
+	}
+
+	@Override
+	public List<DocumentTypeMappingVO> getAllDocumentTypeMapping(Long orgId) {
+
+		return documentTypeMappingRepo.findByOrgId(orgId);
+	}
+
+	@Override
+	public DocumentTypeMappingVO getDocumentTypeMappingById(Long id) throws ApplicationException {
+		if (ObjectUtils.isEmpty(id)) {
+			throw new ApplicationException("Invalid DocumentTypeMapping Id");
+		}
+		DocumentTypeMappingVO documentTypeMappingVO = documentTypeMappingRepo.findById(id)
+				.orElseThrow(() -> new ApplicationException("Document Type Mapping not found for Id: " + id));
+
+		return documentTypeMappingVO;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getClientDetails(Long orgId) {
+		Set<Object[]> chType = clientRepo.getClientDetails(orgId);
+		return getClientDetails(chType);
+	}
+
+	private List<Map<String, Object>> getClientDetails(Set<Object[]> chType) {
+		List<Map<String, Object>> List1 = new ArrayList<>();
+		for (Object[] ch : chType) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("client", ch[0] != null ? ch[0].toString() : "");
+			map.put("clientCode", ch[1] != null ? ch[1].toString() : "");
+
+			List1.add(map);
+		}
+		return List1;
 	}
 
 }

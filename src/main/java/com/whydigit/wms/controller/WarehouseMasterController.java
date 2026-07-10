@@ -133,18 +133,17 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> createdGroupVO = warehouseMasterService.createUpdateGroup(groupDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdGroupVO.get("message"));
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdGroupVO.get("message"));
 			responseObjectsMap.put("createdGroupVO", createdGroupVO.get("groupVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
 
 	// Unit
 
@@ -202,25 +201,24 @@ public class WarehouseMasterController extends BaseController {
 
 	@PutMapping("/createUpdateUnit")
 	public ResponseEntity<ResponseDTO> createUpdateUnit(@RequestBody UnitDTO unitDTO) {
-	    String methodName = "createUpdateUnit()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    try {
-	        Map<String, Object> createdUnitVO = warehouseMasterService.createUpdateUnit(unitDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdUnitVO.get("message"));
-	        responseObjectsMap.put("unitVO", createdUnitVO.get("unitVO")); // Corrected key
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+		String methodName = "createUpdateUnit()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> createdUnitVO = warehouseMasterService.createUpdateUnit(unitDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdUnitVO.get("message"));
+			responseObjectsMap.put("unitVO", createdUnitVO.get("unitVO")); // Corrected key
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
-
 
 	@GetMapping("/getAllUnit")
 	public ResponseEntity<ResponseDTO> getAllUnit() {
@@ -317,14 +315,13 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("createdLocationTypeVO", createdLocationType);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
-
 
 	// CellType
 
@@ -380,7 +377,6 @@ public class WarehouseMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 	@GetMapping("/cellType/{cellTypeId}")
 	public ResponseEntity<ResponseDTO> getCellTypeById(@PathVariable Long cellTypeId) {
 		String methodName = "getCellTypeById()";
@@ -417,7 +413,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> createdCellTypeVO = warehouseMasterService.createUpdateCellType(cellTypeDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdCellTypeVO.get("message"));
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdCellTypeVO.get("message"));
 			responseObjectsMap.put("createdCellTypeVO", createdCellTypeVO.get("cellTypeVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
@@ -428,7 +424,6 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
 
 	// Branch
 	@GetMapping("/branch")
@@ -481,7 +476,7 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
- 
+
 	@PutMapping("/createUpdateBranch")
 	public ResponseEntity<ResponseDTO> createUpdateBranch(@RequestBody BranchDTO branchDTO) {
 		String methodName = "createBranch()";
@@ -491,16 +486,16 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> createdBranchVO = warehouseMasterService.createUpdateBranch(branchDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdBranchVO.get("message"));
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdBranchVO.get("message"));
 			responseObjectsMap.put("branchVO", createdBranchVO.get("branchVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 	// Customer
 
@@ -569,12 +564,12 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("customerVO", createdCustomerVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	@GetMapping("/getClientAndClientCodeByOrgId")
@@ -592,12 +587,13 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Clint And ClientCode information get successfully By OrgId");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Clint And ClientCode information get successfully By OrgId");
 			responseObjectsMap.put("CustomerVO", customerVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Clint And ClientCode information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Clint And ClientCode information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -629,7 +625,7 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/allClientByOrgId")
 	public ResponseEntity<ResponseDTO> getAllClientByOrgId(@RequestParam Long orgid) {
 		String methodName = "getAllClientByOrgId()";
@@ -721,7 +717,7 @@ public class WarehouseMasterController extends BaseController {
 	}
 
 	// Warehouse
-	
+
 	@GetMapping("/warehouse")
 	public ResponseEntity<ResponseDTO> getAllWarehouse(@RequestParam Long orgId) {
 		String methodName = "getAllWarehouse()";
@@ -747,7 +743,6 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
 
 	@GetMapping("/getAllWarehouseByOrgId")
 	public ResponseEntity<ResponseDTO> getAllWarehouseByOrgId(@RequestParam Long orgid, @RequestParam String branch) {
@@ -853,19 +848,18 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("warehouseVO", createdWarehouseVO.get("warehouseVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// Warehouse Location
 
 	@GetMapping("/warehouselocation")
-	public ResponseEntity<ResponseDTO> getAllWarehouseLocation(@RequestParam Long orgid,
-			@RequestParam String branch) {
+	public ResponseEntity<ResponseDTO> getAllWarehouseLocation(@RequestParam Long orgid, @RequestParam String branch) {
 		String methodName = "getAllWarehouseLocation()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1092,19 +1086,19 @@ public class WarehouseMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Map<String,Object>warehouseLocationVO= new HashMap<>();
+		Map<String, Object> warehouseLocationVO = new HashMap<>();
 		try {
-	        warehouseLocationVO = warehouseMasterService.createUpdateWarehouseLocation(warehouseLocationDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, warehouseLocationVO.get("message"));
-	        responseObjectsMap.put("warehouseLocationVO", warehouseLocationVO.get("warehouseLocationVO"));
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			warehouseLocationVO = warehouseMasterService.createUpdateWarehouseLocation(warehouseLocationDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, warehouseLocationVO.get("message"));
+			responseObjectsMap.put("warehouseLocationVO", warehouseLocationVO.get("warehouseLocationVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 	// Material
 
@@ -1182,48 +1176,36 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/uploadExcelMaterial")
-	public ResponseEntity<ResponseDTO> uploadMaterial(
-	        @RequestParam("files") MultipartFile file,
-	        @RequestParam("orgId") Long orgId,
-	        @RequestParam("createdBy") String createdBy) {
+	public ResponseEntity<ResponseDTO> uploadMaterial(@RequestParam("files") MultipartFile file,
+			@RequestParam("orgId") Long orgId, @RequestParam("createdBy") String createdBy) {
 
-	    String methodName = "uploadMaterial()";
+		String methodName = "uploadMaterial()";
 
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO;
 
-	    try {
+		try {
 
-	        MaterialUploadResponseDTO uploadResponse =
-	                warehouseMasterService.uploadMaterial(
-	                        file,
-	                        orgId,
-	                        createdBy);
+			MaterialUploadResponseDTO uploadResponse = warehouseMasterService.uploadMaterial(file, orgId, createdBy);
 
-	        responseObjectsMap.put("uploadResult", uploadResponse);
+			responseObjectsMap.put("uploadResult", uploadResponse);
 
-	        responseDTO = createServiceResponse(responseObjectsMap);
+			responseDTO = createServiceResponse(responseObjectsMap);
 
-	    } catch (Exception e) {
+		} catch (Exception e) {
 
-	        responseDTO = createServiceResponseError(
-	                responseObjectsMap,
-	                "Material Upload Failed",
-	                e.getMessage());
-	    }
+			responseDTO = createServiceResponseError(responseObjectsMap, "Material Upload Failed", e.getMessage());
+		}
 
-	    return ResponseEntity.ok(responseDTO);
+		return ResponseEntity.ok(responseDTO);
 	}
-	
+
 	@GetMapping("/getPartNo")
-	public ResponseEntity<ResponseDTO> getPartNo(
-			@RequestParam(required = true) Long orgId,
-			@RequestParam(required = true) String client,
-			@RequestParam(required = true) String branch,
-			@RequestParam(required = true) String branchCode,
-			@RequestParam(required = true) String customer) {
+	public ResponseEntity<ResponseDTO> getPartNo(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String client, @RequestParam(required = true) String branch,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String customer) {
 		String methodName = "getPartNo()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1231,7 +1213,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> getPart = new ArrayList<>();
 		try {
-			getPart = warehouseMasterService.getPartNo(orgId,client,branch,branchCode,customer);
+			getPart = warehouseMasterService.getPartNo(orgId, client, branch, branchCode, customer);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1315,12 +1297,12 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("BuyerVO", createdBuyerVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// Supplier
@@ -1413,18 +1395,17 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> createdSupplierVO = warehouseMasterService.createUpdateSupplier(supplierDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdSupplierVO.get("message") );
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdSupplierVO.get("message"));
 			responseObjectsMap.put("SupplierVO", createdSupplierVO.get("supplierVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap,errorMsg, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
 
 	// LocationMapping
 
@@ -1491,7 +1472,7 @@ public class WarehouseMasterController extends BaseController {
 		try {
 			Map<String, Object> createdLocationMappingVO = warehouseMasterService
 					.createUpdateLocationMapping(locationMappingDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdLocationMappingVO.get("message"));
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdLocationMappingVO.get("message"));
 			responseObjectsMap.put("LocationMappingVO", createdLocationMappingVO.get("locationMappingVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
@@ -1507,8 +1488,7 @@ public class WarehouseMasterController extends BaseController {
 	// Carrier
 
 	@GetMapping("/carrier")
-	public ResponseEntity<ResponseDTO> getAllCarrier(@RequestParam Long orgid,
-			@RequestParam String cbranch) {
+	public ResponseEntity<ResponseDTO> getAllCarrier(@RequestParam Long orgid, @RequestParam String cbranch) {
 		String methodName = "getAllCarrier()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1561,7 +1541,7 @@ public class WarehouseMasterController extends BaseController {
 
 	@GetMapping("/getCarrierNameByCustomer")
 	public ResponseEntity<ResponseDTO> getCarrierNameByCustomer(@RequestParam Long orgid, @RequestParam String client,
-			@RequestParam String cbranch,@RequestParam String shipmentMode) {
+			@RequestParam String cbranch, @RequestParam String shipmentMode) {
 		String methodName = "getCarrierNameByCustomer()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -1569,7 +1549,7 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<CarrierVO> carrier = new ArrayList<>();
 		try {
-			carrier = warehouseMasterService.getCarrierNameByCustomer(orgid, client, cbranch,shipmentMode);
+			carrier = warehouseMasterService.getCarrierNameByCustomer(orgid, client, cbranch, shipmentMode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -1588,23 +1568,23 @@ public class WarehouseMasterController extends BaseController {
 
 	@PutMapping("/createUpdateCarrier")
 	public ResponseEntity<ResponseDTO> createUpdateCarrier(@RequestBody CarrierDTO carrierDTO) {
-	    String methodName = "createUpdateCarrier()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    try {
-	        Map<String, Object> createdCarrierVO = warehouseMasterService.createUpdateCarrier(carrierDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdCarrierVO.get("message"));
-	        responseObjectsMap.put("CarrierVO", createdCarrierVO.get("carrierVO"));
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+		String methodName = "createUpdateCarrier()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> createdCarrierVO = warehouseMasterService.createUpdateCarrier(carrierDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdCarrierVO.get("message"));
+			responseObjectsMap.put("CarrierVO", createdCarrierVO.get("carrierVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
 
 	// Employee
@@ -1696,14 +1676,13 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			Map<String, Object> createdEmployeeVO = warehouseMasterService.createEmployee(employeeDTO);
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,createdEmployeeVO.get("message") );
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, createdEmployeeVO.get("message"));
 			responseObjectsMap.put("employeeVO", createdEmployeeVO.get("employeeVO"));
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg,
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -1875,30 +1854,30 @@ public class WarehouseMasterController extends BaseController {
 		}
 		return palletno;
 	}
-	
+
 	// Document type
-	
+
 	@PutMapping("/createUpdateDocumentType")
 	public ResponseEntity<ResponseDTO> createUpdateDocumentType(@RequestBody DocumentTypeDTO documentTypeDTO) {
-	    String methodName = "createUpdateDocumentType()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    try {
-	        Map<String, Object> documentType1 = warehouseMasterService.createUpdateDocumentType(documentTypeDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, documentType1.get("message"));
-	        responseObjectsMap.put("documentTypeVO", documentType1.get("documentTypeVO"));
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+		String methodName = "createUpdateDocumentType()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> documentType1 = warehouseMasterService.createUpdateDocumentType(documentTypeDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, documentType1.get("message"));
+			responseObjectsMap.put("documentTypeVO", documentType1.get("documentTypeVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/documentTypeById")
 	public ResponseEntity<ResponseDTO> getdocumentTypeById(@RequestParam Long id) {
 		String methodName = "getdocumentTypeById()";
@@ -1914,18 +1893,17 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"DocumentType information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "DocumentType information get successfully");
 			responseObjectsMap.put("documentTypeVO", documentTypeVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap,
-					"DocumentTypeVO information receive failed", errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "DocumentTypeVO information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllDocumentType")
 	public ResponseEntity<ResponseDTO> getAllDocumentType(@RequestParam Long orgid) {
 		String methodName = "getAllDocumentType()";
@@ -1935,8 +1913,8 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<DocumentTypeVO> documentTypeVO = new ArrayList<>();
 		try {
-			documentTypeVO = warehouseMasterService.getAllDocumentTypeByOrgId(orgid);	
-			} catch (Exception e) {
+			documentTypeVO = warehouseMasterService.getAllDocumentTypeByOrgId(orgid);
+		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
@@ -1951,43 +1929,44 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
-	
+
 	@PutMapping("/createDocumentTypeMapping")
-	public ResponseEntity<ResponseDTO> createDocumentTypeMapping(@RequestBody DocumentTypeMappingDTO documentTypeMappingDTO) {
-	    String methodName = "createDocumentTypeMapping()";
-	    LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-	    String errorMsg = null;
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    try {
-	        Map<String, Object> documentTypeMappingVO = warehouseMasterService.createDocumentTypeMapping(documentTypeMappingDTO);
-	        responseObjectsMap.put(CommonConstant.STRING_MESSAGE, documentTypeMappingVO.get("message"));
-	        responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO.get("documentTypeMappingVO"));
-	        responseDTO = createServiceResponse(responseObjectsMap);
-	    } catch (Exception e) {
-	        errorMsg = e.getMessage();
-	        LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-	        responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
-	    }
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+	public ResponseEntity<ResponseDTO> createDocumentTypeMapping(
+			@RequestBody DocumentTypeMappingDTO documentTypeMappingDTO) {
+		String methodName = "createDocumentTypeMapping()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> documentTypeMappingVO = warehouseMasterService
+					.createDocumentTypeMapping(documentTypeMappingDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, documentTypeMappingVO.get("message"));
+			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO.get("documentTypeMappingVO"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
 	@GetMapping("/getPendingDocumentTypeMapping")
-	public ResponseEntity<ResponseDTO> getPendingDocumentTypeMapping(@RequestParam Long orgId,@RequestParam String branch,@RequestParam String branchCode,
-			@RequestParam String finYear,@RequestParam String finYearIdentifier) {
-		String methodName = "getPendingDocumentTypeMapping()";
+	public ResponseEntity<ResponseDTO> getPendingDocumentTypeMapping(@RequestParam Long orgId,
+			@RequestParam String branch, @RequestParam String branchCode, @RequestParam String finYear,
+			@RequestParam String finYearIdentifier, @RequestParam String clientCode) {
+		String methodName = "getPendingDocumentTypeMappin	g()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> documentTypeMappingVO = new ArrayList<>();
 		try {
-			documentTypeMappingVO = warehouseMasterService.getPendingDocumentTypeMapping(orgId, branch, branchCode, finYear, finYearIdentifier);
-			} catch (Exception e) {
+			documentTypeMappingVO = warehouseMasterService.getPendingDocumentTypeMapping(orgId, branch, branchCode,
+					finYear, finYearIdentifier, clientCode);
+		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
@@ -2002,7 +1981,7 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getAllDocumentTypeMapping")
 	public ResponseEntity<ResponseDTO> getAllDocumentTypeMapping(@RequestParam Long orgId) {
 		String methodName = "getAllDocumentTypeMapping()";
@@ -2013,7 +1992,7 @@ public class WarehouseMasterController extends BaseController {
 		List<DocumentTypeMappingVO> documentTypeMappingVO = new ArrayList<>();
 		try {
 			documentTypeMappingVO = warehouseMasterService.getAllDocumentTypeMapping(orgId);
-			} catch (Exception e) {
+		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
@@ -2022,13 +2001,13 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Document Type Mapping information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Document Type Mapping information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/documentTypeMappingById")
 	public ResponseEntity<ResponseDTO> documentTypeMappingById(@RequestParam Long id) {
 		String methodName = "documentTypeMappingById()";
@@ -2044,8 +2023,7 @@ public class WarehouseMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					"documentTypeMappingVO information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "documentTypeMappingVO information get successfully");
 			responseObjectsMap.put("documentTypeMappingVO", documentTypeMappingVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
@@ -2055,15 +2033,16 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getClientForDoctypeFillgrid")
-	public ResponseEntity<ResponseDTO> getClientForDoctypeFillgrid(@RequestParam Long orgId, @RequestParam String screenCode) {
+	public ResponseEntity<ResponseDTO> getClientForDoctypeFillgrid(@RequestParam Long orgId,
+			@RequestParam String screenCode) {
 		String methodName = "getClientForDoctypeFillgrid()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<Map<String,Object>> clientDetails = new ArrayList<>();
+		List<Map<String, Object>> clientDetails = new ArrayList<>();
 		try {
 			clientDetails = warehouseMasterService.getClientAndClientCodeForDocTypeFillGrid(orgId, screenCode);
 		} catch (Exception e) {
@@ -2081,8 +2060,7 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
 	@GetMapping("/getAllBinDetails")
 	public ResponseEntity<ResponseDTO> getToBinDetails(@RequestParam(required = false) Long orgId,
 			@RequestParam(required = false) String branchCode, @RequestParam(required = false) String client,
@@ -2092,19 +2070,18 @@ public class WarehouseMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-    List<Map<String, Object>> Bins = new ArrayList<>();
-    try {
-    	Bins = warehouseMasterService.getToBinDetails(orgId, branchCode,
-					client,warehouse);
-      } catch (Exception e) {
+		List<Map<String, Object>> Bins = new ArrayList<>();
+		try {
+			Bins = warehouseMasterService.getToBinDetails(orgId, branchCode, client, warehouse);
+		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
 					"All Client Bin Details information retrieved successfully");
-      responseObjectsMap.put("Bins", Bins);
-      responseDTO = createServiceResponse(responseObjectsMap);
+			responseObjectsMap.put("Bins", Bins);
+			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"Failed to retrieve All Client Bin Details information", errorMsg);
@@ -2112,11 +2089,13 @@ public class WarehouseMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/MaterialUpload")
-	public ResponseEntity<ResponseDTO> MaterialUpload(@RequestParam MultipartFile[] files,@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String customer,@RequestParam(required = false) String client, @RequestParam(required = false)  String warehouse, @RequestParam(required = false)  String branch, 
-			 @RequestParam(required = false) String branchCode, @RequestParam(required = false)  String createdBy) {
+	public ResponseEntity<ResponseDTO> MaterialUpload(@RequestParam MultipartFile[] files,
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String customer,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String warehouse,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String createdBy) {
 		String methodName = "MaterialUpload()";
 		int totalRows = 0;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -2124,7 +2103,8 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			warehouseMasterService.uploadMaterials(files, orgId, customer, client, warehouse, branch, branchCode, createdBy);
+			warehouseMasterService.uploadMaterials(files, orgId, customer, client, warehouse, branch, branchCode,
+					createdBy);
 			// Retrieve the counts after processing
 			totalRows = warehouseMasterService.getTotalRows(); // Get total rows processed
 			successfulUploads = warehouseMasterService.getSuccessfulUploads(); // Get successful uploads count
@@ -2147,15 +2127,17 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("errorMessage", errorMsg);
 
 			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Material Failed", errorMsg);
-      }
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/CarrierlUpload")
-	public ResponseEntity<ResponseDTO> CarrierlUpload(@RequestParam MultipartFile[] files,@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String customer,@RequestParam(required = false) String client, @RequestParam(required = false)  String warehouse, @RequestParam(required = false)  String branch, 
-			 @RequestParam(required = false) String branchCode, @RequestParam(required = false)  String createdBy) {
+	public ResponseEntity<ResponseDTO> CarrierlUpload(@RequestParam MultipartFile[] files,
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String customer,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String warehouse,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String createdBy) {
 		String methodName = "CarrierlUpload()";
 		int totalRows = 0;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -2163,7 +2145,8 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			warehouseMasterService.uploadCarrier(files, orgId, customer, client, warehouse, branch, branchCode, createdBy);
+			warehouseMasterService.uploadCarrier(files, orgId, customer, client, warehouse, branch, branchCode,
+					createdBy);
 			// Retrieve the counts after processing
 			totalRows = warehouseMasterService.getTotalRows(); // Get total rows processed
 			successfulUploads = warehouseMasterService.getSuccessfulUploads(); // Get successful uploads count
@@ -2186,15 +2169,17 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("errorMessage", errorMsg);
 
 			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Carrier Failed", errorMsg);
-      }
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/SupplierUpload")
-	public ResponseEntity<ResponseDTO> SupplierUpload(@RequestParam MultipartFile[] files,@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String customer,@RequestParam(required = false) String client, @RequestParam(required = false)  String warehouse, @RequestParam(required = false)  String branch, 
-			 @RequestParam(required = false) String branchCode, @RequestParam(required = false)  String createdBy) {
+	public ResponseEntity<ResponseDTO> SupplierUpload(@RequestParam MultipartFile[] files,
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String customer,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String warehouse,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String createdBy) {
 		String methodName = "SupplierUpload()";
 		int totalRows = 0;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -2202,7 +2187,8 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			warehouseMasterService.uploadSupplier(files, orgId, customer, client, warehouse, branch, branchCode, createdBy);
+			warehouseMasterService.uploadSupplier(files, orgId, customer, client, warehouse, branch, branchCode,
+					createdBy);
 			// Retrieve the counts after processing
 			totalRows = warehouseMasterService.getTotalRows(); // Get total rows processed
 			successfulUploads = warehouseMasterService.getSuccessfulUploads(); // Get successful uploads count
@@ -2225,15 +2211,17 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("errorMessage", errorMsg);
 
 			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Supplier Failed", errorMsg);
-      }
+		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/BuyerUpload")
-	public ResponseEntity<ResponseDTO> BuyerUpload(@RequestParam MultipartFile[] files,@RequestParam(required = false) Long orgId,
-			@RequestParam(required = false) String customer,@RequestParam(required = false) String client, @RequestParam(required = false)  String warehouse, @RequestParam(required = false)  String branch, 
-			 @RequestParam(required = false) String branchCode, @RequestParam(required = false)  String createdBy) {
+	public ResponseEntity<ResponseDTO> BuyerUpload(@RequestParam MultipartFile[] files,
+			@RequestParam(required = false) Long orgId, @RequestParam(required = false) String customer,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String warehouse,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String createdBy) {
 		String methodName = "BuyerUpload()";
 		int totalRows = 0;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
@@ -2241,7 +2229,8 @@ public class WarehouseMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			// Call service method to process Excel upload
-			warehouseMasterService.uploadBuyer(files, orgId, customer, client, warehouse, branch, branchCode, createdBy);
+			warehouseMasterService.uploadBuyer(files, orgId, customer, client, warehouse, branch, branchCode,
+					createdBy);
 			// Retrieve the counts after processing
 			totalRows = warehouseMasterService.getTotalRows(); // Get total rows processed
 			successfulUploads = warehouseMasterService.getSuccessfulUploads(); // Get successful uploads count
@@ -2264,7 +2253,34 @@ public class WarehouseMasterController extends BaseController {
 			responseObjectsMap.put("errorMessage", errorMsg);
 
 			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Buyer Failed", errorMsg);
-      }
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getClientDetails")
+	public ResponseEntity<ResponseDTO> getClientDetails(@RequestParam Long orgId) {
+		String methodName = "getClientDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> mapp = new ArrayList<>();
+
+		try {
+			mapp = warehouseMasterService.getClientDetails(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+		}
+
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "ClientDetails  retrieved successfully");
+			responseObjectsMap.put("mapp", mapp);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Failed to retrieve  ClientDetails", errorMsg);
+		}
+
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
