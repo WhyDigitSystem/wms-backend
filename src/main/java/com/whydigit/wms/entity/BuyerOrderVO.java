@@ -103,6 +103,12 @@ public class BuyerOrderVO {
 	private boolean active = true;
 	@Column(name = "warehouse",length =25)
 	private String warehouse;
+	@Column(name = "deliverydate")
+	private LocalDate deliveryDate;
+	@Column(name = "paymentterms")
+	private String paymentTerms;
+	@Column(name = "shippingmethod")
+	private String shippingMethod;
 	
 
 	@JsonManagedReference

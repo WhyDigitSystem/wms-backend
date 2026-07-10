@@ -301,64 +301,64 @@ public class BuyerOrderController extends BaseController {
 
 	@PostMapping("/ExcelUploadForBuyerOrder")
 	public ResponseEntity<ResponseDTO> ExcelUploadForBuyerOrder(@RequestParam MultipartFile[] files,
-	        CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
-	        @RequestParam(required = false) String createdBy, String customer, String client, 
-	        String finYear, String branch, String branchCode, String warehouse) {
-	    
-	    String methodName = "ExcelUploadForBuyerOrder()";
-	    Map<String, Object> responseObjectsMap = new HashMap<>();
-	    ResponseDTO responseDTO = null;
-	    
-	    try {
-	        buyerOrderService.ExcelUploadForBo(files, type, orgId, createdBy, customer, client, 
-	                finYear, branch, branchCode, warehouse);
+			CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String createdBy, String customer, String client, String finYear,
+			String branch, String branchCode, String warehouse) {
 
-	        int totalRows = buyerOrderService.getTotalRows();
-	        int successfulUploads = buyerOrderService.getSuccessfulUploads();
-	        
-	        // Build response directly
-	        responseObjectsMap.put("statusFlag", "Ok");
-	        responseObjectsMap.put("status", true);
-	        responseObjectsMap.put("totalRows", totalRows);
-	        responseObjectsMap.put("successfulUploads", successfulUploads);
-	        responseObjectsMap.put("message", "Excel Upload For BuyerOrder successful");
-	        
-	        responseDTO = createServiceResponse(responseObjectsMap);
+		String methodName = "ExcelUploadForBuyerOrder()";
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
 
-	    } catch (ApplicationException e) {
-	        String errorMsg = e.getMessage();
-	        LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
-	        
-	        responseObjectsMap.put("statusFlag", "Error");
-	        responseObjectsMap.put("status", false);
-	        responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
-	        responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
-	        responseObjectsMap.put("message", "Excel Upload For BuyerOrder Failed");
-	        responseObjectsMap.put("errorMessage", errorMsg);
-	        
-	        responseDTO = createServiceResponseError(responseObjectsMap, 
-	                "Excel Upload For BuyerOrder Failed", errorMsg);
-	                
-	    } catch (Exception e) {
-	        LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
-	        
-	        responseObjectsMap.put("statusFlag", "Error");
-	        responseObjectsMap.put("status", false);
-	        responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
-	        responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
-	        responseObjectsMap.put("message", "Excel Upload For BuyerOrder Failed");
-	        responseObjectsMap.put("errorMessage", "An unexpected error occurred: " + e.getMessage());
-	        
-	        responseDTO = createServiceResponseError(responseObjectsMap, 
-	                "Excel Upload For BuyerOrder Failed", e.getMessage());
-	        
-	        e.printStackTrace();
-	    }
-	    
-	    LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	    return ResponseEntity.ok().body(responseDTO);
+		try {
+			buyerOrderService.ExcelUploadForBo(files, type, orgId, createdBy, customer, client, finYear, branch,
+					branchCode, warehouse);
+
+			int totalRows = buyerOrderService.getTotalRows();
+			int successfulUploads = buyerOrderService.getSuccessfulUploads();
+
+			// Build response directly
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", totalRows);
+			responseObjectsMap.put("successfulUploads", successfulUploads);
+			responseObjectsMap.put("message", "Excel Upload For BuyerOrder successful");
+
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (ApplicationException e) {
+			String errorMsg = e.getMessage();
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
+			responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
+			responseObjectsMap.put("message", "Excel Upload For BuyerOrder Failed");
+			responseObjectsMap.put("errorMessage", errorMsg);
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For BuyerOrder Failed",
+					errorMsg);
+
+		} catch (Exception e) {
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
+			responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
+			responseObjectsMap.put("message", "Excel Upload For BuyerOrder Failed");
+			responseObjectsMap.put("errorMessage", "An unexpected error occurred: " + e.getMessage());
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For BuyerOrder Failed",
+					e.getMessage());
+
+			e.printStackTrace();
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PutMapping("/createMultipleBuyerOrder")
 	public ResponseEntity<ResponseDTO> createMultipleBuyerOrder(@RequestBody List<MultipleBODTO> multipleBODTO) {
 		String methodName = "createMultipleBuyerOrder()";
@@ -378,11 +378,11 @@ public class BuyerOrderController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getPendingBuyerOrderDetails")
 	public ResponseEntity<ResponseDTO> getPendingBuyerOrderDetails(@RequestParam(required = true) Long orgId,
-			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse,
-			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear) {
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
+			@RequestParam(required = true) String client, @RequestParam(required = true) String finYear) {
 		String methodName = "getPendingBuyerOrderDetails()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -390,7 +390,8 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> pendingOrderDetails = new ArrayList<Map<String, Object>>();
 		try {
-			pendingOrderDetails = buyerOrderService.getPendingBuyerOrderDetails(orgId, branchCode, warehouse, client, finYear);
+			pendingOrderDetails = buyerOrderService.getPendingBuyerOrderDetails(orgId, branchCode, warehouse, client,
+					finYear);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
@@ -400,19 +401,18 @@ public class BuyerOrderController extends BaseController {
 			responseObjectsMap.put("pendingOrderDetails", pendingOrderDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Pending Order Details information get Failed ",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Pending Order Details information get Failed ", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	
 	@GetMapping("/getBuyerorderDashboard")
 	public ResponseEntity<ResponseDTO> getBuyerorderDashboard(@RequestParam(required = true) Long orgId,
-			@RequestParam(required = true) String branchCode,@RequestParam(required = true) String warehouse,
-			@RequestParam(required = true) String client,@RequestParam(required = true) String finYear,
-			@RequestParam(required = false) String month,@RequestParam(required = true) String type) {
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
+			@RequestParam(required = true) String client, @RequestParam(required = true) String finYear,
+			@RequestParam(required = false) String month, @RequestParam(required = true) String type) {
 		String methodName = "getBuyerorderDashboard()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -420,22 +420,83 @@ public class BuyerOrderController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> buyerorderDashboard = new ArrayList<Map<String, Object>>();
 		try {
-			buyerorderDashboard = buyerOrderService.getBuyerorderDashboard(orgId, branchCode, warehouse, client, finYear,month,type);
+			buyerorderDashboard = buyerOrderService.getBuyerorderDashboard(orgId, branchCode, warehouse, client,
+					finYear, month, type);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Buyerorder Dashboard  Details information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Buyerorder Dashboard  Details information get successfully");
 			responseObjectsMap.put("buyerorderDashboard", buyerorderDashboard);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Buyerorder Dashboard Details information get Failed ",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Buyerorder Dashboard Details information get Failed ", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
+	@PostMapping("/uploadBuyerOrderDetailExcelUpload")
+	public ResponseEntity<ResponseDTO> uploadBuyerOrderDetailExcelUpload(@RequestParam("file") MultipartFile file,
+			@RequestParam("type") CustomerAttachmentType type, @RequestParam(required = false) Long orgId,
+			@RequestParam(required = false) String createdBy, @RequestParam(required = false) String customer,
+			@RequestParam(required = false) String client, @RequestParam(required = false) String finYear,
+			@RequestParam(required = false) String branch, @RequestParam(required = false) String branchCode,
+			@RequestParam(required = false) String warehouse) {
+
+		String methodName = "uploadBuyerOrderDetailExcelUpload";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+
+		try {
+
+			buyerOrderService.uploadBuyerOrderDetailExcelUpload(file, type, orgId, createdBy, customer, client, finYear,
+					branch, branchCode, warehouse);
+
+			responseObjectsMap.put("statusFlag", "Ok");
+			responseObjectsMap.put("status", true);
+			responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
+			responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
+			responseObjectsMap.put("message", "Excel Upload For Buyer Order Successful");
+
+			responseDTO = createServiceResponse(responseObjectsMap);
+
+		} catch (ApplicationException e) {
+
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
+			responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
+			responseObjectsMap.put("message", "Excel Upload For Buyer Order Failed");
+			responseObjectsMap.put("errorMessage", e.getMessage());
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Buyer Order Failed",
+					e.getMessage());
+
+		} catch (Exception e) {
+
+			LOGGER.error(CommonConstant.EXCEPTION, methodName, e);
+
+			responseObjectsMap.put("statusFlag", "Error");
+			responseObjectsMap.put("status", false);
+			responseObjectsMap.put("totalRows", buyerOrderService.getTotalRows());
+			responseObjectsMap.put("successfulUploads", buyerOrderService.getSuccessfulUploads());
+			responseObjectsMap.put("message", "Excel Upload For Buyer Order Failed");
+			responseObjectsMap.put("errorMessage", "Unexpected Error: " + e.getMessage());
+
+			responseDTO = createServiceResponseError(responseObjectsMap, "Excel Upload For Buyer Order Failed",
+					e.getMessage());
+		}
+
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+
+		return ResponseEntity.ok(responseDTO);
+	}
 }

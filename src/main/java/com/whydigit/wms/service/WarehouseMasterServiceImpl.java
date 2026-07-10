@@ -2852,6 +2852,8 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 				documentTypeMappingDetailsVO1.setConcatenation(
 						documentTypeMappingDetailsDTO.getScreenCode() + documentTypeMappingDetailsDTO.getDocCode());
 				documentTypeMappingDetailsVO1.setOrgId(documentTypeMappingDTO.getOrgId());
+				documentTypeMappingDetailsVO1.setClient(documentTypeMappingDetailsDTO.getClient());
+				documentTypeMappingDetailsVO1.setClientCode(documentTypeMappingDetailsDTO.getClientCode());
 				documentTypeMappingDetailsVO1.setDocumentTypeMappingVO(documentTypeMappingVO);
 				documentTypeMappingDetailsVO.add(documentTypeMappingDetailsVO1);
 			}

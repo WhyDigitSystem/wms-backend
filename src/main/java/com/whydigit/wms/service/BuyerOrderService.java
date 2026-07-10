@@ -21,13 +21,12 @@ public interface BuyerOrderService {
 
 	List<BuyerOrderVO> getAllBuyerOrderByOrgId(Long orgId, String finYear, String branch, String branchCode,
 			String client, String warehouse);
-	
+
 	Optional<BuyerOrderVO> getAllBuyerOrderById(Long id);
 
 	String getBuyerOrderDocId(Long orgId, String finYear, String branch, String branchCode, String client);
 
-	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client,
-			String warehouse);
+	List<Map<String, Object>> getBoSkuDetails(Long orgId, String branchCode, String client, String warehouse);
 
 	int getAvlQtyByBO(Long orgId, String client, String branchCode, String warehouse, String branch, String partNo,
 			String batch);
@@ -37,17 +36,16 @@ public interface BuyerOrderService {
 
 	List<Map<String, Object>> getPartNoByBuyerOrder(Long orgId, String branchCode, String client, String warehouse);
 
-
-
 	int getAvlQtyForBuyerOrder(Long orgId, String branchCode, String client, String warehouse, String partNo,
 			String batchNo);
 
-	void ExcelUploadForBo(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy, String customer, String client, String finYear, String branch, String branchCode, String warehouse) throws ApplicationException;
+	void ExcelUploadForBo(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
+			String customer, String client, String finYear, String branch, String branchCode, String warehouse)
+			throws ApplicationException;
 
 	int getTotalRows();
 
 	int getSuccessfulUploads();
-	
 
 	Map<String, Object> createMultipleBuyerOrder(List<MultipleBODTO> multipleBODTO1) throws ApplicationException;
 
@@ -55,10 +53,10 @@ public interface BuyerOrderService {
 			String client, String finYear);
 
 	List<Map<String, Object>> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse, String client,
-			String finYear, String month,String type);
+			String finYear, String month, String type);
 
-
-	
-
+	Map<String, Object> uploadBuyerOrderDetailExcelUpload(MultipartFile file, CustomerAttachmentType type, Long orgId,
+			String createdBy, String customer, String client, String finYear, String branch, String branchCode,
+			String warehouse) throws Exception;
 
 }

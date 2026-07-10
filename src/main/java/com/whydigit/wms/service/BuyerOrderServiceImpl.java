@@ -1,10 +1,12 @@
 package com.whydigit.wms.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -340,359 +342,359 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 	@Transactional
 	@Override
 	public void ExcelUploadForBo(MultipartFile[] files, CustomerAttachmentType type, Long orgId, String createdBy,
-	        String customer, String client, String finYear, String branch, String branchCode, String warehouse)
-	        throws ApplicationException {
+			String customer, String client, String finYear, String branch, String branchCode, String warehouse)
+			throws ApplicationException {
 
-	    List<BoExcelUploadVO> boExcelUploadVOVOsToSave = new ArrayList<>();
-	    List<String> allErrorMessages = new ArrayList<>();
-	    totalRows = 0;
-	    successfulUploads = 0;
+		List<BoExcelUploadVO> boExcelUploadVOVOsToSave = new ArrayList<>();
+		List<String> allErrorMessages = new ArrayList<>();
+		totalRows = 0;
+		successfulUploads = 0;
 
-	    if (files == null || files.length == 0) {
-	        throw new ApplicationException("No files uploaded. Please select at least one Excel file.");
-	    }
+		if (files == null || files.length == 0) {
+			throw new ApplicationException("No files uploaded. Please select at least one Excel file.");
+		}
 
-	    for (MultipartFile file : files) {
-	        try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
-	            Sheet sheet = workbook.getSheetAt(0);
-	            List<String> fileErrors = new ArrayList<>();
-	            System.out.println("Processing file: " + file.getOriginalFilename());
+		for (MultipartFile file : files) {
+			try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+				Sheet sheet = workbook.getSheetAt(0);
+				List<String> fileErrors = new ArrayList<>();
+				System.out.println("Processing file: " + file.getOriginalFilename());
 
-	            if (sheet.getPhysicalNumberOfRows() <= 1) {
-	                fileErrors.add("File '" + file.getOriginalFilename() + "' has no data rows.");
-	                allErrorMessages.addAll(fileErrors);
-	                continue;
-	            }
+				if (sheet.getPhysicalNumberOfRows() <= 1) {
+					fileErrors.add("File '" + file.getOriginalFilename() + "' has no data rows.");
+					allErrorMessages.addAll(fileErrors);
+					continue;
+				}
 
-	            Row headerRow = sheet.getRow(0);
-	            if (!isHeaderValid(headerRow)) {
-	                throw new ApplicationException("Invalid Excel format for file: " + file.getOriginalFilename()
-	                        + ". Please refer to the sample file.");
-	            }
+				Row headerRow = sheet.getRow(0);
+				if (!isHeaderValid(headerRow)) {
+					throw new ApplicationException("Invalid Excel format for file: " + file.getOriginalFilename()
+							+ ". Please refer to the sample file.");
+				}
 
-	            for (Row row : sheet) {
-	                if (row.getRowNum() == 0 || isRowEmpty(row)) {
-	                    continue;
-	                }
+				for (Row row : sheet) {
+					if (row.getRowNum() == 0 || isRowEmpty(row)) {
+						continue;
+					}
 
-	                totalRows++;
-	                int rowNum = row.getRowNum() + 1;
-	                System.out.println("Processing row: " + rowNum);
+					totalRows++;
+					int rowNum = row.getRowNum() + 1;
+					System.out.println("Processing row: " + rowNum);
 
-	                try {
-	                    // Get all cell values
-	                    String type1 = getStringCellValue(row.getCell(0));
-	                    String orderNo = getStringCellValue(row.getCell(1));
-	                    LocalDate orderDate = parseDate(getStringCellValue(row.getCell(2)));
-	                    String invoiceNo = getStringCellValue(row.getCell(3));
-	                    LocalDate invoiceDate = parseDate(getStringCellValue(row.getCell(4)));
-	                    String referenceNo = getStringCellValue(row.getCell(5));
-	                    LocalDate referenceDate = parseDate(getStringCellValue(row.getCell(6)));
-	                    String buyerName = getStringCellValue(row.getCell(7));
-	                    String billTo = getStringCellValue(row.getCell(8));
-	                    String shipTo = getStringCellValue(row.getCell(9));
-	                    String partNo = getStringCellValue(row.getCell(10));
-	                    String partDesc = getStringCellValue(row.getCell(11));
-	                    String batchNo = getStringCellValue(row.getCell(12));
-	                    String sku = getStringCellValue(row.getCell(13));
-	                    String qtyStr = getStringCellValue(row.getCell(14));
-	                    String unitRateStr = getStringCellValue(row.getCell(15));
-	                    String remark = getStringCellValue(row.getCell(16));
+					try {
+						// Get all cell values
+						String type1 = getStringCellValue(row.getCell(0));
+						String orderNo = getStringCellValue(row.getCell(1));
+						LocalDate orderDate = parseDate(getStringCellValue(row.getCell(2)));
+						String invoiceNo = getStringCellValue(row.getCell(3));
+						LocalDate invoiceDate = parseDate(getStringCellValue(row.getCell(4)));
+						String referenceNo = getStringCellValue(row.getCell(5));
+						LocalDate referenceDate = parseDate(getStringCellValue(row.getCell(6)));
+						String buyerName = getStringCellValue(row.getCell(7));
+						String billTo = getStringCellValue(row.getCell(8));
+						String shipTo = getStringCellValue(row.getCell(9));
+						String partNo = getStringCellValue(row.getCell(10));
+						String partDesc = getStringCellValue(row.getCell(11));
+						String batchNo = getStringCellValue(row.getCell(12));
+						String sku = getStringCellValue(row.getCell(13));
+						String qtyStr = getStringCellValue(row.getCell(14));
+						String unitRateStr = getStringCellValue(row.getCell(15));
+						String remark = getStringCellValue(row.getCell(16));
 
-	                    System.out.println("Row " + rowNum + " - PartNo: '" + partNo + "', BatchNo: '" + batchNo
-	                            + "', Qty: '" + qtyStr + "', UnitRate: '" + unitRateStr + "'");
+						System.out.println("Row " + rowNum + " - PartNo: '" + partNo + "', BatchNo: '" + batchNo
+								+ "', Qty: '" + qtyStr + "', UnitRate: '" + unitRateStr + "'");
 
-	                    // ===== VALIDATION SECTION =====
-	                    boolean hasError = false;
+						// ===== VALIDATION SECTION =====
+						boolean hasError = false;
 
-	                    // 1. Validate Order No (Required)
-	                    if (orderNo == null || orderNo.trim().isEmpty()) {
-	                        fileErrors.add("Order No is missing in row " + rowNum);
-	                        hasError = true;
-	                    }
+						// 1. Validate Order No (Required)
+						if (orderNo == null || orderNo.trim().isEmpty()) {
+							fileErrors.add("Order No is missing in row " + rowNum);
+							hasError = true;
+						}
 
-	                    // 2. Validate Part No (Required)
-	                    if (partNo == null || partNo.trim().isEmpty()) {
-	                        fileErrors.add("Part No is missing in row " + rowNum);
-	                        hasError = true;
-	                    }
+						// 2. Validate Part No (Required)
+						if (partNo == null || partNo.trim().isEmpty()) {
+							fileErrors.add("Part No is missing in row " + rowNum);
+							hasError = true;
+						}
 
-	                    // 3. Validate Batch No (Required)
-	                    if (batchNo == null || batchNo.trim().isEmpty()) {
-	                        fileErrors.add("Batch No is missing in row " + rowNum);
-	                        hasError = true;
-	                    }
+						// 3. Validate Batch No (Required)
+						if (batchNo == null || batchNo.trim().isEmpty()) {
+							fileErrors.add("Batch No is missing in row " + rowNum);
+							hasError = true;
+						}
 
-	                    // 4. Validate Quantity (Required)
-	                    Integer qty = null;
-	                    if (qtyStr == null || qtyStr.trim().isEmpty()) {
-	                        fileErrors.add("Quantity is missing in row " + rowNum);
-	                        hasError = true;
-	                    } else {
-	                        qty = parseInteger(qtyStr);
-	                        if (qty == null || qty <= 0) {
-	                            fileErrors.add("Invalid quantity '" + qtyStr + "' in row " + rowNum
-	                                    + ". Must be a positive number.");
-	                            hasError = true;
-	                        }
-	                    }
+						// 4. Validate Quantity (Required)
+						Integer qty = null;
+						if (qtyStr == null || qtyStr.trim().isEmpty()) {
+							fileErrors.add("Quantity is missing in row " + rowNum);
+							hasError = true;
+						} else {
+							qty = parseInteger(qtyStr);
+							if (qty == null || qty <= 0) {
+								fileErrors.add("Invalid quantity '" + qtyStr + "' in row " + rowNum
+										+ ". Must be a positive number.");
+								hasError = true;
+							}
+						}
 
-	                    // 5. Validate Unit Rate (Optional - only if provided)
-	                    Double unitRate = null;
-	                    if (unitRateStr != null && !unitRateStr.trim().isEmpty()) {
-	                        unitRate = parseDouble(unitRateStr);
-	                        if (unitRate == null) {
-	                            fileErrors.add("Invalid unit rate '" + unitRateStr + "' in row " + rowNum);
-	                            hasError = true;
-	                        }
-	                    }
+						// 5. Validate Unit Rate (Optional - only if provided)
+						Double unitRate = null;
+						if (unitRateStr != null && !unitRateStr.trim().isEmpty()) {
+							unitRate = parseDouble(unitRateStr);
+							if (unitRate == null) {
+								fileErrors.add("Invalid unit rate '" + unitRateStr + "' in row " + rowNum);
+								hasError = true;
+							}
+						}
 
-	                    // If there are validation errors, skip this row
-	                    if (hasError) {
-	                        continue;
-	                    }
+						// If there are validation errors, skip this row
+						if (hasError) {
+							continue;
+						}
 
-	                    // 6. Check if stock exists for this part
-	                    if (partNo != null && !partNo.trim().isEmpty()) {
-	                        boolean partExists = stockDetailsRepo.existsByPartnoAndOrgIdAndClient(partNo.trim(), orgId,
-	                                client);
-	                        System.out.println("Part exists: " + partExists + " for PartNo: " + partNo);
+						// 6. Check if stock exists for this part
+						if (partNo != null && !partNo.trim().isEmpty()) {
+							boolean partExists = stockDetailsRepo.existsByPartnoAndOrgIdAndClient(partNo.trim(), orgId,
+									client);
+							System.out.println("Part exists: " + partExists + " for PartNo: " + partNo);
 
-	                        if (!partExists) {
-	                            fileErrors.add("Part No '" + partNo + "' does not exist in stock. Row: " + rowNum);
-	                            continue;
-	                        }
+							if (!partExists) {
+								fileErrors.add("Part No '" + partNo + "' does not exist in stock. Row: " + rowNum);
+								continue;
+							}
 
-	                        // 7. Check if batch exists for this part
-	                        if (batchNo != null && !batchNo.trim().isEmpty()) {
-	                            boolean batchExists = stockDetailsRepo.existsByPartnoAndBatchAndOrgIdAndClient(
-	                                    partNo.trim(), batchNo.trim(), orgId, client);
-	                            System.out.println("Batch exists: " + batchExists + " for BatchNo: " + batchNo);
+							// 7. Check if batch exists for this part
+							if (batchNo != null && !batchNo.trim().isEmpty()) {
+								boolean batchExists = stockDetailsRepo.existsByPartnoAndBatchAndOrgIdAndClient(
+										partNo.trim(), batchNo.trim(), orgId, client);
+								System.out.println("Batch exists: " + batchExists + " for BatchNo: " + batchNo);
 
-	                            if (!batchExists) {
-	                                fileErrors.add("Batch No '" + batchNo + "' for Part '" + partNo
-	                                        + "' does not exist in stock. Row: " + rowNum);
-	                                continue;
-	                            }
-	                        }
-	                    }
+								if (!batchExists) {
+									fileErrors.add("Batch No '" + batchNo + "' for Part '" + partNo
+											+ "' does not exist in stock. Row: " + rowNum);
+									continue;
+								}
+							}
+						}
 
-	                    // 8. Check duplicate order
-	                    boolean orderExists = buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(orderNo.trim(),
-	                            orgId, client, customer);
-	                    if (orderExists) {
-	                        fileErrors.add("Order No '" + orderNo + "' already exists. Row: " + rowNum);
-	                        continue;
-	                    }
+						// 8. Check duplicate order
+						boolean orderExists = buyerOrderRepo.existsByOrderNoAndOrgIdAndClientAndCustomer(orderNo.trim(),
+								orgId, client, customer);
+						if (orderExists) {
+							fileErrors.add("Order No '" + orderNo + "' already exists. Row: " + rowNum);
+							continue;
+						}
 
-	                    // ===== CREATE AND SAVE OBJECT =====
-	                    BoExcelUploadVO boExcelUploadVO = new BoExcelUploadVO();
-	                    boExcelUploadVO.setType(type1 != null ? type1.trim() : "");
-	                    boExcelUploadVO.setOrderNo(orderNo != null ? orderNo.trim() : "");
-	                    boExcelUploadVO.setOrderDate(orderDate);
-	                    boExcelUploadVO.setInvoiceNo(invoiceNo != null ? invoiceNo.trim() : "");
-	                    boExcelUploadVO.setInvoiceDate(invoiceDate);
-	                    boExcelUploadVO.setReferenceNo(referenceNo != null ? referenceNo.trim() : "");
-	                    boExcelUploadVO.setReferenceDate(referenceDate);
-	                    boExcelUploadVO.setBuyerName(buyerName != null ? buyerName.trim() : "");
-	                    boExcelUploadVO.setBillTo(billTo != null ? billTo.trim() : "");
-	                    boExcelUploadVO.setShipTo(shipTo != null ? shipTo.trim() : "");
-	                    boExcelUploadVO.setPartNo(partNo != null ? partNo.trim() : "");
-	                    boExcelUploadVO.setPartDesc(partDesc != null ? partDesc.trim() : "");
-	                    boExcelUploadVO.setBatchNo(batchNo != null ? batchNo.trim() : "");
-	                    boExcelUploadVO.setSku(sku != null ? sku.trim() : "");
-	                    boExcelUploadVO.setQty(qty);
-	                    boExcelUploadVO.setUnitRate(unitRate);
-	                    boExcelUploadVO.setRemark(remark != null ? remark.trim() : "");
-	                    boExcelUploadVO.setOrgId(orgId);
-	                    boExcelUploadVO.setCustomer(customer != null ? customer.trim() : "");
-	                    boExcelUploadVO.setClient(client != null ? client.trim() : "");
-	                    boExcelUploadVO.setFinYear(finYear != null ? finYear.trim() : "");
-	                    boExcelUploadVO.setBranch(branch != null ? branch.trim() : "");
-	                    boExcelUploadVO.setBranchCode(branchCode != null ? branchCode.trim() : "");
-	                    boExcelUploadVO.setWarehouse(warehouse != null ? warehouse.trim() : "");
-	                    boExcelUploadVO.setCreatedBy(createdBy != null ? createdBy.trim() : "");
-	                    boExcelUploadVO.setUpdatedBy("");
-	                    boExcelUploadVO.setActive(true);
-	                    boExcelUploadVO.setCancel(false);
-	                    boExcelUploadVO.setCancelRemarks("");
+						// ===== CREATE AND SAVE OBJECT =====
+						BoExcelUploadVO boExcelUploadVO = new BoExcelUploadVO();
+						boExcelUploadVO.setType(type1 != null ? type1.trim() : "");
+						boExcelUploadVO.setOrderNo(orderNo != null ? orderNo.trim() : "");
+						boExcelUploadVO.setOrderDate(orderDate);
+						boExcelUploadVO.setInvoiceNo(invoiceNo != null ? invoiceNo.trim() : "");
+						boExcelUploadVO.setInvoiceDate(invoiceDate);
+						boExcelUploadVO.setReferenceNo(referenceNo != null ? referenceNo.trim() : "");
+						boExcelUploadVO.setReferenceDate(referenceDate);
+						boExcelUploadVO.setBuyerName(buyerName != null ? buyerName.trim() : "");
+						boExcelUploadVO.setBillTo(billTo != null ? billTo.trim() : "");
+						boExcelUploadVO.setShipTo(shipTo != null ? shipTo.trim() : "");
+						boExcelUploadVO.setPartNo(partNo != null ? partNo.trim() : "");
+						boExcelUploadVO.setPartDesc(partDesc != null ? partDesc.trim() : "");
+						boExcelUploadVO.setBatchNo(batchNo != null ? batchNo.trim() : "");
+						boExcelUploadVO.setSku(sku != null ? sku.trim() : "");
+						boExcelUploadVO.setQty(qty);
+						boExcelUploadVO.setUnitRate(unitRate);
+						boExcelUploadVO.setRemark(remark != null ? remark.trim() : "");
+						boExcelUploadVO.setOrgId(orgId);
+						boExcelUploadVO.setCustomer(customer != null ? customer.trim() : "");
+						boExcelUploadVO.setClient(client != null ? client.trim() : "");
+						boExcelUploadVO.setFinYear(finYear != null ? finYear.trim() : "");
+						boExcelUploadVO.setBranch(branch != null ? branch.trim() : "");
+						boExcelUploadVO.setBranchCode(branchCode != null ? branchCode.trim() : "");
+						boExcelUploadVO.setWarehouse(warehouse != null ? warehouse.trim() : "");
+						boExcelUploadVO.setCreatedBy(createdBy != null ? createdBy.trim() : "");
+						boExcelUploadVO.setUpdatedBy("");
+						boExcelUploadVO.setActive(true);
+						boExcelUploadVO.setCancel(false);
+						boExcelUploadVO.setCancelRemarks("");
 
-	                    boExcelUploadVOVOsToSave.add(boExcelUploadVO);
-	                    successfulUploads++;
-	                    System.out.println("Row " + rowNum + " validated and added for saving");
+						boExcelUploadVOVOsToSave.add(boExcelUploadVO);
+						successfulUploads++;
+						System.out.println("Row " + rowNum + " validated and added for saving");
 
-	                } catch (Exception e) {
-	                    fileErrors.add("Error processing row " + rowNum + ": " + e.getMessage());
-	                    e.printStackTrace();
-	                }
-	            }
+					} catch (Exception e) {
+						fileErrors.add("Error processing row " + rowNum + ": " + e.getMessage());
+						e.printStackTrace();
+					}
+				}
 
-	            if (!fileErrors.isEmpty()) {
-	                allErrorMessages.addAll(fileErrors);
-	                System.out.println("Found " + fileErrors.size() + " errors in file: " + file.getOriginalFilename());
-	                for (String error : fileErrors) {
-	                    System.out.println("  - " + error);
-	                }
-	            }
+				if (!fileErrors.isEmpty()) {
+					allErrorMessages.addAll(fileErrors);
+					System.out.println("Found " + fileErrors.size() + " errors in file: " + file.getOriginalFilename());
+					for (String error : fileErrors) {
+						System.out.println("  - " + error);
+					}
+				}
 
-	        } catch (IOException e) {
-	            throw new ApplicationException(
-	                    "Failed to process file: " + file.getOriginalFilename() + " - " + e.getMessage());
-	        }
-	    }
+			} catch (IOException e) {
+				throw new ApplicationException(
+						"Failed to process file: " + file.getOriginalFilename() + " - " + e.getMessage());
+			}
+		}
 
-	    if (!allErrorMessages.isEmpty()) {
-	        String errorSummary = "Excel upload validation failed with " + allErrorMessages.size() + " errors: "
-	                + String.join("; ", allErrorMessages);
-	        System.out.println("ERROR SUMMARY: " + errorSummary);
-	        throw new ApplicationException(errorSummary);
-	    }
+		if (!allErrorMessages.isEmpty()) {
+			String errorSummary = "Excel upload validation failed with " + allErrorMessages.size() + " errors: "
+					+ String.join("; ", allErrorMessages);
+			System.out.println("ERROR SUMMARY: " + errorSummary);
+			throw new ApplicationException(errorSummary);
+		}
 
-	    if (!boExcelUploadVOVOsToSave.isEmpty()) {
-	        boExcelUploadRepo.saveAll(boExcelUploadVOVOsToSave);
-	        System.out.println("Successfully saved " + boExcelUploadVOVOsToSave.size() + " records");
-	    } else {
-	        if (totalRows == 0) {
-	            throw new ApplicationException("No data rows found in the uploaded file(s). Please check your data.");
-	        } else {
-	            throw new ApplicationException("No valid records found to save. " + totalRows
-	                    + " row(s) processed, but all failed validation.");
-	        }
-	    }
+		if (!boExcelUploadVOVOsToSave.isEmpty()) {
+			boExcelUploadRepo.saveAll(boExcelUploadVOVOsToSave);
+			System.out.println("Successfully saved " + boExcelUploadVOVOsToSave.size() + " records");
+		} else {
+			if (totalRows == 0) {
+				throw new ApplicationException("No data rows found in the uploaded file(s). Please check your data.");
+			} else {
+				throw new ApplicationException("No valid records found to save. " + totalRows
+						+ " row(s) processed, but all failed validation.");
+			}
+		}
 	}
 
 	// ===== HELPER METHODS =====
 
 	private LocalDate parseDate(String stringCellValue) {
-	    if (stringCellValue == null || stringCellValue.trim().isEmpty()) {
-	        return null;
-	    }
-	    try {
-	        String value = stringCellValue.trim();
-	        String[] formats = { "dd/MM/yyyy", "dd/M/yyyy", "d/M/yyyy", "yyyy-MM-dd", "dd-MM-yyyy" };
-	        for (String format : formats) {
-	            try {
-	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-	                return LocalDate.parse(value, formatter);
-	            } catch (DateTimeParseException e) {
-	                // Try next format
-	            }
-	        }
-	        return null;
-	    } catch (Exception e) {
-	        System.err.println("Error parsing date: " + stringCellValue);
-	        return null;
-	    }
+		if (stringCellValue == null || stringCellValue.trim().isEmpty()) {
+			return null;
+		}
+		try {
+			String value = stringCellValue.trim();
+			String[] formats = { "dd/MM/yyyy", "dd/M/yyyy", "d/M/yyyy", "yyyy-MM-dd", "dd-MM-yyyy" };
+			for (String format : formats) {
+				try {
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+					return LocalDate.parse(value, formatter);
+				} catch (DateTimeParseException e) {
+					// Try next format
+				}
+			}
+			return null;
+		} catch (Exception e) {
+			System.err.println("Error parsing date: " + stringCellValue);
+			return null;
+		}
 	}
 
 	private boolean isRowEmpty(Row row) {
-	    if (row == null)
-	        return true;
-	    for (Cell cell : row) {
-	        if (cell != null && cell.getCellType() != CellType.BLANK) {
-	            String value = getStringCellValue(cell);
-	            if (value != null && !value.trim().isEmpty()) {
-	                return false;
-	            }
-	        }
-	    }
-	    return true;
+		if (row == null)
+			return true;
+		for (Cell cell : row) {
+			if (cell != null && cell.getCellType() != CellType.BLANK) {
+				String value = getStringCellValue(cell);
+				if (value != null && !value.trim().isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private boolean isHeaderValid(Row headerRow) {
-	    if (headerRow == null) {
-	        return false;
-	    }
+		if (headerRow == null) {
+			return false;
+		}
 
-	    String[] expectedHeaders = { "type", "order no", "order date", "invoice no", "invoice date", "reference no",
-	            "reference date", "buyer name", "bill to", "ship to", "part no", "part desc", "batchno", "sku", "qty",
-	            "unit rate", "remark" };
+		String[] expectedHeaders = { "type", "order no", "order date", "invoice no", "invoice date", "reference no",
+				"reference date", "buyer name", "bill to", "ship to", "part no", "part desc", "batchno", "sku", "qty",
+				"unit rate", "remark" };
 
-	    for (int i = 0; i < expectedHeaders.length; i++) {
-	        String headerValue = getStringCellValue(headerRow.getCell(i)).toLowerCase().trim();
-	        if (!expectedHeaders[i].equalsIgnoreCase(headerValue)) {
-	            System.out.println("Header mismatch at index " + i + ": Expected '" + expectedHeaders[i] + "', Found '"
-	                    + headerValue + "'");
-	            return false;
-	        }
-	    }
-	    return true;
+		for (int i = 0; i < expectedHeaders.length; i++) {
+			String headerValue = getStringCellValue(headerRow.getCell(i)).toLowerCase().trim();
+			if (!expectedHeaders[i].equalsIgnoreCase(headerValue)) {
+				System.out.println("Header mismatch at index " + i + ": Expected '" + expectedHeaders[i] + "', Found '"
+						+ headerValue + "'");
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private String getStringCellValue(Cell cell) {
-	    if (cell == null) {
-	        return "";
-	    }
+		if (cell == null) {
+			return "";
+		}
 
-	    try {
-	        switch (cell.getCellType()) {
-	            case STRING:
-	                return cell.getStringCellValue().trim();
-	            case NUMERIC:
-	                if (DateUtil.isCellDateFormatted(cell)) {
-	                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	                    return sdf.format(cell.getDateCellValue());
-	                } else {
-	                    double numericValue = cell.getNumericCellValue();
-	                    if (numericValue == (int) numericValue) {
-	                        return String.valueOf((int) numericValue);
-	                    } else {
-	                        return BigDecimal.valueOf(numericValue).toPlainString();
-	                    }
-	                }
-	            case BOOLEAN:
-	                return String.valueOf(cell.getBooleanCellValue());
-	            case FORMULA:
-	                try {
-	                    return String.valueOf(cell.getNumericCellValue());
-	                } catch (Exception e) {
-	                    return cell.getCellFormula();
-	                }
-	            case BLANK:
-	                return "";
-	            default:
-	                return "";
-	        }
-	    } catch (Exception e) {
-	        System.err.println("Error reading cell: " + e.getMessage());
-	        return "";
-	    }
+		try {
+			switch (cell.getCellType()) {
+			case STRING:
+				return cell.getStringCellValue().trim();
+			case NUMERIC:
+				if (DateUtil.isCellDateFormatted(cell)) {
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					return sdf.format(cell.getDateCellValue());
+				} else {
+					double numericValue = cell.getNumericCellValue();
+					if (numericValue == (int) numericValue) {
+						return String.valueOf((int) numericValue);
+					} else {
+						return BigDecimal.valueOf(numericValue).toPlainString();
+					}
+				}
+			case BOOLEAN:
+				return String.valueOf(cell.getBooleanCellValue());
+			case FORMULA:
+				try {
+					return String.valueOf(cell.getNumericCellValue());
+				} catch (Exception e) {
+					return cell.getCellFormula();
+				}
+			case BLANK:
+				return "";
+			default:
+				return "";
+			}
+		} catch (Exception e) {
+			System.err.println("Error reading cell: " + e.getMessage());
+			return "";
+		}
 	}
 
 	private Integer parseInteger(String stringCellValue) {
-	    if (stringCellValue == null || stringCellValue.trim().isEmpty()) {
-	        return null;
-	    }
-	    try {
-	        String value = stringCellValue.trim().replace(",", "").replace(" ", "");
-	        return new BigDecimal(value).intValue();
-	    } catch (NumberFormatException e) {
-	        System.err.println("Error parsing integer: '" + stringCellValue + "'");
-	        return null;
-	    }
+		if (stringCellValue == null || stringCellValue.trim().isEmpty()) {
+			return null;
+		}
+		try {
+			String value = stringCellValue.trim().replace(",", "").replace(" ", "");
+			return new BigDecimal(value).intValue();
+		} catch (NumberFormatException e) {
+			System.err.println("Error parsing integer: '" + stringCellValue + "'");
+			return null;
+		}
 	}
 
 	private Double parseDouble(String stringCellValue) {
-	    if (stringCellValue == null || stringCellValue.trim().isEmpty()) {
-	        return null;
-	    }
-	    try {
-	        String value = stringCellValue.trim().replace(",", "").replace(" ", "");
-	        return Double.parseDouble(value);
-	    } catch (NumberFormatException e) {
-	        System.err.println("Error parsing double: '" + stringCellValue + "'");
-	        return null;
-	    }
+		if (stringCellValue == null || stringCellValue.trim().isEmpty()) {
+			return null;
+		}
+		try {
+			String value = stringCellValue.trim().replace(",", "").replace(" ", "");
+			return Double.parseDouble(value);
+		} catch (NumberFormatException e) {
+			System.err.println("Error parsing double: '" + stringCellValue + "'");
+			return null;
+		}
 	}
 
 	@Override
 	public int getTotalRows() {
-	    return totalRows;
+		return totalRows;
 	}
 
 	@Override
 	public int getSuccessfulUploads() {
-	    return successfulUploads;
+		return successfulUploads;
 	}
 
 	// multiple Buyer Order
@@ -885,7 +887,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 
 	@Override
 	public List<Map<String, Object>> getBuyerorderDashboard(Long orgId, String branchCode, String warehouse,
-			String client, String finYear, String month,String type) {
+			String client, String finYear, String month, String type) {
 		Set<Object[]> resultq = boExcelUploadRepo.getBuyerorderDashboard(orgId, branchCode, warehouse, client, finYear,
 				month, type);
 		return getBuyerorder(resultq);
@@ -904,6 +906,370 @@ public class BuyerOrderServiceImpl implements BuyerOrderService {
 		}
 		return details1;
 
+	}
+
+	@Override
+	@Transactional
+	public Map<String, Object> uploadBuyerOrderDetailExcelUpload(MultipartFile file, CustomerAttachmentType type,
+			Long orgId, String createdBy, String customer, String client, String finYear, String branch,
+			String branchCode, String warehouse) throws Exception {
+
+		List<BuyerOrderVO> buyerOrderList = new ArrayList<>();
+		Map<Long, BuyerOrderVO> parentMap = new HashMap<>();
+		int totalRows = 0;
+
+		try (InputStream inputStream = file.getInputStream(); Workbook workbook = WorkbookFactory.create(inputStream)) {
+
+			Sheet mainSheet = workbook.getSheetAt(0);
+			Sheet detailsSheet = workbook.getSheetAt(1);
+
+			totalRows = processCustomerDetails(mainSheet, buyerOrderList, parentMap, orgId, createdBy, branch,
+					branchCode, finYear, customer, client, warehouse);
+
+			processOrderDetails(detailsSheet, parentMap);
+
+			if (!buyerOrderList.isEmpty()) {
+				buyerOrderRepo.saveAll(buyerOrderList);
+			}
+		}
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("totalRows", totalRows);
+		response.put("successfulUploads", buyerOrderList.size());
+
+		return response;
+	}
+
+	private int processCustomerDetails(Sheet sheet, List<BuyerOrderVO> buyerOrderList,
+			Map<Long, BuyerOrderVO> parentMap, Long orgId, String createdBy, String branch, String branchCode,
+			String finYear, String customer, String client, String warehouse) {
+
+		int totalRows = 0;
+		long autoSNo = 1;
+		int lastRowNum = sheet.getLastRowNum();
+
+		for (Row row : sheet) {
+			if (row.getRowNum() == 0) {
+				continue; // Skip header row
+			}
+
+			// Stop processing if we've gone beyond data rows
+			if (row.getRowNum() > lastRowNum) {
+				break;
+			}
+
+			// Skip empty rows
+			if (isRowEmpty(row, 0, 11)) {
+				continue;
+			}
+
+			int rowNum = row.getRowNum() + 1;
+
+			// Check if OrderNo (first required column) has value
+			String orderNo = getStringCellValue(row.getCell(0));
+			if (orderNo == null || orderNo.trim().isEmpty()) {
+				continue; // Skip rows without OrderNo
+			}
+
+			totalRows++;
+
+			// Get SNo from Excel (Column L - index 11) or auto-generate
+			Long sNo = getLongCellValue(row.getCell(11));
+			if (sNo == null) {
+				sNo = autoSNo++;
+			}
+
+			// Check for duplicate SNo
+			if (parentMap.containsKey(sNo)) {
+				throw new RuntimeException("Duplicate SNo '" + sNo + "' in Excel at row: " + rowNum);
+			}
+
+			BuyerOrderVO buyerOrder = new BuyerOrderVO();
+
+			// Map Excel columns to BuyerOrderVO fields
+			buyerOrder.setOrderNo(orderNo);
+			buyerOrder.setBuyerShortName(getRequiredString(row.getCell(1), "Buyer Short Name", rowNum));
+			buyerOrder.setBuyer(getRequiredString(row.getCell(2), "Buyer", rowNum));
+			buyerOrder.setBillToShortName(getRequiredString(row.getCell(3), "Bill To Short Name", rowNum));
+			buyerOrder.setBillToName(getRequiredString(row.getCell(4), "Bill To Name", rowNum));
+			buyerOrder.setShipToShortName(getRequiredString(row.getCell(5), "Ship To Short Name", rowNum));
+			buyerOrder.setShipToName(getStringCellValue(row.getCell(6)));
+			buyerOrder.setOrderDate(parseDate(row.getCell(7)));
+			buyerOrder.setPaymentTerms(getStringCellValue(row.getCell(8)));
+			buyerOrder.setShippingMethod(getStringCellValue(row.getCell(9)));
+			buyerOrder.setRemarks(getStringCellValue(row.getCell(10)));
+
+			String buyer = getRequiredString(row.getCell(2), "Buyer", rowNum);
+			buyerOrder.setBuyer(buyer);
+
+			BuyerVO buyerVO = buyerRepo.findByBuyerAndOrgId(buyer, orgId);
+
+			if (buyerVO == null) {
+				throw new RuntimeException("Buyer '" + buyer + "' not found at row: " + rowNum);
+			}
+
+			buyerOrder.setBuyerAddress(
+					buyerVO.getAddressLine1() + "," + buyerVO.getAddressLine2() + "," + buyerVO.getCity() + ","
+							+ buyerVO.getState() + "," + buyerVO.getCountry() + "," + buyerVO.getZipCode());
+
+			String billToName = getRequiredString(row.getCell(4), "Bill To Name", rowNum);
+			buyerOrder.setBillToName(billToName);
+
+			BuyerVO buyerVO1 = buyerRepo.findByBuyerAndOrgId(billToName, orgId);
+
+			if (buyerVO1 == null) {
+				throw new RuntimeException("Bill To Name '" + billToName + "' not found at row: " + rowNum);
+			}
+
+			buyerOrder.setBillToAddress(
+					buyerVO1.getAddressLine1() + "," + buyerVO1.getAddressLine2() + "," + buyerVO1.getCity() + ","
+							+ buyerVO1.getState() + "," + buyerVO1.getCountry() + "," + buyerVO1.getZipCode());
+			// Set common fields
+			buyerOrder.setCreatedBy(createdBy);
+			buyerOrder.setUpdatedBy(createdBy);
+			buyerOrder.setOrgId(orgId);
+			buyerOrder.setBranch(branch);
+			buyerOrder.setBranchCode(branchCode);
+			buyerOrder.setFinYear(finYear);
+			buyerOrder.setClient(client);
+			buyerOrder.setCustomer(customer);
+			buyerOrder.setWarehouse(warehouse);
+			buyerOrder.setDocDate(LocalDate.now());
+			buyerOrder.setOrderDate(LocalDate.now());
+
+			// Generate Document ID
+			String screenCode = "BO";
+			try {
+				String docId = buyerOrderRepo.getbuyerOrderDocId(orgId, finYear, branchCode, client, screenCode);
+				buyerOrder.setDocId(docId);
+			} catch (Exception e) {
+				// If docId generation fails, use a default or throw exception
+				throw new RuntimeException("Failed to generate Document ID: " + e.getMessage());
+			}
+
+			// Update last number in document type mapping
+			try {
+				DocumentTypeMappingDetailsVO documentTypeMappingDetailsVO = documentTypeMappingDetailsRepo
+						.findByOrgIdAndFinYearAndBranchCodeAndClientAndScreenCode(orgId, finYear, branchCode, client,
+								screenCode);
+				if (documentTypeMappingDetailsVO != null) {
+					documentTypeMappingDetailsVO.setLastno(documentTypeMappingDetailsVO.getLastno() + 1);
+					documentTypeMappingDetailsRepo.save(documentTypeMappingDetailsVO);
+				}
+			} catch (Exception e) {
+				// Log warning but continue
+				System.err.println("Warning: Could not update document type mapping: " + e.getMessage());
+			}
+
+			// Initialize child list
+			buyerOrder.setBuyerOrderDetailsVO(new ArrayList<>());
+
+			// Add to list and map
+			buyerOrderList.add(buyerOrder);
+			parentMap.put(sNo, buyerOrder);
+		}
+
+		return totalRows;
+	}
+
+	private void processOrderDetails(Sheet sheet, Map<Long, BuyerOrderVO> parentMap) {
+		int lastRowNum = sheet.getLastRowNum();
+
+		for (Row row : sheet) {
+			if (row.getRowNum() == 0) {
+				continue; // Skip header row
+			}
+
+			// Stop processing if we've gone beyond data rows
+			if (row.getRowNum() > lastRowNum) {
+				break;
+			}
+
+			// Skip empty rows
+			if (isRowEmpty(row, 0, 8)) {
+				continue;
+			}
+
+			int rowNum = row.getRowNum() + 1;
+
+			// Check if PartNo (first required column) has value
+			String partNo = getStringCellValue(row.getCell(0));
+			if (partNo == null || partNo.trim().isEmpty()) {
+				continue; // Skip rows without PartNo
+			}
+
+			// Get Primary No from column I (index 8)
+			Long primaryNo = getLongCellValue(row.getCell(8));
+			if (primaryNo == null) {
+				throw new RuntimeException("PrimaryNo is required at row: " + rowNum);
+			}
+
+			// Find the parent BuyerOrder
+			BuyerOrderVO parentVO = parentMap.get(primaryNo);
+			if (parentVO == null) {
+				throw new RuntimeException("Invalid PrimaryNo '" + primaryNo + "' at row: " + rowNum
+						+ ". No matching SNo found in main sheet.");
+			}
+
+			// Create and populate detail VO
+			BuyerOrderDetailsVO detailsVO = new BuyerOrderDetailsVO();
+
+			detailsVO.setPartNo(partNo);
+			detailsVO.setPartDesc(getRequiredString(row.getCell(1), "Part Description", rowNum));
+			detailsVO.setSku(getRequiredString(row.getCell(2), "SKU", rowNum));
+			detailsVO.setBatchNo(getRequiredString(row.getCell(3), "Batch No", rowNum));
+			detailsVO.setBatchDate(getStringCellValue(row.getCell(4)));
+			detailsVO.setReMarks(getStringCellValue(row.getCell(5)));
+			detailsVO.setQty(getIntegerValue(row.getCell(6)));
+			detailsVO.setAvailQty(getIntegerValue(row.getCell(7)));
+
+			detailsVO.setBuyerOrderVO(parentVO);
+			parentVO.getBuyerOrderDetailsVO().add(detailsVO);
+		}
+	}
+
+	private boolean isRowEmpty(Row row, int startCol, int endCol) {
+		if (row == null) {
+			return true;
+		}
+
+		for (int i = startCol; i <= endCol; i++) {
+			Cell cell = row.getCell(i);
+			if (cell != null) {
+				String value = getStringCellValue(cell);
+				if (value != null && !value.trim().isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private String getRequiredString(Cell cell, String fieldName, int rowNum) {
+		String value = getStringCellValue(cell);
+		if (value == null || value.trim().isEmpty()) {
+			throw new RuntimeException(fieldName + " is required at row number: " + rowNum);
+		}
+		return value.trim();
+	}
+
+	/**
+	 * Get Long value from cell
+	 */
+	private Long getLongCellValue(Cell cell) {
+		if (cell == null) {
+			return null;
+		}
+
+		try {
+			switch (cell.getCellType()) {
+			case NUMERIC:
+				return (long) cell.getNumericCellValue();
+			case STRING:
+				String value = cell.getStringCellValue().trim();
+				if (!value.isEmpty()) {
+					return Long.parseLong(value);
+				}
+				return null;
+			default:
+				return null;
+			}
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+
+	private Integer getIntegerValue(Cell cell) {
+		if (cell == null) {
+			return 0;
+		}
+
+		try {
+			switch (cell.getCellType()) {
+			case NUMERIC:
+				return (int) cell.getNumericCellValue();
+			case STRING:
+				String value = cell.getStringCellValue().trim();
+				if (!value.isEmpty()) {
+					return Integer.parseInt(value);
+				}
+				return 0;
+			default:
+				return 0;
+			}
+		} catch (NumberFormatException e) {
+			throw new RuntimeException("Invalid number format at row: " + (cell.getRowIndex() + 1));
+		}
+	}
+
+	/**
+	 * Parse Date from cell
+	 */
+	private LocalDate parseDate(Cell cell) {
+		if (cell == null) {
+			return null;
+		}
+
+		try {
+			// Handle Excel date format
+			if (DateUtil.isCellDateFormatted(cell)) {
+				return getLocalDateCellValue(cell);
+			}
+
+			// Handle String date format
+			if (cell.getCellType() == CellType.STRING) {
+				String dateStr = cell.getStringCellValue().trim();
+				if (!dateStr.isEmpty()) {
+					// Try multiple date formats
+					try {
+						// Try yyyy-MM-dd HH:mm:ss format
+						if (dateStr.contains(" ")) {
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+							return LocalDate.parse(dateStr, formatter);
+						}
+						// Try yyyy-MM-dd format
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						return LocalDate.parse(dateStr, formatter);
+					} catch (Exception e1) {
+						try {
+							// Try dd/MM/yyyy format
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+							return LocalDate.parse(dateStr, formatter);
+						} catch (Exception e2) {
+							// Try MM/dd/yyyy format
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+							return LocalDate.parse(dateStr, formatter);
+						}
+					}
+				}
+			}
+
+			// Handle Numeric date (Excel serial number)
+			if (cell.getCellType() == CellType.NUMERIC) {
+				java.util.Date date = cell.getDateCellValue();
+				if (date != null) {
+					return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				}
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException("Invalid date format at row: " + (cell.getRowIndex() + 1));
+		}
+		return null;
+	}
+
+	/**
+	 * Get LocalDate from Excel Date cell
+	 */
+	private LocalDate getLocalDateCellValue(Cell cell) {
+		if (cell == null || !DateUtil.isCellDateFormatted(cell)) {
+			return null;
+		}
+		java.util.Date date = cell.getDateCellValue();
+		if (date == null) {
+			return null;
+		}
+		return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
 }
