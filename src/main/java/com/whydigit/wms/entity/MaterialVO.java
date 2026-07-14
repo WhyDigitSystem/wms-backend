@@ -112,6 +112,8 @@ public class MaterialVO {
 	private int lowQty;
 	@Column(name = "binqty")
 	private int binQty;
+	@Column(name = "maximumqty")
+	private int maximumQty;
 	
 
 	@JsonGetter("active")

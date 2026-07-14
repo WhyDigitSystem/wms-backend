@@ -408,4 +408,28 @@ public class DashboardServiceImpl implements DashboardService {
 	    }
 	    return stock;
 	}
+	
+	@Override
+	public List<Map<String, Object>> getMaximumStockLevelDetails(Long orgId, String branchCode, String client,
+			String warehouse) {
+		Set<Object[]> getExpDetails = stockDetailsRepo.getMaximumStockLevelDetails(orgId, branchCode, client,
+				warehouse);
+		return getMaximumStockLevelDetails(getExpDetails);
+	}
+
+	private List<Map<String, Object>> getMaximumStockLevelDetails(Set<Object[]> getHoldMaterial) {
+		List<Map<String, Object>> gridDetails1 = new ArrayList<>();
+		for (Object[] grid : getHoldMaterial) {
+			Map<String, Object> details = new HashMap<>();
+			details.put("client", grid[0] != null ? grid[0].toString() : "");
+			details.put("partNo", grid[1] != null ? grid[1].toString() : "");
+			details.put("partDesc", grid[2] != null ? grid[2].toString() : "");
+			details.put("sku", grid[3] != null ? grid[3].toString() : "");
+			details.put("maximumQty", grid[4] != null ? Integer.parseInt(grid[4].toString()) : 0);
+			details.put("qty", grid[5] != null ? Integer.parseInt(grid[5].toString()) : 0);
+			gridDetails1.add(details);
+		}
+		return gridDetails1;
+	}
+
 }

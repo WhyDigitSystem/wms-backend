@@ -1159,6 +1159,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		materialVO.setWeight(materialDTO.getWeight());
 		materialVO.setLowQty(materialDTO.getLowQty());
 		materialVO.setBinQty(materialDTO.getBinQty());
+		materialVO.setMaximumQty(materialDTO.getMaximumQty());
 	}
 
 	@Override

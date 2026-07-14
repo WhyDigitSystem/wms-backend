@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.dto.GatePassInDTO;
 import com.whydigit.wms.entity.GatePassInVO;
@@ -27,5 +28,8 @@ public interface GatePassInService {
 
 		List<Map<String, Object>> getEntryFillDetails(Long orgId, String finYear, String branchCode, String client,
 				String entryNo);
+
+		void uploadGatePassExcelUpload(MultipartFile file, Long orgId, String createdBy, String customer, String client,
+				String finYear, String branch, String branchCode, String warehouse) throws Exception;
 
 }

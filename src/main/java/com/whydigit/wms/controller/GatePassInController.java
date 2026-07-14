@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.wms.common.CommonConstant;
 import com.whydigit.wms.common.UserConstants;
@@ -226,5 +228,31 @@ public class GatePassInController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	
+	@PostMapping("/uploadGatePassExcelUpload")
+	public ResponseEntity<ResponseDTO> uploadGatePassExcelUpload(@RequestParam("files") MultipartFile files,
+			@RequestParam("orgId") Long orgId, @RequestParam("createdBy") String createdBy, @RequestParam String customer, @RequestParam String client,
+			 @RequestParam String finYear, @RequestParam String branch, @RequestParam String branchCode, @RequestParam String warehouse) {
+		String methodName = "uploadGatePassExcelUpload()";
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			// Call service method to process Excel upload
+			gatePassInService.uploadGatePassExcelUpload(files, orgId, createdBy, customer,  client,
+					 finYear,  branch,  branchCode,  warehouse);
+			// Retrieve the counts after processing
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Gate Upload successfully");
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			String errorMsg = null;
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 
 }

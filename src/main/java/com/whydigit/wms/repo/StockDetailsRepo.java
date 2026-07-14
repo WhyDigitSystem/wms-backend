@@ -858,5 +858,9 @@ Set<Object[]> getDeadStockStockDetailsReport(Long orgId, String branchCode, Stri
 		+ "HAVING SUM(sqty) > 0")
 Set<Object[]> getExpiredItemStockDetailsReport(Long orgId, String branchCode, String warehouse, String client);
 
+@Query(nativeQuery =true,value ="select m.client,m.partno,m.partdesc,m.sku,m.maximumqty,sum(s.sqty) as qty from material m inner join stockdetails s on m.partno = s.partno and m.client = s.client and m.orgid = s.orgid where m.orgid =?1 and m.branchcode =?2\r\n"
+		+ "	  and m.client =?3 and m.warehouse =?4 group by m.client,m.partno,m.partdesc,m.sku,m.maximumqty having SUM(s.sqty) > m.maximumqty")
+Set<Object[]> getMaximumStockLevelDetails(Long orgId, String branchCode, String client, String warehouse);
+
 
 }

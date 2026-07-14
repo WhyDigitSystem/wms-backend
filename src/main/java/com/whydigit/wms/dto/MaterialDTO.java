@@ -50,4 +50,5 @@ public class MaterialDTO {
 	private String rackLevel;
 	private int lowQty;
 	private int binQty;
+	private int maximumQty;
 }

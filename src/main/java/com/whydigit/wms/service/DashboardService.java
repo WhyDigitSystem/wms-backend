@@ -56,4 +56,7 @@ public interface DashboardService {
 	List<Map<String, Object>> getExpiredItemStockDetailsReport(Long orgId, String branchCode, String warehouse,
 			String client);
 
+	List<Map<String, Object>> getMaximumStockLevelDetails(Long orgId, String branchCode, String client,
+			String warehouse);
+
 }

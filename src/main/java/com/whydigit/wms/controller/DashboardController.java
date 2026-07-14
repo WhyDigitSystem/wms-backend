@@ -417,7 +417,7 @@ public class DashboardController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/getDashBoardStockDetailsReport")
 	public ResponseEntity<ResponseDTO> getDashBoardStockDetailsReport(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
@@ -429,7 +429,8 @@ public class DashboardController extends BaseController {
 		ResponseDTO responseDTO = null;
 		List<Map<String, Object>> stockDetails = new ArrayList<Map<String, Object>>();
 		try {
-			stockDetails = dashboardService.getDashBoardStockDetailsReport(orgId, branchCode, warehouse, finYear, client);
+			stockDetails = dashboardService.getDashBoardStockDetailsReport(orgId, branchCode, warehouse, finYear,
+					client);
 
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -446,13 +447,13 @@ public class DashboardController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	//morethan 20 days stock not sale
-	
+
+	// morethan 20 days stock not sale
+
 	@GetMapping("/getSlowMoveStockDetailsReport")
 	public ResponseEntity<ResponseDTO> getSlowMoveStockDetailsReport(@RequestParam(required = true) Long orgId,
 			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
-			 @RequestParam(required = true) String client) {
+			@RequestParam(required = true) String client) {
 		String methodName = "getSlowMoveStockDetailsReport()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -471,72 +472,99 @@ public class DashboardController extends BaseController {
 			responseObjectsMap.put("stockDetails", stockDetails);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Slow move StockDetails information receive failed",
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Slow move StockDetails information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// morethan 60 days stock not sale
+
+	@GetMapping("/getDeadStockStockDetailsReport")
+	public ResponseEntity<ResponseDTO> getDeadStockStockDetailsReport(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
+			@RequestParam(required = true) String client) {
+		String methodName = "getDeadStockStockDetailsReport()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> stockDetails = new ArrayList<Map<String, Object>>();
+		try {
+			stockDetails = dashboardService.getDeadStockStockDetailsReport(orgId, branchCode, warehouse, client);
+
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Dead Stock StockDetails  found Successfullly");
+			responseObjectsMap.put("stockDetails", stockDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Dead Stock StockDetails information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// expired stock details
+
+	@GetMapping("/getExpiredItemStockDetailsReport")
+	public ResponseEntity<ResponseDTO> getExpiredItemStockDetailsReport(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
+			@RequestParam(required = true) String client) {
+		String methodName = "getExpiredItemStockDetailsReport()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> stockDetails = new ArrayList<Map<String, Object>>();
+		try {
+			stockDetails = dashboardService.getExpiredItemStockDetailsReport(orgId, branchCode, warehouse, client);
+
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Expired StockDetails  found Successfullly");
+			responseObjectsMap.put("stockDetails", stockDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Expired StockDetails information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getMaximumStockLevelDetails")
+	public ResponseEntity<ResponseDTO> getMaximumStockLevelDetails(@RequestParam Long orgId,
+			@RequestParam String branchCode, @RequestParam String client, @RequestParam String warehouse) {
+		String methodName = "getMaximumStockLevelDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> maximumDetails = new ArrayList<>();
+		try {
+			maximumDetails = dashboardService.getMaximumStockLevelDetails(orgId, branchCode, client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Maximum  information get successfully");
+			responseObjectsMap.put("maximumDetails", maximumDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Maximum information receive failed",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	//morethan 60 days stock not sale
-	
-		@GetMapping("/getDeadStockStockDetailsReport")
-		public ResponseEntity<ResponseDTO> getDeadStockStockDetailsReport(@RequestParam(required = true) Long orgId,
-				@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
-				 @RequestParam(required = true) String client) {
-			String methodName = "getDeadStockStockDetailsReport()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<Map<String, Object>> stockDetails = new ArrayList<Map<String, Object>>();
-			try {
-				stockDetails = dashboardService.getDeadStockStockDetailsReport(orgId, branchCode, warehouse, client);
-
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isEmpty(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Dead Stock StockDetails  found Successfullly");
-				responseObjectsMap.put("stockDetails", stockDetails);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, "Dead Stock StockDetails information receive failed",
-						errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		}
-		
-		//expired stock details
-		
-		@GetMapping("/getExpiredItemStockDetailsReport")
-		public ResponseEntity<ResponseDTO> getExpiredItemStockDetailsReport(@RequestParam(required = true) Long orgId,
-				@RequestParam(required = true) String branchCode, @RequestParam(required = true) String warehouse,
-				 @RequestParam(required = true) String client) {
-			String methodName = "getExpiredItemStockDetailsReport()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<Map<String, Object>> stockDetails = new ArrayList<Map<String, Object>>();
-			try {
-				stockDetails = dashboardService.getExpiredItemStockDetailsReport(orgId, branchCode, warehouse, client);
-
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isEmpty(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Expired StockDetails  found Successfullly");
-				responseObjectsMap.put("stockDetails", stockDetails);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, "Expired StockDetails information receive failed",
-						errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		}
 }
