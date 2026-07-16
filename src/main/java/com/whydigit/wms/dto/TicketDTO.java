@@ -28,6 +28,8 @@ public class TicketDTO {
 	private String subject;
 	private String description;
 	private String userName;
+	private String status;
+	
 
 	// private byte[] screenShot;
 

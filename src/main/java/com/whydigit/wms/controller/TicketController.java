@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +39,9 @@ import com.whydigit.wms.entity.TicketVO;
 import com.whydigit.wms.repo.TicketRepo;
 import com.whydigit.wms.service.TicketService;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/api/ticket")
+@RequestMapping("/api/ticketcontroller")
 public class TicketController extends BaseController {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(TicketController.class);
