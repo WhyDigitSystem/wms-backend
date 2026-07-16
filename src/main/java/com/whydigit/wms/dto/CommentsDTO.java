@@ -1,0 +1,23 @@
+package com.whydigit.wms.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CommentsDTO {
+	private Long id;
+
+	private String comments;
+
+	private String createdBy;
+	private String userName;
+	private Long orgId;
+	private Long ticketId;
+	private String sourceUserName;
+	private Long sourceOrgId;
+	private Long sourceId;
+	private Long sourceTicketId;
+}

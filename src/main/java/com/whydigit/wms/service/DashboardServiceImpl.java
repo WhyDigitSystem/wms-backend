@@ -328,87 +328,86 @@ public class DashboardServiceImpl implements DashboardService {
 		}
 		return stock;
 	}
-	
+
 	@Override
 	public List<Map<String, Object>> getSlowMoveStockDetailsReport(Long orgId, String branchCode, String warehouse,
-			 String client) {
-		Set<Object[]> getDetails = stockDetailsRepo.getSlowMoveStockDetailsReport(orgId, branchCode, warehouse,
-			 client);
+			String client) {
+		Set<Object[]> getDetails = stockDetailsRepo.getSlowMoveStockDetailsReport(orgId, branchCode, warehouse, client);
 		return getSlowMoveStockDetailsReport(getDetails);
 	}
 
 	private List<Map<String, Object>> getSlowMoveStockDetailsReport(Set<Object[]> getDetails) {
-	    List<Map<String, Object>> stock = new ArrayList<>();
+		List<Map<String, Object>> stock = new ArrayList<>();
 
-	    for (Object[] st : getDetails) {
-	        Map<String, Object> stockDetails = new HashMap<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> stockDetails = new HashMap<>();
 
-	        stockDetails.put("partno", st[0] != null ? st[0].toString() : "");
-	        stockDetails.put("partdesc", st[1] != null ? st[1].toString() : "");
-	        stockDetails.put("totalQty", st[2] != null ? Integer.parseInt(st[2].toString()) : 0);
-	        stockDetails.put("expdate", st[3] != null ? st[3].toString() : "");
-	        stockDetails.put("status", st[4] != null ? st[4].toString() : "");
-	        stockDetails.put("lastSaleDate", st[5] != null ? st[5].toString() : "");
-	        stockDetails.put("daysSinceSale", st[6] != null ? Integer.parseInt(st[6].toString()) : null);
+			stockDetails.put("partno", st[0] != null ? st[0].toString() : "");
+			stockDetails.put("partdesc", st[1] != null ? st[1].toString() : "");
+			stockDetails.put("totalQty", st[2] != null ? Integer.parseInt(st[2].toString()) : 0);
+			stockDetails.put("expdate", st[3] != null ? st[3].toString() : "");
+			stockDetails.put("status", st[4] != null ? st[4].toString() : "");
+			stockDetails.put("lastSaleDate", st[5] != null ? st[5].toString() : "");
+			stockDetails.put("daysSinceSale", st[6] != null ? Integer.parseInt(st[6].toString()) : null);
 
-	        stock.add(stockDetails);
-	    }
-	    return stock;
+			stock.add(stockDetails);
+		}
+		return stock;
 	}
-	
+
 	@Override
 	public List<Map<String, Object>> getDeadStockStockDetailsReport(Long orgId, String branchCode, String warehouse,
-			 String client) {
+			String client) {
 		Set<Object[]> getDetails = stockDetailsRepo.getDeadStockStockDetailsReport(orgId, branchCode, warehouse,
-			 client);
+				client);
 		return getDeadStockStockDetailsReport(getDetails);
 	}
 
 	private List<Map<String, Object>> getDeadStockStockDetailsReport(Set<Object[]> getDetails) {
-	    List<Map<String, Object>> stock = new ArrayList<>();
+		List<Map<String, Object>> stock = new ArrayList<>();
 
-	    for (Object[] st : getDetails) {
-	        Map<String, Object> stockDetails = new HashMap<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> stockDetails = new HashMap<>();
 
-	        stockDetails.put("partno", st[0] != null ? st[0].toString() : "");
-	        stockDetails.put("partdesc", st[1] != null ? st[1].toString() : "");
-	        stockDetails.put("totalQty", st[2] != null ? Integer.parseInt(st[2].toString()) : 0);
-	        stockDetails.put("expdate", st[3] != null ? st[3].toString() : "");
-	        stockDetails.put("status", st[4] != null ? st[4].toString() : "");
-	        stockDetails.put("lastSaleDate", st[5] != null ? st[5].toString() : "");
-	        stockDetails.put("daysSinceSale", st[6] != null ? Integer.parseInt(st[6].toString()) : null);
+			stockDetails.put("partno", st[0] != null ? st[0].toString() : "");
+			stockDetails.put("partdesc", st[1] != null ? st[1].toString() : "");
+			stockDetails.put("totalQty", st[2] != null ? Integer.parseInt(st[2].toString()) : 0);
+			stockDetails.put("expdate", st[3] != null ? st[3].toString() : "");
+			stockDetails.put("status", st[4] != null ? st[4].toString() : "");
+			stockDetails.put("lastSaleDate", st[5] != null ? st[5].toString() : "");
+			stockDetails.put("daysSinceSale", st[6] != null ? Integer.parseInt(st[6].toString()) : null);
 
-	        stock.add(stockDetails);
-	    }
-	    return stock;
+			stock.add(stockDetails);
+		}
+		return stock;
 	}
-	
+
 	@Override
 	public List<Map<String, Object>> getExpiredItemStockDetailsReport(Long orgId, String branchCode, String warehouse,
-			 String client) {
+			String client) {
 		Set<Object[]> getDetails = stockDetailsRepo.getExpiredItemStockDetailsReport(orgId, branchCode, warehouse,
-			 client);
+				client);
 		return getExpiredItemStockDetailsReport(getDetails);
 	}
 
 	private List<Map<String, Object>> getExpiredItemStockDetailsReport(Set<Object[]> getDetails) {
-	    List<Map<String, Object>> stock = new ArrayList<>();
+		List<Map<String, Object>> stock = new ArrayList<>();
 
-	    for (Object[] st : getDetails) {
-	        Map<String, Object> stockDetails = new HashMap<>();
+		for (Object[] st : getDetails) {
+			Map<String, Object> stockDetails = new HashMap<>();
 
-	        stockDetails.put("partno", st[0] != null ? st[0].toString() : "");
-	        stockDetails.put("partdesc", st[1] != null ? st[1].toString() : "");
-	        stockDetails.put("batch", st[2] != null ? st[2].toString() : "");
-	        stockDetails.put("status", st[3] != null ? st[3].toString() : "");
-	        stockDetails.put("expdate", st[4] != null ? st[4].toString() : "");
-	        stockDetails.put("sQty", st[5] != null ? Integer.parseInt(st[5].toString()) : 0);
+			stockDetails.put("partno", st[0] != null ? st[0].toString() : "");
+			stockDetails.put("partdesc", st[1] != null ? st[1].toString() : "");
+			stockDetails.put("batch", st[2] != null ? st[2].toString() : "");
+			stockDetails.put("status", st[3] != null ? st[3].toString() : "");
+			stockDetails.put("expdate", st[4] != null ? st[4].toString() : "");
+			stockDetails.put("sQty", st[5] != null ? Integer.parseInt(st[5].toString()) : 0);
 
-	        stock.add(stockDetails);
-	    }
-	    return stock;
+			stock.add(stockDetails);
+		}
+		return stock;
 	}
-	
+
 	@Override
 	public List<Map<String, Object>> getMaximumStockLevelDetails(Long orgId, String branchCode, String client,
 			String warehouse) {
@@ -432,4 +431,54 @@ public class DashboardServiceImpl implements DashboardService {
 		return gridDetails1;
 	}
 
+	@Override
+	public List<Map<String, Object>> getEscalationDetails(Long orgId, String branchCode, String client,
+			String warehouse) {
+
+		Set<Object[]> result = stockDetailsRepo.getEscalationDetails(orgId, branchCode, client, warehouse);
+
+		return prepareEscalationResponse(result);
+	}
+
+	private List<Map<String, Object>> prepareEscalationResponse(Set<Object[]> result) {
+
+		List<Map<String, Object>> response = new ArrayList<>();
+
+		Map<String, Object> summary = new HashMap<>();
+		List<Map<String, Object>> detailsList = new ArrayList<>();
+
+		for (Object[] grid : result) {
+
+			Integer sno = grid[0] != null ? Integer.parseInt(grid[0].toString()) : 0;
+
+			if (sno == 1) {
+
+				summary.put("critical", grid[6] != null ? Integer.parseInt(grid[6].toString()) : 0);
+				summary.put("high", grid[7] != null ? Integer.parseInt(grid[7].toString()) : 0);
+				summary.put("medium", grid[8] != null ? Integer.parseInt(grid[8].toString()) : 0);
+				summary.put("low", grid[9] != null ? Integer.parseInt(grid[9].toString()) : 0);
+				summary.put("totalEscalation", grid[10] != null ? Integer.parseInt(grid[10].toString()) : 0);
+
+			} else if (sno == 2) {
+
+				Map<String, Object> details = new HashMap<>();
+
+				details.put("description", grid[2] != null ? grid[2].toString() : "");
+				details.put("type", grid[1] != null ? grid[1].toString() : "");
+				details.put("warehouse", grid[3] != null ? grid[3].toString() : "");
+				details.put("totalCount", grid[4] != null ? Integer.parseInt(grid[4].toString()) : 0);
+
+				detailsList.add(details);
+			}
+		}
+
+		Map<String, Object> maximumDetails = new HashMap<>();
+
+		maximumDetails.put("summary", summary);
+		maximumDetails.put("details", detailsList);
+
+		response.add(maximumDetails);
+
+		return response;
+	}
 }

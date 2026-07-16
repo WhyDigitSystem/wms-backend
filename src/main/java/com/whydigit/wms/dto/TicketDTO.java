@@ -1,5 +1,7 @@
 package com.whydigit.wms.dto;
 
+import javax.validation.constraints.Email;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TicketDTO {
-	
+
 	private Long id;
-	private Long createdBy;
+	private String createdBy;
 	private Long orgId;
 	private String branchCode;
 	private String branch;
@@ -18,9 +20,17 @@ public class TicketDTO {
 	private String customer;
 	private String warehouse;
 	private String finYear;
-	private String name;
-	private String email;
-	private String issueDesc;	
 	private String ticketRemarks;
+	@Email(message = "Invalid Email")
+	private String email;
+	private String companyName;	
+	private String ticketStatus;
+	private String subject;
+	private String description;
+	private String userName;
+
+	// private byte[] screenShot;
+
+
 
 }

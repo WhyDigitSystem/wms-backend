@@ -59,4 +59,6 @@ public interface DashboardService {
 	List<Map<String, Object>> getMaximumStockLevelDetails(Long orgId, String branchCode, String client,
 			String warehouse);
 
+	List<Map<String, Object>> getEscalationDetails(Long orgId, String branchCode, String client, String warehouse);
+
 }
