@@ -57,4 +57,6 @@ public interface TicketService {
 
 	void deleteComments(Long id, Long sourceId);
 
+	List<Map<String, Object>> getNotificationDetails(Long orgId, String branchCode, String client, String warehouse);
+
 }

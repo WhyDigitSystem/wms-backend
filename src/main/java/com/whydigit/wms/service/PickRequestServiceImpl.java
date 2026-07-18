@@ -22,6 +22,7 @@ import com.whydigit.wms.entity.BuyerOrderVO;
 import com.whydigit.wms.entity.BuyerVO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.HandlingStockOutVO;
+import com.whydigit.wms.entity.NotificationVO;
 import com.whydigit.wms.entity.PickRequestDetailsVO;
 import com.whydigit.wms.entity.PickRequestVO;
 import com.whydigit.wms.entity.StockDetailsVO;
@@ -32,6 +33,7 @@ import com.whydigit.wms.repo.ClientRepo;
 import com.whydigit.wms.repo.DocumentTypeMappingDetailsRepo;
 import com.whydigit.wms.repo.HandlingStockOutRepo;
 import com.whydigit.wms.repo.MaterialRepo;
+import com.whydigit.wms.repo.NotificationRepo;
 import com.whydigit.wms.repo.PickRequestDetailsRepo;
 import com.whydigit.wms.repo.PickRequestRepo;
 import com.whydigit.wms.repo.StockDetailsRepo;
@@ -67,6 +69,9 @@ public class PickRequestServiceImpl implements PickRequestService {
 
 	@Autowired
 	DocumentTypeMappingDetailsRepo documentTypeMappingDetailsRepo;
+	
+	@Autowired
+	NotificationRepo notificationRepo;
 
 //	PickRequest
 	@Override
@@ -195,6 +200,22 @@ public class PickRequestServiceImpl implements PickRequestService {
 					stockDetailsVOFrom.setCellType(detailsVO.getCellType());
 					stockDetailsVOFrom.setCore(detailsVO.getCore());
 					stockDetailsVOFrom.setSSku(detailsVO.getSku());
+					
+					NotificationVO notificationVO = new NotificationVO();
+					notificationVO.setOrgId(savedPickRequestVO.getOrgId());
+					notificationVO.setPartno(detailsVO.getPartNo());
+					notificationVO.setPartDesc(detailsVO.getPartDesc());
+					notificationVO.setSku(detailsVO.getSku());
+					notificationVO.setClient(savedPickRequestVO.getClient());
+					notificationVO.setBranchCode(savedPickRequestVO.getBranchCode());
+					notificationVO.setWarehouse(savedPickRequestVO.getWarehouse());
+					notificationVO.setNotificationType("Slow Move");
+					notificationVO.setCreatedBy(savedPickRequestVO.getCreatedBy());
+					notificationVO.setUpdatedBy(savedPickRequestVO.getCreatedBy());
+					notificationVO.setSQty(detailsVO.getPickQty() * -1);
+					notificationVO.setStatus("R");
+					notificationVO.setSourceScreenCode(savedPickRequestVO.getScreenCode());				
+					notificationRepo.save(notificationVO);
 					stockDetailsVOFrom.setSourceScreenCode(savedPickRequestVO.getScreenCode());
 					stockDetailsVOFrom.setSourceScreenName(savedPickRequestVO.getScreenName());
 					stockDetailsVOFrom.setSourceId(detailsVO.getId());

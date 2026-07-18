@@ -555,4 +555,31 @@ public class TicketController extends BaseController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("/getNotificationDetails")
+	public ResponseEntity<ResponseDTO> getNotificationDetails(@RequestParam Long orgId, @RequestParam String branchCode,
+			@RequestParam String client, @RequestParam String warehouse) {
+		String methodName = "getNotificationDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> notificationDetails = new ArrayList<>();
+		try {
+			notificationDetails = ticketService.getNotificationDetails(orgId, branchCode, client, warehouse);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "NotificationDetails  information get successfully");
+			responseObjectsMap.put("notificationDetails", notificationDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"NotificationDetails information receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 }

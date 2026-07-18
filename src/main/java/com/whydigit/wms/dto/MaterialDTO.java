@@ -31,7 +31,7 @@ public class MaterialDTO {
 	private String hsnCode;
 	private String parentChildKey;
 	private String cbranch;
-	private String criticalStockLevel;
+	private int criticalStockLevel;
 	private String status;
 	private Long orgId;
 	private String customer;

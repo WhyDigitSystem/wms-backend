@@ -71,7 +71,7 @@ public class MaterialVO {
 	@Column(name = "cbranch",length =25)
 	private String cbranch;
 	@Column(name = "criticalstocklevel",length =25)
-	private String criticalStockLevel;
+	private int criticalStockLevel;
 	@Column(name = "status",length =25)
 	private String status;
 	@Column(name = "orgid")

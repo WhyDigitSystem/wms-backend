@@ -31,6 +31,7 @@ import com.whydigit.wms.dto.PutAwayDetailsDTO;
 import com.whydigit.wms.entity.DocumentTypeMappingDetailsVO;
 import com.whydigit.wms.entity.GrnVO;
 import com.whydigit.wms.entity.HandlingStockInVO;
+import com.whydigit.wms.entity.NotificationVO;
 import com.whydigit.wms.entity.PutAwayDetailsVO;
 import com.whydigit.wms.entity.PutAwayVO;
 import com.whydigit.wms.entity.PutawayExcelUploadVO;
@@ -42,6 +43,7 @@ import com.whydigit.wms.repo.GrnDetailsRepo;
 import com.whydigit.wms.repo.GrnRepo;
 import com.whydigit.wms.repo.HandlingStockInRepo;
 import com.whydigit.wms.repo.MaterialRepo;
+import com.whydigit.wms.repo.NotificationRepo;
 import com.whydigit.wms.repo.PutAwayDetailsRepo;
 import com.whydigit.wms.repo.PutAwayRepo;
 import com.whydigit.wms.repo.PutawayExcelUploadRepo;
@@ -81,6 +83,9 @@ public class PutawayServiceImpl implements PutawayService {
 
 	@Autowired
 	GrnDetailsRepo grnDetailsRepo;
+	
+	@Autowired
+	NotificationRepo notificationRepo;
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(PutawayServiceImpl.class);
 
@@ -253,6 +258,30 @@ public class PutawayServiceImpl implements PutawayService {
 				stockDetailsVO.setCore(putAwayVO.getCore());
 				stockDetailsVO.setBinClass(putAwayVO.getBinClass());
 				stockDetailsVO.setBatch(putAwayDetailsVO.getBatch());
+				
+				NotificationVO notificationVO = new NotificationVO();
+				notificationVO.setOrgId(savedPutAwayVO.getOrgId());
+				notificationVO.setPartno(putAwayDetailsVO.getPartNo());
+				notificationVO.setPartDesc(putAwayDetailsVO.getPartDesc());
+				notificationVO.setSku(putAwayDetailsVO.getSku());
+				notificationVO.setClient(savedPutAwayVO.getClient());
+				notificationVO.setBranchCode(savedPutAwayVO.getBranchCode());
+				notificationVO.setWarehouse(savedPutAwayVO.getWarehouse());
+				notificationVO.setNotificationType("Near Expiry");
+				notificationVO.setCreatedBy(savedPutAwayVO.getCreatedBy());
+				notificationVO.setUpdatedBy(savedPutAwayVO.getCreatedBy());
+				notificationVO.setSQty(putAwayDetailsVO.getPutAwayQty());
+				notificationVO.setStatus("R");
+				notificationVO.setSourceScreenCode(savedPutAwayVO.getScreenCode());	
+				notificationVO.setGrnNo(savedPutAwayVO.getGrnNo());
+				notificationVO.setBin(putAwayDetailsVO.getBin());
+				notificationVO.setGrnDate(savedPutAwayVO.getGrnDate());
+				notificationVO.setBatch(putAwayDetailsVO.getBatch());
+				notificationVO.setBatchDate(putAwayDetailsVO.getBatchDate());
+				notificationVO.setExpDate(putAwayDetailsVO.getExpDate());
+				notificationRepo.save(notificationVO);
+				
+				
 				stockDetailsVO.setCreatedBy(savedPutAwayVO.getCreatedBy());
 				stockDetailsVO.setUpdatedBy(savedPutAwayVO.getUpdatedBy());
 				stockDetailsVO.setPcKey(materialRepo.getParentChildKey(savedPutAwayVO.getOrgId(),

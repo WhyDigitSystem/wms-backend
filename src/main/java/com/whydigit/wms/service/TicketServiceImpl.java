@@ -2,7 +2,9 @@ package com.whydigit.wms.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -549,4 +552,97 @@ public class TicketServiceImpl implements TicketService {
 		return ticketRepo.getByUserId(orgId, userId);
 	}
 
+	
+	@Override
+	public List<Map<String, Object>> getNotificationDetails(Long orgId, String branchCode, String client,
+			String warehouse) {
+
+		Set<Object[]> result = notificationRepo.getNotificationDetails(orgId, branchCode, client, warehouse);
+
+		return prepareEscalationResponse(result);
+	}
+
+	private List<Map<String, Object>> prepareEscalationResponse(Set<Object[]> result) {
+
+		List<Map<String, Object>> response = new ArrayList<>();
+
+		List<Map<String, Object>> lowStockSummary = new ArrayList<>();
+		List<Map<String, Object>> maximumStockSummary = new ArrayList<>();
+		List<Map<String, Object>> holdStockSummary = new ArrayList<>();
+		List<Map<String, Object>> slowMovingStockSummary = new ArrayList<>();
+		List<Map<String, Object>> deadStockSummary = new ArrayList<>();
+		List<Map<String, Object>> nearExpirySummary = new ArrayList<>();
+
+		for (Object[] grid : result) {
+
+			String type = grid[6] != null ? grid[6].toString().trim() : "";
+
+			Map<String, Object> map = new LinkedHashMap<>();
+
+			map.put("id", grid[7] != null ? Long.parseLong(grid[7].toString()) : 0L);
+			map.put("type", type);
+
+			if ("Low Stock".equalsIgnoreCase(type)) {
+
+				String message = grid[2] + " (" + grid[1] + ") stock is " + grid[5] + " " + grid[3]
+						+ ", below the critical quantity of " + grid[4] + " " + grid[3] + ".";
+
+				map.put("message", message);
+				lowStockSummary.add(map);
+
+			} else if ("Maximum Stock".equalsIgnoreCase(type)) {
+
+				String message = grid[2] + " (" + grid[1] + ") stock is " + grid[5] + " " + grid[3]
+						+ ", exceeding the maximum quantity of " + grid[4] + " " + grid[3] + ".";
+
+				map.put("message", message);
+				maximumStockSummary.add(map);
+
+			} else if ("Hold Stock".equalsIgnoreCase(type)) {
+
+				String message = grid[2] + " (" + grid[1] + ") " + grid[5] + " " + grid[3]
+						+ " has been moved to HOLD Bin " + grid[13] + ".";
+
+				map.put("message", message);
+				holdStockSummary.add(map);
+
+			} else if ("Slow Move".equalsIgnoreCase(type)) {
+
+				String message = grid[2] + " (" + grid[1] + ") has not moved for " + grid[16]
+						+ " days. Current stock is " + grid[5] + ". Last Sale Date : " + grid[15] + ".";
+
+				map.put("message", message);
+				slowMovingStockSummary.add(map);
+
+			} else if ("Dead Move".equalsIgnoreCase(type)) {
+
+				String message = grid[2] + " (" + grid[1] + ") has not moved for " + grid[16]
+						+ " days. Current stock is " + grid[5] + ". Last Sale Date : " + grid[15] + ".";
+
+				map.put("message", message);
+				deadStockSummary.add(map);
+
+			} else if ("Near Expiry".equalsIgnoreCase(type)) {
+
+				String message = grid[2] + " (" + grid[1] + ") has " + grid[5] + " " + grid[3] + " expiring in "
+						+ grid[17] + " day(s). Expiry Date : " + grid[12] + ", Bin : " + grid[13] + ".";
+
+				map.put("message", message);
+				nearExpirySummary.add(map);
+			}
+		}
+
+		Map<String, Object> finalResponse = new LinkedHashMap<>();
+
+		finalResponse.put("LowStockSummary", lowStockSummary);
+		finalResponse.put("MaximumStockSummary", maximumStockSummary);
+		finalResponse.put("HoldStockSummary", holdStockSummary);
+		finalResponse.put("SlowMovingStockSummary", slowMovingStockSummary);
+		finalResponse.put("DeadStockSummary", deadStockSummary);
+		finalResponse.put("NearExpirySummary", nearExpirySummary);
+
+		response.add(finalResponse);
+
+		return response;
+	}
 }

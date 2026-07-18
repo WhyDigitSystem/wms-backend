@@ -1,6 +1,7 @@
 package com.whydigit.wms.service;
 
 import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,6 +71,7 @@ import com.whydigit.wms.entity.LocationMappingDetailsVO;
 import com.whydigit.wms.entity.LocationMappingVO;
 import com.whydigit.wms.entity.LocationTypeVO;
 import com.whydigit.wms.entity.MaterialVO;
+import com.whydigit.wms.entity.NotificationVO;
 import com.whydigit.wms.entity.SupplierVO;
 import com.whydigit.wms.entity.UnitVO;
 import com.whydigit.wms.entity.WarehouseClientVO;
@@ -95,6 +97,7 @@ import com.whydigit.wms.repo.LocationMappingDetailsRepo;
 import com.whydigit.wms.repo.LocationMappingRepo;
 import com.whydigit.wms.repo.LocationTypeRepo;
 import com.whydigit.wms.repo.MaterialRepo;
+import com.whydigit.wms.repo.NotificationRepo;
 import com.whydigit.wms.repo.SupplierRepo;
 import com.whydigit.wms.repo.UnitRepo;
 import com.whydigit.wms.repo.WarehouseBranchRepo;
@@ -185,6 +188,9 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 	@Autowired
 	FinancialYearRepo financialYearRepo;
+
+	@Autowired
+	NotificationRepo notificationRepo;
 
 	// Group
 
@@ -1160,6 +1166,36 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 		materialVO.setLowQty(materialDTO.getLowQty());
 		materialVO.setBinQty(materialDTO.getBinQty());
 		materialVO.setMaximumQty(materialDTO.getMaximumQty());
+
+		String type = "LowAndMaximum";
+
+		NotificationVO notificationVO = notificationRepo.findByCheck(materialDTO.getOrgId(), materialDTO.getPartno(),
+				materialDTO.getPartDesc(), materialDTO.getClient(), materialDTO.getBranchCode(),
+				materialDTO.getWarehouse(), type);
+
+		if (notificationVO == null) {
+			notificationVO = new NotificationVO();
+			notificationVO.setOrgId(materialDTO.getOrgId());
+			notificationVO.setPartno(materialDTO.getPartno());
+			notificationVO.setPartDesc(materialDTO.getPartDesc());
+			notificationVO.setSku(materialDTO.getSku());
+			notificationVO.setClient(materialDTO.getClient());
+			notificationVO.setBranchCode(materialDTO.getBranchCode());
+			notificationVO.setWarehouse(materialDTO.getWarehouse());
+			notificationVO.setNotificationType(type);
+
+			notificationVO.setCreatedBy(materialDTO.getCreatedBy());
+
+		} else {
+
+			notificationVO.setUpdatedBy(materialDTO.getCreatedBy());
+		}
+
+		notificationVO.setCriticalQty(materialDTO.getCriticalStockLevel());
+		notificationVO.setMaximumQty(materialDTO.getMaximumQty());
+		notificationVO.setStatus("OPEN");
+		notificationRepo.save(notificationVO);
+
 	}
 
 	@Override
@@ -2562,7 +2598,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 					dto.setHsnCode(getCellValue(row.getCell(18)));
 					dto.setParentChildKey(getCellValue(row.getCell(19)));
 					dto.setCbranch(getCellValue(row.getCell(20)));
-					dto.setCriticalStockLevel(getCellValue(row.getCell(21)));
+					dto.setCriticalStockLevel(getIntValue(row.getCell(21)));
 					dto.setStatus("TRUE");
 					dto.setCustomer(getCellValue(row.getCell(22)));
 					dto.setMovingType(getCellValue(row.getCell(23)));
@@ -2914,7 +2950,7 @@ public class WarehouseMasterServiceImpl implements WarehouseMasterService {
 
 		return documentTypeMappingVO;
 	}
-	
+
 	@Override
 	public List<Map<String, Object>> getClientDetails(Long orgId) {
 		Set<Object[]> chType = clientRepo.getClientDetails(orgId);
