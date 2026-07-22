@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.whydigit.wms.dto.CommentsDTO;
 import com.whydigit.wms.dto.TicketDTO;
 import com.whydigit.wms.entity.CommentsVO;
+import com.whydigit.wms.entity.NotificationVO;
 import com.whydigit.wms.entity.TicketVO;
 import com.whydigit.wms.exception.ApplicationException;
 import com.whydigit.wms.repo.CommentsRepo;
@@ -552,7 +553,6 @@ public class TicketServiceImpl implements TicketService {
 		return ticketRepo.getByUserId(orgId, userId);
 	}
 
-	
 	@Override
 	public List<Map<String, Object>> getNotificationDetails(Long orgId, String branchCode, String client,
 			String warehouse) {
@@ -645,4 +645,19 @@ public class TicketServiceImpl implements TicketService {
 
 		return response;
 	}
+
+	@Override
+	public NotificationVO updateNotificationDetails(Long orgId, Long notificationId) {
+
+		NotificationVO notificationVO = notificationRepo.findByNotificationIdAndOrgId(orgId, notificationId);
+
+		if (notificationVO == null) {
+			throw new RuntimeException("Notification not found.");
+		}
+
+		notificationVO.setRead(true);
+
+		return notificationRepo.save(notificationVO);
+	}
+
 }

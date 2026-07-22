@@ -53,4 +53,7 @@ public interface NotificationRepo extends JpaRepository<NotificationVO, Long> {
 			+ "partno,partdesc,sku,batch,batchdate,grnno,grndate,expdate,bin,notificationid having  SUM(sqty)>0")
 	Set<Object[]> getNotificationDetails(Long orgId, String branchCode, String client, String warehouse);
 
+	@Query(value = "select * from notification where notificationid=?2 and orgid=?1", nativeQuery = true)
+	NotificationVO findByNotificationIdAndOrgId(Long orgId, Long notificationId);
+
 }

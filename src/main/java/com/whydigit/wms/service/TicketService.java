@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.whydigit.wms.dto.CommentsDTO;
 import com.whydigit.wms.dto.TicketDTO;
 import com.whydigit.wms.entity.CommentsVO;
+import com.whydigit.wms.entity.NotificationVO;
 import com.whydigit.wms.entity.TicketVO;
 import com.whydigit.wms.exception.ApplicationException;
 
@@ -58,5 +59,7 @@ public interface TicketService {
 	void deleteComments(Long id, Long sourceId);
 
 	List<Map<String, Object>> getNotificationDetails(Long orgId, String branchCode, String client, String warehouse);
+
+	NotificationVO updateNotificationDetails(Long orgId, Long notificationId);
 
 }

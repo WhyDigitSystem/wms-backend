@@ -35,6 +35,7 @@ import com.whydigit.wms.dto.CommentsDTO;
 import com.whydigit.wms.dto.ResponseDTO;
 import com.whydigit.wms.dto.TicketDTO;
 import com.whydigit.wms.entity.CommentsVO;
+import com.whydigit.wms.entity.NotificationVO;
 import com.whydigit.wms.entity.TicketVO;
 import com.whydigit.wms.repo.TicketRepo;
 import com.whydigit.wms.service.TicketService;
@@ -578,6 +579,32 @@ public class TicketController extends BaseController {
 			responseDTO = createServiceResponseError(responseObjectsMap,
 					"NotificationDetails information receive failed", errorMsg);
 		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/updateNotificationDetails")
+	public ResponseEntity<ResponseDTO> updateNotificationDetails(@RequestParam(required = true) Long orgId,
+			@RequestParam(required = true) Long notificationId) {
+
+		String methodName = "updateNotificationDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO;
+
+		try {
+			NotificationVO notificationVO = ticketService.updateNotificationDetails(orgId, notificationId);
+
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Notification status updated successfully");
+			responseObjectsMap.put("notificationVO", notificationVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Notification update failed", errorMsg);
+		}
+
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}

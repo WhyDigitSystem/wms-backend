@@ -56,9 +56,13 @@ public class NotificationVO {
 	@Column(name = "message")
 	private String message;
 	@Column(name = "isread")
+	
 	private boolean isRead = false;
+	
 	@Column(name = "isdeleted")
+	
 	private boolean isDeleted = false;
+	
 	@Column(name = "notificationtype")
 	private String notificationType;
 
